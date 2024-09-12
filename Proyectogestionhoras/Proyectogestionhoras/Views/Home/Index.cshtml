@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+
+}
+
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true"/>
+
+
+
+<div class="dashboard-container">
+    <!-- Sección de Proyectos -->
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Mis Proyectos</h2>
+        <div class="section-content">
+            <!-- Nuevo Proyecto -->
+            <div id="nuevoProyectoBtn" class="card new">
+                <h3>+ Nuevo Proyecto</h3>
+                <p>Crear un nuevo proyecto</p>
+            </div>
+            <!-- Proyecto 1 -->
+            <div class="card">
+                <h3>Proyecto Alpha</h3>
+                <p>Cliente: Empresa XYZ</p>
+                <p>Fecha de inicio: 01/03/2024</p>
+            </div>
+            <!-- Proyecto 2 -->
+            <div class="card">
+                <h3>Proyecto Contabilidad</h3>
+                <p>Cliente: Empresa ABC</p>
+                <p>Fecha de inicio: 15/04/2024</p>
+            </div>
+            <!-- Proyecto 3 -->
+            <div class="card">
+                <h3>Proyecto Gobierno</h3>
+                <p>Cliente: colegio de administración</p>
+                <p>Fecha de inicio: 21/05/2024</p>
+            </div>
+            <!-- Proyecto 4 -->
+            <div class="card">
+                <h3>Proyecto Caja de Compensación</h3>
+                <p>Cliente: Empresa Tech Solutions</p>
+                <p>Fecha de inicio: 10/06/2024</p>
+            </div>
+            <!-- Proyecto 5 -->
+            <div class="card">
+                <h3>Proyecto Hospital Salud</h3>
+                <p>Cliente: Hospital San Juan</p>
+                <p>Fecha de inicio: 05/07/2024</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Informes -->
+    <div class="dashboard-section reports-section">
+        <h2 class="section-header">Clientes</h2>
+        <div class="section-content">
+            <div class="card">
+                <h3>Empresa Abc</h3>
+                <p>Sector Salud.</p>
+            </div>
+            <div class="card">
+                <h3>Empresa de Costos</h3>
+                <p>Costos asociados a cada proyecto.</p>
+            </div>
+            <div class="card">
+                <h3>Empresa Banco</h3>
+                <p>Horas trabajadas por el equipo.</p>
+            </div>
+        </div>
+    </div>
+</div>  
