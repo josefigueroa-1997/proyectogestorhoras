@@ -54,18 +54,14 @@
     <div class="dashboard-section reports-section">
         <h2 class="section-header">Clientes</h2>
         <div class="section-content">
-            <div class="card">
-                <h3>Empresa Abc</h3>
-                <p>Sector Salud.</p>
-            </div>
-            <div class="card">
-                <h3>Empresa de Costos</h3>
-                <p>Costos asociados a cada proyecto.</p>
-            </div>
-            <div class="card">
-                <h3>Empresa Banco</h3>
-                <p>Horas trabajadas por el equipo.</p>
-            </div>
+            @foreach (var cliente in ViewBag.clientes)
+            {
+                <div class="card">
+                    <h3>@cliente.Nombre</h3>
+                    <p>@cliente.Pais</p>
+                    <p>@cliente.Linkedin</p>
+                </div>
+            }
         </div>
     </div>
 </div>  

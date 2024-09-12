@@ -1,20 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Proyectogestionhoras.Models;
 using System.Diagnostics;
-
+using Proyectogestionhoras.Services;
 namespace Proyectogestionhoras.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ClienteService cliente;
+        public HomeController(ILogger<HomeController> logger, ClienteService cliente)
         {
             _logger = logger;
+            this.cliente = cliente;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var clientes = await cliente.ObtenerClientesIndex();
+            ViewBag.clientes = clientes;
             return View();
         }
 
