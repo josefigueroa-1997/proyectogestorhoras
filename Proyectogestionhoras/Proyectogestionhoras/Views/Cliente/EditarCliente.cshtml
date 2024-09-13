@@ -1,0 +1,92 @@
+﻿@{
+
+    ViewData["Title"] = "Editar Cliente";
+}
+<style>
+    .form-label {
+    font-weight: 600;
+    color: #333;
+    }
+
+    .form-input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    transition: border-color 0.3s;
+    }
+
+    .form-input:focus {
+    border-color: #fcaa67; /* Color del borde al enfocar */
+    outline: none;
+    }
+
+    .form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+    background-color: #000;
+    color: #fcaa67;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+    background-color: #333;
+    }
+</style>
+<div class="container mx-auto mt-16">
+    <div class="form-container">
+        <h1 class="text-xl font-bold mb-6">Editar Información Cliente</h1>
+        <form method="post" action="/Cliente/Editar">
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label class="form-label" for="Nombre">Nombre</label>
+                <input class="form-input" type="text" id="Nombre" name="Nombre" value="Nombre">
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label class="form-label" for="Direccion">Dirección</label>
+                <input class="form-input" type="text" id="Direccion" name="Direccion" value="Direccion">
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label class="form-label" for="Ciudad">Ciudad</label>
+                <input class="form-input" type="text" id="Ciudad" name="Ciudad" value="Ciudad">
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label class="form-label" for="Pais">País</label>
+                <input class="form-input" type="text" id="Pais" name="Pais" value="Pais">
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label class="form-label" for="Telefono">Teléfono</label>
+                <input class="form-input" type="text" id="Telefono" name="Telefono" value="Telefono">
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label class="form-label" for="PagWeb">Página Web</label>
+                <input class="form-input" type="text" id="PagWeb" name="PagWeb" value="PagWeb">
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <label class="form-label" for="Instagram">Instagram</label>
+                <input class="form-input" type="text" id="Instagram" name="Instagram" value="Instagram">
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mb-6">
+                <label class="form-label" for="Linkedin">LinkedIn</label>
+                <input class="form-input" type="text" id="Linkedin" name="Linkedin" value="Linkedin">
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>

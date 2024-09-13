@@ -145,22 +145,27 @@
 
 <div class="dashboard-container">
     <!-- Client Details Section -->
-    <div class="client-details">
-        <h2>Detalles del Cliente</h2>
-        <p><strong>Nombre:</strong> Juan Pérez</p>
-        <p><strong>Dirección:</strong> Calle Falsa 123</p>
-        <p><strong>Ciudad:</strong> Ciudad Ejemplo</p>
-        <p><strong>País:</strong> País Ejemplo</p>
-        <p><strong>Teléfono:</strong> +123456789</p>
-        <p><strong>Página Web:</strong> www.ejemplo.com</p>
-        <p><strong>Instagram:</strong> ejemplo</p>
-        <p><strong>LinkedIn:</strong> linkedin.com/in/ejemplo</p>
-        <div class="client-buttons">
-            <button class="edit">Editar</button>
-            <button class="delete">Eliminar</button>
-        </div>
-    </div>
+    @foreach (var cliente in ViewBag.clientedetalle)
+    {
+        <div class="client-details">
+            <h2>Detalles del Cliente</h2>
+            <p><strong>Nombre:</strong> @cliente.Nombre</p>
+            <p><strong>Dirección:</strong>@cliente.Direccion</p>
+            <p><strong>Ciudad:</strong> @cliente.Ciudad</p>
+            <p><strong>País:</strong>@cliente.Pais</p>
+            <p><strong>Teléfono:</strong>@cliente.Telefono</p>
+            <p><strong>Página Web:</strong>@cliente.PagWeb</p>
+            <p><strong>Instagram:</strong>@cliente.Instagram</p>
+            <p><strong>LinkedIn:</strong>@cliente.Linkedin</p>
+            <div class="client-buttons">
+                <button onclick="window.location.href='@Url.Action("EditarCliente", "Cliente", new { id = cliente.Id })'" class="edit">Editar</button>
 
+                <button class="delete">Eliminar</button>
+            </div>
+        </div>
+
+    }
+   
     <!-- Projects Section -->
     <div class="projects-section">
         <div class="section-header">

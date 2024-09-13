@@ -21,6 +21,7 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<Conexion>();
+builder.Services.AddScoped<ProyectoService>();
 
 builder.Services.AddDbContext<PROYECTO_CONTROL_HORASContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("cadenasql")));
 var app = builder.Build();

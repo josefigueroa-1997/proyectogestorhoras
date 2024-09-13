@@ -6,56 +6,47 @@ using System.Data.Common;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
-
+using Proyectogestionhoras.Services;
 namespace Proyectogestionhoras.Controllers
 {
     public class ClienteController : Controller
     {
-        private readonly PROYECTO_CONTROL_HORASContext _context;
-        private readonly Conexion conexion; 
 
-        public ClienteController(PROYECTO_CONTROL_HORASContext context, Conexion conexion)
+        private readonly ClienteService service;
+        private readonly ProyectoService proyectoService;
+
+        public ClienteController(ClienteService service, ProyectoService proyectoService)
         {
-            _context = context;
-            this.conexion = conexion;
+            this.service = service;
+            this.proyectoService = proyectoService;
         }
 
-        public IActionResult DetalleCliente(int? id,string? nombre,string? pais)
+        public async Task <IActionResult> ProyectosCliente(int? id, int? idcliente, int? idusuario, string? nombre, int? idtipoempresa, string? statusproyecto)
         {
+            var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, idusuario, nombre,idtipoempresa, statusproyecto);
+            var clientedetalle = await service.ObtenerClientesIndex(idcliente);
+            ViewBag.clientedetalle = clientedetalle;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCliente()
+        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram)
         {
             try
             {
-                string nombre = Request.Form["nombre"].ToString() ?? string.Empty;
-                string direccion = Request.Form["direccion"].ToString() ?? string.Empty;
-                string ciudad = Request.Form["ciudad"].ToString() ?? string.Empty;
-                string pais = Request.Form["pais"].ToString() ?? string.Empty;
-                string telefono = Request.Form["telefono"].ToString() ?? string.Empty;
-                string pagweb = Request.Form["pagweb"].ToString() ?? string.Empty;
-                string linkedin = Request.Form["linkedin"].ToString() ?? string.Empty;
-                string instagram = Request.Form["instagram"].ToString() ?? string.Empty;
-                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-                using (DbCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "REGISTRARCLIENTE";
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
-                    command.Parameters.Add(new SqlParameter("@DIRECCION", direccion));
-                    command.Parameters.Add(new SqlParameter("@CIUDAD",ciudad));
-                    command.Parameters.Add(new SqlParameter("@PAIS", pais));
-                    command.Parameters.Add(new SqlParameter("@TELEFONO", telefono));
-                    command.Parameters.Add(new SqlParameter("@PAG_WEB", pagweb));
-                    command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedin));
-                    command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagram));
-                    await command.ExecuteNonQueryAsync();
-                    await conexion.CloseDatabaseConnectionAsync();
+
+                
+                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram);
+                if (registro) {
+                    TempData["SuccessMessage"] = "¡Se Agregó con éxito el nuevo cliente!";
+                    return RedirectToAction("Index", "Home");
                 }
-                TempData["SuccessMessage"] = "¡Se Agregó con éxito el nuevo cliente!";
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    Debug.Write($"Hubo un error en el registro del cliente");
+                    return View();
+                }
+               
                 
             }
             catch (Exception ex)
@@ -64,6 +55,12 @@ namespace Proyectogestionhoras.Controllers
                 return View();
             }
         }
+        public IActionResult EditarCliente()
+        {
+            {
+                return View();
+            }
+        }   
     }
 
 }

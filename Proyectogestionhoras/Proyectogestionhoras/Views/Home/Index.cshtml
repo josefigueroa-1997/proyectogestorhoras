@@ -60,8 +60,8 @@
             </div>
             @foreach (var cliente in ViewBag.clientes)
             {
-                
-                <a href="@Url.Action("DetalleCliente","Cliente",new {id=cliente.Id})" class="card">
+
+                <a href="@Url.Action("ProyectosCliente","Cliente",new {idcliente=cliente.Id})" class="card">
 
                     <h3>@cliente.Nombre</h3>
                     <p>@cliente.Pais</p>
@@ -104,11 +104,11 @@
                 </div>
                 <div class="mb-4">
                     <label for="instagram" class="block text-gray-700 font-bold">Instagram:</label>
-                    <input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
+                    <input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
                 </div>
                 <div class="mb-4">
                     <label for="linkedin" class="block text-gray-700 font-bold">LinkedIn:</label>
-                    <input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
+                    <input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
                 </div>
             
                 <div class="flex justify-end gap-4 mt-6">
