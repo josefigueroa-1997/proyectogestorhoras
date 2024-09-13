@@ -1,0 +1,182 @@
+﻿@{
+
+    ViewData["Tittle"] = "Detalles Cliente";
+
+}
+<style>
+
+    /* Estilo para el contenido del dashboard */
+    .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .dashboard-section {
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .projects-section {
+        background-color: #fff;
+    }
+
+    .section-header {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .section-content {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .card {
+        background-color: #ffffff; /* Fondo blanco para las tarjetas */
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: background-color 0.3s, border-color 0.3s; /* Agregar transición suave */
+    }
+
+        .card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #000; /* Texto negro para los títulos de las tarjetas */
+        }
+
+        .card p {
+            font-size: 0.875rem;
+            color: #6c6c6c; /* Texto gris para los párrafos en las tarjetas */
+        }
+
+        .card.new {
+            background-color: #333; /* Fondo gris oscuro por defecto */
+            border-left: 4px solid #fcaa67; /* Borde amarillo */
+            cursor: pointer;
+            color: #fff; /* Texto blanco por defecto */
+        }
+
+            .card.new h3 {
+                color: #fcaa67; /* Color del título amarillo */
+            }
+
+            .card.new:hover {
+                background-color: #333; /* Fondo gris oscuro al pasar el mouse */
+                border-color: #fcaa67; /* Borde amarillo al pasar el mouse */
+            }
+
+                .card.new:hover h3 {
+                    color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+                }
+
+                .card.new:hover p {
+                    color: #fff; /* Color del texto blanco al pasar el mouse */
+                }
+
+        .card:hover {
+            background-color: #333; /* Fondo gris oscuro al pasar el mouse */
+            border: 2px solid #fcaa67; /* Borde amarillo al pasar el mouse */
+            cursor: pointer;
+        }
+
+            .card:hover h3 {
+                color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+            }
+
+            .card:hover p {
+                color: #fff; /* Color del texto blanco al pasar el mouse */
+            }
+
+    .client-details {
+        background-color: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        text-align: center; /* Centrando el texto */
+    }
+
+        .client-details h2 {
+            margin-bottom: 1rem;
+        }
+
+        .client-details p {
+            margin: 0.5rem 0;
+        }
+
+    .client-buttons {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+        .client-buttons button {
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+            .client-buttons button.edit {
+                background-color: #fcaa67; /* Verde para el botón de editar */
+                color: #fff;
+            }
+
+            .client-buttons button.delete {
+                background-color: #f44336; /* Rojo para el botón de eliminar */
+                color: #fff;
+            }
+
+            .client-buttons button:hover {
+                opacity: 0.8; /* Cambiar la opacidad al pasar el mouse */
+            }
+
+</style>
+
+
+<div class="dashboard-container">
+    <!-- Client Details Section -->
+    <div class="client-details">
+        <h2>Detalles del Cliente</h2>
+        <p><strong>Nombre:</strong> Juan Pérez</p>
+        <p><strong>Dirección:</strong> Calle Falsa 123</p>
+        <p><strong>Ciudad:</strong> Ciudad Ejemplo</p>
+        <p><strong>País:</strong> País Ejemplo</p>
+        <p><strong>Teléfono:</strong> +123456789</p>
+        <p><strong>Página Web:</strong> www.ejemplo.com</p>
+        <p><strong>Instagram:</strong> ejemplo</p>
+        <p><strong>LinkedIn:</strong> linkedin.com/in/ejemplo</p>
+        <div class="client-buttons">
+            <button class="edit">Editar</button>
+            <button class="delete">Eliminar</button>
+        </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="projects-section">
+        <div class="section-header">
+            Proyectos
+        </div>
+        <div class="section-content">
+            <!-- Ejemplo de tarjeta de proyecto -->
+            <div class="card new">
+                <h3>Proyecto A</h3>
+                <p>Descripción breve del proyecto A.</p>
+            </div>
+            <div class="card new">
+                <h3>Proyecto B</h3>
+                <p>Descripción breve del proyecto B.</p>
+            </div>
+            <!-- Más tarjetas de proyecto aquí -->
+        </div>
+    </div>
+</div>

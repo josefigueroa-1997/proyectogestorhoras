@@ -16,17 +16,20 @@ namespace Proyectogestionhoras.Services
             this.conexion = conexion;
             this.context = context;
         }
-        public async Task<List<Cliente>> ObtenerClientesIndex()
+        public async Task<List<Cliente>> ObtenerClientesIndex(int? id)
         {
             try
             {
-                
+                #pragma warning disable CS8600
+                object idparameter = (object)id ?? DBNull.Value;
+                #pragma warning restore CS8600
                 var clientes = new List<Cliente>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "OBTENERCLIENTESINDEX";
                     command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCLIENTES",idparameter));
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync()) {

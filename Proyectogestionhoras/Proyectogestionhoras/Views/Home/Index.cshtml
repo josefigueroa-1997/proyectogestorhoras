@@ -1,10 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Proyectos Unit";
 
 }
 
 <link rel="stylesheet" href="~/css/index.css" asp-append-version="true"/>
-
 
 
 <div class="dashboard-container">
@@ -50,18 +49,125 @@
         </div>
     </div>
 
-    <!-- Sección de Informes -->
+    <!-- Sección de Clientes -->
     <div class="dashboard-section reports-section">
         <h2 class="section-header">Clientes</h2>
         <div class="section-content">
+            <!-- Nuevo Cliente -->
+            <div id="nuevoClienteBtn" class="card new-cliente">
+                <h3>+ Nuevo Cliente</h3>
+                <p>Agregar un nuevo cliente</p>
+            </div>
             @foreach (var cliente in ViewBag.clientes)
             {
-                <div class="card">
+                
+                <a href="@Url.Action("DetalleCliente","Cliente",new {id=cliente.Id})" class="card">
+
                     <h3>@cliente.Nombre</h3>
                     <p>@cliente.Pais</p>
                     <p>@cliente.Linkedin</p>
-                </div>
+                </a>
+                   
+                
+                
             }
         </div>
     </div>
+    <!-- Modal para agregar nuevo cliente  -->
+    <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
+            <form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-2 gap-4" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="nombre" class="block text-gray-700 font-bold">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>
+                    <input type="text" id="direccion" name="direccion"  class="w-full p-2 border border-gray-300 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="ciudad" class="block text-gray-700 font-bold">Ciudad:</label>
+                    <input type="text" id="ciudad" name="ciudad" class="w-full p-2 border border-gray-300 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="pais" class="block text-gray-700 font-bold">País:</label>
+                    <input type="text" id="pais" name="pais" class="w-full p-2 border border-gray-300 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="telefono" class="block text-gray-700 font-bold">Teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono" class="w-full p-2 border border-gray-300 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="paginaWeb" class="block text-gray-700 font-bold">Página Web:</label>
+                    <input type="text" id="paginaWeb" name="pagweb" class="w-full p-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="instagram" class="block text-gray-700 font-bold">Instagram:</label>
+                    <input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="linkedin" class="block text-gray-700 font-bold">LinkedIn:</label>
+                    <input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
+                </div>
+            
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
+                 <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal para mostrar el mensaje de éxito -->
+    <div id="successModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
+        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
+            <p>@TempData["SuccessMessage"]</p>
+            <button id="closeModalBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-4">Cerrar</button>
+        </div>
+    </div>
+
 </div>  
+<script>
+    /*MODAL REGISTRO CLIENTE*/ 
+    const nuevoClienteBtn = document.getElementById('nuevoClienteBtn');
+    const nuevoClienteModal = document.getElementById('nuevoClienteModal');
+    const cancelarBtn = document.getElementById('cancelarBtn');
+
+    nuevoClienteBtn.addEventListener('click', () => {
+        nuevoClienteModal.classList.remove('hidden');
+    });
+
+    cancelarBtn.addEventListener('click', () => {
+        nuevoClienteModal.classList.add('hidden');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === nuevoClienteModal) {
+            nuevoClienteModal.classList.add('hidden');
+        }
+    });
+    
+</script>
+<script>
+    
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        
+        if (successModal.getAttribute('data-show') === "true") {
+            successModal.classList.remove('hidden');
+        }
+
+        closeModalBtn.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+
+            window.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.classList.add('hidden');
+            }
+        });
+    });
+</script>

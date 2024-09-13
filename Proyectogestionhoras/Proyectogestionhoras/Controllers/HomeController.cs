@@ -14,9 +14,9 @@ namespace Proyectogestionhoras.Controllers
             this.cliente = cliente;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var clientes = await cliente.ObtenerClientesIndex();
+            var clientes = await cliente.ObtenerClientesIndex(id);
             ViewBag.clientes = clientes;
             return View();
         }

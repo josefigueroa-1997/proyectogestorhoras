@@ -88,6 +88,7 @@
     .card:hover {
         background-color: #333; /* Fondo gris oscuro al pasar el mouse */
         border: 2px solid #fcaa67; /* Borde amarillo al pasar el mouse */
+        cursor: pointer;
     }
 
         .card:hover h3 {
@@ -97,3 +98,64 @@
         .card:hover p {
             color: #fff; /* Color del texto blanco al pasar el mouse */
         }
+    /* Estilos para la viñeta de Nuevo Cliente */
+    .card.new-cliente {
+        background-color: #fff; /* Fondo blanco para que destaque en el fondo negro */
+        border-left: 4px solid #fcaa67; /* Borde amarillo */
+        color: #333; /* Texto oscuro */
+        cursor: pointer;
+    }
+
+        .card.new-cliente h3 {
+            color: #fcaa67; /* Título en amarillo */
+        }
+
+        .card.new-cliente:hover {
+            background-color: #fcaa67; /* Fondo amarillo al pasar el mouse */
+            border-color: #fff; /* Borde blanco al pasar el mouse */
+        }
+
+            .card.new-cliente:hover h3 {
+                color: #fff; /* Título blanco al pasar el mouse */
+            }
+
+            .card.new-cliente:hover p {
+                color: #fff; /* Texto blanco al pasar el mouse */
+            }
+/* Estilos del Modal Horizontal */
+.modal-content {
+    max-width: 900px; /* Ajusta el ancho del modal */
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .modal-content form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+        gap: 1rem; /* Espacio entre los campos */
+    }
+
+    .modal-content input {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        width: 100%;
+    }
+
+    .modal-content button {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+
+button:hover {
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none;
+}
