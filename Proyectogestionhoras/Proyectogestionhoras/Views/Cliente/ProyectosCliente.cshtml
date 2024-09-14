@@ -1,10 +1,7 @@
 ﻿@{
-
-    ViewData["Tittle"] = "Detalles Cliente";
-
+    ViewData["Title"] = "Detalles Cliente";
 }
 <style>
-
     /* Estilo para el contenido del dashboard */
     .dashboard-container {
         display: flex;
@@ -35,75 +32,82 @@
     }
 
     .card {
-        background-color: #ffffff; /* Fondo blanco para las tarjetas */
+        background-color: #ffffff;
         padding: 1rem;
         border-radius: 0.5rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        transition: background-color 0.3s, border-color 0.3s; /* Agregar transición suave */
+        transition: background-color 0.3s, border-color 0.3s;
     }
 
         .card h3 {
             font-size: 1.125rem;
             font-weight: 600;
-            color: #000; /* Texto negro para los títulos de las tarjetas */
+            color: #000;
         }
 
         .card p {
             font-size: 0.875rem;
-            color: #6c6c6c; /* Texto gris para los párrafos en las tarjetas */
+            color: #6c6c6c;
         }
 
         .card.new {
-            background-color: #333; /* Fondo gris oscuro por defecto */
-            border-left: 4px solid #fcaa67; /* Borde amarillo */
+            background-color: #333;
+            border-left: 4px solid #fcaa67;
             cursor: pointer;
-            color: #fff; /* Texto blanco por defecto */
+            color: #fff;
         }
 
             .card.new h3 {
-                color: #fcaa67; /* Color del título amarillo */
+                color: #fcaa67;
             }
 
             .card.new:hover {
-                background-color: #333; /* Fondo gris oscuro al pasar el mouse */
-                border-color: #fcaa67; /* Borde amarillo al pasar el mouse */
+                background-color: #333;
+                border-color: #fcaa67;
             }
 
                 .card.new:hover h3 {
-                    color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+                    color: #fcaa67;
                 }
 
                 .card.new:hover p {
-                    color: #fff; /* Color del texto blanco al pasar el mouse */
+                    color: #fff;
                 }
 
         .card:hover {
-            background-color: #333; /* Fondo gris oscuro al pasar el mouse */
-            border: 2px solid #fcaa67; /* Borde amarillo al pasar el mouse */
+            background-color: #333;
+            border: 2px solid #fcaa67;
             cursor: pointer;
         }
 
             .card:hover h3 {
-                color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+                color: #fcaa67;
             }
 
             .card:hover p {
-                color: #fff; /* Color del texto blanco al pasar el mouse */
+                color: #fff;
             }
 
-    .client-details {
-        background-color: #fff;
-        border-radius: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 1.5rem;
-        text-align: center; /* Centrando el texto */
+    
+    .client-container {
+        display: flex;
+        gap: 2rem;
     }
 
-        .client-details h2 {
+    .client-details, .client-contacts {
+        flex: 1;
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .client-details h2, .client-contacts h2 {
             margin-bottom: 1rem;
+            text-align: center;
         }
 
         .client-details p {
@@ -127,47 +131,56 @@
         }
 
             .client-buttons button.edit {
-                background-color: #fcaa67; /* Verde para el botón de editar */
+                background-color: #fcaa67;
                 color: #fff;
             }
 
             .client-buttons button.delete {
-                background-color: #f44336; /* Rojo para el botón de eliminar */
+                background-color: #f44336;
                 color: #fff;
             }
 
             .client-buttons button:hover {
-                opacity: 0.8; /* Cambiar la opacidad al pasar el mouse */
+                opacity: 0.8;
             }
 
+    .client-contacts {
+        text-align: center;
+    }
 </style>
 
-
 <div class="dashboard-container">
-    <!-- Client Details Section -->
-    @foreach (var cliente in ViewBag.clientedetalle)
-    {
+    <div class="client-container">
+        <!-- Client Details Section -->
         <div class="client-details">
             <h2>Detalles del Cliente</h2>
-            <p><strong>Nombre:</strong> @cliente.Nombre</p>
-            <p><strong>Dirección:</strong>@cliente.Direccion</p>
-            <p><strong>Ciudad:</strong> @cliente.Ciudad</p>
-            <p><strong>País:</strong>@cliente.Pais</p>
-            <p><strong>Teléfono:</strong>@cliente.Telefono</p>
-            <p><strong>Página Web:</strong>@cliente.PagWeb</p>
-            <p><strong>Instagram:</strong>@cliente.Instagram</p>
-            <p><strong>LinkedIn:</strong>@cliente.Linkedin</p>
-            <div class="client-buttons">
-                <button onclick="window.location.href='@Url.Action("EditarCliente", "Cliente", new { id = cliente.Id })'" class="edit">Editar</button>
+            @foreach (var cliente in ViewBag.clientedetalle)
+            {
+                <p><strong>Nombre:</strong> @cliente.Nombre</p>
+                <p><strong>Dirección:</strong> @cliente.Direccion</p>
+                <p><strong>Ciudad:</strong> @cliente.Ciudad</p>
+                <p><strong>País:</strong> @cliente.Pais</p>
+                <p><strong>Teléfono:</strong> @cliente.Telefono</p>
+                <p><strong>Página Web:</strong> @cliente.PagWeb</p>
+                <p><strong>Instagram:</strong> @cliente.Instagram</p>
+                <p><strong>LinkedIn:</strong> @cliente.Linkedin</p>
 
-                <button class="delete">Eliminar</button>
-            </div>
+                <div class="client-buttons">
+                    <button onclick="window.location.href='@Url.Action("EditarCliente", "Cliente", new { id = cliente.Id })'" class="edit">Editar</button>
+                    <button class="delete" onclick="confirmarEliminacion(@cliente.Id)">Eliminar</button>
+                </div>
+            }
         </div>
 
-    }
-   
+        <!-- Client Contacts Section -->
+        <div class="client-contacts">
+            <h2>Contactos del Cliente</h2>
+            <p>No hay contactos disponibles.</p>
+        </div>
+    </div>
+
     <!-- Projects Section -->
-    <div class="projects-section">
+    <div class="projects-section dashboard-section">
         <div class="section-header">
             Proyectos
         </div>
@@ -184,4 +197,52 @@
             <!-- Más tarjetas de proyecto aquí -->
         </div>
     </div>
+    <!-- Modal para mostrar el mensaje de éxito -->
+    <div id="successModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
+        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
+            <p>@TempData["SuccessMessage"]</p>
+            <button id="closeModalBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-4">Cerrar</button>
+        </div>
+    </div>
 </div>
+<script>
+    function confirmarEliminacion(clienteId) {
+        if (confirm("¿Estás seguro de que deseas eliminar este cliente? Esta acción no se puede deshacer.")) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '@Url.Action("EliminarCliente", "Cliente")';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'id';
+            input.value = clienteId;
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+<!--MODAL DE MENSAJE DE ÉXITO AL EDITAR DATOS-->
+<script>
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+
+        if (successModal.getAttribute('data-show') === "true") {
+            successModal.classList.remove('hidden');
+        }
+
+        closeModalBtn.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.classList.add('hidden');
+            }
+        });
+    });
+</script>

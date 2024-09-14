@@ -58,17 +58,22 @@
                 <h3>+ Nuevo Cliente</h3>
                 <p>Agregar un nuevo cliente</p>
             </div>
+            @{
+                int count = 1; 
+            }
             @foreach (var cliente in ViewBag.clientes)
             {
-
+                @if (count > 9)
+                {
+                    break;
+                }
                 <a href="@Url.Action("ProyectosCliente","Cliente",new {idcliente=cliente.Id})" class="card">
 
                     <h3>@cliente.Nombre</h3>
                     <p>@cliente.Pais</p>
                     <p>@cliente.Linkedin</p>
                 </a>
-                   
-                
+                count++;
                 
             }
         </div>

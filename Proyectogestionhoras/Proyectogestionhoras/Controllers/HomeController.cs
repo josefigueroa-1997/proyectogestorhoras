@@ -16,9 +16,16 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> Index(int? id)
         {
-            var clientes = await cliente.ObtenerClientesIndex(id);
-            ViewBag.clientes = clientes;
-            return View();
+            if (id.HasValue)
+            {
+                var clientes = await cliente.ObtenerClientesIndex(0);
+                ViewBag.clientes = clientes;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login","Usuario");
+            }
         }
 
         public IActionResult Privacy()

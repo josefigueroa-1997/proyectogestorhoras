@@ -17,7 +17,7 @@
     }
 
     .form-input:focus {
-    border-color: #fcaa67; /* Color del borde al enfocar */
+    border-color: #fcaa67; 
     outline: none;
     }
 
@@ -43,50 +43,55 @@
 <div class="container mx-auto mt-16">
     <div class="form-container">
         <h1 class="text-xl font-bold mb-6">Editar Información Cliente</h1>
-        <form method="post" action="/Cliente/Editar">
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <label class="form-label" for="Nombre">Nombre</label>
-                <input class="form-input" type="text" id="Nombre" name="Nombre" value="Nombre">
-            </div>
+        @foreach (var cliente in ViewBag.clientedatos)
+        {
+            <form method="post" action="@Url.Action("EditarCliente","Cliente") enctype="multipart/form-data">
+                <input type="hidden" name="id" value="@cliente.Id"/>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="Nombre">Nombre</label>
+                    <input class="form-input" type="text" id="Nombre" name="nombre" value="@cliente.Nombre" required>
+                </div>
 
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <label class="form-label" for="Direccion">Dirección</label>
-                <input class="form-input" type="text" id="Direccion" name="Direccion" value="Direccion">
-            </div>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="Direccion">Dirección</label>
+                    <input class="form-input" type="text" id="direccion" name="direccion" value="@cliente.Direccion" required>
+                </div>
 
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <label class="form-label" for="Ciudad">Ciudad</label>
-                <input class="form-input" type="text" id="Ciudad" name="Ciudad" value="Ciudad">
-            </div>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="Ciudad">Ciudad</label>
+                    <input class="form-input" type="text" id="Ciudad" name="ciudad" value="@cliente.Ciudad" required>
+                </div>
 
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <label class="form-label" for="Pais">País</label>
-                <input class="form-input" type="text" id="Pais" name="Pais" value="Pais">
-            </div>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="Pais">País</label>
+                    <input class="form-input" type="text" id="Pais" name="pais" value="@cliente.Pais" required>
+                </div>
 
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <label class="form-label" for="Telefono">Teléfono</label>
-                <input class="form-input" type="text" id="Telefono" name="Telefono" value="Telefono">
-            </div>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="Telefono">Teléfono</label>
+                    <input class="form-input" type="text" id="Telefono" name="telefono" value="@cliente.Telefono" required>
+                </div>
 
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <label class="form-label" for="PagWeb">Página Web</label>
-                <input class="form-input" type="text" id="PagWeb" name="PagWeb" value="PagWeb">
-            </div>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="PagWeb">Página Web</label>
+                    <input class="form-input" type="text" id="PagWeb" name="pagWeb" value="@cliente.PagWeb">
+                </div>
 
-            <div class="grid grid-cols-1 gap-4 mb-4">
-                <label class="form-label" for="Instagram">Instagram</label>
-                <input class="form-input" type="text" id="Instagram" name="Instagram" value="Instagram">
-            </div>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="Instagram">Instagram</label>
+                    <input class="form-input" type="text" id="Instagram" name="instagram" value="@cliente.Instagram">
+                </div>
 
-            <div class="grid grid-cols-1 gap-4 mb-6">
-                <label class="form-label" for="Linkedin">LinkedIn</label>
-                <input class="form-input" type="text" id="Linkedin" name="Linkedin" value="Linkedin">
-            </div>
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <label class="form-label" for="Linkedin">LinkedIn</label>
+                    <input class="form-input" type="text" id="Linkedin" name="linkedin" value="@cliente.Linkedin">
+                </div>
 
-            <div class="flex justify-end">
-                <button type="submit" class="btn-primary">Guardar Cambios</button>
-            </div>
-        </form>
+                <div class="flex justify-end">
+                    <button type="submit" class="btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        }
+       
     </div>
 </div>

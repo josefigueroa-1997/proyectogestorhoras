@@ -6,6 +6,8 @@ using System.Data;
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Proyectogestionhoras.Services
 {
     public class ClienteService : ICliente
@@ -49,7 +51,7 @@ namespace Proyectogestionhoras.Services
 
                             };
                             clientes.Add(cliente);
-                            Debug.WriteLine(cliente.Ciudad);
+                            
                         }
                     }
 
@@ -99,6 +101,63 @@ namespace Proyectogestionhoras.Services
                 return false;
             }
         }
+        public async Task<bool> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram)
+        {
+            try
+            {
+                #pragma warning disable CS8600
+                object pagwebparameter = (object)pagweb ?? DBNull.Value;
+                object linkedinparamater = (object)linkedin ?? DBNull.Value;
+                object instagramparameter = (object)instagram ?? DBNull.Value;
+                #pragma warning restore CS8600
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ACTUALIZARCLIENTE";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ID",id));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
+                    command.Parameters.Add(new SqlParameter("@DIRECCION", direccion));
+                    command.Parameters.Add(new SqlParameter("@CIUDAD", ciudad));
+                    command.Parameters.Add(new SqlParameter("@PAIS", pais));
+                    command.Parameters.Add(new SqlParameter("@TELEFONO", telefono));
+                    command.Parameters.Add(new SqlParameter("@PAG_WEB", pagwebparameter));
+                    command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
+                    command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
+                    await command.ExecuteNonQueryAsync();
+                    await conexion.CloseDatabaseConnectionAsync();
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al editar la información del cliente:"+ex.Message);
+                return false;
 
+            }
+        }
+        public async Task<bool> EliminarCliente(int id)
+        {
+            try
+            {
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "DELETECLIENTE";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ID", id));
+                    await command.ExecuteNonQueryAsync();
+                    await conexion.CloseDatabaseConnectionAsync();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al eliminar al cliente: " + ex.Message);
+                return false;
+            }
+
+        }
+        //public async Task<List<Cliente>> GetClientes(int? id, string? nombre, string? pais)
     }
 }

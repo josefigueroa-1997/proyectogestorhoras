@@ -140,10 +140,10 @@
                 <ul class="menu-items">
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Proyectos</a></li>
-                    <li><a href="#">Clientes</a></li>
+                    <li><a href="@Url.Action("NuestrosClientes","Cliente")">Clientes</a></li>
                     <li><a href="#">Monitorear HH</a></li>
                     <li><a href="#">Flujo de Caja de Proyectos</a></li>
-                    <li><a href="#">Mi Personal</a></li>
+                    <li><a href="@Url.Action("Personal","Usuario")">Mi Personal</a></li>
                     <li><a href="#">Calendario de Proyectos</a></li>
                 </ul>
             </nav>
@@ -154,7 +154,7 @@
                 <div class="dropdown-menu" id="userMenu">
                     <a href="#"></a>
                     <a href="#">Editar perfil</a>
-                    <a href="#">Cerrar sesión</a>
+                    <a href="@Url.Action("Logout","Usuario")">Cerrar sesión</a>
                 </div>
             </div>
         </div>

@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Agregar Personal";
+}
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+    .submit-btn {
+        display: inline-block;
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: #fcaa67;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .submit-btn:hover {
+            background-color: #e39450;
+        }
+</style>
+
+<div class="form-container">
+    <h1 class="form-title">Agregar Personal</h1>
+
+    <form action="@Url.Action("RegistrarUsuario","Usuario")" method="post" enctype="multipart/form-data">
+        <!-- Nombre -->
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </div>
+
+        <!-- RUT -->
+        <div class="form-group">
+            <label for="rut">RUT(Sin Puntos Ni Guiones)</label>
+            <input type="text" id="rut" name="rut" required>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" required>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="tipoRecurso">Tipo de Recurso</label>
+            <select id="tipoRecurso" name="idsegmento" required>
+                <option value="" disabled selected>Seleccione un tipo de recurso</option>
+                @foreach (var recurso in ViewBag.Segmentos)
+                {
+                    <option value="@recurso.Id">@recurso.Cuenta</option>
+
+                }
+            </select>
+        </div>
+        <!-- Nombre del Recurso -->
+        <div class="form-group">
+            <label for="nombreRecurso">Nombre del Recurso</label>
+            <input type="text" id="nombreRecurso" name="nombrerecurso" required>
+        </div>
+
+        <!-- Número de Horas -->
+        <div class="form-group">
+            <label for="numeroHoras">Número de Horas</label>
+            <input type="number" id="numeroHoras" name="numhoras" required min="1">
+        </div>
+
+        <!-- Costo Unitario -->
+        <div class="form-group">
+            <label for="costoUnitario">Costo Unitario</label>
+            <input type="number" id="costoUnitario" name="costounitario" required step="0.01" min="0">
+        </div>
+
+        <!-- Tipo de Usuario (Select) -->
+        <div class="form-group">
+            <label for="tipoUsuario">Tipo de Usuario</label>
+            <select id="tipoUsuario" name="idrol" required>
+                <option value="" disabled selected>Seleccione un tipo de usuario</option>
+                @foreach(var rol in ViewBag.Roles)
+                {
+                    <option value="@rol.Id">@rol.Nombre</option>
+                }
+              
+            </select>
+        </div>
+        <button type="submit" class="submit-btn">Agregar Personal</button>
+    </form>
+</div>
