@@ -1,0 +1,172 @@
+﻿@{
+    ViewData["Title"] = "Detalle Contacto";
+}
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+    .button-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .submit-btn,
+    .delete-btn {
+        display: inline-block;
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .submit-btn {
+        color: #fff;
+        background-color: #fcaa67;
+    }
+
+        .submit-btn:hover {
+            background-color: #e39450;
+        }
+
+    .delete-btn {
+        color: #fff;
+        background-color: #e74c3c;
+    }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+</style>
+
+<div class="form-container">
+    <h1 class="form-title">Agregar Contacto</h1>
+
+    <form id="contactForm" action="@Url.Action("DetalleContacto","Contacto")" method="post" enctype="multipart/form-data">
+        @foreach (var contacto in ViewBag.Contactos)
+        {
+            <input type="hidden" name="id" value="@contacto.Id" />
+
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" value="@contacto.Nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" name="cargo" value="@contacto.Cargo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="desde">Desde</label>
+                <input type="date" id="desde" name="desde" value="@contacto.Desde.ToString("yyyy-MM-dd")" required>
+            </div>
+
+            <div class="form-group">
+                <label for="hasta">Hasta</label>
+                <input type="date" id="hasta" name="hasta" value="@contacto.Hasta.ToString("yyyy-MM-dd")" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="@contacto.Email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" name="telefono" value="@contacto.Telefono" required>
+            </div>
+            <input type="hidden" name="idc" value="@contacto.IdCliente" />
+       
+            <button type="submit" class="submit-btn">Editar Contacto</button>
+            <button class="delete" onclick="confirmarEliminacion(@contacto.Id)">Eliminar</button>
+
+        
+        }
+    </form>
+</div>
+
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+        var desde = document.getElementById('desde').value;
+        var hasta = document.getElementById('hasta').value;
+
+        if (new Date(hasta) < new Date(desde)) {
+            alert('La fecha "Hasta" no puede ser anterior a la fecha "Desde".');
+            event.preventDefault();
+        }
+    });
+
+    document.getElementById('deleteContactBtn').addEventListener('click', function (event) {
+        var confirmDelete = confirm('¿Estás seguro de eliminar el contacto?');
+        if (!confirmDelete) {
+            event.preventDefault(); // Evita que el enlace se siga
+        }
+    });
+</script>
+<script>
+    function confirmarEliminacion(clienteId) {
+        if (confirm("¿Estás seguro de que deseas eliminar este cliente? Esta acción no se puede deshacer.")) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '@Url.Action("EliminarContacto", "Contacto")';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'id';
+            input.value = clienteId;
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>

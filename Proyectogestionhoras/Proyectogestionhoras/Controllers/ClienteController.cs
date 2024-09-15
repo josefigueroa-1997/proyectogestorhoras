@@ -16,11 +16,13 @@ namespace Proyectogestionhoras.Controllers
 
         private readonly ClienteService service;
         private readonly ProyectoService proyectoService;
+        private readonly ContactoService contactoService;
 
-        public ClienteController(ClienteService service, ProyectoService proyectoService)
+        public ClienteController(ClienteService service, ProyectoService proyectoService,ContactoService contactoService)
         {
             this.service = service;
             this.proyectoService = proyectoService;
+            this.contactoService = contactoService;
         }
 
         public async Task <IActionResult> NuestrosClientes(int? id)
@@ -35,22 +37,28 @@ namespace Proyectogestionhoras.Controllers
 
             var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, idusuario, nombre,idtipoempresa, statusproyecto);
             var clientedetalle = await service.ObtenerClientesIndex(idcliente);
-            
+            var contactos = await contactoService.ObtenerContactos(0, idcliente, null);
+            if (idcliente.HasValue)
+            {
+                HttpContext.Session.SetInt32("IdCliente", idcliente.Value);
+            }
+           
+            ViewBag.Contactos = contactos;
             ViewBag.clientedetalle = clientedetalle;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram)
+        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,string idcliente)
         {
             try
             {
 
-                
-                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram);
+                var idusuario = HttpContext.Session.GetInt32("id");
+                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente);
                 if (registro) {
                     TempData["SuccessMessage"] = "¡Se Agregó con éxito el nuevo cliente!";
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home", new {id=idusuario});
                 }
                 else
                 {

@@ -20,6 +20,7 @@ namespace Proyectogestionhoras.Models
         public string? PagWeb { get; set; }
         public string? Linkedin { get; set; }
         public string? Instagram { get; set; }
+        public string IdCliente { get; set; } = null!;
 
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<Proyecto> Proyectos { get; set; }

@@ -46,7 +46,8 @@ namespace Proyectogestionhoras.Services
                                 Telefono = reader.GetString(reader.GetOrdinal("TELEFONO")),
                                 PagWeb = reader.IsDBNull(reader.GetOrdinal("PAGWEB")) ? string.Empty : reader.GetString(reader.GetOrdinal("PAGWEB")),
                                 Linkedin = reader.IsDBNull(reader.GetOrdinal("LINKEDIN")) ? string.Empty : reader.GetString(reader.GetOrdinal("LINKEDIN")),
-                                Instagram = reader.IsDBNull(reader.GetOrdinal("INSTAGRAM")) ? string.Empty : reader.GetString(reader.GetOrdinal("INSTAGRAM"))
+                                Instagram = reader.IsDBNull(reader.GetOrdinal("INSTAGRAM")) ? string.Empty : reader.GetString(reader.GetOrdinal("INSTAGRAM")),
+                                IdCliente = reader.GetString(reader.GetOrdinal("ID_CLIENTE"))
 
 
                             };
@@ -68,7 +69,7 @@ namespace Proyectogestionhoras.Services
             }
 
         }
-        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram)
+        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,string idcliente)
         {
             try
             {
@@ -90,6 +91,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@PAG_WEB", pagwebparameter));
                     command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
+                    command.Parameters.Add(new SqlParameter("@ID_CLIENTE", idcliente));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }

@@ -37,7 +37,14 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-DR8BPEV\\SQLEXPRESS;DataBase=PROYECTO_CONTROL_HORAS;Integrated Security=true;TrustServerCertificate=True");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,6 +90,9 @@ namespace Proyectogestionhoras.Models
             {
                 entity.ToTable("CLIENTE");
 
+                entity.HasIndex(e => e.IdCliente, "UQ__CLIENTE__23A341315C5DBB6D")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Ciudad)
@@ -94,6 +104,8 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("DIRECCION");
+
+                entity.Property(e => e.IdCliente).HasColumnName("ID_CLIENTE");
 
                 entity.Property(e => e.Instagram)
                     .HasMaxLength(200)
