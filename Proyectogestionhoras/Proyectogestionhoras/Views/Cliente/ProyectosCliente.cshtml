@@ -248,29 +248,43 @@
         <!-- Client Contacts Section -->
         <div class="client-contacts">
             @foreach(var cliente in ViewBag.clientedetalle){
-            <button class="add-contact-button" onclick="window.location.href='@Url.Action("AgregarContacto", "Contacto",new{id=cliente.Id})'">Agregar Contacto</button>
+            <button class="add-contact-button" onclick="window.location.href='@Url.Action("AgregarContacto", "Contacto",new{idcliente=cliente.Id})'">Agregar Contacto</button>
             }
             <h2>Contactos</h2>
+            @if (ViewBag.Contactos.Count>0)
+            {
+           
             <ul>
-                @{
-                    int count = 1;
-                }
-                @foreach (var contacto in ViewBag.Contactos)
-                {
-                    @if (count > 6)
-                    {
-                        break;
+                    @{
+                        int count = 1;
                     }
-                    <li class="contact-item">
-                        <a href="@Url.Action("DetalleContacto", "Contacto", new { id = contacto.Id })">
+
+                    @foreach (var contacto in ViewBag.Contactos)
+                    {
+                        @if (count > 6)
+                        {
+                            break;
+                        }
+                        <li class="contact-item">
+                            <a href="@Url.Action("DetalleContacto", "Contacto", new { id = contacto.Id })">
                             <span class="contact-name">@contacto.Nombre</span>
                             <span class="contact-phone">@contacto.Telefono</span>
                         </a>
-                    </li>
-                    count++;
-                }
+                        </li>
+                     count++;
+                    }
             </ul>
-            <button href="#" class="ver-todos">Ver todos</button>
+                @foreach(var cliente in ViewBag.clientedetalle)
+                {
+                    <a href="@Url.Action("ContactosCliente","Contacto",new{idcliente=@cliente.Id})" class="ver-todos">Ver todos</a>
+                }
+               
+                
+            }
+            else
+            {
+                <p style="text-align:center">No hay contactos</p>
+            }
         </div>
     </div>
             

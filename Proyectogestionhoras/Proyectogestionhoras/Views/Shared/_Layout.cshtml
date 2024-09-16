@@ -4,127 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-
-    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script> <!-- Font Awesome -->
-
-    <style>
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background-color: #fcfcfc8c;
-            padding: 0; 
-            border-bottom: 2px solid #ccc;
-            display: flex; 
-            align-items: center; 
-        }
-
-        nav ul {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 0; 
-            padding: 0; 
-            flex-grow: 1; 
-        }
-
-        .menu-items {
-            display: flex;
-            gap: 0;
-            border: 1px solid #ccc;
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
-        }
-
-            .menu-items li {
-                border-right: 1px solid #ccc;
-                padding: 10px 20px;
-                height: 100%; 
-                display: flex;
-                align-items: center; 
-                transition: background-color 0.3s, color 0.3s; 
-            }
-
-                .menu-items li:last-child {
-                    border-right: none;
-                }
-
-            .menu-items a {
-                display: block;
-                text-align: center;
-                color: #333;
-                text-decoration: none;
-                font-weight: 600; 
-            }
-
-            .menu-items li:hover {
-                background-color: #000; 
-            }
-
-                .menu-items li:hover a {
-                    color: #fcaa67; 
-                }
-
-            .menu-items a:hover {
-                color: #fff; 
-            }
-
-        .main-content {
-            margin-top: 60px; 
-            padding: 20px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            justify-content: center; 
-            height: 100%; 
-            padding: 0 20px; 
-        }
-
-            .user-profile img {
-                border-radius: 50%;
-                cursor: pointer; 
-            }
-
-        .dropdown-menu {
-            display: none; 
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            z-index: 1000;
-        }
-
-            .dropdown-menu a {
-                display: block;
-                padding: 8px 12px;
-                color: #333;
-                text-decoration: none;
-            }
-
-                .dropdown-menu a:hover {
-                    background-color: #f0f0f0;
-                }
-
-       
-
-    </style>
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
 </head>
 <body class="bg-gray-100">
     <!-- Top Panel (New Header) -->
@@ -138,7 +21,7 @@
             <!-- Navigation Menu -->
             <nav class="flex-grow">
                 <ul class="menu-items">
-                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="@Url.Action("Index","Home")">Dashboard</a></li>
                     <li><a href="#">Proyectos</a></li>
                     <li><a href="@Url.Action("NuestrosClientes","Cliente")">Clientes</a></li>
                     <li><a href="#">Monitorear HH</a></li>
@@ -147,12 +30,14 @@
                     <li><a href="#">Calendario de Proyectos</a></li>
                 </ul>
             </nav>
-
+            @{
+                string? nombre = Context.Session.GetString("nombre");
+            }
             <!-- User Profile -->
             <div class="user-profile">
                 <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
                 <div class="dropdown-menu" id="userMenu">
-                    <a href="#"></a>
+                    <p style="text-align:center">Hola,@nombre</p>
                     <a href="#">Editar perfil</a>
                     <a href="@Url.Action("Logout","Usuario")">Cerrar sesión</a>
                 </div>
@@ -162,7 +47,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-      @RenderBody();
+      @RenderBody()
     </div>
 
     <script>

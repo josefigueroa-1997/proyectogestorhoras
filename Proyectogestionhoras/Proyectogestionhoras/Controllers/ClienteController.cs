@@ -58,7 +58,7 @@ namespace Proyectogestionhoras.Controllers
                 bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente);
                 if (registro) {
                     TempData["SuccessMessage"] = "¡Se Agregó con éxito el nuevo cliente!";
-                    return RedirectToAction("Index", "Home", new {id=idusuario});
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

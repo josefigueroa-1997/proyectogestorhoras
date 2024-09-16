@@ -1,0 +1,211 @@
+﻿@{
+    ViewData["Title"] = "Crear Nuevo Proyecto";
+}
+
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+    .form-group-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .form-group-radio label {
+            margin-bottom: 0;
+        }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .submit-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: #fcaa67;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .submit-btn:hover {
+            background-color: #e39450;
+        }
+</style>
+
+<div class="form-container">
+    <h1 class="form-title">Crear Nuevo Proyecto</h1>
+    <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
+
+    <form action="/Proyecto/Crear" method="post">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nombreProyecto">Nombre de proyecto</label>
+                <input type="text" id="nombreProyecto" name="nombreProyecto" required>
+            </div>
+            <div class="form-group">
+                <label for="numeroProyecto">Número de proyecto</label>
+                <input type="text" id="numeroProyecto" name="numeroProyecto" required>
+            </div>
+            <div class="form-group">
+                <label for="cliente">Cliente</label>
+                <select id="cliente" name="cliente" required>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    @foreach (var cliente in ViewBag.Clientes)
+                    {
+                        <option value="@cliente.Id">@cliente.Nombre</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="unidadNegocio">Unidad de negocio</label>
+                <select id="unidadNegocio" name="unidadNegocio" required>
+                    <option value="" disabled selected>Seleccione una unidad</option>
+                    @foreach(var uneogocio in ViewBag.Unegocios)
+                    {
+                        <option value="@uneogocio.Id">@uneogocio.TipoUnegocio</option>
+                    }
+                    
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="centroCosto">Centro de costo</label>
+                <select id="centroCosto" name="centroCosto" required>
+                    <option value="" disabled selected>Seleccione un centro de costo</option>
+                    @foreach(var ccosto in ViewBag.Ccostos)
+                    {
+                        <option value="@ccosto.Id">@ccosto.TipoCcosto</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tipologia">Tipología</label>
+                <select id="tipologia" name="tipologia" required>
+                    <option value="" disabled selected>Seleccione una tipología</option>
+                    @foreach (var tipologia in ViewBag.Tipologias)
+                    {
+                        <option value="@tipologia.Id">@tipologia.TipoTipologia</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="tipoEmpresa">Tipo de empresa</label>
+                <select id="tipoEmpresa" name="tipoEmpresa" required>
+                    <option value="" disabled selected>Seleccione el tipo de empresa</option>
+                    @foreach (var empresa in ViewBag.Empresas)
+                    {
+                        <option value="@empresa.Id">@empresa.TipoEmpresa</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="monto">Monto</label>
+                <input type="text" id="monto" name="monto" required>
+            </div>
+            <div class="form-group">
+                <label for="tipoMoneda">Tipo de moneda</label>
+                <select id="tipoMoneda" name="tipoMoneda" required>
+                    <option value="">Seleccione el tipo de moneda</option>
+                    <!-- Opciones dinámicas -->
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group-radio">
+                <label>¿Afecta el IVA?</label>
+                <label><input type="radio" name="afectaIVA" value="si" required> Sí</label>
+                <label><input type="radio" name="afectaIVA" value="no" required> No</label>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="fechaInicio">Fecha de inicio</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" required>
+            </div>
+            <div class="form-group">
+                <label for="fechaFin">Fecha de fin</label>
+                <input type="date" id="fechaFin" name="fechaFin" required>
+            </div>
+            <div class="form-group">
+                <label for="plazo">Plazo</label>
+                <input type="number" id="plazo" name="plazo" required>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="submit-btn">Crear Proyecto</button>
+        </div>
+    </form>
+</div>

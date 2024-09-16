@@ -12,6 +12,13 @@ namespace Proyectogestionhoras.Controllers
             this.clienteService = clienteService;
             this.contactoService = contactoService;
         }
+        [HttpGet]
+        public async Task<IActionResult> ContactosCliente(int idcliente)
+        {
+            var contactosclientes = await contactoService.ObtenerContactos(0,idcliente,null);
+            ViewBag.Contactos = contactosclientes;
+            return View("ContactosCliente");
+        }
 
         public async Task<IActionResult> AgregarContacto(int idcliente)
         {
@@ -55,7 +62,7 @@ namespace Proyectogestionhoras.Controllers
             {
                 bool resultado = await contactoService.EditarContacto(id,nombre,cargo,desde,hasta,email,telefono,idc);
                 if (resultado) {
-
+                    Debug.WriteLine(idc);
                     return RedirectToAction("ProyectosCliente", "Cliente", new { idcliente = idc });
                    
                 }

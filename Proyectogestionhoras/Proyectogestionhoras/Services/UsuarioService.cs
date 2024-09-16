@@ -10,6 +10,8 @@ using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Proyectogestionhoras.Models.DTO;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace Proyectogestionhoras.Services
 {
@@ -113,17 +115,94 @@ namespace Proyectogestionhoras.Services
             }
         }
 
+        public async Task<bool> Login(string rut, string contrasena)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(rut) && !string.IsNullOrEmpty(contrasena))
+                {
 
-        
+                    Login credenciales = new Login();
+                    credenciales = await ObtenerCredenciales(rut);
+                    if (credenciales != null)
+                    {
+                        if (credenciales.Contraseña != null)
+                        {
+                            bool validar = VerificarContrasena(contrasena, credenciales.Contraseña);
+                            if (validar)
+                            {
+                                return true;
+                            }
+                        }                
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
+                }
+                else
+                {
+                    return false;
+                }
+                return false;
 
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"hubo un error al iniciar sesión" + e.Message);
+                return false;
+            }
+        }
 
+        public async Task<Login> ObtenerCredenciales(string rut)
+        {
+            try
+            {
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = "INICIOSESION";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@CORREO", rut));
+                    Login usuario = new Login();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            usuario = new Login()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                Rol = reader.GetInt32(reader.GetOrdinal("ROL")),
+                                Contraseña = reader.GetString(reader.GetOrdinal("CONTRASEÑA")),
+                            };
+                        }
+                    }
+                    await conexion.CloseDatabaseConnectionAsync();
+                    return usuario;
+                }
 
-
-
-
-
-
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return new Login();
+            }
+        }
+        private Boolean VerificarContrasena(string passuser, string passbd)
+        {
+            try
+            {
+                bool verificar = BCrypt.Net.BCrypt.Verify(passuser, passbd);
+                return verificar;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error al verificar las contraseñas:{e.Message}");
+                return false;
+            }
+        }
 
         public async Task<List<Rol>> ObtenerRoles()
         {

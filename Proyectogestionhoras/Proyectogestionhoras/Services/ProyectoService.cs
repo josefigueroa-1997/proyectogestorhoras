@@ -83,5 +83,149 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+        public async Task<List<Unegocio>> ObtenerUnegocio()
+        {
+            try
+            {
+                var unegocios = new List<Unegocio>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERUNEGOCIO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Unegocio unegocio = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                TipoUnegocio = reader.GetString(reader.GetOrdinal("TIPO_UNEGOCIO")),
+
+                            };
+                            unegocios.Add(unegocio);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return unegocios;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener los unegocios:" + ex.Message);
+                return new List<Unegocio>();
+            }
+        }
+        public async Task<List<Ccosto>> ObtenerCcosto()
+        {
+            try
+            {
+                var ccostos = new List<Ccosto>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERCCOSTO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Ccosto ccosto = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                TipoCcosto = reader.GetString(reader.GetOrdinal("TIPO_CCOSTO")),
+
+                            };
+                            ccostos.Add(ccosto);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return ccostos;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener los ccostos:" + ex.Message);
+                return new List<Ccosto>();
+            }
+        }
+        public async Task<List<Empresa>> ObtenerEmpresa()
+        {
+            try
+            {
+                var empresas = new List<Empresa>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERTIPOEMPRESA";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Empresa empresa = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                TipoEmpresa = reader.GetString(reader.GetOrdinal("TIPO_EMPRESA")),
+
+                            };
+                            empresas.Add(empresa);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return empresas;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las empresas:" + ex.Message);
+                return new List<Empresa>();
+            }
+        }
+        public async Task<List<Tipologium>> ObtenerTipoligias()
+        {
+            try
+            {
+                var tipologias = new List<Tipologium>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERTIPOLOGIA";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Tipologium tipologia = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                TipoTipologia = reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
+
+                            };
+                            tipologias.Add(tipologia);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return tipologias;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<Tipologium>();
+            }
+        }
     }
 }

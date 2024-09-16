@@ -1,0 +1,21 @@
+﻿header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+aside {
+    position: fixed;
+    top: 3rem; /* Adjusts the height to be under the header */
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+/* Adjust the content to start after the fixed elements */
+.main-content {
+    margin-left: 16rem; /* Width of the sidebar */
+    margin-top: 4rem; /* Height of the header */
+}

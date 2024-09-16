@@ -1,0 +1,161 @@
+﻿.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.dashboard-section {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.projects-section {
+    background-color: #fff;
+}
+
+.reports-section {
+    background-color: #333232; /* Fondo negro para el bloque de informes */
+    color: #fff; /* Texto blanco en el bloque de informes */
+}
+
+.section-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.projects-section .section-header {
+    color: #333; /* Texto oscuro para el encabezado de la sección de proyectos */
+}
+
+.reports-section .section-header {
+    color: #fff; /* Texto blanco en el encabezado del bloque de informes */
+}
+
+.section-content {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.card {
+    background-color: #ffffff; /* Fondo blanco para las tarjetas */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: background-color 0.3s, border-color 0.3s; /* Agregar transición suave */
+}
+
+    .card h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #000; /* Texto negro para los títulos de las tarjetas */
+    }
+
+    .card p {
+        font-size: 0.875rem;
+        color: #6c6c6c; /* Texto gris para los párrafos en las tarjetas */
+    }
+
+    .card.new {
+        background-color: #333; /* Fondo gris oscuro por defecto */
+        border-left: 4px solid #fcaa67; /* Borde amarillo */
+        cursor: pointer;
+        color: #fff; /* Texto blanco por defecto */
+    }
+
+        .card.new h3 {
+            color: #fcaa67; /* Color del título amarillo */
+        }
+
+        .card.new:hover {
+            background-color: #333; /* Fondo gris oscuro al pasar el mouse */
+            border-color: #fcaa67; /* Borde amarillo al pasar el mouse */
+        }
+
+            .card.new:hover h3 {
+                color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+            }
+
+            .card.new:hover p {
+                color: #fff; /* Color del texto blanco al pasar el mouse */
+            }
+
+    .card:hover {
+        background-color: #333; /* Fondo gris oscuro al pasar el mouse */
+        border: 2px solid #fcaa67; /* Borde amarillo al pasar el mouse */
+        cursor: pointer;
+    }
+
+        .card:hover h3 {
+            color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+        }
+
+        .card:hover p {
+            color: #fff; /* Color del texto blanco al pasar el mouse */
+        }
+    /* Estilos para la viñeta de Nuevo Cliente */
+    .card.new-cliente {
+        background-color: #fff; /* Fondo blanco para que destaque en el fondo negro */
+        border-left: 4px solid #fcaa67; /* Borde amarillo */
+        color: #333; /* Texto oscuro */
+        cursor: pointer;
+    }
+
+        .card.new-cliente h3 {
+            color: #fcaa67; /* Título en amarillo */
+        }
+
+        .card.new-cliente:hover {
+            background-color: #fcaa67; /* Fondo amarillo al pasar el mouse */
+            border-color: #fff; /* Borde blanco al pasar el mouse */
+        }
+
+            .card.new-cliente:hover h3 {
+                color: #fff; /* Título blanco al pasar el mouse */
+            }
+
+            .card.new-cliente:hover p {
+                color: #fff; /* Texto blanco al pasar el mouse */
+            }
+/* Estilos del Modal Horizontal */
+.modal-content {
+    max-width: 900px; /* Ajusta el ancho del modal */
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .modal-content form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+        gap: 1rem; /* Espacio entre los campos */
+    }
+
+    .modal-content input {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        width: 100%;
+    }
+
+    .modal-content button {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+
+button:hover {
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none;
+}

@@ -13,11 +13,10 @@ namespace Proyectogestionhoras.Controllers
     public class UsuarioController : Controller
     {
         private readonly UsuarioService _usuarioService;
-        private readonly Conexion conexion;
-        public UsuarioController(UsuarioService usuarioService,Conexion conexion)
+        public UsuarioController(UsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-            this.conexion = conexion;
+            
         }
 
         public async Task<IActionResult> Personal(int? id,string? nombre,int? id_recurso)
@@ -69,35 +68,27 @@ namespace Proyectogestionhoras.Controllers
         {
             try
             {
-                if (!string.IsNullOrEmpty(rut) && !string.IsNullOrEmpty(contrasena))
+                var login = await _usuarioService.ObtenerCredenciales(rut);
+                if (login is null)
                 {
-
-                    Login credenciales = new Login();
-                    credenciales = await ObtenerCredenciales(rut);
-                    if (credenciales != null)
-                    {
-                        bool validar = VerificarContrasena(contrasena, credenciales.Contraseña);
-                        if (validar)
-                        {
-                            HttpContext.Session.SetInt32("id",credenciales.Id);
-                            HttpContext.Session.SetString("nombre", credenciales.Nombre);
-                            HttpContext.Session.SetInt32("idrol", credenciales.Rol);
-                            return RedirectToAction("Index", "Home", new {id=credenciales.Id});
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.Error = "Contraseña Incorrecta";
-                        return View();
-                    }
-
+                    ViewBag.Error = "Rut y/o Contraseña Incorrectas";
+                    return View();
+                }
+                bool resultado = await _usuarioService.Login(rut, contrasena);
+               
+                if (resultado)
+                {
+                    HttpContext.Session.SetInt32("id", login.Id);
+                    HttpContext.Session.SetString("nombre", login.Nombre);
+                    HttpContext.Session.SetInt32("idrol", login.Rol);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ViewBag.Error = "Debe ingresar su rut y/o contraseña";
+                    ViewBag.Error = "Rut y/o Contraseña Incorrectas";
                     return View();
                 }
-                return View();
+               
             
             }
             catch (Exception e)
@@ -115,46 +106,7 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private async Task<Login> ObtenerCredenciales(string correo)
-        {
-            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-            using (DbCommand cmd = connection.CreateCommand())
-            {
-                cmd.CommandText = "INICIOSESION";
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@CORREO", correo));
-                Login usuario = new Login();
-                using (var reader = await cmd.ExecuteReaderAsync())
-                {
-                    while (await reader.ReadAsync())
-                    {
-                        usuario = new Login()
-                        {
-                            Id = reader.GetInt32(reader.GetOrdinal("ID")),
-                            Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
-                            Rol = reader.GetInt32(reader.GetOrdinal("ROL")),
-                            Contraseña = reader.GetString(reader.GetOrdinal("CONTRASEÑA")),
-                        };
-                    }
-                }
-                
-                return usuario;
-            }
-        }
-        private Boolean VerificarContrasena(string passuser, string passbd)
-        {
-            try
-            {
-                bool verificar = BCrypt.Net.BCrypt.Verify(passuser, passbd);
-                return verificar;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine($"Error al verificar las contraseñas:{e.Message}");
-                return false;
-            }
-        }
-
+      
 
 
     }
