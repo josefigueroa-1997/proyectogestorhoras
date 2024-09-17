@@ -1,6 +1,7 @@
 ﻿
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services.Interface;
+using Proyectogestionhoras.Models.DTO;
 using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
@@ -19,14 +20,14 @@ namespace Proyectogestionhoras.Services
             this.conexion = conexion;
             this.context = context;
         }
-        public async Task<List<Cliente>> ObtenerClientesIndex(int? id)
+        public async Task<List<ClienteDTO>> ObtenerClientesIndex(int? id)
         {
             try
             {
                 #pragma warning disable CS8600
                 object idparameter = (object)id ?? DBNull.Value;
                 #pragma warning restore CS8600
-                var clientes = new List<Cliente>();
+                var clientes = new List<ClienteDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
@@ -36,7 +37,7 @@ namespace Proyectogestionhoras.Services
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync()) {
-                            Cliente cliente = new()
+                            ClienteDTO cliente = new()
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
@@ -47,7 +48,8 @@ namespace Proyectogestionhoras.Services
                                 PagWeb = reader.IsDBNull(reader.GetOrdinal("PAGWEB")) ? string.Empty : reader.GetString(reader.GetOrdinal("PAGWEB")),
                                 Linkedin = reader.IsDBNull(reader.GetOrdinal("LINKEDIN")) ? string.Empty : reader.GetString(reader.GetOrdinal("LINKEDIN")),
                                 Instagram = reader.IsDBNull(reader.GetOrdinal("INSTAGRAM")) ? string.Empty : reader.GetString(reader.GetOrdinal("INSTAGRAM")),
-                                IdCliente = reader.GetString(reader.GetOrdinal("ID_CLIENTE"))
+                                Id_Cliente = reader.GetString(reader.GetOrdinal("ID_CLIENTE")),
+                                Sucursales_Cliente = reader.GetString(reader.GetOrdinal("SUCURSALES_CLIENTE"))
 
 
                             };
@@ -64,12 +66,12 @@ namespace Proyectogestionhoras.Services
             {
 
                 Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
-                return new List<Cliente>();
+                return new List<ClienteDTO>();
 
             }
 
         }
-        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,string idcliente)
+        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idcliente,string sucursal)
         {
             try
             {
@@ -92,6 +94,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
                     command.Parameters.Add(new SqlParameter("@ID_CLIENTE", idcliente));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE_SUCURSAL", sucursal));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
@@ -160,6 +163,29 @@ namespace Proyectogestionhoras.Services
             }
 
         }
-        //public async Task<List<Cliente>> GetClientes(int? id, string? nombre, string? pais)
+        public async Task<bool> AgregarSucursal(int idsucursal, string nombre)
+        {
+            try
+            {
+
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "AGREGAR_SUCURSAL";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ID_CLIENTE", idsucursal));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
+                    await command.ExecuteNonQueryAsync();
+                    await conexion.CloseDatabaseConnectionAsync();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al agregar una sucursal" + ex.Message);
+                return false;
+
+            }
+        }
     }
 }

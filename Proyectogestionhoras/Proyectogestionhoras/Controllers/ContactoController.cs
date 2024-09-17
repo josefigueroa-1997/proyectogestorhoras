@@ -15,17 +15,20 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> ContactosCliente(int idcliente)
         {
-            var contactosclientes = await contactoService.ObtenerContactos(0,idcliente,null);
+            var contactosclientes = await contactoService.ObtenerContactos(null,idcliente,null);
             ViewBag.Contactos = contactosclientes;
             return View("ContactosCliente");
         }
 
-        public async Task<IActionResult> AgregarContacto(int idcliente)
+        public async Task <IActionResult> AgregarContacto(int idcliente)
         {
-            var cliente =  await clienteService.ObtenerClientesIndex(idcliente);
-            ViewBag.Clientes = cliente;
-        
+            
+            var cliente = await clienteService.ObtenerClientesIndex(idcliente);
+           ViewBag.Cliente = cliente;
+         
             return View();
+
+          
         }
         [HttpPost]
         public async Task<IActionResult> AgregarContacto(string nombre, string cargo, DateOnly desde, DateOnly hasta, string email, string telefono, int idc)

@@ -172,53 +172,64 @@
             color: #fcaa67;
         }
 
-    .ver-todos {
-        margin-top: 1rem;
+    .contacts-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+        .contacts-table th,
+        .contacts-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .contacts-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .contacts-table td {
+            background-color: #fff;
+        }
+
+    .details-button, .view-more-button {
         background-color: #fcaa67;
-        color: #fff;
-        padding: 0.5rem 1rem;
+        color: white;
         border: none;
+        padding: 0.5rem 1rem;
         border-radius: 0.3rem;
         cursor: pointer;
         transition: background-color 0.3s;
     }
 
-        .ver-todos:hover {
+        .details-button:hover,
+        .view-more-button:hover {
             background-color: #e09b5d;
         }
 
-    .add-contact-button {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background-color: #fcaa67;
-        color: #fff;
-        border: none;
+    .view-more-button {
+        display: block;
+        margin: 1rem auto;
+        text-align: center;
+    }
+
+    .add-branch-button {
+        background-color: #333; 
+        color: #fcaa67; 
+        border-left: 4px solid #fcaa67; 
         padding: 0.5rem 1rem;
         border-radius: 0.3rem;
         cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s;
+        transition: background-color 0.3s, border-color 0.3s;
     }
 
-        .add-contact-button:hover {
-            background-color: #e09b5d;
+        .add-branch-button:hover {
+            background-color: #333; 
+            border-color: #fcaa67;
+            opacity: 0.8; 
         }
-
-    .client-contacts .contact-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-    }
-
-    .client-contacts .contact-name {
-        font-weight: bold;
-        color: #333;
-    }
-
-    .client-contacts .contact-phone {
-        color: #6c6c6c;
-    }
 
 </style>
 <div class="dashboard-container">
@@ -226,66 +237,111 @@
         <!-- Client Details Section -->
         <div class="client-details">
             <h2>Detalles del Cliente</h2>
-            @foreach (var cliente in ViewBag.clientedetalle)
-            {
-                <p><strong>Nombre:</strong> @cliente.Nombre</p>
-                <p><strong>IDCliente:</strong> @cliente.IdCliente</p>
-                <p><strong>Dirección:</strong> @cliente.Direccion</p>
-                <p><strong>Ciudad:</strong> @cliente.Ciudad</p>
-                <p><strong>País:</strong> @cliente.Pais</p>
-                <p><strong>Teléfono:</strong> @cliente.Telefono</p>
-                <p><strong>Página Web:</strong> @cliente.PagWeb</p>
-                <p><strong>Instagram:</strong> @cliente.Instagram</p>
-                <p><strong>LinkedIn:</strong> @cliente.Linkedin</p>
+            <button class="add-branch-button details-button" id="addBranchBtn">Agregar Sucursal</button>
+            <table class="min-w-full divide-y divide-gray-200 border border-gray-300">
+                @foreach (var cliente in ViewBag.clientedetalle)
+                {
+                    <tr class="bg-white">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Nombre</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Nombre</td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">ID Cliente</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Id_Cliente</td>
+                    </tr>
+                    <tr class="bg-white">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Dirección</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Direccion</td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Ciudad</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Ciudad</td>
+                    </tr>
+                    <tr class="bg-white">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">País</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Pais</td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Teléfono</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Telefono</td>
+                    </tr>
+                    <tr class="bg-white">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Página Web</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.PagWeb</td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Instagram</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Instagram</td>
+                    </tr>
+                    <tr class="bg-white">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">LinkedIn</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Linkedin</td>
+                    </tr>
+                    <tr class="bg-white">
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Sucrusales</td>
+                        <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Sucursales_Cliente</td>
+                    </tr>
+                    <div class="client-buttons mt-4 flex justify-center gap-4">
+                        <!-- Botón Editar -->
+                        <button class="edit bg-orange-400 text-white p-2 rounded hover:bg-orange-500"
+                                onclick="window.location.href='@Url.Action("EditarCliente", "Cliente", new { id = cliente.Id })'">
+                            Editar
+                        </button>
 
-                <div class="client-buttons">
-                    <button onclick="window.location.href='@Url.Action("EditarCliente", "Cliente", new { id = cliente.Id })'" class="edit">Editar</button>
-                    <button class="delete" onclick="confirmarEliminacion(@cliente.Id)">Eliminar</button>
-                </div>
-            }
+                        <!-- Botón Eliminar -->
+                        <button class="delete bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                                onclick="confirmarEliminacion(@cliente.Id)">
+                            Eliminar
+                        </button>
+                    </div>
+                }
+            </table>
+         
         </div>
 
-        <!-- Client Contacts Section -->
-        <div class="client-contacts">
-            @foreach(var cliente in ViewBag.clientedetalle){
-            <button class="add-contact-button" onclick="window.location.href='@Url.Action("AgregarContacto", "Contacto",new{idcliente=cliente.Id})'">Agregar Contacto</button>
-            }
-            <h2>Contactos</h2>
-            @if (ViewBag.Contactos.Count>0)
-            {
-           
-            <ul>
-                    @{
-                        int count = 1;
-                    }
 
-                    @foreach (var contacto in ViewBag.Contactos)
+        <div class="client-contacts">
+            <h2>Contactos</h2>
+            @foreach(var cliente in ViewBag.clientedetalle)
+            {
+                <a href="@Url.Action("AgregarContacto", "Contacto", new { idcliente = cliente.Id })" class="details-button" id="addBranchBtn">Agregar Contacto</a>
+            }
+           
+            @if (ViewBag.Contactos.Count > 0)
+            {
+                <table class="contacts-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contacto in ViewBag.Contactos)  
                     {
-                        @if (count > 6)
-                        {
-                            break;
-                        }
-                        <li class="contact-item">
-                            <a href="@Url.Action("DetalleContacto", "Contacto", new { id = contacto.Id })">
-                            <span class="contact-name">@contacto.Nombre</span>
-                            <span class="contact-phone">@contacto.Telefono</span>
-                        </a>
-                        </li>
-                     count++;
+                        <tr>
+                            <td>@contacto.Nombre</td>
+                            <td>@contacto.Telefono</td>
+                            <td>
+                                <button class="details-button" onclick="window.location.href='@Url.Action("DetalleContacto", "Contacto", new { id = contacto.Id })'">Ver detalles</button>
+                            </td>
+                        </tr>
                     }
-            </ul>
+                </tbody>
+                </table>
                 @foreach(var cliente in ViewBag.clientedetalle)
                 {
-                    <a href="@Url.Action("ContactosCliente","Contacto",new{idcliente=@cliente.Id})" class="ver-todos">Ver todos</a>
+                    <a class="view-more-button" href="@Url.Action("ContactosCliente", "Contacto", new { idcliente = cliente.Id })">Ver más</a>
                 }
-               
-                
+             
             }
             else
             {
-                <p style="text-align:center">No hay contactos</p>
+                <p>No hay contactos disponibles.</p>
             }
         </div>
+    
     </div>
             
     <!-- Projects Section -->
@@ -306,7 +362,23 @@
             <!-- Más tarjetas de proyecto aquí -->
         </div>
     </div>
-
+    <!-- Modal para agregar sucursal -->
+    <div id="addBranchModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nueva Sucursal</h2>
+            <form method="post" action="@Url.Action("AgregarSucursal", "Cliente")">
+                <label for="branchName">Nombre de Sucursal:</label>
+                @foreach (var cliente in ViewBag.clientedetalle)
+                {
+                    <input type="hidden" name="idcli" value="@cliente.Id" />
+                }
+                
+                <input type="text" id="branchName" name="nombre" required class="w-full border border-gray-300 p-2 rounded mt-2 mb-4">
+                <button type="submit" class="details-button">Guardar</button>
+                <button type="button" id="closeBranchModalBtn" class="details-button bg-red-500">Cerrar</button>
+            </form>
+        </div>
+    </div>
     <!-- Modal para mostrar el mensaje de éxito -->
     <div id="successModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -352,5 +424,26 @@
                 successModal.classList.add('hidden');
             }
         });
+    });
+</script>
+<script>
+    // Abrir el modal
+    const addBranchBtn = document.getElementById('addBranchBtn');
+    const addBranchModal = document.getElementById('addBranchModal');
+    const closeBranchModalBtn = document.getElementById('closeBranchModalBtn');
+
+    addBranchBtn.addEventListener('click', () => {
+        addBranchModal.classList.remove('hidden');
+    });
+
+    // Cerrar el modal
+    closeBranchModalBtn.addEventListener('click', () => {
+        addBranchModal.classList.add('hidden');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === addBranchModal) {
+            addBranchModal.classList.add('hidden');
+        }
     });
 </script>

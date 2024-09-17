@@ -73,11 +73,12 @@
     <h1 class="form-title">Agregar Contacto</h1>
 
     <form id="contactForm" action="@Url.Action("AgregarContacto","Contacto")" method="post" enctype="multipart/form-data">
-        @foreach(var cliente in ViewBag.Clientes)
+        @foreach(var cliente in ViewBag.Cliente)
         {
-            <input type = "hidden" name = "idc" value="@cliente.Id" />
-
+            <input type="hidden" name="idc" value="@cliente.Id" />
         }
+        
+
         
         <div class="form-group">
             <label for="nombre">Nombre</label>

@@ -32,19 +32,14 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Recurso> Recursos { get; set; } = null!;
         public virtual DbSet<Rol> Rols { get; set; } = null!;
         public virtual DbSet<SegmentoCosto> SegmentoCostos { get; set; } = null!;
+        public virtual DbSet<Sucursal> Sucursals { get; set; } = null!;
+        public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
         public virtual DbSet<Unegocio> Unegocios { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-DR8BPEV\\SQLEXPRESS;DataBase=PROYECTO_CONTROL_HORAS;Integrated Security=true;TrustServerCertificate=True");
-            }
-        }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,7 +85,7 @@ namespace Proyectogestionhoras.Models
             {
                 entity.ToTable("CLIENTE");
 
-                entity.HasIndex(e => e.IdCliente, "UQ__CLIENTE__23A341315C5DBB6D")
+                entity.HasIndex(e => e.IdCliente, "UQ__CLIENTE__677F38F40BCA749B")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -105,7 +100,10 @@ namespace Proyectogestionhoras.Models
                     .IsUnicode(false)
                     .HasColumnName("DIRECCION");
 
-                entity.Property(e => e.IdCliente).HasColumnName("ID_CLIENTE");
+                entity.Property(e => e.IdCliente)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("id_cliente");
 
                 entity.Property(e => e.Instagram)
                     .HasMaxLength(200)
@@ -467,6 +465,41 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.IdCuenta).HasColumnName("ID_CUENTA");
 
                 entity.Property(e => e.IdHonorariosExternos).HasColumnName("ID_HONORARIOS_EXTERNOS");
+            });
+
+            modelBuilder.Entity<Sucursal>(entity =>
+            {
+                entity.ToTable("SUCURSAL");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE");
+            });
+
+            modelBuilder.Entity<SucursalCliente>(entity =>
+            {
+                entity.ToTable("SUCURSAL_CLIENTE");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.IdCliente).HasColumnName("ID_CLIENTE");
+
+                entity.Property(e => e.IdSucursal).HasColumnName("ID_SUCURSAL");
+
+                entity.HasOne(d => d.IdClienteNavigation)
+                    .WithMany(p => p.SucursalClientes)
+                    .HasForeignKey(d => d.IdCliente)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ID_CLIENTE_SU_FK");
+
+                entity.HasOne(d => d.IdSucursalNavigation)
+                    .WithMany(p => p.SucursalClientes)
+                    .HasForeignKey(d => d.IdSucursal)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ID_SUCURSAL_CLI_FK");
             });
 
             modelBuilder.Entity<Tipologium>(entity =>
