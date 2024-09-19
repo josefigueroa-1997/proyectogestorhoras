@@ -49,13 +49,13 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,int idcliente, string sucursal)
+        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,int idcliente)
         {
             try
             {
 
                 var idusuario = HttpContext.Session.GetInt32("id");
-                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente,sucursal);
+                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente);
                 if (registro) {
                     TempData["SuccessMessage"] = "¡Se Agregó con éxito el nuevo cliente!";
                     return RedirectToAction("Index", "Home");

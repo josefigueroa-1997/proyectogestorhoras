@@ -49,7 +49,7 @@ namespace Proyectogestionhoras.Services
                                 Linkedin = reader.IsDBNull(reader.GetOrdinal("LINKEDIN")) ? string.Empty : reader.GetString(reader.GetOrdinal("LINKEDIN")),
                                 Instagram = reader.IsDBNull(reader.GetOrdinal("INSTAGRAM")) ? string.Empty : reader.GetString(reader.GetOrdinal("INSTAGRAM")),
                                 Id_Cliente = reader.GetString(reader.GetOrdinal("ID_CLIENTE")),
-                                Sucursales_Cliente = reader.GetString(reader.GetOrdinal("SUCURSALES_CLIENTE"))
+                                Sucursales_Cliente = reader.IsDBNull(reader.GetOrdinal("SUCURSALES_CLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("SUCURSALES_CLIENTE"))
 
 
                             };
@@ -71,7 +71,7 @@ namespace Proyectogestionhoras.Services
             }
 
         }
-        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idcliente,string sucursal)
+        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idcliente)
         {
             try
             {
@@ -94,7 +94,6 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
                     command.Parameters.Add(new SqlParameter("@ID_CLIENTE", idcliente));
-                    command.Parameters.Add(new SqlParameter("@NOMBRE_SUCURSAL", sucursal));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }

@@ -112,6 +112,17 @@
                 <input type="text" id="numeroProyecto" name="numeroProyecto" required>
             </div>
             <div class="form-group">
+                <label for="estadoProyecto">Estado del proyecto</label>
+                <select id="estadoProyecto" name="estadoproyecto" required>
+                    <option value="" disabled selected>Seleccione el estado del proyecto</option>
+                    <option value="1">Presentado</option>
+                    <option value="2">En negociación</option>
+                    <option value="3">En ejecución</option>
+                    <option value="4">Terminado</option>
+                    <option value="5">Rechazado</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="cliente">Cliente</label>
                 <select id="cliente" name="cliente" required>
                     <option value="" disabled selected>Seleccione un cliente</option>
@@ -189,7 +200,7 @@
             </div>
         </div>
 
-        <div class="form-row">
+        <div class="form-row" id="fechasRow">
             <div class="form-group">
                 <label for="fechaInicio">Fecha de inicio</label>
                 <input type="date" id="fechaInicio" name="fechaInicio" required>
@@ -198,14 +209,33 @@
                 <label for="fechaFin">Fecha de fin</label>
                 <input type="date" id="fechaFin" name="fechaFin" required>
             </div>
+           
+        </div>
+        <div class="form-row">
             <div class="form-group">
                 <label for="plazo">Plazo</label>
                 <input type="number" id="plazo" name="plazo" required>
             </div>
         </div>
-
         <div class="button-container">
             <button type="submit" class="submit-btn">Crear Proyecto</button>
         </div>
     </form>
 </div>
+<script>
+    document.getElementById("estadoProyecto").addEventListener("change", function () {
+        var estado = this.value;
+        var fechasRow = document.getElementById("fechasRow");
+
+        // Ocultar fechas si el estado es "Presentado", "En negociación" o "Rechazado"
+        if (estado === "1" || estado === "2" || estado === "5") {
+            fechasRow.style.display = "none";
+            document.getElementById("fechaInicio").required = false;
+            document.getElementById("fechaFin").required = false;
+        } else {
+            fechasRow.style.display = "flex";
+            document.getElementById("fechaInicio").required = true;
+            document.getElementById("fechaFin").required = true;
+        }
+    });
+</script>
