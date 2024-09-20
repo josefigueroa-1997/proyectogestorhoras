@@ -71,7 +71,7 @@ namespace Proyectogestionhoras.Services
             }
 
         }
-        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idcliente)
+        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idcliente,string sucursal)
         {
             try
             {
@@ -94,6 +94,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
                     command.Parameters.Add(new SqlParameter("@ID_CLIENTE", idcliente));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE_SUCURSAL", sucursal));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
@@ -183,6 +184,47 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Hubo un error al agregar una sucursal" + ex.Message);
                 return false;
+
+            }
+        }
+        public async Task<List<Sucursal>> OobtenerSucursal(int idcliente)
+        {
+            try
+            {
+
+                var sucursales = new List<Sucursal>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERSUCURSALES";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCLIENTE", idcliente));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Sucursal sucursal = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                               
+
+
+                            };
+                            sucursales.Add(sucursal);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return sucursales;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las sucursales:" + ex.Message);
+                return new List<Sucursal>();
 
             }
         }

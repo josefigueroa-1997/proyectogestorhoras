@@ -95,9 +95,10 @@
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
+            <span id="emailStatus"></span>
         </div>
         <div class="form-group">
-            <label for="tipoRecurso">Tipo de Recurso</label>
+            <label for="tipoRecurso">Segmento</label>
             <select id="tipoRecurso" name="idsegmento" required>
                 <option value="" disabled selected>Seleccione un tipo de recurso</option>
                 @foreach (var recurso in ViewBag.Segmentos)
@@ -109,8 +110,13 @@
         </div>
         <!-- Nombre del Recurso -->
         <div class="form-group">
-            <label for="nombreRecurso">Nombre del Recurso</label>
-            <input type="text" id="nombreRecurso" name="nombrerecurso" required>
+            <label for="nombreRecurso">Tipo de Recurso</label>
+            <select id="nombreRecurso" name="nombrerecurso" required>
+                <option value="" disabled selected>Seleccione un tipo de recurso</option>
+                <option value="Socio">Socio</option>
+                <option value="Consultor Interno" >Consultor Interno</option>
+                <option value="Consultor Externo">Consultor Externo</option>
+            </select>
         </div>
 
         <!-- Número de Horas -->
@@ -140,3 +146,34 @@
         <button type="submit" class="submit-btn">Agregar Personal</button>
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#email').on('input', function () {
+            var email = $(this).val();
+            if (email.length > 0) { 
+                $.ajax({
+                    url: '@Url.Action("VerificarCorreo", "Usuario")',
+                    type: 'GET',
+                    data: { email: email },
+                    contentType: 'application/json',
+                    success: function (resultado) {
+                        if (resultado === 1) {
+                            $('#emailStatus').text("El correo ya está registrado.").css("color", "red");
+                            $('.submit-btn').prop('disabled', true); 
+                        } else {
+                            $('#emailStatus').text("El correo está disponible.").css("color", "green");
+                            $('.submit-btn').prop('disabled', false); 
+                        }
+                    },
+                    error: function () {
+                        $('#emailStatus').text("Error al verificar el correo.").css("color", "orange");
+                    }
+                });
+            } else {
+                $('#emailStatus').text(""); 
+                $('.submit-btn').prop('disabled', false); 
+            }
+        });
+    });
+</script>

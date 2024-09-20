@@ -296,5 +296,38 @@ namespace Proyectogestionhoras.Services
                 return "";
             }
         }
+
+        public async Task<int> VerificarCorreo(string email)
+        {
+            int resultado = 2;  // Valor predeterminado
+            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+
+            if (connection == null)
+            {
+                throw new InvalidOperationException("No se pudo abrir la conexión a la base de datos.");
+            }
+
+            using (DbCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT COUNT(*) FROM USUARIO WHERE EMAIL = @CORREO";
+                DbParameter correoParam = command.CreateParameter();
+                correoParam.ParameterName = "@CORREO";
+                correoParam.Value = email ?? string.Empty;
+                command.Parameters.Add(correoParam);
+
+                try
+                {
+                    resultado = (int)await command.ExecuteScalarAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al ejecutar el comando.", ex);
+                }
+            }
+
+            return resultado > 0 ? 1 : 2;
+        }
+
+
     }
 }

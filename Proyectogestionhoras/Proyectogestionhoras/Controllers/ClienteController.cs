@@ -49,13 +49,13 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,int idcliente)
+        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,int idcliente, string sucursal)
         {
             try
             {
 
                 var idusuario = HttpContext.Session.GetInt32("id");
-                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente);
+                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente,sucursal);
                 if (registro) {
                     TempData["SuccessMessage"] = "¡Se Agregó con éxito el nuevo cliente!";
                     return RedirectToAction("Index", "Home");
@@ -149,6 +149,13 @@ namespace Proyectogestionhoras.Controllers
                 Debug.WriteLine($"Hubo un error al eliminar al cliente:" + ex.Message); 
                 return View();
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerSucursales(int idcliente)
+        {
+            var sucursales = await service.OobtenerSucursal(idcliente);
+            return Json(sucursales);
         }
 
     }

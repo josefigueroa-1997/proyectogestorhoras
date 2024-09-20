@@ -59,6 +59,16 @@ namespace Proyectogestionhoras.Controllers
 
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> VerificarCorreo(string email)
+        {
+            int resultado = await _usuarioService.VerificarCorreo(email);
+            return Ok(resultado);
+        }
+
+
+
         public IActionResult Login()
         {
             return View();

@@ -95,13 +95,69 @@
         .submit-btn:hover {
             background-color: #e39450;
         }
+
+    #integrantes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .integrante-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #f8f8f8;
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        width: calc(33.33% - 20px); /* 3 cards por fila */
+        height: 150px; /* Para mantenerlas cuadradas */
+        box-sizing: border-box;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .integrante-card:hover {
+            background-color: #fcaa67;
+            border-color: #e39450;
+        }
+
+        .integrante-card input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .integrante-card label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .integrante-card input[type="number"] {
+            display: none; /* Ocultamos el input de horas inicialmente */
+            margin-left: auto;
+            padding: 5px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100px;
+        }
+
+        .integrante-card.active input[type="number"] {
+            display: block;
+        }
+
+        .integrante-card.active {
+            background-color: #fcaa67;
+            border-color: #e39450;
+        }
 </style>
 
 <div class="form-container">
     <h1 class="form-title">Crear Nuevo Proyecto</h1>
     <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
 
-    <form action="/Proyecto/Crear" method="post">
+    <form action="/Proyecto/Crear" method="post" onsubmit="return validarFechas()">
         <div class="form-row">
             <div class="form-group">
                 <label for="nombreProyecto">Nombre de proyecto</label>
@@ -111,6 +167,29 @@
                 <label for="numeroProyecto">Número de proyecto</label>
                 <input type="text" id="numeroProyecto" name="numeroProyecto" required>
             </div>
+            
+            <div class="form-group">
+                <label for="cliente">Cliente</label>
+                <select id="cliente" name="cliente" required>
+                    <option value="" disabled selected>Seleccione un cliente</option>
+                    @foreach (var cliente in ViewBag.Clientes)
+                    {
+                        <option value="@cliente.Id">@cliente.Nombre</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cliente">Sucrursal</label>
+                <select id="sucursal" name="sucursal" required>
+                    <option value="" disabled selected>Seleccione una sucursal</option>
+                  
+                        <option value="">Nombre</option>
+                    
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
             <div class="form-group">
                 <label for="estadoProyecto">Estado del proyecto</label>
                 <select id="estadoProyecto" name="estadoproyecto" required>
@@ -122,19 +201,6 @@
                     <option value="5">Rechazado</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="cliente">Cliente</label>
-                <select id="cliente" name="cliente" required>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                    @foreach (var cliente in ViewBag.Clientes)
-                    {
-                        <option value="@cliente.Id">@cliente.Nombre</option>
-                    }
-                </select>
-            </div>
-        </div>
-
-        <div class="form-row">
             <div class="form-group">
                 <label for="unidadNegocio">Unidad de negocio</label>
                 <select id="unidadNegocio" name="unidadNegocio" required>
@@ -187,7 +253,7 @@
                 <label for="tipoMoneda">Tipo de moneda</label>
                 <select id="tipoMoneda" name="tipoMoneda" required>
                     <option value="">Seleccione el tipo de moneda</option>
-                    <!-- Opciones dinámicas -->
+                    <option value="Pesos">Pesos</option>
                 </select>
             </div>
         </div>
@@ -207,27 +273,93 @@
             </div>
             <div class="form-group">
                 <label for="fechaFin">Fecha de fin</label>
-                <input type="date" id="fechaFin" name="fechaFin" required>
+                <input type="date" id="fechaFin" name="fechaFin"  disabled required>
             </div>
            
         </div>
         <div class="form-row">
             <div class="form-group">
-                <label for="plazo">Plazo</label>
-                <input type="number" id="plazo" name="plazo" required>
+                <label for="plazo">Plazo en meses</label>
+                <input type="number" id="plazo" name="plazo" disabled required placeholder="Valor de Plazo">
             </div>
         </div>
+        <div class="form-group">
+            <p class="form-subtitle">Requerimientos de Horas por Tipología</p>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Tipología</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Horas Requeridas de Socios</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Horas Requeridas de Consultores</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;">Tipología 1</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">40 horas</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">30 horas</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <p class="form-subtitle">Integrantes del Proyecto</p>
+            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los socios e indique la cantidad de horas destinadas para el proyecto</p>
+
+            <div id="integrantes">
+                <!-- Ejemplo de Card con checkbox -->
+                <div class="integrante-card" data-id="1">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante1" name="integrantes[]" value="1">
+                    <label for="integrante1">Juan Pérez</label>
+                    <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
+                </div>
+
+                <div class="integrante-card" data-id="2">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante2" name="integrantes[]" value="2">
+                    <label for="integrante2">Ana Gómez</label>
+                    <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
+                </div>
+
+                <!-- Añadir más cards según sea necesario -->
+            </div>
+            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los Consultores e indique la cantidad de horas destinadas para el proyecto</p>
+
+            <div id="integrantes">
+                <!-- Ejemplo de Card con checkbox -->
+                <div class="integrante-card" data-id="1">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante1" name="integrantes[]" value="1">
+                    <label for="integrante1">Juan Pérez</label>
+                    <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
+                </div>
+
+                <div class="integrante-card" data-id="2">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante2" name="integrantes[]" value="2">
+                    <label for="integrante2">Ana Gómez</label>
+                    <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
+                </div>
+                <div class="integrante-card" data-id="2">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante2" name="integrantes[]" value="2">
+                    <label for="integrante2">Julio Cesar</label>
+                    <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
+                </div>
+                <!-- Añadir más cards según sea necesario -->
+            </div>
+        </div>
+
         <div class="button-container">
             <button type="submit" class="submit-btn">Crear Proyecto</button>
         </div>
+       
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 <script>
     document.getElementById("estadoProyecto").addEventListener("change", function () {
         var estado = this.value;
         var fechasRow = document.getElementById("fechasRow");
 
-        // Ocultar fechas si el estado es "Presentado", "En negociación" o "Rechazado"
         if (estado === "1" || estado === "2" || estado === "5") {
             fechasRow.style.display = "none";
             document.getElementById("fechaInicio").required = false;
@@ -238,4 +370,93 @@
             document.getElementById("fechaFin").required = true;
         }
     });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#cliente').on('change', function () {
+            var clienteId = $(this).val(); 
+
+            if (clienteId) {
+                $.ajax({
+                    url: '/Cliente/ObtenerSucursales', 
+                    type: 'GET',
+                    data: { idcliente: clienteId }, 
+                    success: function (data) {
+                        console.log(data);
+                        var $sucursalSelect = $('#sucursal');
+                        $sucursalSelect.empty(); 
+                        $sucursalSelect.append('<option value="" disabled selected>Seleccione una sucursal</option>');
+                        $.each(data, function (index, sucursal) {
+                            $sucursalSelect.append('<option value="' + sucursal.id + '">' + sucursal.nombre + '</option>');
+                        });
+                    },
+                    error: function () {
+                        alert('Error al obtener las sucursales');
+                    }
+                });
+            }
+        });
+        $('#tipologia').on('change', function () {
+            var tipologiaId = $(this).val();
+            console.log("Tipología cambiada: ", tipologiaId); 
+            if (tipologiaId === "1") { 
+                $('#plazo').val(2); 
+                $('#plazo').trigger('input'); 
+            } 
+            if (tipologiaId === "2") { 
+                $('#plazo').val(4); 
+                $('#plazo').trigger('input'); 
+            }
+            if (tipologiaId === "3") { 
+                $('#plazo').val(6); 
+                $('#plazo').trigger('input'); 
+            }
+            if (tipologiaId === "4") { 
+                $('#plazo').val(8); 
+                $('#plazo').trigger('input'); 
+            }
+        });
+
+        document.getElementById('plazo').addEventListener('input', function () {
+            var plazo = this.value;
+            this.placeholder = "Valor de Plazo: " + plazo; 
+        });
+    });
+    $(document).ready(function () {
+        $('#fechaInicio, #plazo').on('input', function () {
+            var fechaInicio = $('#fechaInicio').val();
+            var plazo = $('#plazo').val();
+
+            if (fechaInicio && plazo) {
+                var nuevaFecha = moment(fechaInicio).add(plazo, 'months').format('YYYY-MM-DD');
+                $('#fechaFin').val(nuevaFecha);  
+            } else {
+                $('#fechaFin').val('');  
+            }
+        });
+    });
+    // Función para habilitar el input de horas al seleccionar un integrante
+    document.querySelectorAll('.integrante-checkbox').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const card = this.closest('.integrante-card');
+            if (this.checked) {
+                card.classList.add('active');  // Añadimos la clase active cuando el checkbox está seleccionado
+            } else {
+                card.classList.remove('active'); // Removemos la clase active cuando no está seleccionado
+            }
+        });
+    });
+    // Función para actualizar la tabla con el valor seleccionado del select
+    function actualizarTipologia() {
+        // Obtener el select y el texto seleccionado
+        var selectTipologia = document.getElementById("tipologia");
+        var tipologiaSeleccionada = selectTipologia.options[selectTipologia.selectedIndex].text;
+
+        // Actualizar el contenido de la celda de tipología en la tabla
+        document.getElementById("tipologiaText").innerText = tipologiaSeleccionada;
+    }
+
+    // Añadir un event listener para que la función se ejecute cuando se seleccione una nueva tipología
+    document.getElementById("tipologia").addEventListener("change", actualizarTipologia);
 </script>
