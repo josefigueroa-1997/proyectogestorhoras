@@ -82,7 +82,8 @@
         <!-- RUT -->
         <div class="form-group">
             <label for="rut">RUT(Sin Puntos Ni Guiones)</label>
-            <input type="text" id="rut" name="rut" required>
+            <input type="number" id="rut" name="rut" required>
+            <span id="rutStatus"></span>
         </div>
 
         <!-- Teléfono -->
@@ -114,15 +115,20 @@
             <select id="nombreRecurso" name="nombrerecurso" required>
                 <option value="" disabled selected>Seleccione un tipo de recurso</option>
                 <option value="Socio">Socio</option>
-                <option value="Consultor Interno" >Consultor Interno</option>
+                <option value="Staff" >Staff</option>
                 <option value="Consultor Externo">Consultor Externo</option>
             </select>
         </div>
 
         <!-- Número de Horas -->
         <div class="form-group">
-            <label for="numeroHoras">Número de Horas</label>
+            <label for="numeroHoras">Contrato de Número de Horas Semanales</label>
             <input type="number" id="numeroHoras" name="numhoras" required min="1">
+        </div>
+        <!-- % Horas a Proyectos -->
+        <div class="form-group">
+            <label for="horasProyectos">Porcentaje de Horas a Proyectos</label>
+            <input type="number" id="porcentaje" name="porcentaje" required min="1">
         </div>
 
         <!-- Costo Unitario -->
@@ -146,7 +152,7 @@
         <button type="submit" class="submit-btn">Agregar Personal</button>
     </form>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function () {
         $('#email').on('input', function () {
@@ -162,7 +168,7 @@
                             $('#emailStatus').text("El correo ya está registrado.").css("color", "red");
                             $('.submit-btn').prop('disabled', true); 
                         } else {
-                            $('#emailStatus').text("El correo está disponible.").css("color", "green");
+                            $('#emailStatus').text("").css("color", "green");
                             $('.submit-btn').prop('disabled', false); 
                         }
                     },
@@ -173,6 +179,35 @@
             } else {
                 $('#emailStatus').text(""); 
                 $('.submit-btn').prop('disabled', false); 
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('#rut').on('input', function () {
+            var rut = $(this).val();
+            if (rut.length > 0) {
+                $.ajax({
+                    url: '@Url.Action("VerificarRut", "Usuario")',
+                    type: 'GET',
+                    data: { rut: rut },
+                    contentType: 'application/json',
+                    success: function (resultado) {
+                        if (resultado === 1) {
+                            $('#rutStatus').text("El rut ya está registrado.").css("color", "red");
+                            $('.submit-btn').prop('disabled', true);
+                        } else {
+                            $('#rutStatus').text("").css("color", "green");
+                            $('.submit-btn').prop('disabled', false);
+                        }
+                    },
+                    error: function () {
+                        $('#rutStatus').text("Error al verificar el correo.").css("color", "orange");
+                    }
+                });
+            } else {
+                $('#rutStatus').text("");
+                $('.submit-btn').prop('disabled', false);
             }
         });
     });

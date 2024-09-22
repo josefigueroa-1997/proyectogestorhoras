@@ -154,8 +154,15 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> ObtenerSucursales(int idcliente)
         {
-            var sucursales = await service.OobtenerSucursal(idcliente);
+            var sucursales = await service.ObtenerSucursal(idcliente);
             return Json(sucursales);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VerificarExistenciaIdCliente(int idcliente)
+        {
+            int verificar = await service.ValidarExistenciaIdCliente(idcliente);
+            return Ok(verificar);
         }
 
     }

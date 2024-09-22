@@ -8,7 +8,6 @@ namespace Proyectogestionhoras.Models
         public Cliente()
         {
             Contactos = new HashSet<Contacto>();
-            Proyectos = new HashSet<Proyecto>();
             SucursalClientes = new HashSet<SucursalCliente>();
         }
 
@@ -24,7 +23,6 @@ namespace Proyectogestionhoras.Models
         public string IdCliente { get; set; } = null!;
 
         public virtual ICollection<Contacto> Contactos { get; set; }
-        public virtual ICollection<Proyecto> Proyectos { get; set; }
         public virtual ICollection<SucursalCliente> SucursalClientes { get; set; }
     }
 }

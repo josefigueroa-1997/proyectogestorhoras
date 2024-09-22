@@ -66,7 +66,12 @@ namespace Proyectogestionhoras.Controllers
             int resultado = await _usuarioService.VerificarCorreo(email);
             return Ok(resultado);
         }
-
+        [HttpGet]
+        public async Task<IActionResult> VerificarRut(string rut)
+        {
+            int resusltado = await _usuarioService.Verificarrut(rut);
+            return Ok(resusltado);
+        }
 
 
         public IActionResult Login()

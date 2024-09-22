@@ -9,7 +9,8 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<bool> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram);
         public Task<bool> EliminarCliente(int id);
         public Task<bool> AgregarSucursal(int idsucursal, string nombre);
-        public Task <List<Sucursal>> OobtenerSucursal(int idcliente);
+        public Task <List<Sucursal>> ObtenerSucursal(int idcliente);
+        public Task<int> ValidarExistenciaIdCliente(int idcliente);
         //public Task<List<Cliente>> GetClientes(int? id,string? nombre, string? pais);
     }
 }

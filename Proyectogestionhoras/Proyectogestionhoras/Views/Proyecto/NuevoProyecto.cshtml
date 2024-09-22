@@ -198,10 +198,10 @@
                 <label for="estadoProyecto">Estado del proyecto</label>
                 <select id="estadoProyecto" name="estadoproyecto" required>
                     <option value="" disabled selected>Seleccione el estado del proyecto</option>
-                    <option value="1">A Licitar</option>
-                    <option value="2">Por Negociar</option>
-                    <option value="3">En negociación</option>
-                    <option value="4">En ejecución</option>
+                     @foreach(var statu in ViewBag.Status)
+                    {
+                        <option value="@statu.Id">@statu.TipoStatus</option>
+                    }
                     
                 </select>
             </div>
@@ -255,10 +255,7 @@
             </div>
             <div class="form-group">
                 <label for="tipoMoneda">Tipo de moneda</label>
-                <select id="tipoMoneda" name="tipoMoneda" required>
-                    <option value="">Seleccione el tipo de moneda</option>
-                    <option value="Pesos">Pesos</option>
-                </select>
+                <input type="text" id="tipoMoneda" name="tipoMoneda" required />
             </div>
         </div>
 
@@ -329,8 +326,8 @@
                     <span class="horas-disponibles">Horas disponibles: 40</span>
                     <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
                 </div>
-                <div class="integrante-card" data-id="2">
-                    <input type="checkbox" class="integrante-checkbox" id="integrante2" name="integrantes[]" value="2">
+                <div class="integrante-card" data-id="3">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante3" name="integrantes[]" value="2">
                     <label for="integrante2">Julio Cesar</label>
                     <span class="horas-disponibles">Horas disponibles: 40</span>
                     <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
@@ -338,17 +335,17 @@
                 </div>
                 <!-- Añadir más cards según sea necesario -->
             </div>
-            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los Consultores Internos e indique la cantidad de horas destinadas para el proyecto</p>
+            <p class="form-subtitle" style="font-size: 1rem; color: black;">Seleccione al o los Staff e indique la cantidad de horas destinadas para el proyecto</p>
 
             <div id="integrantes">
                 <!-- Ejemplo de Card con checkbox -->
-                <div class="integrante-card" data-id="7">
+                <div class="integrante-card" data-id="4">
                     <input type="checkbox" class="integrante-checkbox" id="integrante4" name="integrantes[]" value="1">
                     <label for="integrante1">Juan Pérez</label>
                     <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
                 </div>
 
-                <div class="integrante-card" data-id="6">
+                <div class="integrante-card" data-id="5">
                     <input type="checkbox" class="integrante-checkbox" id="integrante5" name="integrantes[]" value="2">
                     <label for="integrante2">Ana Gómez</label>
                     <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
@@ -366,7 +363,7 @@
                     <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
                 </div>
 
-                <div class="integrante-card" data-id="3">
+                <div class="integrante-card" data-id="7">
                     <input type="checkbox" class="integrante-checkbox" id="integrante7" name="integrantes[]" value="2">
                     <label for="integrante2">Ana Gómez</label>
                     <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
@@ -375,14 +372,17 @@
                 <!-- Añadir más cards según sea necesario -->
             </div>
         </div>
-
+        <div class="form-group">
+            <p class="form-subtitle">Gastos del Proyecto</p>
+            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Ingrese los Gastos destinados al proyecto</p>
+        </div>
         <div class="button-container">
             <button type="submit" class="submit-btn">Crear Proyecto</button>
         </div>
        
     </form>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script>
@@ -495,6 +495,16 @@
         const inputHoras = card.querySelector("input[type='number']");
         inputHoras.addEventListener("click", function (event) {
             event.stopPropagation();
+        });
+    });
+    document.querySelectorAll('.integrante-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const card = this.closest('.integrante-card');
+            if (this.checked) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
         });
     });
     // Función para actualizar la tabla con el valor seleccionado del select

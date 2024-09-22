@@ -82,53 +82,58 @@
     <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
             <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
-            <form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-2 gap-4" enctype="multipart/form-data">
-                <div class="mb-4">
+            <form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
+                
+                <div>
                     <label for="nombre" class="block text-gray-700 font-bold">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-                <div class="mb-4">
+                <div>
                     <label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:</label>
                     <input type="number" id="idcliente" name="idcliente" class="w-full p-2 border border-gray-300 rounded" required>
+                    <span id="idClienteStatus"></span>
                 </div>
-               <div class="mb-4">
+                <div>
                     <label for="Sucursal" class="block text-gray-700 font-bold">Sucursal General:</label>
                     <input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-                
-                <div class="mb-4">
+
+            
+                <div>
                     <label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>
-                    <input type="text" id="direccion" name="direccion"  class="w-full p-2 border border-gray-300 rounded" required>
+                    <input type="text" id="direccion" name="direccion" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-                <div class="mb-4">
+                <div>
                     <label for="ciudad" class="block text-gray-700 font-bold">Ciudad:</label>
                     <input type="text" id="ciudad" name="ciudad" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-                <div class="mb-4">
+                <div>
                     <label for="pais" class="block text-gray-700 font-bold">País:</label>
                     <input type="text" id="pais" name="pais" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-                <div class="mb-4">
+
+                <div>
                     <label for="telefono" class="block text-gray-700 font-bold">Teléfono:</label>
                     <input type="tel" id="telefono" name="telefono" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-                <div class="mb-4">
+                <div>
                     <label for="paginaWeb" class="block text-gray-700 font-bold">Página Web:</label>
                     <input type="text" id="paginaWeb" name="pagweb" class="w-full p-2 border border-gray-300 rounded">
                 </div>
-                <div class="mb-4">
-                    <label for="instagram" class="block text-gray-700 font-bold">Instagram:</label>
+                <div>
+                    <label for="instagram" class="block text-gray-700 font-bold">Linkedin:</label>
                     <input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
                 </div>
-                <div class="mb-4">
-                    <label for="linkedin" class="block text-gray-700 font-bold">LinkedIn:</label>
+                <div>
+                    <label for="linkedin" class="block text-gray-700 font-bold">Instagram:</label>
                     <input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
                 </div>
-            
-                <div class="flex justify-end gap-4 mt-6">
+
+      
+                <div class="col-span-3 flex justify-end gap-4 mt-6">
                     <button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
-                 <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
-            </div>
+                    <button type="submit" id="submit-btn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
+                </div>
             </form>
         </div>
     </div>
@@ -142,6 +147,7 @@
     </div>
 
 </div>  
+
 <script>
     /*MODAL REGISTRO CLIENTE*/ 
     const nuevoClienteBtn = document.getElementById('nuevoClienteBtn');
@@ -181,6 +187,37 @@
             window.addEventListener('click', (e) => {
             if (e.target === successModal) {
                 successModal.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#idcliente').on('input', function () {
+            var idcliente = $(this).val();
+            if (idcliente.length > 0) {
+                $.ajax({
+                    url: '@Url.Action("VerificarExistenciaIdCliente", "Cliente")',
+                    type: 'GET',
+                    data: { idcliente: idcliente },
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    success: function (resultado) {
+                        if (resultado === 1) {
+                            $('#idClienteStatus').text("El idCliente ya está registrado.").css("color", "red");
+                            $('#submit-btn').prop('disabled', true);
+                        } else {
+                            $('#idClienteStatus').text("").css("color", "green");
+                            $('#submit-btn').prop('disabled', false);
+                        }
+                    },
+                    error: function () {
+                        $('#idClienteStatus').text("Error al verificar el IdCliente.").css("color", "orange");
+                    }
+                });
+            } else {
+                $('#idClienteStatus').text("");
+                $('#submit-btn').prop('disabled', false);
             }
         });
     });

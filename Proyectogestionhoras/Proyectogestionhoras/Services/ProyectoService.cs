@@ -7,6 +7,7 @@ using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Reflection.Metadata.Ecma335;
+using System.Reflection.Metadata;
 namespace Proyectogestionhoras.Services
 {
     public class ProyectoService : IProyecto
@@ -225,6 +226,45 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
                 return new List<Tipologium>();
+            }
+        }
+
+        public async Task<List<StatusProyecto>> ObtenerStatus(int id)
+        {
+            try
+            {
+                var status = new List<StatusProyecto>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERSTATUS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ID", id));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            StatusProyecto statu = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                TipoStatus = reader.GetString(reader.GetOrdinal("TIPO_STATUS")),
+
+                            };
+                            status.Add(statu);
+                            Debug.WriteLine(statu.TipoStatus);
+                        }
+                        
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return status;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<StatusProyecto>();
             }
         }
     }

@@ -1,1 +1,1 @@
-dotnet ef dbcontext scaffold "Server=DESKTOP-DR8BPEV\SQLEXPRESS;DataBase=PROYECTO_CONTROL_HORAS;Integrated Security=true;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models
+dotnet ef dbcontext scaffold "Server=PROYECTO_CONTROL_HORAS.mssql.somee.com;Database=PROYECTO_CONTROL_HORAS;user=pepelechero_SQLLogin_1;pwd=87zhqvm9wv;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --force

@@ -32,6 +32,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Recurso> Recursos { get; set; } = null!;
         public virtual DbSet<Rol> Rols { get; set; } = null!;
         public virtual DbSet<SegmentoCosto> SegmentoCostos { get; set; } = null!;
+        public virtual DbSet<StatusProyecto> StatusProyectos { get; set; } = null!;
         public virtual DbSet<Sucursal> Sucursals { get; set; } = null!;
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
@@ -336,7 +337,7 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.IdCcostoUnegocio).HasColumnName("ID_CCOSTO_UNEGOCIO");
 
-                entity.Property(e => e.IdCliente).HasColumnName("ID_CLIENTE");
+                entity.Property(e => e.IdClienteSucursal).HasColumnName("ID_CLIENTE_SUCURSAL");
 
                 entity.Property(e => e.IdPresupuesto).HasColumnName("ID_PRESUPUESTO");
 
@@ -354,23 +355,29 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Plazo).HasColumnName("PLAZO");
 
-                entity.Property(e => e.TipoEmpresa).HasColumnName("TIPO_EMPRESA");
+                entity.Property(e => e.PorcentajeProbabilidad)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("PORCENTAJE_PROBABILIDAD");
 
-                entity.Property(e => e.TipoStatus)
+                entity.Property(e => e.Probabilidad)
                     .HasMaxLength(200)
                     .IsUnicode(false)
-                    .HasColumnName("TIPO_STATUS");
+                    .HasColumnName("PROBABILIDAD");
+
+                entity.Property(e => e.StatusProyecto).HasColumnName("STATUS_PROYECTO");
+
+                entity.Property(e => e.TipoEmpresa).HasColumnName("TIPO_EMPRESA");
 
                 entity.HasOne(d => d.IdCcostoUnegocioNavigation)
                     .WithMany(p => p.Proyectos)
                     .HasForeignKey(d => d.IdCcostoUnegocio)
                     .HasConstraintName("ID_CCOSTO_UNEGOCIO_FK");
 
-                entity.HasOne(d => d.IdClienteNavigation)
+                entity.HasOne(d => d.IdClienteSucursalNavigation)
                     .WithMany(p => p.Proyectos)
-                    .HasForeignKey(d => d.IdCliente)
+                    .HasForeignKey(d => d.IdClienteSucursal)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("ID_CLIENTE_PROYECTO_FK");
+                    .HasConstraintName("ID_CLI_SUC_FK");
 
                 entity.HasOne(d => d.IdPresupuestoNavigation)
                     .WithMany(p => p.Proyectos)
@@ -383,6 +390,12 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.IdTipologia)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_TIPOLOGIA_FK");
+
+                entity.HasOne(d => d.StatusProyectoNavigation)
+                    .WithMany(p => p.Proyectos)
+                    .HasForeignKey(d => d.StatusProyecto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("STATUS_PRO_FK");
 
                 entity.HasOne(d => d.TipoEmpresaNavigation)
                     .WithMany(p => p.Proyectos)
@@ -424,6 +437,8 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("COSTO_UNITARIO");
 
+                entity.Property(e => e.HhAnuales).HasColumnName("HH_ANUALES");
+
                 entity.Property(e => e.IdSegmentocostos).HasColumnName("ID_SEGMENTOCOSTOS");
 
                 entity.Property(e => e.NombreRecurso)
@@ -432,6 +447,10 @@ namespace Proyectogestionhoras.Models
                     .HasColumnName("NOMBRE_RECURSO");
 
                 entity.Property(e => e.NumeroHoras).HasColumnName("NUMERO_HORAS");
+
+                entity.Property(e => e.ProcentajeProyecto)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("PROCENTAJE_PROYECTO");
 
                 entity.HasOne(d => d.IdSegmentocostosNavigation)
                     .WithMany(p => p.Recursos)
@@ -465,6 +484,18 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.IdCuenta).HasColumnName("ID_CUENTA");
 
                 entity.Property(e => e.IdHonorariosExternos).HasColumnName("ID_HONORARIOS_EXTERNOS");
+            });
+
+            modelBuilder.Entity<StatusProyecto>(entity =>
+            {
+                entity.ToTable("STATUS_PROYECTO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.TipoStatus)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPO_STATUS");
             });
 
             modelBuilder.Entity<Sucursal>(entity =>

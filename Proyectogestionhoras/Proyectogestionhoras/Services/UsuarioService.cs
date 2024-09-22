@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Proyectogestionhoras.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
+using System.Net.Mail;
+using System.Net;
 
 namespace Proyectogestionhoras.Services
 {
@@ -52,6 +54,7 @@ namespace Proyectogestionhoras.Services
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
+                //EnviarCorreo(email);
                 return true;
             }
             catch (Exception ex) {
@@ -299,7 +302,7 @@ namespace Proyectogestionhoras.Services
 
         public async Task<int> VerificarCorreo(string email)
         {
-            int resultado = 2;  // Valor predeterminado
+            int resultado = 2;  
             DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
 
             if (connection == null)
@@ -326,6 +329,75 @@ namespace Proyectogestionhoras.Services
             }
 
             return resultado > 0 ? 1 : 2;
+        }
+
+        public async Task<int> Verificarrut(string rut)
+        {
+            try
+            {
+                int resultado = 2;
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "VERIFICARRUTUSUARIO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@RUTCLIENTE", rut));
+                    resultado = (int)await command.ExecuteScalarAsync();
+                }
+
+                return resultado > 0 ? 1 : 2;
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al validar la existencia del idcliente:" + e.Message);
+                return 0;
+            }
+        }
+
+        private void EnviarCorreo(string email)
+        {
+            using (MailMessage mensaje = new MailMessage())
+            {
+                mensaje.From = new MailAddress("plataformaproyectosunit@gmail.com");
+                mensaje.To.Add(email);
+                mensaje.Subject = "Credenciales de Ingreso a la Plataforma de UNIT Proyectos";
+                mensaje.IsBodyHtml = true; 
+
+                // Cuerpo del correo con la imagen
+                string imagenUrl = "wwwroot/images/logo.PNG"; // Cambia por la URL correcta de la imagen
+                string body = $@"
+            <p>Estimado usuario,</p>
+            <p>Las credenciales para ingresar a la plataforma de Unit Proyectos son las siguientes:</p>
+            <p><strong>Nombre de usuario:</strong> su RUT</p>
+            <p><strong>Contraseña:</strong> Los 4 primeros dígitos de su RUT</p>
+            <br />
+            <p>Se despide atentamente,</p>
+            <p><strong>Soporte Plataforma Unit Proyectos</strong></p>
+            <br />
+            <p><small>Por favor, no responder a este correo.</small></p>
+            <p><img src='{imagenUrl}' alt='Imagen de ejemplo'></p>
+        ";
+
+                mensaje.Body = body;
+
+                using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com"))
+                {
+                    smtpClient.Port = 587;
+                    smtpClient.UseDefaultCredentials = false;
+                    smtpClient.Credentials = new NetworkCredential("plataformaproyectosunit@gmail.com", "Unit2024.");
+                    smtpClient.EnableSsl = true;
+
+                    try
+                    {
+                        smtpClient.Send(mensaje);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message); 
+                    }
+                }
+            }
         }
 
 

@@ -163,6 +163,30 @@ namespace Proyectogestionhoras.Services
             }
 
         }
+
+        public async Task<int> ValidarExistenciaIdCliente(int idcliente)
+        {
+            try 
+            {
+                int resultado = 2;
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "VERIFICARIDCLIENTE";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCLIENTE", idcliente));
+                    resultado = (int)await command.ExecuteScalarAsync();
+                }
+
+                return resultado > 0 ? 1 : 2;
+
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al validar la existencia del idcliente:"+e.Message);
+                return 0;
+            }
+        }
         public async Task<bool> AgregarSucursal(int idsucursal, string nombre)
         {
             try
@@ -187,7 +211,7 @@ namespace Proyectogestionhoras.Services
 
             }
         }
-        public async Task<List<Sucursal>> OobtenerSucursal(int idcliente)
+        public async Task<List<Sucursal>> ObtenerSucursal(int idcliente)
         {
             try
             {
