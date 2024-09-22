@@ -110,20 +110,20 @@
         padding: 15px;
         border: 2px solid #ddd;
         border-radius: 8px;
-        width: calc(33.33% - 20px); /* 3 cards por fila */
-        height: 150px; /* Para mantenerlas cuadradas */
+        width: calc(33.33% - 20px);
+        height: 150px;
         box-sizing: border-box;
+        cursor: pointer;
         transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
-        .integrante-card:hover {
+        .integrante-card.active {
             background-color: #fcaa67;
             border-color: #e39450;
         }
 
         .integrante-card input[type="checkbox"] {
-            margin-right: 10px;
-            cursor: pointer;
+            display: none;
         }
 
         .integrante-card label {
@@ -134,7 +134,7 @@
         }
 
         .integrante-card input[type="number"] {
-            display: none; /* Ocultamos el input de horas inicialmente */
+            display: none;
             margin-left: auto;
             padding: 5px;
             font-size: 1rem;
@@ -145,12 +145,16 @@
 
         .integrante-card.active input[type="number"] {
             display: block;
+            pointer-events: auto;
         }
 
-        .integrante-card.active {
-            background-color: #fcaa67;
-            border-color: #e39450;
-        }
+    .horas-disponibles {
+        display: block;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
 </style>
 
 <div class="form-container">
@@ -194,11 +198,11 @@
                 <label for="estadoProyecto">Estado del proyecto</label>
                 <select id="estadoProyecto" name="estadoproyecto" required>
                     <option value="" disabled selected>Seleccione el estado del proyecto</option>
-                    <option value="1">Presentado</option>
-                    <option value="2">En negociación</option>
-                    <option value="3">En ejecución</option>
-                    <option value="4">Terminado</option>
-                    <option value="5">Rechazado</option>
+                    <option value="1">A Licitar</option>
+                    <option value="2">Por Negociar</option>
+                    <option value="3">En negociación</option>
+                    <option value="4">En ejecución</option>
+                    
                 </select>
             </div>
             <div class="form-group">
@@ -272,32 +276,36 @@
                 <input type="date" id="fechaInicio" name="fechaInicio" required>
             </div>
             <div class="form-group">
-                <label for="fechaFin">Fecha de fin</label>
+                <label for="fechaFin">Fecha fin</label>
                 <input type="date" id="fechaFin" name="fechaFin"  disabled required>
             </div>
-           
-        </div>
-        <div class="form-row">
             <div class="form-group">
                 <label for="plazo">Plazo en meses</label>
                 <input type="number" id="plazo" name="plazo" disabled required placeholder="Valor de Plazo">
             </div>
         </div>
+        
         <div class="form-group">
-            <p class="form-subtitle">Requerimientos de Horas por Tipología</p>
+            <p class="form-subtitle">Requerimientos de Horas Mensuales por Tipología</p>
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                     <tr>
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipología</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Horas Requeridas de Socios</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Horas Requeridas de Consultores</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Requeridas de Socios</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Requeridas de Staff</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Consultor A</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Consultor B</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Consultor C</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;">Tipología 1</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">40 horas</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">30 horas</td>
+                        <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" disabled id="horasSocios" name="horasSocios" placeholder="Horas Socios"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" disabled id="horasStaff" name="horasStaff" placeholder="Horas Staff"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" disabled id="consultorA" name="consultorA" placeholder="Horas A"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" disabled id="consultorB" name="consultorB" placeholder="Horas B"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" disabled id="consultorC" name="consultorC" placeholder="Horas C"></td>
                     </tr>
                 </tbody>
             </table>
@@ -311,37 +319,59 @@
                 <div class="integrante-card" data-id="1">
                     <input type="checkbox" class="integrante-checkbox" id="integrante1" name="integrantes[]" value="1">
                     <label for="integrante1">Juan Pérez</label>
+                    <span class="horas-disponibles">Horas disponibles: 20</span>
                     <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
                 </div>
 
                 <div class="integrante-card" data-id="2">
                     <input type="checkbox" class="integrante-checkbox" id="integrante2" name="integrantes[]" value="2">
                     <label for="integrante2">Ana Gómez</label>
-                    <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
-                </div>
-
-                <!-- Añadir más cards según sea necesario -->
-            </div>
-            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los Consultores e indique la cantidad de horas destinadas para el proyecto</p>
-
-            <div id="integrantes">
-                <!-- Ejemplo de Card con checkbox -->
-                <div class="integrante-card" data-id="1">
-                    <input type="checkbox" class="integrante-checkbox" id="integrante1" name="integrantes[]" value="1">
-                    <label for="integrante1">Juan Pérez</label>
-                    <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
-                </div>
-
-                <div class="integrante-card" data-id="2">
-                    <input type="checkbox" class="integrante-checkbox" id="integrante2" name="integrantes[]" value="2">
-                    <label for="integrante2">Ana Gómez</label>
+                    <span class="horas-disponibles">Horas disponibles: 40</span>
                     <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
                 </div>
                 <div class="integrante-card" data-id="2">
                     <input type="checkbox" class="integrante-checkbox" id="integrante2" name="integrantes[]" value="2">
                     <label for="integrante2">Julio Cesar</label>
+                    <span class="horas-disponibles">Horas disponibles: 40</span>
+                    <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
+                    
+                </div>
+                <!-- Añadir más cards según sea necesario -->
+            </div>
+            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los Consultores Internos e indique la cantidad de horas destinadas para el proyecto</p>
+
+            <div id="integrantes">
+                <!-- Ejemplo de Card con checkbox -->
+                <div class="integrante-card" data-id="7">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante4" name="integrantes[]" value="1">
+                    <label for="integrante1">Juan Pérez</label>
+                    <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
+                </div>
+
+                <div class="integrante-card" data-id="6">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante5" name="integrantes[]" value="2">
+                    <label for="integrante2">Ana Gómez</label>
                     <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
                 </div>
+                
+                <!-- Añadir más cards según sea necesario -->
+            </div>
+            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los Consultores Externos e indique la cantidad de horas destinadas para el proyecto</p>
+
+            <div id="integrantes">
+                <!-- Ejemplo de Card con checkbox -->
+                <div class="integrante-card" data-id="6">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante6" name="integrantes[]" value="1">
+                    <label for="integrante1">Juan Pérez</label>
+                    <input type="number" class="horas-input" name="horas1" placeholder="Horas semanales">
+                </div>
+
+                <div class="integrante-card" data-id="3">
+                    <input type="checkbox" class="integrante-checkbox" id="integrante7" name="integrantes[]" value="2">
+                    <label for="integrante2">Ana Gómez</label>
+                    <input type="number" class="horas-input" name="horas2" placeholder="Horas semanales">
+                </div>
+                
                 <!-- Añadir más cards según sea necesario -->
             </div>
         </div>
@@ -356,7 +386,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script>
-    document.getElementById("estadoProyecto").addEventListener("change", function () {
+   /* document.getElementById("estadoProyecto").addEventListener("change", function () {
         var estado = this.value;
         var fechasRow = document.getElementById("fechasRow");
 
@@ -369,7 +399,7 @@
             document.getElementById("fechaInicio").required = true;
             document.getElementById("fechaFin").required = true;
         }
-    });
+    });*/
 </script>
 
 <script>
@@ -437,26 +467,83 @@
         });
     });
     // Función para habilitar el input de horas al seleccionar un integrante
-    document.querySelectorAll('.integrante-checkbox').forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            const card = this.closest('.integrante-card');
-            if (this.checked) {
-                card.classList.add('active');  // Añadimos la clase active cuando el checkbox está seleccionado
-            } else {
-                card.classList.remove('active'); // Removemos la clase active cuando no está seleccionado
-            }
+    function toggleHorasInput(card) {
+        const checkbox = card.querySelector("input[type='checkbox']");
+        const inputHoras = card.querySelector("input[type='number']");
+
+        
+        if (card.classList.contains("active")) {
+            card.classList.remove("active");
+
+            checkbox.checked = false;
+            inputHoras.style.display = 'none';
+            inputHoras.value = ''; // Limpiar input cuando se deselecciona
+        } else {
+            card.classList.add("active");
+            checkbox.checked = true;
+            inputHoras.style.display = 'block'; // Mostrar input de horas
+        }
+    }
+
+    // Adjuntar listeners a las cards
+    document.querySelectorAll(".integrante-card").forEach(card => {
+        card.addEventListener("click", function () {
+            toggleHorasInput(card);
+        });
+
+        // Detener la propagación al hacer clic en el input de horas
+        const inputHoras = card.querySelector("input[type='number']");
+        inputHoras.addEventListener("click", function (event) {
+            event.stopPropagation();
         });
     });
     // Función para actualizar la tabla con el valor seleccionado del select
     function actualizarTipologia() {
-        // Obtener el select y el texto seleccionado
+        
         var selectTipologia = document.getElementById("tipologia");
         var tipologiaSeleccionada = selectTipologia.options[selectTipologia.selectedIndex].text;
 
-        // Actualizar el contenido de la celda de tipología en la tabla
+        
         document.getElementById("tipologiaText").innerText = tipologiaSeleccionada;
     }
 
     // Añadir un event listener para que la función se ejecute cuando se seleccione una nueva tipología
     document.getElementById("tipologia").addEventListener("change", actualizarTipologia);
+    
+        document.getElementById('tipologia').addEventListener('change', function () {
+            var tipologiaValue = this.value;
+            var horasSociosInput = document.getElementById('horasSocios');
+            var horaasStaffInput = document.getElementById('horasStaff');
+            var consultorAInput = document.getElementById('consultorA');
+            var consultorBInput = document.getElementById('consultorB');
+            var consultorCInput = document.getElementById('consultorC');
+            if (tipologiaValue == '1') {
+                horasSociosInput.value = 14;
+                horaasStaffInput.value = 27;
+                consultorAInput.value = 0;
+                consultorBInput.value = 0;
+                consultorCInput.value = 0;
+            }
+            if (tipologiaValue == '2') {
+                horasSociosInput.value = 28;
+                horaasStaffInput.value = 80;
+                consultorAInput.value = 0;
+                consultorBInput.value = 0;
+                consultorCInput.value = 0;
+            }
+            if (tipologiaValue == '3') {
+                horasSociosInput.value = 57;
+                horaasStaffInput.value = 106;
+                consultorAInput.value = 30;
+                consultorBInput.value = 96;
+                consultorCInput.value = 192
+            }
+            if (tipologiaValue == '4') {
+                 horasSociosInput.value = 60;
+                 horaasStaffInput.value = 0;
+                 consultorAInput.value = 50;
+                 consultorBInput.value = 640;
+                 consultorCInput.value = 1280
+            }
+        });
 </script>
