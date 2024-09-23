@@ -231,6 +231,29 @@
             opacity: 0.8; 
         }
 
+    .section-subheader {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .card.negotiation {
+        background-color: #ffe0b3; /* Color suave para negociación */
+    }
+
+    .card.execution {
+        background-color: #cceeff; /* Color suave para ejecución */
+    }
+
+    .card.finished {
+        background-color: #cceac6; /* Color suave para proyectos terminados */
+    }
+
+    .card.rejected {
+        background-color: #ffcccc; /* Color suave para proyectos rechazados */
+    }
 </style>
 <div class="dashboard-container">
     <div class="client-container">
@@ -349,17 +372,89 @@
         <div class="section-header">
             Proyectos
         </div>
+
+        <!-- Proyectos en Negociación -->
+        <div class="section-subheader">
+            Proyectos En Negociación
+        </div>
         <div class="section-content">
-            <!-- Ejemplo de tarjeta de proyecto -->
-            <div class="card new">
+          
+            <div class="card negotiation">
                 <h3>Proyecto A</h3>
-                <p>Descripción breve del proyecto A.</p>
+                <p>Descripción breve del proyecto en negociación.</p>
             </div>
-            <div class="card new">
+            <div class="card negotiation">
                 <h3>Proyecto B</h3>
-                <p>Descripción breve del proyecto B.</p>
+                <p>Descripción breve del proyecto en negociación.</p>
             </div>
-            <!-- Más tarjetas de proyecto aquí -->
+            <div class="card negotiation">
+                <h3>Proyecto C</h3>
+                <p>Descripción breve del proyecto en negociación.</p>
+            </div>
+          
+        </div>
+
+        <!-- Proyectos en Ejecución -->
+        <div class="section-subheader">
+            Proyectos En Ejecución
+        </div>
+        <div class="section-content">
+            
+            <div class="card execution">
+                <h3>Proyecto D</h3>
+                <p>Descripción breve del proyecto en ejecución.</p>
+            </div>
+            <div class="card execution">
+                <h3>Proyecto E</h3>
+                <p>Descripción breve del proyecto en ejecución.</p>
+            </div>
+            <div class="card execution">
+                <h3>Proyecto F</h3>
+                <p>Descripción breve del proyecto en ejecución.</p>
+            </div>
+            
+        </div>
+
+        <!-- Proyectos Terminados -->
+        <div class="section-subheader">
+            Proyectos Terminados
+        </div>
+        <div class="section-content">
+            
+            <div class="card finished">
+                <h3>Proyecto G</h3>
+                <p>Descripción breve del proyecto terminado.</p>
+            </div>
+            <div class="card finished">
+                <h3>Proyecto H</h3>
+                <p>Descripción breve del proyecto terminado.</p>
+            </div>
+            <div class="card finished">
+                <h3>Proyecto I</h3>
+                <p>Descripción breve del proyecto terminado.</p>
+            </div>
+            
+        </div>
+
+        <!-- Proyectos Rechazados -->
+        <div class="section-subheader">
+            Proyectos Rechazados
+        </div>
+        <div class="section-content">
+           
+            <div class="card rejected">
+                <h3>Proyecto J</h3>
+                <p>Descripción breve del proyecto rechazado.</p>
+            </div>
+            <div class="card rejected">
+                <h3>Proyecto K</h3>
+                <p>Descripción breve del proyecto rechazado.</p>
+            </div>
+            <div class="card rejected">
+                <h3>Proyecto L</h3>
+                <p>Descripción breve del proyecto rechazado.</p>
+            </div>
+            <!-- Más tarjetas de proyectos rechazados aquí -->
         </div>
     </div>
     <!-- Modal para agregar sucursal -->

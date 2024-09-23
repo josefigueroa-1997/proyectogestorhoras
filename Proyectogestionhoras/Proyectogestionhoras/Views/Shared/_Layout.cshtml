@@ -23,12 +23,12 @@
             <nav class="flex-grow">
                 <ul class="menu-items">
                     <li><a href="@Url.Action("Index","Home")">Dashboard</a></li>
-                    <li><a href="#">Proyectos</a></li>
+                    <li><a href="@Url.Action("GetProyectos","Proyecto")">Proyectos</a></li>
                     <li><a href="@Url.Action("NuestrosClientes","Cliente")">Clientes</a></li>
-                    <li><a href="#">Monitorear HH</a></li>
+                    <li><a href="@Url.Action("GetProyectosUnidadNegocio","Proyecto")">Unidad de Negocio</a></li>
+                    <li><a href="#">Monitorear HH y $$</a></li>
                     <li><a href="#">Flujo de Caja de Proyectos</a></li>
                     <li><a href="@Url.Action("Personal","Usuario")">Staff</a></li>
-                    <li><a href="#">Calendario de Proyectos</a></li>
                 </ul>
             </nav>
             @{

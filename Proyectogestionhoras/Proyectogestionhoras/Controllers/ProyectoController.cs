@@ -28,5 +28,15 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Status = status;
             return View();
         }
+
+        public IActionResult GetProyectos()
+        {
+            return View("Proyectos");
+        }
+
+        public IActionResult GetProyectosUnidadNegocio()
+        {
+            return View("UnidadNegocio");
+        }
     }
 }

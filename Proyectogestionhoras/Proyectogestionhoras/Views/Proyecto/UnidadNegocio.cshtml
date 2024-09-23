@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Unidad de Negocio";
+}
+
+
+<link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
+
+
+<div class="projects-container">
+    <h1>Proyectos Unidad de Negocio</h1>
+
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+        <input type="text" id="projectSearch" placeholder="Buscar proyectos..." oninput="filterProjects()">
+    </div>
+
+
+    <div class="filter-select">
+        <select id="projectStatus" onchange="filterProjects()">
+            <option value="">Todas las Unidades de Negocio</option>
+            <option value="planificacion">Planificación Estratégica</option>
+            <option value="is">Innovación en Servicios</option>
+            <option value="transformacion">Transformación Organizacional</option>
+            <option value="io">Innovación Organizacional</option>
+        </select>
+    </div>
+
+    <!-- Secciones de proyectos -->
+    <div class="projects-section">
+        <div class="section-header">Planificación Estratégica</div>
+        <div class="section-content" id="planificacionProjects">
+
+
+            <div class="card">
+                <h3>Proyecto 1</h3>
+                <p>Cliente: Banco Estado</p>
+            </div>
+            <div class="card">
+                <h3>Proyecto 10</h3>
+                <p>Cliente: Banco Estado</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="projects-section">
+        <div class="section-header">Innovación en Servicios</div>
+        <div class="section-content" id="isProjects">
+
+            <div class="card">
+                <h3>Proyecto 2</h3>
+                <p>Cliente: Universidad Santo Tomás</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="projects-section">
+        <div class="section-header">Transformación Organizacional</div>
+        <div class="section-content" id="transformacionProjects">
+
+            <div class="card">
+                <h3>Proyecto 3</h3>
+                <p>Cliente: Gobierno de Chile</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="projects-section">
+        <div class="section-header">Innovación Organizacional</div>
+        <div class="section-content" id="ioProjects">
+
+            <div class="card">
+                <h3>Proyecto 4</h3>
+                <p>Cliente: Banco de Chile</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterProjects() {
+        const searchTerm = document.getElementById('projectSearch').value.toLowerCase();
+        const statusFilter = document.getElementById('projectStatus').value;
+
+        // Filtrar proyectos por nombre y estado
+        const sections = {
+            'planificacion': document.getElementById('planificacionProjects').children,
+            'is': document.getElementById('isProjects').children,
+            'transformacion': document.getElementById('transformacionProjects').children,
+            'io': document.getElementById('ioProjects').children
+        };
+
+        for (const section in sections) {
+            Array.from(sections[section]).forEach(card => {
+                const projectName = card.querySelector('h3').innerText.toLowerCase();
+                const isVisible = projectName.includes(searchTerm) && (statusFilter === '' || section === statusFilter);
+                card.style.display = isVisible ? 'block' : 'none';
+            });
+        }
+    }
+</script>

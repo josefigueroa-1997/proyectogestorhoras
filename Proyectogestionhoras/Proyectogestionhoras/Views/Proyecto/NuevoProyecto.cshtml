@@ -9,7 +9,7 @@
     }
 
     .form-container {
-        max-width: 1000px;
+        max-width: 1200px;
         margin: 0 auto;
         background-color: #fff;
         padding: 20px;
@@ -194,17 +194,7 @@
         </div>
 
         <div class="form-row">
-            <div class="form-group">
-                <label for="estadoProyecto">Estado del proyecto</label>
-                <select id="estadoProyecto" name="estadoproyecto" required>
-                    <option value="" disabled selected>Seleccione el estado del proyecto</option>
-                     @foreach(var statu in ViewBag.Status)
-                    {
-                        <option value="@statu.Id">@statu.TipoStatus</option>
-                    }
-                    
-                </select>
-            </div>
+            
             <div class="form-group">
                 <label for="unidadNegocio">Unidad de negocio</label>
                 <select id="unidadNegocio" name="unidadNegocio" required>
@@ -227,6 +217,42 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="estadoProyecto">Estado del proyecto</label>
+                <select id="estadoProyecto" name="estadoproyecto" required>
+                    <option value="" disabled selected>Seleccione el estado del proyecto</option>
+                    @foreach (var statu in ViewBag.Status)
+                    {
+                        <option value="@statu.Id">@statu.TipoStatus</option>
+                    }
+
+                </select>
+            </div>
+            <div style="display:none" class="form-group">
+                <label for="Probabilidad">Probabilidad</label>
+                <input type="text" id="probabilidad" name="probabilidad" >
+            </div>
+            <div style="display:none" class="form-group">
+                <label for="nivelprobabilidad">Nivel Probabilidad</label>
+                <input type="text" id="nivelprobabilidad" name="nivelprobabilidad" >
+            </div>
+            <div style="display:none" class="form-group">
+                <label for="fechaPlazo">Fecha de Plazo</label>
+                <input type="date" id="fechaPlazo" name="fechaPlazo" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="centroCosto">Centro de costo</label>
+                <select id="centroCosto" name="centroCosto" required>
+                    <option value="" disabled selected>Seleccione un centro de costo</option>
+                    @foreach (var ccosto in ViewBag.Ccostos)
+                    {
+                        <option value="@ccosto.Id">@ccosto.TipoCcosto</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="tipologia">Tipología</label>
                 <select id="tipologia" name="tipologia" required>
                     <option value="" disabled selected>Seleccione una tipología</option>
@@ -236,9 +262,6 @@
                     }
                 </select>
             </div>
-        </div>
-
-        <div class="form-row">
             <div class="form-group">
                 <label for="tipoEmpresa">Tipo de empresa</label>
                 <select id="tipoEmpresa" name="tipoEmpresa" required>
@@ -253,10 +276,7 @@
                 <label for="monto">Monto</label>
                 <input type="text" id="monto" name="monto" required>
             </div>
-            <div class="form-group">
-                <label for="tipoMoneda">Tipo de moneda</label>
-                <input type="text" id="tipoMoneda" name="tipoMoneda" required />
-            </div>
+            
         </div>
 
         <div class="form-row">
@@ -267,7 +287,17 @@
             </div>
         </div>
 
-        <div class="form-row" id="fechasRow">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="tipoMoneda">Tipo de moneda</label>
+                <select id="tipoMoneda" name="tipoMoneda" required>
+                    <option value="" disabled selected>Seleccione el tipo de Moneda</option>
+                    <option value="CLP">CLP</option>
+                    <option value="US">US</option>
+                    <option value="EURO">EURO</option>
+                    <option value="UF">UF</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="fechaInicio">Fecha de inicio</label>
                 <input type="date" id="fechaInicio" name="fechaInicio" required>
@@ -309,7 +339,7 @@
         </div>
         <div class="form-group">
             <p class="form-subtitle">Integrantes del Proyecto</p>
-            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los socios e indique la cantidad de horas destinadas para el proyecto</p>
+            <p class="form-subtitle" style="font-size: 1rem; color: black;">Seleccione a los socios e indique la cantidad de horas destinadas para el proyecto</p>
 
             <div id="integrantes">
                 <!-- Ejemplo de Card con checkbox -->
@@ -353,7 +383,7 @@
                 
                 <!-- Añadir más cards según sea necesario -->
             </div>
-            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Seleccione a los Consultores Externos e indique la cantidad de horas destinadas para el proyecto</p>
+            <p class="form-subtitle" style="font-size: 1rem; color: black;">Seleccione a los Consultores Externos e indique la cantidad de horas destinadas para el proyecto</p>
 
             <div id="integrantes">
                 <!-- Ejemplo de Card con checkbox -->
@@ -373,8 +403,268 @@
             </div>
         </div>
         <div class="form-group">
-            <p class="form-subtitle">Gastos del Proyecto</p>
-            <p class="form-subtitle" style="font-size: 1rem; color: #999;">Ingrese los Gastos destinados al proyecto</p>
+            <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="segmentoservicios" name="segmentoservicios" required>
+                                <option value="" disabled selected>Seleccione el Segmento</option>
+                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
+                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="ccostosservicios" name="ccostosservicios" required>
+                                <option value="" disabled selected>Seleccione el Centro Costos</option>
+                                <option value="1">General (0.0)</option>
+                                <option value="2">IC-OI (4.3)</option>
+                                <option value="3">PE-EC (1.2)</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="idcuentaservicios" name="idcuentaservicios" required>
+                                <option value="" disabled selected>Seleccione ID Cuenta</option>
+                                <option value="1">5101003</option>
+                                <option value="2">
+                                    5309999
+                                </option>
+                                <option value="3">5101002</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="cuentasrevicios" name="cuentaservicio" required>
+                                <option value="" disabled selected>Seleccione Cuenta</option>
+                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
+                                <option value="2">
+                                    Otros Gastos De Servicios Generales
+                                </option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" ></td>
+                        <td value="1" name="diseño" style="padding: 10px; border: 1px solid #ddd;">Diseño</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="segmentoservicios" name="segmentoservicios" required>
+                                <option value="" disabled selected>Seleccione el Segmento</option>
+                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
+                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="ccostosservicios" name="ccostosservicios" required>
+                                <option value="" disabled selected>Seleccione el Centro Costos</option>
+                                <option value="1">General (0.0)</option>
+                                <option value="2">IC-OI (4.3)</option>
+                                <option value="3">PE-EC (1.2)</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="idcuentaservicios" name="idcuentaservicios" required>
+                                <option value="" disabled selected>Seleccione ID Cuenta</option>
+                                <option value="1">5101003</option>
+                                <option value="2">
+                                    5309999
+                                </option>
+                                <option value="3">5101002</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="cuentasrevicios" name="cuentaservicio" required>
+                                <option value="" disabled selected>Seleccione Cuenta</option>
+                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
+                                <option value="2">
+                                    Otros Gastos De Servicios Generales
+                                </option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
+                        <td value="2" name="impresion" style="padding: 10px; border: 1px solid #ddd;">Impresión</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="segmentoservicios" name="segmentoservicios" required>
+                                <option value="" disabled selected>Seleccione el Segmento</option>
+                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
+                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="ccostosservicios" name="ccostosservicios" required>
+                                <option value="" disabled selected>Seleccione el Centro Costos</option>
+                                <option value="1">General (0.0)</option>
+                                <option value="2">IC-OI (4.3)</option>
+                                <option value="3">PE-EC (1.2)</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="idcuentaservicios" name="idcuentaservicios" required>
+                                <option value="" disabled selected>Seleccione ID Cuenta</option>
+                                <option value="1">5101003</option>
+                                <option value="2">
+                                    5309999
+                                </option>
+                                <option value="3">5101002</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="cuentasrevicios" name="cuentaservicio" required>
+                                <option value="" disabled selected>Seleccione Cuenta</option>
+                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
+                                <option value="2">
+                                    Otros Gastos De Servicios Generales
+                                </option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" ></td>
+                        <td value="3" name="Cualquiera" style="padding: 10px; border: 1px solid #ddd;">Cualquiera</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <p class="form-subtitle"style="color:black;">Gastos Operacionales</p>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="segmentogastos" name="segmentogastos" required>
+                                <option value="" disabled selected>Seleccione el Segmento</option>
+                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
+                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="ccostosgastos" name="ccostosgastos" required>
+                                <option value="" disabled selected>Seleccione el Centro Costos</option>
+                                <option value="1">General (0.0)</option>
+                                <option value="2">IC-OI (4.3)</option>
+                                <option value="3">PE-EC (1.2)</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="idcuentagastos" name="idcuentagastos" required>
+                                <option value="" disabled selected>Seleccione ID Cuenta</option>
+                                <option value="1">5101003</option>
+                                <option value="2">
+                                    5309999
+                                </option>
+                                <option value="3">5101002</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="cuentagastos" name="cuentagastos" required>
+                                <option value="" disabled selected>Seleccione Cuenta</option>
+                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
+                                <option value="2">
+                                    Otros Gastos De Servicios Generales
+                                </option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
+                        <td value="1" name="pasajes" style="padding: 10px; border: 1px solid #ddd;">Pasajes</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="segmentogastos" name="segmentogastos" required>
+                                <option value="" disabled selected>Seleccione el Segmento</option>
+                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
+                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="ccostosgastos" name="ccostosgastos" required>
+                                <option value="" disabled selected>Seleccione el Centro Costos</option>
+                                <option value="1">General (0.0)</option>
+                                <option value="2">IC-OI (4.3)</option>
+                                <option value="3">PE-EC (1.2)</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="idcuentagastos" name="idcuentagastos" required>
+                                <option value="" disabled selected>Seleccione ID Cuenta</option>
+                                <option value="1">5101003</option>
+                                <option value="2">
+                                    5309999
+                                </option>
+                                <option value="3">5101002</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="cuentagastos" name="cuentagastos" required>
+                                <option value="" disabled selected>Seleccione Cuenta</option>
+                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
+                                <option value="2">
+                                    Otros Gastos De Servicios Generales
+                                </option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
+                        <td value="2" name="alimentacion" style="padding: 10px; border: 1px solid #ddd;">Alimentación</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="segmentogastos" name="segmentogastos" required>
+                                <option value="" disabled selected>Seleccione el Segmento</option>
+                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
+                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="ccostosgastos" name="ccostosgastos" required>
+                                <option value="" disabled selected>Seleccione el Centro Costos</option>
+                                <option value="1">General (0.0)</option>
+                                <option value="2">IC-OI (4.3)</option>
+                                <option value="3">PE-EC (1.2)</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="idcuentagastos" name="idcuentagastos" required>
+                                <option value="" disabled selected>Seleccione ID Cuenta</option>
+                                <option value="1">5101003</option>
+                                <option value="2">
+                                    5309999
+                                </option>
+                                <option value="3">5101002</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select id="cuentagastos" name="cuentagastos" required>
+                                <option value="" disabled selected>Seleccione Cuenta</option>
+                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
+                                <option value="2">
+                                    Otros Gastos De Servicios Generales
+                                </option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
+                        <td value="3" name="Cualquiera" style="padding: 10px; border: 1px solid #ddd;">Ottro</td>
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
         <div class="button-container">
             <button type="submit" class="submit-btn">Crear Proyecto</button>
@@ -477,11 +767,11 @@
 
             checkbox.checked = false;
             inputHoras.style.display = 'none';
-            inputHoras.value = ''; // Limpiar input cuando se deselecciona
+            inputHoras.value = ''; 
         } else {
             card.classList.add("active");
             checkbox.checked = true;
-            inputHoras.style.display = 'block'; // Mostrar input de horas
+            inputHoras.style.display = 'block'; 
         }
     }
 
@@ -491,7 +781,7 @@
             toggleHorasInput(card);
         });
 
-        // Detener la propagación al hacer clic en el input de horas
+        
         const inputHoras = card.querySelector("input[type='number']");
         inputHoras.addEventListener("click", function (event) {
             event.stopPropagation();
@@ -517,7 +807,7 @@
         document.getElementById("tipologiaText").innerText = tipologiaSeleccionada;
     }
 
-    // Añadir un event listener para que la función se ejecute cuando se seleccione una nueva tipología
+    
     document.getElementById("tipologia").addEventListener("change", actualizarTipologia);
     
         document.getElementById('tipologia').addEventListener('change', function () {
@@ -556,4 +846,29 @@
                  consultorCInput.value = 1280
             }
         });
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        const estadoProyecto = document.getElementById('estadoProyecto');
+        const probabilidadInput = document.getElementById('probabilidad').parentElement;
+        const nivelProbabilidadInput = document.getElementById('nivelprobabilidad').parentElement;
+        const fechaplazoInput = document.getElementById('fechaPlazo').parentElement;
+        // Función para mostrar/ocultar los inputs en función del valor seleccionado
+        function toggleInputs() {
+            const selectedValue = estadoProyecto.value;
+
+            if (selectedValue == "1") {
+             
+                probabilidadInput.style.display = 'block';
+                nivelProbabilidadInput.style.display = 'block';
+                fechaplazoInput.style.display = 'block';
+            } else {
+   
+                probabilidadInput.style.display = 'none';
+                nivelProbabilidadInput.style.display = 'none';
+                fechaplazoInput.style.display = 'none';
+            }
+        }
+        estadoProyecto.addEventListener('change', toggleInputs);
+        toggleInputs();
+    });
 </script>

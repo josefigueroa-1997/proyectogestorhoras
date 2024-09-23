@@ -111,8 +111,8 @@
         </div>
         <!-- Nombre del Recurso -->
         <div class="form-group">
-            <label for="nombreRecurso">Tipo de Recurso</label>
-            <select id="nombreRecurso" name="nombrerecurso" required>
+            <label for="nombreRecurso">Tipo de Personal</label>
+            <select id="tipoPersonal" name="nombrerecurso" required>
                 <option value="" disabled selected>Seleccione un tipo de recurso</option>
                 <option value="Socio">Socio</option>
                 <option value="Staff" >Staff</option>
@@ -126,8 +126,8 @@
             <input type="number" id="numeroHoras" name="numhoras" required min="1">
         </div>
         <!-- % Horas a Proyectos -->
-        <div class="form-group">
-            <label for="horasProyectos">Porcentaje de Horas a Proyectos</label>
+        <div class="form-group" >
+            <label for="porcentaje">Porcentaje de Horas a Proyectos</label>
             <input type="number" id="porcentaje" name="porcentaje" required min="1">
         </div>
 
@@ -136,7 +136,14 @@
             <label for="costoUnitario">Costo Unitario</label>
             <input type="number" id="costoUnitario" name="costounitario" required step="0.01" min="0">
         </div>
-
+        <div class="form-group">
+            <label for="desde">Desde</label>
+            <input type="date" id="desde" name="desde" required >
+        </div>
+        <div class="form-group">
+            <label for="hasta">Desde</label>
+            <input type="date" id="hasta" name="hasta" required>
+        </div>
         <!-- Tipo de Usuario (Select) -->
         <div class="form-group">
             <label for="tipoUsuario">Tipo de Usuario</label>
@@ -210,5 +217,29 @@
                 $('.submit-btn').prop('disabled', false);
             }
         });
+    });
+   
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const tipopersonal = document.getElementById('tipoPersonal');
+        const numerohorasInput = document.getElementById('numeroHoras').parentElement;
+        const porcentajeInput = document.getElementById('porcentaje').parentElement;
+
+        // Función para mostrar/ocultar los inputs en función del valor seleccionado
+        function toggleInputs() {
+            const selectedValue = tipopersonal.value;
+
+            if (selectedValue == "Consultor Externo") {
+
+                numerohorasInput.style.display = 'none';
+                porcentajeInput.style.display = 'none';
+            } else {
+
+                numerohorasInput.style.display = 'block';
+                porcentajeInput.style.display = 'block';
+            }
+        }
+        tipopersonal.addEventListener('change', toggleInputs);
+        toggleInputs();
     });
 </script>

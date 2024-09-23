@@ -15,8 +15,8 @@
 }
 
 .reports-section {
-    background-color: #333232; /* Fondo negro para el bloque de informes */
-    color: #fff; /* Texto blanco en el bloque de informes */
+    background-color: #333232; 
+    color: #fff; 
 }
 
 .section-header {
@@ -26,11 +26,11 @@
 }
 
 .projects-section .section-header {
-    color: #333; /* Texto oscuro para el encabezado de la sección de proyectos */
+    color: #333; 
 }
 
 .reports-section .section-header {
-    color: #fff; /* Texto blanco en el encabezado del bloque de informes */
+    color: #fff; 
 }
 
 .section-content {
@@ -40,91 +40,90 @@
 }
 
 .card {
-    background-color: #ffffff; /* Fondo blanco para las tarjetas */
+    background-color: #ffffff; 
     padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    transition: background-color 0.3s, border-color 0.3s; /* Agregar transición suave */
+    transition: background-color 0.3s, border-color 0.3s; 
 }
 
     .card h3 {
         font-size: 1.125rem;
         font-weight: 600;
-        color: #000; /* Texto negro para los títulos de las tarjetas */
+        color: #000; 
     }
 
     .card p {
         font-size: 0.875rem;
-        color: #6c6c6c; /* Texto gris para los párrafos en las tarjetas */
+        color: #6c6c6c; 
     }
 
     .card.new {
-        background-color: #333; /* Fondo gris oscuro por defecto */
-        border-left: 4px solid #fcaa67; /* Borde amarillo */
+        background-color: #333; 
+        border-left: 4px solid #fcaa67;
         cursor: pointer;
-        color: #fff; /* Texto blanco por defecto */
+        color: #fff; 
     }
 
         .card.new h3 {
-            color: #fcaa67; /* Color del título amarillo */
+            color: #fcaa67;
         }
-
         .card.new:hover {
-            background-color: #333; /* Fondo gris oscuro al pasar el mouse */
-            border-color: #fcaa67; /* Borde amarillo al pasar el mouse */
+            background-color: #333; 
+            border-color: #fcaa67; 
         }
 
             .card.new:hover h3 {
-                color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+                color: #fcaa67; 
             }
 
             .card.new:hover p {
-                color: #fff; /* Color del texto blanco al pasar el mouse */
+                color: #fff; 
             }
 
     .card:hover {
-        background-color: #333; /* Fondo gris oscuro al pasar el mouse */
-        border: 2px solid #fcaa67; /* Borde amarillo al pasar el mouse */
+        background-color: #333; 
+        border: 2px solid #fcaa67; 
         cursor: pointer;
     }
 
         .card:hover h3 {
-            color: #fcaa67; /* Color del título amarillo al pasar el mouse */
+            color: #fcaa67; 
         }
 
         .card:hover p {
-            color: #fff; /* Color del texto blanco al pasar el mouse */
+            color: #fff; 
         }
-    /* Estilos para la viñeta de Nuevo Cliente */
+    
     .card.new-cliente {
-        background-color: #fff; /* Fondo blanco para que destaque en el fondo negro */
-        border-left: 4px solid #fcaa67; /* Borde amarillo */
-        color: #333; /* Texto oscuro */
+        background-color: #fff; 
+        border-left: 4px solid #fcaa67; 
+        color: #333; 
         cursor: pointer;
     }
 
         .card.new-cliente h3 {
-            color: #fcaa67; /* Título en amarillo */
+            color: #fcaa67; 
         }
 
         .card.new-cliente:hover {
-            background-color: #fcaa67; /* Fondo amarillo al pasar el mouse */
-            border-color: #fff; /* Borde blanco al pasar el mouse */
+            background-color: #fcaa67; 
+            border-color: #fff; 
         }
 
             .card.new-cliente:hover h3 {
-                color: #fff; /* Título blanco al pasar el mouse */
+                color: #fff; 
             }
 
             .card.new-cliente:hover p {
-                color: #fff; /* Texto blanco al pasar el mouse */
+                color: #fff; 
             }
 /* Estilos del Modal Horizontal */
 .modal-content {
-    max-width: 900px; /* Ajusta el ancho del modal */
+    max-width: 900px; 
     width: 100%;
     background-color: #fff;
     border-radius: 0.5rem;
@@ -134,8 +133,8 @@
 
     .modal-content form {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Dos columnas */
-        gap: 1rem; /* Espacio entre los campos */
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 1rem; 
     }
 
     .modal-content input {
@@ -159,3 +158,16 @@ button:hover {
 .hidden {
     display: none;
 }
+.btn-ver-mas {
+    background-color: #fcaa67; 
+    color: #fff; 
+    padding: 0.5rem 1rem; 
+    border: none; 
+    border-radius: 0.5rem; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+    .btn-ver-mas:hover {
+        background-color: #333; 
+    }

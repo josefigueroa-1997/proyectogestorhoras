@@ -1,0 +1,77 @@
+﻿.projects-container {
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.search-bar {
+    margin-bottom: 1.5rem;
+}
+
+    .search-bar input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+    }
+
+.filter-select {
+    margin-bottom: 1.5rem;
+}
+
+    .filter-select select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+    }
+
+.section-content {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+    .card h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #000;
+    }
+
+    .card p {
+        font-size: 0.875rem;
+        color: #6c6c6c;
+    }
+
+    .card:hover {
+        background-color: #333;
+        border: 2px solid #fcaa67;
+        cursor: pointer;
+    }
+
+        .card:hover h3 {
+            color: #fcaa67;
+        }
+
+        .card:hover p {
+            color: #fff;
+        }

@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Mis Proyectos";
+}
+<link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
+
+
+<div class="projects-container">
+    <h1>@ViewData["Title"]</h1>
+
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+        <input type="text" id="projectSearch" placeholder="Buscar proyectos..." oninput="filterProjects()">
+    </div>
+
+    
+    <div class="filter-select">
+        <select id="projectStatus" onchange="filterProjects()">
+            <option value="">Todos los Estados</option>
+            <option value="negociacion">Proyectos En Negociación</option>
+            <option value="ejecucion">Proyectos En Ejecución</option>
+            <option value="terminados">Proyectos Terminados</option>
+            <option value="rechazados">Proyectos Rechazados</option>
+        </select>
+    </div>
+
+    <!-- Secciones de proyectos -->
+    <div class="projects-section">
+        <div class="section-header">Proyectos En Negociación</div>
+        <div class="section-content" id="negociacionProjects">
+         
+            
+            <div class="card">
+                <h3>Proyecto 1</h3>
+                <p>Cliente: Banco Estado</p>
+            </div>
+             <div class="card">
+                <h3>Proyecto 10</h3>
+                <p>Cliente: Banco Estado</p>
+            </div>
+                
+        </div>
+    </div>
+
+    <div class="projects-section">
+        <div class="section-header">Proyectos En Ejecución</div>
+        <div class="section-content" id="ejecucionProjects">
+            
+                <div class="card">
+                    <h3>Proyecto 2</h3>
+                    <p>Cliente: Universidad Santo Tomás</p>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="projects-section">
+        <div class="section-header">Proyectos Terminados</div>
+        <div class="section-content" id="terminadosProjects">
+            
+                <div class="card">
+                    <h3>Proyecto 3</h3>
+                    <p>Cliente: Gobierno de Chile</p>
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="projects-section">
+        <div class="section-header">Proyectos Rechazados</div>
+        <div class="section-content" id="rechazadosProjects">
+            
+                <div class="card">
+                    <h3>Proyecto 4</h3>
+                    <p>Cliente: Banco de Chile</p>
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterProjects() {
+        const searchTerm = document.getElementById('projectSearch').value.toLowerCase();
+        const statusFilter = document.getElementById('projectStatus').value;
+
+        // Filtrar proyectos por nombre y estado
+        const sections = {
+            'negociacion': document.getElementById('negociacionProjects').children,
+            'ejecucion': document.getElementById('ejecucionProjects').children,
+            'terminados': document.getElementById('terminadosProjects').children,
+            'rechazados': document.getElementById('rechazadosProjects').children
+        };
+
+        for (const section in sections) {
+            Array.from(sections[section]).forEach(card => {
+                const projectName = card.querySelector('h3').innerText.toLowerCase();
+                const isVisible = projectName.includes(searchTerm) && (statusFilter === '' || section === statusFilter);
+                card.style.display = isVisible ? 'block' : 'none';
+            });
+        }
+    }
+</script>
