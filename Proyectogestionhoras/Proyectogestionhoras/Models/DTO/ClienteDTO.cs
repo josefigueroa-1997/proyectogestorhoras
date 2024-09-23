@@ -13,5 +13,6 @@
         public string? Instagram { get; set; }
         public string? Id_Cliente { get; set; }
         public string? Sucursales_Cliente { get; set; }
+        public List<int>? SucursalIds { get; set; }
     }
 }

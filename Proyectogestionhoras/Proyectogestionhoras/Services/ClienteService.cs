@@ -49,12 +49,20 @@ namespace Proyectogestionhoras.Services
                                 Linkedin = reader.IsDBNull(reader.GetOrdinal("LINKEDIN")) ? string.Empty : reader.GetString(reader.GetOrdinal("LINKEDIN")),
                                 Instagram = reader.IsDBNull(reader.GetOrdinal("INSTAGRAM")) ? string.Empty : reader.GetString(reader.GetOrdinal("INSTAGRAM")),
                                 Id_Cliente = reader.GetString(reader.GetOrdinal("ID_CLIENTE")),
-                                Sucursales_Cliente = reader.IsDBNull(reader.GetOrdinal("SUCURSALES_CLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("SUCURSALES_CLIENTE"))
-
+                                Sucursales_Cliente = reader.IsDBNull(reader.GetOrdinal("SUCURSALES_CLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("SUCURSALES_CLIENTE")),
+                                SucursalIds = new List<int>()
 
                             };
                             clientes.Add(cliente);
                             
+                        }
+                        if (await reader.NextResultAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                int sucursalId = reader.GetInt32(reader.GetOrdinal("SucursalIds"));
+                                clientes.Last().SucursalIds?.Add(sucursalId);
+                            }
                         }
                     }
 
@@ -106,7 +114,7 @@ namespace Proyectogestionhoras.Services
                 return false;
             }
         }
-        public async Task<bool> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram)
+        public async Task<bool> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idsucursal,string nombresucursal)
         {
             try
             {
@@ -129,6 +137,8 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@PAG_WEB", pagwebparameter));
                     command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
+                    command.Parameters.Add(new SqlParameter("@IDSUCURSAL", idsucursal));
+                    command.Parameters.Add(new SqlParameter("@NOMBRESUCURSAL", nombresucursal));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }

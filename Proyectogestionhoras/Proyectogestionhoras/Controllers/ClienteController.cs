@@ -103,16 +103,18 @@ namespace Proyectogestionhoras.Controllers
         {
             {
                 var cliente = await service.ObtenerClientesIndex(id);
+                var sucursales = await service.ObtenerSucursal(id);
                 ViewBag.clientedatos = cliente;
+                ViewBag.Sucursales = sucursales;
                 return View();
             }
         }
         [HttpPost]
-        public async Task<IActionResult> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram)
+        public async Task<IActionResult> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram, int idsucursal, string nombresucursal)
         {
             try
             {
-                bool resultado = await service.EditarCliente(id,nombre,direccion, ciudad,pais, telefono,pagweb, linkedin, instagram);
+                bool resultado = await service.EditarCliente(id,nombre,direccion, ciudad,pais, telefono,pagweb, linkedin, instagram,idsucursal, nombresucursal);
                 if (resultado) {
                     TempData["SuccessMessage"] = "¡Se Edito con éxito la información del cliente!";
                     return RedirectToAction("ProyectosCliente", "Cliente", new {idcliente=id});

@@ -86,7 +86,30 @@
                     <label class="form-label" for="Linkedin">LinkedIn</label>
                     <input class="form-input" type="text" id="Linkedin" name="linkedin" value="@cliente.Linkedin">
                 </div>
-
+                
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <label class="form-label" for="Sucursales">Sucursales</label>
+                    <div>
+                        @if (ViewBag.Sucursales != null)
+                        {
+                            var isFirst = true;
+                            foreach (var sucursal in ViewBag.Sucursales)
+                            {
+                                <div>
+                                    <input type="radio" id="sucursal_@sucursal.Id" name="idsucursal" value="@sucursal.Id"
+                                    @(isFirst ? "checked" : "")
+                                           onchange="updateSucursalName('@sucursal.Nombre')" />
+                                    <label for="sucursal_@sucursal.Id">@sucursal.Nombre </label>
+                                </div>
+                                isFirst = false;
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <label class="form-label" for="sucursalNombre">Nombre de la Sucursal Seleccionada Para Editar Nombre</label>
+                    <input class="form-input" type="text" id="sucursalNombre" name="nombresucursal" placeholder="Selecciona una sucursal para editar el nombre" readonly>
+                </div>
                 <div class="flex justify-end">
                     <button type="submit" class="btn-primary">Guardar Cambios</button>
                 </div>
@@ -95,3 +118,19 @@
        
     </div>
 </div>
+
+<script>
+  
+    function updateSucursalName(nombre) {
+        document.getElementById("sucursalNombre").value = nombre;
+        document.getElementById("sucursalNombre").removeAttribute("readonly"); 
+    }
+
+   
+    window.onload = function () {
+        var firstRadio = document.querySelector('input[name="idsucursal"]:checked');
+        if (firstRadio) {
+            updateSucursalName(firstRadio.nextElementSibling.textContent.trim());
+        }
+    };
+</script>
