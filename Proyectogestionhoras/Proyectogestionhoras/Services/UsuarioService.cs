@@ -248,7 +248,7 @@ namespace Proyectogestionhoras.Services
                 return new List<Rol>();
             }
         }
-        public async Task<List<SegmentoCosto>> ObtenerSegmentoCosto()
+        /*public async Task<List<SegmentoCosto>> ObtenerSegmentoCosto()
         {
             try
             {
@@ -284,7 +284,7 @@ namespace Proyectogestionhoras.Services
                 return new List<SegmentoCosto>();
             }
         }
-       
+       */
         private string EncriptarContrasena(string contrasena)
         {
             try

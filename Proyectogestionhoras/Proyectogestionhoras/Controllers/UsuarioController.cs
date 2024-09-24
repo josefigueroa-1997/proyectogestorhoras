@@ -28,9 +28,9 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task< IActionResult> AddPersonal() {
             var roles = await _usuarioService.ObtenerRoles();
-            var segmentos = await _usuarioService.ObtenerSegmentoCosto();
+            //var segmentos = await _usuarioService.ObtenerSegmentoCosto();
             ViewBag.Roles = roles;
-            ViewBag.Segmentos = segmentos;
+            //ViewBag.Segmentos = segmentos;
             return View();
         }
 

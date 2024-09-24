@@ -49,7 +49,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,int idcliente, string sucursal)
+        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,string idcliente, string sucursal)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> VerificarExistenciaIdCliente(int idcliente)
+        public async Task<IActionResult> VerificarExistenciaIdCliente(string idcliente)
         {
             int verificar = await service.ValidarExistenciaIdCliente(idcliente);
             return Ok(verificar);

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using Proyectogestionhoras.Services;
+using Proyectogestionhoras.Services.Interface;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,6 +25,7 @@ builder.Services.AddScoped<Conexion>();
 builder.Services.AddScoped<ProyectoService>();
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ContactoService>();
+builder.Services.AddScoped<SegmentoService>();
 builder.Services.AddDbContext<PROYECTO_CONTROL_HORASContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("cadenasql")));
 var app = builder.Build();
 

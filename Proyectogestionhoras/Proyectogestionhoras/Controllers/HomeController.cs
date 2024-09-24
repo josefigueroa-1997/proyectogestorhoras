@@ -16,18 +16,20 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var id = HttpContext.Session.GetInt32("id");
-            if (id.HasValue)
-            {
-                var clientes = await cliente.ObtenerClientesIndex(0);
-                ViewBag.clientes = clientes;
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login","Usuario");
-            }
-           
+            /* var id = HttpContext.Session.GetInt32("id");
+             if (id.HasValue)
+             {
+                 var clientes = await cliente.ObtenerClientesIndex(0);
+                 ViewBag.clientes = clientes;
+                 return View();
+             }
+             else
+             {
+                 return RedirectToAction("Login","Usuario");
+             }*/
+            var clientes = await cliente.ObtenerClientesIndex(0);
+            ViewBag.clientes = clientes;
+            return View();
         }
 
         public IActionResult Privacy()

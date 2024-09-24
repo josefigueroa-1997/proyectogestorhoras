@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Segmentos";
+}
+@*
+<div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+
+    <!-- Título de la tabla -->
+    <h2 style="text-align: center; color: #333;">Segmento Costos</h2>
+
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
+        <thead>
+            <tr style="background-color: #d9e2f3; color: black;">
+                <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Costo</th>
+                <th style="padding: 5px; border: 1px solid #ddd; width: 20%;">Centro de Costos</th>
+                <th style="padding: 5px; border: 1px solid #ddd; width: 15%;">ID Cuenta</th>
+                <th style="padding: 5px; border: 1px solid #ddd; width: 20%;">Cuenta</th>
+                <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var segmento in ViewBag.Costos)
+            {
+                <tr>
+                    <td style="padding: 5px; border: 1px solid #ddd;">
+                        @segmento.NOMBRESEGMENTO
+                    </td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">
+                        @segmento.CENTRO_COSTOS
+                    </td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">
+                        @segmento.IDCUENTA
+                    </td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">
+                        @segmento.CUENTA
+                    </td>
+                    <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
+                        <button style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Editar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+*@
+
+
+<form action="@Url.Action("Registrar","Segmento")"method="post" enctype="multipart/form-data">
+    
+    <select name="ccosto">
+        @foreach (var cuenta in ViewBag.Ccostos)
+        {
+            <option value="@cuenta.Id">@cuenta.Codigo</option>
+        }
+
+
+    </select>
+    <select name="segmento">
+        @foreach (var segmento in ViewBag.Segmentos)
+        {
+            <option value="@segmento.Id">@segmento.Nombre</option>
+        }
+
+
+    </select>
+    <button type="submit">guardar</button>
+</form>

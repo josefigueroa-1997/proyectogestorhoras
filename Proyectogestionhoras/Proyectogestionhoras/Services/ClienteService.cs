@@ -79,7 +79,7 @@ namespace Proyectogestionhoras.Services
             }
 
         }
-        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idcliente,string sucursal)
+        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,string idcliente,string sucursal)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace Proyectogestionhoras.Services
 
         }
 
-        public async Task<int> ValidarExistenciaIdCliente(int idcliente)
+        public async Task<int> ValidarExistenciaIdCliente(string idcliente)
         {
             try 
             {
