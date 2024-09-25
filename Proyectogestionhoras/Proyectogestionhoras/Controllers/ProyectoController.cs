@@ -42,7 +42,13 @@ namespace Proyectogestionhoras.Controllers
         {
             var factura = await proyectoService.ObtenerValoresFactura(idcosto, idunegocio);
             return Ok(factura);
-        } 
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetValoresServicios(int idcodigo)
+        {
+            var servicio = await proyectoService.ObtenerValoresServicios(idcodigo);
+            return Ok(servicio);
+        }
 
         public IActionResult GetProyectos()
         {

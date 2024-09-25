@@ -13,5 +13,6 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<StatusProyecto>> ObtenerStatus(int id);
         public Task<List<ProyectoDTO>> ObtenerProyectos(int? id,int? idcliente,int? idusuario,string? nombre,int? idtipoempresa,string? statusproyecto);
         public Task<List<FacturaDTO>> ObtenerValoresFactura(int idcosto, int idunegocio);
+        public Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcodigo);
     }
 }

@@ -316,13 +316,15 @@
                 <input type="hidden" id="idcuenta" name="idcuenta" readonly>
                 <input type="hidden" id="cuenta" name="cuenta" readonly>
                 <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
+                <input type="text" id="codigo"/>
+                <input type="text" id="idcuentaservicio" />
             </div>
         </div>
         <div class="form-group">
             <p class="form-subtitle">Facturas</p>
             <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
-                    <tr>
+                    <tr style="background-color: #d9e2f3; color: black;">
                         <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
@@ -434,9 +436,8 @@
                     <tr>
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
-                        
-                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
                         
@@ -444,24 +445,19 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td value="1" name="diseño" style="padding: 10px; border: 1px solid #ddd;">Diseño</td>
+                        <td name="servicio" style="padding: 10px; border: 1px solid #ddd;">Diseño</td>
                         <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
-                        
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="segmentoservicios" name="segmentoservicios" >
+                            <input type="text" class="ccostoservicio" name="ccostoservicio" readonly />
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select required id="segmentoservicios" name="segmentoservicios" >
                                 <option value="" disabled selected>Seleccione el Segmento</option>
                                 <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
                                 <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
                             </select>
                         </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="ccostosservicios" name="ccostosservicios" >
-                                <option value="" disabled selected>Seleccione el Centro Costos</option>
-                                <option value="1">General (0.0)</option>
-                                <option value="2">IC-OI (4.3)</option>
-                                <option value="3">PE-EC (1.2)</option>
-                            </select>
-                        </td>
+                        
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <select id="idcuentaservicios" name="idcuentaservicios" >
                                 <option value="" disabled selected>Seleccione ID Cuenta</option>
@@ -483,86 +479,7 @@
                         </td>
                         
                     </tr>
-                    <tr>
-                        <td value="2" name="impresion" style="padding: 10px; border: 1px solid #ddd;">Impresión</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
-                        
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="segmentoservicios" name="segmentoservicios" >
-                                <option value="" disabled selected>Seleccione el Segmento</option>
-                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
-                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
-                            </select>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="ccostosservicios" name="ccostosservicios" >
-                                <option value="" disabled selected>Seleccione el Centro Costos</option>
-                                <option value="1">General (0.0)</option>
-                                <option value="2">IC-OI (4.3)</option>
-                                <option value="3">PE-EC (1.2)</option>
-                            </select>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="idcuentaservicios" name="idcuentaservicios" >
-                                <option value="" disabled selected>Seleccione ID Cuenta</option>
-                                <option value="1">5101003</option>
-                                <option value="2">
-                                    5309999
-                                </option>
-                                <option value="3">5101002</option>
-                            </select>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="cuentasrevicios" name="cuentaservicio" >
-                                <option value="" disabled selected>Seleccione Cuenta</option>
-                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
-                                <option value="2">
-                                    Otros Gastos De Servicios Generales
-                                </option>
-                            </select>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                        <td value="3" name="Cualquiera" style="padding: 10px; border: 1px solid #ddd;">Cualquiera</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
-                        
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="segmentoservicios" name="segmentoservicios" >
-                                <option value="" disabled selected>Seleccione el Segmento</option>
-                                <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
-                                <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
-                            </select>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="ccostosservicios" name="ccostosservicios" >
-                                <option value="" disabled selected>Seleccione el Centro Costos</option>
-                                <option value="1">General (0.0)</option>
-                                <option value="2">IC-OI (4.3)</option>
-                                <option value="3">PE-EC (1.2)</option>
-                            </select>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="idcuentaservicios" name="idcuentaservicios" >
-                                <option value="" disabled selected>Seleccione ID Cuenta</option>
-                                <option value="1">5101003</option>
-                                <option value="2">
-                                    5309999
-                                </option>
-                                <option value="3">5101002</option>
-                            </select>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select id="cuentasrevicios" name="cuentaservicio" >
-                                <option value="" disabled selected>Seleccione Cuenta</option>
-                                <option value="1">Costos de Terceros- Desarrollos y Otros</option>
-                                <option value="2">
-                                    Otros Gastos De Servicios Generales
-                                </option>
-                            </select>
-                        </td>
-                        
-                    </tr>
+                    
                     
                 </tbody>
             </table>
@@ -919,42 +836,43 @@
         const newRow = document.createElement('tr');
 
         newRow.innerHTML = `
-                <td style="padding: 10px; border: 1px solid #ddd;">
-                    <select name="segmentoservicios" >
-                        <option value="" disabled selected>Seleccione el Segmento</option>
-                        <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
-                        <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
-                    </select>
-                </td>
-                <td style="padding: 10px; border: 1px solid #ddd;">
-                    <select name="ccostosservicios" required>
-                        <option value="" disabled selected>Seleccione el Centro Costos</option>
-                        <option value="1">General (0.0)</option>
-                        <option value="2">IC-OI (4.3)</option>
-                        <option value="3">PE-EC (1.2)</option>
-                    </select>
-                </td>
-                <td style="padding: 10px; border: 1px solid #ddd;">
-                    <select name="idcuentaservicios" >
-                        <option value="" disabled selected>Seleccione ID Cuenta</option>
-                        <option value="1">5101003</option>
-                        <option value="2">5309999</option>
-                        <option value="3">5101002</option>
-                    </select>
-                </td>
-                <td style="padding: 10px; border: 1px solid #ddd;">
-                    <select name="cuentaservicio" >
-                        <option value="" disabled selected>Seleccione Cuenta</option>
-                        <option value="1">Costos de Terceros- Desarrollos y Otros</option>
-                        <option value="2">Otros Gastos De Servicios Generales</option>
-                    </select>
-                </td>
-                <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text"></td>
+                        <td name="servicio" style="padding: 10px; border: 1px solid #ddd;"><input text="text"/></td>
+                      <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="ccostoservicio" name="ccostoservicio" readonly />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <select required id="segmentoservicios" name="segmentoservicios" >
+                                    <option value="" disabled selected>Seleccione el Segmento</option>
+                                    <option value="1">Costos de Terceros- Desarrollos y OtrosGeneral</option>
+                                    <option value="2">Otros Gastos De Servicios GeneralesEmpresas CL</option>
+                                </select>
+                            </td>
+
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <select id="idcuentaservicios" name="idcuentaservicios" >
+                                    <option value="" disabled selected>Seleccione ID Cuenta</option>
+                                    <option value="1">5101003</option>
+                                    <option value="2">
+                                        5309999
+                                    </option>
+                                    <option value="3">5101002</option>
+                                </select>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <select id="cuentasrevicios" name="cuentaservicio" >
+                                    <option value="" disabled selected>Seleccione Cuenta</option>
+                                    <option value="1">Costos de Terceros- Desarrollos y Otros</option>
+                                    <option value="2">
+                                        Otros Gastos De Servicios Generales
+                                    </option>
+                                </select>
+                            </td>
             `;
 
        
         document.querySelector('#tablaservicios tbody').appendChild(newRow);
+        obtenerCodigo();
     });
 
     document.getElementById('agregarFilaGastos').addEventListener('click', function () {
@@ -1078,20 +996,23 @@
                     idunegocio: idUnidadNegocio
                 },
                 success: function (data) {
-                    // Verifica que hay resultados y actualiza el input de código
+     
                     if (data && data.length > 0) {
-                        $("#codigoccosto").val(data[0].codigo); // Ajusta si tu respuesta es diferente
+                        $("#codigoccosto").val(data[0].codigo);
+                        $("#codigo").val(data[0].id);
+                        $(".ccostoservicio").val(data[0].codigo);
+                        obtenerValoresServicio(data[0].id);
                     } else {
-                        $("#codigoccosto").val(''); // Limpiar si no hay resultado
+                        $("#codigoccosto").val(''); 
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error("Error en la solicitud AJAX:", error);
-                    $("#codigoccosto").val(''); // Limpiar en caso de error
+                    $("#codigoccosto").val(''); 
                 }
             });
         } else {
-            $("#codigoccosto").val(''); // Limpiar si no hay selección
+            $("#codigoccosto").val(''); 
         }
     }
     $(document).ready(function () {
@@ -1113,22 +1034,43 @@
                     idunegocio: idUnidadNegocio
                 },
                 success: function (data) {
-                    // Verifica que hay resultados y actualiza el input de código
+                    
                     if (data && data.length > 0) {
                         $("#idcuenta").val(data[0].idcuenta);
                         $("#cuenta").val(data[0].cuenta);
                         $("#nombresegmentofactura").val(data[0].nombre);
+                        generarFilas();
                     } else {
-                        $("#idcuenta").val(''); // Limpiar si no hay resultado
+                        $("#idcuenta").val('');
+                        $("#nombresegmentofactura").val('');
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error("Error en la solicitud AJAX:", error);
-                    $("#idcuenta").val(''); // Limpiar en caso de error
+                    $("#idcuenta").val(''); 
                 }
             });
         } else {
-            $("#idcuenta").val(''); // Limpiar si no hay selección
+            $("#idcuenta").val(''); 
         }
     }
+    function obtenerValoresServicio(codigo) {
+        if (codigo) {
+            $.ajax({
+                url: '/Proyecto/GetValoresServicios',  
+                type: 'GET',
+                data: { idcodigo: codigo },  
+                success: function (response) {
+                    console.log(response)
+                 
+                    $("#idcuentaservicio").val(response[0].nombre);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener el servicio:', error);
+                    $("#idcuentaservicio").val('');
+                }
+            });
+        }
+    }
+
 </script>
