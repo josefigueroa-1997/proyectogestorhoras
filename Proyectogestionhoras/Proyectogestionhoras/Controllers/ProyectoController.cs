@@ -29,6 +29,21 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Getcodigoccosto(int idcosto,int idunegocio)
+        {
+            var codigo = await proyectoService.ObtenerCodigoCCosto(idcosto,idunegocio);
+            return Json(codigo);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetValoresFactura(int idcosto,int idunegocio)
+        {
+            var factura = await proyectoService.ObtenerValoresFactura(idcosto, idunegocio);
+            return Ok(factura);
+        } 
+
         public IActionResult GetProyectos()
         {
             return View("Proyectos");

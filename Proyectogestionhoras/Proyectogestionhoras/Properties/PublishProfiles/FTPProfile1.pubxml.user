@@ -5,9 +5,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAs9ss7peW60aSymS83arZdwAAAAACAAAAAAAQZgAAAAEAACAAAAAd/nmbmFDod4Jl5vfL1w22glB2U+rbvX94GsgC2RGgPwAAAAAOgAAAAAIAACAAAAC1gZc2UHE3GwbJQRxSTHAknTLPw9oVJomCgRLCw/aJPyAAAAAxEYs6m5S4ZvVtQaeLJT6KsfApRyPHnM9FFyHBx2nVi0AAAAD5i0XYtAwfKMQ++ikIt16hY+toutlzyO0aSF6LbQMX4DaDcqGPm7vWgE3uBIvMA0GYnaL5fH2AflLhv8Efs5yw</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAs9ss7peW60aSymS83arZdwAAAAACAAAAAAAQZgAAAAEAACAAAADEYK/ovL1alRde8MGCZ+HKEfdO4RLmL/i7PCj7AqQjUAAAAAAOgAAAAAIAACAAAAChLmREmyne4MpF/YG+2N1JtqOs+RV853MTJspTfJzimCAAAADu0k23KKLqE4pK+QO6AJ5l7V1Xg09I1zIvpe/2z1AMI0AAAADd5mFu7Xj+CDECzqvsCJSV+XLLqk5vlVa7UWiE88Pz6vXvs/sLht9rqntZfzc+gom4MPp+QO6n/toNTQVXteqp</EncryptedPassword>
     <_PublishTargetUrl>ftp://192.52.242.121/www.proyectohoras.somee.com</_PublishTargetUrl>
-    <History>False|2024-09-25T14:40:52.5542222Z||;False|2024-09-25T11:39:22.4041648-03:00||;False|2024-09-25T11:37:47.3891372-03:00||;False|2024-09-25T11:35:43.4716321-03:00||;False|2024-09-25T11:35:18.1866658-03:00||;False|2024-09-25T11:31:21.1923754-03:00||;False|2024-09-25T11:30:53.2658808-03:00||;False|2024-09-25T11:30:50.6065148-03:00||;False|2024-09-25T11:30:20.2836839-03:00||;False|2024-09-25T11:29:51.9165738-03:00||;False|2024-09-25T11:28:40.7878847-03:00||;False|2024-09-25T11:28:13.6051152-03:00||;False|2024-09-25T11:27:30.2637649-03:00||;False|2024-09-25T11:26:34.3692288-03:00||;True|2024-09-24T10:34:07.4357219-03:00||;False|2024-09-24T10:28:37.3222936-03:00||;True|2024-09-23T21:10:48.7102861-03:00||;True|2024-09-23T18:19:19.0630734-03:00||;True|2024-09-23T15:10:58.5129325-03:00||;True|2024-09-17T19:07:01.2000993-03:00||;True|2024-09-16T11:49:53.2676830-03:00||;False|2024-09-16T10:46:56.1303611-03:00||;False|2024-09-16T10:19:35.6299998-03:00||;True|2024-09-16T09:59:00.8139605-03:00||;False|2024-09-16T09:46:04.3439314-03:00||;False|2024-09-16T09:39:04.7847751-03:00||;True|2024-09-16T09:23:14.7879708-03:00||;False|2024-09-16T09:09:16.1457115-03:00||;</History>
+    <History>True|2024-09-25T14:53:59.4723036Z||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -21,61 +21,61 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/03/2022 13:10:20</publishTime>
     </File>
     <File Include="Humanizer.dll">
-      <publishTime>02/06/2020 09:07:58</publishTime>
+      <publishTime>06/02/2020 09:07:58</publishTime>
     </File>
     <File Include="Microsoft.Data.SqlClient.dll">
       <publishTime>09/20/2021 20:59:32</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/23/2021 15:35:34</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Design.dll">
       <publishTime>10/23/2021 15:37:14</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/23/2021 15:35:52</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/23/2021 15:37:10</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.SqlServer.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/23/2021 15:37:48</publishTime>
     </File>
     <File Include="Microsoft.Identity.Client.dll">
       <publishTime>10/19/2020 18:51:12</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.JsonWebTokens.dll">
-      <publishTime>12/10/2020 21:21:34</publishTime>
+      <publishTime>10/12/2020 21:21:34</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.Logging.dll">
-      <publishTime>12/10/2020 21:23:12</publishTime>
+      <publishTime>10/12/2020 21:23:12</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.Protocols.dll">
-      <publishTime>12/10/2020 21:25:30</publishTime>
+      <publishTime>10/12/2020 21:25:30</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
-      <publishTime>12/10/2020 21:31:32</publishTime>
+      <publishTime>10/12/2020 21:31:32</publishTime>
     </File>
     <File Include="Microsoft.IdentityModel.Tokens.dll">
-      <publishTime>12/10/2020 21:27:48</publishTime>
+      <publishTime>10/12/2020 21:27:48</publishTime>
     </File>
     <File Include="Microsoft.OpenApi.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>08/29/2020 16:14:12</publishTime>
     </File>
     <File Include="Microsoft.Win32.SystemEvents.dll">
       <publishTime>11/15/2019 05:36:56</publishTime>
     </File>
     <File Include="Proyectogestionhoras.deps.json">
-      <publishTime>09/25/2024 11:39:35</publishTime>
+      <publishTime>09/25/2024 11:43:22</publishTime>
     </File>
     <File Include="Proyectogestionhoras.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/25/2024 11:43:22</publishTime>
     </File>
     <File Include="Proyectogestionhoras.exe">
-      <publishTime>09/25/2024 11:39:34</publishTime>
+      <publishTime>09/25/2024 11:43:22</publishTime>
     </File>
     <File Include="Proyectogestionhoras.pdb">
-      <publishTime>09/25/2024 11:39:34</publishTime>
+      <publishTime>09/25/2024 11:43:22</publishTime>
     </File>
     <File Include="Proyectogestionhoras.runtimeconfig.json">
       <publishTime>09/16/2024 09:09:09</publishTime>
@@ -87,52 +87,52 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/20/2021 20:59:34</publishTime>
     </File>
     <File Include="runtimes/win-arm/native/Microsoft.Data.SqlClient.SNI.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/20/2020 15:13:26</publishTime>
     </File>
     <File Include="runtimes/win-arm64/native/Microsoft.Data.SqlClient.SNI.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/20/2020 15:13:26</publishTime>
     </File>
     <File Include="runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/20/2020 15:13:38</publishTime>
     </File>
     <File Include="runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/20/2020 15:13:26</publishTime>
     </File>
     <File Include="runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/15/2019 05:54:18</publishTime>
     </File>
     <File Include="runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/15/2019 05:54:20</publishTime>
     </File>
     <File Include="runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/15/2019 05:54:30</publishTime>
     </File>
     <File Include="runtimes/win/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/20/2021 20:59:34</publishTime>
     </File>
     <File Include="runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/15/2019 05:53:44</publishTime>
     </File>
     <File Include="runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/15/2019 05:53:46</publishTime>
     </File>
     <File Include="Swashbuckle.AspNetCore.Swagger.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/16/2021 09:54:10</publishTime>
     </File>
     <File Include="Swashbuckle.AspNetCore.SwaggerGen.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/16/2021 09:54:36</publishTime>
     </File>
     <File Include="Swashbuckle.AspNetCore.SwaggerUI.dll">
       <publishTime>10/16/2021 09:54:30</publishTime>
     </File>
     <File Include="System.Configuration.ConfigurationManager.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/15/2019 05:37:04</publishTime>
     </File>
     <File Include="System.Drawing.Common.dll">
       <publishTime>09/18/2018 16:38:14</publishTime>
     </File>
     <File Include="System.IdentityModel.Tokens.Jwt.dll">
-      <publishTime>12/10/2020 21:20:12</publishTime>
+      <publishTime>10/12/2020 21:20:12</publishTime>
     </File>
     <File Include="System.Runtime.Caching.dll">
       <publishTime>11/15/2019 05:37:36</publishTime>
@@ -147,19 +147,19 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/15/2019 05:56:52</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>09/25/2024 11:39:35</publishTime>
+      <publishTime>09/25/2024 11:43:30</publishTime>
     </File>
     <File Include="wwwroot/css/index.css">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/23/2024 14:19:33</publishTime>
     </File>
     <File Include="wwwroot/css/layout.css">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/23/2024 16:44:54</publishTime>
     </File>
     <File Include="wwwroot/css/login.css">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/23/2024 14:05:41</publishTime>
     </File>
     <File Include="wwwroot/css/proyecto.css">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/23/2024 13:46:51</publishTime>
     </File>
     <File Include="wwwroot/css/site.css">
       <publishTime>09/11/2024 19:30:06</publishTime>
@@ -348,7 +348,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/12/2024 13:02:13</publishTime>
     </File>
     <File Include="wwwroot/Proyectogestionhoras.styles.css">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>09/16/2024 09:09:08</publishTime>
     </File>
   </ItemGroup>
 </Project>

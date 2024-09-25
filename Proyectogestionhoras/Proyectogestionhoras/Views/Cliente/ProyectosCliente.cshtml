@@ -260,7 +260,7 @@
         <!-- Client Details Section -->
         <div class="client-details">
             <h2>Detalles del Cliente</h2>
-            <button class="add-branch-button details-button" id="addBranchBtn">Agregar Sucursal</button>
+            <button class="add-branch-button details-button" id="addBranchBtn">Agregar Departamento</button>
             <table class="min-w-full divide-y divide-gray-200 border border-gray-300">
                 @foreach (var cliente in ViewBag.clientedetalle)
                 {
@@ -301,7 +301,7 @@
                         <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Linkedin</td>
                     </tr>
                     <tr class="bg-white">
-                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Sucursales</td>
+                        <td class="px-6 py-3 font-medium text-gray-900 border-b border-gray-300">Departamentos</td>
                         <td class="px-6 py-3 text-gray-700 border-b border-gray-300">@cliente.Sucursales_Cliente</td>
                     </tr>
                     <div class="client-buttons mt-4 flex justify-center gap-4">
@@ -460,9 +460,9 @@
     <!-- Modal para agregar sucursal -->
     <div id="addBranchModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nueva Sucursal</h2>
+            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Departamento</h2>
             <form method="post" action="@Url.Action("AgregarSucursal", "Cliente")">
-                <label for="branchName">Nombre de Sucursal:</label>
+                <label for="branchName">Nombre de Departamento:</label>
                 @foreach (var cliente in ViewBag.clientedetalle)
                 {
                     <input type="hidden" name="idcli" value="@cliente.Id" />

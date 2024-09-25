@@ -156,6 +156,45 @@ namespace Proyectogestionhoras.Services
                 return new List<Ccosto>();
             }
         }
+
+        public async Task<List<CcostoUnegocio>> ObtenerCodigoCCosto(int idcosto, int idunegocio)
+        {
+            try
+            {
+                var ccostonegocios = new List<CcostoUnegocio>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERCODIGOCCOSTO ";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCCOSTO", idcosto));
+                    command.Parameters.Add(new SqlParameter("@IDUNEGOCIO ", idunegocio));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            CcostoUnegocio ccostounegocio = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                Codigo = reader.GetString(reader.GetOrdinal("CODIGO")),
+
+                            };
+                            ccostonegocios.Add(ccostounegocio);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return ccostonegocios;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener los unegocios:" + ex.Message);
+                return new List<CcostoUnegocio>();
+            }
+        }
         public async Task<List<Empresa>> ObtenerEmpresa()
         {
             try
@@ -265,6 +304,46 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
                 return new List<StatusProyecto>();
+            }
+        }
+        public async Task<List<FacturaDTO>> ObtenerValoresFactura(int idcosto, int idunegocio)
+        {
+            try
+            {
+                var facturatablas = new List<FacturaDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "GENERARTABLASEGMENTOFACTURA";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCCOSTO", idcosto));
+                    command.Parameters.Add(new SqlParameter("@IDUNEGOCIO ", idunegocio));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            FacturaDTO factura = new()
+                            {
+                                Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
+
+                            };
+                            facturatablas.Add(factura);
+                           
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return facturatablas;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<FacturaDTO>();
             }
         }
     }
