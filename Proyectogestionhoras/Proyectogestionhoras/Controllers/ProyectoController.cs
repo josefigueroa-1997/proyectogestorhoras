@@ -50,6 +50,19 @@ namespace Proyectogestionhoras.Controllers
             return Ok(servicio);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetSegmentosGastos(int idcodigo)
+        {
+            var segmentos = await proyectoService.GetValoresSegmentos(idcodigo);
+            return Ok(segmentos);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetValoresGastos(int idsegmento)
+        {
+            var gastos = await proyectoService.GetValoresGastos(idsegmento);
+            return Json(gastos);
+        }
         public IActionResult GetProyectos()
         {
             return View("Proyectos");

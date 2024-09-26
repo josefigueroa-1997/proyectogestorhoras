@@ -386,5 +386,85 @@ namespace Proyectogestionhoras.Services
                 return new List<ServiciosDTO>();
             }
         }
+        public async Task<List<Segmento>> GetValoresSegmentos(int idcodigo)
+        {
+            try
+            {
+                var segmentos = new List<Segmento>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERSEGMENTOGASTOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCODIGOCOSTO", idcodigo));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Segmento segmento = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                
+
+                            };
+                            segmentos.Add(segmento);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return segmentos;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<Segmento>();
+            }
+        }
+        public async Task<List<Cuentum>> GetValoresGastos(int idsegmento)
+        {
+            try
+            {
+                var cuentas = new List<Cuentum>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERCUENTAGASTOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTO", idsegmento));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Cuentum cuentum = new()
+                            {
+                                Idcuenta = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                Cuenta = reader.GetString(reader.GetOrdinal("CUENTA")),
+
+
+                            };
+                            cuentas.Add(cuentum);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return cuentas;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<Cuentum>();
+            }
+        }
     }
 }
