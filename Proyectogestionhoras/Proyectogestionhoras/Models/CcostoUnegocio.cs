@@ -8,6 +8,7 @@ namespace Proyectogestionhoras.Models
         public CcostoUnegocio()
         {
             Proyectos = new HashSet<Proyecto>();
+            SegmentoCcostos = new HashSet<SegmentoCcosto>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace Proyectogestionhoras.Models
         public virtual Ccosto? IdCcostoNavigation { get; set; }
         public virtual Unegocio? IdUnegocioNavigation { get; set; }
         public virtual ICollection<Proyecto> Proyectos { get; set; }
+        public virtual ICollection<SegmentoCcosto> SegmentoCcostos { get; set; }
     }
 }

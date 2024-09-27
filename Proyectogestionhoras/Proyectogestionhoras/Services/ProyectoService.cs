@@ -466,5 +466,82 @@ namespace Proyectogestionhoras.Services
                 return new List<Cuentum>();
             }
         }
+        public async Task<List<Gasto>> ObtenerGastos()
+        {
+            try
+            {
+                var gastos = new List<Gasto>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERGASTOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Gasto gasto = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
+
+
+                            };
+                            gastos.Add(gasto);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return gastos;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<Gasto>();
+            }
+        }
+
+        public async Task<List<Servicio>> ObtenerServicios()
+        {
+            try
+            {
+                var servicios = new List<Servicio>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERSERVICIOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Servicio servicio = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
+
+
+                            };
+                            servicios.Add(servicio);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return servicios;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<Servicio>();
+            }
+        }
     }
 }

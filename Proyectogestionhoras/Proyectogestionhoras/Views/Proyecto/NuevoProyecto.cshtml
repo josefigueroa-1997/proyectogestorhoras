@@ -180,13 +180,13 @@
             </div>
             <div class="form-group">
                 <label for="nombreProyecto">Nombre de proyecto</label>
-                <input type="text" id="nombreProyecto" name="nombreProyecto" >
+                <input type="text" id="nombreProyecto" name="nombreProyecto" required>
             </div>
             
             
             <div class="form-group">
                 <label for="cliente">Cliente</label>
-                <select id="cliente" name="cliente" >
+                <select id="cliente" name="cliente" required>
                     <option value="" disabled selected>Seleccione un cliente</option>
                     @foreach (var cliente in ViewBag.Clientes)
                     {
@@ -209,7 +209,7 @@
             
             <div class="form-group">
                 <label for="unidadNegocio">Unidad de negocio</label>
-                <select id="unidadNegocio" name="unidadNegocio" >
+                <select id="unidadNegocio" name="unidadNegocio" required>
                     <option value="" disabled selected>Seleccione una unidad</option>
                     @foreach(var uneogocio in ViewBag.Unegocios)
                     {
@@ -220,7 +220,7 @@
             </div>
             <div class="form-group">
                 <label for="centroCosto">Centro de costo</label>
-                <select id="centroCosto" name="centroCosto" >
+                <select id="centroCosto" name="centroCosto" required>
                     <option value="" disabled selected>Seleccione un centro de costo</option>
                     @foreach(var ccosto in ViewBag.Ccostos)
                     {
@@ -234,7 +234,7 @@
             </div>
             <div class="form-group">
                 <label for="estadoProyecto">Estado del proyecto</label>
-                <select id="estadoProyecto" name="estadoproyecto" >
+                <select id="estadoProyecto" name="estadoproyecto" required>
                     <option value="" disabled selected>Seleccione el estado del proyecto</option>
                     @foreach (var statu in ViewBag.Status)
                     {
@@ -266,7 +266,7 @@
             
             <div class="form-group">
                 <label for="tipologia">Tipología</label>
-                <select id="tipologia" name="tipologia" >
+                <select id="tipologia" name="tipologia" required>
                     <option value="" disabled selected>Seleccione una tipología</option>
                     @foreach (var tipologia in ViewBag.Tipologias)
                     {
@@ -276,7 +276,7 @@
             </div>
             <div class="form-group">
                 <label for="tipoEmpresa">Tipo de empresa</label>
-                <select id="tipoEmpresa" name="tipoEmpresa" >
+                <select id="tipoEmpresa" name="tipoEmpresa" required>
                     <option value="" disabled selected>Seleccione el tipo de empresa</option>
                     @foreach (var empresa in ViewBag.Empresas)
                     {
@@ -294,15 +294,15 @@
         <div class="form-row">
             <div class="form-group-radio">
                 <label>¿Afecta el IVA?</label>
-                <label><input type="radio" name="afectaIVA" value="si" onchange="generarFilas()"> Sí</label>
-                <label><input type="radio" name="afectaIVA" value="no" onchange="generarFilas()"> No</label>
+                <label><input type="radio" name="afectaIVA" value="si" required onchange="generarFilas()"> Sí</label>
+                <label><input type="radio" name="afectaIVA" value="no" required onchange="generarFilas()"> No</label>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label for="tipoMoneda">Tipo de moneda</label>
-                <select id="tipoMoneda" name="tipoMoneda" >
+                <select id="tipoMoneda" name="tipoMoneda" required>
                     <option value="" disabled selected>Seleccione el tipo de Moneda</option>
                     <option value="CLP">CLP</option>
                     <option value="US">US</option>
@@ -312,11 +312,11 @@
             </div>
             <div class="form-group">
                 <label for="plazo">Plazo en meses</label>
-                <input type="number" id="plazo" name="plazo"  placeholder="Valor de Plazo">
+                <input type="number" id="plazo" name="plazo"  placeholder="Valor de Plazo" required>
             </div>
             <div class="form-group">
                 <label for="fechaInicio">Fecha de inicio</label>
-                <input type="date" id="fechaInicio" name="fechaInicio" >
+                <input type="date" id="fechaInicio" name="fechaInicio" required>
             </div>
             <div class="form-group">
                 <label for="fechaFin">Fecha fin</label>
@@ -460,8 +460,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td name="servicio" style="padding: 10px; border: 1px solid #ddd;">Diseño</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio"  type="number"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select class="serviciosSelect" name="nombreservicio">
+                                <option value="" disabled selected>Seleccione un Servicio</option>
+
+
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
                         </td>
@@ -481,6 +487,7 @@
                     
                 </tbody>
             </table>
+            <div id="totalMonto" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotal">0</span></div>
             <button id="agregarFila" class="submit-btn" style="margin-top: 10px;">Agregar Otra Subcontratación de Servicio</button>
         </div>
         <div class="form-group">
@@ -500,8 +507,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td value="1" name="pasajes" style="padding: 10px; border: 1px solid #ddd;">Pasajes</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select class="gastosSelect" name="nombregasto">
+                                <option value="" disabled selected>Seleccione un Gasto</option>
+                                
+
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="montogasto" class="montogasto" type="text"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="ccostogasto"  name="costogastos" readonly />
                         </td>
@@ -526,10 +539,11 @@
 
                 </tbody>
             </table>
+            <div id="totalMontoGastos" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalGastos">0</span></div>
             <button id="agregarFilaGastos" class="submit-btn" style="margin-top: 10px;">Agregar Otro Gasto Operacional</button>
         </div>
         <div class="button-container">
-            <button type="submit" class="submit-btn">Crear Proyecto</button>
+            <button type="button" class="submit-btn">Crear Proyecto</button>
         </div>
        
     </form>
@@ -719,10 +733,10 @@
         toggleInputs();
     });
 
-
-    document.getElementById('agregarFila').addEventListener('click', function () {
+    const totalMontoElement = document.getElementById('montoTotal');
+    document.getElementById('agregarFila').addEventListener('click', function (e) {
         const newRow = document.createElement('tr');
-
+        e.preventDefault();
         // Se asegura de que los campos tengan valores por defecto si no existen filas previas
         const costoservicioValue = document.querySelector('#ccostoservicio') ? document.getElementById('ccostoservicio').value : '';
         const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
@@ -730,8 +744,14 @@
         const cuentaservicioValue = document.querySelector('#cuentaservicio') ? document.getElementById('cuentaservicio').value : '';
 
         newRow.innerHTML = `
-            <td name="servicio" style="padding: 10px; border: 1px solid #ddd;"><input text="text"/></td>
-            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select class="serviciosSelect" name="nombreservicio">
+                                    <option value="" disabled selected>Seleccione un Servicio</option>
+
+
+                                </select>
+            </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input class="montoservicio" name="montoservicio"   type="text"></td>
             <td style="padding: 10px; border: 1px solid #ddd;">
                 <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
             </td>
@@ -750,81 +770,110 @@
         `;
 
         document.querySelector('#tablaservicios tbody').appendChild(newRow);
-
-        // Agregar funcionalidad al botón "Eliminar"
-        newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
-            newRow.remove(); // Elimina la fila correspondiente
+        cargarServicios(newRow.querySelector('.serviciosSelect'));
+        const newMontoInput = newRow.querySelector('.montoservicio');
+        newMontoInput.addEventListener("input", function () {
+            formatInput(event); 
+            updateTotal();
         });
+        newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
+            newRow.remove();
+            updateTotal();
+        });
+        updateTotal();
     });
+    function updateTotal() {
+        let total = 0;
+        const montoInputs = document.querySelectorAll('.montoservicio');
+        montoInputs.forEach(input => {
+            const value = parseFloat(input.value.replace(/\./g, '').replace(/[^0-9,]/g, '').replace(',', '.'));
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+        totalMontoElement.innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    document.querySelector('.montoservicio').addEventListener("input", updateTotal);
+
 
 
     document.addEventListener('DOMContentLoaded', function () {
 
-        document.getElementById('agregarFilaGastos').addEventListener('click', function () {
+        document.getElementById('agregarFilaGastos').addEventListener('click', function (e) {
             const idUnidadNegocio = $("#unidadNegocio").val();
             const idCentroCosto = $("#centroCosto").val();
             const costoGastoValue = document.getElementById('ccostogasto').value;
-
+            e.preventDefault();
             const newRow = document.createElement('tr');
 
-            // Crear cada celda de la nueva fila
             const servicioCell = document.createElement('td');
             const montoCell = document.createElement('td');
             const centroCostoCell = document.createElement('td');
             const segmentoCell = document.createElement('td');
             const idCuentaCell = document.createElement('td');
             const cuentaCell = document.createElement('td');
-            const eliminarCell = document.createElement('td'); // Celda para el botón de eliminar
+            const eliminarCell = document.createElement('td'); 
 
-            // Agregar el input o select correspondiente a cada celda
-            servicioCell.innerHTML = '<input type="text">';
-            montoCell.innerHTML = '<input type="number">';
+
+            const selectGastos = document.createElement('select');
+            selectGastos.className = "gastosSelect";
+            selectGastos.name = "nombregasto";
+            selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option>';
+            servicioCell.appendChild(selectGastos);
+            const montoInput = document.createElement('input');
+            montoInput.type = 'text'; // Cambiado a 'text' para que funcione el formateo
+            montoInput.className = 'montogasto';
+            montoCell.appendChild(montoInput);
+
+            // Agregar el evento de formateo al nuevo input
+            montoInput.addEventListener("input", formatInput);
             centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
 
-            // Crear el select para el segmento
             const selectSegmento = document.createElement('select');
             selectSegmento.className = "segmentogastos";
             selectSegmento.name = "segmentogastos";
             selectSegmento.innerHTML = '<option value="" disabled selected>Seleccione el Segmento</option>';
 
-            // Llamar a la función para llenar el select de segmento
+           
             if (idUnidadNegocio && idCentroCosto) {
-                obtenerValoresSegmento(idCentroCosto, $(selectSegmento));  // Asumiendo que esta función rellena el select
+                obtenerValoresSegmento(idCentroCosto, $(selectSegmento));  
             }
 
             segmentoCell.appendChild(selectSegmento);
 
-            // Completa el resto de las celdas
+ 
             idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagastos" readonly />';
             cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
 
-            // Crear el botón de eliminar
+           
             const eliminarBtn = document.createElement('button');
             eliminarBtn.textContent = 'Eliminar';
             eliminarBtn.style.color = 'white';
             eliminarBtn.style.backgroundColor = 'red';
             eliminarBtn.className = 'eliminar-btn';
 
-            // Agregar el evento de click para eliminar la fila
+       
             eliminarBtn.addEventListener('click', function () {
-                newRow.remove(); // Elimina la fila actual
+                newRow.remove(); 
+                updateTotalGasto();
             });
 
             eliminarCell.appendChild(eliminarBtn);
 
-            // Agregar todas las celdas a la fila
+
             newRow.appendChild(servicioCell);
             newRow.appendChild(montoCell);
             newRow.appendChild(centroCostoCell);
             newRow.appendChild(segmentoCell);
             newRow.appendChild(idCuentaCell);
             newRow.appendChild(cuentaCell);
-            newRow.appendChild(eliminarCell); // Añadir la celda con el botón de eliminar
-
-            // Añadir la nueva fila a la tabla
+            newRow.appendChild(eliminarCell); 
+            cargarGastos(newRow.querySelector('.gastosSelect'));
+      
             document.querySelector('#tablagastos tbody').appendChild(newRow);
         });
     });
+
 
 
 
@@ -889,9 +938,9 @@
             var filaTotales = document.createElement("tr");
             filaTotales.innerHTML = `
                 <td colspan="4" style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Totales</td>
-                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="number" value="${totalMonto.toFixed(2)}" readonly></td>
-                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="number" value="${totalIVA.toFixed(2)}" readonly></td>
-                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="number" value="${totalFinal.toFixed(2)}" readonly></td>
+                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalMonto.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
+                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalIVA.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
+                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalFinal.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
             `;
 
             
@@ -984,12 +1033,18 @@
                 url: '/Proyecto/GetValoresServicios',  
                 type: 'GET',
                 data: { idcodigo: codigo },  
-                success: function (response) {
-                  
-                 
-                    $(".nombresegmentoservicio").val(response[0].nombre);
-                    $(".idcuentaservicio").val(response[0].idcuenta);
-                    $(".cuentaservicio").val(response[0].cuenta);
+                success: function (response ) {
+                    if (response && response.length > 0) {
+                        $(".nombresegmentoservicio").val(response[0].nombre);
+                        $(".idcuentaservicio").val(response[0].idcuenta);
+                        $(".cuentaservicio").val(response[0].cuenta);
+                    }
+                    else{
+                        $(".nombresegmentoservicio").val('');
+                        $(".idcuentaservicio").val('');
+                        $(".cuentaservicio").val('');
+                    }
+                    
                 },
                 error: function (xhr, status, error) {
                     console.error('Error al obtener el servicio:', error);
@@ -1053,13 +1108,18 @@
             $fila.find('.idcuentagastos').val('');
         }
     });
-    document.getElementById("monto").addEventListener("input", function (e) {
-        
+
+
+
+
+
+    function formatInput(e) {
         var valor = e.target.value;
 
+        
         valor = valor.replace(/\./g, '').replace(/[^0-9.,]/g, '');
 
-        
+    
         if (valor !== "") {
             valor = parseFloat(valor.replace(',', '.')).toLocaleString('de-DE', {
                 minimumFractionDigits: 0,
@@ -1067,12 +1127,93 @@
             });
         }
         e.target.value = valor;
+        updateTotalGasto();
+    }
+
+  
+    document.getElementById("monto").addEventListener("input", formatInput);
+    document.querySelectorAll('.montoservicio').forEach(input => {
+        input.addEventListener("input", formatInput);
+    });
+    document.querySelectorAll('.montogasto').forEach(input => {
+        input.addEventListener("input", formatInput);
     });
 
 
     document.querySelectorAll('.eliminar-btn').forEach(function (button) {
         button.addEventListener('click', function () {
             button.closest('tr').remove(); 
+        });
+    });
+
+
+    function updateTotalGasto() {
+        let total = 0;
+
+        const montos = document.querySelectorAll('.montogasto');
+        montos.forEach(input => {
+      
+            const value = parseFloat(input.value.replace(/\./g, '').replace(',', '.'));
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+
+        document.getElementById('montoTotalGastos').innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+
+
+
+    function cargarGastos(selectElement) {
+        $.ajax({
+            url: '/Proyecto/ObtenerGastos',
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty(); 
+                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
+
+           
+                $.each(data, function (index, gasto) {
+                    $(selectElement).append('<option value="' + gasto.id + '">' + gasto.nombre + '</option>');
+                });
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los gastos.');
+            }
+        });
+    }
+
+   
+    $(document).ready(function () {
+        $('.gastosSelect').each(function () {
+            cargarGastos(this);
+        });
+    });
+
+   
+    function cargarServicios(selectElement) {
+        $.ajax({
+            url: '/Proyecto/ObtenerServicios', 
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty(); 
+                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
+
+                $.each(data, function (index, servicio) {
+                    $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
+                });
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los servicios.');
+            }
+        });
+    }
+
+   
+    $(document).ready(function () {
+        $('.serviciosSelect').each(function () {
+            cargarServicios(this);
         });
     });
 </script>

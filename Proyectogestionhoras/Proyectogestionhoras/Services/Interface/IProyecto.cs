@@ -16,5 +16,7 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcodigo);
         public Task<List<Segmento>> GetValoresSegmentos(int idcodigo);
         public Task<List<Cuentum>> GetValoresGastos(int idsegmento);
+        public Task<List<Gasto>> ObtenerGastos();
+        public Task<List<Servicio>> ObtenerServicios();
     }
 }

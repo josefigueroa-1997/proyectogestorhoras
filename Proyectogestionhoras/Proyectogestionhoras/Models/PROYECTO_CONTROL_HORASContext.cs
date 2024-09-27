@@ -30,9 +30,12 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Presupuesto> Presupuestos { get; set; } = null!;
         public virtual DbSet<Proyecto> Proyectos { get; set; } = null!;
         public virtual DbSet<ProyectoGasto> ProyectoGastos { get; set; } = null!;
+        public virtual DbSet<ProyectoServicio> ProyectoServicios { get; set; } = null!;
         public virtual DbSet<Recurso> Recursos { get; set; } = null!;
         public virtual DbSet<Rol> Rols { get; set; } = null!;
         public virtual DbSet<Segmento> Segmentos { get; set; } = null!;
+        public virtual DbSet<SegmentoCcosto> SegmentoCcostos { get; set; } = null!;
+        public virtual DbSet<Servicio> Servicios { get; set; } = null!;
         public virtual DbSet<StatusProyecto> StatusProyectos { get; set; } = null!;
         public virtual DbSet<Sucursal> Sucursals { get; set; } = null!;
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
@@ -41,8 +44,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-      
-
+   
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Ccosto>(entity =>
@@ -265,19 +267,10 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.IdCuenta).HasColumnName("ID_CUENTA");
 
-                entity.Property(e => e.Monto)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("MONTO");
-
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
-
-                entity.Property(e => e.TipoServicio)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("TIPO_SERVICIO");
             });
 
             modelBuilder.Entity<Planilla>(entity =>
@@ -428,6 +421,12 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
 
+                entity.Property(e => e.Idcuenta).HasColumnName("IDCUENTA");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("MONTO");
+
                 entity.HasOne(d => d.IdGastosNavigation)
                     .WithMany(p => p.ProyectoGastos)
                     .HasForeignKey(d => d.IdGastos)
@@ -439,6 +438,35 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.IdProyecto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_PRO_GASTOS_IDFK");
+            });
+
+            modelBuilder.Entity<ProyectoServicio>(entity =>
+            {
+                entity.ToTable("PROYECTO_SERVICIO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.IdCuenta).HasColumnName("ID_CUENTA");
+
+                entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
+
+                entity.Property(e => e.IdServicio).HasColumnName("ID_SERVICIO");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("MONTO");
+
+                entity.HasOne(d => d.IdProyectoNavigation)
+                    .WithMany(p => p.ProyectoServicios)
+                    .HasForeignKey(d => d.IdProyecto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ID_PROYECTO_S_FK");
+
+                entity.HasOne(d => d.IdServicioNavigation)
+                    .WithMany(p => p.ProyectoServicios)
+                    .HasForeignKey(d => d.IdServicio)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ID_SERVICIO_FK");
             });
 
             modelBuilder.Entity<Recurso>(entity =>
@@ -499,6 +527,41 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.IdCuenta)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CUENTA_FK");
+            });
+
+            modelBuilder.Entity<SegmentoCcosto>(entity =>
+            {
+                entity.ToTable("SEGMENTO_CCOSTO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.IdCcosto).HasColumnName("ID_CCOSTO");
+
+                entity.Property(e => e.IdSegmento).HasColumnName("ID_SEGMENTO");
+
+                entity.HasOne(d => d.IdCcostoNavigation)
+                    .WithMany(p => p.SegmentoCcostos)
+                    .HasForeignKey(d => d.IdCcosto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ID_CCOSTO_S_FK");
+
+                entity.HasOne(d => d.IdSegmentoNavigation)
+                    .WithMany(p => p.SegmentoCcostos)
+                    .HasForeignKey(d => d.IdSegmento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ID_SEGMENTO_FK");
+            });
+
+            modelBuilder.Entity<Servicio>(entity =>
+            {
+                entity.ToTable("SERVICIOS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE");
             });
 
             modelBuilder.Entity<StatusProyecto>(entity =>
