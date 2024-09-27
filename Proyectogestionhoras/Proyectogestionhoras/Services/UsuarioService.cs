@@ -29,12 +29,17 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public async Task<bool> RegistrarUsuario(string nombre, string rut, string telefono, string email, int idrol, string nombrerecurso, int numhoras, decimal costounitario, int idsegmento)
+        public async Task<bool> RegistrarUsuario(string nombre, string rut, string telefono, string email, int idrol, string nombrerecurso, int? numhoras, decimal costounitario, float? porcentajehoras, DateTime? fechainicio, DateTime? fechafin)
         {
             try
             {
                 string primerosCuatroDigitosRut = rut.Length >= 4 ? rut.Substring(0, 4) : rut;
-
+                #pragma warning disable CS8600
+                object numhorasparameter = (object)numhoras ?? 0;
+                object porcentajeparameter = (object)porcentajehoras ?? DBNull.Value;
+                object fechainicioparamater = (object)fechainicio ?? DBNull.Value;
+                object fechafinparamater = (object)fechafin ?? DBNull.Value;
+                #pragma warning restore CS8600
                 string passencrypted = EncriptarContrasena(primerosCuatroDigitosRut);
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using(DbCommand command = connection.CreateCommand())
@@ -48,9 +53,11 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@EMAIL", email));
                     command.Parameters.Add(new SqlParameter("@ID_ROL", idrol));
                     command.Parameters.Add(new SqlParameter("@NOMBRE_RECURSO", nombrerecurso));
-                    command.Parameters.Add(new SqlParameter("@NUMERO_HORAS", numhoras));
+                    command.Parameters.Add(new SqlParameter("@NUMERO_HORAS_SEMANALES", numhorasparameter));
                     command.Parameters.Add(new SqlParameter("@COSTO_UNITARIO", costounitario));
-                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOCOSTO", idsegmento));
+                    command.Parameters.Add(new SqlParameter("@PORCENTAJEHORAS", porcentajeparameter));
+                    command.Parameters.Add(new SqlParameter("@FECHAINICIO", fechainicioparamater));
+                    command.Parameters.Add(new SqlParameter("@FECHAFIN", fechafinparamater));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }

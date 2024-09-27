@@ -4,7 +4,7 @@ namespace Proyectogestionhoras.Services.Interface
 {
     public interface IUsuario
     {
-        public Task<bool> RegistrarUsuario(string nombre,string rut,string telefono,string email,int idrol,string nombrerecurso,int numhoras,decimal costounitario,int idsegmento);
+        public Task<bool> RegistrarUsuario(string nombre, string rut, string telefono, string email, int idrol, string nombrerecurso, int? numhoras, decimal costounitario, float? porcentajehoras, DateTime? fechainicio, DateTime? fechafin);
         public Task<List<Rol>> ObtenerRoles();
        // public Task<List<SegmentoCosto>> ObtenerSegmentoCosto();
         public Task<List<UsuarioDTO>> ObtenerUusario(int? id,string? nombre,int? id_recurso);

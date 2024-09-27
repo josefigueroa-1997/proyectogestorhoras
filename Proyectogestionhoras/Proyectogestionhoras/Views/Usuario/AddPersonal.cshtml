@@ -98,17 +98,7 @@
             <input type="email" id="email" name="email" required>
             <span id="emailStatus"></span>
         </div>
-        <div class="form-group">
-            <label for="tipoRecurso">Segmento</label>
-            <select id="tipoRecurso" name="idsegmento" required>
-                <option value="" disabled selected>Seleccione un tipo de recurso</option>
-                @foreach (var recurso in ViewBag.Segmentos)
-                {
-                    <option value="@recurso.Id">@recurso.Cuenta</option>
-
-                }
-            </select>
-        </div>
+        
         <!-- Nombre del Recurso -->
         <div class="form-group">
             <label for="nombreRecurso">Tipo de Personal</label>
@@ -123,12 +113,12 @@
         <!-- Número de Horas -->
         <div class="form-group">
             <label for="numeroHoras">Contrato de Número de Horas Semanales</label>
-            <input type="number" id="numeroHoras" name="numhoras" required min="1">
+            <input type="number" id="numeroHoras" name="numhoras"  min="1">
         </div>
         <!-- % Horas a Proyectos -->
         <div class="form-group" >
             <label for="porcentaje">Porcentaje de Horas a Proyectos</label>
-            <input type="number" id="porcentaje" name="porcentaje" required min="1">
+            <input type="number" id="porcentaje" name="porcentajehoras"  min="1">
         </div>
 
         <!-- Costo Unitario -->
@@ -138,11 +128,11 @@
         </div>
         <div class="form-group">
             <label for="desde">Desde</label>
-            <input type="date" id="desde" name="desde" required >
+            <input type="date" id="desde" name="fechainicio" >
         </div>
         <div class="form-group">
-            <label for="hasta">Desde</label>
-            <input type="date" id="hasta" name="hasta" required>
+            <label for="hasta">Hasta</label>
+            <input type="date" id="hasta" name="fechafin" >
         </div>
         <!-- Tipo de Usuario (Select) -->
         <div class="form-group">
@@ -219,12 +209,13 @@
         });
     });
    
-    document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
 
         const tipopersonal = document.getElementById('tipoPersonal');
         const numerohorasInput = document.getElementById('numeroHoras').parentElement;
         const porcentajeInput = document.getElementById('porcentaje').parentElement;
-
+        const fechainicioInput = document.getElementById('desde').parentElement
+        const fechafinInput = document.getElementById('hasta').parentElement
         // Función para mostrar/ocultar los inputs en función del valor seleccionado
         function toggleInputs() {
             const selectedValue = tipopersonal.value;
@@ -233,10 +224,14 @@
 
                 numerohorasInput.style.display = 'none';
                 porcentajeInput.style.display = 'none';
+                fechainicioInput.style.display = 'none';
+                fechafinInput.style.display = 'none';
             } else {
 
                 numerohorasInput.style.display = 'block';
                 porcentajeInput.style.display = 'block';
+                fechainicioInput.style.display = 'block';
+                fechafinInput.style.display = 'block';
             }
         }
         tipopersonal.addEventListener('change', toggleInputs);
