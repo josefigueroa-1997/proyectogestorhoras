@@ -1,4 +1,6 @@
-﻿namespace Proyectogestionhoras.Models.DTO
+﻿using Microsoft.AspNetCore.Routing.Constraints;
+
+namespace Proyectogestionhoras.Models.DTO
 {
     public class UsuarioDTO
     {
@@ -9,10 +11,12 @@
 
         public string? Email { get; set; }
 
-        public string? Nombre_Recurso { get; set; }
+        public string? NOMBRE_RECURSO_CORRELATIVO { get; set; }
         public int Numero_Horas { get; set; }
         public decimal Costo_Unitario { get; set; }
         public string? Rol { get; set; }
+
+        public decimal? HH_MENSUALES { get; set; }
 
 
 

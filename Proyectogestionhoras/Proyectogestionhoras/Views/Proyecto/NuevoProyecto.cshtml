@@ -329,10 +329,12 @@
                 <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
                 <input type="hidden" id="codigo"/>
                 <input type="hidden" class="nombresegmentoservicio" />
-                <input type="hidden" class="idcuentaservicio" />
+                <input type="hidden" class="idcuentaservicio" name="idcuentaservicio"/>
                 <input type="hidden" class="cuentaservicio" />
                 <input type="hidden" class="ccostoservicio" />
-             
+                <input type="hidden" class="nombresegmentoconsultor" />
+                <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor"/>
+                <input type="hidden" class="cuentaconsultor" />
             </div>
         </div>
         <div class="form-group">
@@ -355,13 +357,115 @@
             </table>
         </div>
         <div class="form-group">
-            <p class="form-subtitle">Requerimientos de Horas Mensuales por Tipología</p>
+            <p class="form-subtitle" style="color:black">Cantidad de Horas Mensuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
+            <div style="display: flex; justify-content: space-between;">
+
+                <!-- Tabla de Socios -->
+                <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background-color: #b2e6a5; color: black;">
+                            <th style="padding: 10px; border: 1px solid #ddd;">Socio</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">HH/Mensuales Disponibles</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">HH/Mensuales Usadas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        @foreach (var recurso in ViewBag.Recursos)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                            {
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;" class="hh-mensuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_MENSUALES</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;" id="usadas-@recurso.Id">0</td>
+                                </tr>
+                                
+                            }
+                        }
+                        <tr>
+                            <td colspan="2" style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Total Horas</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;" class="total-disponibles-socios">0</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;" class="total-usadas-socios">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Tabla de Staff -->
+                <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background-color: #b2e6a5; color: black;">
+                            <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">HH/Mensuales Disponibles</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">HH/Mensuales Usadas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        @foreach (var recurso in ViewBag.Recursos)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                            {
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;" class="hh-mensuales" data-id="@recurso.Id" data-tipo="Staff">@recurso.HH_MENSUALES</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;" id="usadas-@recurso.Id">0</td>
+                                </tr>
+                                
+                            }
+                        }
+                        <tr>
+                            <td colspan="2" style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Total Horas</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;" class="total-disponibles-socios">0</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;" class="total-usadas-socios">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <p class="form-subtitle">Digite las HH/Mensuales para cada Integrante del Proyecto</p>
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                     <tr>
+                        @foreach (var recurso in ViewBag.Recursos)
+                        {
+                            <th style="background-color: #b2e6a5; color: black;">
+                                <input type="hidden" name="nombres[]" value="@recurso.Id" />
+                                <input type="text" value="@recurso.NOMBRE_RECURSO_CORRELATIVO" readonly />
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @foreach (var recurso in ViewBag.Recursos)
+                        {
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input type="number" class="horasInput" name="horas[]" min="0" placeholder="Horas" oninput="sumarHoras()" data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id" data-hhmensuales="@recurso.HH_MENSUALES" />
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="form-group">
+            <p class="form-subtitle" style="color:black">Resumen Horas Mensuales de cada Integrante del Proyecto</p>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #b2e6a5; color: black;">
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipología</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Requeridas de Socios</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Requeridas de Staff</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Socio</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Staff</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Consultor A</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Consultor B</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Mensuales Consultor C</th>
@@ -370,15 +474,71 @@
                 <tbody>
                     <tr>
                         <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"  id="horasSocios" name="horasSocios" placeholder="Horas Socios"></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"  id="horasStaff" name="horasStaff" placeholder="Horas Staff"></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"  id="consultorA" name="consultorA" placeholder="Horas A"></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"  id="consultorB" name="consultorB" placeholder="Horas B"></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"  id="consultorC" name="consultorC" placeholder="Horas C"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input type="number" id="horasSocios" name="horasSocios" placeholder="Horas Socios" readonly>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input type="number" id="horasStaff" name="horasStaff" placeholder="Horas Staff" readonly>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input type="number" id="consultorA" name="consultorA" placeholder="Horas A" readonly>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input type="number" id="consultorB" name="consultorB" placeholder="Horas B" readonly>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input type="number" id="consultorC" name="consultorC" placeholder="Horas C" readonly>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+
+        @*COSTOS DIRECTOS*@
+
+        <div class="form-group">
+            <p class="form-subtitle" style="color:black">Costos Directos</p>
+            <div style="display: flex; justify-content: space-between;">
+
+                <!-- Tabla de Socios -->
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background-color: #b2e6a5; color: black;">
+                            <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Costo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor"/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;" ><strong>Cons. Internos</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons. Externos</strong></td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+
+               
+            </div>
+        </div>
+
+        @*
         <div class="form-group">
             <p class="form-subtitle">Integrantes del Proyecto</p>
             <p class="form-subtitle" style="font-size: 1rem; color: black;">Seleccione a los socios e indique la cantidad de horas destinadas para el proyecto</p>
@@ -443,7 +603,7 @@
                 
                 <!-- Añadir más cards según sea necesario -->
             </div>
-        </div>
+        </div>*@
         <div class="form-group">
             <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
             <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablaservicios">
@@ -981,6 +1141,7 @@
                             obtenerValoresSegmento(data[0].id, $(this));  // Pasa el select actual
                         });
                         obtenerValoresServicio(data[0].id);
+                        obtenerValoresConsultores(data[0].id);
                     } else {
                         $("#codigoccosto").val('');
                     }
@@ -1053,6 +1214,37 @@
             });
         }
     }
+
+    function obtenerValoresConsultores(codigo) {
+        if (codigo) {
+            $.ajax({
+                url: '/Proyecto/ObtenerValoresConsultores',
+                type: 'GET',
+                data: { idcodigo: codigo },
+                success: function (response) {
+                    if (response && response.length > 0) {
+                        $(".nombresegmentoconsultor").val(response[0].nombre);
+                        $(".idcuentaconsultor").val(response[0].idcuenta);
+                        $(".cuentaconsultor").val(response[0].cuenta);
+                        
+                    }
+                    else {
+                        $(".nombresegmentoconsultor").val('');
+                        $(".idcuentaconsultor").val('');
+                        $(".cuentaconsultor").val('');
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener el servicio:', error);
+                    $(".nombresegmentoservicio").val('');
+                }
+            });
+        }
+    }
+
+
+
 
     function obtenerValoresSegmento(codigo, segmentSelect) {
         if (codigo) {
@@ -1216,4 +1408,97 @@
             cargarServicios(this);
         });
     });
+
+   
+
+
+
+    function sumarHoras() {
+            let totalSocios = 0;
+            let totalStaff = 0;
+            let totalConsultorA = 0;
+            let totalConsultorB = 0;
+            let totalConsultorC = 0;
+
+            const inputsHoras = document.querySelectorAll('.horasInput');
+
+            inputsHoras.forEach(input => {
+                const horas = parseFloat(input.value) || 0;
+                const tipo = input.getAttribute('data-tipo');
+                const id = input.getAttribute('data-id');
+                const hhMensuales = parseFloat(input.getAttribute('data-hhmensuales')) || 0; // Obtener las HH disponibles
+
+                if (tipo.startsWith("Socio")) {
+                    totalSocios += horas;
+                    document.getElementById(`usadas-${id}`).innerText = horas; // Actualizamos las horas usadas en la tabla de Socios
+                    const nuevasHHDisponibles = hhMensuales - horas;
+                    document.querySelector(`.hh-mensuales[data-id="${id}"]`).innerText = nuevasHHDisponibles; // Actualizar HH disponibles
+                } else if (tipo.startsWith("Staff")) {
+                    totalStaff += horas;
+                    document.getElementById(`usadas-${id}`).innerText = horas; // Actualizamos las horas usadas en la tabla de Staff
+                    const nuevasHHDisponibles = hhMensuales - horas;
+                    document.querySelector(`.hh-mensuales[data-id="${id}"]`).innerText = nuevasHHDisponibles; // Actualizar HH disponibles
+                } else if (tipo === "Consultor A") {
+                    totalConsultorA += horas;
+                } else if (tipo === "Consultor B") {
+                    totalConsultorB += horas;
+                } else if (tipo === "Consultor C") {
+                    totalConsultorC += horas;
+                }
+            });
+
+            document.getElementById('horasSocios').value = totalSocios;
+            document.getElementById('horasStaff').value = totalStaff;
+            document.getElementById('consultorA').value = totalConsultorA;
+            document.getElementById('consultorB').value = totalConsultorB;
+            document.getElementById('consultorC').value = totalConsultorC;
+        calcularTotales();
+        }
+
+
+    function calcularTotales() {
+        let totalSociosDisponibles = 0;
+        let totalSociosUsadas = 0;
+        let totalStaffDisponibles = 0;
+        let totalStaffUsadas = 0;
+
+        const filasSocios = document.querySelectorAll('table:nth-of-type(1) tbody tr');
+
+        filasSocios.forEach((fila, index) => {
+            if (index < filasSocios.length - 1) {
+                const disponibles = parseInt(fila.querySelector('.hh-mensuales').innerText);
+                const usadas = parseInt(fila.querySelector(`#usadas-${fila.querySelector('.hh-mensuales').dataset.id}`).innerText) || 0;
+
+                totalSociosDisponibles += disponibles;
+                totalSociosUsadas += usadas;
+            }
+        });
+
+        const filaTotalSocios = filasSocios[filasSocios.length - 1];
+        filaTotalSocios.cells[2].innerText = totalSociosDisponibles;
+        filaTotalSocios.cells[3].innerText = totalSociosUsadas;
+
+        const filasStaff = document.querySelectorAll('table:nth-of-type(2) tbody tr');
+
+        filasStaff.forEach((fila, index) => {
+            if (index < filasStaff.length - 1) {
+                const disponibles = parseInt(fila.querySelector('.hh-mensuales').innerText);
+                const usadas = parseInt(fila.querySelector(`#usadas-${fila.querySelector('.hh-mensuales').dataset.id}`).innerText) || 0;
+
+                totalStaffDisponibles += disponibles;
+                totalStaffUsadas += usadas;
+            }
+        });
+
+        const filaTotalStaff = filasStaff[filasStaff.length - 1];
+        filaTotalStaff.cells[2].innerText = totalStaffDisponibles;
+        filaTotalStaff.cells[3].innerText = totalStaffUsadas;
+    }
+
+    // Llamar a la función para calcular los totales al cargar
+    document.addEventListener('DOMContentLoaded', calcularTotales);
 </script>
+
+
+
+                

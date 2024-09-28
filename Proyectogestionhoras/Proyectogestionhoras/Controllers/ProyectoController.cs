@@ -6,11 +6,13 @@ namespace Proyectogestionhoras.Controllers
     {
         private readonly ProyectoService proyectoService;
         private readonly ClienteService clienteService;
+        private readonly UsuarioService usuarioService;
         
-        public ProyectoController(ProyectoService proyectoService,ClienteService clienteService)
+        public ProyectoController(ProyectoService proyectoService,ClienteService clienteService,UsuarioService usuarioService)
         {
             this.proyectoService = proyectoService;
             this.clienteService = clienteService;
+            this.usuarioService = usuarioService;
         } 
         public async Task<IActionResult> NuevoProyecto()
         {
@@ -20,6 +22,8 @@ namespace Proyectogestionhoras.Controllers
             var tipologias = await proyectoService.ObtenerTipoligias();
             var clientes = await clienteService.ObtenerClientesIndex(0);
             var status = await proyectoService.ObtenerStatus(0);
+            var recursos = await usuarioService.ObtenerUusario(0,null,0);
+            ViewBag.Recursos = recursos;
             ViewBag.Clientes = clientes;
             ViewBag.Tipologias = tipologias;
             ViewBag.Empresas = empresas;
@@ -75,6 +79,13 @@ namespace Proyectogestionhoras.Controllers
         {
             var servicios = await proyectoService.ObtenerServicios();
             return Ok(servicios);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerValoresConsultores(int idcodigo)
+        {
+            var consultores = await proyectoService.ObtenerValoresConsultores(idcodigo);
+            return Json(consultores);
         }
         public IActionResult GetProyectos()
         {

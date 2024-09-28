@@ -543,5 +543,45 @@ namespace Proyectogestionhoras.Services
                 return new List<Servicio>();
             }
         }
+        public async Task<List<ConsultoresDTO>> ObtenerValoresConsultores(int idcodigo)
+        {
+            try
+            {
+                var consultores = new List<ConsultoresDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERSEGMENTOSCONSULTORES";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCODIGOCCOSTO", idcodigo));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ConsultoresDTO consultor = new()
+                            {
+                                NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
+
+                            };
+                            consultores.Add(consultor);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return consultores;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<ConsultoresDTO>();
+            }
+        }
     }
 }

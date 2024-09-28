@@ -12,10 +12,12 @@ namespace Proyectogestionhoras.Models
 
         public int Id { get; set; }
         public string NombreRecurso { get; set; } = null!;
-        public int NumeroHoras { get; set; }
         public decimal? CostoUnitario { get; set; }
-        public int? HhAnuales { get; set; }
         public decimal? ProcentajeProyecto { get; set; }
+        public DateTime? Desde { get; set; }
+        public DateTime? Hasta { get; set; }
+        public int? NumeroHoras { get; set; }
+        public decimal? HhMensuales { get; set; }
 
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }
