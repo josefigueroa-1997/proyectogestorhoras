@@ -583,5 +583,45 @@ namespace Proyectogestionhoras.Services
                 return new List<ConsultoresDTO>();
             }
         }
+        public async Task<List<HonorariosDTO>> ObtenerValoresHonorarios(int idcodigo, int idrecurso)
+        {
+            try
+            {
+                var honorarios = new List<HonorariosDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERSEGMENTOHONORARIOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCCOSTOCODIGO", idcodigo));
+                    command.Parameters.Add(new SqlParameter("@IDRECURSO", idrecurso));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            HonorariosDTO honorario = new()
+                            {
+                                NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
+
+                            };
+                            honorarios.Add(honorario);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return honorarios;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<HonorariosDTO>();
+            }
+        }
     }
 }

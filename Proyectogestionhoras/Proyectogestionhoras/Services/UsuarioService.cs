@@ -104,8 +104,9 @@ namespace Proyectogestionhoras.Services
                                 Numero_Horas = reader.GetInt32(reader.GetOrdinal("NUMERO_HORAS")),
                                 Costo_Unitario = reader.GetDecimal(reader.GetOrdinal("COSTO_UNITARIO")) ,
                                 Rol = reader.GetString(reader.GetOrdinal("ROL")),
-                                HH_MENSUALES = reader.IsDBNull(reader.GetOrdinal("HH_MENSUALES")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HH_MENSUALES"))
-
+                                HH_MENSUALES = reader.IsDBNull(reader.GetOrdinal("HH_MENSUALES")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HH_MENSUALES")),
+                                ID_RECURSO = reader.GetInt32(reader.GetOrdinal("ID_RECURSO"))
+                                
 
                             };
                             usuarios.Add(usuario);

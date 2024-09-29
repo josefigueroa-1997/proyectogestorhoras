@@ -18,6 +18,7 @@ namespace Proyectogestionhoras.Models.DTO
 
         public decimal? HH_MENSUALES { get; set; }
 
+        public int ID_RECURSO { get;set; }
 
 
 

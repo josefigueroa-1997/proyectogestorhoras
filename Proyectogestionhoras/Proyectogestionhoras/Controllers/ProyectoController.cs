@@ -87,6 +87,13 @@ namespace Proyectogestionhoras.Controllers
             var consultores = await proyectoService.ObtenerValoresConsultores(idcodigo);
             return Json(consultores);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerValoresHonorarios(int idcodigo,int idrecurso)
+        {
+            var honorarios = await proyectoService.ObtenerValoresHonorarios(idcodigo,idrecurso);
+            return Json(honorarios);
+        }
         public IActionResult GetProyectos()
         {
             return View("Proyectos");
