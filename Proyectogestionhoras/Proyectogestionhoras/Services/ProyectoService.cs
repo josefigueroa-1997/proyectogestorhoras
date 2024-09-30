@@ -426,7 +426,7 @@ namespace Proyectogestionhoras.Services
                 return new List<Segmento>();
             }
         }
-        public async Task<List<Cuentum>> GetValoresGastos(int idsegmento)
+      /*  public async Task<List<Cuentum>> GetValoresGastos(int idsegmento)
         {
             try
             {
@@ -465,7 +465,7 @@ namespace Proyectogestionhoras.Services
                 Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
                 return new List<Cuentum>();
             }
-        }
+        }*/
         public async Task<List<Gasto>> ObtenerGastos()
         {
             try
@@ -621,6 +621,47 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
                 return new List<HonorariosDTO>();
+            }
+        }
+
+        public async Task<List<GastoDTO>> ObtenerValoresGastos(int idcodigo, string nombregasto)
+        {
+            try
+            {
+                var gastos = new List<GastoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "FILTRARSEGMENTOGASTOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCOSDIGOCOSTO", idcodigo));
+                    command.Parameters.Add(new SqlParameter("@NOMBRESEGMENTO", nombregasto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            GastoDTO gasto = new()
+                            {
+                                NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
+
+                            };
+                            gastos.Add(gasto);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return gastos;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                return new List<GastoDTO>();
             }
         }
     }

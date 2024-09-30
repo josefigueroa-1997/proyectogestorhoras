@@ -15,10 +15,11 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<FacturaDTO>> ObtenerValoresFactura(int idcosto, int idunegocio);
         public Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcodigo);
         public Task<List<Segmento>> GetValoresSegmentos(int idcodigo);
-        public Task<List<Cuentum>> GetValoresGastos(int idsegmento);
+        //public Task<List<Cuentum>> GetValoresGastos(int idsegmento);
         public Task<List<Gasto>> ObtenerGastos();
         public Task<List<Servicio>> ObtenerServicios();
         public Task<List<ConsultoresDTO>> ObtenerValoresConsultores(int idcodigo);
         public Task<List<HonorariosDTO>> ObtenerValoresHonorarios(int idcodigo,int idrecurso);
+        public Task<List<GastoDTO>> ObtenerValoresGastos(int idcodigo, string nombregasto);
     }
 }

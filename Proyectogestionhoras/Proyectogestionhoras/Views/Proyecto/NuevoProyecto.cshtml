@@ -337,7 +337,7 @@
                 <input type="hidden" class="nombresegmentoconsultor" />
                 <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor"/>
                 <input type="hidden" class="cuentaconsultor" />
-                <input type="text" class="nombresegmentohonorario" />
+                <input type="hidden" class="nombresegmentohonorario" />
             </div>
         </div>
         <div class="form-group">
@@ -363,7 +363,7 @@
             <p class="form-subtitle" style="color:black">Stock de Horas Mensuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
             <div style="display: flex; justify-content: space-between;">
 
-                <!-- Tabla de Socios -->
+                
                 <table style="width: 40%; border-collapse: collapse; text-align: left;">
                     <thead>
                         <tr style="background-color: #b2e6a5; color: black;">
@@ -694,30 +694,34 @@
 
                 <table style="width: 40%; border-collapse: collapse; text-align: left;">
                     <thead>
-                        <tr style="background-color: #b2e6a5; color: black;">
+                        <tr style="background-color: #fa8164; color: black;">
                             <th style="padding: 10px; border: 1px solid #ddd;">Costo</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Totales</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Totales Costos</th>
                             
                         </tr>
                     </thead>
                     <tbody id="tablaSocios">
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong> Socios</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" id="totalsociosproyectos"/></td>
                            
 
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong> Staff</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number"/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" id="totalstaffsproyectos" /></td>
                            
-
+                            
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong> Consultores Externos</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" id="totalconsultoresproyectos" /></td>
 
 
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong> Total</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"> <span id="totalescostosproyectos" style="font-weight: bold;"></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -799,10 +803,8 @@
                             <input type="text" id="ccostogasto"  name="costogastos" readonly />
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select class="segmentogastos" name="segmentogastos" >
-                                <option value="" disabled selected>Seleccione el Segmento</option>
-                                
-                            </select>
+                            <input type="text" class="segmentogastos" name="segmentogastos" />
+                     
                         </td>
                        
                         <td style="padding: 10px; border: 1px solid #ddd;">
@@ -858,31 +860,7 @@
                 });
             }
         });
-      /*  $('#tipologia').on('change', function () {
-            var tipologiaId = $(this).val();
-            console.log("Tipología cambiada: ", tipologiaId); 
-            if (tipologiaId === "1") { 
-                $('#plazo').val(2); 
-                $('#plazo').trigger('input'); 
-            } 
-            if (tipologiaId === "2") { 
-                $('#plazo').val(4); 
-                $('#plazo').trigger('input'); 
-            }
-            if (tipologiaId === "3") { 
-                $('#plazo').val(6); 
-                $('#plazo').trigger('input'); 
-            }
-            if (tipologiaId === "4") { 
-                $('#plazo').val(8); 
-                $('#plazo').trigger('input'); 
-            }
-        });*/
-
-       /* document.getElementById('plazo').addEventListener('input', function () {
-            var plazo = this.value;
-            this.placeholder = "Valor de Plazo: " + plazo; 
-        });*/
+     
     });
     $(document).ready(function () {
         $('#fechaInicio, #plazo').on('input', function () {
@@ -951,42 +929,7 @@
     
     document.getElementById("tipologia").addEventListener("change", actualizarTipologia);
     
-       /* document.getElementById('tipologia').addEventListener('change', function () {
-            var tipologiaValue = this.value;
-            var horasSociosInput = document.getElementById('horasSocios');
-            var horaasStaffInput = document.getElementById('horasStaff');
-            var consultorAInput = document.getElementById('consultorA');
-            var consultorBInput = document.getElementById('consultorB');
-            var consultorCInput = document.getElementById('consultorC');
-            if (tipologiaValue == '1') {
-                horasSociosInput.value = 14;
-                horaasStaffInput.value = 27;
-                consultorAInput.value = 0;
-                consultorBInput.value = 0;
-                consultorCInput.value = 0;
-            }
-            if (tipologiaValue == '2') {
-                horasSociosInput.value = 28;
-                horaasStaffInput.value = 80;
-                consultorAInput.value = 0;
-                consultorBInput.value = 0;
-                consultorCInput.value = 0;
-            }
-            if (tipologiaValue == '3') {
-                horasSociosInput.value = 57;
-                horaasStaffInput.value = 106;
-                consultorAInput.value = 30;
-                consultorBInput.value = 96;
-                consultorCInput.value = 192
-            }
-            if (tipologiaValue == '4') {
-                 horasSociosInput.value = 60;
-                 horaasStaffInput.value = 0;
-                 consultorAInput.value = 50;
-                 consultorBInput.value = 640;
-                 consultorCInput.value = 1280
-            }
-        });*/
+       
     document.addEventListener('DOMContentLoaded', function () {
         
         const estadoProyecto = document.getElementById('estadoProyecto');
@@ -1017,7 +960,7 @@
     document.getElementById('agregarFila').addEventListener('click', function (e) {
         const newRow = document.createElement('tr');
         e.preventDefault();
-        // Se asegura de que los campos tengan valores por defecto si no existen filas previas
+        
         const costoservicioValue = document.querySelector('#ccostoservicio') ? document.getElementById('ccostoservicio').value : '';
         const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
         const idcuentaservicioValue = document.querySelector('#idcuentaservicio') ? document.getElementById('idcuentaservicio').value : '';
@@ -1101,26 +1044,16 @@
             selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option>';
             servicioCell.appendChild(selectGastos);
             const montoInput = document.createElement('input');
-            montoInput.type = 'text'; // Cambiado a 'text' para que funcione el formateo
+            montoInput.type = 'text'; 
             montoInput.className = 'montogasto';
             montoCell.appendChild(montoInput);
 
-            // Agregar el evento de formateo al nuevo input
+          
             montoInput.addEventListener("input", formatInput);
             centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
 
-            const selectSegmento = document.createElement('select');
-            selectSegmento.className = "segmentogastos";
-            selectSegmento.name = "segmentogastos";
-            selectSegmento.innerHTML = '<option value="" disabled selected>Seleccione el Segmento</option>';
-
            
-            if (idUnidadNegocio && idCentroCosto) {
-                obtenerValoresSegmento(idCentroCosto, $(selectSegmento));  
-            }
-
-            segmentoCell.appendChild(selectSegmento);
-
+            segmentoCell.innerHTML = '<input class="segmentogastos" name="segmentogastos" readonly />';
  
             idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagastos" readonly />';
             cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
@@ -1149,7 +1082,7 @@
             newRow.appendChild(cuentaCell);
             newRow.appendChild(eliminarCell); 
             cargarGastos(newRow.querySelector('.gastosSelect'));
-      
+            
             document.querySelector('#tablagastos tbody').appendChild(newRow);
         });
     });
@@ -1239,6 +1172,7 @@
     });
 
     function obtenerCodigo() {
+       
         var idUnidadNegocio = $("#unidadNegocio").val();
         var idCentroCosto = $("#centroCosto").val();
 
@@ -1257,11 +1191,10 @@
                         $(".ccostoservicio").val(data[0].codigo);
                         $("#ccostogasto").val(data[0].codigo);
                         $("input[name='costogastos']").val(data[0].codigo);
-                        $('.segmentogastos').each(function () {
-                            obtenerValoresSegmento(data[0].id, $(this));  // Pasa el select actual
-                        });
+                      
                         obtenerValoresServicio(data[0].id);
                         obtenerValoresConsultores(data[0].id);
+                       
                     } else {
                         $("#codigoccosto").val('');
                     }
@@ -1364,67 +1297,6 @@
     }
 
 
-
-
-    function obtenerValoresSegmento(codigo, segmentSelect) {
-        if (codigo) {
-            $.ajax({
-                url: '/Proyecto/GetSegmentosGastos',
-                method: 'GET',
-                data: { idcodigo: codigo },
-                success: function (response) {
-                    
-                    segmentSelect.empty();
-                    segmentSelect.append('<option value="" disabled selected>Seleccione el Segmento</option>');
-
-                    $.each(response, function (index, segmento) {
-                        segmentSelect.append('<option value="' + segmento.id + '">' + segmento.nombre + '</option>');
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.log('Error al cargar los segmentos:', error);
-                }
-            });
-        } else {
-            console.log('El código está vacío o no se ha obtenido correctamente.');
-        }
-    }
-
-
-
-    $(document).on('change', '.segmentogastos', function () {
-        var segmentoId = $(this).val();  
-        var $fila = $(this).closest('tr');  
-
-        if (segmentoId) {
-            
-            $.ajax({
-                url: '/Proyecto/GetValoresGastos',
-                method: 'GET',
-                data: { idsegmento: segmentoId },
-                success: function (response) {
-                    if (response) {
-                        
-                        $fila.find('.idcuentagastos').val(response[0].idcuenta);
-                        $fila.find('.cuentagastos').val(response[0].cuenta);
-                    } else {
-                        console.log('No se encontró idcuenta para este segmento');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log('Error al obtener idcuenta:', error);
-                }
-            });
-        } else {
-            
-            $fila.find('.idcuentagastos').val('');
-        }
-    });
-
-
-
-
-
     function formatInput(e) {
         var valor = e.target.value;
 
@@ -1495,14 +1367,41 @@
             }
         });
     }
-
-   
     $(document).ready(function () {
         $('.gastosSelect').each(function () {
             cargarGastos(this);
         });
     });
 
+
+
+    $(document).on('change', '.gastosSelect', function () {
+        var $row = $(this).closest('tr'); 
+        var idCodigo = $("#codigo").val();
+        var nombreGasto = $(this).find('option:selected').text(); 
+
+        $.ajax({
+            url: '/Proyecto/ObtenerValoresGastos',
+            type: 'GET',
+            data: {
+                idcodigo: idCodigo,
+                nombresegmento: nombreGasto
+            },
+            success: function (data) {
+                if (data && data.length > 0) {
+                    
+                    $row.find('.segmentogastos').val(data[0].nombre);
+                    $row.find('.idcuentagastos').val(data[0].idcuenta);
+                    $row.find('.cuentagastos').val(data[0].cuenta);
+                } else {
+                    console.log("No se encontraron valores.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
    
     function cargarServicios(selectElement) {
         $.ajax({
@@ -1554,6 +1453,10 @@
             let totalhorassociosdetalle  = 0;
             let totalcostossociosdetalle = 0;
             let totalproyectosociodetalle = 0;
+            let totalsociosproyectos = 0;
+            let totalstaffsproyectos = 0;
+            let totalconsultoresproyectos = 0;
+            let totalescostosproyectos = 0;
             const inputsHoras = document.querySelectorAll('.horasInput');
 
             inputsHoras.forEach(input => {
@@ -1578,6 +1481,7 @@
                     document.getElementById(`usadas-${id}`).innerText = horas;
                     const nuevasHHDisponibles = hhMensuales - horas;
                     document.querySelector(`.hh-mensuales[data-id="${id}"]`).innerText = nuevasHHDisponibles;
+
                 } else if (tipo.startsWith("Staff")) {
                     totalStaff += horas;
                     horasStaffTabla += horas;
@@ -1592,6 +1496,7 @@
                     document.getElementById(`usadas-${id}`).innerText = horas;
                     const nuevasHHDisponibles = hhMensuales - horas;
                     document.querySelector(`.hh-mensuales[data-id="${id}"]`).innerText = nuevasHHDisponibles;
+
                 } else if (tipo === "Consultor A") {
                     totalConsultorA += horas;
                     document.getElementById(`horas-consultor-${id}`).value = totalConsultorA;
@@ -1599,6 +1504,7 @@
                     document.getElementById(`costo-total-consultor-${id}`).value = costoUnitario * horas;
                 costoConsultoresTabla += parseFloat(document.getElementById(`costo-consultor-${id}`).value);
                 totalProyectoconsultores += parseFloat(document.getElementById(`costo-total-consultor-${id}`).value);
+                totalconsultoresproyectos += parseFloat(document.getElementById(`costo-total-consultor-${id}`).value);
             } else if (tipo === "Consultor B") {
                     totalConsultorB += horas;
                     document.getElementById(`horas-consultor-${id}`).value = totalConsultorB;
@@ -1606,6 +1512,7 @@
                     document.getElementById(`costo-total-consultor-${id}`).value = costoUnitario * horas;
                 costoConsultoresTabla += parseFloat(document.getElementById(`costo-consultor-${id}`).value);
                 totalProyectoconsultores += parseFloat(document.getElementById(`costo-total-consultor-${id}`).value);
+                totalconsultoresproyectos += parseFloat(document.getElementById(`costo-total-consultor-${id}`).value);
                 } else if (tipo === "Consultor C") {
                     totalConsultorC += horas;
                     document.getElementById(`horas-consultor-${id}`).value = totalConsultorC;
@@ -1613,131 +1520,36 @@
                     document.getElementById(`costo-total-consultor-${id}`).value = costoUnitario * horas;
                 costoConsultoresTabla += parseFloat(document.getElementById(`costo-consultor-${id}`).value);
                 totalProyectoconsultores += parseFloat(document.getElementById(`costo-total-consultor-${id}`).value);
+                totalconsultoresproyectos += parseFloat(document.getElementById(`costo-total-consultor-${id}`).value);
                 }
             horasConsultores = totalConsultorA + totalConsultorB + totalConsultorC;
             document.getElementById('total-horas-consultor').value = horasConsultores;
 
             
             document.getElementById('total-costo-consultor').value = costoConsultoresTabla ;
-            document.getElementById('total-proyecto-consultor').innerHTML = totalProyectoconsultores.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });;
-                
-            });
-
+            document.getElementById('total-proyecto-consultor').innerHTML = totalProyectoconsultores.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('totalconsultoresproyectos').value = totalconsultoresproyectos;
+            totalescostosproyectos = totalproyectoSocio + totalproyectoStaff + totalconsultoresproyectos;
+        });
+           
             document.getElementById('horasSocios').value = totalSocios;
             document.getElementById('horasStaff').value = totalStaff;
             document.getElementById('consultorA').value = totalConsultorA;
             document.getElementById('consultorB').value = totalConsultorB;
             document.getElementById('consultorC').value = totalConsultorC;
-        document.getElementById('total-costo-socios').value = totalcostossociosdetalle;
+            document.getElementById('total-costo-socios').value = totalcostossociosdetalle;
             document.getElementById('total-horas-socios').value = horasSociosTabla; // Total horas socios
             document.getElementById('total-proyecto-socios').innerHTML = totalproyectoSocio.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('total-horas-staff').value = horasStaffTabla;
             document.getElementById('total-costo-staff').value = costoStaffTabla;
-        document.getElementById('total-proyecto-staff').innerHTML = totalproyectoStaff.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        
-           /* document.getElementById('horasSociosTabla').value = horasSociosTabla;
-            document.getElementById('horasStaffTabla').value = horasStaffTabla;
-            document.getElementById('horasConsultores').value = horasConsultores;
-            document.getElementById('costoSocioTabla').value = costoSocioTabla;
-            document.getElementById('costoStaffTabla').value = costoStaffTabla;
-            document.getElementById('costoConsultoresTabla').value = costoConsultoresTabla;
-            document.getElementById('totalproyectoSocio').value = totalproyectoSocio;
-            document.getElementById('totalproyectoStaff').value = totalproyectoStaff;
-            document.getElementById('totalProyectoconsultores').value = totalProyectoconsultores;
-            document.getElementById('totaleshoras').value = totaleshoras;
-            document.getElementById('totalescostos').value = totalescostos;
-            document.getElementById('totalproyectocostoshora').innerHTML = totalproyectocostoshora.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });*/
-        
-        //document.getElementById('totalproyectocostoshora').innerHTML = totalproyectocostoshora.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('total-proyecto-staff').innerHTML = totalproyectoStaff.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('totalsociosproyectos').value = totalproyectoSocio;
+            document.getElementById('totalstaffsproyectos').value = totalproyectoStaff;
+            document.getElementById('totalescostosproyectos').innerHTML = totalescostosproyectos.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+           
         }
 
-        /*
-    function sumarHoras() {
-        let totalSocios = 0;
-        let totalStaff = 0;
-        let totalConsultorA = 0;
-        let totalConsultorB = 0;
-        let totalConsultorC = 0;
-        let horasSociosTabla = 0;
-        let horasStaffTabla = 0;
-        let horasConsultores = 0;
-        let totalproyectoSocio = 0;
-        let totalproyectoStaff = 0;
-        let totalProyectoconsultores = 0;
-        let totaleshoras = 0;
-        let totalproyectocostoshora = 0;
-
-        const inputsHoras = document.querySelectorAll('.horasInput');
-
-        inputsHoras.forEach(input => {
-            const horas = parseFloat(input.value) || 0;
-            const tipo = input.getAttribute('data-tipo');
-            const id = input.getAttribute('data-id');
-            const hhMensuales = parseFloat(input.getAttribute('data-hhmensuales')) || 0;
-            const costoUnitario = parseFloat(input.getAttribute('data-costo')) || 0;
-
-            if (tipo.startsWith("Socio")) {
-                totalSocios += horas;
-                horasSociosTabla += horas;
-
-                if (horas > 0) {
-                    document.getElementById(`costo-socio-${id}`).value = costoUnitario; // Muestra el costo unitario
-                    document.getElementById(`costo-total-socio-${id}`).value = costoUnitario * horas; // Costo total para este socio
-                    totalproyectoSocio += costoUnitario * horas; // Acumula el costo total para el proyecto
-                }
-
-                document.getElementById(`horas-socio-${id}`).value = horas;
-                document.getElementById(`usadas-${id}`).innerText = horas;
-                const nuevasHHDisponibles = hhMensuales - horas;
-                document.querySelector(`.hh-mensuales[data-id="${id}"]`).innerText = nuevasHHDisponibles;
-            } else if (tipo.startsWith("Staff")) {
-                totalStaff += horas;
-                horasStaffTabla += horas;
-
-                if (horas > 0) {
-                    document.getElementById(`costo-staff-${id}`).value = costoUnitario; // Muestra el costo unitario
-                    document.getElementById(`costo-total-staff-${id}`).value = costoUnitario * horas; // Costo total para este staff
-                    totalproyectoStaff += costoUnitario * horas; // Acumula el costo total para el proyecto
-                }
-
-                document.getElementById(`horas-staff-${id}`).value = horas;
-                document.getElementById(`usadas-${id}`).innerText = horas;
-                const nuevasHHDisponibles = hhMensuales - horas;
-                document.querySelector(`.hh-mensuales[data-id="${id}"]`).innerText = nuevasHHDisponibles;
-            } else if (tipo === "Consultor A") {
-                totalConsultorA += horas;
-                if (horas > 0) {
-                    totalProyectoconsultores += costoUnitario * horas; // Costo total para Consultor A
-                }
-            } else if (tipo === "Consultor B") {
-                totalConsultorB += horas;
-                if (horas > 0) {
-                    totalProyectoconsultores += costoUnitario * horas; // Costo total para Consultor B
-                }
-            } else if (tipo === "Consultor C") {
-                totalConsultorC += horas;
-                if (horas > 0) {
-                    totalProyectoconsultores += costoUnitario * horas; // Costo total para Consultor C
-                }
-            }
-        });
-
-        totaleshoras = horasSociosTabla + horasConsultores + horasStaffTabla;
-        totalproyectocostoshora = totalproyectoSocio + totalproyectoStaff + totalProyectoconsultores;
-
-        document.getElementById('horasSocios').value = totalSocios;
-        document.getElementById('horasStaff').value = totalStaff;
-        document.getElementById('horasSociosTabla').value = horasSociosTabla;
-        document.getElementById('horasStaffTabla').value = horasStaffTabla;
-        document.getElementById('totalproyectoSocio').value = totalproyectoSocio;
-        document.getElementById('totalproyectoStaff').value = totalproyectoStaff;
-        document.getElementById('totalProyectoconsultores').value = totalProyectoconsultores;
-        document.getElementById('totaleshoras').value = totaleshoras;
-        document.getElementById('total-horas-socios').value = horasSociosTabla; // Total horas socios
-        document.getElementById('total-proyecto-socios').innerHTML = totalproyectoSocio.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        document.getElementById('totalproyectocostoshora').innerHTML = totalproyectocostoshora.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    */
+   
 
     function obtenerHonorarios(idRecurso) {
         var idCodigo = $("#codigo").val();  
@@ -1756,7 +1568,7 @@
                         $(".idcuentahonorario").val(data[0].idcuenta);
                         $(".cuentahonorario").val(data[0].cuenta);
                     } else {
-                        $(".idcuentahonorario").val('');  
+                         
                         $('.nombresegmentohonorario').val('');
                         $('.cuentahomorario').val('');
                     }
@@ -1771,8 +1583,31 @@
         
     }
 
-    
-    
+    function validarHoras(input) {
+        const tipoRecurso = input.getAttribute('data-tipo'); 
+        const maxHHMensuales = parseFloat(input.getAttribute('data-hhmensuales')); 
+        const horasIngresadas = parseFloat(input.value); 
+
+        
+        if (tipoRecurso.startsWith("Socio") || tipoRecurso.startsWith("Staff")) {
+            if (horasIngresadas > maxHHMensuales) {
+                alert(`No puedes ingresar más de ${maxHHMensuales} horas mensuales para este socio o staff.`);
+                input.value = ''; 
+            }
+        }
+        
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputsHoras = document.querySelectorAll('.horasInput');
+
+        inputsHoras.forEach(input => {
+            input.addEventListener('input', function () {
+                validarHoras(this); 
+            });
+        });
+    });
  
 </script>
 

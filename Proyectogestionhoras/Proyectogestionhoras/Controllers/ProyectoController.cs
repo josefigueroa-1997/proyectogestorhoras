@@ -62,9 +62,9 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetValoresGastos(int idsegmento)
+        public async Task<IActionResult> ObtenerValoresGastos(int idcodigo,string nombresegmento)
         {
-            var valoresgastos = await proyectoService.GetValoresGastos(idsegmento);
+            var valoresgastos = await proyectoService.ObtenerValoresGastos(idcodigo, nombresegmento);
             return Json(valoresgastos);
         }
 
