@@ -520,23 +520,23 @@
                     <tbody>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor"/></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/></td>
                             
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" /></td>
                             
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons. Externos</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
                             
                         </tr>
                         
@@ -824,6 +824,50 @@
             <div id="totalMontoGastos" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalGastos">0</span></div>
             <button id="agregarFilaGastos" class="submit-btn" style="margin-top: 10px;">Agregar Otro Gasto Operacional</button>
         </div>
+        <div class="form-group">
+            <p class="form-subtitle" style="color:black;">Síntesis Economica del Proyecto</p>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;" >
+                <thead>
+                    <tr>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+                        
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Ingresos</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="ingresosvalor"></span></td>
+
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="horassociosmargen"></span></td>
+
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Staff</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="horasstaffmargen"></span></td>
+
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Cons.Externos</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="horasconsultoresmargen"></span></td>
+
+                    </tr>
+
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Serv. Contratados</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="serviciosmargen"></span></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
         <div class="button-container">
             <button type="button" class="submit-btn">Crear Proyecto</button>
         </div>
@@ -998,12 +1042,15 @@
         newMontoInput.addEventListener("input", function () {
             formatInput(event); 
             updateTotal();
+            ObtenerMargen();
         });
         newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
             newRow.remove();
             updateTotal();
+            ObtenerMargen();
         });
         updateTotal();
+        ObtenerMargen();
     });
     function updateTotal() {
         let total = 0;
@@ -1015,6 +1062,7 @@
             }
         });
         totalMontoElement.innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        ObtenerMargen();
     }
     document.querySelector('.montoservicio').addEventListener("input", updateTotal);
 
@@ -1151,14 +1199,16 @@
             var filaTotales = document.createElement("tr");
             filaTotales.innerHTML = `
                 <td colspan="4" style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Totales</td>
-                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalMonto.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
+                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input id="netofactura" type="text" value="${totalMonto.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
                     <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalIVA.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
                     <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalFinal.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
             `;
 
             
             tablaBody.appendChild(filaTotales);
+            ObtenerMargen();
         }
+       
     }
 
 
@@ -1530,6 +1580,7 @@
             document.getElementById('total-proyecto-consultor').innerHTML = totalProyectoconsultores.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('totalconsultoresproyectos').value = totalconsultoresproyectos;
             totalescostosproyectos = totalproyectoSocio + totalproyectoStaff + totalconsultoresproyectos;
+            ObtenerMargen();
         });
            
             document.getElementById('horasSocios').value = totalSocios;
@@ -1546,7 +1597,7 @@
             document.getElementById('totalsociosproyectos').value = totalproyectoSocio;
             document.getElementById('totalstaffsproyectos').value = totalproyectoStaff;
             document.getElementById('totalescostosproyectos').innerHTML = totalescostosproyectos.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-           
+        ObtenerMargen();
         }
 
    
@@ -1608,7 +1659,124 @@
             });
         });
     });
- 
+
+    function ObtenerMargen() {
+        var netoFacturaElem = document.getElementById('netofactura');
+        if (!netoFacturaElem) {
+            console.error("El elemento con id 'netofactura' no se encontró en el DOM.");
+            return;
+        }
+
+        var netoFacturaValue = netoFacturaElem.value;
+        var ingresosvalor = parseFloat(netoFacturaValue.replace(/\./g, '').replace(',', '.'));
+
+        if (isNaN(ingresosvalor)) {
+            console.error("El valor de ingresos no es un número válido.");
+            return;
+        }
+
+        document.getElementById('ingresosvalor').innerHTML = ingresosvalor.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        var totalProyectoSociosElem = document.getElementById('total-proyecto-socios');
+        if (!totalProyectoSociosElem) {
+            console.error("El elemento con id 'total-proyecto-socios' no se encontró en el DOM.");
+            return;
+        }
+
+        var totalProyectoSociosValue = totalProyectoSociosElem.innerHTML; // Cambia value a innerHTML
+        var horassociosmargen = parseFloat(totalProyectoSociosValue.replace(/\./g, '').replace(',', '.'));
+
+        if (isNaN(horassociosmargen)) {
+            horassociosmargen = 0; // Valor predeterminado
+            console.warn("El valor de horas socios no es un número válido. Se asigna 0.");
+        }
+
+        document.getElementById('horassociosmargen').innerHTML = horassociosmargen.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+
+        var totalProyectoStaffElem = document.getElementById('total-proyecto-staff');
+        if (!totalProyectoStaffElem) {
+            console.error("El elemento con id 'total-proyecto-staff' no se encontró en el DOM.");
+            return;
+        }
+
+        var totalProyectoStaffValue = totalProyectoStaffElem.innerHTML; // Cambia value a innerHTML
+        var horasstaffmargen = parseFloat(totalProyectoStaffValue.replace(/\./g, '').replace(',', '.'));
+
+        if (isNaN(horasstaffmargen)) {
+            horasstaffmargen = 0; // Valor predeterminado
+            console.warn("El valor de horas socios no es un número válido. Se asigna 0.");
+        }
+
+        document.getElementById('horasstaffmargen').innerHTML = horasstaffmargen.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        /*cons externos*/
+
+
+
+        var totalProyectoConsElem = document.getElementById('totalconsultoresproyectos');
+        if (!totalProyectoConsElem) {
+            console.error("El elemento con id 'totalconsultoresproyectos' no se encontró en el DOM.");
+            return;
+        }
+
+       
+        var totalProyectoConsValue = totalProyectoConsElem.value; 
+        console.log("Valor obtenido:", totalProyectoConsValue);
+
+        var horasconsultoresmargen = parseFloat(totalProyectoConsValue.replace(/\./g, '').replace(',', '.'));
+
+        if (isNaN(horasconsultoresmargen)) {
+            horasconsultoresmargen = 0; // Valor predeterminado
+            console.warn("El valor de horas consultores no es un número válido. Se asigna 0.");
+        }
+
+        document.getElementById('horasconsultoresmargen').innerHTML = horasconsultoresmargen.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+
+       
+       
+
+        /*serviciosmargen*/
+        // Total de servicios
+        var ServiciosElem = document.getElementById('totalMonto');
+        if (!ServiciosElem) {
+            console.error("El elemento con id 'totalMonto' no se encontró en el DOM.");
+            return;
+        }
+
+        var ServiciosValue = ServiciosElem.innerHTML; // Asegúrate de que esto es correcto
+        console.log("Valor total de servicios:", ServiciosValue); // Para depurar
+
+        var serviciosmargen = parseFloat(ServiciosValue.replace(/\./g, '').replace(',', '.'));
+
+        if (isNaN(serviciosmargen)) {
+            serviciosmargen = 0; // Valor predeterminado
+            console.warn("El valor de servicios no es un número válido. Se asigna 0.");
+        }
+
+        // Mostrar en el margen
+        document.getElementById('serviciosmargen').innerHTML = serviciosmargen.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+   
+
+
+
 </script>
 
 
