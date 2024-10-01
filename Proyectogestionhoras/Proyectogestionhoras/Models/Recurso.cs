@@ -18,6 +18,7 @@ namespace Proyectogestionhoras.Models
         public DateTime? Hasta { get; set; }
         public int? NumeroHoras { get; set; }
         public decimal? HhMensuales { get; set; }
+        public decimal? HhAnuales { get; set; }
 
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }
