@@ -76,25 +76,39 @@
         }
 
     .button-container {
-        text-align: center;
-        margin-top: 20px;
-    }
+    text-align: center;
+    margin-top: 20px;
+}
 
-    .submit-btn {
-        padding: 10px 30px;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #fff;
-        background-color: #fcaa67;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+.submit-btn, .clear-btn {
+    padding: 10px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px; 
+}
 
-        .submit-btn:hover {
-            background-color: #e39450;
-        }
+.submit-btn {
+    color: #fff;
+    background-color: #fcaa67;
+}
+
+.submit-btn:hover {
+    background-color: #e39450;
+}
+
+
+.clear-btn {
+    color: #fff;
+    background-color: #007bff; 
+}
+
+.clear-btn:hover {
+    background-color: #0056b3; 
+}
 
 
     .horas-disponibles {
@@ -129,7 +143,7 @@
         <div class="form-row">
             <div class="form-group">
                 <label for="numeroProyecto">Número de proyecto</label>
-                <input type="text" id="numeroProyecto" readonly name="numproyecto" value="2024/01">
+                <input type="text" id="numeroProyecto" readonly name="numproyecto" >
             </div>
             <div class="form-group">
                 <label for="nombreProyecto">Nombre de proyecto</label>
@@ -428,7 +442,7 @@
                     <tr>
                         <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-socios" id="horasSocios" name="horasSocios" placeholder="Horas Socios">
+                            <input type="number" class="horas-socios" id="horasSocios" name="horasSocios" placeholder="Horas Socios" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="number" class="horas-staff" id="horasStaff" name="horasStaff" placeholder="Horas Staff" >
@@ -995,6 +1009,7 @@
         </div>
         <div class="button-container">
             <button type="submit" class="submit-btn">Crear Proyecto</button>
+            <button type="button" class="clear-btn" id="clearBtn">Limpiar</button>
         </div>
        
     </form>
@@ -2090,8 +2105,25 @@
 
 
 
+    $(document).ready(function(){
 
+        $.ajax({
 
+            url: '/Proyecto/ObtenerUltimoNumProyecto',
+            method:'GET',
+            success:function(data){
+                $('#numeroProyecto').val(data);
+            },
+            error: function(error){
+                console.log('Error al obtener el proyecto:',error);
+            }
+        });
+
+    });
+    document.getElementById('clearBtn').addEventListener('click', function() {
+  
+        window.location.reload();
+    });
 </script>
 
 

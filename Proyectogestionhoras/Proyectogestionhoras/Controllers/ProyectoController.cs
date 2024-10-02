@@ -88,6 +88,42 @@ namespace Proyectogestionhoras.Controllers
                 .FirstOrDefaultAsync();
         }
 
+
+        [HttpGet]
+        public IActionResult ObtenerUltimoNumProyecto()
+        {
+            var ultimoproyecto = context.Proyectos.OrderByDescending(p => p.Id).Select(p => p.NumProyecto).FirstOrDefault();
+            string nuevonumproyecto = GenerarNuevoNumeroProyecto(ultimoproyecto);
+            return Json(nuevonumproyecto);
+        }
+
+        public string GenerarNuevoNumeroProyecto(string ultimoproyecto)
+        {
+            string nuevonumproyecto = string.Empty;
+            int anioactual = DateTime.Now.Year;
+            if (!string.IsNullOrEmpty(ultimoproyecto))
+            {
+                var partes = ultimoproyecto.Split('/');
+                int anioultimoproyecto = int.Parse(partes[0]);
+                int correlativo = int.Parse(partes[1]);
+                if(anioultimoproyecto == anioactual)
+                {
+                    correlativo++;
+                    nuevonumproyecto = $"{anioactual}/{correlativo:D2}";
+                }
+                else
+                {
+                    nuevonumproyecto = $"{anioactual}/01";
+                }
+
+            }
+            else
+            {
+                nuevonumproyecto = $"{anioactual}/01";
+            }
+            return nuevonumproyecto;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Getcodigoccosto(int idcosto,int idunegocio)
         {
