@@ -387,7 +387,7 @@
                                     <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
                                     <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
                                     <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">$ @recurso.Costo_Unitario</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                 </tr>
 
                             }
@@ -417,7 +417,7 @@
                                     <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
                                     <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
                                     <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">$ @recurso.Costo_Unitario</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                 </tr>
 
                             }
@@ -425,13 +425,23 @@
                         
                     </tbody>
                 </table>
-                <div style="display:none">
+                <div style="display:none;">
                     @foreach (var recurso in ViewBag.Recursos)
                     {
                         if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
                         {
-                            <input type="hidden" id="idconsultores" value="@recurso.Costo_Unitario" />
-                           
+                            if(recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor A")
+                            {
+                                <input type="hidden" id="idconsultora" value="@recurso.Costo_Unitario"/>
+                            }
+                            if(recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor B")
+                            {
+                                <input type="hidden" id="idconsultorb" value="@recurso.Costo_Unitario" />
+                            }
+                            if(recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor C")
+                            {
+                                <input type="hidden" id="idconsultorc" value="@recurso.Costo_Unitario" />
+                            }
 
                         }
                     }
@@ -467,10 +477,10 @@
                     <tr>
                         <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="horasSocios" name="horasSocios" placeholder="Horas Socios" >
+                            <input type="number" class="horas-socios" id="horasSocios" name="horasSocios" placeholder="Horas Socios">
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="horasStaff" name="horasStaff" placeholder="Horas Staff" >
+                            <input type="number" class="horas-staff" id="horasStaff" name="horasStaff" placeholder="Horas Staff" >
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="number" id="consultorA" name="consultorA" placeholder="Horas A" >
@@ -485,26 +495,7 @@
                 </tbody>
             </table>
         </div>
-        <table>
-            
-                <tr>
-                    
-                    <td>
-                        costo total socios
-                    </td>
-                    <td>
-                        costo total staff
-
-                    </td>
-                    
-                </tr>
-                <tr>
-                    <td><input type="number" id="costosocio"/></td>
-                <td><input type="number" id="costostaff" /></td>
-                </tr>
-
-
-        </table>
+       
 
        @* <div class="form-group">
             <p class="form-subtitle" style="color:black">Stock de Horas Mensuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
@@ -670,24 +661,42 @@
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalstaff" style="font-weight: bold;"></span></td>
                             
                         </tr>
                         <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons. Externos</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
                             
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorA" style="font-weight: bold;"></span></td>
                         </tr>
                         <tr>
-                           
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
+                        </tr>
+                        <tr >
+                            <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;"> <span id="totalcostosdirectos" style="font-weight: bold;"></span></td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -696,7 +705,7 @@
             </div>
         </div>
 
-
+        @*
         <div class="form-group">
             <p class="form-subtitle" style="color:black">Despliegue de Tipo de Costos</p>
             <div style="display: flex; justify-content: space-between;">
@@ -876,7 +885,7 @@
                 </table>
             </div>
         </div>
-        
+        *@
         <div class="form-group">
             <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
             <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablaservicios">
@@ -1207,17 +1216,18 @@
         newMontoInput.addEventListener("input", function () {
             formatInput(event); 
             updateTotal();
+            obtenerMargenEsperado();
             
         });
         newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
             newRow.remove();
             updateTotal();
-            
+            obtenerMargenEsperado();
         });
         updateTotal();
-        
+        obtenerMargenEsperado();
     });
-    function updateTotal() {
+   function updateTotal() {
         let total = 0;
         const montoInputs = document.querySelectorAll('.montoservicio');
         montoInputs.forEach(input => {
@@ -1227,11 +1237,14 @@
             }
         });
         totalMontoElement.innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        ObtenerMargen();
+        return total;
     }
     document.querySelector('.montoservicio').addEventListener("input", updateTotal);
-
-
+     
+    document.addEventListener('DOMContentLoaded', function () {
+        obtenerMargenEsperado();
+        updateTotal();// Inicializa los márgenes
+    });
 
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -1371,7 +1384,7 @@
 
             
             tablaBody.appendChild(filaTotales);
-            ObtenerMargen();
+            
         }
        
     }
@@ -1570,7 +1583,7 @@
         });
 
         document.getElementById('montoTotalGastos').innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        ObtenerMargen();
+        //obtenerMargenEsperado();
     }
 
 
@@ -1840,7 +1853,7 @@
         });
     });*/
 
-    function ObtenerMargen() {
+    /*function ObtenerMargen() {
         var netoFacturaElem = document.getElementById('netofactura');
         if (!netoFacturaElem) {
             console.error("El elemento con id 'netofactura' no se encontró en el DOM.");
@@ -1860,7 +1873,7 @@
             maximumFractionDigits: 2
         });
 
-        var totalProyectoSociosElem = document.getElementById('total-proyecto-socios');
+        var totalProyectoSociosElem = document.getElementById('total-proyecto-socio');
         if (!totalProyectoSociosElem) {
             console.error("El elemento con id 'total-proyecto-socios' no se encontró en el DOM.");
             return;
@@ -1899,7 +1912,7 @@
             maximumFractionDigits: 2
         });
 
-        /*cons externos*/
+      
 
 
 
@@ -1925,14 +1938,13 @@
             maximumFractionDigits: 2
         });
 
-        /* SERVICIOS CONSTRATADOS*/
+     
 
         const totalMontoElement = document.getElementById('montoTotal'); // Obtiene el elemento del total
         const total = parseFloat(totalMontoElement.innerText.replace(/\./g, '').replace(',', '.')); // Convierte el texto a número
         const serviciosmargenSpan = document.getElementById('serviciosmargen'); // Cambiar a 'serviciosmargen' para un span
         serviciosmargenSpan.innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Mostrar en el span
 
-       /*GASTOS OPERACIONALES */
         const totalGastosElement = document.getElementById('montoTotalGastos'); // Obtiene el elemento del total de gastos
         const totalg = parseFloat(totalGastosElement.innerText.replace(/\./g, '').replace(',', '.')); // Convierte el texto a número
         const gastosOperacionalesInput = document.getElementById('gastosmargen'); // Suponiendo que este es el ID donde quieres mostrar el total
@@ -1953,9 +1965,137 @@
         });
 
       
+    }*/
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const costoSocio = parseFloat(document.querySelector('[data-costo-unitario]').getAttribute('data-costo-unitario')) || 0;
+        const costoStaff = parseFloat(document.querySelector('[data-costo-staff]').getAttribute('data-costo-staff')) || 0;
+        const costoConsultora = parseFloat(document.querySelector('#idconsultora').value) || 0;
+        const costoConsultorb = parseFloat(document.querySelector('#idconsultorb').value) || 0;
+        const costoConsultorc = parseFloat(document.querySelector('#idconsultorc').value) || 0;
+
+        const inputHorasStaff = document.querySelector('#horasStaff');
+        const inputHorasSocios = document.querySelector('#horasSocios');
+        const inputHorasConsultora = document.querySelector('#consultorA');
+        const inputHorasConsultorb = document.querySelector('#consultorB');
+        const inputHorasConsultorc = document.querySelector('#consultorC');
+
+        const totalStaffElement = document.querySelector('#totalstaff');
+        const totalConsultorAElement = document.querySelector('#totalconsultorA');
+        const totalConsultorBElement = document.querySelector('#totalconsultorB');
+        const totalConsultorCElement = document.querySelector('#totalconsultorC');
+        const totalSociosElement = document.querySelector('#totalsocio');
+        const totalCostosDirectosElement = document.querySelector('#totalcostosdirectos');
+
+        function actualizarTotalCostos() {
+            const totalSocio = parseFloat(totalSociosElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalStaff = parseFloat(totalStaffElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalConsultora = parseFloat(totalConsultorAElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalConsultorb = parseFloat(totalConsultorBElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalConsultorc = parseFloat(totalConsultorCElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+
+            const totalcostos = totalSocio + totalStaff + totalConsultora + totalConsultorb + totalConsultorc;
+            totalCostosDirectosElement.textContent = totalcostos.toLocaleString('de-DE', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function actualizarElementoHoras(input, costo, outputElement) {
+            input.addEventListener('input', function () {
+                const horas = parseFloat(this.value) || 0;
+                const total = horas * costo;
+                outputElement.textContent = total.toLocaleString('de-DE', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                actualizarTotalCostos();
+            });
+        }
+
+        actualizarElementoHoras(inputHorasSocios, costoSocio, totalSociosElement);
+        actualizarElementoHoras(inputHorasStaff, costoStaff, totalStaffElement);
+        actualizarElementoHoras(inputHorasConsultora, costoConsultora, totalConsultorAElement);
+        actualizarElementoHoras(inputHorasConsultorb, costoConsultorb, totalConsultorBElement);
+        actualizarElementoHoras(inputHorasConsultorc, costoConsultorc, totalConsultorCElement);
+
+    });
+
+
+    // Función para calcular el margen
+    function calcularMargen(costoSocio, costoStaff, costoConsultora, costoConsultorb, costoConsultorc, horasSocios, horasStaff, horasConsultora, horasConsultorb, horasConsultorc) {
+        const totalSocios = horasSocios * costoSocio;
+        const totalStaff = horasStaff * costoStaff;
+        const totalConsultoresExternos = (horasConsultora * costoConsultora) + (horasConsultorb * costoConsultorb) + (horasConsultorc * costoConsultorc);
+
+        const margenSocios = totalSocios;
+        const margenStaff = totalStaff;
+        const margenConsultoresExternos = totalConsultoresExternos;
+
+        return {
+            margenSocios: margenSocios,
+            margenStaff: margenStaff,
+            margenConsultoresExternos: margenConsultoresExternos,
+        };
     }
-  
-    
+
+    // Función para obtener márgenes esperados a partir de los valores del DOM
+    function obtenerMargenEsperado() {
+        const costoSocio = parseFloat(document.querySelector('[data-costo-unitario]').getAttribute('data-costo-unitario')) || 0;
+        const costoStaff = parseFloat(document.querySelector('[data-costo-staff]').getAttribute('data-costo-staff')) || 0;
+        const costoConsultora = parseFloat(document.querySelector('#idconsultora').value) || 0;
+        const costoConsultorb = parseFloat(document.querySelector('#idconsultorb').value) || 0;
+        const costoConsultorc = parseFloat(document.querySelector('#idconsultorc').value) || 0;
+
+        const horasSocios = parseFloat(document.querySelector('#horasSocios').value) || 0;
+        const horasStaff = parseFloat(document.querySelector('#horasStaff').value) || 0;
+        const horasConsultora = parseFloat(document.querySelector('#consultorA').value) || 0;
+        const horasConsultorb = parseFloat(document.querySelector('#consultorB').value) || 0;
+        const horasConsultorc = parseFloat(document.querySelector('#consultorC').value) || 0;
+        const totalMonto = updateTotal();
+        // Llama a la función de cálculo y obtiene los márgenes
+        const margenes = calcularMargen(costoSocio, costoStaff, costoConsultora, costoConsultorb, costoConsultorc, horasSocios, horasStaff, horasConsultora, horasConsultorb, horasConsultorc);
+
+        // Actualiza el DOM con los márgenes calculados
+        document.getElementById('horassociosmargen').textContent = margenes.margenSocios.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        document.getElementById('horasstaffmargen').textContent = margenes.margenStaff.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        document.getElementById('horasconsultoresmargen').textContent = margenes.margenConsultoresExternos.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        document.getElementById('serviciosmargen').textContent = totalMonto.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Escucha el evento de cambio en cada campo de horas para recalcular el margen esperado
+        document.querySelector('#horasSocios').addEventListener('input', obtenerMargenEsperado);
+        document.querySelector('#horasStaff').addEventListener('input', obtenerMargenEsperado);
+        document.querySelector('#consultorA').addEventListener('input', obtenerMargenEsperado);
+        document.querySelector('#consultorB').addEventListener('input', obtenerMargenEsperado);
+        document.querySelector('#consultorC').addEventListener('input', obtenerMargenEsperado);
+
+        document.querySelectorAll('.montoservicio').forEach(input => {
+            input.addEventListener('input', obtenerMargenEsperado);
+        });
+        // Llama a la función para mostrar el margen inicial
+        obtenerMargenEsperado();
+    });
+
+
+
+
 
 </script>
 
