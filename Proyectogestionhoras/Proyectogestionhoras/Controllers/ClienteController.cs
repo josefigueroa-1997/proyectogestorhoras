@@ -49,7 +49,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCliente(string nombre,string direccion,string ciudad,string pais,string telefono,string? pagweb,string? linkedin,string? instagram,string idcliente, string sucursal)
+        public async Task<IActionResult> RegistrarCliente(string nombre,string? direccion,string? ciudad,string? pais,string? telefono,string? pagweb,string? linkedin,string? instagram,string idcliente, string sucursal)
         {
             try
             {

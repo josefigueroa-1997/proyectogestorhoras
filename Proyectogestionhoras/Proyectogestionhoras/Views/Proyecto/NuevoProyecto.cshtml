@@ -96,57 +96,6 @@
             background-color: #e39450;
         }
 
-    #integrantes {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .integrante-card {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #f8f8f8;
-        padding: 15px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        width: calc(33.33% - 20px);
-        height: 150px;
-        box-sizing: border-box;
-        cursor: pointer;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-        .integrante-card.active {
-            background-color: #fcaa67;
-            border-color: #e39450;
-        }
-
-        .integrante-card input[type="checkbox"] {
-            display: none;
-        }
-
-        .integrante-card label {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #333;
-            flex: 1;
-        }
-
-        .integrante-card input[type="number"] {
-            display: none;
-            margin-left: auto;
-            padding: 5px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100px;
-        }
-
-        .integrante-card.active input[type="number"] {
-            display: block;
-            pointer-events: auto;
-        }
 
     .horas-disponibles {
         display: block;
@@ -167,22 +116,24 @@
         transition: background-color 0.3s;
     }
 
-  
+    .tabla-margen td {
+        text-align: right;
+    }
 </style>
 
 <div class="form-container">
     <h1 class="form-title">Crear Nuevo Proyecto</h1>
     <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
 
-    <form action="/Proyecto/Crear" method="post" onsubmit="return validarFechas()">
+    <form action="@Url.Action("CrearProyecto","Proyecto")" method="post" onsubmit="return validarFechas()">
         <div class="form-row">
             <div class="form-group">
                 <label for="numeroProyecto">Número de proyecto</label>
-                <input type="text" id="numeroProyecto" disabled name="numeroProyecto" value="2024/01">
+                <input type="text" id="numeroProyecto" readonly name="numproyecto" value="2024/01">
             </div>
             <div class="form-group">
                 <label for="nombreProyecto">Nombre de proyecto</label>
-                <input type="text" id="nombreProyecto" name="nombreProyecto" required>
+                <input type="text" id="nombreProyecto" name="nombre" required>
             </div>
             
             
@@ -236,7 +187,7 @@
             </div>
             <div class="form-group">
                 <label for="estadoProyecto">Estado del proyecto</label>
-                <select id="estadoProyecto" name="estadoproyecto" required>
+                <select id="estadoProyecto" name="status" required>
                     <option value="" disabled selected>Seleccione el estado del proyecto</option>
                     @foreach (var statu in ViewBag.Status)
                     {
@@ -256,11 +207,11 @@
             </div>
             <div style="display:none" class="form-group">
                 <label for="nivelprobabilidad">Nivel Probabilidad</label>
-                <input type="text" id="nivelprobabilidad" name="nivelprobabilidad" >
+                <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad">
             </div>
             <div style="display:none" class="form-group">
                 <label for="fechaPlazo">Fecha de Plazo</label>
-                <input type="date" id="fechaPlazo" name="fechaPlazo" >
+                <input type="date" id="fechaPlazo" name="fechaplazoneg">
             </div>
         </div>
 
@@ -268,7 +219,7 @@
             
             <div class="form-group">
                 <label for="tipologia">Tipología</label>
-                <select id="tipologia" name="tipologia" required>
+                <select id="tipologia" name="idtipologia" required>
                     <option value="" disabled selected>Seleccione una tipología</option>
                     @foreach (var tipologia in ViewBag.Tipologias)
                     {
@@ -278,7 +229,7 @@
             </div>
             <div class="form-group">
                 <label for="tipoEmpresa">Tipo de empresa</label>
-                <select id="tipoEmpresa" name="tipoEmpresa" required>
+                <select id="tipoEmpresa" name="tipoempresa" required>
                     <option value="" disabled selected>Seleccione el tipo de empresa</option>
                     @foreach (var empresa in ViewBag.Empresas)
                     {
@@ -288,7 +239,7 @@
             </div>
             <div class="form-group">
                 <label for="monto">Monto</label>
-                <input type="text" id="monto" name="monto" >
+                <input type="text" id="monto" name="monto">
             </div>
             
         </div>
@@ -296,15 +247,15 @@
         <div class="form-row">
             <div class="form-group-radio">
                 <label>¿Afecta el IVA?</label>
-                <label><input type="radio" name="afectaIVA" value="si" required onchange="generarFilas()"> Sí</label>
-                <label><input type="radio" name="afectaIVA" value="no" required onchange="generarFilas()"> No</label>
+                <label><input type="radio" name="afectaiva" value="si" required onchange="generarFilas()"> Sí</label>
+                <label><input type="radio" name="afectaiva" value="no" required onchange="generarFilas()"> No</label>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label for="tipoMoneda">Tipo de moneda</label>
-                <select id="tipoMoneda" name="tipoMoneda" required>
+                <select id="tipoMoneda" name="moneda" required>
                     <option value="" disabled selected>Seleccione el tipo de Moneda</option>
                     <option value="CLP">CLP</option>
                     <option value="US">US</option>
@@ -314,15 +265,15 @@
             </div>
             <div class="form-group">
                 <label for="plazo">Plazo en meses</label>
-                <input type="number" id="plazo" name="plazo"  placeholder="Valor de Plazo" required>
+                <input type="number" id="plazo" name="plazo" placeholder="Valor de Plazo" required>
             </div>
             <div class="form-group">
                 <label for="fechaInicio">Fecha de inicio</label>
-                <input type="date" id="fechaInicio" name="fechaInicio" required>
+                <input type="date" id="fechaInicio" name="fechainicio" required>
             </div>
             <div class="form-group">
                 <label for="fechaFin">Fecha fin</label>
-                <input type="date" id="fechaFin" name="fechaFin"  disabled >
+                <input type="date" id="fechaFin" readonly name="fechatermino" disabled>
             </div>
             <div class="form-group">
             
@@ -461,16 +412,16 @@
         </div>
 
         <div class="form-group">
-            <p class="form-subtitle" style="color:black">Digite las HH/Anuales de cada Costo del Proyecto</p>
+            <p class="form-subtitle" style="color:black">Digite las Horas del Proyecto</p>
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                     <tr style="background-color: #b2e6a5; color: black;">
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipología</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Anuales Socio</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Anuales Staff</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Anuales Consultor A</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Anuales Consultor B</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Anuales Consultor C</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Socio</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Staff</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor A</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor B</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor C</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -695,7 +646,7 @@
                         </tr>
                         <tr >
                             <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;"> <span id="totalcostosdirectos" style="font-weight: bold;"></span></td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"> <span id="totalcostosdirectos" style="font-weight: bold;"></span></td>
 
                         </tr>
                     </tbody>
@@ -984,9 +935,9 @@
         </div>
         <div class="form-group">
             <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
-            <table style="width: 100%; border-collapse: collapse; text-align: left;" >
+            <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
                 <thead>
-                    <tr style="background-color: #fa8164; color: black;">
+                    <tr style="background-color: #fa8164; color: black; text-align:center">
                         <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
                         
@@ -996,46 +947,46 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Ingresos</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong><span id="ingresosvalor"></span></strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
 
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="horassociosmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
 
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Staff</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="horasstaffmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
 
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Cons.Externos</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="horasconsultoresmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
 
                     </tr>
 
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Serv. Contratados</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="serviciosmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
 
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Gastos Operacionales</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><span id="gastosmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
 
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #fa8164;"><strong>Total Egresos</strong></td>
-                        <td style="padding: 10px; border: 1px solid #fa8164;">
+                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
+                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
                             <strong><span id="egresosmargen"></span></strong>
                         </td>
 
                     </tr>
                     <tr style="background-color: #fa8164; color: black;">
-                        <td style="padding: 10px; border: 1px solid #fa8164;"><strong>Margen Esperado</strong></td>
-                        <td style="padding: 10px; border: 1px solid #fa8164;"><strong><span id="margenfinal"></span></strong></td>
+                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
+                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
 
                     </tr>
                 </tbody>
@@ -1043,7 +994,7 @@
 
         </div>
         <div class="button-container">
-            <button type="button" class="submit-btn">Crear Proyecto</button>
+            <button type="submit" class="submit-btn">Crear Proyecto</button>
         </div>
        
     </form>
@@ -1087,9 +1038,10 @@
 
             if (fechaInicio && plazo) {
                 var nuevaFecha = moment(fechaInicio).add(plazo, 'months').format('YYYY-MM-DD');
-                $('#fechaFin').val(nuevaFecha);  
+                $('#fechaFin').val(nuevaFecha);
+                $('#fechaFin').prop('disabled', false); // Habilita el campo para que se envíe
             } else {
-                $('#fechaFin').val('');  
+                $('#fechaFin').val('');
             }
         });
     });
@@ -1243,7 +1195,8 @@
      
     document.addEventListener('DOMContentLoaded', function () {
         obtenerMargenEsperado();
-        updateTotal();// Inicializa los márgenes
+        updateTotal();
+        updateTotalGasto();
     });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -1295,6 +1248,7 @@
             eliminarBtn.addEventListener('click', function () {
                 newRow.remove(); 
                 updateTotalGasto();
+                obtenerMargenEsperado();
             });
 
             eliminarCell.appendChild(eliminarBtn);
@@ -1310,6 +1264,7 @@
             cargarGastos(newRow.querySelector('.gastosSelect'));
             
             document.querySelector('#tablagastos tbody').appendChild(newRow);
+            obtenerMargenEsperado();
         });
     });
 
@@ -1326,7 +1281,7 @@
         var plazo = document.getElementById("plazo").value;
         var fechaInicio = document.getElementById("fechaInicio").value;
         var monto = parseFloat(document.getElementById("monto").value.replace(/\./g, '')) || 0;
-        var afectaIVA = document.querySelector('input[name="afectaIVA"]:checked')?.value;
+        var afectaIVA = document.querySelector('input[name="afectaiva"]:checked')?.value;
         var idcuenta = document.getElementById("idcuentafactura").value;
         var cuentacontable = document.getElementById("cuentafactura").value;
         var nombresegmento = document.getElementById("nombresegmentofactura").value;
@@ -1363,9 +1318,15 @@
                     <td style="padding: 10px; border: 1px solid #ddd;">${cuentacontable}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;">${nombresegmento}</td>
                     <td style="padding: 10px; border: 1px solid #ddd;">${mesAño}</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" value="${montoPorMes.toFixed(2)}" readonly></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" value="${iva.toFixed(2)}" readonly></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" value="${total.toFixed(2)}" readonly></td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+        <input type="text" value="${montoPorMes.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px; padding: 5px;">
+    </td>
+    <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+        <input type="text" value="${iva.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px; padding: 5px;">
+    </td>
+    <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+        <input type="text" value="${total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px; padding: 5px;">
+    </td>
                 `;
 
                 tablaBody.appendChild(fila);
@@ -1377,14 +1338,20 @@
             var filaTotales = document.createElement("tr");
             filaTotales.innerHTML = `
                 <td colspan="4" style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Totales</td>
-                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input id="netofactura" type="text" value="${totalMonto.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
-                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalIVA.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
-                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><input type="text" value="${totalFinal.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly></td>
+                           <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; text-align: right;">
+            <input id="netofactura" type="text" value="${totalMonto.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px;">
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; text-align: right;">
+            <input type="text" value="${totalIVA.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px;">
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; text-align: right;">
+            <input type="text" value="${totalFinal.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px;">
+        </td>
             `;
 
             
             tablaBody.appendChild(filaTotales);
-            
+            obtenerMargenEsperado();
         }
        
     }
@@ -1551,6 +1518,7 @@
         }
         e.target.value = valor;
         updateTotalGasto();
+        obtenerMargenEsperado();
     }
 
   
@@ -1583,7 +1551,7 @@
         });
 
         document.getElementById('montoTotalGastos').innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        //obtenerMargenEsperado();
+        return total;
     }
 
 
@@ -2054,10 +2022,20 @@
         const horasConsultorb = parseFloat(document.querySelector('#consultorB').value) || 0;
         const horasConsultorc = parseFloat(document.querySelector('#consultorC').value) || 0;
         const totalMonto = updateTotal();
+        const totalGastos = updateTotalGasto();
         // Llama a la función de cálculo y obtiene los márgenes
         const margenes = calcularMargen(costoSocio, costoStaff, costoConsultora, costoConsultorb, costoConsultorc, horasSocios, horasStaff, horasConsultora, horasConsultorb, horasConsultorc);
+        const netoFacturaElement = document.getElementById('netofactura');
+        const ingresos = netoFacturaElement ? parseFloat(netoFacturaElement.value.replace(/\./g, '').replace(',', '.')) || 0 : 0;
+        
+        
+        
+        document.getElementById('ingresosvalor').textContent = ingresos.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
 
-        // Actualiza el DOM con los márgenes calculados
+
         document.getElementById('horassociosmargen').textContent = margenes.margenSocios.toLocaleString('de-DE', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
@@ -2076,6 +2054,20 @@
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
+        document.getElementById('gastosmargen').textContent = totalGastos.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        const totalegresos = parseFloat(document.getElementById('horassociosmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('horasstaffmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('horasconsultoresmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('serviciosmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('gastosmargen').textContent.replace(/\./g, '').replace(',', '.'));
+        document.getElementById('egresosmargen').textContent = totalegresos.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        const totalmargen = parseFloat(document.getElementById('ingresosvalor').textContent.replace(/\./g, '').replace(',', '.')) - parseFloat(document.getElementById('egresosmargen').textContent.replace(/\./g, '').replace(',', '.'))
+        document.getElementById('margenfinal').textContent = totalmargen.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -2088,6 +2080,9 @@
 
         document.querySelectorAll('.montoservicio').forEach(input => {
             input.addEventListener('input', obtenerMargenEsperado);
+        });
+        document.querySelectorAll('.montogasto').forEach(input => {
+            input.addEventListener("input", formatInput);
         });
         // Llama a la función para mostrar el margen inicial
         obtenerMargenEsperado();

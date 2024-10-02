@@ -41,10 +41,10 @@ namespace Proyectogestionhoras.Services
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
-                                Direccion = reader.GetString(reader.GetOrdinal("DIRECCION")),
-                                Ciudad = reader.GetString(reader.GetOrdinal("CIUDAD")),
-                                Pais = reader.GetString(reader.GetOrdinal("PAIS")),
-                                Telefono = reader.GetString(reader.GetOrdinal("TELEFONO")),
+                                Direccion = reader.IsDBNull(reader.GetOrdinal("DIRECCION")) ? string.Empty : reader.GetString(reader.GetOrdinal("DIRECCION")),
+                                Ciudad = reader.IsDBNull(reader.GetOrdinal("CIUDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("CIUDAD")),
+                                Pais = reader.IsDBNull(reader.GetOrdinal("PAIS")) ? string.Empty : reader.GetString(reader.GetOrdinal("PAIS")),
+                                Telefono = reader.IsDBNull(reader.GetOrdinal("TELEFONO")) ? string.Empty : reader.GetString(reader.GetOrdinal("TELEFONO")),
                                 PagWeb = reader.IsDBNull(reader.GetOrdinal("PAGWEB")) ? string.Empty : reader.GetString(reader.GetOrdinal("PAGWEB")),
                                 Linkedin = reader.IsDBNull(reader.GetOrdinal("LINKEDIN")) ? string.Empty : reader.GetString(reader.GetOrdinal("LINKEDIN")),
                                 Instagram = reader.IsDBNull(reader.GetOrdinal("INSTAGRAM")) ? string.Empty : reader.GetString(reader.GetOrdinal("INSTAGRAM")),
@@ -79,7 +79,7 @@ namespace Proyectogestionhoras.Services
             }
 
         }
-        public async Task<bool> RegistrarCliente(string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,string idcliente,string sucursal)
+        public async Task<bool> RegistrarCliente(string nombre, string? direccion, string? ciudad, string? pais, string? telefono, string? pagweb, string? linkedin, string? instagram,string idcliente,string sucursal)
         {
             try
             {
@@ -87,17 +87,21 @@ namespace Proyectogestionhoras.Services
                 object pagwebparameter = (object)pagweb ?? DBNull.Value;
                 object linkedinparamater = (object)linkedin ?? DBNull.Value;
                 object instagramparameter = (object)instagram ?? DBNull.Value;
-                #pragma warning restore CS8600
+                object direccionparameter = (object)direccion ?? DBNull.Value;
+                object ciudadparameter = (object)ciudad ?? DBNull.Value;
+                object paisparameter = (object)pais ?? DBNull.Value;
+                object telefonoparameter = (object)telefono ?? DBNull.Value;
+#pragma warning restore CS8600
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "REGISTRARCLIENTE";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
-                    command.Parameters.Add(new SqlParameter("@DIRECCION", direccion));
-                    command.Parameters.Add(new SqlParameter("@CIUDAD", ciudad));
-                    command.Parameters.Add(new SqlParameter("@PAIS", pais));
-                    command.Parameters.Add(new SqlParameter("@TELEFONO", telefono));
+                    command.Parameters.Add(new SqlParameter("@DIRECCION", direccionparameter));
+                    command.Parameters.Add(new SqlParameter("@CIUDAD", ciudadparameter));
+                    command.Parameters.Add(new SqlParameter("@PAIS", paisparameter));
+                    command.Parameters.Add(new SqlParameter("@TELEFONO", telefonoparameter));
                     command.Parameters.Add(new SqlParameter("@PAG_WEB", pagwebparameter));
                     command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
@@ -118,11 +122,16 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-                #pragma warning disable CS8600
+#pragma warning disable CS8600
                 object pagwebparameter = (object)pagweb ?? DBNull.Value;
                 object linkedinparamater = (object)linkedin ?? DBNull.Value;
                 object instagramparameter = (object)instagram ?? DBNull.Value;
-                #pragma warning restore CS8600
+                object direccionparameter = (object)direccion ?? DBNull.Value;
+                object ciudadparameter = (object)ciudad ?? DBNull.Value;
+                object paisparameter = (object)pais ?? DBNull.Value;
+                object telefonoparameter = (object)telefono ?? DBNull.Value;
+
+#pragma warning restore CS8600
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
@@ -130,10 +139,10 @@ namespace Proyectogestionhoras.Services
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@ID",id));
                     command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
-                    command.Parameters.Add(new SqlParameter("@DIRECCION", direccion));
-                    command.Parameters.Add(new SqlParameter("@CIUDAD", ciudad));
-                    command.Parameters.Add(new SqlParameter("@PAIS", pais));
-                    command.Parameters.Add(new SqlParameter("@TELEFONO", telefono));
+                    command.Parameters.Add(new SqlParameter("@DIRECCION", direccionparameter));
+                    command.Parameters.Add(new SqlParameter("@CIUDAD", ciudadparameter));
+                    command.Parameters.Add(new SqlParameter("@PAIS", paisparameter));
+                    command.Parameters.Add(new SqlParameter("@TELEFONO", telefonoparameter));
                     command.Parameters.Add(new SqlParameter("@PAG_WEB", pagwebparameter));
                     command.Parameters.Add(new SqlParameter("@LINKEDIN", linkedinparamater));
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));

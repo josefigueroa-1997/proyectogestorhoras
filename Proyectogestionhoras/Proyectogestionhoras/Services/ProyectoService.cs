@@ -18,6 +18,55 @@ namespace Proyectogestionhoras.Services
             this.conexion = conexion;
         }
 
+
+
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg)
+        {
+            try
+            {
+                #pragma warning disable CS8600
+                object probabilidadparameter = (object)probabilidad ?? DBNull.Value;
+                object porcentajeparametr = (object)porcentajeprobabilidad ?? DBNull.Value;
+                object fechaplazoparameter = (object)fechaplazoneg ?? DBNull.Value;    
+                #pragma warning restore CS8600
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "CREAR_PROYECTO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@MONTO", monto));
+                    command.Parameters.Add(new SqlParameter("@MONEDA", moneda));
+                    command.Parameters.Add(new SqlParameter("@AFECTAIVA", afectaiva));
+                    command.Parameters.Add(new SqlParameter("@ID_TIPOLOGIA", idtipologia));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
+                    command.Parameters.Add(new SqlParameter("@NUM_PROYECTO", numproyecto));
+                    command.Parameters.Add(new SqlParameter("@FECHA_INICIO", fechainicio));
+                    command.Parameters.Add(new SqlParameter("@FECHA_TERMINO ", fechatermino));
+                    command.Parameters.Add(new SqlParameter("@PLAZO", plazo));
+                    command.Parameters.Add(new SqlParameter("@TIPO_EMPRESA", tipoempresa));
+                    command.Parameters.Add(new SqlParameter("@ID_CCOSTO_UNEGOCIO", codigoccosto));
+                    command.Parameters.Add(new SqlParameter("@ID_CLIENTE_SUCURSAL", idclientesucursal));
+                    command.Parameters.Add(new SqlParameter("@STATUS_PROYECTO", status));
+                    command.Parameters.Add(new SqlParameter("@PROBABILIDAD", probabilidadparameter));
+                    command.Parameters.Add(new SqlParameter("@PORCENTAJE_PROBABILIDAD", porcentajeparametr));
+                    command.Parameters.Add(new SqlParameter("@FECHA_PLAZO_NEG", fechaplazoparameter));
+                    await command.ExecuteNonQueryAsync();
+                    await conexion.CloseDatabaseConnectionAsync();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al registrar el cliente" + ex);
+                return false;
+            }
+        }
+
+
+
+
+
         public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, int? idusuario, string? nombre, int? idtipoempresa, string? statusproyecto)
         {
             try
@@ -268,7 +317,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<StatusProyecto>> ObtenerStatus(int id)
+        public async Task<List<StatusProyecto>> ObtenerStatus()
         {
             try
             {
@@ -276,9 +325,9 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "OBTENERSTATUS";
+                    command.CommandText = "OBTENERSTATUSFICHA";
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@ID", id));
+                    
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -290,7 +339,7 @@ namespace Proyectogestionhoras.Services
 
                             };
                             status.Add(statu);
-                            Debug.WriteLine(statu.TipoStatus);
+                            Debug.WriteLine($"TIPOSTATUS:"+statu.TipoStatus);
                         }
                         
                     }

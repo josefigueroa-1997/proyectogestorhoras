@@ -5,12 +5,13 @@ namespace Proyectogestionhoras.Services.Interface
 {
     public interface IProyecto
     {
+        public Task<bool> CrearProyecto(decimal monto,string moneda,string afectaiva,int idtipologia,string nombre,string numproyecto,DateTime fechainicio,DateTime fechatermino,int plazo,int tipoempresa,int codigoccosto,int idclientesucursal,int status,string? probabilidad,decimal? porcentajeprobabilidad,DateTime? fechaplazoneg);
         public Task<List<Unegocio>> ObtenerUnegocio();
         public Task<List<Ccosto>> ObtenerCcosto();
         public Task<List<CcostoUnegocio>> ObtenerCodigoCCosto(int idcosto,int idunegocio);
         public Task<List<Empresa>> ObtenerEmpresa();
         public Task<List<Tipologium>> ObtenerTipoligias();
-        public Task<List<StatusProyecto>> ObtenerStatus(int id);
+        public Task<List<StatusProyecto>> ObtenerStatus();
         public Task<List<ProyectoDTO>> ObtenerProyectos(int? id,int? idcliente,int? idusuario,string? nombre,int? idtipoempresa,string? statusproyecto);
         public Task<List<FacturaDTO>> ObtenerValoresFactura(int idcosto, int idunegocio);
         public Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcodigo);
