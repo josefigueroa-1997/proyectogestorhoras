@@ -3,6 +3,7 @@ using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Proyectogestionhoras.Models.ViewModel;
 namespace Proyectogestionhoras.Controllers
 {
     public class ProyectoController : Controller
@@ -39,7 +40,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff,int hhconsultora)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff,int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc)
         {
             try
             {
@@ -49,7 +50,44 @@ namespace Proyectogestionhoras.Controllers
                 int idsucursal = int.Parse(Request.Form["sucursal"]);
                 int idsucursalcliente = await GetIdClienteSucrusal(idcliente, idsucursal);
                 int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
-                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios, idcuentasocio,hhstaff,idcuentastaff, hhconsultora);
+
+                List<ServicioViewModel> servicios = new List<ServicioViewModel>();
+                var idsservicios = Request.Form["idservicio"];
+                var montoservicio = Request.Form["montoservicio"];
+                var idcuentaservicio = Request.Form["idcuentaservicio"];
+
+                for (int i = 0; i < idsservicios.Count; i++)
+                {
+                    var servicioViewModel = new ServicioViewModel
+                    {
+                        Idservicios = int.Parse(idsservicios[i]),
+                        IdCuenta = int.Parse(idcuentaservicio[i]),
+                        MontoServicio = decimal.Parse(montoservicio[i])
+                    };
+
+                    servicios.Add(servicioViewModel);
+                }
+
+                List<GastoViewModel> gastos = new List<GastoViewModel>();
+                var idgastos = Request.Form["idgastos[]"];
+                var montogasto = Request.Form["montogasto"];
+                var idcuentagasto = Request.Form["idcuentagasto"];
+                if (idgastos.Count != montogasto.Count || idgastos.Count != idcuentagasto.Count)
+                {
+                    throw new Exception("Los datos de gastos no coinciden en longitud.");
+                }
+                for (int i = 0; i < idgastos.Count; i++)
+                {
+                    var gastoviewmodel = new GastoViewModel
+                    {
+                        Idgastos = int.Parse (idgastos[i]),
+                        IdCuenta = int.Parse(idcuentagasto[i]),
+                        MontoGasto = decimal.Parse (montogasto[i])
+                    };
+                    gastos.Add(gastoviewmodel);
+                }
+
+                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios, idcuentasocio,hhstaff,idcuentastaff, hhconsultora, idcuentaconsultora, hhconsultorb,idcuentaconsultorb,hhconsultorc,idcuentaconsultorc, servicios, gastos);
                 if (resultado)
                 {
                     return RedirectToAction("ExitoCreacion");
@@ -67,6 +105,9 @@ namespace Proyectogestionhoras.Controllers
                 return View();
             }
         }
+
+
+        
 
         public IActionResult ExitoCreacion()
         {

@@ -8,26 +8,29 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection.Metadata;
+using Proyectogestionhoras.Models.ViewModel;
 namespace Proyectogestionhoras.Services
 {
     public class ProyectoService : IProyecto
     {
         private readonly Conexion conexion;
-        public ProyectoService(Conexion conexion) { 
+        private readonly PROYECTO_CONTROL_HORASContext context;
+        public ProyectoService(Conexion conexion,PROYECTO_CONTROL_HORASContext context) { 
             
             this.conexion = conexion;
+            this.context = context;
         }
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff, int hhconsultora)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff, int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
                 #pragma warning disable CS8600
                 object probabilidadparameter = (object)probabilidad ?? DBNull.Value;
                 object porcentajeparametr = (object)porcentajeprobabilidad ?? DBNull.Value;
-                object fechaplazoparameter = (object)fechaplazoneg ?? DBNull.Value;    
+                object fechaplazoparameter = (object)fechaplazoneg ?? DBNull.Value;
                 #pragma warning restore CS8600
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
@@ -55,10 +58,24 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@HHSTAFF", hhstaff));
                     command.Parameters.Add(new SqlParameter("@IDCUENTASTAFF", idcuentastaff));
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORA", hhconsultora));
+                    command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORA", idcuentaconsultora));
+                    command.Parameters.Add(new SqlParameter("@HHCONSULTORB", hhconsultorb));
+                    command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORB", idcuentaconsultorb));
+                    command.Parameters.Add(new SqlParameter("@HHCONSULTORC", hhconsultorc));
+                    command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORC", idcuentaconsultorc));
+
+                    SqlParameter idProyectoParameter = new SqlParameter("@ID_PROYECTO", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(idProyectoParameter);
+                    
                     await command.ExecuteNonQueryAsync();
-                    await conexion.CloseDatabaseConnectionAsync();
+                    int idProyectoCreado = (int)idProyectoParameter.Value;
+                    await registrarproyectoservicio(idProyectoCreado, servicios);
+                    await registrarproyectogasto(idProyectoCreado, gastos);
+                    return true;
                 }
-                return true;
             }
             catch (Exception ex)
             {
@@ -69,7 +86,59 @@ namespace Proyectogestionhoras.Services
         }
 
 
+        public async Task  registrarproyectoservicio(int idproyectocreado,List<ServicioViewModel> servicios)
+        {
+            if (servicios == null || !servicios.Any())
+            {
+               
+                return; 
+            }
+            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
 
+            using (DbCommand command = connection.CreateCommand() )
+            {
+                foreach (var servicio in servicios)
+                {
+                    var nuevaServicio = new ProyectoServicio
+                    {
+                        IdProyecto = idproyectocreado,
+                        IdServicio = servicio.Idservicios, 
+                        IdCuenta = servicio.IdCuenta, 
+                        Monto = servicio.MontoServicio 
+                    };
+
+                    await context.ProyectoServicios.AddAsync(nuevaServicio);
+                }
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task registrarproyectogasto(int idproyectocreado, List<GastoViewModel> gastos)
+        {
+            if (gastos == null || !gastos.Any())
+            {
+
+                return;
+            }
+            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+
+            using (DbCommand command = connection.CreateCommand())
+            {
+                foreach (var gasto in gastos)
+                {
+                    var nuevoGasto = new ProyectoGasto
+                    {
+                        IdProyecto = idproyectocreado,
+                        IdGastos = gasto.Idgastos,
+                        Idcuenta = gasto.IdCuenta,
+                        Monto = gasto.MontoGasto
+                    };
+
+                    await context.ProyectoGastos.AddAsync(nuevoGasto);
+                }
+                await context.SaveChangesAsync();
+            }
+        }
 
 
         public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, int? idusuario, string? nombre, int? idtipoempresa, string? statusproyecto)

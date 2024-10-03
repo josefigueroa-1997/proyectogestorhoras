@@ -253,7 +253,7 @@
             </div>
             <div class="form-group">
                 <label for="monto">Monto</label>
-                <input type="text" id="monto" name="monto">
+                <input type="text" id="monto" name="monto" required>
             </div>
             
         </div>
@@ -448,13 +448,13 @@
                             <input type="number" class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A">
+                            <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="consultorB" name="consultorB" placeholder="Horas B" >
+                            <input type="number" id="consultorB" name="hhconsultorb" placeholder="Horas B" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="consultorC" name="consultorC" placeholder="Horas C" >
+                            <input type="number" id="consultorC" name="hhconsultorc" placeholder="Horas C" required>
                         </td>
                     </tr>
                 </tbody>
@@ -638,7 +638,7 @@
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" name="idcuentaconsultora" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
                             
@@ -646,14 +646,14 @@
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" name="idcuentaconsultorb" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" name="idcuentaconsultorc" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
@@ -868,7 +868,7 @@
                 <tbody>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select class="serviciosSelect" name="nombreservicio">
+                            <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
                                 <option value="" disabled selected>Seleccione un Servicio</option>
 
 
@@ -915,7 +915,7 @@
                 <tbody>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select class="gastosSelect" name="nombregasto">
+                            <select class="gastosSelect" name="idgastos[]" onchange="checkRequiredGasto(this)">
                                 <option value="" disabled selected>Seleccione un Gasto</option>
                                 
 
@@ -931,7 +931,7 @@
                         </td>
                        
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input class="idcuentagastos" name="idcuentagastos" readonly/>
+                            <input class="idcuentagastos" name="idcuentagasto" readonly />
                                 
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
@@ -1159,7 +1159,7 @@
 
         newRow.innerHTML = `
             <td style="padding: 10px; border: 1px solid #ddd;">
-                            <select class="serviciosSelect" name="nombreservicio">
+                                    <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
                                     <option value="" disabled selected>Seleccione un Servicio</option>
 
 
@@ -1173,7 +1173,7 @@
                 <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" value="${nombreservicioValue}" readonly/>
             </td>
             <td style="padding: 10px; border: 1px solid #ddd;">
-                <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" value="${idcuentaservicioValue}" readonly/>
+                    <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" value="${idcuentaservicioValue}" readonly/>
             </td>
             <td style="padding: 10px; border: 1px solid #ddd;">
                 <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" value="${cuentaservicioValue}" readonly />
@@ -1240,14 +1240,22 @@
 
             const selectGastos = document.createElement('select');
             selectGastos.className = "gastosSelect";
-            selectGastos.name = "nombregasto";
-            selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option>';
+            selectGastos.name = "idgastos[]";
+            selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option> ';
             servicioCell.appendChild(selectGastos);
+         
+            selectGastos.addEventListener('change', function () {
+                checkRequiredGasto(selectGastos);
+            });
+
+            
+            const row = document.querySelector('tr'); 
+            row.appendChild(selectGastos);
             const montoInput = document.createElement('input');
             montoInput.type = 'text'; 
             montoInput.className = 'montogasto';
             montoCell.appendChild(montoInput);
-
+            montoInput.name = "montogasto";
           
             montoInput.addEventListener("input", formatInput);
             centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
@@ -1255,7 +1263,7 @@
            
             segmentoCell.innerHTML = '<input class="segmentogastos" name="segmentogastos" readonly />';
  
-            idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagastos" readonly />';
+            idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagasto" readonly />';
             cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
 
            
@@ -2130,6 +2138,34 @@
   
         window.location.reload();
     });
+    function checkRequired(selectElement) {
+        // Obtener la fila del servicio correspondiente
+        const row = selectElement.closest('tr');
+
+        // Obtener el campo de monto
+        const montoInput = row.querySelector('.montoservicio');
+
+        // Si se selecciona un servicio, se requiere el campo monto
+        if (selectElement.value) {
+            montoInput.setAttribute('required', 'required');
+        } else {
+            montoInput.removeAttribute('required');
+        }
+    }
+    function checkRequiredGasto(selectElement) {
+        // Obtener la fila del servicio correspondiente
+        const row = selectElement.closest('tr');
+
+        // Obtener el campo de monto
+        const montoInput = row.querySelector('.montogasto');
+
+        // Si se selecciona un servicio, se requiere el campo monto
+        if (selectElement.value) {
+            montoInput.setAttribute('required', 'required');
+        } else {
+            montoInput.removeAttribute('required');
+        }
+    }
 </script>
 
 
