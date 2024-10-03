@@ -40,7 +40,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff,int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff,int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc,int idcuentafactura)
         {
             try
             {
@@ -72,10 +72,7 @@ namespace Proyectogestionhoras.Controllers
                 var idgastos = Request.Form["idgastos[]"];
                 var montogasto = Request.Form["montogasto"];
                 var idcuentagasto = Request.Form["idcuentagasto"];
-                if (idgastos.Count != montogasto.Count || idgastos.Count != idcuentagasto.Count)
-                {
-                    throw new Exception("Los datos de gastos no coinciden en longitud.");
-                }
+                
                 for (int i = 0; i < idgastos.Count; i++)
                 {
                     var gastoviewmodel = new GastoViewModel
@@ -87,7 +84,7 @@ namespace Proyectogestionhoras.Controllers
                     gastos.Add(gastoviewmodel);
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios, idcuentasocio,hhstaff,idcuentastaff, hhconsultora, idcuentaconsultora, hhconsultorb,idcuentaconsultorb,hhconsultorc,idcuentaconsultorc, servicios, gastos);
+                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios, idcuentasocio,hhstaff,idcuentastaff, hhconsultora, idcuentaconsultora, hhconsultorb,idcuentaconsultorb,hhconsultorc,idcuentaconsultorc, servicios, gastos, idcuentafactura);
                 if (resultado)
                 {
                     return RedirectToAction("ExitoCreacion");
@@ -106,7 +103,12 @@ namespace Proyectogestionhoras.Controllers
             }
         }
 
-
+        public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
+        {
+            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
+            ViewBag.Proyectos = proyectos;
+            return View("DetalleProyecto");
+        }
         
 
         public IActionResult ExitoCreacion()

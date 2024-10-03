@@ -1,0 +1,130 @@
+﻿@{
+
+    ViewData["Title"] = "Detalle Proyecto";
+
+
+}
+
+
+<style>
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+
+</style>
+
+<div class="form-container">
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+        <table style="width: 100%; border-collapse: collapse; margin: 0 auto;">
+            <thead>
+                <tr style="background-color: white; color: black; text-align:center">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+
+                </tr>
+
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong><span id="egresosmargen"></span></strong>
+                    </td>
+
+                </tr>
+                <tr style="background-color: #fa8164; color: black;">
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+</div>

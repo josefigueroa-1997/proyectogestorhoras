@@ -23,7 +23,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff, int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff, int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc, List<ServicioViewModel> servicios, List<GastoViewModel> gastos,int idcuentafactura)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORB", idcuentaconsultorb));
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORC", hhconsultorc));
                     command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORC", idcuentaconsultorc));
-
+                    command.Parameters.Add(new SqlParameter("@IDCUENTAFACTURA", idcuentafactura));
                     SqlParameter idProyectoParameter = new SqlParameter("@ID_PROYECTO", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -141,17 +141,20 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, int? idusuario, string? nombre, int? idtipoempresa, string? statusproyecto)
+        public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
         {
             try
             {
                 #pragma warning disable CS8600
                 object idparameter = (object)id ?? DBNull.Value;
                 object idclienteparameter = (object)idcliente ?? DBNull.Value;
-                object idusuarioparameter = (object)idusuario ?? DBNull.Value;
                 object nombreparameter = (object)nombre ?? DBNull.Value;
                 object idtipoempresaparameter = (object)idtipoempresa ?? DBNull.Value;
                 object statusproyectoparameter = (object)statusproyecto ?? DBNull.Value;
+                object numproparameter = (object)numproyecto ?? DBNull.Value;
+                object tipologiaparameter = (object)idtipologia ?? DBNull.Value;
+                object unegocioparameter = (object)unidadneg ?? DBNull.Value;
+                object ccostoparameter = (object)idccosto ?? DBNull.Value;
                 #pragma warning restore CS8600
                 var proyectos = new List<ProyectoDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
@@ -161,10 +164,13 @@ namespace Proyectogestionhoras.Services
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@ID",idparameter));
                     cmd.Parameters.Add(new SqlParameter("@IDCLIENTE", idclienteparameter));
-                    cmd.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuarioparameter));
                     cmd.Parameters.Add(new SqlParameter("@NOMBRE", nombreparameter));
                     cmd.Parameters.Add(new SqlParameter("@ID_TIPOEMPRESA", idtipoempresaparameter));
                     cmd.Parameters.Add(new SqlParameter("@STATUS_PROYECTO", statusproyectoparameter));
+                    cmd.Parameters.Add(new SqlParameter("@NUMPROYECTO", numproparameter));
+                    cmd.Parameters.Add(new SqlParameter("@IDTIPOLOGIA", tipologiaparameter));
+                    cmd.Parameters.Add(new SqlParameter("@UNIDADNEGOCIO", unegocioparameter));
+                    cmd.Parameters.Add(new SqlParameter("@IDCENTROCOSTO", ccostoparameter));
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -172,24 +178,25 @@ namespace Proyectogestionhoras.Services
                             ProyectoDTO proyecto = new() { 
                             
                                 Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                numproyecto = reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
+                                Tipo_Unegocio = reader.GetString(reader.GetOrdinal("TIPO_UNEGOCIO")),
+                                Tipo_CCosto = reader.GetString(reader.GetOrdinal("TIPO_CCOSTO")),
+                                Codigo = reader.GetString(reader.GetOrdinal("CODIGO")),
+                                NombreCliente = reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
                                 NombreProyecto = reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
-                                num_proyecto = reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
-                                Id_Cliente = reader.GetInt32(reader.GetOrdinal("ID_CLIENTE")),
-                                Tipo_Status = reader.GetString(reader.GetOrdinal("TIPO_STATUS")),
-                                Fecha_Inicio = reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")).Date,
-                                Fecha_Termino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")).Date ,
-                                Plazo = reader.GetInt32(reader.GetOrdinal("PLAZO")),
-                                Nombre_Cliente = reader.GetString(reader.GetOrdinal("NOMBRE_CLIENTE")),
                                 Tipo_Tipologia = reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
                                 Tipo_Empresa = reader.GetString(reader.GetOrdinal("TIPO_EMPRESA")),
-                                CCOSTO_NEGOCIO = reader.GetString(reader.GetOrdinal("CCOSTO_NEGOCIO")),
-                                Linkedin = reader.IsDBNull(reader.GetOrdinal("LINKEDIN")) ? string.Empty : reader.GetString(reader.GetOrdinal("LINKEDIN")),
-                                Integrantes_Proyecto = reader.GetString(reader.GetOrdinal("INTEGRANTES_PROYECTO")),
-                                HH_Semanales = reader.GetInt32(reader.GetOrdinal("HH_SEMANALES")),
-                                Nombre_Recurso = reader.GetString(reader.GetOrdinal("NOMBRE_RECURSO")),
-                                Pais = reader.GetString(reader.GetOrdinal("PAIS")),
-                                Ciudad = reader.GetString(reader.GetOrdinal("CIUDAD"))
+                                AfectaIva = reader.GetString(reader.GetOrdinal("AFECTAIVA")),
+                                Tipo_Status = reader.GetString(reader.GetOrdinal("TIPO_STATUS")),
+                                Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
+                                Porcentaje_Probabilidad = reader.IsDBNull(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")) ? 0 : reader.GetDecimal(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")),
+                                Plazo = reader.GetInt32(reader.GetOrdinal("PLAZO")),
+                                Fecha_Inicio = reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")).Date,
+                                Fecha_Termino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")).Date ,
                                 
+                                Fecha_Plazo_Neg = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")).Date
+
+
                             };
                             proyectos.Add(proyecto);
                             

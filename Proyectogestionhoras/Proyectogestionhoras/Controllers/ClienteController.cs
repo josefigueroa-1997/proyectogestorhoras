@@ -35,7 +35,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task <IActionResult> ProyectosCliente(int? id, int? idcliente, int? idusuario, string? nombre, int? idtipoempresa, string? statusproyecto)
         {
 
-            var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, idusuario, nombre,idtipoempresa, statusproyecto);
+            //var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, idusuario, nombre,idtipoempresa, statusproyecto);
             var clientedetalle = await service.ObtenerClientesIndex(idcliente);
             var contactos = await contactoService.ObtenerContactos(0, idcliente, null);
             if (idcliente.HasValue)

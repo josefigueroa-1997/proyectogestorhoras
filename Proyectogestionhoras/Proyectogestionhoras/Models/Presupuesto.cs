@@ -14,6 +14,7 @@ namespace Proyectogestionhoras.Models
         public decimal Monto { get; set; }
         public string Moneda { get; set; } = null!;
         public string Afectaiva { get; set; } = null!;
+        public decimal? Montoiva { get; set; }
 
         public virtual ICollection<Proyecto> Proyectos { get; set; }
     }
