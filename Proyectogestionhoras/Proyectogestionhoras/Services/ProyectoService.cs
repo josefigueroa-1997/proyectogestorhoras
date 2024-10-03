@@ -20,7 +20,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff, int hhconsultora)
         {
             try
             {
@@ -50,6 +50,11 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@PROBABILIDAD", probabilidadparameter));
                     command.Parameters.Add(new SqlParameter("@PORCENTAJE_PROBABILIDAD", porcentajeparametr));
                     command.Parameters.Add(new SqlParameter("@FECHA_PLAZO_NEG", fechaplazoparameter));
+                    command.Parameters.Add(new SqlParameter("@HHSOCIOS", hhsocios));
+                    command.Parameters.Add(new SqlParameter("@IDCUENTASOCIO", idcuentasocio));
+                    command.Parameters.Add(new SqlParameter("@HHSTAFF", hhstaff));
+                    command.Parameters.Add(new SqlParameter("@IDCUENTASTAFF", idcuentastaff));
+                    command.Parameters.Add(new SqlParameter("@HHCONSULTORA", hhconsultora));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }

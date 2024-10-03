@@ -10,6 +10,5 @@ namespace Proyectogestionhoras.Models
         public int IdUsuProy { get; set; }
 
         public virtual Planilla IdPlanillaNavigation { get; set; } = null!;
-        public virtual UsuarioProyecto IdUsuProyNavigation { get; set; } = null!;
     }
 }

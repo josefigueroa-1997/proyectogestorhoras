@@ -442,13 +442,13 @@
                     <tr>
                         <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-socios" id="horasSocios" name="horasSocios" placeholder="Horas Socios" required>
+                            <input type="number" class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-staff" id="horasStaff" name="horasStaff" placeholder="Horas Staff" >
+                            <input type="number" class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="consultorA" name="consultorA" placeholder="Horas A" >
+                            <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A">
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="number" id="consultorB" name="consultorB" placeholder="Horas B" >
@@ -623,14 +623,14 @@
                     <tbody>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentasocio" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalstaff" style="font-weight: bold;"></span></td>
@@ -1116,27 +1116,33 @@
     
        
     document.addEventListener('DOMContentLoaded', function () {
-        
         const estadoProyecto = document.getElementById('estadoProyecto');
         const probabilidadInput = document.getElementById('probabilidad').parentElement;
         const nivelProbabilidadInput = document.getElementById('nivelprobabilidad').parentElement;
         const fechaplazoInput = document.getElementById('fechaPlazo').parentElement;
-        // Función para mostrar/ocultar los inputs en función del valor seleccionado
+
         function toggleInputs() {
             const selectedValue = estadoProyecto.value;
 
             if (selectedValue == "1") {
-             
                 probabilidadInput.style.display = 'block';
                 nivelProbabilidadInput.style.display = 'block';
                 fechaplazoInput.style.display = 'block';
+
+                probabilidadInput.querySelector('select').setAttribute('required', 'required');
+                nivelProbabilidadInput.querySelector('input').setAttribute('required', 'required');
+                fechaplazoInput.querySelector('input').setAttribute('required', 'required');
             } else {
-   
                 probabilidadInput.style.display = 'none';
                 nivelProbabilidadInput.style.display = 'none';
                 fechaplazoInput.style.display = 'none';
+
+                probabilidadInput.querySelector('select').removeAttribute('required');
+                nivelProbabilidadInput.querySelector('input').removeAttribute('required');
+                fechaplazoInput.querySelector('input').removeAttribute('required');
             }
         }
+
         estadoProyecto.addEventListener('change', toggleInputs);
         toggleInputs();
     });

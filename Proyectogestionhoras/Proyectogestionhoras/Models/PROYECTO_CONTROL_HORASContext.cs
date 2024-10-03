@@ -44,7 +44,15 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-   
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=PROYECTO_CONTROL_HORAS.mssql.somee.com;Database=PROYECTO_CONTROL_HORAS;user=pepelechero_SQLLogin_1;pwd=87zhqvm9wv;");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Ccosto>(entity =>
@@ -135,7 +143,7 @@ namespace Proyectogestionhoras.Models
                     .HasColumnName("PAIS");
 
                 entity.Property(e => e.Telefono)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("TELEFONO");
             });
@@ -295,12 +303,6 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.IdPlanilla)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_PLANILLA_FK");
-
-                entity.HasOne(d => d.IdUsuProyNavigation)
-                    .WithMany(p => p.PlanillaUsusarioProyectos)
-                    .HasForeignKey(d => d.IdUsuProy)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("ID_USU_PRO_FK");
             });
 
             modelBuilder.Entity<Presupuesto>(entity =>
@@ -337,6 +339,10 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.FechaInicio)
                     .HasColumnType("date")
                     .HasColumnName("FECHA_INICIO");
+
+                entity.Property(e => e.FechaPlazoNeg)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_PLAZO_NEG");
 
                 entity.Property(e => e.FechaTermino)
                     .HasColumnType("date")
@@ -700,7 +706,15 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.HhSemanales).HasColumnName("HH_SEMANALES");
+                entity.Property(e => e.HhConsultora).HasColumnName("HH_CONSULTORA");
+
+                entity.Property(e => e.HhConsultorb).HasColumnName("HH_CONSULTORB");
+
+                entity.Property(e => e.HhConsultorc).HasColumnName("HH_CONSULTORC");
+
+                entity.Property(e => e.HhSocios).HasColumnName("HH_SOCIOS");
+
+                entity.Property(e => e.HhStaff).HasColumnName("HH_STAFF");
 
                 entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
 
@@ -710,13 +724,13 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.UsuarioProyectos)
                     .HasForeignKey(d => d.IdProyecto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("USUARIO_PROYECTO_IDPROYECTO_FK");
+                    .HasConstraintName("PRO_USU_FK");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.UsuarioProyectos)
                     .HasForeignKey(d => d.IdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("USUARIO_PROYECTO_IDUSUARIO_FK");
+                    .HasConstraintName("USUARIO_PRO_FK");
             });
 
             OnModelCreatingPartial(modelBuilder);

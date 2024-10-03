@@ -13,10 +13,10 @@ namespace Proyectogestionhoras.Models
 
         public int Id { get; set; }
         public string Nombre { get; set; } = null!;
-        public string Direccion { get; set; } = null!;
-        public string Ciudad { get; set; } = null!;
-        public string Pais { get; set; } = null!;
-        public string Telefono { get; set; } = null!;
+        public string? Direccion { get; set; }
+        public string? Ciudad { get; set; }
+        public string? Pais { get; set; }
+        public string? Telefono { get; set; }
         public string? PagWeb { get; set; }
         public string? Linkedin { get; set; }
         public string? Instagram { get; set; }

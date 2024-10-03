@@ -28,6 +28,7 @@ namespace Proyectogestionhoras.Models
         public int StatusProyecto { get; set; }
         public string? Probabilidad { get; set; }
         public decimal? PorcentajeProbabilidad { get; set; }
+        public DateTime? FechaPlazoNeg { get; set; }
 
         public virtual CcostoUnegocio? IdCcostoUnegocioNavigation { get; set; }
         public virtual SucursalCliente IdClienteSucursalNavigation { get; set; } = null!;
