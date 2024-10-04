@@ -643,6 +643,7 @@
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
                             
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorA" style="font-weight: bold;"></span></td>
+                            <input type="hidden" class="idhonorarioscuenta" name="idhonorarioscuentaa" />
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
@@ -650,6 +651,7 @@
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
+                            <input type="hidden" class="idhonorarioscuenta" name="idhonorarioscuentab" />
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
@@ -657,6 +659,7 @@
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
+                            <input type="hidden" class="idhonorarioscuenta" name="idhonorarioscuentac" />
                         </tr>
                         <tr >
                             <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
@@ -1808,6 +1811,7 @@
                         $(".nombresegmentohonorario").val(data[0].nombre);
                         $(".idcuentahonorario").val(data[0].idcuenta);
                         $(".cuentahonorario").val(data[0].cuenta);
+                        $(".idhonorarioscuenta").val(data[0].id);
                     } else {
 
                         $('.nombresegmentohonorario').val('');

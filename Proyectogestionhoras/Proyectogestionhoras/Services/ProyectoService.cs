@@ -23,7 +23,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff, int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc, List<ServicioViewModel> servicios, List<GastoViewModel> gastos,int idcuentafactura)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -54,16 +54,15 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@PORCENTAJE_PROBABILIDAD", porcentajeparametr));
                     command.Parameters.Add(new SqlParameter("@FECHA_PLAZO_NEG", fechaplazoparameter));
                     command.Parameters.Add(new SqlParameter("@HHSOCIOS", hhsocios));
-                    command.Parameters.Add(new SqlParameter("@IDCUENTASOCIO", idcuentasocio));
+                   
                     command.Parameters.Add(new SqlParameter("@HHSTAFF", hhstaff));
-                    command.Parameters.Add(new SqlParameter("@IDCUENTASTAFF", idcuentastaff));
+                    
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORA", hhconsultora));
-                    command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORA", idcuentaconsultora));
+                   
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORB", hhconsultorb));
-                    command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORB", idcuentaconsultorb));
+                 
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORC", hhconsultorc));
-                    command.Parameters.Add(new SqlParameter("@IDCUENTACONSULTORC", idcuentaconsultorc));
-                    command.Parameters.Add(new SqlParameter("@IDCUENTAFACTURA", idcuentafactura));
+                  
                     SqlParameter idProyectoParameter = new SqlParameter("@ID_PROYECTO", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -693,8 +692,8 @@ namespace Proyectogestionhoras.Services
                             {
                                 NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
-
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                Id = reader.GetInt32(reader.GetOrdinal("ID"))
                             };
                             consultores.Add(consultor);
 
@@ -733,7 +732,8 @@ namespace Proyectogestionhoras.Services
                             {
                                 NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                Id = reader.GetInt32(reader.GetOrdinal("ID"))
 
                             };
                             honorarios.Add(honorario);

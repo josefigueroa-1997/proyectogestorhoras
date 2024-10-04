@@ -40,7 +40,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios,int idcuentasocio, int hhstaff, int idcuentastaff,int hhconsultora, int idcuentaconsultora, int hhconsultorb, int idcuentaconsultorb, int hhconsultorc, int idcuentaconsultorc,int idcuentafactura)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff,int hhconsultora, int hhconsultorb, int hhconsultorc)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Proyectogestionhoras.Controllers
                     gastos.Add(gastoviewmodel);
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios, idcuentasocio,hhstaff,idcuentastaff, hhconsultora, idcuentaconsultora, hhconsultorb,idcuentaconsultorb,hhconsultorc,idcuentaconsultorc, servicios, gastos, idcuentafactura);
+                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc, servicios, gastos);
                 if (resultado)
                 {
                     return RedirectToAction("ExitoCreacion");

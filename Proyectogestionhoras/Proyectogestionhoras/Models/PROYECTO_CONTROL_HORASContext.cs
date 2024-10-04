@@ -24,6 +24,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
+        public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
         public virtual DbSet<Presupuesto> Presupuestos { get; set; } = null!;
@@ -249,6 +250,26 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
+            });
+
+            modelBuilder.Entity<HistorialCosto>(entity =>
+            {
+                entity.ToTable("HISTORIAL_COSTOS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CostoUnitario).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.FechaFin).HasColumnType("date");
+
+                entity.Property(e => e.FechaInicio).HasColumnType("date");
+
+                entity.Property(e => e.IdUsuario).HasColumnName("ID_USUARIO");
+
+                entity.HasOne(d => d.IdUsuarioNavigation)
+                    .WithMany(p => p.HistorialCostos)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .HasConstraintName("FK_HISTORIAL_COSTOS_USUARIO");
             });
 
             modelBuilder.Entity<Planilla>(entity =>
@@ -679,6 +700,8 @@ namespace Proyectogestionhoras.Models
                 entity.ToTable("USUARIO_PROYECTO");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CostoUnitarioAsignado).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.HhConsultora).HasColumnName("HH_CONSULTORA");
 

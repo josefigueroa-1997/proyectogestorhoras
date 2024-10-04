@@ -5,7 +5,7 @@ namespace Proyectogestionhoras.Services.Interface
 {
     public interface IProyecto
     {
-        public Task<bool> CrearProyecto(decimal monto,string moneda,string afectaiva,int idtipologia,string nombre,string numproyecto,DateTime fechainicio,DateTime fechatermino,int plazo,int tipoempresa,int codigoccosto,int idclientesucursal,int status,string? probabilidad,decimal? porcentajeprobabilidad,DateTime? fechaplazoneg,int hhsocios,int idcuentasocio,int hhstaff,int idcuentastaff,int hhconsultora,int idcuentaconsultora,int hhconsultorb,int idcuentaconsultorb,int hhconsultorc,int idcuentaconsultorc,List<ServicioViewModel> servicios,List<GastoViewModel> gastos,int idcuentafactura);
+        public Task<bool> CrearProyecto(decimal monto,string moneda,string afectaiva,int idtipologia,string nombre,string numproyecto,DateTime fechainicio,DateTime fechatermino,int plazo,int tipoempresa,int codigoccosto,int idclientesucursal,int status,string? probabilidad,decimal? porcentajeprobabilidad,DateTime? fechaplazoneg,int hhsocios,int hhstaff,int hhconsultora,int hhconsultorb,int hhconsultorc,List<ServicioViewModel> servicios,List<GastoViewModel> gastos);
         public Task<List<Unegocio>> ObtenerUnegocio();
         public Task<List<Ccosto>> ObtenerCcosto();
         public Task<List<CcostoUnegocio>> ObtenerCodigoCCosto(int idcosto,int idunegocio);
