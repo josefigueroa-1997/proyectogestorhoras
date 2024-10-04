@@ -292,6 +292,7 @@
             <div class="form-group">
             
                 <input type="hidden" id="idcuentafactura" name="idcuentafactura" readonly>
+                <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
                 <input type="hidden" id="cuentafactura" name="cuenta" readonly>
                 <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
                 <input type="hidden" id="codigo"/>
@@ -303,6 +304,7 @@
                 <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor"/>
                 <input type="hidden" class="cuentaconsultor" />
                 <input type="hidden" class="nombresegmentohonorario" />
+                <input type="hidden" class="idsegmentoservicio" id="idsegmentoservicio" />
             </div>
         </div>
         <div class="form-group">
@@ -623,43 +625,102 @@
                     <tbody>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentasocio" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentasocio" name="idcuentasocio" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentosocio" readonly/>
+                                <select class="segmentoSocio" style="display:none;" name="idsegmentosocio">
+                                    <option value="" disabled selected>Seleccione un segmento</option>
+                                    @foreach (var segmento in ViewBag.SegmentoCosto)
+                                    {
+                                        if(segmento.TipoSegmento == "Costos")
+                                        {
+                                            <option value="@segmento.Id">@segmento.Nombre</option>
+                                        }
+                                        
+                                    }
+                                </select>
+
+                            </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
+                            <input type="hidden" class="idsegmentosocio" name="idsegmentosocio" />
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/>
+                                <select class="segmentoConsultor" style="display:none;" name="idsegmentostaff">
+                                    <option value="" disabled selected>Seleccione un segmento</option>
+                                    @foreach (var segmento in ViewBag.SegmentoCosto)
+                                    {
+                                        if (segmento.TipoSegmento == "Costos")
+                                        {
+                                            <option value="@segmento.Id">@segmento.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalstaff" style="font-weight: bold;"></span></td>
-                            
+                            <input type="hidden" class="idsegmentoconsultor" name="idsegmentostaff" />
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" name="idcuentaconsultora" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioA" name="idcuentaconsultora" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioA" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorarioA" />
+                                <select class="segmentoConsultorA" style="display:none;" name="idsegmentoconsultora">
+                                    <option value="" disabled selected>Seleccione un segmento</option>
+                                    @foreach (var segmento in ViewBag.SegmentoCosto)
+                                    {
+                                        if (segmento.TipoSegmento == "Honorarios")
+                                        {
+                                            <option value="@segmento.Id">@segmento.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            
+                            </td>
                             
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorA" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idhonorarioscuenta" name="idhonorarioscuentaa" />
+                            <input type="hidden" class="idsegmentohonorarioA" name="idsegmentoconsultora" />
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" name="idcuentaconsultorb" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly/></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioB" name="idcuentaconsultorb" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioB" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorarioB" readonly/>
+                                <select class="segmentoConsultorB" style="display:none;" name="idsegmentoconsultorb">
+                                    <option value="" disabled selected>Seleccione un segmento</option>
+                                    @foreach (var segmento in ViewBag.SegmentoCosto)
+                                    {
+                                        if (segmento.TipoSegmento == "Honorarios")
+                                        {
+                                            <option value="@segmento.Id">@segmento.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idhonorarioscuenta" name="idhonorarioscuentab" />
+                            <input type="hidden" class="idsegmentohonorarioB" name="idsegmentoconsultorb" />
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorario" name="idcuentaconsultorc" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorario" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorario" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioC" name="idcuentaconsultorc" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioC" readonly /></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentohonorarioC" readonly />
+                                <select class="segmentoConsultorC" style="display:none;" name="idsegmentoconsultorc">
+                                    <option value="" disabled selected>Seleccione un segmento</option>
+                                    @foreach (var segmento in ViewBag.SegmentoCosto)
+                                    {
+                                        if (segmento.TipoSegmento == "Honorarios")
+                                        {
+                                            <option value="@segmento.Id">@segmento.Nombre</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idhonorarioscuenta" name="idhonorarioscuentac" />
+                            <input type="hidden" class="idsegmentohonorarioC" name="idsegmentoconsultorc" />
                         </tr>
                         <tr >
                             <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
@@ -669,7 +730,7 @@
                     </tbody>
                 </table>
 
-               
+        
             </div>
         </div>
 
@@ -883,6 +944,10 @@
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
+                            <select class="segmentoservicio" style="display:none;" name="idsegmentoservicio">
+                                <option value="" disabled selected>Seleccione un segmento</option>
+                                
+                            </select>
                         </td>
                         
                         <td style="padding: 10px; border: 1px solid #ddd;">
@@ -891,7 +956,10 @@
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
                         </td>
-                        
+                        <td style="display:none;">
+                            <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                        </td>
+                       
                     </tr>
                     
                     
@@ -940,6 +1008,9 @@
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input class="cuentagastos" name="cuentagastos" readonly />
 
+                        </td>
+                        <td style="display:none">
+                            <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
                         </td>
                        
                     </tr>
@@ -1149,59 +1220,79 @@
         estadoProyecto.addEventListener('change', toggleInputs);
         toggleInputs();
     });
-
+    
     const totalMontoElement = document.getElementById('montoTotal');
-    document.getElementById('agregarFila').addEventListener('click', function (e) {
-        const newRow = document.createElement('tr');
-        e.preventDefault();
-        
-        const costoservicioValue = document.querySelector('#ccostoservicio') ? document.getElementById('ccostoservicio').value : '';
-        const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
-        const idcuentaservicioValue = document.querySelector('#idcuentaservicio') ? document.getElementById('idcuentaservicio').value : '';
-        const cuentaservicioValue = document.querySelector('#cuentaservicio') ? document.getElementById('cuentaservicio').value : '';
+    $(document).ready(function () {
+        // Llama a la función para cargar segmentos en los selects existentes
+        $('.segmentoservicio').each(function () {
+            obtenerSegmentosCostos(this);
+        });
 
-        newRow.innerHTML = `
-            <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
-                                    <option value="" disabled selected>Seleccione un Servicio</option>
+        document.getElementById('agregarFila').addEventListener('click', function (e) {
+            e.preventDefault();
+            const newRow = document.createElement('tr');
 
+            const costoservicioValue = document.querySelector('#ccostoservicio') ? document.getElementById('ccostoservicio').value : '';
+            const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
+            const idcuentaservicioValue = document.querySelector('#idcuentaservicio') ? document.getElementById('idcuentaservicio').value : '';
+            const cuentaservicioValue = document.querySelector('#cuentaservicio') ? document.getElementById('cuentaservicio').value : '';
+            const idsegmentoservicioValue = document.querySelector('.idsegmentoservicio') ? document.querySelector('.idsegmentoservicio').value : ''; // Cambié el selector a '.idsegmentoservicio'
 
-                                </select>
-            </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input class="montoservicio" name="montoservicio"   type="text"></td>
-            <td style="padding: 10px; border: 1px solid #ddd;">
-                <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
-            </td>
-            <td style="padding: 10px; border: 1px solid #ddd;">
-                <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" value="${nombreservicioValue}" readonly/>
-            </td>
-            <td style="padding: 10px; border: 1px solid #ddd;">
-                    <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" value="${idcuentaservicioValue}" readonly/>
-            </td>
-            <td style="padding: 10px; border: 1px solid #ddd;">
-                <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" value="${cuentaservicioValue}" readonly />
-            </td>
-            <td style="padding: 10px; border: 1px solid #ddd;">
-                <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
-            </td>
-        `;
+            newRow.innerHTML = `
+        <td style="padding: 10px; border: 1px solid #ddd;">
+            <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
+                <option value="" disabled selected>Seleccione un Servicio</option>
+            </select>
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+            <input class="montoservicio" name="montoservicio" type="text">
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+            <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+            <input class="nombresegmentoservicio" name="nombresegmentoservicio" value="${nombreservicioValue}" readonly/>
+            <select class="segmentoservicio" style="display:none;" name="idsegmentoservicio">
+                <option value="" disabled selected>Seleccione un segmento</option>
+            </select>
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+            <input class="idcuentaservicio" name="idcuentaservicio" value="${idcuentaservicioValue}" readonly/>
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+            <input class="cuentaservicio" name="cuentaservicio" value="${cuentaservicioValue}" readonly />
+        </td>
+        <td style="display:none;">
+            <input class="idsegmentoservicio" name="idsegmentoservicio" value="${idsegmentoservicioValue}" />
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+            <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
+        </td>
+    `;
 
-        document.querySelector('#tablaservicios tbody').appendChild(newRow);
-        cargarServicios(newRow.querySelector('.serviciosSelect'));
-        const newMontoInput = newRow.querySelector('.montoservicio');
-        newMontoInput.addEventListener("input", function () {
-            formatInput(event); 
+            document.querySelector('#tablaservicios tbody').appendChild(newRow);
+
+            // Llama a la función para cargar los segmentos en el nuevo select
+            obtenerSegmentosCostos(newRow.querySelector('.segmentoservicio'));
+            cargarServicios(newRow.querySelector('.serviciosSelect'));
+
+            const newMontoInput = newRow.querySelector('.montoservicio');
+            newMontoInput.addEventListener("input", function (event) {
+                formatInput(event);
+                updateTotal();
+                obtenerMargenEsperado();
+            });
+
+            newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
+                newRow.remove();
+                updateTotal();
+                obtenerMargenEsperado();
+            });
+
             updateTotal();
             obtenerMargenEsperado();
-            
+
         });
-        newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
-            newRow.remove();
-            updateTotal();
-            obtenerMargenEsperado();
-        });
-        updateTotal();
-        obtenerMargenEsperado();
     });
    function updateTotal() {
         let total = 0;
@@ -1223,83 +1314,102 @@
         updateTotalGasto();
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+   document.addEventListener('DOMContentLoaded', function () {
 
-        document.getElementById('agregarFilaGastos').addEventListener('click', function (e) {
-            const idUnidadNegocio = $("#unidadNegocio").val();
-            const idCentroCosto = $("#centroCosto").val();
-            const costoGastoValue = document.getElementById('ccostogasto').value;
-            e.preventDefault();
-            const newRow = document.createElement('tr');
+    document.getElementById('agregarFilaGastos').addEventListener('click', function (e) {
+        const idUnidadNegocio = $("#unidadNegocio").val();
+        const idCentroCosto = $("#centroCosto").val();
+        const costoGastoValue = document.getElementById('ccostogasto').value;
+        e.preventDefault();
+        const newRow = document.createElement('tr');
 
-            const servicioCell = document.createElement('td');
-            const montoCell = document.createElement('td');
-            const centroCostoCell = document.createElement('td');
-            const segmentoCell = document.createElement('td');
-            const idCuentaCell = document.createElement('td');
-            const cuentaCell = document.createElement('td');
-            const eliminarCell = document.createElement('td'); 
+        const servicioCell = document.createElement('td');
+        const montoCell = document.createElement('td');
+        const centroCostoCell = document.createElement('td');
+        const segmentoCell = document.createElement('td');
+        const idCuentaCell = document.createElement('td');
+        const cuentaCell = document.createElement('td');
+        const eliminarCell = document.createElement('td');
+        const idSegmentoGastoCell = document.createElement('td'); // Nueva celda para el ID
 
+        // Campo oculto para 'idsegmentogasto'
+        const idSegmentoGastoInput = document.createElement('input');
+        idSegmentoGastoInput.type = 'text';
+        idSegmentoGastoInput.className = 'idsegmentogasto';
+        idSegmentoGastoInput.name = 'idsegmentogasto';
+        idSegmentoGastoInput.style.display = 'none'; // Ocultar el input
+        idSegmentoGastoCell.appendChild(idSegmentoGastoInput);
 
-            const selectGastos = document.createElement('select');
-            selectGastos.className = "gastosSelect";
-            selectGastos.name = "idgastos[]";
-            selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option> ';
-            servicioCell.appendChild(selectGastos);
-         
-            selectGastos.addEventListener('change', function () {
-                checkRequiredGasto(selectGastos);
-            });
+        // Crear select para gastos
+        const selectGastos = document.createElement('select');
+        selectGastos.className = "gastosSelect";
+        selectGastos.name = "idgastos[]";
+        selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option>';
+        servicioCell.appendChild(selectGastos);
 
-            
-            const row = document.querySelector('tr'); 
-            row.appendChild(selectGastos);
-            const montoInput = document.createElement('input');
-            montoInput.type = 'text'; 
-            montoInput.className = 'montogasto';
-            montoCell.appendChild(montoInput);
-            montoInput.name = "montogasto";
-          
-            montoInput.addEventListener("input", formatInput);
-            centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
+        // Evento para validar el gasto seleccionado
+        selectGastos.addEventListener('change', function () {
+            checkRequiredGasto(selectGastos);
+        });
 
-           
-            segmentoCell.innerHTML = '<input class="segmentogastos" name="segmentogastos" readonly />';
- 
-            idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagasto" readonly />';
-            cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
+        // Crear input para el monto del gasto
+        const montoInput = document.createElement('input');
+        montoInput.type = 'text'; 
+        montoInput.className = 'montogasto';
+        montoInput.name = "montogasto";
+        montoCell.appendChild(montoInput);
 
-           
-            const eliminarBtn = document.createElement('button');
-            eliminarBtn.textContent = 'Eliminar';
-            eliminarBtn.style.color = 'white';
-            eliminarBtn.style.backgroundColor = 'red';
-            eliminarBtn.className = 'eliminar-btn';
+        // Evento para formatear el input del monto
+        montoInput.addEventListener("input", formatInput);
 
-       
-            eliminarBtn.addEventListener('click', function () {
-                newRow.remove(); 
-                updateTotalGasto();
-                obtenerMargenEsperado();
-            });
+        // Campo de centro de costo (readonly)
+        centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
 
-            eliminarCell.appendChild(eliminarBtn);
+        // Campo de segmento de gasto (readonly)
+        segmentoCell.innerHTML = '<input class="segmentogastos" name="segmentogastos" readonly />';
 
+        // Campo de ID de cuenta de gasto (readonly)
+        idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagasto" readonly />';
 
-            newRow.appendChild(servicioCell);
-            newRow.appendChild(montoCell);
-            newRow.appendChild(centroCostoCell);
-            newRow.appendChild(segmentoCell);
-            newRow.appendChild(idCuentaCell);
-            newRow.appendChild(cuentaCell);
-            newRow.appendChild(eliminarCell); 
-            cargarGastos(newRow.querySelector('.gastosSelect'));
-            
-            document.querySelector('#tablagastos tbody').appendChild(newRow);
+        // Campo de cuenta de gasto (readonly)
+        cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
+
+        // Botón para eliminar la fila
+        const eliminarBtn = document.createElement('button');
+        eliminarBtn.textContent = 'Eliminar';
+        eliminarBtn.style.color = 'white';
+        eliminarBtn.style.backgroundColor = 'red';
+        eliminarBtn.className = 'eliminar-btn';
+
+        // Evento para eliminar la fila
+        eliminarBtn.addEventListener('click', function () {
+            newRow.remove(); 
+            updateTotalGasto();
             obtenerMargenEsperado();
         });
-    });
 
+        eliminarCell.appendChild(eliminarBtn);
+
+        // Agregar todas las celdas a la fila
+        newRow.appendChild(servicioCell);
+        newRow.appendChild(montoCell);
+        newRow.appendChild(centroCostoCell);
+        newRow.appendChild(segmentoCell);
+        newRow.appendChild(idCuentaCell);
+        newRow.appendChild(cuentaCell);
+        newRow.appendChild(eliminarCell);
+        newRow.appendChild(idSegmentoGastoCell);
+
+        // Cargar los datos del select de gastos
+        cargarGastos(newRow.querySelector('.gastosSelect'));
+
+        // Agregar la nueva fila a la tabla
+        document.querySelector('#tablagastos tbody').appendChild(newRow);
+
+        // Actualizar márgenes o cálculos
+        obtenerMargenEsperado();
+    });
+});
 
 
 
@@ -1418,9 +1528,15 @@
                         $(".ccostoservicio").val(data[0].codigo);
                         $("#ccostogasto").val(data[0].codigo);
                         $("input[name='costogastos']").val(data[0].codigo);
-                        obtenerValoresServicio();
-                        obtenerHonorarios();
-                        obtenerValoresConsultores(data[0].id);
+                        if (data[0].id) {
+                            obtenerValoresServicio(data[0].id);  // Asegúrate de pasar el ID
+                            obtenerHonorarios();
+                            obtenerValoresConsultores(data[0].id);
+                        } else {
+                            // Manejo si el ID no está presente
+                            $(".nombresegmentoservicio").hide();
+                            $(".segmentoservicio").show(); // Muestra el select si no hay ID
+                        }
                        
                     } else {
                         $("#codigoccosto").val('');
@@ -1453,6 +1569,7 @@
                         $("#idcuentafactura").val(data[0].idcuenta);
                         $("#cuentafactura").val(data[0].cuenta);
                         $("#nombresegmentofactura").val(data[0].nombre);
+                        $("#idsegmentofactura").val(data[0].idsegmento);
                         generarFilas();
                     } else {
                         $("#idcuentafactura").val('');
@@ -1472,34 +1589,95 @@
     
     
     /*VALORES CUENTAS SERVICIOS */
-    
-    function obtenerValoresServicio() {
-        var idCodigo = $("#codigo").val();
+
+   function obtenerValoresServicio(idCodigo) {
         if (idCodigo) {
             $.ajax({
-                url: '/Proyecto/GetValoresServicios',  
+                url: '/Proyecto/GetValoresServicios',
                 type: 'GET',
                 data: { idcodigo: idCodigo },
-                success: function (response ) {
+                success: function (response) {
                     if (response && response.length > 0) {
-                        $(".nombresegmentoservicio").val(response[0].nombre);
+                        // Llenar los valores
+                        $(".nombresegmentoservicio").val(response[0].nombre).show();
                         $(".idcuentaservicio").val(response[0].idcuenta);
                         $(".cuentaservicio").val(response[0].cuenta);
-                    }
-                    else{
-                        $(".nombresegmentoservicio").val('');
+                        $(".idsegmentoservicio").val(response[0].idsegmento);
+                        $(".segmentoservicio").hide(); // Ocultar el select
+                    } else {
+                        // No hay datos, manejar la visibilidad
+                        $(".nombresegmentoservicio").val('').hide();
                         $(".idcuentaservicio").val('');
                         $(".cuentaservicio").val('');
+                        $(".segmentoservicio").show(); // Mostrar el select
                     }
-                    
                 },
                 error: function (xhr, status, error) {
                     console.error('Error al obtener el servicio:', error);
-                    $(".nombresegmentoservicio").val('');
+                    $(".nombresegmentoservicio").val('').hide();
+                    $(".segmentoservicio").show(); // Mostrar el select en caso de error
+                }
+            });
+        } else {
+            // Si no hay idCódigo, ocultar el campo de nombre y mostrar el select
+            $(".nombresegmentoservicio").val('').hide();
+            $(".segmentoservicio").show(); // Mostrar el select
+        }
+    } 
+
+    function obtenerSegmentosCostos(selectElement) {
+        $.ajax({
+            url: '/Proyecto/ObtenerSegmentosCostosjson',
+            type: 'GET',
+            success: function (data) {
+                // Limpia las opciones actuales en el select
+                $(selectElement).empty();
+                $(selectElement).append('<option value="" disabled selected>Seleccione un segmento</option>');
+
+                // Recorre los segmentos recibidos y añade opciones al select
+                $.each(data, function (index, segmento) {
+                    $(selectElement).append(`<option value="${segmento.id}">${segmento.nombre}</option>`);
+                });
+
+                // Muestra el select si deseas
+                $(selectElement).show();
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al obtener segmentos de costos:', error);
+            }
+        });
+    }
+
+
+    $('.segmentoservicio').change(function () {
+        var idSegmento = $(this).val(); // Obtiene el ID del segmento seleccionado
+        var currentRow = $(this).closest('tr'); // Obtiene la fila actual
+
+        if (idSegmento) { // Verifica que haya un ID seleccionado
+            $.ajax({
+                url: '/Proyecto/ObtenerCuentacostos', // Ruta al método en el controlador
+                type: 'GET',
+                data: { idsegmento: idSegmento },
+                success: function (response) {
+                    if (response && response.length > 0) {
+                        // Llena los inputs con los datos del JSON
+                        currentRow.find('.idcuentaservicio').val(response[0].idcuenta);
+                        currentRow.find('.cuentaservicio').val(response[0].cuenta);
+                    } else {
+                        // Limpia los inputs si no hay datos
+                        currentRow.find('.idcuentaservicio').val('');
+                        currentRow.find('.cuentaservicio').val('');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener los datos:', error);
+                    // Limpia los inputs en caso de error
+                    currentRow.find('.idcuentaservicio').val('');
+                    currentRow.find('.cuentaservicio').val('');
                 }
             });
         }
-    }
+    });
 
    
 
@@ -1514,15 +1692,40 @@
                 data: { idcodigo: codigo },
                 success: function (response) {
                     if (response && response.length > 0) {
-                        $(".nombresegmentoconsultor").val(response[0].nombre);
+
+
+                        
                         $(".idcuentaconsultor").val(response[0].idcuenta);
                         $(".cuentaconsultor").val(response[0].cuenta);
+                        $(".idsegmentoconsultor").val(response[0].idsegmento).prop("disabled", false);
+                        $(".cuentasocio").val(response[0].cuenta);
+                        $(".idsegmentosocio").val(response[0].idsegmento).prop("disabled", false);
+                        $(".idcuentasocio").val(response[0].idcuenta);
+                        $(".segmentoConsultor").hide();
+                        $(".segmentoSocio").hide();
                         
+                        $(".nombresegmentoconsultor").val(response[0].nombre).prop("readonly", true).show();
+                        $(".nombresegmentosocio").val(response[0].nombre).prop("readonly", true).show();
+
+                        // Ocultar los selects y deshabilitarlos
+                        $(".segmentoConsultor, .segmentoSocio").hide().prop("disabled", true);
                     }
                     else {
                         $(".nombresegmentoconsultor").val('');
                         $(".idcuentaconsultor").val('');
                         $(".cuentaconsultor").val('');
+                        $(".segmentoConsultor").show();
+                        $(".segmentoSocio").show();
+                        $(".nombresegmentoconsultor").val('').hide();
+                        $(".nombresegmentosocio").val('').hide();
+                        $(".idcuentasocio").val('');
+                        $(".cuentasocio").val('');
+                        $(".nombresegmentoconsultor").val('').prop("readonly", true).hide();
+                        $(".nombresegmentosocio").val('').prop("readonly", true).hide();
+                        $(".idsegmentoconsultor").val('').prop("disabled", true);
+                        $(".idsegmentosocio").val(response[0].idsegmento).prop("disabled", true);
+                        $(".segmentoConsultor, .segmentoSocio").show().prop("disabled", false);
+                        $(".idsegmentosocio").val('').prop("disabled", true);
                     }
 
                 },
@@ -1534,7 +1737,75 @@
         }
     }
 
+    /*cuenta socio*/ 
+    $(document).ready(function () {
+        // Captura el evento change del select
+        $('.segmentoSocio').change(function () {
+            var idSegmento = $(this).val(); // Obtiene el ID del segmento seleccionado
 
+            if (idSegmento) { // Verifica que haya un ID seleccionado
+                $.ajax({
+                    url: '/Proyecto/ObtenerCuentacostos', // Ruta al método en el controlador
+                    type: 'GET',
+                    data: { idsegmento: idSegmento },
+                    success: function (response) {
+                        if (response && response.length > 0) {
+                            // Llena los inputs con los datos del JSON
+                            $('.idcuentasocio').val(response[0].idcuenta);
+                            $('.cuentasocio').val(response[0].cuenta);
+                        } else {
+                            // Limpia los inputs si no hay datos
+                            $('.idcuentasocio').val('');
+                            $('.cuentasocio').val('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener los datos:', error);
+                        // Limpia los inputs en caso de error
+                        $('.idcuentasocio').val('');
+                        $('.cuentasocio').val('');
+                    }
+                });
+            }
+        });
+    });
+
+ 
+        
+     /*consultor interno*/ 
+
+    $(document).ready(function () {
+        // Captura el evento change del select
+        $('.segmentoConsultor').change(function () {
+            var idSegmento = $(this).val(); // Obtiene el ID del segmento seleccionado
+
+            if (idSegmento) { // Verifica que haya un ID seleccionado
+                $.ajax({
+                    url: '/Proyecto/ObtenerCuentacostos', // Ruta al método en el controlador
+                    type: 'GET',
+                    data: { idsegmento: idSegmento },
+                    success: function (response) {
+                        if (response && response.length > 0) {
+                            // Llena los inputs con los datos del JSON
+                            $('.idcuentaconsultor').val(response[0].idcuenta);
+                            $('.cuentaconsultor').val(response[0].cuenta);
+                        } else {
+                            // Limpia los inputs si no hay datos
+                            $('.idcuentaconsultor').val('');
+                            $('.cuentaconsultor').val('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener los datos:', error);
+                        // Limpia los inputs en caso de error
+                        $('.idcuentaconsultor').val('');
+                        $('.cuentaconsultor').val('');
+                    }
+                });
+            }
+        });
+    });
+ 
     function formatInput(e) {
         var valor = e.target.value;
 
@@ -1633,6 +1904,7 @@
                     $row.find('.segmentogastos').val(data[0].nombre);
                     $row.find('.idcuentagastos').val(data[0].idcuenta);
                     $row.find('.cuentagastos').val(data[0].cuenta);
+                    $row.find('.idsegmentogasto').val(data[0].idsegmento);
                 } else {
                     console.log("No se encontraron valores.");
                 }
@@ -1808,14 +2080,46 @@
                 success: function (data) {
                   
                     if (data && data.length > 0) {
-                        $(".nombresegmentohonorario").val(data[0].nombre);
-                        $(".idcuentahonorario").val(data[0].idcuenta);
-                        $(".cuentahonorario").val(data[0].cuenta);
-                        $(".idhonorarioscuenta").val(data[0].id);
+                        $(".nombresegmentohonorarioA").val(data[0].nombre).show();
+                        $(".idcuentahonorarioA").val(data[0].idcuenta);
+                        $(".cuentahonorarioA").val(data[0].cuenta);
+                        $(".idsegmentohonorarioA").val(data[0].idsegmento).prop("disabled", false);
+                        $(".nombresegmentohonorarioB").val(data[0].nombre).show();
+                        $(".idcuentahonorarioB").val(data[0].idcuenta);
+                        $(".cuentahonorarioB").val(data[0].cuenta);
+                        $(".idsegmentohonorarioB").val(data[0].idsegmento).prop("disabled", false);
+                        $(".nombresegmentohonorarioC").val(data[0].nombre).show();
+                        $(".idcuentahonorarioC").val(data[0].idcuenta);
+                        $(".cuentahonorarioC").val(data[0].cuenta);
+                        $(".idsegmentohonorarioC").val(data[0].idsegmento).prop("disabled",false);
+                        $(".segmentoConsultorA").hide();
+                        $(".segmentoConsultorB").hide();
+                        $(".segmentoConsultorC").hide();
+                        $(".segmentoConsultorA").prop("disabled", true);
+                        $(".segmentoConsultorB").prop("disabled", true);
+                        $(".segmentoConsultorC").prop("disabled", true);
+                        
                     } else {
 
-                        $('.nombresegmentohonorario').val('');
-                        $('.cuentahonorario').val('');
+                        $(".nombresegmentohonorarioA").val('').hide();
+                        $(".idcuentahonorarioA").val('').prop("disabled", true);
+                        $(".cuentahonorarioA").val('');
+                        $(".idsegmentohonorarioA").val('');
+                        $(".nombresegmentohonorarioB").val('').hide();
+                        $(".idcuentahonorarioB").val('');
+                        $(".cuentahonorarioB").val('');
+                        $(".idsegmentohonorarioB").val('').prop("disabled", true);
+                        $(".nombresegmentohonorarioC").val('').hide();
+                        $(".idcuentahonorarioC").val('');
+                        $(".cuentahonorarioC").val('');
+                        $(".idsegmentohonorarioC").val('').prop("disabled", true);
+                        $(".segmentoConsultorA").show();
+                        $(".segmentoConsultorB").show();
+                        $(".segmentoConsultorC").show();
+                        $(".segmentoConsultorA").prop("disabled", false);
+                        $(".segmentoConsultorB").prop("disabled", false);
+                        $(".segmentoConsultorC").prop("disabled", false);
+                       
                     }
                 },
                 error: function (xhr, status, error) {
@@ -1824,10 +2128,142 @@
             });
         }
 
-
+       
 
     }
 
+    /*consultor a*/
+    $(document).ready(function () {
+       
+        $('.segmentoConsultorA').change(function () {
+            var idSegmento = $(this).val(); 
+
+            if (idSegmento) { 
+                $.ajax({
+                    url: '/Proyecto/ObtenerCuentacostos', 
+                    type: 'GET',
+                    data: { idsegmento: idSegmento },
+                    success: function (response) {
+                        if (response && response.length > 0) {
+                       
+                            $('.idcuentahonorarioA').val(response[0].idcuenta);
+                            $('.cuentahonorarioA').val(response[0].cuenta);
+                        } else {
+                          
+                            $('.idcuentahonorarioA').val('');
+                            $('.cuentahonorarioA').val('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener los datos:', error);
+                        
+                        $('.idcuentahonorarioA').val('');
+                        $('.cuentahonorarioA').val('');
+                    }
+                });
+            }
+        });
+    });
+
+    /*consultor B*/
+    $(document).ready(function () {
+
+        $('.segmentoConsultorB').change(function () {
+            var idSegmento = $(this).val();
+
+            if (idSegmento) {
+                $.ajax({
+                    url: '/Proyecto/ObtenerCuentacostos',
+                    type: 'GET',
+                    data: { idsegmento: idSegmento },
+                    success: function (response) {
+                        if (response && response.length > 0) {
+
+                            $('.idcuentahonorarioB').val(response[0].idcuenta);
+                            $('.cuentahonorarioB').val(response[0].cuenta);
+                        } else {
+
+                            $('.idcuentahonorarioB').val('');
+                            $('.cuentahonorarioB').val('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener los datos:', error);
+
+                        $('.idcuentahonorarioB').val('');
+                        $('.cuentahonorarioB').val('');
+                    }
+                });
+            }
+        });
+    });
+
+    /*CONSULTOR C*/
+
+    $(document).ready(function () {
+
+        $('.segmentoConsultorC').change(function () {
+            var idSegmento = $(this).val();
+
+            if (idSegmento) {
+                $.ajax({
+                    url: '/Proyecto/ObtenerCuentacostos',
+                    type: 'GET',
+                    data: { idsegmento: idSegmento },
+                    success: function (response) {
+                        if (response && response.length > 0) {
+
+                            $('.idcuentahonorarioC').val(response[0].idcuenta);
+                            $('.cuentahonorarioC').val(response[0].cuenta);
+                        } else {
+
+                            $('.idcuentahonorarioC').val('');
+                            $('.cuentahonorarioC').val('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener los datos:', error);
+
+                        $('.idcuentahonorarioC').val('');
+                        $('.cuentahonorarioC').val('');
+                    }
+                });
+            }
+        });
+    });
+/*
+    $(document).on('submit', 'form', function () {
+        
+        if (!$('.segmentoConsultorC').is(':hidden')) {
+            $(".nombresegmentohonorarioC").prop("disabled", true); 
+        }
+        
+        if (!$('.nombresegmentohonorarioC').is(':hidden')) {
+            $(".segmentoConsultorC").prop("disabled", true); 
+    });
+
+    $(document).on('submit', 'form', function () {
+      
+        if (!$('.segmentoConsultorB').is(':hidden')) {
+            $(".nombresegmentohonorarioB").prop("disabled", true); 
+        }
+      
+        if (!$('.nombresegmentohonorarioB').is(':hidden')) {
+            $(".segmentoConsultorB").prop("disabled", true); 
+        }
+    });
+
+    $(document).on('submit', 'form', function () {
+        // Desactivar el input si el select está activo
+        if (!$('.segmentoConsultorA').is(':hidden')) {
+            $(".nombresegmentohonorarioA").prop("disabled", true); // Desactiva el input
+        }
+        // Desactivar el select si el input está visible
+        if (!$('.nombresegmentohonorarioA').is(':hidden')) {
+            $(".segmentoConsultorA").prop("disabled", true); // Desactiva el select
+        }
+    });
+    */
    /* function validarHoras(input) {
         const tipoRecurso = input.getAttribute('data-tipo'); 
         const maxHHMensuales = parseFloat(input.getAttribute('data-hhmensuales')); 

@@ -4,6 +4,7 @@ using Proyectogestionhoras.Services;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models.ViewModel;
+using Proyectogestionhoras.Models.DTO;
 namespace Proyectogestionhoras.Controllers
 {
     public class ProyectoController : Controller
@@ -28,6 +29,8 @@ namespace Proyectogestionhoras.Controllers
             var clientes = await clienteService.ObtenerClientesIndex(0);
             var status = await proyectoService.ObtenerStatus();
             var recursos = await usuarioService.ObtenerUusario(0,null,0);
+            var segmentoscostos = await ObtenerSegmentosCostos();
+            ViewBag.SegmentoCosto = segmentoscostos;
             ViewBag.Recursos = recursos;
             ViewBag.Clientes = clientes;
             ViewBag.Tipologias = tipologias;
@@ -40,7 +43,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff,int hhconsultora, int hhconsultorb, int hhconsultorc)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
         {
             try
             {
@@ -54,14 +57,14 @@ namespace Proyectogestionhoras.Controllers
                 List<ServicioViewModel> servicios = new List<ServicioViewModel>();
                 var idsservicios = Request.Form["idservicio"];
                 var montoservicio = Request.Form["montoservicio"];
-                var idcuentaservicio = Request.Form["idcuentaservicio"];
+                var idsegmentoservicio = Request.Form["idsegmentoservicio"];
 
                 for (int i = 0; i < idsservicios.Count; i++)
                 {
                     var servicioViewModel = new ServicioViewModel
                     {
                         Idservicios = int.Parse(idsservicios[i]),
-                        IdCuenta = int.Parse(idcuentaservicio[i]),
+                        IdSegmento = int.Parse(idsegmentoservicio[i]),
                         MontoServicio = decimal.Parse(montoservicio[i])
                     };
 
@@ -71,20 +74,20 @@ namespace Proyectogestionhoras.Controllers
                 List<GastoViewModel> gastos = new List<GastoViewModel>();
                 var idgastos = Request.Form["idgastos[]"];
                 var montogasto = Request.Form["montogasto"];
-                var idcuentagasto = Request.Form["idcuentagasto"];
+                var idsegmentogasto = Request.Form["idsegmentogasto"];
                 
                 for (int i = 0; i < idgastos.Count; i++)
                 {
                     var gastoviewmodel = new GastoViewModel
                     {
                         Idgastos = int.Parse (idgastos[i]),
-                        IdCuenta = int.Parse(idcuentagasto[i]),
+                        IdSegmento = int.Parse(idsegmentogasto[i]),
                         MontoGasto = decimal.Parse (montogasto[i])
                     };
                     gastos.Add(gastoviewmodel);
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc, servicios, gastos);
+                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
                 if (resultado)
                 {
                     return RedirectToAction("ExitoCreacion");
@@ -130,6 +133,50 @@ namespace Proyectogestionhoras.Controllers
                 .Select(cu => cu.Id)
                 .FirstOrDefaultAsync();
         }
+
+
+        public async Task<List<Segmento>> ObtenerSegmentosCostos()
+        {
+            var segmentosCostos = await context.Segmentos
+                
+                .Select(s => new Segmento { Id = s.Id, Nombre = s.Nombre,TipoSegmento=s.TipoSegmento }) 
+                .ToListAsync(); 
+
+            return segmentosCostos;
+        }
+
+
+
+        [HttpGet]
+        public async Task<ActionResult<List<Segmento>>> ObtenerSegmentosCostosjson()
+        {
+            var segmentosCostos = await context.Segmentos
+                .Where(s => s.TipoSegmento == "Costos") // Filtra donde TipoSegmento es "Costos"
+                .Select(s => new Segmento { Id = s.Id, Nombre = s.Nombre })
+                .ToListAsync();
+
+            return Ok(segmentosCostos); // Retorna un resultado OK con los segmentos
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<ConsultoresDTO>>> ObtenerCuentacostos(int idsegmento)
+        {
+           
+            var resultados = await (from s in context.Segmentos
+                                    join c in context.Cuenta on s.IdCuenta equals c.Id
+                                    where s.Id == idsegmento
+                                    select new ConsultoresDTO
+                                    {
+                                        
+                                        IDCUENTA = c.Idcuenta,
+                                        CUENTA = c.Cuenta,
+                                       
+                                    }).ToListAsync();
+
+            // Retorna el resultado como JSON
+            return Ok(resultados);
+        }
+
 
 
         [HttpGet]

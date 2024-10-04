@@ -23,7 +23,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -62,7 +62,12 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORB", hhconsultorb));
                  
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORC", hhconsultorc));
-                  
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOSOCIO", idsegmentosocio));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOSTAFF", idsegmentostaff));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORA", idsegmentoconsultora));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORB", idsegmentoconsultorb));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
                     SqlParameter idProyectoParameter = new SqlParameter("@ID_PROYECTO", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -102,7 +107,7 @@ namespace Proyectogestionhoras.Services
                     {
                         IdProyecto = idproyectocreado,
                         IdServicio = servicio.Idservicios, 
-                        IdCuenta = servicio.IdCuenta, 
+                        Idsegmento = servicio.IdSegmento, 
                         Monto = servicio.MontoServicio 
                     };
 
@@ -129,7 +134,7 @@ namespace Proyectogestionhoras.Services
                     {
                         IdProyecto = idproyectocreado,
                         IdGastos = gasto.Idgastos,
-                        Idcuenta = gasto.IdCuenta,
+                        Idsegmento = gasto.IdSegmento,
                         Monto = gasto.MontoGasto
                     };
 
@@ -455,8 +460,8 @@ namespace Proyectogestionhoras.Services
                             {
                                 Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
-
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
                             };
                             facturatablas.Add(factura);
                            
@@ -495,8 +500,8 @@ namespace Proyectogestionhoras.Services
                             {
                                 NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
-
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
                             };
                             servicios.Add(servicio);
 
@@ -693,7 +698,7 @@ namespace Proyectogestionhoras.Services
                                 NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
-                                Id = reader.GetInt32(reader.GetOrdinal("ID"))
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
                             };
                             consultores.Add(consultor);
 
@@ -733,7 +738,7 @@ namespace Proyectogestionhoras.Services
                                 NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
-                                Id = reader.GetInt32(reader.GetOrdinal("ID"))
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
 
                             };
                             honorarios.Add(honorario);
@@ -774,7 +779,8 @@ namespace Proyectogestionhoras.Services
                             {
                                 NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA"))
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
 
                             };
                             gastos.Add(gasto);

@@ -3,7 +3,7 @@
     public class ServicioViewModel
     {
         public int Idservicios { get; set; }     
-        public int IdCuenta { get; set; }        
+        public int IdSegmento { get; set; }        
         public decimal MontoServicio { get; set; }
 
 

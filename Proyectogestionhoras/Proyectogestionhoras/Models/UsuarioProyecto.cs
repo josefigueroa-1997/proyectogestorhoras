@@ -13,10 +13,11 @@ namespace Proyectogestionhoras.Models
         public int? HhConsultorb { get; set; }
         public int? HhConsultorc { get; set; }
         public int? HhSocios { get; set; }
-        public int? Idcuenta { get; set; }
         public decimal? CostoUnitarioAsignado { get; set; }
+        public int? Idsegmento { get; set; }
 
         public virtual Proyecto IdProyectoNavigation { get; set; } = null!;
         public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
+        public virtual Segmento? IdsegmentoNavigation { get; set; }
     }
 }
