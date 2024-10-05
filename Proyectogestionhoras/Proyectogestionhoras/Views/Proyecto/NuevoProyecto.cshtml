@@ -1223,10 +1223,43 @@
     
     const totalMontoElement = document.getElementById('montoTotal');
     $(document).ready(function () {
-        // Llama a la función para cargar segmentos en los selects existentes
+       
         $('.segmentoservicio').each(function () {
             obtenerSegmentosCostos(this);
         });
+
+        $('#tablaservicios').on('change', '.segmentoservicio', function () {
+            var idSegmento = $(this).val(); // Obtiene el ID del segmento seleccionado
+            var currentRow = $(this).closest('tr'); // Obtiene la fila actual
+
+            if (idSegmento) { // Verifica que haya un ID seleccionado
+                $.ajax({
+                    url: '/Proyecto/ObtenerCuentacostos',
+                    type: 'GET',
+                    data: { idsegmento: idSegmento },
+                    success: function (response) {
+                        if (response && response.length > 0) {
+                            // Llena los inputs con los datos del JSON
+                            currentRow.find('.idcuentaservicio').val(response[0].idcuenta);
+                            currentRow.find('.cuentaservicio').val(response[0].cuenta);
+                        } else {
+                            // Limpia los inputs si no hay datos
+                            currentRow.find('.idcuentaservicio').val('');
+                            currentRow.find('.cuentaservicio').val('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener los datos:', error);
+                        // Limpia los inputs en caso de error
+                        currentRow.find('.idcuentaservicio').val('');
+                        currentRow.find('.cuentaservicio').val('');
+                    }
+                });
+            }
+        });
+
+        
+    
 
         document.getElementById('agregarFila').addEventListener('click', function (e) {
             e.preventDefault();
@@ -1275,14 +1308,14 @@
             // Llama a la función para cargar los segmentos en el nuevo select
             obtenerSegmentosCostos(newRow.querySelector('.segmentoservicio'));
             cargarServicios(newRow.querySelector('.serviciosSelect'));
-
+            obtenerValoresServicio();
             const newMontoInput = newRow.querySelector('.montoservicio');
             newMontoInput.addEventListener("input", function (event) {
                 formatInput(event);
                 updateTotal();
                 obtenerMargenEsperado();
             });
-
+            obtenerValoresServicio();
             newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
                 newRow.remove();
                 updateTotal();
@@ -1291,7 +1324,7 @@
 
             updateTotal();
             obtenerMargenEsperado();
-
+            
         });
     });
    function updateTotal() {
@@ -1505,6 +1538,8 @@
         $("#unidadNegocio, #centroCosto").change(function () {
             obtenerCodigo(); 
             obteneridcuenta(); 
+            obtenerValoresServicio();
+            obtenerValoresConsultores();
         });
     });
 
@@ -1529,14 +1564,11 @@
                         $("#ccostogasto").val(data[0].codigo);
                         $("input[name='costogastos']").val(data[0].codigo);
                         if (data[0].id) {
-                            obtenerValoresServicio(data[0].id);  // Asegúrate de pasar el ID
+
                             obtenerHonorarios();
-                            obtenerValoresConsultores(data[0].id);
-                        } else {
-                            // Manejo si el ID no está presente
-                            $(".nombresegmentoservicio").hide();
-                            $(".segmentoservicio").show(); // Muestra el select si no hay ID
+
                         }
+                    
                        
                     } else {
                         $("#codigoccosto").val('');
@@ -1590,40 +1622,45 @@
     
     /*VALORES CUENTAS SERVICIOS */
 
-   function obtenerValoresServicio(idCodigo) {
-        if (idCodigo) {
+    function obtenerValoresServicio() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+        if (idUnidadNegocio && idCentroCosto) {
             $.ajax({
                 url: '/Proyecto/GetValoresServicios',
                 type: 'GET',
-                data: { idcodigo: idCodigo },
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio
+                },
                 success: function (response) {
                     if (response && response.length > 0) {
-                        // Llenar los valores
+                        // Si hay datos, mostramos el input con el valor y ocultamos el select
                         $(".nombresegmentoservicio").val(response[0].nombre).show();
                         $(".idcuentaservicio").val(response[0].idcuenta);
                         $(".cuentaservicio").val(response[0].cuenta);
                         $(".idsegmentoservicio").val(response[0].idsegmento);
-                        $(".segmentoservicio").hide(); // Ocultar el select
+                        $(".segmentoservicio").hide(); // Ocultamos el select si hay nombre
                     } else {
-                        // No hay datos, manejar la visibilidad
+                        // Si no hay datos, mostramos el select y limpiamos el input
                         $(".nombresegmentoservicio").val('').hide();
                         $(".idcuentaservicio").val('');
                         $(".cuentaservicio").val('');
-                        $(".segmentoservicio").show(); // Mostrar el select
+                        $(".segmentoservicio").show(); // Mostramos el select
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error al obtener el servicio:', error);
                     $(".nombresegmentoservicio").val('').hide();
-                    $(".segmentoservicio").show(); // Mostrar el select en caso de error
+                    $(".segmentoservicio").show(); // Mostrar el select si hay error
                 }
             });
         } else {
-            // Si no hay idCódigo, ocultar el campo de nombre y mostrar el select
+            // Si no hay valores seleccionados, mostramos el select y ocultamos el input
             $(".nombresegmentoservicio").val('').hide();
-            $(".segmentoservicio").show(); // Mostrar el select
+            $(".segmentoservicio").show();
         }
-    } 
+    }
 
     function obtenerSegmentosCostos(selectElement) {
         $.ajax({
@@ -1649,91 +1686,68 @@
     }
 
 
-    $('.segmentoservicio').change(function () {
-        var idSegmento = $(this).val(); // Obtiene el ID del segmento seleccionado
-        var currentRow = $(this).closest('tr'); // Obtiene la fila actual
-
-        if (idSegmento) { // Verifica que haya un ID seleccionado
-            $.ajax({
-                url: '/Proyecto/ObtenerCuentacostos', // Ruta al método en el controlador
-                type: 'GET',
-                data: { idsegmento: idSegmento },
-                success: function (response) {
-                    if (response && response.length > 0) {
-                        // Llena los inputs con los datos del JSON
-                        currentRow.find('.idcuentaservicio').val(response[0].idcuenta);
-                        currentRow.find('.cuentaservicio').val(response[0].cuenta);
-                    } else {
-                        // Limpia los inputs si no hay datos
-                        currentRow.find('.idcuentaservicio').val('');
-                        currentRow.find('.cuentaservicio').val('');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error al obtener los datos:', error);
-                    // Limpia los inputs en caso de error
-                    currentRow.find('.idcuentaservicio').val('');
-                    currentRow.find('.cuentaservicio').val('');
-                }
-            });
-        }
-    });
 
    
 
     /*VALORES CONSULTORES*/ 
 
 
-    function obtenerValoresConsultores(codigo) {
-        if (codigo) {
+    function obtenerValoresConsultores() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+
+        if (idUnidadNegocio && idCentroCosto) {
             $.ajax({
                 url: '/Proyecto/ObtenerValoresConsultores',
                 type: 'GET',
-                data: { idcodigo: codigo },
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio
+                },
                 success: function (response) {
                     if (response && response.length > 0) {
-
-
-                        
+                        // Cuando hay datos
                         $(".idcuentaconsultor").val(response[0].idcuenta);
                         $(".cuentaconsultor").val(response[0].cuenta);
                         $(".idsegmentoconsultor").val(response[0].idsegmento).prop("disabled", false);
                         $(".cuentasocio").val(response[0].cuenta);
                         $(".idsegmentosocio").val(response[0].idsegmento).prop("disabled", false);
                         $(".idcuentasocio").val(response[0].idcuenta);
-                        $(".segmentoConsultor").hide();
-                        $(".segmentoSocio").hide();
-                        
+
+                        // Ocultar los selects y mostrar los campos readonly
                         $(".nombresegmentoconsultor").val(response[0].nombre).prop("readonly", true).show();
                         $(".nombresegmentosocio").val(response[0].nombre).prop("readonly", true).show();
 
-                        // Ocultar los selects y deshabilitarlos
-                        $(".segmentoConsultor, .segmentoSocio").hide().prop("disabled", true);
-                    }
-                    else {
-                        $(".nombresegmentoconsultor").val('');
+                        // Deshabilitar selects ya que hay datos
+                        $(".segmentoConsultor").hide().prop("disabled", true);
+                        $(".segmentoSocio").hide().prop("disabled", true);
+                    } else {
+                        // Cuando NO hay datos
                         $(".idcuentaconsultor").val('');
                         $(".cuentaconsultor").val('');
-                        $(".segmentoConsultor").show();
-                        $(".segmentoSocio").show();
-                        $(".nombresegmentoconsultor").val('').hide();
-                        $(".nombresegmentosocio").val('').hide();
                         $(".idcuentasocio").val('');
                         $(".cuentasocio").val('');
+
+                        // Mostrar y habilitar los selects
+                        $(".segmentoConsultor").show().prop("disabled", false);
+                        $(".segmentoSocio").show().prop("disabled", false);
+
+                        // Asegurarse de que los campos readonly estén ocultos
                         $(".nombresegmentoconsultor").val('').prop("readonly", true).hide();
                         $(".nombresegmentosocio").val('').prop("readonly", true).hide();
                         $(".idsegmentoconsultor").val('').prop("disabled", true);
-                        $(".idsegmentosocio").val(response[0].idsegmento).prop("disabled", true);
-                        $(".segmentoConsultor, .segmentoSocio").show().prop("disabled", false);
                         $(".idsegmentosocio").val('').prop("disabled", true);
                     }
-
                 },
                 error: function (xhr, status, error) {
                     console.error('Error al obtener el servicio:', error);
                     $(".nombresegmentoservicio").val('');
                 }
             });
+        } else {
+            // Si no hay valores seleccionados para Unidad de Negocio o Centro de Costo
+            // Mostrar y habilitar los selects
+            $(".segmentoConsultor, .segmentoSocio").show().prop("disabled", false);
         }
     }
 

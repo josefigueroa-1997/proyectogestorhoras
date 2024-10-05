@@ -480,7 +480,7 @@ namespace Proyectogestionhoras.Services
                 return new List<FacturaDTO>();
             }
         }
-        public async Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcodigo)
+        public async Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcosto, int idunegocio)
         {
             try
             {
@@ -490,8 +490,8 @@ namespace Proyectogestionhoras.Services
                 {
                     command.CommandText = "OBTENERSEGMENTOTERCEROS";
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@IDCCOSTOCODIGO", idcodigo));
-                    
+                    command.Parameters.Add(new SqlParameter("@IDCCOSTO", idcosto));
+                    command.Parameters.Add(new SqlParameter("@IDUNEGOCIO", idunegocio));
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -677,7 +677,7 @@ namespace Proyectogestionhoras.Services
                 return new List<Servicio>();
             }
         }
-        public async Task<List<ConsultoresDTO>> ObtenerValoresConsultores(int idcodigo)
+        public async Task<List<ConsultoresDTO>> ObtenerValoresConsultores(int idcosto, int idunegocio)
         {
             try
             {
@@ -687,7 +687,8 @@ namespace Proyectogestionhoras.Services
                 {
                     command.CommandText = "OBTENERSEGMENTOSCONSULTORES";
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@IDCODIGOCCOSTO", idcodigo));
+                    command.Parameters.Add(new SqlParameter("@IDCCOSTO", idcosto));
+                    command.Parameters.Add(new SqlParameter("@IDUNEGOCIO", idunegocio));
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {

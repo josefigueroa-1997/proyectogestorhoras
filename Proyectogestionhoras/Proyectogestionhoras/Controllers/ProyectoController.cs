@@ -151,11 +151,11 @@ namespace Proyectogestionhoras.Controllers
         public async Task<ActionResult<List<Segmento>>> ObtenerSegmentosCostosjson()
         {
             var segmentosCostos = await context.Segmentos
-                .Where(s => s.TipoSegmento == "Costos") // Filtra donde TipoSegmento es "Costos"
+                .Where(s => s.TipoSegmento == "Costos") 
                 .Select(s => new Segmento { Id = s.Id, Nombre = s.Nombre })
                 .ToListAsync();
 
-            return Ok(segmentosCostos); // Retorna un resultado OK con los segmentos
+            return Ok(segmentosCostos);
         }
 
         [HttpGet]
@@ -228,9 +228,9 @@ namespace Proyectogestionhoras.Controllers
             return Ok(factura);
         }
         [HttpGet]
-        public async Task<IActionResult> GetValoresServicios(int idcodigo)
+        public async Task<IActionResult> GetValoresServicios(int idcosto, int idunegocio)
         {
-            var servicio = await proyectoService.ObtenerValoresServicios(idcodigo);
+            var servicio = await proyectoService.ObtenerValoresServicios(idcosto,idunegocio);
             return Ok(servicio);
         }
 
@@ -262,9 +262,9 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ObtenerValoresConsultores(int idcodigo)
+        public async Task<IActionResult> ObtenerValoresConsultores(int idcosto, int idunegocio)
         {
-            var consultores = await proyectoService.ObtenerValoresConsultores(idcodigo);
+            var consultores = await proyectoService.ObtenerValoresConsultores(idcosto,idunegocio);
             return Json(consultores);
         }
 

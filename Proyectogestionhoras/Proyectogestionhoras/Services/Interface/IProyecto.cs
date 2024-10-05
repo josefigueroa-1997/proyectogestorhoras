@@ -14,12 +14,12 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<StatusProyecto>> ObtenerStatus();
         public Task<List<ProyectoDTO>> ObtenerProyectos(int? id,int? idcliente,string? nombre,int? idtipoempresa,int? statusproyecto,string? numproyecto,int? idtipologia,int? unidadneg,int? idccosto);
         public Task<List<FacturaDTO>> ObtenerValoresFactura(int idcosto, int idunegocio);
-        public Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcodigo);
+        public Task<List<ServiciosDTO>> ObtenerValoresServicios(int idcosto,int idunegocio);
         public Task<List<Segmento>> GetValoresSegmentos(int idcodigo);
         //public Task<List<Cuentum>> GetValoresGastos(int idsegmento);
         public Task<List<Gasto>> ObtenerGastos();
         public Task<List<Servicio>> ObtenerServicios();
-        public Task<List<ConsultoresDTO>> ObtenerValoresConsultores(int idcodigo);
+        public Task<List<ConsultoresDTO>> ObtenerValoresConsultores(int idcosto, int idunegocio);
         public Task<List<HonorariosDTO>> ObtenerValoresHonorarios(int idcodigo,int idrecurso);
         public Task<List<GastoDTO>> ObtenerValoresGastos(int idcodigo, string nombregasto);
     }
