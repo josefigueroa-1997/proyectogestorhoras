@@ -378,40 +378,40 @@
             Proyectos En Negociación
         </div>
         <div class="section-content">
-          
-            <div class="card negotiation">
-                <h3>Proyecto A</h3>
-                <p>Descripción breve del proyecto en negociación.</p>
-            </div>
-            <div class="card negotiation">
-                <h3>Proyecto B</h3>
-                <p>Descripción breve del proyecto en negociación.</p>
-            </div>
-            <div class="card negotiation">
-                <h3>Proyecto C</h3>
-                <p>Descripción breve del proyecto en negociación.</p>
-            </div>
-          
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                if (proyecto.Tipo_Status == "En Negociación")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new {id = proyecto.Id})">
+                        <div class="card negotiation">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NOMBREDEPARTAMENTO</p>
+                        </div>
+                    </a>
+                }
+                
+            }
+            
+           
         </div>
 
         <!-- Proyectos en Ejecución -->
         <div class="section-subheader">
-            Proyectos En Ejecución
+            Proyectos en Licitación
         </div>
         <div class="section-content">
-            
-            <div class="card execution">
-                <h3>Proyecto D</h3>
-                <p>Descripción breve del proyecto en ejecución.</p>
-            </div>
-            <div class="card execution">
-                <h3>Proyecto E</h3>
-                <p>Descripción breve del proyecto en ejecución.</p>
-            </div>
-            <div class="card execution">
-                <h3>Proyecto F</h3>
-                <p>Descripción breve del proyecto en ejecución.</p>
-            </div>
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                if (proyecto.Tipo_Status == "A Licitar")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new {id = proyecto.Id})">
+                    <div class="card execution">
+                        <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NOMBREDEPARTAMENTO</p>
+                    </div>
+                    </a>
+                }
+            }
             
         </div>
 

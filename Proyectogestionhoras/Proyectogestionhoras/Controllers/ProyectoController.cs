@@ -90,7 +90,8 @@ namespace Proyectogestionhoras.Controllers
                 bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
                 if (resultado)
                 {
-                    return RedirectToAction("ExitoCreacion");
+                    int idproyectoultimo = ultimoidproyecto();
+                    return RedirectToAction("ObtenerProyectos","Proyecto",new {id= idproyectoultimo });
                 }
                 else
                 {
@@ -112,8 +113,22 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Proyectos = proyectos;
             return View("DetalleProyecto");
         }
-        
 
+        public int ultimoidproyecto()
+        {
+            var ultimoProyecto = context.Proyectos
+                                         .OrderByDescending(p => p.Id)
+                                         .FirstOrDefault();
+
+
+            if (ultimoProyecto != null)
+            {
+                return ultimoProyecto.Id;
+            }
+
+
+            return 0;
+        }
         public IActionResult ExitoCreacion()
         {
             return View();

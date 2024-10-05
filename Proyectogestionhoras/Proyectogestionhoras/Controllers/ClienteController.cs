@@ -32,17 +32,17 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
-        public async Task <IActionResult> ProyectosCliente(int? id, int? idcliente, int? idusuario, string? nombre, int? idtipoempresa, string? statusproyecto)
+        public async Task <IActionResult> ProyectosCliente(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
         {
 
-            //var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, idusuario, nombre,idtipoempresa, statusproyecto);
+            var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre,idtipoempresa, statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
             var clientedetalle = await service.ObtenerClientesIndex(idcliente);
             var contactos = await contactoService.ObtenerContactos(0, idcliente, null);
             if (idcliente.HasValue)
             {
                 HttpContext.Session.SetInt32("IdCliente", idcliente.Value);
             }
-           
+            ViewBag.Proyectos = proyectos;
             ViewBag.Contactos = contactos;
             ViewBag.clientedetalle = clientedetalle;
             return View();

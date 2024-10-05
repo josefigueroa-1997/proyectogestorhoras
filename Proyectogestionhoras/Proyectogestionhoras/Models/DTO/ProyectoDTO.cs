@@ -20,6 +20,37 @@
         public DateTime Fecha_Termino { get; set;}
         public DateTime? Fecha_Plazo_Neg { get; set;}
 
+        public string? NOMBREDEPARTAMENTO { get; set; }
 
+
+        public int HHSOCIOS { get; set; }
+        public string? CUENTA_SOCIOS { get; set; }
+        public int IDCUENTA_SOCIOS { get; set; }
+        public string? SEGMENTO_SOCIOS { get; set; }
+        public decimal? COSTO_SOCIO { get; set; }
+
+        public int HHSTAFF { get; set; }
+        public string? CUENTA_STAFF { get; set; }
+        public int IDCUENTA_STAFF { get; set; }
+        public string? SEGMENTO_STAFF { get; set; }
+        public decimal? COSTO_STAFF { get; set; }
+        
+        public int HH_CONSULTOR_A { get; set; }
+        public string? CUENTA_CONSULTOR_A { get; set; }
+        public int IDCUENTA_CONSULTOR_A { get; set; }
+        public string? SEGMENTO_CONSULTOR_A { get; set; }
+        public decimal? COSTO_CONSULTORA { get; set; }
+
+        public int HH_CONSULTOR_B { get; set; }
+        public string? CUENTA_CONSULTOR_B { get; set; }
+        public int IDCUENTA_CONSULTOR_B { get; set; }
+        public string? SEGMENTO_CONSULTOR_B { get; set; }
+        public decimal? COSTO_CONSULTORB { get; set; }
+
+        public int HH_CONSULTOR_C { get; set; }
+        public string? CUENTA_CONSULTOR_C { get; set; }
+        public int IDCUENTA_CONSULTOR_C { get; set; }
+        public string? SEGMENTO_CONSULTOR_C { get; set; }
+        public decimal? COSTO_CONSULTORC { get; set; }
     }
 }

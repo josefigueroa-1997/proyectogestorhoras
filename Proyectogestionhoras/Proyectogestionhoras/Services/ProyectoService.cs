@@ -198,7 +198,40 @@ namespace Proyectogestionhoras.Services
                                 Fecha_Inicio = reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")).Date,
                                 Fecha_Termino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")).Date ,
                                 
-                                Fecha_Plazo_Neg = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")).Date
+                                Fecha_Plazo_Neg = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
+                                NOMBREDEPARTAMENTO = reader.GetString(reader.GetOrdinal("NOMBREDEPARTAMENTO")),
+
+                                HHSOCIOS = reader.IsDBNull(reader.GetOrdinal("HHSOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHSOCIOS")),
+                                CUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("CUENTA_SOCIOS")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_SOCIOS")),
+                                IDCUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_SOCIOS")),
+                                SEGMENTO_SOCIOS = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_SOCIOS")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_SOCIOS")),
+                                COSTO_SOCIO = reader.IsDBNull(reader.GetOrdinal("COSTO_SOCIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_SOCIO")),
+
+                                HHSTAFF = reader.IsDBNull(reader.GetOrdinal("HHSTAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHSTAFF")),
+                                CUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("CUENTA_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_STAFF")),
+                                IDCUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_STAFF")),
+                                SEGMENTO_STAFF = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_STAFF")),
+                                COSTO_STAFF = reader.IsDBNull(reader.GetOrdinal("COSTO_STAFF")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_STAFF")),
+
+                                HH_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTOR_A")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTOR_A")),
+                                CUENTA_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_A")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_A")),
+                                IDCUENTA_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_A")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_A")),
+                                SEGMENTO_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_A")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_A")),
+                                COSTO_CONSULTORA = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORA")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORA")),
+
+                                HH_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTOR_B")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTOR_B")),
+                                CUENTA_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_B")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_B")),
+                                IDCUENTA_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_B")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_B")),
+                                SEGMENTO_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_B")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_B")),
+                                COSTO_CONSULTORB = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORB")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORB")),
+
+                                HH_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTOR_C")),
+                                CUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_C")),
+                                IDCUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")),
+                                SEGMENTO_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")),
+                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC"))
+
+
 
 
                             };
