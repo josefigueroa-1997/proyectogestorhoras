@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Models.DTO;
 using Proyectogestionhoras.Services.Interface;
+using System.Text.RegularExpressions;
 namespace Proyectogestionhoras.Controllers
 {
     public class ProyectoController : Controller
@@ -56,12 +57,11 @@ namespace Proyectogestionhoras.Controllers
                 int idsucursal = int.Parse(Request.Form["sucursal"]);
                 int idsucursalcliente = await GetIdClienteSucrusal(idcliente, idsucursal);
                 int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
-
                 List<ServicioViewModel> servicios = new List<ServicioViewModel>();
                 var idsservicios = Request.Form["idservicio"];
                 var montoservicio = Request.Form["montoservicio"];
                 var idsegmentoservicio = Request.Form["idsegmentoservicio"];
-
+               
                 for (int i = 0; i < idsservicios.Count; i++)
                 {
                     var servicioViewModel = new ServicioViewModel

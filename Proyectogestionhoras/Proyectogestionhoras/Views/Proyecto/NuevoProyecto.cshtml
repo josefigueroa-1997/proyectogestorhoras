@@ -221,7 +221,7 @@
             </div>
             <div style="display:none" class="form-group">
                 <label for="nivelprobabilidad">Nivel Probabilidad</label>
-                <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad">
+                <input type="number" id="nivelprobabilidad" name="porcentajeprobabilidad">
             </div>
             <div style="display:none" class="form-group">
                 <label for="fechaPlazo">Fecha de Plazo</label>
@@ -1188,13 +1188,13 @@
             obtenerSegmentosCostos(this);
         });
 
-        $('#tablaservicios').on('change', '.segmentoservicio', function () {
+        $('#tablaservicios').on('change', 'tbody tr .segmentoservicio', function () {
             var idSegmento = $(this).val(); // Obtiene el ID del segmento seleccionado
             var currentRow = $(this).closest('tr'); // Obtiene la fila actual
 
             if (idSegmento) { // Verifica que haya un ID seleccionado
                 $.ajax({
-                    url: '/Proyecto/ObtenerCuentacostos',
+                    url: '/Proyecto/ObtenerCuentacostos', // Ruta al método en el controlador
                     type: 'GET',
                     data: { idsegmento: idSegmento },
                     success: function (response) {
@@ -1202,6 +1202,7 @@
                             // Llena los inputs con los datos del JSON
                             currentRow.find('.idcuentaservicio').val(response[0].idcuenta);
                             currentRow.find('.cuentaservicio').val(response[0].cuenta);
+                            
                         } else {
                             // Limpia los inputs si no hay datos
                             currentRow.find('.idcuentaservicio').val('');
@@ -1229,7 +1230,7 @@
             const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
             const idcuentaservicioValue = document.querySelector('#idcuentaservicio') ? document.getElementById('idcuentaservicio').value : '';
             const cuentaservicioValue = document.querySelector('#cuentaservicio') ? document.getElementById('cuentaservicio').value : '';
-            const idsegmentoservicioValue = document.querySelector('.idsegmentoservicio') ? document.querySelector('.idsegmentoservicio').value : ''; // Cambié el selector a '.idsegmentoservicio'
+            const idsegmentoservicioValue = document.querySelector('.idsegmentoservicio') ? document.querySelector('.idsegmentoservicio').value : ''; 
 
             newRow.innerHTML = `
         <td style="padding: 10px; border: 1px solid #ddd;">
@@ -1275,7 +1276,7 @@
                 updateTotal();
                 obtenerMargenEsperado();
             });
-            obtenerValoresServicio();
+            
             newRow.querySelector('.eliminar-btn').addEventListener('click', function () {
                 newRow.remove();
                 updateTotal();
