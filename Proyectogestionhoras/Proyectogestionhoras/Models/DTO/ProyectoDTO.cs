@@ -5,14 +5,20 @@
         public int Id { get; set; }
         public string? numproyecto { get; set; }
         public string? Tipo_Unegocio { get; set; }
+        public int IDUNEGOCIO { get; set; }
+        public int IDCOSTO { get; set; }
         public string? Tipo_CCosto { get; set; }
         public string? Codigo { get; set; }
+        public int IDCLIENTE { get; set; }
         public string? NombreCliente { get; set; }
         public string? NombreProyecto { get; set; }
         public string? Tipo_Tipologia { get; set; }
+        public int IDTIPOLOGIA { get; set; }
         public string? Tipo_Empresa { get; set; }
+        public int IDEMPRESA { get; set; }
         public string? AfectaIva { get; set; }
         public string? Tipo_Status { get; set; }
+        public int STATUSPROYECTO { get; set; }
         public string? Probabilidad { get; set; }
         public decimal? Porcentaje_Probabilidad { get; set; }
         public int Plazo { get; set; }
@@ -21,7 +27,10 @@
         public DateTime? Fecha_Plazo_Neg { get; set;}
 
         public string? NOMBREDEPARTAMENTO { get; set; }
-
+        public int IDDEPARTAMENTO { get; set; }
+        public decimal? MONTO { get; set; }
+        public string? MONEDA { get; set; }
+        
 
         public int HHSOCIOS { get; set; }
         public string? CUENTA_SOCIOS { get; set; }
@@ -52,5 +61,6 @@
         public int IDCUENTA_CONSULTOR_C { get; set; }
         public string? SEGMENTO_CONSULTOR_C { get; set; }
         public decimal? COSTO_CONSULTORC { get; set; }
+
     }
 }

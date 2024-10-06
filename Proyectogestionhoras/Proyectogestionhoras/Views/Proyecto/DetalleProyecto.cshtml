@@ -40,6 +40,7 @@
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 20px;
     }
 
     td {
@@ -52,6 +53,36 @@
         background-color: #f8d7da;
         font-weight: bold;
     }
+
+    .update-btn, .nuevo-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-left: 10px;
+        margin-bottom: 20px;
+    }
+
+    .update-btn {
+        color: #fff;
+        background-color: #fcaa67;
+    }
+
+        .update-btn:hover {
+            background-color: #e39450;
+        }
+
+    .nuevo-btn {
+        color: #fff;
+        background-color: #007bff;
+    }
+
+        .nuevo-btn:hover {
+            background-color: #0056b3;
+        }
 </style>
 
 <div class="form-container">
@@ -59,9 +90,13 @@
         @foreach (var proyecto in ViewBag.Proyectos)
         {
             <p class="form-subtitle" style="color:black;">Detalles del Proyecto</p>
-
+            <a href="@Url.Action("EditarProyecto","Proyecto",new {id=proyecto.Id,idcliente=proyecto.IDCLIENTE})" class="update-btn">Editar Proyecto</a>
+            @if(proyecto.Tipo_Status == "En Negociación")
+            {
+                <button type="button" class=" nuevo-btn">Ingresar Nueva Negociación</button>
+            }
             <div class="tables-wrapper">
-                <!-- Primera tabla -->
+                
                 <div class="table-container">
                     <table>
                         <tbody>
@@ -150,6 +185,14 @@
                                 <td class="highlight">Fecha Termino</td>
                                 <td>@proyecto.Fecha_Termino.ToString("dd/MM/yyyy")</td>
                             </tr>
+                            <tr>
+                                <td class="highlight">Monto</td>
+                                <td id="montoproyecto">@proyecto.MONTO</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">Moneda</td>
+                                <td>@proyecto.MONEDA</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -157,7 +200,69 @@
         }
     </div>
 
+    @*FACTURAS PROYECTO*@
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black">Facturas</p>
+        <div style="display: flex; justify-content: space-between;">
 
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #d9e2f3; color: black;">
+                        
+
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Mes</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Neto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Iva</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 
+                    @{
+                        decimal totalesneto =0 ;
+                        decimal totaliva = 0;
+                        decimal totalfactura = 0;
+                    }
+                    @foreach (var factura in ViewBag.Facturas)
+                    {
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.IdCuenta</td>
+
+                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.Cuenta</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.Segmento</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.Fecha_Factura.ToString("MM/yyyy")</td>
+                            
+                            <td id="neto" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@factura.Neto</td>
+                            <td id="iva" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@factura.IVA</td>
+                            <td id="totalf" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@factura.Total</td>
+                            @{
+                                totalesneto += factura.Neto;
+                                totaliva += factura.IVA;
+                                totalfactura += factura.Total;
+                            }
+                        </tr>
+                       
+                    }
+                    <tr>
+                        <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Totales</strong></td>
+                        <td id="totalesNeto" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><string>@totalesneto</string> </td>
+                        <td id="totalesIva" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@totaliva</strong> </td>
+                        <td id="totalesFacturas" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@totalfactura</strong> </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+
+
+
+    @*COSTOS DIRECTOS*@
 
     <div class="form-group">
         <p class="form-subtitle" style="color:black">Costos Directos</p>
@@ -264,7 +369,7 @@
                         }
                     <tr>
                         <td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"> @totalescostos</td>
+                        <td id="totalcostos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"> @totalescostos</td>
 
                     </tr>
                 </tbody>
@@ -318,7 +423,7 @@
                        }
                        <tr>
                         <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#f9eb8b;text-align:left;"><strong>Total</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f9eb8b;"> @totalservicios</td>
+                        <td id="totalservicios" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f9eb8b;"> @totalservicios</td>
                        </tr>
                     </tbody>
                 </table>
@@ -372,7 +477,7 @@
                     }
                     <tr>
                         <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#f5bd89;text-align:left;"><strong>Total</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f5bd89;"> @totalgastos</td>
+                        <td id="totalgastos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f5bd89;"> @totalgastos</td>
                     </tr>
                 </tbody>
             </table>
@@ -383,3 +488,69 @@
 
 
 </div>
+
+<script>
+    
+    var montoproyectoElement = document.getElementById("montoproyecto");
+    var NetoElement = document.getElementById("neto");
+    var IvaElement = document.getElementById("iva");
+    var TotalfElement = document.getElementById("totalf");
+    var totalesNetoElement = document.getElementById("totalesNeto");
+    var totalesIvaElement = document.getElementById("totalesIva");
+    var totalesFacturasElement = document.getElementById("totalesFacturas");
+    var totalgastosElemento = document.getElementById("totalgastos");
+    var totalserviciosElemento = document.getElementById("totalservicios");
+    var totalcostosElemento = document.getElementById("totalcostos");
+
+    var NetoValue = parseFloat(NetoElement.innerText);
+    var IvaValue = parseFloat(IvaElement.innerText);
+    var TotalfValue = parseFloat(TotalfElement.innerText);
+    var totalesNetoValue = parseFloat(totalesNetoElement.innerText);
+    var totalesIvaValue = parseFloat(totalesIvaElement.innerText);
+    var totalesFacturasValue = parseFloat(totalesFacturasElement.innerText);
+    var totalgastoValue = parseFloat(totalgastosElemento.innerText);
+    var totalserviciosValue = parseFloat(totalserviciosElemento.innerText);
+    var totalcostosValue = parseFloat(totalcostosElemento.innerText);
+    var montoproyectoValue = parseFloat(montoproyectoElement.innerText);
+
+    NetoElement.innerText = NetoValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    IvaElement.innerText = IvaValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    TotalfElement.innerText = TotalfValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    totalesNetoElement.innerText = totalesNetoValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    totalesIvaElement.innerText = totalesIvaValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    totalesFacturasElement.innerText = totalesFacturasValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    totalgastosElemento.innerText = totalgastoValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    totalserviciosElemento.innerText = totalserviciosValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    totalcostosElemento.innerText = totalcostosValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    montoproyectoElement.innerText = montoproyectoValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+</script>

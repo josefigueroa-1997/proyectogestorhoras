@@ -1089,7 +1089,7 @@
     </form>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 
 
 
@@ -1134,47 +1134,7 @@
             }
         });
     });
-    // Función para habilitar el input de horas al seleccionar un integrante
-    function toggleHorasInput(card) {
-        const checkbox = card.querySelector("input[type='checkbox']");
-        const inputHoras = card.querySelector("input[type='number']");
-
-        
-        if (card.classList.contains("active")) {
-            card.classList.remove("active");
-
-            checkbox.checked = false;
-            inputHoras.style.display = 'none';
-            inputHoras.value = ''; 
-        } else {
-            card.classList.add("active");
-            checkbox.checked = true;
-            inputHoras.style.display = 'block'; 
-        }
-    }
-
-    // Adjuntar listeners a las cards
-    document.querySelectorAll(".integrante-card").forEach(card => {
-        card.addEventListener("click", function () {
-            toggleHorasInput(card);
-        });
-
-        
-        const inputHoras = card.querySelector("input[type='number']");
-        inputHoras.addEventListener("click", function (event) {
-            event.stopPropagation();
-        });
-    });
-    document.querySelectorAll('.integrante-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const card = this.closest('.integrante-card');
-            if (this.checked) {
-                card.classList.add('active');
-            } else {
-                card.classList.remove('active');
-            }
-        });
-    });
+  
     // Función para actualizar la tabla con el valor seleccionado del select
     function actualizarTipologia() {
         

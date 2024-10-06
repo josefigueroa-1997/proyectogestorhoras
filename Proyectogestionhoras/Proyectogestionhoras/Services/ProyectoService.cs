@@ -184,14 +184,20 @@ namespace Proyectogestionhoras.Services
                                 Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 numproyecto = reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
                                 Tipo_Unegocio = reader.GetString(reader.GetOrdinal("TIPO_UNEGOCIO")),
+                                IDUNEGOCIO = reader.GetInt32(reader.GetOrdinal("IDUNEGOCIO")),
+                                IDCOSTO = reader.GetInt32(reader.GetOrdinal("IDCOSTO")),
                                 Tipo_CCosto = reader.GetString(reader.GetOrdinal("TIPO_CCOSTO")),
                                 Codigo = reader.GetString(reader.GetOrdinal("CODIGO")),
+                                IDCLIENTE = reader.GetInt32(reader.GetOrdinal("IDCLIENTE")),
                                 NombreCliente = reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
                                 NombreProyecto = reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
                                 Tipo_Tipologia = reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
+                                IDTIPOLOGIA = reader.GetInt32(reader.GetOrdinal("IDTIPOLOGIA")),
                                 Tipo_Empresa = reader.GetString(reader.GetOrdinal("TIPO_EMPRESA")),
+                                IDEMPRESA = reader.GetInt32(reader.GetOrdinal("IDEMPRESA")),
                                 AfectaIva = reader.GetString(reader.GetOrdinal("AFECTAIVA")),
                                 Tipo_Status = reader.GetString(reader.GetOrdinal("TIPO_STATUS")),
+                                STATUSPROYECTO = reader.GetInt32(reader.GetOrdinal("STATUSPROYECTO")),
                                 Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
                                 Porcentaje_Probabilidad = reader.IsDBNull(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")) ? 0 : reader.GetDecimal(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")),
                                 Plazo = reader.GetInt32(reader.GetOrdinal("PLAZO")),
@@ -200,7 +206,10 @@ namespace Proyectogestionhoras.Services
                                 
                                 Fecha_Plazo_Neg = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
                                 NOMBREDEPARTAMENTO = reader.GetString(reader.GetOrdinal("NOMBREDEPARTAMENTO")),
-
+                                IDDEPARTAMENTO = reader.GetInt32(reader.GetOrdinal("IDDEPARTAMENTO")),
+                                MONTO = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                MONEDA = reader.IsDBNull(reader.GetOrdinal("MONEDA")) ? string.Empty : reader.GetString(reader.GetOrdinal("MONEDA")),
+                                
                                 HHSOCIOS = reader.IsDBNull(reader.GetOrdinal("HHSOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHSOCIOS")),
                                 CUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("CUENTA_SOCIOS")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_SOCIOS")),
                                 IDCUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_SOCIOS")),
@@ -287,7 +296,7 @@ namespace Proyectogestionhoras.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Hubo un error al obtener los sesrvicios del proyecto:" + ex.Message);
+                Debug.WriteLine($"Hubo un error al obtener los servicios del proyecto:" + ex.Message);
                 return new List<ServiciosProyectoDTO>();
             }
         }

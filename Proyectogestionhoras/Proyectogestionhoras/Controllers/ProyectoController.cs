@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Models.DTO;
+using Proyectogestionhoras.Services.Interface;
 namespace Proyectogestionhoras.Controllers
 {
     public class ProyectoController : Controller
@@ -13,12 +14,14 @@ namespace Proyectogestionhoras.Controllers
         private readonly ClienteService clienteService;
         private readonly UsuarioService usuarioService;
         private readonly PROYECTO_CONTROL_HORASContext context;
-        public ProyectoController(ProyectoService proyectoService,ClienteService clienteService,UsuarioService usuarioService,PROYECTO_CONTROL_HORASContext context)
+        private readonly FacturaService facturaService;
+        public ProyectoController(ProyectoService proyectoService,ClienteService clienteService,UsuarioService usuarioService,PROYECTO_CONTROL_HORASContext context,FacturaService facturaService)
         {
             this.proyectoService = proyectoService;
             this.clienteService = clienteService;
             this.usuarioService = usuarioService;
             this.context = context;
+            this.facturaService = facturaService;
         } 
         public async Task<IActionResult> NuevoProyecto()
         {
@@ -112,6 +115,8 @@ namespace Proyectogestionhoras.Controllers
             var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
             var servicios = await proyectoService.ObtenerServiciosProyecto(id);
             var gastos = await proyectoService.ObtenerGastosProyectos(id);
+            var facturas = await facturaService.RecuperarFacturas(id);
+            ViewBag.Facturas = facturas;
             ViewBag.Proyectos = proyectos;
             ViewBag.Servicios = servicios;
             ViewBag.Gastos = gastos;
@@ -133,9 +138,48 @@ namespace Proyectogestionhoras.Controllers
 
             return 0;
         }
-        public IActionResult ExitoCreacion()
+        public async Task<IActionResult> EditarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
         {
+            var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto);
+            var unegocios = await proyectoService.ObtenerUnegocio();
+            var ccostos = await proyectoService.ObtenerCcosto();
+            var empresas = await proyectoService.ObtenerEmpresa();
+            var tipologias = await proyectoService.ObtenerTipoligias();
+            var clientes = await clienteService.ObtenerClientesIndex(0);
+            var status = await proyectoService.ObtenerStatus();
+            var recursos = await usuarioService.ObtenerUusario(0, null, 0);
+            var segmentoscostos = await ObtenerSegmentosCostos();
+            var sucursales = await ObtenerSucursales(idcliente);
+            //IDCLIENTE
+            ViewBag.SegmentoCosto = segmentoscostos;
+            ViewBag.Recursos = recursos;
+            ViewBag.Clientes = clientes;
+            ViewBag.Tipologias = tipologias;
+            ViewBag.Empresas = empresas;
+            ViewBag.Ccostos = ccostos;
+            ViewBag.Unegocios = unegocios;
+            ViewBag.Status = status;
+            ViewBag.Proyectos = proyecto;
+            ViewBag.Sucursales = sucursales;
             return View();
+        }
+
+        public async Task<List<Sucursal>> ObtenerSucursales(int? idcliente)
+        {
+            var sucursales = await (from sc in context.SucursalClientes // Tabla sucursal_cliente
+                                    join c in context.Sucursals on sc.IdSucursal equals c.Id // JOIN con SUCURSAL
+                                    where sc.IdCliente == idcliente // Condición para filtrar por cliente
+                                    select new
+                                    {
+                                        c.Id,
+                                        c.Nombre
+                                    }).ToListAsync();
+
+            return sucursales.Select(s => new Sucursal
+            {
+                Id = s.Id,
+                Nombre = s.Nombre
+            }).ToList();
         }
         public async Task<int> GetIdClienteSucrusal(int idcliente, int idsucursal)
         {
