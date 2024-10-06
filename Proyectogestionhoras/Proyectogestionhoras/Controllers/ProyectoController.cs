@@ -110,7 +110,11 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
         {
             var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
+            var servicios = await proyectoService.ObtenerServiciosProyecto(id);
+            var gastos = await proyectoService.ObtenerGastosProyectos(id);
             ViewBag.Proyectos = proyectos;
+            ViewBag.Servicios = servicios;
+            ViewBag.Gastos = gastos;
             return View("DetalleProyecto");
         }
 

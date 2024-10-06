@@ -251,6 +251,88 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task<List<ServiciosProyectoDTO>> ObtenerServiciosProyecto(int? idproyecto)
+        {
+            try
+            {
+                var serviciosProyectos = new List<ServiciosProyectoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERSERVICIOSPROYECTO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ServiciosProyectoDTO servicio = new()
+                            {
+                                NOMBRESERVICIO = reader.GetString(reader.GetOrdinal("NOMBRESERVICIO")),
+                                NOMBRSEGMENTO = reader.GetString(reader.GetOrdinal("NOMBRSEGMENTO")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                            };
+                            serviciosProyectos.Add(servicio);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return serviciosProyectos;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener los sesrvicios del proyecto:" + ex.Message);
+                return new List<ServiciosProyectoDTO>();
+            }
+        }
+
+        public async Task<List<GastoProyectoDTO>> ObtenerGastosProyectos(int? idproyecto)
+        {
+            try
+            {
+                var gastosproyectos = new List<GastoProyectoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERGASTOSPROYECTO ";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            GastoProyectoDTO gasto = new()
+                            {
+                                NOMBREGASTO = reader.GetString(reader.GetOrdinal("NOMBREGASTO")),
+                                NOMBRSEGMENTO = reader.GetString(reader.GetOrdinal("NOMBRSEGMENTO")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                            };
+                            gastosproyectos.Add(gasto);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return gastosproyectos;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener los sesrvicios del proyecto:" + ex.Message);
+                return new List<GastoProyectoDTO>();
+            }
+        }
+
+
         public async Task<List<Unegocio>> ObtenerUnegocio()
         {
             try

@@ -170,12 +170,12 @@
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                     <tr style="background-color: #b2e6a5; color: black;">
-                        <th style="padding: 10px; border: 1px solid #ddd;">Costo</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Horas</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Costo</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Horas</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -215,7 +215,7 @@
                         <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HH_CONSULTOR_A</td>
                             <td style="padding: 10px; border: 1px solid #ddd;"> @proyecto.IDCUENTA_CONSULTOR_A</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">>@proyecto.CUENTA_CONSULTOR_A</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_A</td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                                 @proyecto.SEGMENTO_CONSULTOR_A
                            
@@ -263,7 +263,7 @@
                             decimal totalescostos = totalconsultorC + totalconsultorB + totalconsultora + totalstaff + totalsocios;
                         }
                     <tr>
-                        <td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
+                        <td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
                         <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"> @totalescostos</td>
 
                     </tr>
@@ -273,4 +273,113 @@
             }
         </div>
     </div>
+
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black">Subcontratación de Servicios</p>
+        <div style="display: flex; justify-content: space-between;">
+
+            
+
+
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                    <tr style="background-color: #f9eb8b; color: black;">
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Servicio</th>
+                        
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Monto</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            
+                           decimal totalservicios = 0;
+                        }
+                        @foreach(var proyecto in ViewBag.Servicios){
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>@proyecto.NOMBRESERVICIO</strong></td>
+                            
+                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                @proyecto.MONTO
+
+
+                            </td>
+                            @{
+                                totalservicios += proyecto.MONTO;
+                            }
+
+                        </tr>
+                       }
+                       <tr>
+                        <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#f9eb8b;text-align:left;"><strong>Total</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f9eb8b;"> @totalservicios</td>
+                       </tr>
+                    </tbody>
+                </table>
+
+            
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black">Gastos Operacionales</p>
+        <div style="display: flex; justify-content: space-between;">
+
+
+
+
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #f5bd89; color: black;">
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Gasto</th>
+                        
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Monto</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+
+                        decimal totalgastos = 0;
+                    }
+                    @foreach (var proyecto in ViewBag.Gastos)
+                    {
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>@proyecto.NOMBREGASTO</strong></td>
+                            
+                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                @proyecto.MONTO
+
+
+                            </td>
+                            @{
+                                totalgastos += proyecto.MONTO;
+                            }
+
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#f5bd89;text-align:left;"><strong>Total</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f5bd89;"> @totalgastos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+
 </div>
