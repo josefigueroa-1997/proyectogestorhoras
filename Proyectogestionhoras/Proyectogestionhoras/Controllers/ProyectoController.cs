@@ -151,7 +151,11 @@ namespace Proyectogestionhoras.Controllers
             var segmentoscostos = await ObtenerSegmentosCostos();
             var sucursales = await ObtenerSucursales(idcliente);
             var serviciosproyectos = await proyectoService.ObtenerServiciosProyecto(id);
+            var gastosproyectos = await proyectoService.ObtenerGastosProyectos(id);
             var servicios = await GetServicios();
+            var gastos = await GetGastos();
+            ViewBag.Gastos = gastos;
+            ViewBag.GastosProyectos = gastosproyectos;
             ViewBag.Servicios = servicios;
             ViewBag.ServiciosProyectos = serviciosproyectos;
             ViewBag.SegmentoCosto = segmentoscostos;
@@ -170,6 +174,13 @@ namespace Proyectogestionhoras.Controllers
         public async Task<List<Servicio>> GetServicios()
         {
             var resultado = await context.Servicios
+            .ToListAsync();
+            return resultado;
+        }
+
+        public async Task<List<Gasto>> GetGastos()
+        {
+            var resultado = await context.Gastos
             .ToListAsync();
             return resultado;
         }

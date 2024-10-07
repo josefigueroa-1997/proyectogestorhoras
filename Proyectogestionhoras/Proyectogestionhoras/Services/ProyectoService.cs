@@ -321,6 +321,7 @@ namespace Proyectogestionhoras.Services
                         {
                             GastoProyectoDTO gasto = new()
                             {
+                                IDGASTOS = reader.GetInt32(reader.GetOrdinal("IDGASTOS")),
                                 NOMBREGASTO = reader.GetString(reader.GetOrdinal("NOMBREGASTO")),
                                 NOMBRSEGMENTO = reader.GetString(reader.GetOrdinal("NOMBRSEGMENTO")),
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),

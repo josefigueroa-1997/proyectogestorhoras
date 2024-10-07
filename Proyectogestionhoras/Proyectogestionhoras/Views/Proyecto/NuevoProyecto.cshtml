@@ -1135,43 +1135,7 @@
     const totalMontoElement = document.getElementById('montoTotal');
     $(document).ready(function () {
        
-       /* $('.segmentoservicio').each(function () {
-            obtenerSegmentosCostos(this);
-        });
-
-        $('#tablaservicios').on('change', 'tbody tr .segmentoservicio', function () {
-            var idSegmento = $(this).val(); 
-            var currentRow = $(this).closest('tr'); 
-
-            if (idSegmento) { 
-                $.ajax({
-                    url: '/Proyecto/ObtenerCuentacostos', 
-                    type: 'GET',
-                    data: { idsegmento: idSegmento },
-                    success: function (response) {
-                        if (response && response.length > 0) {
-                      
-                            currentRow.find('.idcuentaservicio').val(response[0].idcuenta);
-                            currentRow.find('.cuentaservicio').val(response[0].cuenta);
-                            
-                        } else {
-                        
-                            currentRow.find('.idcuentaservicio').val('');
-                            currentRow.find('.cuentaservicio').val('');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error al obtener los datos:', error);
-           
-                        currentRow.find('.idcuentaservicio').val('');
-                        currentRow.find('.cuentaservicio').val('');
-                    }
-                });
-            }
-        });
-
-        
-    */
+       
 
         document.getElementById('agregarFila').addEventListener('click', function (e) {
             e.preventDefault();
@@ -1258,6 +1222,10 @@
         updateTotal();
         updateTotalGasto();
     });
+
+
+
+
 
    document.addEventListener('DOMContentLoaded', function () {
 
