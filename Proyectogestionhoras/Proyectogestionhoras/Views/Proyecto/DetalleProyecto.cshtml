@@ -220,38 +220,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                 
-                    @{
-                        decimal totalesneto =0 ;
-                        decimal totaliva = 0;
-                        decimal totalfactura = 0;
-                    }
-                    @foreach (var factura in ViewBag.Facturas)
-                    {
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.IdCuenta</td>
-
-                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.Cuenta</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.Segmento</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.Fecha_Factura.ToString("MM/yyyy")</td>
-                            
-                            <td id="neto" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@factura.Neto</td>
-                            <td id="iva" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@factura.IVA</td>
-                            <td id="totalf" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@factura.Total</td>
-                            @{
-                                totalesneto += factura.Neto;
-                                totaliva += factura.IVA;
-                                totalfactura += factura.Total;
-                            }
-                        </tr>
-                       
-                    }
-                    <tr>
-                        <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Totales</strong></td>
-                        <td id="totalesNeto" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><string>@totalesneto</string> </td>
-                        <td id="totalesIva" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@totaliva</strong> </td>
-                        <td id="totalesFacturas" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@totalfactura</strong> </td>
-                    </tr>
+                    
+                   
                 </tbody>
             </table>
 
@@ -267,7 +237,9 @@
     <div class="form-group">
         <p class="form-subtitle" style="color:black">Costos Directos</p>
         <div style="display: flex; justify-content: space-between;">
-
+            @{
+                decimal totalsocios = 0;
+            }
             @foreach (var proyecto in ViewBag.Proyectos)
             {
                 
@@ -295,7 +267,7 @@
 
                         </td>
                             @{
-                                decimal totalsocios = proyecto.HHSOCIOS * @proyecto.COSTO_SOCIO;
+                                totalsocios = proyecto.HHSOCIOS * @proyecto.COSTO_SOCIO;
                             }
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@totalsocios</td>
                       
@@ -485,72 +457,74 @@
 
         </div>
     </div>
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+        <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
+            <thead>
+                <tr style="background-color: #fa8164; color: black; text-align:center">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
 
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong></strong></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@totalsocios</td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+
+                </tr>
+
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong><span id="egresosmargen"></span></strong>
+                    </td>
+
+                </tr>
+                <tr style="background-color: #fa8164; color: black;">
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
 
 </div>
 
 <script>
-    
-    var montoproyectoElement = document.getElementById("montoproyecto");
-    var NetoElement = document.getElementById("neto");
-    var IvaElement = document.getElementById("iva");
-    var TotalfElement = document.getElementById("totalf");
-    var totalesNetoElement = document.getElementById("totalesNeto");
-    var totalesIvaElement = document.getElementById("totalesIva");
-    var totalesFacturasElement = document.getElementById("totalesFacturas");
-    var totalgastosElemento = document.getElementById("totalgastos");
-    var totalserviciosElemento = document.getElementById("totalservicios");
-    var totalcostosElemento = document.getElementById("totalcostos");
 
-    var NetoValue = parseFloat(NetoElement.innerText);
-    var IvaValue = parseFloat(IvaElement.innerText);
-    var TotalfValue = parseFloat(TotalfElement.innerText);
-    var totalesNetoValue = parseFloat(totalesNetoElement.innerText);
-    var totalesIvaValue = parseFloat(totalesIvaElement.innerText);
-    var totalesFacturasValue = parseFloat(totalesFacturasElement.innerText);
-    var totalgastoValue = parseFloat(totalgastosElemento.innerText);
-    var totalserviciosValue = parseFloat(totalserviciosElemento.innerText);
-    var totalcostosValue = parseFloat(totalcostosElemento.innerText);
-    var montoproyectoValue = parseFloat(montoproyectoElement.innerText);
 
-    NetoElement.innerText = NetoValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    IvaElement.innerText = IvaValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    TotalfElement.innerText = TotalfValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    totalesNetoElement.innerText = totalesNetoValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    totalesIvaElement.innerText = totalesIvaValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    totalesFacturasElement.innerText = totalesFacturasValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    totalgastosElemento.innerText = totalgastoValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    totalserviciosElemento.innerText = totalserviciosValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    totalcostosElemento.innerText = totalcostosValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    montoproyectoElement.innerText = montoproyectoValue.toLocaleString('de-DE', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+
+
+
+
 </script>
