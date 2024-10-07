@@ -150,7 +150,10 @@ namespace Proyectogestionhoras.Controllers
             var recursos = await usuarioService.ObtenerUusario(0, null, 0);
             var segmentoscostos = await ObtenerSegmentosCostos();
             var sucursales = await ObtenerSucursales(idcliente);
-            //IDCLIENTE
+            var serviciosproyectos = await proyectoService.ObtenerServiciosProyecto(id);
+            var servicios = await GetServicios();
+            ViewBag.Servicios = servicios;
+            ViewBag.ServiciosProyectos = serviciosproyectos;
             ViewBag.SegmentoCosto = segmentoscostos;
             ViewBag.Recursos = recursos;
             ViewBag.Clientes = clientes;
@@ -162,6 +165,13 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Proyectos = proyecto;
             ViewBag.Sucursales = sucursales;
             return View();
+        }
+
+        public async Task<List<Servicio>> GetServicios()
+        {
+            var resultado = await context.Servicios
+            .ToListAsync();
+            return resultado;
         }
 
         public async Task<List<Sucursal>> ObtenerSucursales(int? idcliente)
@@ -332,9 +342,9 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ObtenerValoresHonorarios(int idcodigo,int idrecurso)
+        public async Task<IActionResult> ObtenerValoresHonorarios(int idcosto, int idunegocio, int idrecurso)
         {
-            var honorarios = await proyectoService.ObtenerValoresHonorarios(idcodigo,idrecurso);
+            var honorarios = await proyectoService.ObtenerValoresHonorarios(idcosto,idunegocio,idrecurso);
             return Json(honorarios);
         }
         public IActionResult GetProyectos()

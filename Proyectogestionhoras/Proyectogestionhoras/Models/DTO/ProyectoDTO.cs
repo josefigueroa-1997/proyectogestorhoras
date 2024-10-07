@@ -62,5 +62,9 @@
         public string? SEGMENTO_CONSULTOR_C { get; set; }
         public decimal? COSTO_CONSULTORC { get; set; }
 
+
+        public string? NOMBRE_RECURSO { get; set; }
+        public string? TIPO_CONSULTOR { get; set; }
+
     }
 }

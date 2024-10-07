@@ -291,7 +291,7 @@
             </div>
                 <div style="display:none" class="form-group" id="nivelProbabilidadDiv">
                 <label for="nivelprobabilidad">Nivel Probabilidad</label>
-                    <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" value="@proyecto.Porcentaje_Probabilidad">
+                    <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" min="1" max="100" value="@proyecto.Porcentaje_Probabilidad">
             </div>
                 <div style="display:none" class="form-group" id="fechaPlazoDiv">
                 <label for="fechaPlazo">Fecha de Plazo</label>
@@ -343,7 +343,7 @@
             </div>
             <div class="form-group">
                 <label for="monto">Monto</label>
-                    <input type="text" id="monto" name="monto" value="@proyecto.MONTO" required>
+                    <input type="text" id="monto" name="monto" min="0" value="@proyecto.MONTO" required>
             </div>
 
         </div>
@@ -426,7 +426,7 @@
                 <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
                 <input type="hidden" id="cuentafactura" name="cuenta" readonly>
                 <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
-                <input type="hidden" id="codigo" />
+                    <input type="hidden" id="codigo" /> codigoccosto
                 <input type="hidden" class="nombresegmentoservicio" />
                 <input type="hidden" class="idcuentaservicio" name="idcuentaservicio" />
                 <input type="hidden" class="cuentaservicio" />
@@ -574,24 +574,26 @@
                     <tr>
                         <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" required>
+                                <input type="number" class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" required>
+                                <input type="number" class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" required>
+                                <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="consultorB" name="hhconsultorb" placeholder="Horas B" required>
+                                <input type="number" id="consultorB" name="hhconsultorb" placeholder="Horas B" value="@proyecto.HH_CONSULTOR_B" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" id="consultorC" name="hhconsultorc" placeholder="Horas C" required>
+                                <input type="number" id="consultorC" name="hhconsultorc" placeholder="Horas C" value="@proyecto.HH_CONSULTOR_C" required>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+
 
 
        
@@ -616,21 +618,11 @@
                     <tbody>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentasocio" name="idcuentasocio" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio" readonly /></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentasocio" name="idcuentasocio"  readonly /></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio"  readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="text" class="nombresegmentosocio" readonly />
-                                <select class="segmentoSocio" style="display:none;" name="idsegmentosocio">
-                                    <option value="" disabled selected>Seleccione un segmento</option>
-                                    @foreach (var segmento in ViewBag.SegmentoCosto)
-                                    {
-                                        if (segmento.TipoSegmento == "Costos")
-                                        {
-                                            <option value="@segmento.Id">@segmento.Nombre</option>
-                                        }
-
-                                    }
-                                </select>
+                                    <input type="text" class="nombresegmentosocio"  readonly />
+                               
 
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
@@ -638,40 +630,22 @@
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly /></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff"  readonly /></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor"  readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="text" class="nombresegmentoconsultor" readonly />
-                                <select class="segmentoConsultor" style="display:none;" name="idsegmentostaff">
-                                    <option value="" disabled selected>Seleccione un segmento</option>
-                                    @foreach (var segmento in ViewBag.SegmentoCosto)
-                                    {
-                                        if (segmento.TipoSegmento == "Costos")
-                                        {
-                                            <option value="@segmento.Id">@segmento.Nombre</option>
-                                        }
-                                    }
-                                </select>
+                                    <input type="text" class="nombresegmentoconsultor"  readonly />
+                               
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalstaff" style="font-weight: bold;"></span></td>
                             <input type="hidden" class="idsegmentoconsultor" name="idsegmentostaff" />
                         </tr>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioA" name="idcuentaconsultora" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioA" readonly /></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioA" name="idcuentaconsultora" readonly /></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioA" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="text" class="nombresegmentohonorarioA" readonly />
-                                <select class="segmentoConsultorA" style="display:none;" name="idsegmentoconsultora">
-                                    <option value="" disabled selected>Seleccione un segmento</option>
-                                    @foreach (var segmento in ViewBag.SegmentoCosto)
-                                    {
-                                        if (segmento.TipoSegmento == "Honorarios")
-                                        {
-                                            <option value="@segmento.Id">@segmento.Nombre</option>
-                                        }
-                                    }
-                                </select>
+                                    <input type="text" class="nombresegmentohonorarioA"  readonly />
+                              
 
                             </td>
 
@@ -684,16 +658,7 @@
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioB" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
                                 <input type="text" class="nombresegmentohonorarioB" readonly />
-                                <select class="segmentoConsultorB" style="display:none;" name="idsegmentoconsultorb">
-                                    <option value="" disabled selected>Seleccione un segmento</option>
-                                    @foreach (var segmento in ViewBag.SegmentoCosto)
-                                    {
-                                        if (segmento.TipoSegmento == "Honorarios")
-                                        {
-                                            <option value="@segmento.Id">@segmento.Nombre</option>
-                                        }
-                                    }
-                                </select>
+                                
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
                             <input type="hidden" class="idsegmentohonorarioB" name="idsegmentoconsultorb" />
@@ -704,16 +669,7 @@
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioC" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
                                 <input type="text" class="nombresegmentohonorarioC" readonly />
-                                <select class="segmentoConsultorC" style="display:none;" name="idsegmentoconsultorc">
-                                    <option value="" disabled selected>Seleccione un segmento</option>
-                                    @foreach (var segmento in ViewBag.SegmentoCosto)
-                                    {
-                                        if (segmento.TipoSegmento == "Honorarios")
-                                        {
-                                            <option value="@segmento.Id">@segmento.Nombre</option>
-                                        }
-                                    }
-                                </select>
+                               
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
                             <input type="hidden" class="idsegmentohonorarioC" name="idsegmentoconsultorc" />
@@ -746,6 +702,52 @@
                     </tr>
                 </thead>
                 <tbody>
+                        @foreach (var sp in ViewBag.ServiciosProyectos)
+                        {
+                            <tr>
+
+
+
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <select class="gastosSelect" name="idgastos[]" onchange="checkRequiredGasto(this)">
+                                        <option value="" disabled selected>Seleccione un Gasto</option>
+                                        @foreach (var servicio in ViewBag.Servicios)
+                                        {
+                                            if (servicio.Id == sp.IDSERVICIO)
+                                            {
+                                                <option value="@servicio.Id" selected>@servicio.Nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@servicio.Id">@servicio.Nombre</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="montogasto" class="montogasto" type="text"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="ccostogasto" name="costogastos" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="segmentogastos" name="segmentogastos" />
+
+                                </td>
+
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input class="idcuentagastos" name="idcuentagasto" readonly />
+
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input class="cuentagastos" name="cuentagastos" readonly />
+
+                                </td>
+                                <td style="display:none">
+                                    <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                                </td>
+
+                            </tr>
+                        }
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
@@ -800,7 +802,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                        
+                        <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <select class="gastosSelect" name="idgastos[]" onchange="checkRequiredGasto(this)">
                                 <option value="" disabled selected>Seleccione un Gasto</option>
@@ -813,7 +816,7 @@
                             <input type="text" id="ccostogasto" name="costogastos" readonly />
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="text" class="segmentogastos" name="segmentogastos" />
+                            <input type="text" class="segmentogastos" name="segmentogastos" readonly/>
 
                         </td>
 
@@ -953,13 +956,22 @@
     
     document.addEventListener("DOMContentLoaded", function () {
         toggleFields(); 
+        generarFilas();
+        obteneridcuenta();
+        actualizarTipologia();
+        obtenerValoresServicio();
+        obtenerValoresConsultores();
+        obtenerHonorarios();
     });
 
     /*TRAE EL CODIGO DEL PROYECTO DE CENTRO DE COSTO*/
     $(document).ready(function () {
         $("#unidadNegocio, #centroCosto").change(function () {
             obtenerCodigo();
-            
+            obteneridcuenta();
+            obtenerValoresServicio();
+            obtenerValoresConsultores();
+            obtenerHonorarios();
         });
     });
 
@@ -979,6 +991,7 @@
                 success: function (data) {
                     if (data && data.length > 0) {
                         $(".codigoccosto").val(data[0].codigo);
+                       
                         
                     } else {
                         $("#codigoccosto").val('');
@@ -1008,6 +1021,361 @@
                 $('#fechaFin').val('');
             }
         });
+    });
+
+    /*TABLA FACTURAS*/
+    document.getElementById("plazo").addEventListener("input", generarFilas);
+    document.getElementById("fechaInicio").addEventListener("input", generarFilas);
+    document.getElementById("monto").addEventListener("input", generarFilas);
+
+    function generarFilas() {
+        var plazo = document.getElementById("plazo").value;
+        var fechaInicio = document.getElementById("fechaInicio").value;
+        var monto = parseFloat(document.getElementById("monto").value.replace(/\./g, '')) || 0;
+        var afectaIVA = document.querySelector('input[name="afectaiva"]:checked')?.value;
+        var idcuenta = document.getElementById("idcuentafactura").value;
+        var cuentacontable = document.getElementById("cuentafactura").value;
+        var nombresegmento = document.getElementById("nombresegmentofactura").value;
+        var tablaBody = document.getElementById("tabla-body");
+
+        tablaBody.innerHTML = "";
+
+        var totalMonto = 0;
+        var totalIVA = 0;
+        var totalFinal = 0;
+
+        if (plazo > 0 && fechaInicio) {
+            var fecha = new Date(fechaInicio);
+            fecha.setMonth(fecha.getMonth() + 1);
+            var montoPorMes = monto / plazo;
+
+            for (var i = 1; i <= plazo; i++) {
+                var fila = document.createElement("tr");
+
+                var mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
+                var año = fecha.getFullYear();
+                var mesAño = mes + '/' + año;
+
+                var iva = (afectaIVA === "si") ? montoPorMes * 0.19 : 0;
+                var total = montoPorMes + iva;
+
+
+                totalMonto += montoPorMes;
+                totalIVA += iva;
+                totalFinal += total;
+
+                fila.innerHTML = `
+                        <td style="padding: 10px; border: 1px solid #ddd;">${idcuenta}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${cuentacontable}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${nombresegmento}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${mesAño}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+            <input type="text" value="${montoPorMes.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px; padding: 5px;">
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+            <input type="text" value="${iva.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px; padding: 5px;">
+        </td>
+        <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+            <input type="text" value="${total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px; padding: 5px;">
+        </td>
+                    `;
+
+                tablaBody.appendChild(fila);
+
+                fecha.setMonth(fecha.getMonth() + 1);
+            }
+
+
+            var filaTotales = document.createElement("tr");
+            filaTotales.innerHTML = `
+                    <td colspan="4" style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Totales</td>
+                               <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; text-align: right;">
+                <input id="netofactura" type="text" value="${totalMonto.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px;">
+            </td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; text-align: right;">
+                <input type="text" value="${totalIVA.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px;">
+            </td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; text-align: right;">
+                <input type="text" value="${totalFinal.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}" readonly style="width: 150px; text-align: right; font-size: 16px;">
+            </td>
+                `;
+
+
+            tablaBody.appendChild(filaTotales);
+            //obtenerMargenEsperado();
+        }
+
+    }
+
+    function obteneridcuenta() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+
+        if (idUnidadNegocio && idCentroCosto) {
+            $.ajax({
+                url: '/Proyecto/GetValoresFactura',
+                type: 'GET',
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio
+                },
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        $("#idcuentafactura").val(data[0].idcuenta);
+                        $("#cuentafactura").val(data[0].cuenta);
+                        $("#nombresegmentofactura").val(data[0].nombre);
+                        $("#idsegmentofactura").val(data[0].idsegmento);
+                        generarFilas();
+                    } else {
+                        $("#idcuentafactura").val('');
+                        $("#nombresegmentofactura").val('');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error en la solicitud AJAX:", error);
+                    $("#idcuentafactura").val('');
+                }
+            });
+        } else {
+            $("#idcuentafactura").val('');
+        }
+    }
+
+    /*OBTENER VALORES CONSULTORES*/
+
+
+    function obtenerValoresConsultores() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+
+        if (idUnidadNegocio && idCentroCosto) {
+            $.ajax({
+                url: '/Proyecto/ObtenerValoresConsultores',
+                type: 'GET',
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio
+                },
+                success: function (response) {
+                    if (response && response.length > 0) {
+                        // Cuando hay datos
+                        $(".idcuentaconsultor").val(response[0].idcuenta);
+                        $(".cuentaconsultor").val(response[0].cuenta);
+                        $(".idsegmentoconsultor").val(response[0].idsegmento);
+                        $(".cuentasocio").val(response[0].cuenta);
+                        $(".idsegmentosocio").val(response[0].idsegmento);
+                        $(".idcuentasocio").val(response[0].idcuenta);
+
+                        // Ocultar los selects y mostrar los campos readonly
+                        $(".nombresegmentoconsultor").val(response[0].nombre);
+                        $(".nombresegmentosocio").val(response[0].nombre);
+
+
+                    } else {
+                        // Cuando NO hay datos
+                        $(".idcuentaconsultor").val('');
+                        $(".cuentaconsultor").val('');
+                        $(".idcuentasocio").val('');
+                        $(".cuentasocio").val('');
+
+
+                        // Asegurarse de que los campos readonly estén ocultos
+                        $(".nombresegmentoconsultor").val('');
+                        $(".nombresegmentosocio").val('');
+                        $(".idsegmentoconsultor").val('');
+                        $(".idsegmentosocio").val('');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener el servicio:', error);
+                    $(".nombresegmentoservicio").val('');
+                }
+            });
+        }
+    }
+
+    /*OBTENER VALORES CONSULTORES EXTERNOS*/
+
+    function obtenerHonorarios() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+        var idConsultor = $("#idconsultor").val();
+
+        if (idUnidadNegocio && idCentroCosto) {
+            $.ajax({
+                url: '/Proyecto/ObtenerValoresHonorarios',
+                type: 'GET',
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio,
+                    idrecurso: idConsultor
+                },
+                success: function (data) {
+
+                    if (data && data.length > 0) {
+                        $(".nombresegmentohonorarioA").val(data[0].nombre);
+                        $(".idcuentahonorarioA").val(data[0].idcuenta);
+                        $(".cuentahonorarioA").val(data[0].cuenta);
+                        $(".idsegmentohonorarioA").val(data[0].idsegmento);
+                        $(".nombresegmentohonorarioB").val(data[0].nombre);
+                        $(".idcuentahonorarioB").val(data[0].idcuenta);
+                        $(".cuentahonorarioB").val(data[0].cuenta);
+                        $(".idsegmentohonorarioB").val(data[0].idsegmento);
+                        $(".nombresegmentohonorarioC").val(data[0].nombre);
+                        $(".idcuentahonorarioC").val(data[0].idcuenta);
+                        $(".cuentahonorarioC").val(data[0].cuenta);
+                        $(".idsegmentohonorarioC").val(data[0].idsegmento);
+
+
+                    } else {
+
+                        $(".nombresegmentohonorarioA").val('').hide();
+                        $(".idcuentahonorarioA").val('');
+                        $(".cuentahonorarioA").val('');
+                        $(".idsegmentohonorarioA").val('');
+                        $(".nombresegmentohonorarioB").val('');
+                        $(".idcuentahonorarioB").val('');
+                        $(".cuentahonorarioB").val('');
+                        $(".idsegmentohonorarioB").val('');
+                        $(".nombresegmentohonorarioC").val('').hide();
+                        $(".idcuentahonorarioC").val('');
+                        $(".cuentahonorarioC").val('');
+                        $(".idsegmentohonorarioC").val('');
+
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error en la solicitud AJAX:", error);
+                }
+            });
+        }
+
+
+
+    }
+
+
+    /*OBTENERVALORESCUENTA SERVICIOS*/
+
+    function obtenerValoresServicio() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+        if (idUnidadNegocio && idCentroCosto) {
+            $.ajax({
+                url: '/Proyecto/GetValoresServicios',
+                type: 'GET',
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio
+                },
+                success: function (response) {
+                    if (response && response.length > 0) {
+
+                        $(".nombresegmentoservicio").val(response[0].nombre);
+                        $(".idcuentaservicio").val(response[0].idcuenta);
+                        $(".cuentaservicio").val(response[0].cuenta);
+                        $(".idsegmentoservicio").val(response[0].idsegmento);
+
+                    } else {
+
+                        $(".nombresegmentoservicio").val('');
+                        $(".idcuentaservicio").val('');
+                        $(".cuentaservicio").val('');
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener el servicio:', error);
+                    $(".nombresegmentoservicio").val('').hide();
+
+                }
+            });
+        }
+    }
+
+    /*TIPOLOGIA EN TABLA HORAS*/
+    // Función para actualizar la tabla con el valor seleccionado del select
+    function actualizarTipologia() {
+
+        var selectTipologia = document.getElementById("tipologia");
+        var tipologiaSeleccionada = selectTipologia.options[selectTipologia.selectedIndex].text;
+
+
+        document.getElementById("tipologiaText").innerText = tipologiaSeleccionada;
+    }
+
+
+    document.getElementById("tipologia").addEventListener("change", actualizarTipologia);
+
+
+
+    /*COSTOS TABLAS RECURSOS/COSTOS*/
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const costoSocio = parseFloat(document.querySelector('[data-costo-unitario]').getAttribute('data-costo-unitario')) || 0;
+        const costoStaff = parseFloat(document.querySelector('[data-costo-staff]').getAttribute('data-costo-staff')) || 0;
+        const costoConsultora = parseFloat(document.querySelector('#idconsultora').value) || 0;
+        const costoConsultorb = parseFloat(document.querySelector('#idconsultorb').value) || 0;
+        const costoConsultorc = parseFloat(document.querySelector('#idconsultorc').value) || 0;
+
+        const inputHorasStaff = document.querySelector('#horasStaff');
+        const inputHorasSocios = document.querySelector('#horasSocios');
+        const inputHorasConsultora = document.querySelector('#consultorA');
+        const inputHorasConsultorb = document.querySelector('#consultorB');
+        const inputHorasConsultorc = document.querySelector('#consultorC');
+
+        const totalStaffElement = document.querySelector('#totalstaff');
+        const totalConsultorAElement = document.querySelector('#totalconsultorA');
+        const totalConsultorBElement = document.querySelector('#totalconsultorB');
+        const totalConsultorCElement = document.querySelector('#totalconsultorC');
+        const totalSociosElement = document.querySelector('#totalsocio');
+        const totalCostosDirectosElement = document.querySelector('#totalcostosdirectos');
+
+        // Función para actualizar el total de costos
+        function actualizarTotalCostos() {
+            const totalSocio = parseFloat(totalSociosElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalStaff = parseFloat(totalStaffElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalConsultora = parseFloat(totalConsultorAElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalConsultorb = parseFloat(totalConsultorBElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+            const totalConsultorc = parseFloat(totalConsultorCElement.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+
+            const totalcostos = totalSocio + totalStaff + totalConsultora + totalConsultorb + totalConsultorc;
+            totalCostosDirectosElement.textContent = totalcostos.toLocaleString('de-DE', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Función para actualizar las horas y costos
+        function actualizarElementoHoras(input, costo, outputElement) {
+            const horas = parseFloat(input.value) || 0;
+            const total = horas * costo;
+            outputElement.textContent = total.toLocaleString('de-DE', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            actualizarTotalCostos();
+
+            // Event listener para recalcular en tiempo real
+            input.addEventListener('input', function () {
+                const horas = parseFloat(this.value) || 0;
+                const total = horas * costo;
+                outputElement.textContent = total.toLocaleString('de-DE', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                actualizarTotalCostos();
+            });
+        }
+
+        // Inicializar el cálculo al cargar la página
+        actualizarElementoHoras(inputHorasSocios, costoSocio, totalSociosElement);
+        actualizarElementoHoras(inputHorasStaff, costoStaff, totalStaffElement);
+        actualizarElementoHoras(inputHorasConsultora, costoConsultora, totalConsultorAElement);
+        actualizarElementoHoras(inputHorasConsultorb, costoConsultorb, totalConsultorBElement);
+        actualizarElementoHoras(inputHorasConsultorc, costoConsultorc, totalConsultorCElement);
+
     });
 
 </script>

@@ -238,8 +238,10 @@ namespace Proyectogestionhoras.Services
                                 CUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_C")),
                                 IDCUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")),
                                 SEGMENTO_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")),
-                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC"))
+                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
 
+                                NOMBRE_RECURSO = reader.IsDBNull(reader.GetOrdinal("NOMBRE_RECURSO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRE_RECURSO")),
+                                TIPO_CONSULTOR = reader.IsDBNull(reader.GetOrdinal("TIPO_CONSULTOR")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_CONSULTOR"))
 
 
 
@@ -278,6 +280,7 @@ namespace Proyectogestionhoras.Services
                         {
                             ServiciosProyectoDTO servicio = new()
                             {
+                                IDSERVICIO = reader.GetInt32(reader.GetOrdinal("IDSERVICIO")),
                                 NOMBRESERVICIO = reader.GetString(reader.GetOrdinal("NOMBRESERVICIO")),
                                 NOMBRSEGMENTO = reader.GetString(reader.GetOrdinal("NOMBRSEGMENTO")),
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
@@ -842,7 +845,7 @@ namespace Proyectogestionhoras.Services
                 return new List<ConsultoresDTO>();
             }
         }
-        public async Task<List<HonorariosDTO>> ObtenerValoresHonorarios(int idcodigo, int idrecurso)
+        public async Task<List<HonorariosDTO>> ObtenerValoresHonorarios(int idcosto, int idunegocio, int idrecurso)
         {
             try
             {
@@ -852,7 +855,8 @@ namespace Proyectogestionhoras.Services
                 {
                     command.CommandText = "OBTENERSEGMENTOHONORARIOS";
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@IDCCOSTOCODIGO", idcodigo));
+                    command.Parameters.Add(new SqlParameter("@IDCCOSTO", idcosto));
+                    command.Parameters.Add(new SqlParameter("@IDUNEGOCIO", idunegocio));
                     command.Parameters.Add(new SqlParameter("@IDRECURSO", idrecurso));
                     using (var reader = await command.ExecuteReaderAsync())
                     {
