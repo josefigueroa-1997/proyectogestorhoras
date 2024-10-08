@@ -5,7 +5,25 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
+using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File(@"C:\Users\pepef\Desktop\proyecto gestion\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\logs\myapp-.txt",
+                   rollingInterval: RollingInterval.Day,
+                   rollOnFileSizeLimit: true) // Permite crear nuevos archivos si el límite de tamaño es alcanzado
+    .CreateLogger();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration) // Esto lee la configuración de appsettings.json
+    .CreateLogger();
+// Reemplaza el logger predeterminado por Serilog
+builder.Host.UseSerilog();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -28,12 +46,33 @@ builder.Services.AddScoped<ContactoService>();
 builder.Services.AddScoped<SegmentoService>();
 builder.Services.AddScoped<FacturaService>();
 builder.Services.AddDbContext<PROYECTO_CONTROL_HORASContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("cadenasql")));
-var app = builder.Build();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+var app = builder.Build();
+// Configurar la localización (cultura)
+var supportedCultures = new[]
 {
-    app.UseExceptionHandler("/Home/Error");
+    new CultureInfo("es-CL")
+};
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("es-CL"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseDatabaseErrorPage();
+}
+
+else
+{
+    app.UseDeveloperExceptionPage();
+    app.UseDatabaseErrorPage();
+    // app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }

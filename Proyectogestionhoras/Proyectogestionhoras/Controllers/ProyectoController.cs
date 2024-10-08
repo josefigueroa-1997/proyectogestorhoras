@@ -7,6 +7,8 @@ using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Models.DTO;
 using Proyectogestionhoras.Services.Interface;
 using System.Text.RegularExpressions;
+using Serilog;
+using Microsoft.Extensions.Primitives;
 namespace Proyectogestionhoras.Controllers
 {
     public class ProyectoController : Controller
@@ -30,10 +32,11 @@ namespace Proyectogestionhoras.Controllers
             var ccostos = await proyectoService.ObtenerCcosto();
             var empresas = await proyectoService.ObtenerEmpresa();
             var tipologias = await proyectoService.ObtenerTipoligias();
-            var clientes = await clienteService.ObtenerClientesIndex(0);
+            //var clientes = await clienteService.ObtenerClientesIndex(0);
             var status = await proyectoService.ObtenerStatus();
             var recursos = await usuarioService.ObtenerUusario(0,null,0);
             var segmentoscostos = await ObtenerSegmentosCostos();
+            var clientes = await context.Clientes.ToListAsync();
             ViewBag.SegmentoCosto = segmentoscostos;
             ViewBag.Recursos = recursos;
             ViewBag.Clientes = clientes;
@@ -51,46 +54,57 @@ namespace Proyectogestionhoras.Controllers
         {
             try
             {
+                
                 int idcosto = int.Parse(Request.Form["centroCosto"]);
                 int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
+                
                 int idcliente = int.Parse(Request.Form["cliente"]);
                 int idsucursal = int.Parse(Request.Form["sucursal"]);
+                var montopresupuesto = Request.Form["monto"].ToString();
+                var montopresupuestostr = montopresupuesto.Replace(".", "");
+                decimal montofinal = decimal.Parse(montopresupuestostr);
                 int idsucursalcliente = await GetIdClienteSucrusal(idcliente, idsucursal);
                 int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
                 List<ServicioViewModel> servicios = new List<ServicioViewModel>();
                 var idsservicios = Request.Form["idservicio"];
-                var montoservicio = Request.Form["montoservicio"];
                 var idsegmentoservicio = Request.Form["idsegmentoservicio"];
-               
+                var montoservicioList = Request.Form["montoservicio"]; 
+
                 for (int i = 0; i < idsservicios.Count; i++)
                 {
+                    var montoservicioStr = montoservicioList[i].ToString();
+
+                    montoservicioStr = montoservicioStr.Replace(".", "");
+
+                    decimal montoservicio = decimal.Parse(montoservicioStr);
                     var servicioViewModel = new ServicioViewModel
                     {
                         Idservicios = int.Parse(idsservicios[i]),
                         IdSegmento = int.Parse(idsegmentoservicio[i]),
-                        MontoServicio = decimal.Parse(montoservicio[i])
+                        MontoServicio = montoservicio, 
                     };
 
                     servicios.Add(servicioViewModel);
                 }
 
                 List<GastoViewModel> gastos = new List<GastoViewModel>();
-                var idgastos = Request.Form["idgastos[]"];
-                var montogasto = Request.Form["montogasto"];
+                var idgastos = Request.Form["idgastos[]"]; // Asegúrate de que esto obtenga múltiples IDs de gastos
                 var idsegmentogasto = Request.Form["idsegmentogasto"];
-                
+                var montogastoList = Request.Form["montogasto"]; // Obtener la lista de montos
+
                 for (int i = 0; i < idgastos.Count; i++)
                 {
                     var gastoviewmodel = new GastoViewModel
                     {
-                        Idgastos = int.Parse (idgastos[i]),
+                        Idgastos = int.Parse(idgastos[i]),
                         IdSegmento = int.Parse(idsegmentogasto[i]),
-                        MontoGasto = decimal.Parse (montogasto[i])
+                        MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")) // Accede al monto correspondiente y reemplaza el punto
                     };
+
                     gastos.Add(gastoviewmodel);
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(monto,moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa,idcodigoccosto,idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
+                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
@@ -98,18 +112,25 @@ namespace Proyectogestionhoras.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.ErrorMessage = "Hubo un error al registrar el proyecto.";
+                    return View("NuevoProyecto");
                 }
                 
             }
             catch (Exception ex) {
-
+                Log.Error(ex, "Error al crear el proyecto");
+                ViewBag.ErrorMessage = $"Hubo un error al registrar el proyecto: {ex.Message}";
                 Debug.WriteLine($"Hubo un error al registrar el proyecto:{ex.Message}");
 
-                return View();
+                return View("NuevoProyecto");
             }
         }
 
+
+        public IActionResult Exito()
+        {
+            return View();
+        }
         public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
         {
             var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);

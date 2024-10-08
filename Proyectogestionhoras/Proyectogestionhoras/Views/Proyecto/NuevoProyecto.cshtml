@@ -136,6 +136,12 @@
 </style>
 
 <div class="form-container">
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
     <h1 class="form-title">Crear Nuevo Proyecto</h1>
     <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
 
@@ -150,15 +156,28 @@
                 <input type="text" id="nombreProyecto" name="nombre" required>
             </div>
             
+
+
+
+
+            
+            
+            
+            
+            
+            
             
             <div class="form-group">
                 <label for="cliente">Cliente</label>
                 <select id="cliente" name="cliente" required>
                     <option value="" disabled selected>Seleccione un cliente</option>
-                    @foreach (var cliente in ViewBag.Clientes)
-                    {
-                        <option value="@cliente.Id">@cliente.Nombre</option>
+                    @if(ViewBag.Clientes!=null){
+                        @foreach (var cliente in ViewBag.Clientes)
+                        {
+                            <option value="@cliente.Id">@cliente.Nombre</option>
+                        }
                     }
+                    
                 </select>
             </div>
             <div class="form-group">
@@ -178,10 +197,13 @@
                 <label for="unidadNegocio">Unidad de negocio</label>
                 <select id="unidadNegocio" name="unidadNegocio" required>
                     <option value="" disabled selected>Seleccione una unidad</option>
-                    @foreach(var uneogocio in ViewBag.Unegocios)
-                    {
-                        <option value="@uneogocio.Id">@uneogocio.TipoUnegocio</option>
+                    @if(ViewBag.Unegocios!=null){
+                        @foreach (var uneogocio in ViewBag.Unegocios)
+                        {
+                            <option value="@uneogocio.Id">@uneogocio.TipoUnegocio</option>
+                        }
                     }
+                    
                     
                 </select>
             </div>
@@ -189,10 +211,14 @@
                 <label for="centroCosto">Centro de costo</label>
                 <select id="centroCosto" name="centroCosto" required>
                     <option value="" disabled selected>Seleccione un centro de costo</option>
-                    @foreach(var ccosto in ViewBag.Ccostos)
+                    @if (ViewBag.Ccostos != null)
                     {
-                        <option value="@ccosto.Id">@ccosto.TipoCcosto</option>
+                        @foreach (var ccosto in ViewBag.Ccostos)
+                        {
+                            <option value="@ccosto.Id">@ccosto.TipoCcosto</option>
+                        }
                     }
+                    
                 </select>
             </div>
             <div class="form-group">
@@ -203,10 +229,13 @@
                 <label for="estadoProyecto">Estado del proyecto</label>
                 <select id="estadoProyecto" name="status" required>
                     <option value="" disabled selected>Seleccione el estado del proyecto</option>
-                    @foreach (var statu in ViewBag.Status)
-                    {
-                        <option value="@statu.Id">@statu.TipoStatus</option>
+                    @if (ViewBag.Status!=null){
+                        @foreach (var statu in ViewBag.Status)
+                        {
+                            <option value="@statu.Id">@statu.TipoStatus</option>
+                        }
                     }
+                    
 
                 </select>
             </div>
@@ -235,25 +264,31 @@
                 <label for="tipologia">Tipología</label>
                 <select id="tipologia" name="idtipologia" required>
                     <option value="" disabled selected>Seleccione una tipología</option>
-                    @foreach (var tipologia in ViewBag.Tipologias)
-                    {
-                        <option value="@tipologia.Id">@tipologia.TipoTipologia</option>
+                    @if(ViewBag.Tipologias!=null){
+                        @foreach (var tipologia in ViewBag.Tipologias)
+                        {
+                            <option value="@tipologia.Id">@tipologia.TipoTipologia</option>
+                        }
                     }
+                    
                 </select>
             </div>
             <div class="form-group">
                 <label for="tipoEmpresa">Tipo de empresa</label>
                 <select id="tipoEmpresa" name="tipoempresa" required>
                     <option value="" disabled selected>Seleccione el tipo de empresa</option>
-                    @foreach (var empresa in ViewBag.Empresas)
-                    {
-                        <option value="@empresa.Id">@empresa.TipoEmpresa</option>
+                    @if(ViewBag.Empresas!=null){
+                        @foreach (var empresa in ViewBag.Empresas)
+                        {
+                            <option value="@empresa.Id">@empresa.TipoEmpresa</option>
+                        }
                     }
+                    
                 </select>
             </div>
             <div class="form-group">
                 <label for="monto">Monto</label>
-                <input type="text" id="monto" name="monto" min="0" required>
+                <input type="text" id="monto" name="monto"  required>
             </div>
             
         </div>
@@ -295,7 +330,7 @@
                 <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
                 <input type="hidden" id="cuentafactura" name="cuenta" readonly>
                 <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
-                <input type="hidden" id="codigo"/>
+                <input type="hidden" id="codigo" name="idccosto"/>
                 <input type="hidden" class="nombresegmentoservicio" />
                 <input type="hidden" class="idcuentaservicio" name="idcuentaservicio"/>
                 <input type="hidden" class="cuentaservicio" />
@@ -344,21 +379,23 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach (var recurso in ViewBag.Recursos)
-                        {
-                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                        @if (ViewBag.Recursos!=null){
+                            @foreach (var recurso in ViewBag.Recursos)
                             {
-                                <tr>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
-                                </tr>
+                                if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                                {
+                                    <tr>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+                                    </tr>
 
+                                }
                             }
                         }
+                        
                     </tbody>
                 </table>
                 <!-- Tabla de Staff -->
@@ -374,57 +411,65 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach (var recurso in ViewBag.Recursos)
-                        {
-                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                        @if(ViewBag.Recursos!=null){
+                            @foreach (var recurso in ViewBag.Recursos)
                             {
-                                <tr>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
-                                </tr>
+                                if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                                {
+                                    <tr>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+                                    </tr>
 
+                                }
                             }
                         }
+                        
                         
                     </tbody>
                 </table>
                 <div style="display:none;">
-                    @foreach (var recurso in ViewBag.Recursos)
-                    {
-                        if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+                    @if(ViewBag.Recursos!=null){
+                        @foreach (var recurso in ViewBag.Recursos)
                         {
-                            if(recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor A")
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
                             {
-                                <input type="hidden" id="idconsultora" value="@recurso.Costo_Unitario"/>
-                            }
-                            if(recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor B")
-                            {
-                                <input type="hidden" id="idconsultorb" value="@recurso.Costo_Unitario" />
-                            }
-                            if(recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor C")
-                            {
-                                <input type="hidden" id="idconsultorc" value="@recurso.Costo_Unitario" />
-                            }
+                                if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor A")
+                                {
+                                    <input type="hidden" id="idconsultora" value="@recurso.Costo_Unitario" />
+                                }
+                                if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor B")
+                                {
+                                    <input type="hidden" id="idconsultorb" value="@recurso.Costo_Unitario" />
+                                }
+                                if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor C")
+                                {
+                                    <input type="hidden" id="idconsultorc" value="@recurso.Costo_Unitario" />
+                                }
 
+                            }
                         }
                     }
+                   
                 </div>
             </div>
         </div>
         <div style="display:none">
-            @foreach (var recurso in ViewBag.Recursos)
-            {
-                if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+            @if(ViewBag.Recursos!=null){
+                @foreach (var recurso in ViewBag.Recursos)
                 {
-                    <input type="hidden" id="idconsultor" value="@recurso.ID_RECURSO" />
-                    break;
-                   
+                    if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+                    {
+                        <input type="hidden" id="idconsultor" value="@recurso.ID_RECURSO" />
+                        break;
+
+                    }
                 }
             }
+           
         </div>
 
         <div class="form-group">
