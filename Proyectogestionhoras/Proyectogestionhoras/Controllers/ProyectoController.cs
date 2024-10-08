@@ -88,9 +88,9 @@ namespace Proyectogestionhoras.Controllers
                 }
 
                 List<GastoViewModel> gastos = new List<GastoViewModel>();
-                var idgastos = Request.Form["idgastos[]"]; // Asegúrate de que esto obtenga múltiples IDs de gastos
+                var idgastos = Request.Form["idgastos[]"]; 
                 var idsegmentogasto = Request.Form["idsegmentogasto"];
-                var montogastoList = Request.Form["montogasto"]; // Obtener la lista de montos
+                var montogastoList = Request.Form["montogasto"]; 
 
                 for (int i = 0; i < idgastos.Count; i++)
                 {
@@ -98,7 +98,7 @@ namespace Proyectogestionhoras.Controllers
                     {
                         Idgastos = int.Parse(idgastos[i]),
                         IdSegmento = int.Parse(idsegmentogasto[i]),
-                        MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")) // Accede al monto correspondiente y reemplaza el punto
+                        MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")) 
                     };
 
                     gastos.Add(gastoviewmodel);
@@ -127,10 +127,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
-        public IActionResult Exito()
-        {
-            return View();
-        }
+       
         public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
         {
             var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
@@ -167,7 +164,7 @@ namespace Proyectogestionhoras.Controllers
             var empresas = await proyectoService.ObtenerEmpresa();
             var tipologias = await proyectoService.ObtenerTipoligias();
             var clientes = await clienteService.ObtenerClientesIndex(0);
-            var status = await proyectoService.ObtenerStatus();
+            var status = await RecuperarEstados();
             var recursos = await usuarioService.ObtenerUusario(0, null, 0);
             var segmentoscostos = await ObtenerSegmentosCostos();
             var sucursales = await ObtenerSucursales(idcliente);
@@ -192,6 +189,11 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+        public async Task<List<StatusProyecto>> RecuperarEstados()
+        {
+            var estados = await context.StatusProyectos.ToListAsync();
+            return estados;
+        }
         public async Task<List<Servicio>> GetServicios()
         {
             var resultado = await context.Servicios
@@ -208,9 +210,9 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<List<Sucursal>> ObtenerSucursales(int? idcliente)
         {
-            var sucursales = await (from sc in context.SucursalClientes // Tabla sucursal_cliente
-                                    join c in context.Sucursals on sc.IdSucursal equals c.Id // JOIN con SUCURSAL
-                                    where sc.IdCliente == idcliente // Condición para filtrar por cliente
+            var sucursales = await (from sc in context.SucursalClientes 
+                                    join c in context.Sucursals on sc.IdSucursal equals c.Id 
+                                    where sc.IdCliente == idcliente 
                                     select new
                                     {
                                         c.Id,
@@ -250,6 +252,14 @@ namespace Proyectogestionhoras.Controllers
             return segmentosCostos;
         }
 
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetValoresGastosEdicion(int idcosto, int unegocio, string nombresegmento)
+        {
+            var gastos = await proyectoService.ObtenerValoresGastosEdicion(idcosto,unegocio, nombresegmento);
+            return Json(gastos);
+        }
 
 
         [HttpGet]

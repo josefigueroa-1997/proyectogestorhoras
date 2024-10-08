@@ -926,7 +926,50 @@ namespace Proyectogestionhoras.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                Debug.WriteLine($"Hubo un error al obtener los gastos:" + ex.Message);
+                return new List<GastoDTO>();
+            }
+        }
+
+        public async Task<List<GastoDTO>> ObtenerValoresGastosEdicion(int idcosto,int unegocio, string nombresegmento)
+        {
+            try
+            {
+                var gastos = new List<GastoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "FILTRARSEGMENTOGASTOSEDICION";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCOSTO", idcosto));
+                    command.Parameters.Add(new SqlParameter("@IDUNEGOCIO", unegocio));
+                    command.Parameters.Add(new SqlParameter("@NOMBRESEGMENTO", nombresegmento));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            GastoDTO gasto = new()
+                            {
+                                NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
+
+                            };
+                            gastos.Add(gasto);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return gastos;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener los gastos:" + ex.Message);
                 return new List<GastoDTO>();
             }
         }
