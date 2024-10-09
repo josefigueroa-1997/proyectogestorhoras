@@ -639,15 +639,80 @@
                         <td style="padding: 10px; border: 1px solid #ddd;">
                                 <input type="number" id="consultorC" name="hhconsultorc" placeholder="Horas C" value="@proyecto.HH_CONSULTOR_C" required>
                         </td>
+                        
                     </tr>
                 </tbody>
             </table>
         </div>
 
+          
 
+            <div  style="display:none;" id="tablaintegrantes" class="form-group">
+                <p class="form-subtitle">Digite las HH/Proyectos para cada Integrante</p>
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            @foreach (var recurso in ViewBag.Recursos)
+                            {
+                                <th style="background-color: #b2e6a5; color: black;">
+                                    <input type="hidden" name="nombres[]" value="@recurso.Id" />
 
+                                    <input type="text" value="@recurso.NOMBRE_RECURSO_CORRELATIVO" readonly />
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach (var recurso in ViewBag.Recursos)
+                            {
 
-       
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" class="horasInput" name="horas[]" min="0" placeholder="Horas" 
+                                  data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id"  data-costo="@recurso.Costo_Unitario" />
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="tablaresumen" style="display:none;" class="form-group">
+                <p class="form-subtitle">Resumen HH/Proyectos</p>
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+
+                        <tr>
+                            <th>Total Horas Socios</th>
+                            <th>Total Horas Staff</th>
+                            <th>Total Horas Consultor A</th>
+                            <th>Total Horas Consultor B</th>
+                            <th>Total Horas Consultor C</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span id="totalSocios">0</span>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span id="totalStaff">0</span>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span id="totalConsultorA">0</span>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span id="totalConsultorB">0</span>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span id="totalConsultorC">0</span>
+                        </td>
+                    </tr>
+                    
+                
+                </table>
+            </div>
+
+           
 
         @*COSTOS DIRECTOS*@
 
@@ -1044,11 +1109,11 @@
     });
 
 
-    /*MUESTRA O OCULTA PARAMETROS DE ESTADO EN NEGOCIACIÓN*/
+    /*MUESTRA O OCULTA PARAMETROS DE ESTADO EN NEGOCIACIÓN y EJECUCIÓN*/
     function toggleFields() {
         var estadoSeleccionado = document.getElementById("estadoProyecto").value;
 
-        // Mostrar o ocultar los campos según el estado
+  
         if (estadoSeleccionado === "1") {
             document.getElementById("probabilidadDiv").style.display = "block";
             document.getElementById("nivelProbabilidadDiv").style.display = "block";
@@ -1057,6 +1122,15 @@
             document.getElementById("probabilidadDiv").style.display = "none";
             document.getElementById("nivelProbabilidadDiv").style.display = "none";
             document.getElementById("fechaPlazoDiv").style.display = "none";
+        }
+        if (estadoSeleccionado === "2"){
+            tablaresumen
+            document.getElementById("tablaintegrantes").style.display = "block";
+            document.getElementById("tablaresumen").style.display = "block";
+        }
+        else{
+            document.getElementById("tablaintegrantes").style.display = "none";
+            document.getElementById("tablaresumen").style.display = "none";
         }
     }
 
@@ -1494,7 +1568,7 @@
         totalMontoElement.innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         return total;
     }
-    // document.querySelector('.montoservicio').addEventListener("input", updateTotal);
+
 
 
 
@@ -1671,19 +1745,16 @@
             montoInput.name = "montogasto";
             montoCell.appendChild(montoInput);
 
-            // Evento para formatear el input del monto
+  
             montoInput.addEventListener("input", formatInput);
 
-            // Campo de centro de costo (readonly)
+
             centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
 
-            // Campo de segmento de gasto (readonly)
             segmentoCell.innerHTML = '<input class="segmentogastos" name="segmentogastos" readonly />';
 
-            // Campo de ID de cuenta de gasto (readonly)
             idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagasto" readonly />';
 
-            // Campo de cuenta de gasto (readonly)
             cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
 
             // Botón para eliminar la fila
@@ -1774,36 +1845,6 @@
 
 
 
-   /* $(document).on('change', '.gastosSelect', function () {
-        var $row = $(this).closest('tr');
-        var idUnidadNegocio = $("#unidadNegocio").val();
-        var idCentroCosto = $("#centroCosto").val();
-        var nombreGasto = $(this).find('option:selected').text();
-
-        $.ajax({
-            url: '/Proyecto/GetValoresGastosEdicion',
-            type: 'GET',
-            data: {
-                idcosto: idCentroCosto,
-                idunegocio: idUnidadNegocio,
-                nombresegmento: nombreGasto
-            },
-            success: function (data) {
-                if (data && data.length > 0) {
-
-                    $row.find('.segmentogastos').val(data[0].nombre);
-                    $row.find('.idcuentagastos').val(data[0].idcuenta);
-                    $row.find('.cuentagastos').val(data[0].cuenta);
-                    $row.find('.idsegmentogasto').val(data[0].idsegmento);
-                } else {
-                    console.log("No se encontraron valores.");
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error en la solicitud AJAX:", error);
-            }
-        });
-    });*/
     function formatInput(e) {
         var valor = e.target.value;
 
@@ -1856,21 +1897,21 @@
     }
 
     function limpiarFila(button) {
-        // Obtener la fila (tr) padre del botón que se ha clickeado
+   
         var fila = button.closest('tr');
 
-        // Limpiar los campos de la fila
+
         var inputs = fila.querySelectorAll('input');
         inputs.forEach(function (input) {
-            if (!input.readOnly) { // Solo limpiar los inputs que no son de solo lectura
+            if (!input.readOnly) { 
                 input.value = '';
             }
         });
 
-        // Limpiar el select
+   
         var select = fila.querySelector('select');
         if (select) {
-            select.selectedIndex = 0; // Seleccionar el primer elemento (opción "Seleccione un Gasto")
+            select.selectedIndex = 0; 
         }
         updateTotalGasto();
         obtenerMargenEsperado();
@@ -1972,8 +2013,137 @@
         document.querySelectorAll('.montogasto').forEach(input => {
             input.addEventListener("input", formatInput);
         });
-        // Llama a la función para mostrar el margen inicial
+        
         obtenerMargenEsperado();
     });
+
+  
+      
+    let totalSocios = 0;
+    let totalStaff = 0;
+    let totalConsultorA = 0;
+    let totalConsultorB = 0;
+    let totalConsultorC = 0;
+    let maxSocios = 0;
+    let maxStaff = 0;
+    let maxConsultorA = 0;
+    let maxConsultorB = 0;
+    let maxConsultorC = 0;
+
+ 
+    function calcularHoras() {
+
+        const statusProyecto = document.getElementById('estadoProyecto').value;
+
+        
+        if (statusProyecto !== '2') {
+            return; 
+        }
+        totalSocios = 0;
+        totalStaff = 0;
+        totalConsultorA = 0;
+        totalConsultorB = 0;
+        totalConsultorC = 0;
+
+       
+        const horasInputs = document.querySelectorAll('.horasInput');
+
+        horasInputs.forEach(input => {
+            const horas = parseFloat(input.value) || 0;
+            const tipo = input.dataset.tipo.trim(); 
+
+           
+            if (tipo.includes('Socio')) {
+                totalSocios += horas;
+            } else if (tipo.includes('Staff')) {
+                totalStaff += horas;
+            } else if (tipo === 'Consultor A') {
+                totalConsultorA += horas;
+            } else if (tipo === 'Consultor B') {
+                totalConsultorB += horas;
+            } else if (tipo === 'Consultor C') {
+                totalConsultorC += horas;
+            }
+        });
+
+      
+        maxSocios = parseFloat(document.getElementById('horasSocios').value) || 0;
+        maxStaff = parseFloat(document.getElementById('horasStaff').value) || 0;
+        maxConsultorA = parseFloat(document.getElementById('consultorA').value) || 0;
+        maxConsultorB = parseFloat(document.getElementById('consultorB').value) || 0;
+        maxConsultorC = parseFloat(document.getElementById('consultorC').value) || 0;
+
+        
+        if (totalSocios > maxSocios) {
+            alert(`La suma de horas de Socios (${totalSocios}) excede el máximo permitido (${maxSocios}).`);
+            document.querySelectorAll('.horasInput[data-tipo*="Socio"]').forEach(input => {
+                input.value = 0;
+            });
+            totalSocios = 0;
+        }
+
+        if (totalStaff > maxStaff) {
+            alert(`La suma de horas de Staff (${totalStaff}) excede el máximo permitido (${maxStaff}).`);
+            document.querySelectorAll('.horasInput[data-tipo*="Staff"]').forEach(input => {
+                input.value = 0;
+            });
+            totalStaff = 0;
+        }
+
+        if (totalConsultorA > maxConsultorA) {
+            alert(`La suma de horas de Consultor A (${totalConsultorA}) excede el máximo permitido (${maxConsultorA}).`);
+            document.querySelectorAll('.horasInput[data-tipo*="Consultor A"]').forEach(input => {
+                input.value = 0;
+            });
+            totalConsultorA = 0;
+        }
+
+        if (totalConsultorB > maxConsultorB) {
+            alert(`La suma de horas de Consultor B (${totalConsultorB}) excede el máximo permitido (${maxConsultorB}).`);
+            document.querySelectorAll('.horasInput[data-tipo*="Consultor B"]').forEach(input => {
+                input.value = 0;
+            });
+            totalConsultorB = 0;
+        }
+
+        if (totalConsultorC > maxConsultorC) {
+            alert(`La suma de horas de Consultor C (${totalConsultorC}) excede el máximo permitido (${maxConsultorC}).`);
+            document.querySelectorAll('.horasInput[data-tipo*="Consultor C"]').forEach(input => {
+                input.value = 0;
+            });
+            totalConsultorC = 0;
+        }
+
+      
+        document.getElementById('totalSocios').innerText = totalSocios;
+        document.getElementById('totalStaff').innerText = totalStaff;
+        document.getElementById('totalConsultorA').innerText = totalConsultorA;
+        document.getElementById('totalConsultorB').innerText = totalConsultorB;
+        document.getElementById('totalConsultorC').innerText = totalConsultorC;
+    }
+
+
+    function validarFormulario(event) {
+        const statusProyecto = document.getElementById('estadoProyecto').value;
+
+        if (statusProyecto !== '2') {
+            return; 
+        }
+        if (totalSocios !== maxSocios || totalStaff !== maxStaff ||
+            totalConsultorA !== maxConsultorA || totalConsultorB !== maxConsultorB || totalConsultorC !== maxConsultorC) {
+
+            alert("Los totales las horas no coinciden con los máximos permitidos. Por favor, revisa las horas.");
+            event.preventDefault();
+        }
+    }
+
+    document.querySelectorAll('.horasInput').forEach(input => {
+        input.addEventListener('input', calcularHoras);
+    });
+
+    
+    const formulario = document.querySelector('form'); 
+    formulario.addEventListener('submit', validarFormulario);
+</script>
+
             
-        </script>
