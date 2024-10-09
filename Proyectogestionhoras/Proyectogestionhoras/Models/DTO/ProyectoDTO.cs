@@ -16,6 +16,7 @@
         public int IDTIPOLOGIA { get; set; }
         public string? Tipo_Empresa { get; set; }
         public int IDEMPRESA { get; set; }
+        public int IDPRESUPESTO { get; set; }
         public string? AfectaIva { get; set; }
         public string? Tipo_Status { get; set; }
         public int STATUSPROYECTO { get; set; }

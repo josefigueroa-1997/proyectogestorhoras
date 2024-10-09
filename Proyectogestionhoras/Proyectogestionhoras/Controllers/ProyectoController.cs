@@ -189,6 +189,75 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
+        {
+            
+
+            int idcosto = int.Parse(Request.Form["centroCosto"]);
+            int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
+            var montopresupuesto = Request.Form["monto"].ToString();
+            var montopresupuestostr = montopresupuesto.Replace(".", "");
+            decimal montofinal = decimal.Parse(montopresupuestostr); 
+            int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
+            List<ServicioViewModel> servicios = new List<ServicioViewModel>();
+            var idsservicios = Request.Form["idservicio"];
+            var idsegmentoservicio = Request.Form["idsegmentoservicio"];
+            var montoservicioList = Request.Form["montoservicio"];
+
+            for (int i = 0; i < idsservicios.Count; i++)
+            {
+                var montoservicioStr = montoservicioList[i].ToString();
+
+                montoservicioStr = montoservicioStr.Replace(".", "");
+
+                decimal montoservicio = decimal.Parse(montoservicioStr);
+                var servicioViewModel = new ServicioViewModel
+                {
+                    Idservicios = int.Parse(idsservicios[i]),
+                    IdSegmento = int.Parse(idsegmentoservicio[i]),
+                    MontoServicio = montoservicio,
+                };
+
+                servicios.Add(servicioViewModel);
+            }
+
+            List<GastoViewModel> gastos = new List<GastoViewModel>();
+            var idgastos = Request.Form["idgastos[]"];
+            var idsegmentogasto = Request.Form["idsegmentogasto"];
+            var montogastoList = Request.Form["montogasto"];
+            int largoMontogastoList = montogastoList.Count; 
+
+            Debug.WriteLine($"El largo de montogastoList es: {largoMontogastoList}");
+            for (int i = 0; i < idgastos.Count; i++)
+            {
+                var montogastoStr = montogastoList[i].ToString();
+
+                montogastoStr = montogastoStr.Replace(".", "");
+
+                decimal montogasto = decimal.Parse(montogastoStr);
+                var gasto = new GastoViewModel
+                {
+                    Idgastos = int.Parse(idgastos[i]),
+                    IdSegmento = int.Parse(idsegmentogasto[i]),
+                    MontoGasto = montogasto,
+                };
+
+                gastos.Add(gasto);
+            }
+            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, servicios, gastos);
+            if (resultado)
+            {
+                return RedirectToAction("ObtenerProyectos", "Proyecto", new {id=idproyecto});
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+
         public async Task<List<StatusProyecto>> RecuperarEstados()
         {
             var estados = await context.StatusProyectos.ToListAsync();

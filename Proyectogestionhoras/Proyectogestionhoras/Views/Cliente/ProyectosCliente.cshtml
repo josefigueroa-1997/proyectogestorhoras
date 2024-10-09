@@ -441,19 +441,20 @@
             Proyectos Rechazados
         </div>
         <div class="section-content">
-           
-            <div class="card rejected">
-                <h3>Proyecto J</h3>
-                <p>Descripción breve del proyecto rechazado.</p>
-            </div>
-            <div class="card rejected">
-                <h3>Proyecto K</h3>
-                <p>Descripción breve del proyecto rechazado.</p>
-            </div>
-            <div class="card rejected">
-                <h3>Proyecto L</h3>
-                <p>Descripción breve del proyecto rechazado.</p>
-            </div>
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+
+                if (proyecto.Tipo_Status == "Rechazado")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new {id = proyecto.Id})">
+                        <div class="card rejected">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NOMBREDEPARTAMENTO</p>
+                        </div>
+                    </a>
+                }
+            }
+            
             <!-- Más tarjetas de proyectos rechazados aquí -->
         </div>
     </div>

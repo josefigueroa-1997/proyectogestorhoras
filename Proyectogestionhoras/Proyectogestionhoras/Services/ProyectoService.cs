@@ -9,6 +9,9 @@ using System.Data;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection.Metadata;
 using Proyectogestionhoras.Models.ViewModel;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
 namespace Proyectogestionhoras.Services
 {
     public class ProyectoService : IProyecto
@@ -76,63 +79,180 @@ namespace Proyectogestionhoras.Services
                     
                     await command.ExecuteNonQueryAsync();
                     int idProyectoCreado = (int)idProyectoParameter.Value;
-                    await registrarproyectoservicio(idProyectoCreado, servicios);
-                    await registrarproyectogasto(idProyectoCreado, gastos);
+                    await GestorServiciosProyecto(idProyectoCreado, servicios);
+                    await GestorProyectoGastos(idProyectoCreado, gastos);
                     return true;
                 }
             }
             catch (Exception ex)
             {
 
-                Debug.WriteLine($"Hubo un error al registrar el cliente" + ex);
+                Debug.WriteLine($"Hubo un error al registrar el PROYECTO" + ex);
                 return false;
             }
         }
 
 
-        public async Task  registrarproyectoservicio(int idproyectocreado,List<ServicioViewModel> servicios)
+      
+        /*EDITAR PROYECTO*/
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
-            if (servicios == null || !servicios.Any())
+            try
             {
-               
-                return; 
-            }
-            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-
-            using (DbCommand command = connection.CreateCommand() )
-            {
-                foreach (var servicio in servicios)
+#pragma warning disable CS8600
+                object probabilidadparameter = (object)probabilidad ?? DBNull.Value;
+                object porcentajeparametr = (object)porcentajeprobabilidad ?? DBNull.Value;
+                object fechaplazoparameter = (object)fechaplazoneg ?? DBNull.Value;
+#pragma warning restore CS8600
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
                 {
-                    var nuevaServicio = new ProyectoServicio
-                    {
-                        IdProyecto = idproyectocreado,
-                        IdServicio = servicio.Idservicios, 
-                        Idsegmento = servicio.IdSegmento, 
-                        Monto = servicio.MontoServicio 
-                    };
+                    command.CommandText = "EDITAR_PROYECTO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    command.Parameters.Add(new SqlParameter("@IDPRESUPUESTO", idpresupuesto));
+                    command.Parameters.Add(new SqlParameter("@MONTO", monto));
+                    command.Parameters.Add(new SqlParameter("@MONEDA", moneda));
+                    command.Parameters.Add(new SqlParameter("@AFECTAIVA", afectaiva));
+                    command.Parameters.Add(new SqlParameter("@ID_TIPOLOGIA", idtipologia));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
+                    
+                    command.Parameters.Add(new SqlParameter("@FECHA_INICIO", fechainicio));
+                    command.Parameters.Add(new SqlParameter("@FECHA_TERMINO ", fechatermino));
+                    command.Parameters.Add(new SqlParameter("@PLAZO", plazo));
+                    command.Parameters.Add(new SqlParameter("@TIPO_EMPRESA", tipoempresa));
+                    command.Parameters.Add(new SqlParameter("@ID_CCOSTO_UNEGOCIO", codigoccosto));
+                    
+                    command.Parameters.Add(new SqlParameter("@STATUS_PROYECTO", status));
+                    command.Parameters.Add(new SqlParameter("@PROBABILIDAD", probabilidadparameter));
+                    command.Parameters.Add(new SqlParameter("@PORCENTAJE_PROBABILIDAD", porcentajeparametr));
+                    command.Parameters.Add(new SqlParameter("@FECHA_PLAZO_NEG", fechaplazoparameter));
+                    command.Parameters.Add(new SqlParameter("@HHSOCIOS", hhsocios));
 
-                    await context.ProyectoServicios.AddAsync(nuevaServicio);
+                    command.Parameters.Add(new SqlParameter("@HHSTAFF", hhstaff));
+
+                    command.Parameters.Add(new SqlParameter("@HHCONSULTORA", hhconsultora));
+
+                    command.Parameters.Add(new SqlParameter("@HHCONSULTORB", hhconsultorb));
+
+                    command.Parameters.Add(new SqlParameter("@HHCONSULTORC", hhconsultorc));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOSOCIO", idsegmentosocio));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOSTAFF", idsegmentostaff));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORA", idsegmentoconsultora));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORB", idsegmentoconsultorb));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
+                    command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
+                    await GestorServiciosProyecto(idproyecto,servicios);
+                    await GestorProyectoGastos(idproyecto, gastos);
+                    await command.ExecuteNonQueryAsync();
+                    
+                   
+                    return true;
                 }
-                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al editar el PROYECTO" + ex);
+                return false;
             }
         }
 
-        public async Task registrarproyectogasto(int idproyectocreado, List<GastoViewModel> gastos)
+        public async Task GestorServiciosProyecto(int idProyecto, List<ServicioViewModel> servicios)
         {
-            if (gastos == null || !gastos.Any())
+     
+            if (servicios == null || !servicios.Any())
             {
-
                 return;
             }
+
             DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
 
             using (DbCommand command = connection.CreateCommand())
             {
-                foreach (var gasto in gastos)
+           
+                var serviciosExistentes = await context.ProyectoServicios
+                    .Where(ps => ps.IdProyecto == idProyecto)
+                    .ToListAsync();
+
+  
+                var serviciosAEliminar = serviciosExistentes
+                    .Where(se => !servicios.Any(s => s.Idservicios == se.IdServicio))
+                    .ToList();
+
+         
+                foreach (var servicioEliminado in serviciosAEliminar)
                 {
+                    context.ProyectoServicios.Remove(servicioEliminado);
+                }
+
+               
+                foreach (var servicio in servicios)
+                {
+                    var servicioExistente = serviciosExistentes
+                        .FirstOrDefault(se => se.IdServicio == servicio.Idservicios);
+
+                    if (servicioExistente != null)
+                    {
+                       
+                        servicioExistente.Idsegmento = servicio.IdSegmento;
+                        servicioExistente.Monto = servicio.MontoServicio;
+                    }
+                    else
+                    {
+                      
+                        var nuevoServicio = new ProyectoServicio
+                        {
+                            IdProyecto = idProyecto,
+                            IdServicio = servicio.Idservicios,
+                            Idsegmento = servicio.IdSegmento,
+                            Monto = servicio.MontoServicio
+                        };
+
+                        await context.ProyectoServicios.AddAsync(nuevoServicio);
+                    }
+                }
+
+                // Guardar los cambios
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task GestorProyectoGastos(int idProyecto, List<GastoViewModel> gastos)
+        {
+            if (gastos == null || !gastos.Any())
+            {
+                return;
+            }
+
+            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+
+
+            var gastosExistentes = await context.ProyectoGastos
+                .Where(pg => pg.IdProyecto == idProyecto)
+                .ToListAsync();
+
+       
+            var idsGastosRecibidos = gastos.Select(g => g.Idgastos).ToList();
+
+
+            foreach (var gasto in gastos)
+            {
+                var gastoExistente = gastosExistentes
+                    .FirstOrDefault(g => g.IdGastos == gasto.Idgastos && g.Idsegmento == gasto.IdSegmento);
+
+                if (gastoExistente != null)
+                {
+                
+                    gastoExistente.Monto = gasto.MontoGasto;
+                    context.ProyectoGastos.Update(gastoExistente);
+                }
+                else
+                {
+                    // Agregar nuevo gasto
                     var nuevoGasto = new ProyectoGasto
                     {
-                        IdProyecto = idproyectocreado,
+                        IdProyecto = idProyecto,
                         IdGastos = gasto.Idgastos,
                         Idsegmento = gasto.IdSegmento,
                         Monto = gasto.MontoGasto
@@ -140,9 +260,23 @@ namespace Proyectogestionhoras.Services
 
                     await context.ProyectoGastos.AddAsync(nuevoGasto);
                 }
-                await context.SaveChangesAsync();
             }
+
+            // Eliminar los gastos que ya no están en la lista recibida
+            var gastosAEliminar = gastosExistentes
+                .Where(g => !idsGastosRecibidos.Contains(g.IdGastos))
+                .ToList();
+
+            if (gastosAEliminar.Any())
+            {
+                context.ProyectoGastos.RemoveRange(gastosAEliminar);
+            }
+
+            // Guardar los cambios
+            await context.SaveChangesAsync();
         }
+
+
 
 
         public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
@@ -195,6 +329,7 @@ namespace Proyectogestionhoras.Services
                                 IDTIPOLOGIA = reader.GetInt32(reader.GetOrdinal("IDTIPOLOGIA")),
                                 Tipo_Empresa = reader.GetString(reader.GetOrdinal("TIPO_EMPRESA")),
                                 IDEMPRESA = reader.GetInt32(reader.GetOrdinal("IDEMPRESA")),
+                                IDPRESUPESTO = reader.GetInt32(reader.GetOrdinal("IDPRESUPESTO")),
                                 AfectaIva = reader.GetString(reader.GetOrdinal("AFECTAIVA")),
                                 Tipo_Status = reader.GetString(reader.GetOrdinal("TIPO_STATUS")),
                                 STATUSPROYECTO = reader.GetInt32(reader.GetOrdinal("STATUSPROYECTO")),
@@ -327,6 +462,7 @@ namespace Proyectogestionhoras.Services
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
                             };
                             gastosproyectos.Add(gasto);
 

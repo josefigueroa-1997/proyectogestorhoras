@@ -139,12 +139,14 @@
 <div class="form-container">
     @foreach (var proyecto in ViewBag.Proyectos)
     {
-        <input type="hidden" name="idproyecto" value="@proyecto.Id"/>
+        
     
         <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
     <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
 
-    <form action="" method="post" onsubmit="">
+        <form action="@Url.Action("ActualizarProyecto","Proyecto")" method="post">
+            <input type="hidden" name="idproyecto" value="@proyecto.Id" />
+            <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
         <div class="form-row">
             <div class="form-group">
                 <label for="numeroProyecto">Número de proyecto</label>
@@ -313,7 +315,7 @@
             </div>
                 <div style="display:none" class="form-group" id="nivelProbabilidadDiv">
                 <label for="nivelprobabilidad">Nivel Probabilidad</label>
-                    <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" min="1" max="100" value="@proyecto.Porcentaje_Probabilidad">
+                    <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" value="@proyecto.Porcentaje_Probabilidad">
             </div>
                 <div style="display:none" class="form-group" id="fechaPlazoDiv">
                 <label for="fechaPlazo">Fecha de Plazo</label>
@@ -321,7 +323,11 @@
                     {
                         <input type="date" id="fechaPlazo" name="fechaplazoneg" value="@proyecto.Fecha_Plazo_Neg.ToString("yyyy-MM-dd")">
                     }
-                   
+                    else
+                    {
+                        <input type="date" id="fechaPlazo" name="fechaplazoneg" >
+                    }
+
             </div>
         </div>
 
@@ -794,7 +800,9 @@
                                     <td style="display:none;">
                                         <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
                                     </td>
-
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
+                                    </td>
                                 </tr>
                             }
                         }
@@ -825,6 +833,9 @@
                                     </td>
                                     <td style="display:none;">
                                         <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                <button type="button" class="limpiar-btn"  onclick="limpiarFila(this)">Limpiar</button>
                                     </td>
                             </tr>
                         
@@ -892,11 +903,12 @@
                                         <input class="cuentagastos" name="cuentagastos" value="@gp.CUENTA" readonly />
                                     </td>
                                     <td style="display:none">
-                                        <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                                        <input type="text" class="idsegmentogasto" name="idsegmentogasto" value="@gp.IDSEGMENTO" />
                                     </td>
                                     <td style="padding: 10px; border: 1px solid #ddd;">
                                         <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
                                     </td>
+
                                 </tr>
                             }
                         }
@@ -995,7 +1007,7 @@
 
         </div>
         <div class="button-container">
-            <button type="submit" class="submit-btn">Crear Proyecto</button>
+            <button type="submit" class="submit-btn">Guardar Cambios</button>
             
         </div>
 
@@ -1424,19 +1436,17 @@
                     <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
                 </td>
                 <td style="padding: 10px; border: 1px solid #ddd;">
-                    <input class="nombresegmentoservicio" name="nombresegmentoservicio" value="${nombreservicioValue}" readonly/>
-                    <select class="segmentoservicio" style="display:none;" name="idsegmentoservicio">
-                        <option value="" disabled selected>Seleccione un segmento</option>
-                    </select>
+                    <input class="nombresegmentoservicio" name="nombresegmentoservicio" readonly/>
+                    
                 </td>
                 <td style="padding: 10px; border: 1px solid #ddd;">
-                    <input class="idcuentaservicio" name="idcuentaservicio" value="${idcuentaservicioValue}" readonly/>
+                    <input class="idcuentaservicio" name="idcuentaservicio" readonly/>
                 </td>
                 <td style="padding: 10px; border: 1px solid #ddd;">
-                    <input class="cuentaservicio" name="cuentaservicio" value="${cuentaservicioValue}" readonly />
+                    <input class="cuentaservicio" name="cuentaservicio"  readonly />
                 </td>
                 <td style="display:none;">
-                    <input class="idsegmentoservicio" name="idsegmentoservicio" value="${idsegmentoservicioValue}" />
+                    <input class="idsegmentoservicio" name="idsegmentoservicio"  />
                 </td>
                 <td style="padding: 10px; border: 1px solid #ddd;">
                     <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
@@ -1721,11 +1731,13 @@
             },
             success: function (data) {
                 if (data.length > 0) {
-                    const gasto = data[0]; // Suponiendo que solo hay un resultado por segmento
-                    // Completar los inputs con los valores obtenidos
+                    const gasto = data[0]; 
+                  
                     newRow.querySelector('.segmentogastos').value = gasto.nombre;
                     newRow.querySelector('.idcuentagastos').value = gasto.idcuenta;
                     newRow.querySelector('.cuentagastos').value = gasto.cuenta;
+                    newRow.querySelector('.idsegmentogasto').value = gasto.idsegmento;
+                    
                 } else {
                     alert('No se encontraron valores para el gasto seleccionado.');
                 }

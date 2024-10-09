@@ -90,7 +90,11 @@
         @foreach (var proyecto in ViewBag.Proyectos)
         {
             <p class="form-subtitle" style="color:black;">Detalles del Proyecto</p>
-            <a href="@Url.Action("EditarProyecto","Proyecto",new {id=proyecto.Id,idcliente=proyecto.IDCLIENTE})" class="update-btn">Editar Proyecto</a>
+            @if (proyecto.Tipo_Status != "Rechazado")
+            {
+                <a href="@Url.Action("EditarProyecto","Proyecto",new {id=proyecto.Id,idcliente=proyecto.IDCLIENTE})" class="update-btn">Editar Proyecto</a>
+            }
+           
             @if(proyecto.Tipo_Status == "En Negociación")
             {
                 <button type="button" class=" nuevo-btn">Ingresar Nueva Negociación</button>
