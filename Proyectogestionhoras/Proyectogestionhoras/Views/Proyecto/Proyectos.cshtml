@@ -16,6 +16,7 @@
     <div class="filter-select">
         <select id="projectStatus" onchange="filterProjects()">
             <option value="">Todos los Estados</option>
+            <option value="licitar">Proyectos A Licitar</option>
             <option value="negociacion">Proyectos En Negociación</option>
             <option value="ejecucion">Proyectos En Ejecución</option>
             <option value="terminados">Proyectos Terminados</option>
@@ -25,18 +26,42 @@
 
     <!-- Secciones de proyectos -->
     <div class="projects-section">
+        <div class="section-header">Proyectos A Licitar</div>
+        <div class="section-content" id="licitadoProjects">
+
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                @if (proyecto.Tipo_Status == "A Licitar")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
+                        <div class="card">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NombreCliente</p>
+                        </div>
+                    </a>
+                }
+
+            }
+
+        </div>
+    </div>
+    <div class="projects-section">
         <div class="section-header">Proyectos En Negociación</div>
         <div class="section-content" id="negociacionProjects">
          
-            
-            <div class="card">
-                <h3>Proyecto 1</h3>
-                <p>Cliente: Banco Estado</p>
-            </div>
-             <div class="card">
-                <h3>Proyecto 10</h3>
-                <p>Cliente: Banco Estado</p>
-            </div>
+            @foreach(var proyecto in ViewBag.Proyectos)
+            {
+                @if(proyecto.Tipo_Status == "En Negociación")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
+                        <div class="card">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NombreCliente</p>
+                        </div>
+                    </a>
+                }
+               
+            }  
                 
         </div>
     </div>
@@ -44,23 +69,29 @@
     <div class="projects-section">
         <div class="section-header">Proyectos En Ejecución</div>
         <div class="section-content" id="ejecucionProjects">
-            
-                <div class="card">
-                    <h3>Proyecto 2</h3>
-                    <p>Cliente: Universidad Santo Tomás</p>
-                </div>
-            
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                @if (proyecto.Tipo_Status == "En Ejecución")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
+                        <div class="card">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NombreCliente</p>
+                        </div>
+                    </a>
+                }
+
+            }
+
+
         </div>
     </div>
 
     <div class="projects-section">
         <div class="section-header">Proyectos Terminados</div>
         <div class="section-content" id="terminadosProjects">
+
             
-                <div class="card">
-                    <h3>Proyecto 3</h3>
-                    <p>Cliente: Gobierno de Chile</p>
-                </div>
             
         </div>
     </div>
@@ -68,11 +99,20 @@
     <div class="projects-section">
         <div class="section-header">Proyectos Rechazados</div>
         <div class="section-content" id="rechazadosProjects">
-            
-                <div class="card">
-                    <h3>Proyecto 4</h3>
-                    <p>Cliente: Banco de Chile</p>
-                </div>
+
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                @if (proyecto.Tipo_Status == "Rechazado")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
+                        <div class="card">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NombreCliente</p>
+                        </div>
+                    </a>
+                }
+
+            }
             
         </div>
     </div>
@@ -83,18 +123,25 @@
         const searchTerm = document.getElementById('projectSearch').value.toLowerCase();
         const statusFilter = document.getElementById('projectStatus').value;
 
-        // Filtrar proyectos por nombre y estado
+        // Filtrar proyectos por nombre, cliente y estado
         const sections = {
             'negociacion': document.getElementById('negociacionProjects').children,
             'ejecucion': document.getElementById('ejecucionProjects').children,
             'terminados': document.getElementById('terminadosProjects').children,
-            'rechazados': document.getElementById('rechazadosProjects').children
+            'rechazados': document.getElementById('rechazadosProjects').children,
+            'licitar': document.getElementById('licitadoProjects').children,
         };
 
         for (const section in sections) {
             Array.from(sections[section]).forEach(card => {
                 const projectName = card.querySelector('h3').innerText.toLowerCase();
-                const isVisible = projectName.includes(searchTerm) && (statusFilter === '' || section === statusFilter);
+                const clientName = card.querySelector('p').innerText.toLowerCase();
+
+                // Verifica si el término de búsqueda coincide con el nombre del proyecto o del cliente
+                const isVisible = (projectName.includes(searchTerm) || clientName.includes(searchTerm))
+                    && (statusFilter === '' || section === statusFilter);
+
+                // Mostrar u ocultar la tarjeta según el filtro
                 card.style.display = isVisible ? 'block' : 'none';
             });
         }

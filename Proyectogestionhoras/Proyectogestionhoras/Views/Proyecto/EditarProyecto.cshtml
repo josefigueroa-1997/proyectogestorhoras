@@ -1624,7 +1624,7 @@
                                     {
 
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <input type="number" class="horasInput" name="hhasignadas" min="0" placeholder="Horas"
+                                            <input type="number"  class="horasInput" name="hhasignadas" min="0" placeholder="Horas"
                                                    data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id" data-costo="@recurso.Costo_Unitario" />
                                         </td>
                                     }
@@ -1635,7 +1635,7 @@
                     </table>
                 </div>
 
-                <div id="tablaresumen" style="display:none;" class="form-group">
+                <div id="tablaresumen" style="display:none;background-color: #b2e6a5; color: black;" class="form-group">
                     <p class="form-subtitle">Resumen HH/Proyectos</p>
                     <table style="width: 100%; border-collapse: collapse; text-align: left;">
                         <thead>
@@ -2088,6 +2088,7 @@
         
     }
 
+    
 
     document.addEventListener("DOMContentLoaded", function () {
         toggleFields();
@@ -2968,6 +2969,8 @@
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
+       
+
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -2988,14 +2991,14 @@
         obtenerMargenEsperado();
     });
 
+    // Definir variables globales para los totales
+    let totalSocios = 0;
+    let totalStaff = 0;
+    let totalConsultorA = 0;
+    let totalConsultorB = 0;
+    let totalConsultorC = 0;
 
     function calcularHoras() {
-        const statusProyecto = document.getElementById('estadoProyecto').value;
-
-        if (statusProyecto !== '2') {
-            return;
-        }
-
         // Resetear totales
         totalSocios = 0;
         totalStaff = 0;
@@ -3021,80 +3024,78 @@
                 totalConsultorC += horas;
             }
         });
-
-        // Actualizar los valores máximos
-        const maxSocios = parseFloat(document.getElementById('horasSocios').value) || 0;
-        const maxStaff = parseFloat(document.getElementById('horasStaff').value) || 0;
-        const maxConsultorA = parseFloat(document.getElementById('consultorA').value) || 0;
-        const maxConsultorB = parseFloat(document.getElementById('consultorB').value) || 0;
-        const maxConsultorC = parseFloat(document.getElementById('consultorC').value) || 0;
-
-        // Validar máximos y ajustar totales
-        if (totalSocios > maxSocios) {
-            alert(`La suma de horas de Socios (${totalSocios}) excede el máximo permitido (${maxSocios}).`);
-            totalSocios = maxSocios; // Ajustar al máximo permitido
-        }
-
-        if (totalStaff > maxStaff) {
-            alert(`La suma de horas de Staff (${totalStaff}) excede el máximo permitido (${maxStaff}).`);
-            totalStaff = maxStaff; // Ajustar al máximo permitido
-        }
-
-        if (totalConsultorA > maxConsultorA) {
-            alert(`La suma de horas de Consultor A (${totalConsultorA}) excede el máximo permitido (${maxConsultorA}).`);
-            totalConsultorA = maxConsultorA; // Ajustar al máximo permitido
-        }
-
-        if (totalConsultorB > maxConsultorB) {
-            alert(`La suma de horas de Consultor B (${totalConsultorB}) excede el máximo permitido (${maxConsultorB}).`);
-            totalConsultorB = maxConsultorB; // Ajustar al máximo permitido
-        }
-
-        if (totalConsultorC > maxConsultorC) {
-            alert(`La suma de horas de Consultor C (${totalConsultorC}) excede el máximo permitido (${maxConsultorC}).`);
-            totalConsultorC = maxConsultorC; // Ajustar al máximo permitido
-        }
-
-        // Mostrar totales
+       
         document.getElementById('totalSocios').innerText = totalSocios;
         document.getElementById('totalStaff').innerText = totalStaff;
         document.getElementById('totalConsultorA').innerText = totalConsultorA;
         document.getElementById('totalConsultorB').innerText = totalConsultorB;
         document.getElementById('totalConsultorC').innerText = totalConsultorC;
+
     }
 
     function validarFormulario(event) {
         const statusProyecto = document.getElementById('estadoProyecto');
 
         if (statusProyecto.disabled) {
-            return; // Salir de la función si está deshabilitado
+            return;
         }
 
         if (statusProyecto.value !== '2') {
-            return; // Salir si no es estado 2
+            return;
         }
 
-        // Reutiliza el cálculo de horas
+        if (statusProyecto.value === '2') {
+            
+            const totalmargen = parseFloat(document.getElementById('margenfinal').textContent.replace(/\./g, '').replace(',', '.'));
+
+           
+            if (totalmargen < 0) {
+                alert("La proyección del margén del proyecto es negativa.");
+                event.preventDefault(); 
+                return; 
+            }
+        }
+        const horasInputs = document.querySelectorAll('.horasInput');
+        let hasEmptyInput = false;
+
+        horasInputs.forEach(input => {
+            if (input.value.trim() === '') {
+                hasEmptyInput = true; 
+            }
+        });
+
+        if (hasEmptyInput) {
+            alert("Por favor, completa todos los campos de horas."); 
+            event.preventDefault(); 
+            return;
+        }
         calcularHoras();
 
-        // Validar que los totales coinciden con los máximos permitidos
-        if (totalSocios > parseFloat(document.getElementById('horasSocios').value) ||
-            totalStaff > parseFloat(document.getElementById('horasStaff').value) ||
-            totalConsultorA > parseFloat(document.getElementById('consultorA').value) ||
-            totalConsultorB > parseFloat(document.getElementById('consultorB').value) ||
-            totalConsultorC > parseFloat(document.getElementById('consultorC').value)) {
 
-            alert("Los totales de las horas no coinciden con los máximos permitidos. Por favor, revisa las horas.");
-            event.preventDefault(); // Prevenir el envío del formulario
+        const maxSocios = parseFloat(document.getElementById('horasSocios').value) || 0;
+        const maxStaff = parseFloat(document.getElementById('horasStaff').value) || 0;
+        const maxConsultorA = parseFloat(document.getElementById('consultorA').value) || 0;
+        const maxConsultorB = parseFloat(document.getElementById('consultorB').value) || 0;
+        const maxConsultorC = parseFloat(document.getElementById('consultorC').value) || 0;
+     
+       
+        if (totalSocios !== maxSocios ||
+            totalStaff !== maxStaff ||
+            totalConsultorA !== maxConsultorA ||
+            totalConsultorB !== maxConsultorB ||
+            totalConsultorC !== maxConsultorC) {
+
+            alert("Los totales de las horas ingresadas deben coincidir exactamente con las horas registradas para cada rol. Por favor, revisa las horas.");
+            event.preventDefault();
         }
     }
 
-    // Escuchar cambios en los inputs de horas
+   
     document.querySelectorAll('.horasInput').forEach(input => {
         input.addEventListener('input', calcularHoras);
     });
 
-    // Escuchar el envío del formulario
+
     const formulario = document.querySelector('form');
     formulario.addEventListener('submit', validarFormulario);
 </script>

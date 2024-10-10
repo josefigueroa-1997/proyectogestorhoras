@@ -25,14 +25,25 @@ namespace Proyectogestionhoras.Controllers
             this.usuarioService = usuarioService;
             this.context = context;
             this.facturaService = facturaService;
-        } 
+        }
+
+
+        public async Task <IActionResult> GetProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
+        {
+            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
+            ViewBag.Proyectos = proyectos;
+            return View("Proyectos");
+        }
+
+
+
         public async Task<IActionResult> NuevoProyecto()
         {
             var unegocios = await proyectoService.ObtenerUnegocio();
             var ccostos = await proyectoService.ObtenerCcosto();
             var empresas = await proyectoService.ObtenerEmpresa();
             var tipologias = await proyectoService.ObtenerTipoligias();
-            //var clientes = await clienteService.ObtenerClientesIndex(0);
+            
             var status = await proyectoService.ObtenerStatus();
             var recursos = await usuarioService.ObtenerUusario(0,null,0);
             var segmentoscostos = await ObtenerSegmentosCostos();
@@ -542,10 +553,7 @@ namespace Proyectogestionhoras.Controllers
             var honorarios = await proyectoService.ObtenerValoresHonorarios(idcosto,idunegocio,idrecurso);
             return Json(honorarios);
         }
-        public IActionResult GetProyectos()
-        {
-            return View("Proyectos");
-        }
+        
 
         public IActionResult GetProyectosUnidadNegocio()
         {
