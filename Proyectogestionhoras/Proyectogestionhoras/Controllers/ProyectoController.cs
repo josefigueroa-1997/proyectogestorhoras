@@ -134,6 +134,8 @@ namespace Proyectogestionhoras.Controllers
             var servicios = await proyectoService.ObtenerServiciosProyecto(id);
             var gastos = await proyectoService.ObtenerGastosProyectos(id);
             var facturas = await facturaService.RecuperarFacturas(id);
+            var hhusuarios = await usuarioService.ObtenerHorasUsuariosProyecto(id);
+            ViewBag.Usuarios = hhusuarios;
             ViewBag.Facturas = facturas;
             ViewBag.Proyectos = proyectos;
             ViewBag.Servicios = servicios;
@@ -189,10 +191,70 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+        public async Task<int> Obtenerstatusproyecto(int idproyecto)
+        {
+            var statusProyecto = await context.Proyectos
+            .Where(p => p.Id == idproyecto)
+            .Select(p => p.StatusProyecto)
+            .FirstOrDefaultAsync();
+
+            return statusProyecto;
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
         {
-            
+            var statusproyecto = await Obtenerstatusproyecto(idproyecto);
+            if (statusproyecto == 2)
+            {
+                List<ServicioViewModel> serviciosejecucion = new List<ServicioViewModel>();
+                var idsserviciosejecucion = Request.Form["idservicio"];
+                var idsegmentoservicioejecucion = Request.Form["idsegmentoservicio"];
+                var montoservicioListejecucion = Request.Form["montoservicio"];
+
+                for (int i = 0; i < idsserviciosejecucion.Count; i++)
+                {
+                    var montoservicioStr = montoservicioListejecucion[i].ToString();
+
+                    montoservicioStr = montoservicioStr.Replace(".", "");
+
+                    decimal montoservicio = decimal.Parse(montoservicioStr);
+                    var servicioViewModel = new ServicioViewModel
+                    {
+                        Idservicios = int.Parse(idsserviciosejecucion[i]),
+                        IdSegmento = int.Parse(idsegmentoservicioejecucion[i]),
+                        MontoServicio = montoservicio,
+                    };
+
+                    serviciosejecucion.Add(servicioViewModel);
+                }
+
+                List<GastoViewModel> gastosejecucion = new List<GastoViewModel>();
+                var idgastosejecuion = Request.Form["idgastos[]"];
+                var idsegmentogastoejecucion = Request.Form["idsegmentogasto"];
+                var montogastoListejecucion = Request.Form["montogasto"];
+
+                for (int i = 0; i < idgastosejecuion.Count; i++)
+                {
+                    var montogastoStr = montogastoListejecucion[i].ToString();
+
+                    montogastoStr = montogastoStr.Replace(".", "");
+
+                    decimal montogasto = decimal.Parse(montogastoStr);
+                    var gasto = new GastoViewModel
+                    {
+                        Idgastos = int.Parse(idgastosejecuion[i]),
+                        IdSegmento = int.Parse(idsegmentogastoejecucion[i]),
+                        MontoGasto = montogasto,
+                    };
+
+                    gastosejecucion.Add(gasto);
+                }
+                await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
+                await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
+                return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
+            }
 
             int idcosto = int.Parse(Request.Form["centroCosto"]);
             int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
@@ -226,9 +288,7 @@ namespace Proyectogestionhoras.Controllers
             var idgastos = Request.Form["idgastos[]"];
             var idsegmentogasto = Request.Form["idsegmentogasto"];
             var montogastoList = Request.Form["montogasto"];
-            int largoMontogastoList = montogastoList.Count; 
-
-            Debug.WriteLine($"El largo de montogastoList es: {largoMontogastoList}");
+            
             for (int i = 0; i < idgastos.Count; i++)
             {
                 var montogastoStr = montogastoList[i].ToString();
@@ -245,7 +305,31 @@ namespace Proyectogestionhoras.Controllers
 
                 gastos.Add(gasto);
             }
-            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, servicios, gastos);
+            List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
+            var statusedicion = int.Parse(Request.Form["status"].ToString());
+            if (statusedicion == 2)
+            {
+                var idusuarios = Request.Form["idusuarios[]"];
+                var hhasignadas = Request.Form["hhasignadas"];
+                for (int i = 0; i < idusuarios.Count; i++)
+                {
+                    var usuarioh = new UsuarioProyectoViewModel
+                    {
+                        IdUsuario = int.Parse(idusuarios[i]),
+                        HHAsignadas = int.Parse(hhasignadas[i]),
+                    };
+                    usuariohoras.Add(usuarioh);
+                }
+            }
+            
+            
+            
+
+
+
+            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, servicios, gastos, usuariohoras);
+            
+           
             if (resultado)
             {
                 return RedirectToAction("ObtenerProyectos", "Proyecto", new {id=idproyecto});

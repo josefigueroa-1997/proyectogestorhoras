@@ -145,936 +145,1897 @@
     <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
 
         <form action="@Url.Action("ActualizarProyecto","Proyecto")" method="post">
-            <input type="hidden" name="idproyecto" value="@proyecto.Id" />
-            <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
-        <div class="form-row">
-            <div class="form-group">
-                <label for="numeroProyecto">Número de proyecto</label>
-                    <input type="text" id="numeroProyecto" readonly name="numproyecto" value="@proyecto.numproyecto">
-            </div>
-            <div class="form-group">
-                <label for="nombreProyecto">Nombre de proyecto</label>
-                    <input type="text" id="nombreProyecto" name="nombre" value="@proyecto.NombreProyecto" required>
-            </div>
+            @if(proyecto.STATUSPROYECTO == 2)
+            {
+                <input type="hidden" name="idproyecto" value="@proyecto.Id" />
+                <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="numeroProyecto">Número de proyecto</label>
+                        <input type="text" id="numeroProyecto" readonly name="numproyecto" value="@proyecto.numproyecto">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreProyecto">Nombre de proyecto</label>
+                        <input type="text" id="nombreProyecto" name="nombre" value="@proyecto.NombreProyecto" readonly required>
+                    </div>
 
 
-            <div class="form-group">
-                <label for="cliente">Cliente</label>
-                    <input type="hidden" name="idcliente" value="@proyecto.IDCLIENTE" />
-                <select id="cliente" name="cliente" disabled required>
-                    <option value="" disabled selected>Seleccione un cliente</option>
-                        @if (ViewBag.Clientes != null)
-                        {
-                            @foreach (var cliente in ViewBag.Clientes)
+                    <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <input type="hidden" name="idcliente" value="@proyecto.IDCLIENTE" />
+                        <select id="cliente" name="cliente" disabled required>
+                            <option value="" disabled selected>Seleccione un cliente</option>
+                            @if (ViewBag.Clientes != null)
                             {
-                                if (cliente.Id == proyecto.IDCLIENTE)
+                                @foreach (var cliente in ViewBag.Clientes)
                                 {
-                                    <option value="@cliente.Id" selected>@cliente.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@cliente.Id">@cliente.Nombre</option>
-                                }
-                            }
-                        }
-                      
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="cliente">Departamento</label>
-                    <input type="hidden" name="idsucursal" value="@proyecto.IDDEPARTAMENTO" />
-                <select id="sucursal" name="sucursal" disabled required>
-                    <option value="" disabled selected>Seleccione un departamento</option>
-                        @if (ViewBag.Sucursales != null)
-                        {
-                            @foreach (var sucursal in ViewBag.Sucursales)
-                            {
-                                if (sucursal.Id == proyecto.IDDEPARTAMENTO)
-                                {
-                                    <option value="@sucursal.Id" selected>@sucursal.Nombre</option>
-                                }
-                                else
-                                {
-                                    <option value="@sucursal.Id">@sucursal.Nombre</option>
-                                }
-                            }
-                        }
-                       
-
-
-                </select>
-            </div>
-        </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label for="unidadNegocio">Unidad de negocio</label>
-                <select id="unidadNegocio" name="unidadNegocio" required>
-                    <option value="" disabled selected>Seleccione una unidad</option>
-                        @if (ViewBag.Unegocios!=null)
-                        {
-                            @foreach (var uneogocio in ViewBag.Unegocios)
-                            {
-                                if (uneogocio.Id == proyecto.IDUNEGOCIO)
-                                {
-                                    <option value="@uneogocio.Id" selected>@uneogocio.TipoUnegocio</option>
-                                }
-                                else
-                                {
-                                    <option value="@uneogocio.Id">@uneogocio.TipoUnegocio</option>
-                                }
-                            }
-                        }
-                
-
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="centroCosto">Centro de costo</label>
-                <select id="centroCosto" name="centroCosto" required>
-                    <option value="" disabled selected>Seleccione un centro de costo</option>
-                        @if (ViewBag.Ccostos != null)
-                        {
-                            @foreach (var ccosto in ViewBag.Ccostos)
-                            {
-
-                                if (ccosto.Id == proyecto.IDCOSTO)
-                                {
-                                    <option value="@ccosto.Id" selected>@ccosto.TipoCcosto</option>
-                                }
-                                else
-                                {
-                                    <option value="@ccosto.Id">@ccosto.TipoCcosto</option>
-                                }
-
-                            }
-                        }
-                      
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="codigoccosto">Código</label>
-                    <input type="text" class="codigoccosto" name="codigoccosto" value="@proyecto.Codigo" readonly>
-            </div>
-            <div class="form-group">
-                <label for="estadoProyecto">Estado del proyecto</label>
-                    <select id="estadoProyecto" name="status" onchange="toggleFields()" required>
-                    <option value="" disabled selected>Seleccione el estado del proyecto</option>
-                        @if (ViewBag.Status != null)
-                        {
-                            @foreach (var statu in ViewBag.Status)
-                            {
-
-                                if (statu.Id == proyecto.STATUSPROYECTO)
-                                {
-                                    <option value="@statu.Id" selected>@statu.TipoStatus</option>
-                                }
-                                else
-                                {
-                                    <option value="@statu.Id">@statu.TipoStatus</option>
-                                }
-                            }
-                        }
-                     
-
-                </select>
-            </div>
-                <div style="display:none" class="form-group" id="probabilidadDiv">
-                <label for="Probabilidad">Probabilidad</label>
-                <select id="probabilidad" name="probabilidad">
-                    <option value="" disabled selected>Seleccione la Probabilidad del proyecto</option>
-
-                        @if (proyecto.Probabilidad == "Alto")
-                        {
-                            <option value="Alto" selected>Alta</option>
-                        }
-                        else
-                        {
-                            <option value="Alto">Alta</option>
-                        }
-
-                        @if (proyecto.Probabilidad == "Medio")
-                        {
-                            <option value="Medio" selected>Media</option>
-                        }
-                        else
-                        {
-                            <option value="Medio">Media</option>
-                        }
-
-                        @if (proyecto.Probabilidad == "Bajo")
-                        {
-                            <option value="Bajo" selected>Baja</option>
-                        }
-                        else
-                        {
-                            <option value="Bajo">Baja</option>
-                        }
-                </select>
-            </div>
-                <div style="display:none" class="form-group" id="nivelProbabilidadDiv">
-                <label for="nivelprobabilidad">Nivel Probabilidad</label>
-                    <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" value="@proyecto.Porcentaje_Probabilidad">
-            </div>
-                <div style="display:none" class="form-group" id="fechaPlazoDiv">
-                <label for="fechaPlazo">Fecha de Plazo</label>
-                    @if (proyecto.Fecha_Plazo_Neg != null)
-                    {
-                        <input type="date" id="fechaPlazo" name="fechaplazoneg" value="@proyecto.Fecha_Plazo_Neg.ToString("yyyy-MM-dd")">
-                    }
-                    else
-                    {
-                        <input type="date" id="fechaPlazo" name="fechaplazoneg" >
-                    }
-
-            </div>
-        </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label for="tipologia">Tipología</label>
-                <select id="tipologia" name="idtipologia" required>
-                    <option value="" disabled selected>Seleccione una tipología</option>
-                        @if (ViewBag.Tipologias != null)
-                        {
-                            @foreach (var tipologia in ViewBag.Tipologias)
-                            {
-
-                                if (tipologia.Id == proyecto.IDTIPOLOGIA)
-                                {
-                                    <option value="@tipologia.Id" selected>@tipologia.TipoTipologia</option>
-                                }
-                                else
-                                {
-                                    <option value="@tipologia.Id">@tipologia.TipoTipologia</option>
-                                }
-                            }
-                        }
-                      
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="tipoEmpresa">Tipo de empresa</label>
-                <select id="tipoEmpresa" name="tipoempresa" required>
-                    <option value="" disabled selected>Seleccione el tipo de empresa</option>
-                    @if(ViewBag.Empresas!=null)
-                    {
-                            @foreach (var empresa in ViewBag.Empresas)
-                            {
-
-                                if (empresa.Id == proyecto.IDEMPRESA)
-                                {
-                                    <option value="@empresa.Id" selected>@empresa.TipoEmpresa</option>
-                                }
-                                else
-                                {
-                                    <option value="@empresa.Id">@empresa.TipoEmpresa</option>
-                                }
-                            }
-                            
-                    }
-                      
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="monto">Monto</label>
-                    <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N2}", @proyecto.MONTO) " required>
-            </div>
-
-        </div>
-
-        <div class="form-row">
-            <div class="form-group-radio">
-                <label>¿Afecta el IVA?</label>
-                    <label>
-                        <input type="radio" name="afectaiva" value="si"
-                               required onchange="generarFilas()"
-                        @(proyecto.AfectaIva == "si" ? "checked" : "")>
-                        Sí
-                    </label>
-                    <label>
-                        <input type="radio" name="afectaiva" value="no"
-                               required onchange="generarFilas()"
-                        @(proyecto.AfectaIva == "no" ? "checked" : "")>
-                        No
-                    </label>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="tipoMoneda">Tipo de moneda</label>
-                <select id="tipoMoneda" name="moneda" required>
-                    <option value="" disabled selected>Seleccione el tipo de Moneda</option>
-                        @if (proyecto.MONEDA == "CLP")
-                        {
-                            <option value="CLP" selected>CLP</option>
-                        }
-                        else
-                        {
-                            <option value="CLP">CLP</option>
-                        }
-
-                        @if (proyecto.MONEDA == "US")
-                        {
-                            <option value="US" selected>US</option>
-                        }
-                        else
-                        {
-                            <option value="US">US</option>
-                        }
-
-                        @if (proyecto.MONEDA == "EURO")
-                        {
-                            <option value="EURO" selected>EURO</option>
-                        }
-                        else
-                        {
-                            <option value="MONEDA">EURO</option>
-                        }
-
-                        @if (proyecto.MONEDA == "UF")
-                        {
-                            <option value="UF" selected>UF</option>
-                        }
-                        else
-                        {
-                            <option value="UF">UF</option>
-                        }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="plazo">Plazo en meses</label>
-                    <input type="number" id="plazo" name="plazo" placeholder="Valor de Plazo" value="@proyecto.Plazo" required>
-            </div>
-            <div class="form-group">
-                <label for="fechaInicio">Fecha de inicio</label>
-                    <input type="date" id="fechaInicio" name="fechainicio" value="@proyecto.Fecha_Inicio.ToString("yyyy-MM-dd")" required>
-            </div>
-            <div class="form-group">
-                <label for="fechaFin">Fecha fin</label>
-                    <input type="date" id="fechaFin" readonly name="fechatermino" value="@proyecto.Fecha_Termino.ToString("yyyy-MM-dd")">
-            </div>
-            <div class="form-group">
-
-                <input type="hidden" id="idcuentafactura" name="idcuentafactura" readonly>
-                <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
-                <input type="hidden" id="cuentafactura" name="cuenta" readonly>
-                <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
-                    <input type="hidden" id="codigo" /> codigoccosto
-                <input type="hidden" class="nombresegmentoservicio" />
-                <input type="hidden" class="idcuentaservicio" name="idcuentaservicio" />
-                <input type="hidden" class="cuentaservicio" />
-                <input type="hidden" class="ccostoservicio" />
-                <input type="hidden" class="nombresegmentoconsultor" />
-                <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor" />
-                <input type="hidden" class="cuentaconsultor" />
-                <input type="hidden" class="nombresegmentohonorario" />
-                <input type="hidden" class="idsegmentoservicio" id="idsegmentoservicio" />
-            </div>
-        </div>
-        <div class="form-group">
-            <p class="form-subtitle">Facturas</p>
-            <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
-                <thead>
-                    <tr style="background-color: #d9e2f3; color: black;">
-                        <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Mes</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Neto</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Iva</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-body">
-                </tbody>
-            </table>
-        </div>
-
-        <div class="form-group">
-            <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
-            <div style="display: flex; justify-content: space-between;">
-
-
-                <table style="width: 40%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="background-color: #b2e6a5; color: black;">
-                            <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
-
-                            <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            @if (ViewBag.Recursos != null)
-                            {
-                                @foreach (var recurso in ViewBag.Recursos)
-                                {
-                                    if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                                    if (cliente.Id == proyecto.IDCLIENTE)
                                     {
-                                        <tr>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
-                                        </tr>
-
+                                        <option value="@cliente.Id" selected>@cliente.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@cliente.Id">@cliente.Nombre</option>
                                     }
                                 }
                             }
-                           
-                    </tbody>
-                </table>
-                <!-- Tabla de Staff -->
-                <table style="width: 40%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="background-color: #b2e6a5; color: black;">
-                            <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
 
-                            <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            @if (ViewBag.Recursos != null)
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente">Departamento</label>
+                        <input type="hidden" name="idsucursal" value="@proyecto.IDDEPARTAMENTO" />
+                        <select id="sucursal" name="sucursal" disabled required>
+                            <option value="" disabled selected>Seleccione un departamento</option>
+                            @if (ViewBag.Sucursales != null)
                             {
-                                @foreach (var recurso in ViewBag.Recursos)
+                                @foreach (var sucursal in ViewBag.Sucursales)
                                 {
-                                    if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                                    if (sucursal.Id == proyecto.IDDEPARTAMENTO)
                                     {
-                                        <tr>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
-                                        </tr>
-
+                                        <option value="@sucursal.Id" selected>@sucursal.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@sucursal.Id">@sucursal.Nombre</option>
                                     }
                                 }
                             }
-                          
 
-                    </tbody>
-                </table>
-                <div style="display:none;">
-                        @if (ViewBag.Recursos!=null)
-                        {
-                            @foreach (var recurso in ViewBag.Recursos)
-                            {
-                                if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
-                                {
-                                    if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor A")
-                                    {
-                                        <input type="hidden" id="idconsultora" value="@recurso.Costo_Unitario" />
-                                    }
-                                    if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor B")
-                                    {
-                                        <input type="hidden" id="idconsultorb" value="@recurso.Costo_Unitario" />
-                                    }
-                                    if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor C")
-                                    {
-                                        <input type="hidden" id="idconsultorc" value="@recurso.Costo_Unitario" />
-                                    }
 
-                                }
-                            }
-                        }
-                     
+
+                        </select>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div style="display:none">
-                @if (ViewBag.Recursos != null)
-                {
-                    @foreach (var recurso in ViewBag.Recursos)
-                    {
-                        if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
-                        {
-                            <input type="hidden" id="idconsultor" value="@recurso.ID_RECURSO" />
-                            break;
 
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="unidadNegocio">Unidad de negocio</label>
+                        <input type="hidden" name="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
+                        <select id="unidadNegocio" name="unidadNegocio" disabled>
+                            <option value="" disabled selected>Seleccione una unidad</option>
+                            @if (ViewBag.Unegocios != null)
+                            {
+                                @foreach (var uneogocio in ViewBag.Unegocios)
+                                {
+                                    if (uneogocio.Id == proyecto.IDUNEGOCIO)
+                                    {
+                                        <option value="@uneogocio.Id" selected>@uneogocio.TipoUnegocio</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@uneogocio.Id">@uneogocio.TipoUnegocio</option>
+                                    }
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="centroCosto">Centro de costo</label>
+                        <input type="hidden" name="centroCosto" value="@proyecto.IDCOSTO" />
+                        <select id="centroCosto" name="centroCosto" disabled required>
+                            <option value="" disabled selected>Seleccione un centro de costo</option>
+                            @if (ViewBag.Ccostos != null)
+                            {
+                                @foreach (var ccosto in ViewBag.Ccostos)
+                                {
+
+                                    if (ccosto.Id == proyecto.IDCOSTO)
+                                    {
+                                        <option value="@ccosto.Id" selected>@ccosto.TipoCcosto</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@ccosto.Id">@ccosto.TipoCcosto</option>
+                                    }
+
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="codigoccosto">Código</label>
+                        <input type="text" class="codigoccosto" name="codigoccosto" value="@proyecto.Codigo" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoProyecto">Estado del proyecto</label>
+                        <input type="hidden" name="status" value="@proyecto.STATUSPROYECTO" />
+                        <select id="estadoProyecto" name="status" onchange="toggleFields()" disabled>
+                            <option value="" disabled selected>Seleccione el estado del proyecto</option>
+                            @if (ViewBag.Status != null)
+                            {
+                                @foreach (var statu in ViewBag.Status)
+                                {
+
+                                    if (statu.Id == proyecto.STATUSPROYECTO)
+                                    {
+                                        <option value="@statu.Id" selected>@statu.TipoStatus</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@statu.Id">@statu.TipoStatus</option>
+                                    }
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                    <div style="display:none" class="form-group" id="probabilidadDiv">
+                        <label for="Probabilidad">Probabilidad</label>
+                        <input type="hidden" name="probabilidad" value="@proyecto.Probabilidad" />
+                        <select id="probabilidad" name="probabilidad" disabled>
+                            <option value="" disabled selected>Seleccione la Probabilidad del proyecto</option>
+
+                            @if (proyecto.Probabilidad == "Alto")
+                            {
+                                <option value="Alto" selected>Alta</option>
+                            }
+                            else
+                            {
+                                <option value="Alto">Alta</option>
+                            }
+
+                            @if (proyecto.Probabilidad == "Medio")
+                            {
+                                <option value="Medio" selected>Media</option>
+                            }
+                            else
+                            {
+                                <option value="Medio">Media</option>
+                            }
+
+                            @if (proyecto.Probabilidad == "Bajo")
+                            {
+                                <option value="Bajo" selected>Baja</option>
+                            }
+                            else
+                            {
+                                <option value="Bajo">Baja</option>
+                            }
+                        </select>
+                    </div>
+                    <div style="display:none" class="form-group" id="nivelProbabilidadDiv">
+                        <label for="nivelprobabilidad">Nivel Probabilidad(%)</label>
+                        <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" readonly value="@proyecto.Porcentaje_Probabilidad">
+                    </div>
+                    <div style="display:none" class="form-group" id="fechaPlazoDiv">
+                        <label for="fechaPlazo">Fecha de Plazo</label>
+                        @if (proyecto.Fecha_Plazo_Neg != null)
+                        {
+                            <input type="date" id="fechaPlazo" readonly name="fechaplazoneg" value="@proyecto.Fecha_Plazo_Neg.ToString("yyyy-MM-dd")">
+                        }
+                        else
+                        {
+                            <input type="date" id="fechaPlazo" readonly name="fechaplazoneg">
+                        }
+
+                    </div>
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="tipologia">Tipología</label>
+                        <input type="hidden" name="idtipologia" value="@proyecto.IDTIPOLOGIA" />
+                        <select id="tipologia" name="idtipologia" disabled required>
+                            <option value="" disabled selected>Seleccione una tipología</option>
+                            @if (ViewBag.Tipologias != null)
+                            {
+                                @foreach (var tipologia in ViewBag.Tipologias)
+                                {
+
+                                    if (tipologia.Id == proyecto.IDTIPOLOGIA)
+                                    {
+                                        <option value="@tipologia.Id" selected>@tipologia.TipoTipologia</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@tipologia.Id">@tipologia.TipoTipologia</option>
+                                    }
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoEmpresa">Tipo de empresa</label>
+                        <input type="hidden" name="tipoempresa" value="@proyecto.IDEMPRESA" />
+                        <select id="tipoEmpresa" name="tipoempresa" disabled required>
+                            <option value="" disabled selected>Seleccione el tipo de empresa</option>
+                            @if (ViewBag.Empresas != null)
+                            {
+                                @foreach (var empresa in ViewBag.Empresas)
+                                {
+
+                                    if (empresa.Id == proyecto.IDEMPRESA)
+                                    {
+                                        <option value="@empresa.Id" selected>@empresa.TipoEmpresa</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@empresa.Id">@empresa.TipoEmpresa</option>
+                                    }
+                                }
+
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">Monto</label>
+                        <input type="text" id="monto" name="monto" readonly min="0" value="@String.Format("{0:N2}", @proyecto.MONTO) " required>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-radio">
+                        <label>¿Afecta el IVA?</label>
+                        <label>
+                            <input type="radio" readonly name="afectaiva" value="si"
+                                   required onchange="generarFilas()"
+                            @(proyecto.AfectaIva == "si" ? "checked" : "")>
+                            Sí
+                        </label>
+                        <label>
+                            <input type="radio" readonly name="afectaiva" value="no"
+                                   required onchange="generarFilas()"
+                            @(proyecto.AfectaIva == "no" ? "checked" : "")>
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipoMoneda">Tipo de moneda</label>
+                        <input type="hidden" name="moneda" value="@proyecto.MONEDA" />
+                        <select id="tipoMoneda" name="moneda" disabled required>
+                            <option value="" disabled selected>Seleccione el tipo de Moneda</option>
+                            @if (proyecto.MONEDA == "CLP")
+                            {
+                                <option value="CLP" selected>CLP</option>
+                            }
+                            else
+                            {
+                                <option value="CLP">CLP</option>
+                            }
+
+                            @if (proyecto.MONEDA == "US")
+                            {
+                                <option value="US" selected>US</option>
+                            }
+                            else
+                            {
+                                <option value="US">US</option>
+                            }
+
+                            @if (proyecto.MONEDA == "EURO")
+                            {
+                                <option value="EURO" selected>EURO</option>
+                            }
+                            else
+                            {
+                                <option value="MONEDA">EURO</option>
+                            }
+
+                            @if (proyecto.MONEDA == "UF")
+                            {
+                                <option value="UF" selected>UF</option>
+                            }
+                            else
+                            {
+                                <option value="UF">UF</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plazo">Plazo en meses</label>
+                        <input type="number" id="plazo" name="plazo" readonly placeholder="Valor de Plazo" value="@proyecto.Plazo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha de inicio</label>
+                        <input type="date" id="fechaInicio" readonly name="fechainicio" value="@proyecto.Fecha_Inicio.ToString("yyyy-MM-dd")" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFin">Fecha fin</label>
+                        <input type="date" id="fechaFin" readonly name="fechatermino" value="@proyecto.Fecha_Termino.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group">
+
+                        <input type="hidden" id="idcuentafactura" name="idcuentafactura" readonly>
+                        <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
+                        <input type="hidden" id="cuentafactura" name="cuenta" readonly>
+                        <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
+                        <input type="hidden" id="codigo" />
+                        <input type="hidden" class="nombresegmentoservicio" />
+                        <input type="hidden" class="idcuentaservicio" name="idcuentaservicio" />
+                        <input type="hidden" class="cuentaservicio" />
+                        <input type="hidden" class="ccostoservicio" />
+                        <input type="hidden" class="nombresegmentoconsultor" />
+                        <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor" />
+                        <input type="hidden" class="cuentaconsultor" />
+                        <input type="hidden" class="nombresegmentohonorario" />
+                        <input type="hidden" class="idsegmentoservicio" id="idsegmentoservicio" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="form-subtitle">Facturas</p>
+                    <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #d9e2f3; color: black;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Mes</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Neto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Iva</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-body">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
+                    <div style="display: flex; justify-content: space-between;">
+
+
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
+
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Recursos != null)
+                                {
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                                        {
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                        <!-- Tabla de Staff -->
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
+
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Recursos != null)
+                                {
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                                        {
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+                        <div style="display:none;">
+                            @if (ViewBag.Recursos != null)
+                            {
+                                @foreach (var recurso in ViewBag.Recursos)
+                                {
+                                    if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+                                    {
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor A")
+                                        {
+                                            <input type="hidden" id="idconsultora" value="@recurso.Costo_Unitario" />
+                                        }
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor B")
+                                        {
+                                            <input type="hidden" id="idconsultorb" value="@recurso.Costo_Unitario" />
+                                        }
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor C")
+                                        {
+                                            <input type="hidden" id="idconsultorc" value="@recurso.Costo_Unitario" />
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div style="display:none">
+                    @if (ViewBag.Recursos != null)
+                    {
+                        @foreach (var recurso in ViewBag.Recursos)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+                            {
+                                <input type="hidden" id="idconsultor" value="@recurso.ID_RECURSO" />
+                                break;
+
+                            }
                         }
                     }
-                }
-             
-        </div>
 
-        <div class="form-group">
-            <p class="form-subtitle" style="color:black">Digite las Horas del Proyecto</p>
-            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                <thead>
-                    <tr style="background-color: #b2e6a5; color: black;">
-                        <th style="padding: 10px; border: 1px solid #ddd;">Tipología</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Socio</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Staff</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor A</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor B</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor C</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="number" class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="number" class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="number" id="consultorB" name="hhconsultorb" placeholder="Horas B" value="@proyecto.HH_CONSULTOR_B" required>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="number" id="consultorC" name="hhconsultorc" placeholder="Horas C" value="@proyecto.HH_CONSULTOR_C" required>
-                        </td>
-                        
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                </div>
 
-          
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Digite las Horas del Proyecto</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #b2e6a5; color: black;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Tipología</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Socio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Staff</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor A</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor B</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor C</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly id="consultorB" name="hhconsultorb" placeholder="Horas B" value="@proyecto.HH_CONSULTOR_B" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly id="consultorC" name="hhconsultorc" placeholder="Horas C" value="@proyecto.HH_CONSULTOR_C" required>
+                                </td>
 
-            <div  style="display:none;" id="tablaintegrantes" class="form-group">
-                <p class="form-subtitle">Digite las HH/Proyectos para cada Integrante</p>
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+               @* <div style="display:none;" id="tablaintegrantes" class="form-group">
+                    <p class="form-subtitle">Digite las HH/Proyectos para cada Integrante</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr>
+                                @if(ViewBag.Recursos!=null)
+                                {
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+                                        <th style="background-color: #b2e6a5; color: black;">
+                                            <input type="hidden" name="idusuarios[]" value="@recurso.Id" />
+
+                                            <input type="text" value="@recurso.NOMBRE_RECURSO_CORRELATIVO" readonly />
+                                        </th>
+                                    }
+
+                                }
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @if(ViewBag.Recursos)
+                                {
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input readonly type="number" class="horasInput" name="hhasignadas" min="0" placeholder="Horas"
+                                                   data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id" data-costo="@recurso.Costo_Unitario" />
+                                        </td>
+                                    }
+                                }
+                              
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="tablaresumen" style="display:none;" class="form-group">
+                    <p class="form-subtitle">Resumen HH/Proyectos</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+
+                            <tr>
+                                <th>Total Horas Socios</th>
+                                <th>Total Horas Staff</th>
+                                <th>Total Horas Consultor A</th>
+                                <th>Total Horas Consultor B</th>
+                                <th>Total Horas Consultor C</th>
+                            </tr>
+                        </thead>
                         <tr>
-                            @foreach (var recurso in ViewBag.Recursos)
-                            {
-                                <th style="background-color: #b2e6a5; color: black;">
-                                    <input type="hidden" name="nombres[]" value="@recurso.Id" />
-
-                                    <input type="text" value="@recurso.NOMBRE_RECURSO_CORRELATIVO" readonly />
-                                </th>
-                            }
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <span id="totalSocios">0</span>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <span id="totalStaff">0</span>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <span id="totalConsultorA">0</span>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <span id="totalConsultorB">0</span>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <span id="totalConsultorC">0</span>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            @foreach (var recurso in ViewBag.Recursos)
+
+
+                    </table>
+                </div>
+
+        *@
+
+                @*COSTOS DIRECTOS*@
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Costos Directos</p>
+                    <div style="display: flex; justify-content: space-between;">
+
+
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Costo</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentasocio" name="idcuentasocio" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentosocio" readonly />
+
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentosocio" name="idsegmentosocio" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentoconsultor" readonly />
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalstaff" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentoconsultor" name="idsegmentostaff" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioA" name="idcuentaconsultora" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioA" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentohonorarioA" readonly />
+
+
+                                    </td>
+
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorA" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentohonorarioA" name="idsegmentoconsultora" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioB" name="idcuentaconsultorb" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioB" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentohonorarioB" readonly />
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentohonorarioB" name="idsegmentoconsultorb" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioC" name="idcuentaconsultorc" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioC" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentohonorarioC" readonly />
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentohonorarioC" name="idsegmentoconsultorc" />
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"> <span id="totalcostosdirectos" style="font-weight: bold;"></span></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablaservicios">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.ServiciosProyectos != null)
                             {
+                                @foreach (var sp in ViewBag.ServiciosProyectos)
+                                {
+                                    <tr>
+
+
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <select class="servicios" name="idservicio" onchange="checkRequired(this)">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Servicios != null)
+                                                {
+                                                    @foreach (var servicio in ViewBag.Servicios)
+                                                    {
+                                                        if (servicio.Id == sp.IDSERVICIO)
+                                                        {
+                                                            <option value="@servicio.Id" selected>@servicio.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@servicio.Id">@servicio.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+
+
+                                            </select>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" value="@String.Format("{0:N2}", sp.MONTO)" type="text"></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
+
+                                        </td>
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
+                                        </td>
+                                        <td style="display:none;">
+                                            <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
+                                        <option value="" disabled selected>Seleccione un Servicio</option>
+
+
+
+                                    </select>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
+
+                                </td>
 
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" class="horasInput" name="horas[]" min="0" placeholder="Horas" 
-                                  data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id"  data-costo="@recurso.Costo_Unitario" />
+                                    <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
                                 </td>
-                            }
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="tablaresumen" style="display:none;" class="form-group">
-                <p class="form-subtitle">Resumen HH/Proyectos</p>
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-
-                        <tr>
-                            <th>Total Horas Socios</th>
-                            <th>Total Horas Staff</th>
-                            <th>Total Horas Consultor A</th>
-                            <th>Total Horas Consultor B</th>
-                            <th>Total Horas Consultor C</th>
-                        </tr>
-                    </thead>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <span id="totalSocios">0</span>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <span id="totalStaff">0</span>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <span id="totalConsultorA">0</span>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <span id="totalConsultorB">0</span>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <span id="totalConsultorC">0</span>
-                        </td>
-                    </tr>
-                    
-                
-                </table>
-            </div>
-
-           
-
-        @*COSTOS DIRECTOS*@
-
-        <div class="form-group">
-            <p class="form-subtitle" style="color:black">Costos Directos</p>
-            <div style="display: flex; justify-content: space-between;">
-
-
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="background-color: #b2e6a5; color: black;">
-                            <th style="padding: 10px; border: 1px solid #ddd;">Costo</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
-                            <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentasocio" name="idcuentasocio"  readonly /></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio"  readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" class="nombresegmentosocio"  readonly />
-                               
-
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idsegmentosocio" name="idsegmentosocio" />
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff"  readonly /></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor"  readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" class="nombresegmentoconsultor"  readonly />
-                               
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalstaff" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idsegmentoconsultor" name="idsegmentostaff" />
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioA" name="idcuentaconsultora" readonly /></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioA" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" class="nombresegmentohonorarioA"  readonly />
-                              
-
-                            </td>
-
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorA" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idsegmentohonorarioA" name="idsegmentoconsultora" />
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioB" name="idcuentaconsultorb" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioB" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="text" class="nombresegmentohonorarioB" readonly />
-                                
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idsegmentohonorarioB" name="idsegmentoconsultorb" />
-                        </tr>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioC" name="idcuentaconsultorc" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioC" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="text" class="nombresegmentohonorarioC" readonly />
-                               
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
-                            <input type="hidden" class="idsegmentohonorarioC" name="idsegmentoconsultorc" />
-                        </tr>
-                        <tr>
-                            <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"> <span id="totalcostosdirectos" style="font-weight: bold;"></span></td>
-
-                        </tr>
-                    </tbody>
-                </table>
-
-
-            </div>
-        </div>
-
-       
-        <div class="form-group">
-            <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
-            <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablaservicios">
-                <thead>
-                    <tr>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                        @if (ViewBag.ServiciosProyectos != null)
-                        {
-                            @foreach (var sp in ViewBag.ServiciosProyectos)
-                            {
-                                <tr>
-
-
-
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <select class="servicios" name="idservicio" onchange="checkRequired(this)">
-                                            <option value="" disabled selected>Seleccione un Servicio</option>
-                                            @if (ViewBag.Servicios != null)
-                                            {
-                                                @foreach (var servicio in ViewBag.Servicios)
-                                                {
-                                                    if (servicio.Id == sp.IDSERVICIO)
-                                                    {
-                                                        <option value="@servicio.Id" selected>@servicio.Nombre</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@servicio.Id">@servicio.Nombre</option>
-                                                    }
-                                                }
-                                            }
-                                           
-
-                                        </select>
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" value="@String.Format("{0:N2}", sp.MONTO)" type="text"></td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
-
-                                    </td>
-
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
-                                    </td>
-                                    <td style="display:none;">
-                                        <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                      
-                            <tr>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
-                                            <option value="" disabled selected>Seleccione un Servicio</option>
-                                          
-                                           
-
-                                        </select>
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio"  type="text"></td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
-
-                                    </td>
-
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
-                                    </td>
-                                    <td style="display:none;">
-                                        <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                <button type="button" class="limpiar-btn"  onclick="limpiarFila(this)">Limpiar</button>
-                                    </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
+                                </td>
+                                <td style="display:none;">
+                                    <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                </td>
                             </tr>
-                        
 
 
 
-                </tbody>
-            </table>
-            <div id="totalMonto" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotal">0</span></div>
-            <button  id="agregarFila" class="submit-btn" style="margin-top: 10px;">Agregar Otra Subcontratación de Servicio</button>
-        </div>
-        <div class="form-group">
-            <p class="form-subtitle" style="color:black;">Gastos Operacionales</p>
-            <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablagastos">
-                <thead>
-                    <tr>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+
+                        </tbody>
+                    </table>
+                    <div id="totalMonto" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotal">0</span></div>
+                    <button id="agregarFila" class="submit-btn" style="margin-top: 10px;">Agregar Otra Subcontratación de Servicio</button>
+                </div>
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black;">Gastos Operacionales</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablagastos">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
 
 
-                    </tr>
-                </thead>
-                    <tbody>
-                        @if (ViewBag.GastosProyectos != null)
-                        {
-                            @foreach (var gp in ViewBag.GastosProyectos)
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.GastosProyectos != null)
                             {
-                                <tr>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <select class="gastos" name="idgastos[]">
-                                            <option value="" disabled selected>Seleccione un Gasto</option>
-                                            @if (ViewBag.Gastos != null)
-                                            {
-                                                @foreach (var gasto in ViewBag.Gastos)
+                                @foreach (var gp in ViewBag.GastosProyectos)
+                                {
+                                    <tr>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <select class="gastos" name="idgastos[]">
+                                                <option value="" disabled selected>Seleccione un Gasto</option>
+                                                @if (ViewBag.Gastos != null)
                                                 {
-                                                    if (gasto.Id == gp.IDGASTOS)
+                                                    @foreach (var gasto in ViewBag.Gastos)
                                                     {
-                                                        <option value="@gasto.Id" selected>@gasto.Nombre</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@gasto.Id">@gasto.Nombre</option>
+                                                        if (gasto.Id == gp.IDGASTOS)
+                                                        {
+                                                            <option value="@gasto.Id" selected>@gasto.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@gasto.Id">@gasto.Nombre</option>
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        </select>
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input name="montogasto" class="montogasto" value="@String.Format("{0:N2}", gp.MONTO)" type="text">
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input type="text" class="segmentogastos" name="segmentogastos" value="@gp.NOMBRSEGMENTO" readonly />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input class="idcuentagastos" name="idcuentagasto" value="@gp.IDCUENTA" readonly />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <input class="cuentagastos" name="cuentagastos" value="@gp.CUENTA" readonly />
-                                    </td>
-                                    <td style="display:none">
-                                        <input type="text" class="idsegmentogasto" name="idsegmentogasto" value="@gp.IDSEGMENTO" />
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
-                                    </td>
+                                            </select>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input name="montogasto" class="montogasto" value="@String.Format("{0:N2}", gp.MONTO)" type="text">
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" class="segmentogastos" name="segmentogastos" value="@gp.NOMBRSEGMENTO" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input class="idcuentagastos" name="idcuentagasto" value="@gp.IDCUENTA" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input class="cuentagastos" name="cuentagastos" value="@gp.CUENTA" readonly />
+                                        </td>
+                                        <td style="display:none">
+                                            <input type="text" class="idsegmentogasto" name="idsegmentogasto" value="@gp.IDSEGMENTO" />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                        </td>
 
-                                </tr>
+                                    </tr>
+                                }
                             }
+
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <select class="gastosSelect" name="idgastos[]">
+                                        <option value="" disabled selected>Seleccione un Gasto</option>
+                                    </select>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input name="montogasto" class="montogasto" type="text">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="segmentogastos" name="segmentogastos" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input class="idcuentagastos" name="idcuentagasto" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input class="cuentagastos" name="cuentagastos" readonly />
+                                </td>
+                                <td style="display:none">
+                                    <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="totalMontoGastos" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalGastos">0</span></div>
+                    <button id="agregarFilaGastos" class="submit-btn" style="margin-top: 10px;">Agregar Otro Gasto Operacional</button>
+                </div>
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+                    <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
+                        <thead>
+                            <tr style="background-color: #fa8164; color: black; text-align:center">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                                    <strong><span id="egresosmargen"></span></strong>
+                                </td>
+
+                            </tr>
+                            <tr style="background-color: #fa8164; color: black;">
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="submit-btn">Guardar Cambios</button>
+
+                </div>
+            }
+            else{
+
+                <input type="hidden" name="idproyecto" value="@proyecto.Id" />
+                <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="numeroProyecto">Número de proyecto</label>
+                        <input type="text" id="numeroProyecto" readonly name="numproyecto" value="@proyecto.numproyecto">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreProyecto">Nombre de proyecto</label>
+                        <input type="text" id="nombreProyecto" name="nombre" value="@proyecto.NombreProyecto" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <input type="hidden" name="idcliente" value="@proyecto.IDCLIENTE" />
+                        <select id="cliente" name="cliente" disabled required>
+                            <option value="" disabled selected>Seleccione un cliente</option>
+                            @if (ViewBag.Clientes != null)
+                            {
+                                @foreach (var cliente in ViewBag.Clientes)
+                                {
+                                    if (cliente.Id == proyecto.IDCLIENTE)
+                                    {
+                                        <option value="@cliente.Id" selected>@cliente.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@cliente.Id">@cliente.Nombre</option>
+                                    }
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente">Departamento</label>
+                        <input type="hidden" name="idsucursal" value="@proyecto.IDDEPARTAMENTO" />
+                        <select id="sucursal" name="sucursal" disabled required>
+                            <option value="" disabled selected>Seleccione un departamento</option>
+                            @if (ViewBag.Sucursales != null)
+                            {
+                                @foreach (var sucursal in ViewBag.Sucursales)
+                                {
+                                    if (sucursal.Id == proyecto.IDDEPARTAMENTO)
+                                    {
+                                        <option value="@sucursal.Id" selected>@sucursal.Nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@sucursal.Id">@sucursal.Nombre</option>
+                                    }
+                                }
+                            }
+
+
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="unidadNegocio">Unidad de negocio</label>
+                        <select id="unidadNegocio" name="unidadNegocio" required>
+                            <option value="" disabled selected>Seleccione una unidad</option>
+                            @if (ViewBag.Unegocios != null)
+                            {
+                                @foreach (var uneogocio in ViewBag.Unegocios)
+                                {
+                                    if (uneogocio.Id == proyecto.IDUNEGOCIO)
+                                    {
+                                        <option value="@uneogocio.Id" selected>@uneogocio.TipoUnegocio</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@uneogocio.Id">@uneogocio.TipoUnegocio</option>
+                                    }
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="centroCosto">Centro de costo</label>
+                        <select id="centroCosto" name="centroCosto" required>
+                            <option value="" disabled selected>Seleccione un centro de costo</option>
+                            @if (ViewBag.Ccostos != null)
+                            {
+                                @foreach (var ccosto in ViewBag.Ccostos)
+                                {
+
+                                    if (ccosto.Id == proyecto.IDCOSTO)
+                                    {
+                                        <option value="@ccosto.Id" selected>@ccosto.TipoCcosto</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@ccosto.Id">@ccosto.TipoCcosto</option>
+                                    }
+
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="codigoccosto">Código</label>
+                        <input type="text" class="codigoccosto" name="codigoccosto" value="@proyecto.Codigo" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoProyecto">Estado del proyecto</label>
+                        <select id="estadoProyecto" name="status" onchange="toggleFields()" required>
+                            <option value="" disabled selected>Seleccione el estado del proyecto</option>
+                            @if (ViewBag.Status != null)
+                            {
+                                @foreach (var statu in ViewBag.Status)
+                                {
+
+                                    if (statu.Id == proyecto.STATUSPROYECTO)
+                                    {
+                                        <option value="@statu.Id" selected>@statu.TipoStatus</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@statu.Id">@statu.TipoStatus</option>
+                                    }
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                    <div style="display:none" class="form-group" id="probabilidadDiv">
+                        <label for="Probabilidad">Probabilidad</label>
+                        <select id="probabilidad" name="probabilidad">
+                            <option value="" disabled selected>Seleccione la Probabilidad del proyecto</option>
+
+                            @if (proyecto.Probabilidad == "Alto")
+                            {
+                                <option value="Alto" selected>Alta</option>
+                            }
+                            else
+                            {
+                                <option value="Alto">Alta</option>
+                            }
+
+                            @if (proyecto.Probabilidad == "Medio")
+                            {
+                                <option value="Medio" selected>Media</option>
+                            }
+                            else
+                            {
+                                <option value="Medio">Media</option>
+                            }
+
+                            @if (proyecto.Probabilidad == "Bajo")
+                            {
+                                <option value="Bajo" selected>Baja</option>
+                            }
+                            else
+                            {
+                                <option value="Bajo">Baja</option>
+                            }
+                        </select>
+                    </div>
+                    <div style="display:none" class="form-group" id="nivelProbabilidadDiv">
+                        <label for="nivelprobabilidad">Nivel Probabilidad(%)</label>
+                        <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" value="@proyecto.Porcentaje_Probabilidad">
+                    </div>
+                    <div style="display:none" class="form-group" id="fechaPlazoDiv">
+                        <label for="fechaPlazo">Fecha de Plazo</label>
+                        @if (proyecto.Fecha_Plazo_Neg != null)
+                        {
+                            <input type="date" id="fechaPlazo" name="fechaplazoneg" value="@proyecto.Fecha_Plazo_Neg.ToString("yyyy-MM-dd")">
+                        }
+                        else
+                        {
+                            <input type="date" id="fechaPlazo" name="fechaplazoneg">
                         }
 
+                    </div>
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="tipologia">Tipología</label>
+                        <select id="tipologia" name="idtipologia" required>
+                            <option value="" disabled selected>Seleccione una tipología</option>
+                            @if (ViewBag.Tipologias != null)
+                            {
+                                @foreach (var tipologia in ViewBag.Tipologias)
+                                {
+
+                                    if (tipologia.Id == proyecto.IDTIPOLOGIA)
+                                    {
+                                        <option value="@tipologia.Id" selected>@tipologia.TipoTipologia</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@tipologia.Id">@tipologia.TipoTipologia</option>
+                                    }
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoEmpresa">Tipo de empresa</label>
+                        <select id="tipoEmpresa" name="tipoempresa" required>
+                            <option value="" disabled selected>Seleccione el tipo de empresa</option>
+                            @if (ViewBag.Empresas != null)
+                            {
+                                @foreach (var empresa in ViewBag.Empresas)
+                                {
+
+                                    if (empresa.Id == proyecto.IDEMPRESA)
+                                    {
+                                        <option value="@empresa.Id" selected>@empresa.TipoEmpresa</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@empresa.Id">@empresa.TipoEmpresa</option>
+                                    }
+                                }
+
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">Monto</label>
+                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N2}", @proyecto.MONTO) " required>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-radio">
+                        <label>¿Afecta el IVA?</label>
+                        <label>
+                            <input type="radio" name="afectaiva" value="si"
+                                   required onchange="generarFilas()"
+                            @(proyecto.AfectaIva == "si" ? "checked" : "")>
+                            Sí
+                        </label>
+                        <label>
+                            <input type="radio" name="afectaiva" value="no"
+                                   required onchange="generarFilas()"
+                            @(proyecto.AfectaIva == "no" ? "checked" : "")>
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipoMoneda">Tipo de moneda</label>
+                        <select id="tipoMoneda" name="moneda" required>
+                            <option value="" disabled selected>Seleccione el tipo de Moneda</option>
+                            @if (proyecto.MONEDA == "CLP")
+                            {
+                                <option value="CLP" selected>CLP</option>
+                            }
+                            else
+                            {
+                                <option value="CLP">CLP</option>
+                            }
+
+                            @if (proyecto.MONEDA == "US")
+                            {
+                                <option value="US" selected>US</option>
+                            }
+                            else
+                            {
+                                <option value="US">US</option>
+                            }
+
+                            @if (proyecto.MONEDA == "EURO")
+                            {
+                                <option value="EURO" selected>EURO</option>
+                            }
+                            else
+                            {
+                                <option value="MONEDA">EURO</option>
+                            }
+
+                            @if (proyecto.MONEDA == "UF")
+                            {
+                                <option value="UF" selected>UF</option>
+                            }
+                            else
+                            {
+                                <option value="UF">UF</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plazo">Plazo en meses</label>
+                        <input type="number" id="plazo" name="plazo" placeholder="Valor de Plazo" value="@proyecto.Plazo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha de inicio</label>
+                        <input type="date" id="fechaInicio" name="fechainicio" value="@proyecto.Fecha_Inicio.ToString("yyyy-MM-dd")" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFin">Fecha fin</label>
+                        <input type="date" id="fechaFin" readonly name="fechatermino" value="@proyecto.Fecha_Termino.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group">
+
+                        <input type="hidden" id="idcuentafactura" name="idcuentafactura" readonly>
+                        <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
+                        <input type="hidden" id="cuentafactura" name="cuenta" readonly>
+                        <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
+                        <input type="hidden" id="codigo" /> 
+                        <input type="hidden" class="nombresegmentoservicio" />
+                        <input type="hidden" class="idcuentaservicio" name="idcuentaservicio" />
+                        <input type="hidden" class="cuentaservicio" />
+                        <input type="hidden" class="ccostoservicio" />
+                        <input type="hidden" class="nombresegmentoconsultor" />
+                        <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor" />
+                        <input type="hidden" class="cuentaconsultor" />
+                        <input type="hidden" class="nombresegmentohonorario" />
+                        <input type="hidden" class="idsegmentoservicio" id="idsegmentoservicio" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="form-subtitle">Facturas</p>
+                    <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #d9e2f3; color: black;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Mes</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Neto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Iva</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-body">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
+                    <div style="display: flex; justify-content: space-between;">
+
+
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
+
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Recursos != null)
+                                {
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                                        {
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                        <!-- Tabla de Staff -->
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
+
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Recursos != null)
+                                {
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                                        {
+                                            <tr>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+                        <div style="display:none;">
+                            @if (ViewBag.Recursos != null)
+                            {
+                                @foreach (var recurso in ViewBag.Recursos)
+                                {
+                                    if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+                                    {
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor A")
+                                        {
+                                            <input type="hidden" id="idconsultora" value="@recurso.Costo_Unitario" />
+                                        }
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor B")
+                                        {
+                                            <input type="hidden" id="idconsultorb" value="@recurso.Costo_Unitario" />
+                                        }
+                                        if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor C")
+                                        {
+                                            <input type="hidden" id="idconsultorc" value="@recurso.Costo_Unitario" />
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div style="display:none">
+                    @if (ViewBag.Recursos != null)
+                    {
+                        @foreach (var recurso in ViewBag.Recursos)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+                            {
+                                <input type="hidden" id="idconsultor" value="@recurso.ID_RECURSO" />
+                                break;
+
+                            }
+                        }
+                    }
+
+                </div>
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Digite las Horas del Proyecto</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #b2e6a5; color: black;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Tipología</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Socio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Staff</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor A</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor B</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Hrs/Proyecto Consultor C</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" id="consultorB" name="hhconsultorb" placeholder="Horas B" value="@proyecto.HH_CONSULTOR_B" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" id="consultorC" name="hhconsultorc" placeholder="Horas C" value="@proyecto.HH_CONSULTOR_C" required>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+              <div style="display:none;" id="tablaintegrantes" class="form-group">
+                    <p class="form-subtitle">Digite las HH/Proyectos para cada Integrante</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr>
+                                @if(ViewBag.Recursos!=null){
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+                                        <th style="background-color: #b2e6a5; color: black;">
+                                            <input type="hidden" name="idusuarios[]" value="@recurso.Id" />
+
+                                            <input type="text" value="@recurso.NOMBRE_RECURSO_CORRELATIVO" readonly />
+                                        </th>
+                                    }
+                                }
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @if (ViewBag.Recursos != null)
+                                {
+                                    @foreach (var recurso in ViewBag.Recursos)
+                                    {
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="number" class="horasInput" name="hhasignadas" min="0" placeholder="Horas"
+                                                   data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id" data-costo="@recurso.Costo_Unitario" />
+                                        </td>
+                                    }
+                                }
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="tablaresumen" style="display:none;" class="form-group">
+                    <p class="form-subtitle">Resumen HH/Proyectos</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+
+                            <tr>
+                                <th>Total Horas Socios</th>
+                                <th>Total Horas Staff</th>
+                                <th>Total Horas Consultor A</th>
+                                <th>Total Horas Consultor B</th>
+                                <th>Total Horas Consultor C</th>
+                            </tr>
+                        </thead>
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <select class="gastosSelect" name="idgastos[]">
-                                    <option value="" disabled selected>Seleccione un Gasto</option>
-                                </select>
+                                <span id="totalSocios">0</span>
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input name="montogasto" class="montogasto" type="text">
+                                <span id="totalStaff">0</span>
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
+                                <span id="totalConsultorA">0</span>
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input type="text" class="segmentogastos" name="segmentogastos" readonly />
+                                <span id="totalConsultorB">0</span>
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input class="idcuentagastos" name="idcuentagasto" readonly />
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <input class="cuentagastos" name="cuentagastos" readonly />
-                            </td>
-                            <td style="display:none">
-                                <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                <span id="totalConsultorC">0</span>
                             </td>
                         </tr>
-                    </tbody>
-            </table>
-            <div id="totalMontoGastos" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalGastos">0</span></div>
-            <button id="agregarFilaGastos" class="submit-btn" style="margin-top: 10px;">Agregar Otro Gasto Operacional</button>
-        </div>
-        <div class="form-group">
-            <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
-            <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
-                <thead>
-                    <tr style="background-color: #fa8164; color: black; text-align:center">
-                        <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+
+
+                    </table>
+                </div>
+        
+
+
+                @*COSTOS DIRECTOS*@
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Costos Directos</p>
+                    <div style="display: flex; justify-content: space-between;">
+
+
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Costo</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentasocio" name="idcuentasocio" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentosocio" readonly />
+
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalsocio" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentosocio" name="idsegmentosocio" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentoconsultor" readonly />
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalstaff" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentoconsultor" name="idsegmentostaff" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioA" name="idcuentaconsultora" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioA" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentohonorarioA" readonly />
+
+
+                                    </td>
+
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorA" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentohonorarioA" name="idsegmentoconsultora" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioB" name="idcuentaconsultorb" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioB" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentohonorarioB" readonly />
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorB" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentohonorarioB" name="idsegmentoconsultorb" />
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentahonorarioC" name="idcuentaconsultorc" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentahonorarioC" readonly /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" class="nombresegmentohonorarioC" readonly />
+
+                                    </td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"> <span id="totalconsultorC" style="font-weight: bold;"></span></td>
+                                    <input type="hidden" class="idsegmentohonorarioC" name="idsegmentoconsultorc" />
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;"><strong>Total</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"> <span id="totalcostosdirectos" style="font-weight: bold;"></span></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablaservicios">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.ServiciosProyectos != null)
+                            {
+                                @foreach (var sp in ViewBag.ServiciosProyectos)
+                                {
+                                    <tr>
 
 
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <select class="servicios" name="idservicio" onchange="checkRequired(this)">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Servicios != null)
+                                                {
+                                                    @foreach (var servicio in ViewBag.Servicios)
+                                                    {
+                                                        if (servicio.Id == sp.IDSERVICIO)
+                                                        {
+                                                            <option value="@servicio.Id" selected>@servicio.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@servicio.Id">@servicio.Nombre</option>
+                                                        }
+                                                    }
+                                                }
 
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
 
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+                                            </select>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" value="@String.Format("{0:N2}", sp.MONTO)" type="text"></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
 
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+                                        </td>
 
-                    </tr>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
+                                        </td>
+                                        <td style="display:none;">
+                                            <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
 
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
+                                        <option value="" disabled selected>Seleccione un Servicio</option>
 
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
 
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
-                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                            <strong><span id="egresosmargen"></span></strong>
-                        </td>
 
-                    </tr>
-                    <tr style="background-color: #fa8164; color: black;">
-                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
-                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+                                    </select>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
 
-                    </tr>
-                </tbody>
-            </table>
+                                </td>
 
-        </div>
-        <div class="button-container">
-            <button type="submit" class="submit-btn">Guardar Cambios</button>
-            
-        </div>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
+                                </td>
+                                <td style="display:none;">
+                                    <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                </td>
+                            </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <div id="totalMonto" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotal">0</span></div>
+                    <button id="agregarFila" class="submit-btn" style="margin-top: 10px;">Agregar Otra Subcontratación de Servicio</button>
+                </div>
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black;">Gastos Operacionales</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablagastos">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.GastosProyectos != null)
+                            {
+                                @foreach (var gp in ViewBag.GastosProyectos)
+                                {
+                                    <tr>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <select class="gastos" name="idgastos[]">
+                                                <option value="" disabled selected>Seleccione un Gasto</option>
+                                                @if (ViewBag.Gastos != null)
+                                                {
+                                                    @foreach (var gasto in ViewBag.Gastos)
+                                                    {
+                                                        if (gasto.Id == gp.IDGASTOS)
+                                                        {
+                                                            <option value="@gasto.Id" selected>@gasto.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@gasto.Id">@gasto.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input name="montogasto" class="montogasto" value="@String.Format("{0:N2}", gp.MONTO)" type="text">
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" class="segmentogastos" name="segmentogastos" value="@gp.NOMBRSEGMENTO" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input class="idcuentagastos" name="idcuentagasto" value="@gp.IDCUENTA" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input class="cuentagastos" name="cuentagastos" value="@gp.CUENTA" readonly />
+                                        </td>
+                                        <td style="display:none">
+                                            <input type="text" class="idsegmentogasto" name="idsegmentogasto" value="@gp.IDSEGMENTO" />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <select class="gastosSelect" name="idgastos[]">
+                                        <option value="" disabled selected>Seleccione un Gasto</option>
+                                    </select>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input name="montogasto" class="montogasto" type="text">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="segmentogastos" name="segmentogastos" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input class="idcuentagastos" name="idcuentagasto" readonly />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input class="cuentagastos" name="cuentagastos" readonly />
+                                </td>
+                                <td style="display:none">
+                                    <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="totalMontoGastos" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalGastos">0</span></div>
+                    <button id="agregarFilaGastos" class="submit-btn" style="margin-top: 10px;">Agregar Otro Gasto Operacional</button>
+                </div>
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+                    <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
+                        <thead>
+                            <tr style="background-color: #fa8164; color: black; text-align:center">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                                    <strong><span id="egresosmargen"></span></strong>
+                                </td>
+
+                            </tr>
+                            <tr style="background-color: #fa8164; color: black;">
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="submit-btn">Guardar Cambios</button>
+
+                </div>
+
+            }
+         
 
     </form>
     }
@@ -1112,8 +2073,8 @@
     /*MUESTRA O OCULTA PARAMETROS DE ESTADO EN NEGOCIACIÓN y EJECUCIÓN*/
     function toggleFields() {
         var estadoSeleccionado = document.getElementById("estadoProyecto").value;
+       
 
-  
         if (estadoSeleccionado === "1") {
             document.getElementById("probabilidadDiv").style.display = "block";
             document.getElementById("nivelProbabilidadDiv").style.display = "block";
@@ -1123,15 +2084,8 @@
             document.getElementById("nivelProbabilidadDiv").style.display = "none";
             document.getElementById("fechaPlazoDiv").style.display = "none";
         }
-        if (estadoSeleccionado === "2"){
-            tablaresumen
-            document.getElementById("tablaintegrantes").style.display = "block";
-            document.getElementById("tablaresumen").style.display = "block";
-        }
-        else{
-            document.getElementById("tablaintegrantes").style.display = "none";
-            document.getElementById("tablaresumen").style.display = "none";
-        }
+
+        
     }
 
 
@@ -1147,6 +2101,23 @@
         updateTotal();
         updateTotalGasto();
         obtenerMargenEsperado();
+        document.getElementById("estadoProyecto").addEventListener("change", function () {
+            var estadoSeleccionado = document.getElementById("estadoProyecto");
+
+            // Verificar si el elemento está deshabilitado
+            if (estadoSeleccionado.disabled) {
+                return; // Salir de la función si está deshabilitado
+            }
+
+            // Solo si está habilitado, podemos verificar su valor
+            if (estadoSeleccionado.value === "2") {
+                document.getElementById("tablaintegrantes").style.display = "block";
+                document.getElementById("tablaresumen").style.display = "block";
+            } else {
+                document.getElementById("tablaintegrantes").style.display = "none";
+                document.getElementById("tablaresumen").style.display = "none";
+            }
+        });
     });
 
     /*TRAE EL CODIGO DEL PROYECTO DE CENTRO DE COSTO*/
@@ -2017,42 +2988,27 @@
         obtenerMargenEsperado();
     });
 
-  
-      
-    let totalSocios = 0;
-    let totalStaff = 0;
-    let totalConsultorA = 0;
-    let totalConsultorB = 0;
-    let totalConsultorC = 0;
-    let maxSocios = 0;
-    let maxStaff = 0;
-    let maxConsultorA = 0;
-    let maxConsultorB = 0;
-    let maxConsultorC = 0;
 
- 
     function calcularHoras() {
-
         const statusProyecto = document.getElementById('estadoProyecto').value;
 
-        
         if (statusProyecto !== '2') {
-            return; 
+            return;
         }
+
+        // Resetear totales
         totalSocios = 0;
         totalStaff = 0;
         totalConsultorA = 0;
         totalConsultorB = 0;
         totalConsultorC = 0;
 
-       
         const horasInputs = document.querySelectorAll('.horasInput');
 
         horasInputs.forEach(input => {
             const horas = parseFloat(input.value) || 0;
-            const tipo = input.dataset.tipo.trim(); 
+            const tipo = input.dataset.tipo.trim();
 
-           
             if (tipo.includes('Socio')) {
                 totalSocios += horas;
             } else if (tipo.includes('Staff')) {
@@ -2066,55 +3022,40 @@
             }
         });
 
-      
-        maxSocios = parseFloat(document.getElementById('horasSocios').value) || 0;
-        maxStaff = parseFloat(document.getElementById('horasStaff').value) || 0;
-        maxConsultorA = parseFloat(document.getElementById('consultorA').value) || 0;
-        maxConsultorB = parseFloat(document.getElementById('consultorB').value) || 0;
-        maxConsultorC = parseFloat(document.getElementById('consultorC').value) || 0;
+        // Actualizar los valores máximos
+        const maxSocios = parseFloat(document.getElementById('horasSocios').value) || 0;
+        const maxStaff = parseFloat(document.getElementById('horasStaff').value) || 0;
+        const maxConsultorA = parseFloat(document.getElementById('consultorA').value) || 0;
+        const maxConsultorB = parseFloat(document.getElementById('consultorB').value) || 0;
+        const maxConsultorC = parseFloat(document.getElementById('consultorC').value) || 0;
 
-        
+        // Validar máximos y ajustar totales
         if (totalSocios > maxSocios) {
             alert(`La suma de horas de Socios (${totalSocios}) excede el máximo permitido (${maxSocios}).`);
-            document.querySelectorAll('.horasInput[data-tipo*="Socio"]').forEach(input => {
-                input.value = 0;
-            });
-            totalSocios = 0;
+            totalSocios = maxSocios; // Ajustar al máximo permitido
         }
 
         if (totalStaff > maxStaff) {
             alert(`La suma de horas de Staff (${totalStaff}) excede el máximo permitido (${maxStaff}).`);
-            document.querySelectorAll('.horasInput[data-tipo*="Staff"]').forEach(input => {
-                input.value = 0;
-            });
-            totalStaff = 0;
+            totalStaff = maxStaff; // Ajustar al máximo permitido
         }
 
         if (totalConsultorA > maxConsultorA) {
             alert(`La suma de horas de Consultor A (${totalConsultorA}) excede el máximo permitido (${maxConsultorA}).`);
-            document.querySelectorAll('.horasInput[data-tipo*="Consultor A"]').forEach(input => {
-                input.value = 0;
-            });
-            totalConsultorA = 0;
+            totalConsultorA = maxConsultorA; // Ajustar al máximo permitido
         }
 
         if (totalConsultorB > maxConsultorB) {
             alert(`La suma de horas de Consultor B (${totalConsultorB}) excede el máximo permitido (${maxConsultorB}).`);
-            document.querySelectorAll('.horasInput[data-tipo*="Consultor B"]').forEach(input => {
-                input.value = 0;
-            });
-            totalConsultorB = 0;
+            totalConsultorB = maxConsultorB; // Ajustar al máximo permitido
         }
 
         if (totalConsultorC > maxConsultorC) {
             alert(`La suma de horas de Consultor C (${totalConsultorC}) excede el máximo permitido (${maxConsultorC}).`);
-            document.querySelectorAll('.horasInput[data-tipo*="Consultor C"]').forEach(input => {
-                input.value = 0;
-            });
-            totalConsultorC = 0;
+            totalConsultorC = maxConsultorC; // Ajustar al máximo permitido
         }
 
-      
+        // Mostrar totales
         document.getElementById('totalSocios').innerText = totalSocios;
         document.getElementById('totalStaff').innerText = totalStaff;
         document.getElementById('totalConsultorA').innerText = totalConsultorA;
@@ -2122,27 +3063,39 @@
         document.getElementById('totalConsultorC').innerText = totalConsultorC;
     }
 
-
     function validarFormulario(event) {
-        const statusProyecto = document.getElementById('estadoProyecto').value;
+        const statusProyecto = document.getElementById('estadoProyecto');
 
-        if (statusProyecto !== '2') {
-            return; 
+        if (statusProyecto.disabled) {
+            return; // Salir de la función si está deshabilitado
         }
-        if (totalSocios !== maxSocios || totalStaff !== maxStaff ||
-            totalConsultorA !== maxConsultorA || totalConsultorB !== maxConsultorB || totalConsultorC !== maxConsultorC) {
 
-            alert("Los totales las horas no coinciden con los máximos permitidos. Por favor, revisa las horas.");
-            event.preventDefault();
+        if (statusProyecto.value !== '2') {
+            return; // Salir si no es estado 2
+        }
+
+        // Reutiliza el cálculo de horas
+        calcularHoras();
+
+        // Validar que los totales coinciden con los máximos permitidos
+        if (totalSocios > parseFloat(document.getElementById('horasSocios').value) ||
+            totalStaff > parseFloat(document.getElementById('horasStaff').value) ||
+            totalConsultorA > parseFloat(document.getElementById('consultorA').value) ||
+            totalConsultorB > parseFloat(document.getElementById('consultorB').value) ||
+            totalConsultorC > parseFloat(document.getElementById('consultorC').value)) {
+
+            alert("Los totales de las horas no coinciden con los máximos permitidos. Por favor, revisa las horas.");
+            event.preventDefault(); // Prevenir el envío del formulario
         }
     }
 
+    // Escuchar cambios en los inputs de horas
     document.querySelectorAll('.horasInput').forEach(input => {
         input.addEventListener('input', calcularHoras);
     });
 
-    
-    const formulario = document.querySelector('form'); 
+    // Escuchar el envío del formulario
+    const formulario = document.querySelector('form');
     formulario.addEventListener('submit', validarFormulario);
 </script>
 

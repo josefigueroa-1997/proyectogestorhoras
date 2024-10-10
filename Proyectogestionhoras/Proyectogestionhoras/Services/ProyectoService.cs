@@ -95,7 +95,7 @@ namespace Proyectogestionhoras.Services
 
       
         /*EDITAR PROYECTO*/
-        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<UsuarioProyectoViewModel> usuariohoras)
         {
             try
             {
@@ -142,11 +142,13 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORB", idsegmentoconsultorb));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
-                    await GestorServiciosProyecto(idproyecto,servicios);
-                    await GestorProyectoGastos(idproyecto, gastos);
-                    await command.ExecuteNonQueryAsync();
                     
-                   
+                    
+                    await command.ExecuteNonQueryAsync();
+                    await GestorServiciosProyecto(idproyecto, servicios);
+                    await GestorProyectoGastos(idproyecto, gastos);
+                    await AsignarHHUsuarios(idproyecto, usuariohoras);
+
                     return true;
                 }
             }
@@ -262,7 +264,7 @@ namespace Proyectogestionhoras.Services
                 }
             }
 
-            // Eliminar los gastos que ya no están en la lista recibida
+           
             var gastosAEliminar = gastosExistentes
                 .Where(g => !idsGastosRecibidos.Contains(g.IdGastos))
                 .ToList();
@@ -272,11 +274,61 @@ namespace Proyectogestionhoras.Services
                 context.ProyectoGastos.RemoveRange(gastosAEliminar);
             }
 
-            // Guardar los cambios
+        
             await context.SaveChangesAsync();
         }
 
+        public async Task AsignarHHUsuarios(int idproyecto,List<UsuarioProyectoViewModel> usuariohoras)
+        {
+            if (usuariohoras == null || !usuariohoras.Any())
+            {
+                return;
+            }
+   
+            var idsUsuarios = usuariohoras.Select(uh => uh.IdUsuario).ToList();
 
+       
+            var usuarios = await context.Usuarios
+                .Include(u => u.IdRecursoNavigation)
+                .Where(u => idsUsuarios.Contains(u.Id))
+                .ToListAsync();
+
+            var proyectosUsuarios = await context.UsuarioProyectos
+                .Where(up => idsUsuarios.Contains(up.IdUsuario) && up.IdProyecto == idproyecto)
+                .ToListAsync();
+
+            foreach (var usuariovm in usuariohoras)
+            {
+                var usuario = usuarios.FirstOrDefault(u => u.Id == usuariovm.IdUsuario);
+                if (usuario != null)
+                {
+                    var tiporecurso = usuario.IdRecursoNavigation.NombreRecurso;
+                    var usuarioProyecto = proyectosUsuarios.FirstOrDefault(up => up.IdUsuario == usuariovm.IdUsuario);
+
+                    if (usuarioProyecto != null)
+                    {
+                    
+                        if (tiporecurso == "Socio")
+                        {
+                            usuarioProyecto.HhSocios = usuariovm.HHAsignadas;
+                        }
+                        else if (tiporecurso == "Staff")
+                        {
+                            usuarioProyecto.HhStaff = usuariovm.HHAsignadas;
+                        }
+
+                        var recurso = usuario.IdRecursoNavigation;
+                        if (recurso.HhAnuales.HasValue)
+                        {
+                            recurso.HhAnuales -= usuariovm.HHAsignadas;
+                        }
+                    }
+                }
+            }
+
+         
+            await context.SaveChangesAsync();
+        }
 
 
         public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
@@ -313,8 +365,8 @@ namespace Proyectogestionhoras.Services
                     {
                         while (await reader.ReadAsync())
                         {
-                            ProyectoDTO proyecto = new() { 
-                            
+                            ProyectoDTO proyecto = new() {
+
                                 Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 numproyecto = reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
                                 Tipo_Unegocio = reader.GetString(reader.GetOrdinal("TIPO_UNEGOCIO")),
@@ -337,14 +389,14 @@ namespace Proyectogestionhoras.Services
                                 Porcentaje_Probabilidad = reader.IsDBNull(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")) ? 0 : reader.GetDecimal(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")),
                                 Plazo = reader.GetInt32(reader.GetOrdinal("PLAZO")),
                                 Fecha_Inicio = reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")).Date,
-                                Fecha_Termino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")).Date ,
-                                
+                                Fecha_Termino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")).Date,
+
                                 Fecha_Plazo_Neg = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
                                 NOMBREDEPARTAMENTO = reader.GetString(reader.GetOrdinal("NOMBREDEPARTAMENTO")),
                                 IDDEPARTAMENTO = reader.GetInt32(reader.GetOrdinal("IDDEPARTAMENTO")),
                                 MONTO = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 MONEDA = reader.IsDBNull(reader.GetOrdinal("MONEDA")) ? string.Empty : reader.GetString(reader.GetOrdinal("MONEDA")),
-                                
+
                                 HHSOCIOS = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
                                 CUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("CUENTA_SOCIOS")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_SOCIOS")),
                                 IDCUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_SOCIOS")),
@@ -352,6 +404,7 @@ namespace Proyectogestionhoras.Services
                                 COSTO_SOCIO = reader.IsDBNull(reader.GetOrdinal("COSTO_SOCIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_SOCIO")),
 
                                 HHSTAFF = reader.IsDBNull(reader.GetOrdinal("HH_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_STAFF")),
+                                
                                 CUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("CUENTA_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_STAFF")),
                                 IDCUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_STAFF")),
                                 SEGMENTO_STAFF = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_STAFF")),
@@ -373,14 +426,14 @@ namespace Proyectogestionhoras.Services
                                 CUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_C")),
                                 IDCUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")),
                                 SEGMENTO_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")),
-                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
+                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC"))
 
-                                NOMBRE_RECURSO = reader.IsDBNull(reader.GetOrdinal("NOMBRE_RECURSO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRE_RECURSO")),
-                                TIPO_CONSULTOR = reader.IsDBNull(reader.GetOrdinal("TIPO_CONSULTOR")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_CONSULTOR"))
+                                
 
 
 
                             };
+                          
                             proyectos.Add(proyecto);
                             
                         }

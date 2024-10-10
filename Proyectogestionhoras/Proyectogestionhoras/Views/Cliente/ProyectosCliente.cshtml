@@ -395,7 +395,7 @@
            
         </div>
 
-        <!-- Proyectos en Ejecución -->
+        <!-- Proyectos en A licitar -->
         <div class="section-subheader">
             Proyectos en Licitación
         </div>
@@ -415,24 +415,24 @@
             
         </div>
 
-        <!-- Proyectos Terminados -->
+        <!-- Proyectos Ejecución -->
         <div class="section-subheader">
-            Proyectos Terminados
+            Proyectos en Ejecución
         </div>
         <div class="section-content">
-            
-            <div class="card finished">
-                <h3>Proyecto G</h3>
-                <p>Descripción breve del proyecto terminado.</p>
-            </div>
-            <div class="card finished">
-                <h3>Proyecto H</h3>
-                <p>Descripción breve del proyecto terminado.</p>
-            </div>
-            <div class="card finished">
-                <h3>Proyecto I</h3>
-                <p>Descripción breve del proyecto terminado.</p>
-            </div>
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                if (proyecto.Tipo_Status == "En Ejecución")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new {id = proyecto.Id})">
+                        <div class="card finished">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NOMBREDEPARTAMENTO</p>
+                        </div>
+                    </a>
+                }
+            }
+          
             
         </div>
 

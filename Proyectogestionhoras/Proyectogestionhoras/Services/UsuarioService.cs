@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net.Mail;
 using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyectogestionhoras.Services
 {
@@ -203,7 +204,7 @@ namespace Proyectogestionhoras.Services
                 return new Login();
             }
         }
-        private Boolean VerificarContrasena(string passuser, string passbd)
+        private bool VerificarContrasena(string passuser, string passbd)
         {
             try
             {
@@ -362,6 +363,52 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Hubo un error al validar la existencia del idcliente:" + e.Message);
                 return 0;
+            }
+        }
+
+        public async Task<List<UsuarioProyectoDTO>> ObtenerHorasUsuariosProyecto(int? idproyecto)
+        {
+            try
+            {
+
+                var usuarios = new List<UsuarioProyectoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "DESPLIEGUEHORASPORCOSTOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+               
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            UsuarioProyectoDTO usuario = new()
+                            {
+
+
+                                NOMBRE = reader.IsDBNull(reader.GetOrdinal("NOMBRE")) ? null : reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                NOMBRE_RECURSO = reader.IsDBNull(reader.GetOrdinal("NOMBRE_RECURSO")) ? null : reader.GetString(reader.GetOrdinal("NOMBRE_RECURSO")),
+                                HH_SOCIOS = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
+                                HH_STAFF = reader.IsDBNull(reader.GetOrdinal("HH_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_STAFF")),
+
+
+                            };
+                            usuarios.Add(usuario);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return usuarios;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
+                return new List<UsuarioProyectoDTO>();
+
             }
         }
 
