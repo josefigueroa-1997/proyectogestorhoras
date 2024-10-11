@@ -16,6 +16,7 @@ namespace Proyectogestionhoras.Models
         {
         }
 
+        public virtual DbSet<Actividade> Actividades { get; set; } = null!;
         public virtual DbSet<Ccosto> Ccostos { get; set; } = null!;
         public virtual DbSet<CcostoUnegocio> CcostoUnegocios { get; set; } = null!;
         public virtual DbSet<Cliente> Clientes { get; set; } = null!;
@@ -55,6 +56,17 @@ namespace Proyectogestionhoras.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Actividade>(entity =>
+            {
+                entity.ToTable("ACTIVIDADES");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Nombre)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE");
+            });
+
             modelBuilder.Entity<Ccosto>(entity =>
             {
                 entity.ToTable("CCOSTO");
@@ -283,6 +295,10 @@ namespace Proyectogestionhoras.Models
                 entity.ToTable("PLANILLA");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA");
             });
 
             modelBuilder.Entity<PlanillaUsusarioProyecto>(entity =>
@@ -291,9 +307,18 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.IdActividad).HasColumnName("ID_ACTIVIDAD");
+
                 entity.Property(e => e.IdPlanilla).HasColumnName("ID_PLANILLA");
 
                 entity.Property(e => e.IdUsuProy).HasColumnName("ID_USU_PROY");
+
+                entity.Property(e => e.RegistroHhProyecto).HasColumnName("REGISTRO_HH_PROYECTO");
+
+                entity.HasOne(d => d.IdActividadNavigation)
+                    .WithMany(p => p.PlanillaUsusarioProyectos)
+                    .HasForeignKey(d => d.IdActividad)
+                    .HasConstraintName("ACTIVIDAD_FK");
 
                 entity.HasOne(d => d.IdPlanillaNavigation)
                     .WithMany(p => p.PlanillaUsusarioProyectos)
@@ -424,6 +449,10 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA");
+
                 entity.Property(e => e.IdGastos).HasColumnName("ID_GASTOS");
 
                 entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
@@ -457,6 +486,10 @@ namespace Proyectogestionhoras.Models
                 entity.ToTable("PROYECTO_SERVICIO");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA");
 
                 entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
 
@@ -522,6 +555,11 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.ProcentajeProyecto)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("PROCENTAJE_PROYECTO");
+
+                entity.Property(e => e.TipoConsultor)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPO_CONSULTOR");
             });
 
             modelBuilder.Entity<Rol>(entity =>
@@ -718,6 +756,18 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CostoUnitarioAsignado).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Costoconsultora)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORA");
+
+                entity.Property(e => e.Costoconsultorb)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORB");
+
+                entity.Property(e => e.Costoconsultorc)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORC");
 
                 entity.Property(e => e.HhConsultora).HasColumnName("HH_CONSULTORA");
 

@@ -912,6 +912,7 @@
                     <tr>
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
@@ -929,6 +930,7 @@
                             </select>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio" type="date"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
                         </td>
@@ -962,6 +964,7 @@
                     <tr>
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>                     
                         <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
@@ -980,6 +983,7 @@
                             </select>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;"><input name="montogasto" class="montogasto" type="text"></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" class="fechagasto" type="date"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="ccostogasto"  name="costogastos" readonly />
                         </td>
@@ -1170,8 +1174,19 @@
     
     const totalMontoElement = document.getElementById('montoTotal');
     $(document).ready(function () {
+
+        function obtenerFechaActual() {
+            const hoy = new Date();
+            const dia = String(hoy.getDate()).padStart(2, '0');
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0'); 
+            const anio = hoy.getFullYear();
+            return `${anio}-${mes}-${dia}`;
+        }
+
        
-       
+        document.querySelectorAll('.fechaservicio').forEach(function (inputFecha) {
+            inputFecha.value = obtenerFechaActual();
+        });
 
         document.getElementById('agregarFila').addEventListener('click', function (e) {
             e.preventDefault();
@@ -1192,6 +1207,8 @@
         <td style="padding: 10px; border: 1px solid #ddd;">
             <input class="montoservicio" name="montoservicio" type="text">
         </td>
+                 <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio" type="date" value="${obtenerFechaActual()}">
+                 </td>
         <td style="padding: 10px; border: 1px solid #ddd;">
             <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
         </td>
@@ -1265,6 +1282,18 @@
 
    document.addEventListener('DOMContentLoaded', function () {
 
+        function obtenerFechaActualGasto() {
+            const hoy = new Date();
+            const dia = String(hoy.getDate()).padStart(2, '0');
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Enero es 0
+            const anio = hoy.getFullYear();
+            return `${anio}-${mes}-${dia}`;
+        }
+
+        document.querySelectorAll('.fechagasto').forEach(function (inputFecha) {
+            inputFecha.value = obtenerFechaActualGasto();
+        });
+
     document.getElementById('agregarFilaGastos').addEventListener('click', function (e) {
         const idUnidadNegocio = $("#unidadNegocio").val();
         const idCentroCosto = $("#centroCosto").val();
@@ -1279,24 +1308,24 @@
         const idCuentaCell = document.createElement('td');
         const cuentaCell = document.createElement('td');
         const eliminarCell = document.createElement('td');
-        const idSegmentoGastoCell = document.createElement('td'); // Nueva celda para el ID
+        const idSegmentoGastoCell = document.createElement('td'); 
 
-        // Campo oculto para 'idsegmentogasto'
+       
         const idSegmentoGastoInput = document.createElement('input');
         idSegmentoGastoInput.type = 'text';
         idSegmentoGastoInput.className = 'idsegmentogasto';
         idSegmentoGastoInput.name = 'idsegmentogasto';
-        idSegmentoGastoInput.style.display = 'none'; // Ocultar el input
+        idSegmentoGastoInput.style.display = 'none'; 
         idSegmentoGastoCell.appendChild(idSegmentoGastoInput);
 
-        // Crear select para gastos
+       
         const selectGastos = document.createElement('select');
         selectGastos.className = "gastosSelect";
         selectGastos.name = "idgastos[]";
         selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option>';
         servicioCell.appendChild(selectGastos);
 
-        // Evento para validar el gasto seleccionado
+      
         selectGastos.addEventListener('change', function () {
             checkRequiredGasto(selectGastos);
         });
@@ -1330,7 +1359,7 @@
         eliminarBtn.style.backgroundColor = 'red';
         eliminarBtn.className = 'eliminar-btn';
 
-        // Evento para eliminar la fila
+      
         eliminarBtn.addEventListener('click', function () {
             newRow.remove(); 
             updateTotalGasto();
@@ -1339,13 +1368,27 @@
 
         eliminarCell.appendChild(eliminarBtn);
 
+           
+            const fechaCell = document.createElement('td');
+            const fechaInput = document.createElement('input');
+            fechaInput.type = 'date';
+            fechaInput.name = 'fechagasto';
+            fechaInput.className = 'fechagasto';
+            fechaCell.appendChild(fechaInput);
+
+      
+            fechaInput.value = obtenerFechaActualGasto();
+
+
         // Agregar todas las celdas a la fila
         newRow.appendChild(servicioCell);
         newRow.appendChild(montoCell);
+            newRow.appendChild(fechaCell);
         newRow.appendChild(centroCostoCell);
         newRow.appendChild(segmentoCell);
         newRow.appendChild(idCuentaCell);
         newRow.appendChild(cuentaCell);
+            
         newRow.appendChild(eliminarCell);
         newRow.appendChild(idSegmentoGastoCell);
 

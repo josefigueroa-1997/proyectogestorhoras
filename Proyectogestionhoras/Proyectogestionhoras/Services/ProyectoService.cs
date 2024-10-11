@@ -162,7 +162,6 @@ namespace Proyectogestionhoras.Services
 
         public async Task GestorServiciosProyecto(int idProyecto, List<ServicioViewModel> servicios)
         {
-     
             if (servicios == null || !servicios.Any())
             {
                 return;
@@ -172,53 +171,54 @@ namespace Proyectogestionhoras.Services
 
             using (DbCommand command = connection.CreateCommand())
             {
-           
+            
                 var serviciosExistentes = await context.ProyectoServicios
                     .Where(ps => ps.IdProyecto == idProyecto)
                     .ToListAsync();
 
-  
+                
                 var serviciosAEliminar = serviciosExistentes
-                    .Where(se => !servicios.Any(s => s.Idservicios == se.IdServicio))
+                    .Where(se => !servicios.Any(s => s.Idservicios == se.IdServicio && s.Fecha == se.Fecha))
                     .ToList();
 
-         
                 foreach (var servicioEliminado in serviciosAEliminar)
                 {
                     context.ProyectoServicios.Remove(servicioEliminado);
                 }
 
-               
+           
                 foreach (var servicio in servicios)
                 {
+          
                     var servicioExistente = serviciosExistentes
-                        .FirstOrDefault(se => se.IdServicio == servicio.Idservicios);
+                        .FirstOrDefault(se => se.IdServicio == servicio.Idservicios && se.Fecha == servicio.Fecha);
 
                     if (servicioExistente != null)
                     {
-                       
+                     
                         servicioExistente.Idsegmento = servicio.IdSegmento;
                         servicioExistente.Monto = servicio.MontoServicio;
                     }
                     else
                     {
-                      
+                       
                         var nuevoServicio = new ProyectoServicio
                         {
                             IdProyecto = idProyecto,
                             IdServicio = servicio.Idservicios,
                             Idsegmento = servicio.IdSegmento,
-                            Monto = servicio.MontoServicio
+                            Monto = servicio.MontoServicio,
+                            Fecha = servicio.Fecha.Date,
                         };
 
                         await context.ProyectoServicios.AddAsync(nuevoServicio);
                     }
                 }
 
-                // Guardar los cambios
                 await context.SaveChangesAsync();
             }
         }
+
 
         public async Task GestorProyectoGastos(int idProyecto, List<GastoViewModel> gastos)
         {
@@ -229,44 +229,42 @@ namespace Proyectogestionhoras.Services
 
             DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
 
-
+          
             var gastosExistentes = await context.ProyectoGastos
                 .Where(pg => pg.IdProyecto == idProyecto)
                 .ToListAsync();
 
-       
-            var idsGastosRecibidos = gastos.Select(g => g.Idgastos).ToList();
-
 
             foreach (var gasto in gastos)
             {
+                
                 var gastoExistente = gastosExistentes
-                    .FirstOrDefault(g => g.IdGastos == gasto.Idgastos && g.Idsegmento == gasto.IdSegmento);
+                    .FirstOrDefault(g => g.IdGastos == gasto.Idgastos && g.Fecha == gasto.Fecha.Date);
 
                 if (gastoExistente != null)
                 {
-                
+             
                     gastoExistente.Monto = gasto.MontoGasto;
                     context.ProyectoGastos.Update(gastoExistente);
                 }
                 else
                 {
-                    // Agregar nuevo gasto
+          
                     var nuevoGasto = new ProyectoGasto
                     {
                         IdProyecto = idProyecto,
                         IdGastos = gasto.Idgastos,
-                        Idsegmento = gasto.IdSegmento,
-                        Monto = gasto.MontoGasto
+                        Idsegmento=gasto.IdSegmento,
+                        Monto = gasto.MontoGasto,
+                        Fecha = gasto.Fecha.Date,
                     };
 
                     await context.ProyectoGastos.AddAsync(nuevoGasto);
                 }
             }
 
-           
             var gastosAEliminar = gastosExistentes
-                .Where(g => !idsGastosRecibidos.Contains(g.IdGastos))
+                .Where(ge => !gastos.Any(g => g.Idgastos == ge.IdGastos && g.Fecha == ge.Fecha))
                 .ToList();
 
             if (gastosAEliminar.Any())
@@ -274,7 +272,6 @@ namespace Proyectogestionhoras.Services
                 context.ProyectoGastos.RemoveRange(gastosAEliminar);
             }
 
-        
             await context.SaveChangesAsync();
         }
 
@@ -476,6 +473,7 @@ namespace Proyectogestionhoras.Services
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
                             };
                             serviciosProyectos.Add(servicio);
 
@@ -517,7 +515,8 @@ namespace Proyectogestionhoras.Services
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
-                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO")),
+                                FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
                             };
                             gastosproyectos.Add(gasto);
 

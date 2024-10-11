@@ -828,6 +828,7 @@
                             <tr>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
@@ -866,6 +867,7 @@
                                             </select>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" value="@String.Format("{0:N2}", sp.MONTO)" type="text"></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" value="@sp.FECHA.ToString("yyyy-MM-dd")" type="date"></td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
                                         </td>
@@ -900,6 +902,7 @@
                                     </select>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio"  type="date"></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
                                 </td>
@@ -937,6 +940,7 @@
                             <tr>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Gasto</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
@@ -973,6 +977,7 @@
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <input name="montogasto" class="montogasto" value="@String.Format("{0:N2}", gp.MONTO)" type="text">
                                         </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" value="@gp.FECHA.ToString("yyyy-MM-dd")" type="date"></td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
                                         </td>
@@ -1005,6 +1010,7 @@
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input name="montogasto" class="montogasto" type="text">
                                 </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" class="fechagasto"  type="date"></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
                                 </td>
@@ -1768,6 +1774,7 @@
                             <tr>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
@@ -1806,6 +1813,7 @@
                                             </select>
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" value="@String.Format("{0:N2}", sp.MONTO)" type="text"></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" value="@sp.FECHA.ToString("yyyy-MM-dd")" type="date"></td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
                                         </td>
@@ -1840,6 +1848,7 @@
                                     </select>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio" type="date"></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
                                 </td>
@@ -1877,6 +1886,7 @@
                             <tr>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
@@ -1913,6 +1923,7 @@
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <input name="montogasto" class="montogasto" value="@String.Format("{0:N2}", gp.MONTO)" type="text">
                                         </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto"  value="@gp.FECHA.ToString("yyyy-MM-dd")" type="date"></td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
                                         </td>
@@ -1945,6 +1956,7 @@
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input name="montogasto" class="montogasto" type="text">
                                 </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" class="fechagasto" type="date"></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
                                 </td>
@@ -2458,7 +2470,18 @@
     const totalMontoElement = document.getElementById('montoTotal');
 
     $(document).ready(function () {
+        function obtenerFechaActual() {
+            const hoy = new Date();
+            const dia = String(hoy.getDate()).padStart(2, '0');
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Enero es 0
+            const anio = hoy.getFullYear();
+            return `${anio}-${mes}-${dia}`;
+        }
 
+        // Asigna la fecha actual a todos los campos 'fechaservicio' existentes cuando se carga la página
+        document.querySelectorAll('.fechaservicio').forEach(function (inputFecha) {
+            inputFecha.value = obtenerFechaActual();
+        });
         document.getElementById('agregarFila').addEventListener('click', function (e) {
             e.preventDefault();
             const newRow = document.createElement('tr');
@@ -2478,6 +2501,8 @@
                 <td style="padding: 10px; border: 1px solid #ddd;">
                     <input class="montoservicio" name="montoservicio" type="text">
                 </td>
+                     <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio" type="date" value="${obtenerFechaActual()}">
+                     </td>
                 <td style="padding: 10px; border: 1px solid #ddd;">
                     <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
                 </td>
@@ -2665,7 +2690,19 @@
     /*TABLA GASTOS*/
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Delegar el evento change en la tabla para filas existentes y nuevas
+
+
+        function obtenerFechaActualGasto() {
+            const hoy = new Date();
+            const dia = String(hoy.getDate()).padStart(2, '0');
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Enero es 0
+            const anio = hoy.getFullYear();
+            return `${anio}-${mes}-${dia}`;
+        }
+
+        document.querySelectorAll('.fechagasto').forEach(function (inputFecha) {
+            inputFecha.value = obtenerFechaActualGasto();
+        });
         document.querySelector('#tablagastos tbody').addEventListener('change', function (e) {
             if (e.target.classList.contains('gastosSelect')) {
                 const selectGastos = e.target;
@@ -2735,6 +2772,13 @@
             eliminarBtn.style.color = 'white';
             eliminarBtn.style.backgroundColor = 'red';
             eliminarBtn.className = 'eliminar-btn';
+            const fechaCell = document.createElement('td');
+            const fechaInput = document.createElement('input');
+            fechaInput.type = 'date';
+            fechaInput.name = 'fechagasto';
+            fechaInput.className = 'fechagasto';
+            fechaCell.appendChild(fechaInput);
+            fechaInput.value = obtenerFechaActualGasto();
 
             // Evento para eliminar la fila
             eliminarBtn.addEventListener('click', function () {
@@ -2748,6 +2792,7 @@
             // Agregar todas las celdas a la fila
             newRow.appendChild(servicioCell);
             newRow.appendChild(montoCell);
+            newRow.appendChild(fechaCell);
             newRow.appendChild(centroCostoCell);
             newRow.appendChild(segmentoCell);
             newRow.appendChild(idCuentaCell);

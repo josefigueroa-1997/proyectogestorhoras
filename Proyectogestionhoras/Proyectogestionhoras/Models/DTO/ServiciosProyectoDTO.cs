@@ -8,6 +8,7 @@
         public string? CUENTA { get; set; }
         public int IDCUENTA { get; set; }
         public decimal? MONTO { get; set; }
+        public DateTime? FECHA { get; set; }
 
 
 

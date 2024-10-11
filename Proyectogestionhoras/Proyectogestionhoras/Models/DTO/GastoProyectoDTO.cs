@@ -9,5 +9,6 @@
         public int IDCUENTA { get; set; }
         public decimal? MONTO { get; set; }
         public int IDSEGMENTO { get; set; }
+        public DateTime? FECHA { get; set; }
     }
 }

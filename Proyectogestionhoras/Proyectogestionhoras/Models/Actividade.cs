@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace Proyectogestionhoras.Models
 {
-    public partial class Planilla
+    public partial class Actividade
     {
-        public Planilla()
+        public Actividade()
         {
             PlanillaUsusarioProyectos = new HashSet<PlanillaUsusarioProyecto>();
         }
 
         public int Id { get; set; }
-        public DateTime Fecha { get; set; }
+        public string Nombre { get; set; } = null!;
 
         public virtual ICollection<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; }
     }
