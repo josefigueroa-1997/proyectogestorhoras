@@ -366,7 +366,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<UsuarioProyectoDTO>> ObtenerHorasUsuariosProyecto(int? idproyecto)
+        public async Task<List<UsuarioProyectoDTO>> ObtenerHorasUsuariosProyecto(int idusuario)
         {
             try
             {
@@ -375,9 +375,9 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "DESPLIEGUEHORASPORCOSTOS";
+                    command.CommandText = "PEROYECTOSUSUARIOS";
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
                
                     using (var reader = await command.ExecuteReaderAsync())
                     {
@@ -386,11 +386,11 @@ namespace Proyectogestionhoras.Services
                             UsuarioProyectoDTO usuario = new()
                             {
 
+                                ID = reader.IsDBNull(reader.GetOrdinal("ID")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID")),
+                                NUM_PROYECTO = reader.IsDBNull(reader.GetOrdinal("NUM_PROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
+                                NOMBREPROYECTO = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                NOMBRECLIENTE = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? null : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE"))
 
-                                NOMBRE = reader.IsDBNull(reader.GetOrdinal("NOMBRE")) ? null : reader.GetString(reader.GetOrdinal("NOMBRE")),
-                                NOMBRE_RECURSO = reader.IsDBNull(reader.GetOrdinal("NOMBRE_RECURSO")) ? null : reader.GetString(reader.GetOrdinal("NOMBRE_RECURSO")),
-                                HH_SOCIOS = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
-                                HH_STAFF = reader.IsDBNull(reader.GetOrdinal("HH_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_STAFF")),
 
 
                             };

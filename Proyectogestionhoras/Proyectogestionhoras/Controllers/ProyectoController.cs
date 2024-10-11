@@ -28,9 +28,9 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
-        public async Task <IActionResult> GetProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
+        public async Task <IActionResult> GetProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
+            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
             ViewBag.Proyectos = proyectos;
             return View("Proyectos");
         }
@@ -139,14 +139,13 @@ namespace Proyectogestionhoras.Controllers
 
 
        
-        public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
+        public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto);
+            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto, idusuario);
             var servicios = await proyectoService.ObtenerServiciosProyecto(id);
             var gastos = await proyectoService.ObtenerGastosProyectos(id);
             var facturas = await facturaService.RecuperarFacturas(id);
-            var hhusuarios = await usuarioService.ObtenerHorasUsuariosProyecto(id);
-            ViewBag.Usuarios = hhusuarios;
+            
             ViewBag.Facturas = facturas;
             ViewBag.Proyectos = proyectos;
             ViewBag.Servicios = servicios;
@@ -169,9 +168,9 @@ namespace Proyectogestionhoras.Controllers
 
             return 0;
         }
-        public async Task<IActionResult> EditarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
+        public async Task<IActionResult> EditarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto,int? idusuario)
         {
-            var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto);
+            var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
             var unegocios = await proyectoService.ObtenerUnegocio();
             var ccostos = await proyectoService.ObtenerCcosto();
             var empresas = await proyectoService.ObtenerEmpresa();

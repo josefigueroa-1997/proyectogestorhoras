@@ -97,22 +97,118 @@
 
     <h1 class="client-title">Personal</h1>
 
-    <!-- Client Cards Grid -->
-    <div class="client-grid">
-        @foreach(var usuario in ViewBag.Usuarios)
-        {
-            <div class="client-card">
-                <img src="https://via.placeholder.com/100" alt="Cliente 2">
-                <h3><strong>@usuario.Nombre</strong></h3>
-                <p>@usuario.NOMBRE_RECURSO_CORRELATIVO</p>
-                <p>HH Semanales:@usuario.Numero_Horas</p>
-            </div>
-        }
-       
+    <div class="form-group">
+        
+        <div class="flex justify-between mt-8">
+            <!-- Tabla de Socios -->
+            <table class="w-1/2 border-collapse text-left mr-8">
+                <thead>
+                    <tr class="bg-green-200 text-black">
+                        <th class="p-4 border">Socio</th>
+                        <th class="p-4 border">Nombre</th>
+                        <th class="p-4 border">HH/Anuales Disponibles</th>
+                        <th class="p-4 border">Hrs. a Proyectos</th>
+                        <th class="p-4 border">Costo Unitario</th>
+                        <th class="p-4 border">Editar</th> <!-- Nueva columna Editar -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Usuarios != null)
+                    {
+                        @foreach (var recurso in ViewBag.Usuarios)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                            {
+                                <tr>
+                                    <td class="p-4 border">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                    <td class="p-4 border">@recurso.Nombre</td>
+                                    <td class="p-4 border">@recurso.HH_ANUALES</td>
+                                    <td class="p-4 border">@recurso.PROCENTAJE_PROYECTO %</td>
+                                    <td class="p-4 border">$@recurso.Costo_Unitario</td>
+                                    <td class="p-4 border">
+                                        <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                    </td> <!-- Botón Editar -->
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
 
-        <!-- Repite esta estructura para más clientes -->
+            <!-- Tabla de Staff -->
+            <table class="w-1/2 border-collapse text-left">
+                <thead>
+                    <tr class="bg-green-200 text-black">
+                        <th class="p-4 border">Staff</th>
+                        <th class="p-4 border">Nombre</th>
+                        <th class="p-4 border">HH/Anuales Disponibles</th>
+                        <th class="p-4 border">Hrs. a Proyectos</th>
+                        <th class="p-4 border">Costo Unitario</th>
+                        <th class="p-4 border">Editar</th> <!-- Nueva columna Editar -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Usuarios != null)
+                    {
+                        @foreach (var recurso in ViewBag.Usuarios)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                            {
+                                <tr>
+                                    <td class="p-4 border">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                    <td class="p-4 border">@recurso.Nombre</td>
+                                    <td class="p-4 border">@recurso.HH_ANUALES</td>
+                                    <td class="p-4 border">@recurso.PROCENTAJE_PROYECTO %</td>
+                                    <td class="p-4 border">$@recurso.Costo_Unitario</td>
+                                    <td class="p-4 border">
+                                        <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { id = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                    </td> <!-- Botón Editar -->
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-    <!-- Modal para mostrar el mensaje de éxito -->
+
+    <!-- Separación entre las tablas -->
+    <div class="mt-12 mb-8"></div>
+
+    <div class="form-group">
+        <!-- Tabla de Consultores Externos -->
+        <table class="w-1/2 mx-auto border-collapse text-left">
+            <thead>
+                <tr class="bg-green-200 text-black">
+                    <th class="p-4 border">Consultores Externos</th>
+                    <th class="p-4 border">Nombre</th>
+                    <th class="p-4 border">Costo Unitario</th>
+                    <th class="p-4 border">Editar</th> <!-- Nueva columna Editar -->
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Usuarios != null)
+                {
+                    @foreach (var recurso in ViewBag.Usuarios)
+                    {
+                        if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+                        {
+                            <tr>
+                                <td class="p-4 border">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                <td class="p-4 border">@recurso.Nombre</td>
+                                <td class="p-4 border">$@recurso.Costo_Unitario</td>
+                                <td class="p-4 border">
+                                    <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { id = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                </td> <!-- Botón Editar -->
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MODAL DE MENSAJE DE ÉXITO AL EDITAR DATOS -->
     <div id="successModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>

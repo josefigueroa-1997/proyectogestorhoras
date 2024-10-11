@@ -12,17 +12,29 @@
         <h2 class="section-header">Mis Proyectos</h2>
         <div class="section-content">
             <!-- Nuevo Proyecto -->
-            <a href="@Url.Action("NuevoProyecto","Proyecto")" id="nuevoProyectoBtn" class="card new">
-                <h3>+ Nuevo Proyecto</h3>
-                <p>Crear un nuevo proyecto</p>
-            </a>
+       
+            
+            
+                <a href="@Url.Action("NuevoProyecto","Proyecto")" id="nuevoProyectoBtn" class="card new">
+                    <h3>+ Nuevo Proyecto</h3>
+                    <p>Crear un nuevo proyecto</p>
+                </a>
+            
+           
             <!-- Proyecto 1 -->
-            <div class="card">
-                <h3>Proyecto Alpha</h3>
-                <p>Cliente: Empresa XYZ</p>
-                <p>Fecha de inicio: 01/03/2024</p>
-            </div>
-            <!-- Proyecto 2 -->
+            @*@foreach(var proyecto in ViewBag.Proyectos)
+            {
+                <a href="">
+                    <div class="card">
+                        <h3>@proyecto.NUM_PROYECTO</h3>
+                        <p>Cliente: @proyecto.NOMBRECLIENTE</p>
+                       
+                    </div>
+
+                </a>
+            }*@
+            
+           <!-- Proyecto 2 -->
             <div class="card">
                 <h3>Proyecto Contabilidad</h3>
                 <p>Cliente: Empresa ABC</p>
@@ -46,7 +58,7 @@
                 <p>Cliente: Hospital San Juan</p>
                 <p>Fecha de inicio: 05/07/2024</p>
             </div>
-        </div>
+            </div>
         <div class="text-center mt-4">
             <a href="@Url.Action("GetProyectos", "Proyecto")" class="btn-ver-mas">Ver más</a>
         </div>

@@ -331,7 +331,7 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
+        public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             try
             {
@@ -345,7 +345,8 @@ namespace Proyectogestionhoras.Services
                 object tipologiaparameter = (object)idtipologia ?? DBNull.Value;
                 object unegocioparameter = (object)unidadneg ?? DBNull.Value;
                 object ccostoparameter = (object)idccosto ?? DBNull.Value;
-                #pragma warning restore CS8600
+                object idusuarioparameter = (object)idusuario ?? DBNull.Value;
+#pragma warning restore CS8600
                 var proyectos = new List<ProyectoDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using(DbCommand cmd = connection.CreateCommand())
@@ -361,6 +362,7 @@ namespace Proyectogestionhoras.Services
                     cmd.Parameters.Add(new SqlParameter("@IDTIPOLOGIA", tipologiaparameter));
                     cmd.Parameters.Add(new SqlParameter("@UNIDADNEGOCIO", unegocioparameter));
                     cmd.Parameters.Add(new SqlParameter("@IDCENTROCOSTO", ccostoparameter));
+                    cmd.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuarioparameter));
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())

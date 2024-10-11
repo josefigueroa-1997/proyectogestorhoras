@@ -3,56 +3,100 @@
   "WorkspaceRootPath": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\proyecto\\editarproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\proyecto\\editarproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\usuario\\editarusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\usuario\\editarusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\usuario\\personal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\usuario\\personal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\dto\\usuariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\dto\\usuariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\usuario\\addpersonal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\usuario\\addpersonal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\proyecto\\proyectos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\proyecto\\proyectos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\proyecto\\nuevoproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\proyecto\\nuevoproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\dto\\proyectodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\dto\\proyectodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\planilla\\misproyectos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\planilla\\misproyectos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\proyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\proyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\planillacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\planillacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\proyecto\\detalleproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\proyecto\\detalleproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\cliente\\proyectoscliente.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\cliente\\proyectoscliente.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\interface\\iusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\interface\\iusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\dto\\usuarioproyectodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\dto\\usuarioproyectodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\proyectocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\interface\\iusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\interface\\iusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\clientecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\clientecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\proyecto\\detalleproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\proyecto\\detalleproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\proyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\proyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\interface\\iproyecto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\interface\\iproyecto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\viewmodel\\usuarioproyectoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\viewmodel\\usuarioproyectoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\proyecto\\editarproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\proyecto\\editarproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\proyecto\\nuevoproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\proyecto\\nuevoproyecto.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\cliente\\proyectoscliente.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\cliente\\proyectoscliente.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\viewmodel\\usuarioproyectoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\viewmodel\\usuarioproyectoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\dto\\gastoproyectodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -151,32 +195,12 @@
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\clienteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\interface\\icliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\interface\\icliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\dto\\usuariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\dto\\usuariodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\dto\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\dto\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\usuario\\personal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\usuario\\personal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\usuario\\addpersonal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\usuario\\addpersonal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\interface\\isegmento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -185,10 +209,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\segmento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\models\\segmento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\models\\dto\\clientedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -230,11 +250,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 22,
               "Title": "ProyectosCliente.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Cliente\\ProyectosCliente.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Cliente\\ProyectosCliente.cshtml",
@@ -247,133 +267,293 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "EditarProyecto.cshtml",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
-              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
-              "ViewState": "AQIAAO4LAAAAAAAAAAAAwB8MAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-10T21:51:20.665Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "DetalleProyecto.cshtml",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
-              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
-              "ViewState": "AQIAALUBAAAAAAAAAAAswMMBAAA6AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-05T14:03:17.211Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ProyectoController.cs",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\ProyectoController.cs",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\ProyectoController.cs",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\ProyectoController.cs",
-              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\ProyectoController.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAQwCAAAAAiAAAA",
+              "DocumentIndex": 6,
+              "Title": "UsuarioDTO.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAQwA8AAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-05T22:17:43.473Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Proyectos.cshtml",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
-              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
-              "ViewState": "AQIAABIAAAAAAAAAAAAAAJMAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-23T15:52:57.124Z",
+              "WhenOpened": "2024-09-14T18:19:41.588Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "ProyectoService.cs",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\ProyectoService.cs",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\ProyectoService.cs",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\ProyectoService.cs",
-              "RelativeToolTip": "Proyectogestionhoras\\Services\\ProyectoService.cs",
-              "ViewState": "AQIAAIsBAAAAAAAAAAAuwKwBAAAzAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-08T20:58:36.134Z",
+              "Title": "Personal.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
+              "ViewState": "AQIAAG4AAAAAAAAAAAAAwH0AAABXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-14T17:59:53.338Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ProyectoDTO.cs",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\ProyectoDTO.cs",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\ProyectoDTO.cs",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\ProyectoDTO.cs",
-              "RelativeToolTip": "Proyectogestionhoras\\Models\\DTO\\ProyectoDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAkAAAA",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAgwCEAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-13T18:02:08.802Z",
+              "WhenOpened": "2024-09-16T21:08:08.049Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Home\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACQAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-02T15:52:59.387Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "UsuarioService.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\UsuarioService.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\UsuarioService.cs",
               "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\UsuarioService.cs",
               "RelativeToolTip": "Proyectogestionhoras\\Services\\UsuarioService.cs",
-              "ViewState": "AQIAAHQBAAAAAAAAAAAwwIgBAABcAAAA",
+              "ViewState": "AQIAAFwAAAAAAAAAAAAwwGcAAABDAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-20T17:15:39.538Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "IUsuario.cs",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
-              "RelativeToolTip": "Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAIAAAA",
+              "DocumentIndex": 3,
+              "Title": "EditarUsuario.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\EditarUsuario.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Usuario\\EditarUsuario.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\EditarUsuario.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Usuario\\EditarUsuario.cshtml",
+              "ViewState": "AQIAAF0AAAAAAAAAAAAAAG8AAAA9AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-11T16:48:55.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UsuarioController.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\UsuarioController.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\UsuarioController.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\UsuarioController.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\UsuarioController.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAgwCQAAABKAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-22T15:26:08.774Z"
+              "WhenOpened": "2024-10-11T16:45:24.109Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "_ViewImports.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\_ViewImports.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\_ViewImports.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\_ViewImports.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\_ViewImports.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-11T16:50:35.69Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
+              "Title": "Proyectos.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\Proyectos.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAC4AAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-23T15:52:57.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AddPersonal.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
+              "ViewState": "AQIAANUAAAAAAAAAAAAAAO8AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-09-20T17:26:59.786Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "MisProyectos.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Planilla\\MisProyectos.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Planilla\\MisProyectos.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Planilla\\MisProyectos.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Planilla\\MisProyectos.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-11T15:57:18.86Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "NuevoProyecto.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
+              "ViewState": "AQIAAGUBAAAAAAAAAAAAAMEBAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-08T21:08:40.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PlanillaController.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\PlanillaController.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\PlanillaController.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\PlanillaController.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\PlanillaController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T15:56:14.057Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAAB0AAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-11T15:51:26.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ProyectoController.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\ProyectoController.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\ProyectoController.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\ProyectoController.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\ProyectoController.cs",
+              "ViewState": "AQIAAIMAAAAAAAAAAAAuwJMAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-05T22:17:43.473Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "UsuarioProyectoDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\UsuarioProyectoDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\UsuarioProyectoDTO.cs",
               "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\UsuarioProyectoDTO.cs",
               "RelativeToolTip": "Proyectogestionhoras\\Models\\DTO\\UsuarioProyectoDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAbAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-10T18:20:33.624Z"
+              "WhenOpened": "2024-10-10T18:20:33.624Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 16,
+              "Title": "IUsuario.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Services\\Interface\\IUsuario.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAABYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T15:26:08.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ClienteController.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\ClienteController.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\ClienteController.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\ClienteController.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\ClienteController.cs",
+              "ViewState": "AQIAABEAAAAAAAAAAAAQwCIAAADhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T14:11:53.522Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "EditarProyecto.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\EditarProyecto.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-10T21:51:20.665Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "DetalleProyecto.cshtml",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
+              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\DetalleProyecto.cshtml",
+              "ViewState": "AQIAANcAAAAAAAAAAAAswNMBAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-05T14:03:17.211Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ProyectoService.cs",
+              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\ProyectoService.cs",
+              "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\ProyectoService.cs",
+              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\ProyectoService.cs",
+              "RelativeToolTip": "Proyectogestionhoras\\Services\\ProyectoService.cs",
+              "ViewState": "AQIAADUBAAAAAAAAAAAmwGwBAABDAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-08T20:58:36.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
               "Title": "IProyecto.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\IProyecto.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\Interface\\IProyecto.cs",
               "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\IProyecto.cs",
               "RelativeToolTip": "Proyectogestionhoras\\Services\\Interface\\IProyecto.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAACcAgAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAADVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-04T14:28:25.743Z"
+              "WhenOpened": "2024-10-04T14:28:25.743Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 23,
               "Title": "UsuarioProyectoViewModel.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\ViewModel\\UsuarioProyectoViewModel.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\ViewModel\\UsuarioProyectoViewModel.cs",
@@ -385,19 +565,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "NuevoProyecto.cshtml",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
-              "RelativeToolTip": "Proyectogestionhoras\\Views\\Proyecto\\NuevoProyecto.cshtml",
-              "ViewState": "AQIAAN4AAAAAAAAAAAAAAPIAAABFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-08T21:08:40.107Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 24,
               "Title": "GastoProyectoDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\GastoProyectoDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\GastoProyectoDTO.cs",
@@ -409,7 +577,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 25,
               "Title": "GastoDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\GastoDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\GastoDTO.cs",
@@ -421,7 +589,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 26,
               "Title": "ProyectoServicio.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\ProyectoServicio.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\ProyectoServicio.cs",
@@ -433,7 +601,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 27,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Program.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Program.cs",
@@ -446,7 +614,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 28,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Properties\\launchSettings.json",
@@ -458,7 +626,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 29,
               "Title": "ServiciosProyectoDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\ServiciosProyectoDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\ServiciosProyectoDTO.cs",
@@ -470,7 +638,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 30,
               "Title": "Servicio.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\Servicio.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\Servicio.cs",
@@ -482,7 +650,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 31,
               "Title": "PROYECTO_CONTROL_HORASContext.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\PROYECTO_CONTROL_HORASContext.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\PROYECTO_CONTROL_HORASContext.cs",
@@ -495,7 +663,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 33,
               "Title": "Segmentos.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Segmento\\Segmentos.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Segmento\\Segmentos.cshtml",
@@ -507,7 +675,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 32,
               "Title": "SegmentoController.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\SegmentoController.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\SegmentoController.cs",
@@ -519,7 +687,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 34,
               "Title": "DetalleContacto.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Contacto\\DetalleContacto.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Contacto\\DetalleContacto.cshtml",
@@ -531,7 +699,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 35,
               "Title": "FacturaService.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\FacturaService.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\FacturaService.cs",
@@ -543,7 +711,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 36,
               "Title": "FacturaProyectoDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\FacturaProyectoDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\FacturaProyectoDTO.cs",
@@ -555,7 +723,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 37,
               "Title": "IFactura.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\IFactura.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\Interface\\IFactura.cs",
@@ -567,7 +735,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 38,
               "Title": "EditarCliente.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Cliente\\EditarCliente.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Cliente\\EditarCliente.cshtml",
@@ -579,7 +747,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 39,
               "Title": "ConsultoresDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\ConsultoresDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\ConsultoresDTO.cs",
@@ -591,7 +759,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 40,
               "Title": "HonorariosDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\HonorariosDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\HonorariosDTO.cs",
@@ -603,7 +771,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 41,
               "Title": "FacturaDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\FacturaDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\FacturaDTO.cs",
@@ -615,7 +783,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 42,
               "Title": "ServiciosDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\ServiciosDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\ServiciosDTO.cs",
@@ -627,7 +795,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 43,
               "Title": "ServicioViewModel.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\ViewModel\\ServicioViewModel.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\ViewModel\\ServicioViewModel.cs",
@@ -639,7 +807,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 44,
               "Title": "ProyectoGasto.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\ProyectoGasto.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\ProyectoGasto.cs",
@@ -651,7 +819,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 45,
               "Title": "GastoViewModel.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\ViewModel\\GastoViewModel.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\ViewModel\\GastoViewModel.cs",
@@ -663,7 +831,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 46,
               "Title": "SegmentoCcosto.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\SegmentoCcosto.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\SegmentoCcosto.cs",
@@ -675,7 +843,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 47,
               "Title": "ClienteService.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\ClienteService.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\ClienteService.cs",
@@ -688,19 +856,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "Proyectogestionhoras\\Views\\Home\\Index.cshtml",
-              "ViewState": "AQIAAGYAAAAAAAAAAAAswHoAAAB2AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-02T15:52:59.387Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 48,
               "Title": "ICliente.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\ICliente.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\Interface\\ICliente.cs",
@@ -712,19 +868,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
-              "Title": "UsuarioDTO.cs",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
-              "RelativeToolTip": "Proyectogestionhoras\\Models\\DTO\\UsuarioDTO.cs",
-              "ViewState": "AQIAAAUAAAAAAAAAAAAQwBYAAAArAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-14T18:19:41.588Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 49,
               "Title": "Login.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\Login.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\Login.cs",
@@ -736,44 +880,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "Personal.cshtml",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
-              "RelativeToolTip": "Proyectogestionhoras\\Views\\Usuario\\Personal.cshtml",
-              "ViewState": "AQIAAF0AAAAAAAAAAAAIwGsAAAA1AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-14T17:59:53.338Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "UsuarioController.cs",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\UsuarioController.cs",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\UsuarioController.cs",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\UsuarioController.cs",
-              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\UsuarioController.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAA6wCYAAAD9AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-24T17:55:12.827Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
-              "Title": "AddPersonal.cshtml",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
-              "RelativeToolTip": "Proyectogestionhoras\\Views\\Usuario\\AddPersonal.cshtml",
-              "ViewState": "AQIAALYAAAAAAAAAAAAAwO8AAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-20T17:26:59.786Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 50,
               "Title": "ISegmento.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\Interface\\ISegmento.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\Interface\\ISegmento.cs",
@@ -785,7 +892,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 51,
               "Title": "Segmento.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\Segmento.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\Segmento.cs",
@@ -797,19 +904,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "Proyectogestionhoras\\Controllers\\HomeController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAIBJwBgAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-16T21:08:08.049Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 52,
               "Title": "ClienteDTO.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\DTO\\ClienteDTO.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\DTO\\ClienteDTO.cs",
@@ -821,7 +916,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 53,
               "Title": "layout.css",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\wwwroot\\css\\layout.css",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\wwwroot\\css\\layout.css",
@@ -833,7 +928,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 54,
               "Title": "AgregarContacto.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Contacto\\AgregarContacto.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Contacto\\AgregarContacto.cshtml",
@@ -845,7 +940,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 56,
               "Title": "UnidadNegocio.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Proyecto\\UnidadNegocio.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Proyecto\\UnidadNegocio.cshtml",
@@ -857,7 +952,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 55,
               "Title": "index.css",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\wwwroot\\css\\index.css",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\wwwroot\\css\\index.css",
@@ -869,7 +964,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 57,
               "Title": "SucursalCliente.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\SucursalCliente.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\SucursalCliente.cs",
@@ -881,7 +976,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 58,
               "Title": "Contacto.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\Contacto.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\Contacto.cs",
@@ -893,7 +988,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 59,
               "Title": "Cliente.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Models\\Cliente.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Models\\Cliente.cs",

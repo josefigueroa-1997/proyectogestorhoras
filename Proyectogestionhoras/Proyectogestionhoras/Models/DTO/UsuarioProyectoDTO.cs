@@ -2,9 +2,10 @@
 {
     public class UsuarioProyectoDTO
     {
-        public string? NOMBRE { get; set; }
-        public string? NOMBRE_RECURSO { get; set; }
-        public int HH_SOCIOS { get; set; }
-        public int HH_STAFF { get; set; }
+        public int ID { get; set; }
+        public string? NUM_PROYECTO { get; set; }
+        public string? NOMBREPROYECTO { get; set; }
+        
+        public string? NOMBRECLIENTE { get; set; }
     }
 }

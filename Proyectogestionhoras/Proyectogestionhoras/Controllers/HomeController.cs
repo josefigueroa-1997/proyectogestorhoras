@@ -8,19 +8,24 @@ namespace Proyectogestionhoras.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ClienteService cliente;
-        public HomeController(ILogger<HomeController> logger, ClienteService cliente)
+        private readonly UsuarioService usuario;
+        public HomeController(ILogger<HomeController> logger, ClienteService cliente, UsuarioService usuario)
         {
             _logger = logger;
             this.cliente = cliente;
+            this.usuario = usuario;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? idproyecto, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto)
         {
-            /* var id = HttpContext.Session.GetInt32("id");
+           /* var id = HttpContext.Session.GetInt32("id");
              if (id.HasValue)
              {
                  var clientes = await cliente.ObtenerClientesIndex(0);
+                var usuariosproyectos = await usuario.ObtenerHorasUsuariosProyecto(id.Value);   
+
                  ViewBag.clientes = clientes;
+                ViewBag.Proyectos = usuariosproyectos;
                  return View();
              }
              else
