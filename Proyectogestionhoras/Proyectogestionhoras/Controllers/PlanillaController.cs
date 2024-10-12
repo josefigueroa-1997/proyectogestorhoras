@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services;
 
 namespace Proyectogestionhoras.Controllers
@@ -6,16 +8,21 @@ namespace Proyectogestionhoras.Controllers
     public class PlanillaController : Controller
     {
         private readonly PlanillaService planillaService;
-
-        public PlanillaController(PlanillaService planillaService)
+        private readonly PROYECTO_CONTROL_HORASContext context;
+        public PlanillaController(PlanillaService planillaService,PROYECTO_CONTROL_HORASContext context)
         {
             this.planillaService = planillaService;
+            this.context = context;
         }
-        public IActionResult PlanillaRegistro()
+        public async Task<IActionResult> PlanillaRegistro()
         {
             var id = HttpContext.Session.GetInt32("id");
             if(id.HasValue)
             {
+               
+                var planilla = await planillaService.ObtenerPlanillaUsuario(id.Value);
+                ViewBag.Planilla = planilla;
+                
                 return View("Planilla");
 
             }
@@ -25,21 +32,30 @@ namespace Proyectogestionhoras.Controllers
             }
             
         }
+        public async Task<List<Actividade>> RecuperarActividades()
+        {
+            var actividades = await context.Actividades.ToListAsync();
+            return actividades;
+        }
+        public async Task<List<Proyecto>> RecuperarProyectos()
+        {
+            var proyectos = await context.Proyectos.ToListAsync(); return proyectos;
+        }
 
         [HttpPost]
         public async Task <IActionResult> RegistrarHoras(int idusuario, int idusuproy, int horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
         {
-            // Lógica para registrar horas
+        
             bool registroExitoso = false;
             bool yaSeRegistraronHoras = false;
 
-            // Aquí deberías implementar la lógica real para registrar horas
+
             try
             {
-                // Llama al servicio que se encarga de registrar las horas
+            
                 int resultado = await planillaService.RegistrarHoras(idusuario, idusuproy, horasasignadas, Fecharegistro, observaciones, idactividad);
 
-                // Manejo de resultados del servicio
+    
                 if (resultado == 1)
                 {
                     registroExitoso = true;
@@ -48,15 +64,15 @@ namespace Proyectogestionhoras.Controllers
                 {
                     yaSeRegistraronHoras = true;
                 }
-                // Aquí podrías manejar otros resultados si los hubiera.
+      
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones
+                
                 return Json(new { success = false, message = "Ocurrió un error inesperado: " + ex.Message });
             }
 
-            // Respuesta al cliente
+    
             if (registroExitoso)
             {
                 return Json(new { success = true, message = "Horas registradas exitosamente." });
@@ -70,6 +86,7 @@ namespace Proyectogestionhoras.Controllers
                 return Json(new { success = false, message = "Ocurrió un error inesperado." });
             }
         }
+
 
     }
 }
