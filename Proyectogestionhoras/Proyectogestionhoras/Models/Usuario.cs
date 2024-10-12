@@ -8,6 +8,7 @@ namespace Proyectogestionhoras.Models
         public Usuario()
         {
             HistorialCostos = new HashSet<HistorialCosto>();
+            Planillas = new HashSet<Planilla>();
             UsuarioProyectos = new HashSet<UsuarioProyecto>();
         }
 
@@ -23,6 +24,7 @@ namespace Proyectogestionhoras.Models
         public virtual Recurso IdRecursoNavigation { get; set; } = null!;
         public virtual Rol IdRolNavigation { get; set; } = null!;
         public virtual ICollection<HistorialCosto> HistorialCostos { get; set; }
+        public virtual ICollection<Planilla> Planillas { get; set; }
         public virtual ICollection<UsuarioProyecto> UsuarioProyectos { get; set; }
     }
 }

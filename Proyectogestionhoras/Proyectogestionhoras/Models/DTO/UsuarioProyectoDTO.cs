@@ -2,6 +2,7 @@
 {
     public class UsuarioProyectoDTO
     {
+        
         public int ID { get; set; }
         public string? NUMPROYECTO { get; set; }
         public string? NOMBREPROYECTO { get; set; }

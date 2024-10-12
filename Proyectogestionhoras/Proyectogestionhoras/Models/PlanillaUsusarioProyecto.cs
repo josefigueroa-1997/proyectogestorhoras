@@ -10,6 +10,8 @@ namespace Proyectogestionhoras.Models
         public int IdUsuProy { get; set; }
         public int RegistroHhProyecto { get; set; }
         public int? IdActividad { get; set; }
+        public string? Observaciones { get; set; }
+        public DateTime FechaRegistro { get; set; }
 
         public virtual Actividade? IdActividadNavigation { get; set; }
         public virtual Planilla IdPlanillaNavigation { get; set; } = null!;

@@ -172,10 +172,18 @@
 
 
                     </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;" ></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
 
+                        <select class="actividadesSelect" name="actividad">
+                            <option value="" disabled selected></option>
+
+                        </select>
+
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" name="hhregistradas"/></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" name="observaciones" /></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" ><input type="text" class="hhrestantes" readonly/></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
 
                 </tr>
             </tbody>
@@ -183,43 +191,192 @@
 
 
     </div>
-
-
+    <input type="hidden" class="rolrecurso" name="rolrecurso"/>
+    <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" />
+    <div class="fixed inset-0 flex items-center justify-center z-50" id="mensajeModal" style="display: none;">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+            <div class="flex justify-between items-center border-b p-4">
+                <h5 class="text-lg font-semibold">Registro de Horas</h5>
+                <button type="button" class="text-gray-600 hover:text-gray-900" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="p-4">
+                <p id="modalMensaje"></p>
+            </div>
+            <div class="flex justify-end border-t p-4">
+                <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
 
 <script>
     $(document).ready(function () {
-       
+        var today = new Date().toISOString().split('T')[0];
+        $('.fecharegistro').val(today);
+
+        window.closeModal = function () {
+            $('#mensajeModal').hide(); // Oculta el modal
+        };
+
         var idusuario = @Context.Session.GetInt32("id");
 
-      
         if (idusuario) {
-            
             $.ajax({
-                url: '@Url.Action("ObtenerMisproyectos", "Usuario")', // Cambia 'TuControlador' por el nombre de tu controlador
+                url: '@Url.Action("ObtenerMisproyectos", "Usuario")',
                 type: 'GET',
                 data: { idusuario: idusuario },
                 success: function (response) {
-                    // Vacía el select antes de llenarlo
                     $('.proyectosSelect').empty();
                     $('.proyectosSelect').append('<option value="" disabled selected>Seleccione un proyecto</option>');
 
-                    // Itera sobre los proyectos y agrega opciones al select
                     $.each(response, function (index, proyecto) {
                         $('.proyectosSelect').append(
                             $('<option>', {
                                 value: proyecto.id,
                                 text: proyecto.numproyecto + ' - ' + proyecto.nombreproyecto
-                                })
+                            })
                         );
+                    });
+
+                    $('.proyectosSelect').on('change', function () {
+                        var idproyecto = $(this).val();
+
+                        $.ajax({
+                            url: '@Url.Action("Recuperarhhusuarios", "Usuario")',
+                            type: 'GET',
+                            data: { idusuario: idusuario, idproyecto: idproyecto },
+                            success: function (informacionusuario) {
+                                if (informacionusuario && informacionusuario.length > 0) {
+                                    $('.rolrecurso').val(informacionusuario[0].recurso);
+                                    $('.hhrestantes').val(informacionusuario[0].hhasignadas);
+                                    $('.idusuarioproyecto').val(informacionusuario[0].idusuarioproyecto);
+
+                                    var recurso = $('.rolrecurso').val();
+
+                                    $.ajax({
+                                        url: '@Url.Action("RecuperarActividades", "Usuario")',
+                                        type: 'GET',
+                                        data: { recurso: recurso },
+                                        success: function (actividades) {
+                                            $('.actividadesSelect').empty();
+                                            $('.actividadesSelect').append('<option value="" disabled selected>Seleccione una actividad</option>');
+
+                                            $.each(actividades, function (index, actividad) {
+                                                $('.actividadesSelect').append(
+                                                    $('<option>', {
+                                                        value: actividad.id,
+                                                        text: actividad.nombre
+                                                    })
+                                                );
+                                            });
+                                        },
+                                        error: function (error) {
+                                            console.error("Error al obtener las actividades:", error);
+                                        }
+                                    });
+                                } else {
+                                    $('.rolrecurso').val('Recurso no disponible');
+                                }
+                            },
+                            error: function (error) {
+                                console.error("Error al obtener la información del recurso:", error);
+                                $('.rolrecurso').val('Error al obtener recurso');
+                            }
+                        });
                     });
                 },
                 error: function (error) {
                     console.error("Error al obtener los proyectos:", error);
                 }
             });
-        } else {
-            console.error("El ID de usuario no está disponible.");
+
+            // Registrar horas
+            $('.submit-btn').on('click', function (event) {
+                event.preventDefault(); // Prevenir el envío del formulario
+
+                var fecha = $('.fecharegistro').val();
+                var idproyecto = $('.proyectosSelect').val();
+                var idactividad = $('.actividadesSelect').val();
+                var horasRegistradas = parseInt($('input[name="hhregistradas"]').val()) || 0;
+                var observaciones = $('input[name="observaciones"]').val();
+                var idusuarioproyecto = $('.idusuarioproyecto').val();
+                var hhRestantesInput = $('.hhrestantes');
+                var hhRestantes = parseInt(hhRestantesInput.val()) || 0;
+
+                if (!fecha || !idproyecto || !idactividad || horasRegistradas === 0) {
+                    alert("Por favor, completa todos los campos requeridos.");
+                    return;
+                }
+
+                if (horasRegistradas > hhRestantes) {
+                    alert("Las horas asignadas no pueden ser mayores que las horas restantes.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("RegistrarHoras", "Planilla")',
+                    type: 'POST',
+                    data: {
+                        idusuario: idusuario,
+                        idusuproy: idusuarioproyecto,
+                        horasasignadas: horasRegistradas,
+                        Fecharegistro: fecha,
+                        observaciones: observaciones,
+                        idactividad: idactividad,
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#modalMensaje').text(response.message);
+
+                            const nuevoHHRestantes = hhRestantes - horasRegistradas;
+                            hhRestantesInput.val(nuevoHHRestantes);
+
+                            // Deshabilitar todos los campos del registro
+                            $('#planillausuario input, #planillausuario select').prop('disabled', true);
+
+                            // Agregar una nueva fila a la tabla
+                            let nuevaFila = `
+                             <tr>
+                                 <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" /></td>
+                                 <td style="padding: 10px; border: 1px solid #ddd;">
+                                     <select class="proyectosSelect" name="proyecto">
+                                         <option value="" disabled selected>Seleccione un proyecto</option>
+                                     </select>
+                                 </td>
+                                 <td style="padding: 10px; border: 1px solid #ddd;">
+                                     <select class="actividadesSelect" name="actividad">
+                                         <option value="" disabled selected>Seleccione una actividad</option>
+                                     </select>
+                                 </td>
+                                 <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" name="hhregistradas"/></td>
+                                 <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" name="observaciones" /></td>
+                                 <td style="padding: 10px; border: 1px solid #ddd;" ><input type="text" class="hhrestantes" readonly/></td>
+                                 <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
+                             </tr>`;
+
+                            // Insertar la nueva fila
+                            $('#tabla-body').prepend(nuevaFila);
+
+                            // Mover el botón de registrar a la nueva fila
+                            $('html, body').animate({
+                                scrollTop: $('#tabla-body tr:first-child').offset().top
+                            }, 1000);
+
+                        } else {
+                            $('#modalMensaje').text(response.message);
+                        }
+                        $('#mensajeModal').show(); // Muestra el modal
+                    },
+                    error: function (error) {
+                        console.error("Error al registrar horas:", error);
+                        alert("Ocurrió un error al registrar las horas.");
+                    }
+                });
+            });
         }
     });
+
 </script>

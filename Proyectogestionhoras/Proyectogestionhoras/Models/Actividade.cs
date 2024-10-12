@@ -12,6 +12,7 @@ namespace Proyectogestionhoras.Models
 
         public int Id { get; set; }
         public string Nombre { get; set; } = null!;
+        public string? TipoAcatividad { get; set; }
 
         public virtual ICollection<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; }
     }

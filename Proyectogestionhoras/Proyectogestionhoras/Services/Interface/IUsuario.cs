@@ -10,7 +10,8 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<UsuarioDTO>> ObtenerUusario(int? id,string? nombre,int? id_recurso);
         public Task<bool> Login(string rut, string contrasena);
         public Task<Login> ObtenerCredenciales(string rut);
-        public Task<List<UsuarioProyectoDTO>> ObtenerHorasUsuariosProyecto(int idusuario);
+        public Task<List<UsuarioProyectoDTO>> ObtenerUsuariosProyecto(int idusuario);
+        public Task<List<HH_AsignaciónDTO>> RecuperarHHUsuarios(int idusuario, int idproyecto);
 
     }
 }

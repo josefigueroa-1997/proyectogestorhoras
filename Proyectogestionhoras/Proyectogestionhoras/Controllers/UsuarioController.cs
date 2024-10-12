@@ -8,14 +8,17 @@ using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
 namespace Proyectogestionhoras.Controllers
 {
     public class UsuarioController : Controller
     {
         private readonly UsuarioService _usuarioService;
-        public UsuarioController(UsuarioService usuarioService)
+        private readonly PROYECTO_CONTROL_HORASContext context;
+        public UsuarioController(UsuarioService usuarioService,PROYECTO_CONTROL_HORASContext context)
         {
             _usuarioService = usuarioService;
+            this.context = context;
             
         }
 
@@ -133,8 +136,25 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]      
         public async Task<IActionResult> ObtenerMisproyectos(int idusuario)
         {
-            var proyectos = await _usuarioService.ObtenerHorasUsuariosProyecto(idusuario);
+            var proyectos = await _usuarioService.ObtenerUsuariosProyecto(idusuario);
             return Json(proyectos);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Recuperarhhusuarios(int idusuario,int idproyecto)
+        {
+            var informacionusuario = await _usuarioService.RecuperarHHUsuarios(idusuario, idproyecto);
+            return Json(informacionusuario);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RecuperarActividades(string recurso)
+        {
+            var actividades = await context.Actividades
+                           .Where(a => a.TipoAcatividad == recurso)
+                           .Select(a => new { a.Id, a.Nombre })
+                           .ToListAsync();
+            return Json(actividades);
         }
 
 

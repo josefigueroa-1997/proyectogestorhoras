@@ -366,7 +366,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<UsuarioProyectoDTO>> ObtenerHorasUsuariosProyecto(int idusuario)
+        public async Task<List<UsuarioProyectoDTO>> ObtenerUsuariosProyecto(int idusuario)
         {
             try
             {
@@ -411,6 +411,58 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+
+
+        public async Task<List<HH_AsignaciónDTO>> RecuperarHHUsuarios(int idusuario, int idproyecto)
+        {
+            try
+            {
+
+                var hhusuario = new List<HH_AsignaciónDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "HH_USUARIO_PROYECTO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            HH_AsignaciónDTO hhusuarios = new()
+                            {
+                                IDUSUARIOPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDUSUARIOPROYCTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDUSUARIOPROYCTO")),
+                                IDUSUARIO = reader.IsDBNull(reader.GetOrdinal("ID_USUARIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID_USUARIO")),
+                                RECURSO = reader.IsDBNull(reader.GetOrdinal("RECURSO")) ? null : reader.GetString(reader.GetOrdinal("RECURSO")),
+                                NOMBREUSUARIO = reader.IsDBNull(reader.GetOrdinal("NOMBRE_USUARIO")) ? null : reader.GetString(reader.GetOrdinal("NOMBRE_USUARIO")),
+                                IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("ID_PROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID_PROYECTO")),
+                                HHASIGNADAS = reader.IsDBNull(reader.GetOrdinal("HHASIGNADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHASIGNADAS")),
+                                TIPOCONSULTOR = reader.IsDBNull(reader.GetOrdinal("TIPO_CONSULTOR")) ? null : reader.GetString(reader.GetOrdinal("TIPO_CONSULTOR")),
+
+                            };
+                            hhusuario.Add(hhusuarios);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return hhusuario;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
+                return new List<HH_AsignaciónDTO>();
+
+            }
+        }
+
+
+
+
 
         private void EnviarCorreo(string email)
         {

@@ -65,6 +65,11 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Nombre)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
+
+                entity.Property(e => e.TipoAcatividad)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPO_ACATIVIDAD");
             });
 
             modelBuilder.Entity<Ccosto>(entity =>
@@ -296,9 +301,13 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Fecha)
-                    .HasColumnType("date")
-                    .HasColumnName("FECHA");
+                entity.Property(e => e.IdUsuario).HasColumnName("ID_USUARIO");
+
+                entity.HasOne(d => d.IdUsuarioNavigation)
+                    .WithMany(p => p.Planillas)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ID_USUARIO_FK");
             });
 
             modelBuilder.Entity<PlanillaUsusarioProyecto>(entity =>
@@ -307,11 +316,20 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.FechaRegistro)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_REGISTRO");
+
                 entity.Property(e => e.IdActividad).HasColumnName("ID_ACTIVIDAD");
 
                 entity.Property(e => e.IdPlanilla).HasColumnName("ID_PLANILLA");
 
                 entity.Property(e => e.IdUsuProy).HasColumnName("ID_USU_PROY");
+
+                entity.Property(e => e.Observaciones)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACIONES");
 
                 entity.Property(e => e.RegistroHhProyecto).HasColumnName("REGISTRO_HH_PROYECTO");
 

@@ -22,7 +22,7 @@ namespace Proyectogestionhoras.Controllers
             if (id.HasValue)
              {
                  var clientes = await cliente.ObtenerClientesIndex(0);
-                var usuariosproyectos = await usuario.ObtenerHorasUsuariosProyecto(id.Value);   
+                var usuariosproyectos = await usuario.ObtenerUsuariosProyecto(id.Value);   
 
                  ViewBag.clientes = clientes;
                 ViewBag.Proyectos = usuariosproyectos;
