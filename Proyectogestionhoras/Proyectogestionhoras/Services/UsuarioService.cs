@@ -375,7 +375,7 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "PEROYECTOSUSUARIOS";
+                    command.CommandText = "PROYECTOSUSUARIO";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
                
@@ -387,7 +387,7 @@ namespace Proyectogestionhoras.Services
                             {
 
                                 ID = reader.IsDBNull(reader.GetOrdinal("ID")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID")),
-                                NUM_PROYECTO = reader.IsDBNull(reader.GetOrdinal("NUM_PROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
+                                NUMPROYECTO = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
                                 NOMBREPROYECTO = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
                                 NOMBRECLIENTE = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? null : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE"))
 

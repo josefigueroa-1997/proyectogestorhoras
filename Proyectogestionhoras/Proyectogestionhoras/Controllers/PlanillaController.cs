@@ -4,10 +4,19 @@ namespace Proyectogestionhoras.Controllers
 {
     public class PlanillaController : Controller
     {
-        public IActionResult MisProyectos()
+        public IActionResult PlanillaRegistro()
         {
+            var id = HttpContext.Session.GetInt32("id");
+            if(id.HasValue)
+            {
+                return View("Planilla");
 
-            return View();
+            }
+            else
+            {
+                return View("Login","Usuario");
+            }
+            
         }
     }
 }

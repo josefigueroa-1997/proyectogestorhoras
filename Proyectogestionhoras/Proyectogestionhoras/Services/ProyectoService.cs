@@ -275,21 +275,22 @@ namespace Proyectogestionhoras.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task AsignarHHUsuarios(int idproyecto,List<UsuarioProyectoViewModel> usuariohoras)
+        public async Task AsignarHHUsuarios(int idproyecto, List<UsuarioProyectoViewModel> usuariohoras)
         {
             if (usuariohoras == null || !usuariohoras.Any())
             {
                 return;
             }
-   
+
             var idsUsuarios = usuariohoras.Select(uh => uh.IdUsuario).ToList();
 
-       
+         
             var usuarios = await context.Usuarios
                 .Include(u => u.IdRecursoNavigation)
                 .Where(u => idsUsuarios.Contains(u.Id))
                 .ToListAsync();
 
+           
             var proyectosUsuarios = await context.UsuarioProyectos
                 .Where(up => idsUsuarios.Contains(up.IdUsuario) && up.IdProyecto == idproyecto)
                 .ToListAsync();
@@ -304,7 +305,7 @@ namespace Proyectogestionhoras.Services
 
                     if (usuarioProyecto != null)
                     {
-                    
+                        
                         if (tiporecurso == "Socio")
                         {
                             usuarioProyecto.HhSocios = usuariovm.HHAsignadas;
@@ -314,18 +315,25 @@ namespace Proyectogestionhoras.Services
                             usuarioProyecto.HhStaff = usuariovm.HHAsignadas;
                         }
 
+                      
                         var recurso = usuario.IdRecursoNavigation;
                         if (recurso.HhAnuales.HasValue)
                         {
                             recurso.HhAnuales -= usuariovm.HHAsignadas;
                         }
+
+                        
+                        if (usuariovm.HHAsignadas == 0)
+                        {
+                            context.UsuarioProyectos.Remove(usuarioProyecto);
+                        }
                     }
                 }
             }
 
-         
             await context.SaveChangesAsync();
         }
+
 
 
         public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)

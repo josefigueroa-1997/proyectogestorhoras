@@ -1,0 +1,225 @@
+﻿@{
+    ViewData["Title"] = "Planilla de Registro";
+}
+
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+    .form-group-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .form-group-radio label {
+            margin-bottom: 0;
+        }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .submit-btn, .clear-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-left: 10px;
+    }
+
+    .submit-btn {
+        color: #fff;
+        background-color: #fcaa67;
+    }
+
+        .submit-btn:hover {
+            background-color: #e39450;
+        }
+
+
+    .clear-btn {
+        color: #fff;
+        background-color: #007bff;
+    }
+
+        .clear-btn:hover {
+            background-color: #0056b3;
+        }
+
+
+    .horas-disponibles {
+        display: block;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .eliminar-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: red;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .tabla-margen td {
+        text-align: right;
+    }
+</style>
+
+<div class="form-container">
+    @{
+        string? nombre = Context.Session.GetString("nombre");
+        int? idusuario = Context.Session.GetInt32("id");
+    }
+
+    <h1 class="form-title">Planilla: @nombre</h1>
+
+    <div class="form-group">
+        <table id="planillausuario" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background-color: #d9e2f3; color: black;">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Actividad</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Número Horas</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">HH Restantes</th>
+                    
+                </tr>
+            </thead>
+            <tbody id="tabla-body">
+                <tr>
+
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro"   /></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                        <select class="proyectosSelect" name="proyecto">
+                            <option value="" disabled selected></option>
+
+
+                        </select>
+
+
+
+
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;" ></td>
+
+
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+       
+        var idusuario = @Context.Session.GetInt32("id");
+
+      
+        if (idusuario) {
+            
+            $.ajax({
+                url: '@Url.Action("ObtenerMisproyectos", "Usuario")', // Cambia 'TuControlador' por el nombre de tu controlador
+                type: 'GET',
+                data: { idusuario: idusuario },
+                success: function (response) {
+                    // Vacía el select antes de llenarlo
+                    $('.proyectosSelect').empty();
+                    $('.proyectosSelect').append('<option value="" disabled selected>Seleccione un proyecto</option>');
+
+                    // Itera sobre los proyectos y agrega opciones al select
+                    $.each(response, function (index, proyecto) {
+                        $('.proyectosSelect').append(
+                            $('<option>', {
+                                value: proyecto.id,
+                                text: proyecto.numproyecto + ' - ' + proyecto.nombreproyecto
+                                })
+                        );
+                    });
+                },
+                error: function (error) {
+                    console.error("Error al obtener los proyectos:", error);
+                }
+            });
+        } else {
+            console.error("El ID de usuario no está disponible.");
+        }
+    });
+</script>

@@ -128,7 +128,14 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-      
+        
+        
+        [HttpGet]      
+        public async Task<IActionResult> ObtenerMisproyectos(int idusuario)
+        {
+            var proyectos = await _usuarioService.ObtenerHorasUsuariosProyecto(idusuario);
+            return Json(proyectos);
+        }
 
 
     }
