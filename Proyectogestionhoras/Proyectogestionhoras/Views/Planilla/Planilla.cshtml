@@ -80,7 +80,7 @@
         margin-top: 20px;
     }
 
-    .submit-btn {
+    .submit-btn,.planilla-btn {
         padding: 8px 20px; /* Disminuir el padding */
         font-size: 0.9rem;
         font-weight: 600;
@@ -101,7 +101,10 @@
         }
 
 
-    
+    .planilla-btn{
+        color: #fff;
+        background-color: royalblue;
+    }
 
 
     .horas-disponibles {
@@ -133,10 +136,13 @@
     @{
         string? nombre = Context.Session.GetString("nombre");
         int? idusuario = Context.Session.GetInt32("id");
+        string? recurso = Context.Session.GetString("recurso");
     }
-
+    <div style="display: flex; justify-content: flex-end; margin-top: 10px; margin-right: 20px;">
+        <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=idusuario})" class="planilla-btn">Mis Planillas</a>
+    </div>
     <h1 class="form-title">Planilla: @nombre</h1>
-
+    <p class="form-subtitle">Rol:@recurso</p>
     <div class="form-group">
         <table id="planillausuario" style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>

@@ -6,6 +6,7 @@ using Proyectogestionhoras.Services.Interface;
 using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Proyectogestionhoras.Services
 {
     public class PlanillaService : IPlanilla
@@ -23,13 +24,17 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-     
-                var planilla = await context.Planillas.FirstOrDefaultAsync(p => p.IdUsuario == idusuario);
+                int mesregistro = Fecharegistro.Month;
+                int anioregistro = Fecharegistro.Year;
+
+                var planilla = await context.Planillas.FirstOrDefaultAsync(p => p.IdUsuario == idusuario && p.Mes == mesregistro && p.Anio == anioregistro);
                 if (planilla == null)
                 {
                     planilla = new Planilla
                     {
                         IdUsuario = idusuario,
+                        Mes = mesregistro,
+                        Anio = anioregistro,
                     };
                     context.Planillas.Add(planilla);
                     await context.SaveChangesAsync();
@@ -126,25 +131,30 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaUsuario(int idusuario)
+        public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaUsuario(int? idusuario, int? idplanilla)
         {
             try
             {
-
+#pragma warning disable CS8600
+                object idusuarioparameter = (object)idusuario ?? DBNull.Value;
+                object idplanillaparameter = (object)idplanilla ?? DBNull.Value;
+               
+#pragma warning restore CS8600
                 var planillausuario = new List<PlanillaUsuarioDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "RECUPERARPLANILLAUSUARIO";
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
-                  
+                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuarioparameter));
+                    command.Parameters.Add(new SqlParameter("@IDPLANILLA", idplanillaparameter));
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
                             PlanillaUsuarioDTO datos = new()
                             {
+                                IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IDPLANILLA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPLANILLA")),
                                 FechaRegistro =  reader.GetDateTime(reader.GetOrdinal("FECHA_REGISTRO")),
                                 NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
                                 NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
@@ -153,7 +163,8 @@ namespace Proyectogestionhoras.Services
                                
                                 HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHREGISTRADAS")),
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
-
+                                Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
                             };
                             planillausuario.Add(datos);
 

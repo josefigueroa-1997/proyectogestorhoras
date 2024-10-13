@@ -301,7 +301,11 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
                 entity.Property(e => e.IdUsuario).HasColumnName("ID_USUARIO");
+
+                entity.Property(e => e.Mes).HasColumnName("MES");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.Planillas)

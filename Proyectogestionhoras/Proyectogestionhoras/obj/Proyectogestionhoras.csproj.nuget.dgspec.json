@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj": {}
+    "C:\\Users\\pepe\\Desktop\\proyecto\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj": {
+    "C:\\Users\\pepe\\Desktop\\proyecto\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj",
+        "projectUniqueName": "C:\\Users\\pepe\\Desktop\\proyecto\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj",
         "projectName": "Proyectogestionhoras",
-        "projectPath": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj",
-        "packagesPath": "C:\\Users\\pepef\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\obj\\",
+        "projectPath": "C:\\Users\\pepe\\Desktop\\proyecto\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Proyectogestionhoras.csproj",
+        "packagesPath": "C:\\Users\\pepe\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pepe\\Desktop\\proyecto\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pepef\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pepe\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -35,11 +34,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -49,6 +43,10 @@
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.4.1, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
@@ -98,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

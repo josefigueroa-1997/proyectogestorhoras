@@ -190,6 +190,7 @@ namespace Proyectogestionhoras.Services
                                 Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
                                 Rol = reader.GetInt32(reader.GetOrdinal("ROL")),
                                 Contraseña = reader.GetString(reader.GetOrdinal("CONTRASEÑA")),
+                                Recurso = reader.GetString(reader.GetOrdinal("RECURSO")),
                             };
                         }
                     }

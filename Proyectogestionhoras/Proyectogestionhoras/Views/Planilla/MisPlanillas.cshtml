@@ -1,0 +1,32 @@
+﻿@{
+
+    ViewData["Title"] = "Mis Planillas";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Mis Planillas</h2>
+        <div class="section-content">
+           
+
+
+         @foreach(var planilla in ViewBag.Planillas)
+            {
+                <a href="@Url.Action("PlanillaMes","Planilla",new{idplanilla=planilla.Id})">
+            <div class="card">
+               <h3>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(planilla.Mes)</h3>
+            <p>Año: @planilla.Anio</p>
+
+            </div>
+
+            </a>
+            }
+
+        </div> 
+    </div>
+
+</div>
+
+

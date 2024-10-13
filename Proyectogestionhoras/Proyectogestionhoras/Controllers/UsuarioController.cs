@@ -106,6 +106,7 @@ namespace Proyectogestionhoras.Controllers
                     HttpContext.Session.SetInt32("id", login.Id);
                     HttpContext.Session.SetString("nombre", login.Nombre);
                     HttpContext.Session.SetInt32("idrol", login.Rol);
+                    HttpContext.Session.SetString("recurso", login.Recurso);
                     return RedirectToAction("Index", "Home");
                 }
                 else
