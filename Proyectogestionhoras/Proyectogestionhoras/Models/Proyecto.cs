@@ -8,6 +8,7 @@ namespace Proyectogestionhoras.Models
         public Proyecto()
         {
             Facturas = new HashSet<Factura>();
+            HhUsuarioHistorials = new HashSet<HhUsuarioHistorial>();
             ProyectoGastos = new HashSet<ProyectoGasto>();
             ProyectoServicios = new HashSet<ProyectoServicio>();
             UsuarioProyectos = new HashSet<UsuarioProyecto>();
@@ -37,6 +38,7 @@ namespace Proyectogestionhoras.Models
         public virtual StatusProyecto StatusProyectoNavigation { get; set; } = null!;
         public virtual Empresa TipoEmpresaNavigation { get; set; } = null!;
         public virtual ICollection<Factura> Facturas { get; set; }
+        public virtual ICollection<HhUsuarioHistorial> HhUsuarioHistorials { get; set; }
         public virtual ICollection<ProyectoGasto> ProyectoGastos { get; set; }
         public virtual ICollection<ProyectoServicio> ProyectoServicios { get; set; }
         public virtual ICollection<UsuarioProyecto> UsuarioProyectos { get; set; }

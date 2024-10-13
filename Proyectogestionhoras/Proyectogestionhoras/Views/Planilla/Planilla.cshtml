@@ -234,6 +234,9 @@
         var today = new Date().toISOString().split('T')[0];
         $('.fecharegistro').val(today);
 
+        // Restringir la selección de fechas futuras
+        $('.fecharegistro').attr('max', today);
+
         window.closeModal = function () {
             $('#mensajeModal').hide();
         };
@@ -250,19 +253,25 @@
                         $('.proyectosSelect').empty();
                         $('.proyectosSelect').append('<option value="" disabled selected>Seleccione un proyecto</option>');
 
-                        $.each(response, function (index, proyecto) {
-                            $('.proyectosSelect').append(
-                                $('<option>', {
-                                    value: proyecto.id,
-                                    text: proyecto.numproyecto + ' - ' + proyecto.nombreproyecto
-                                })
-                            );
-                        });
+                        if (response.length > 0) {
+                            // Si hay proyectos, los agregamos al select
+                            $.each(response, function (index, proyecto) {
+                                $('.proyectosSelect').append(
+                                    $('<option>', {
+                                        value: proyecto.id,
+                                        text: proyecto.numproyecto + ' - ' + proyecto.nombreproyecto
+                                    })
+                                );
+                            });
 
-                        $('.proyectosSelect').on('change', function () {
-                            var idproyecto = $(this).val();
-                            cargarInformacionUsuario(idproyecto);
-                        });
+                            $('.proyectosSelect').on('change', function () {
+                                var idproyecto = $(this).val();
+                                cargarInformacionUsuario(idproyecto);
+                            });
+                        } else {
+                            // Si no hay proyectos, mostramos un mensaje
+                            $('.proyectosSelect').append('<option value="" disabled>No hay proyectos disponibles</option>');
+                        }
                     },
                     error: function (error) {
                         console.error("Error al obtener los proyectos:", error);
@@ -335,14 +344,15 @@
                 alert("Por favor, completa todos los campos requeridos.");
                 return;
             }
-            $('#modalMensaje').text("Procesando Su Solicitud...");
-            $('#mensajeModal').show();
+           
 
             if (horasRegistradas > hhRestantes) {
                 alert("Las horas asignadas no pueden ser mayores que las horas restantes.");
                 return;
             }
 
+            $('#modalMensaje').text("Procesando Su Solicitud...");
+            $('#mensajeModal').show();
             $.ajax({
                 url: '@Url.Action("RegistrarHoras", "Planilla")',
                 type: 'POST',
@@ -362,7 +372,7 @@
 
                         $('#planillausuario input, #planillausuario select').prop('disabled', true);
                         $('.submit-btn').hide();
-
+                        $('.hhrestantes').removeClass();
                         let filaRegistrada = $('#tabla-body tr:first-child');
 
                         // Obtener el texto de la actividad seleccionada
@@ -374,7 +384,7 @@
 
                         let nuevaFila = `
                             <tr>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" /></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <select class="proyectosSelect" name="proyecto">
                                         <option value="" disabled selected>Seleccione un proyecto</option>

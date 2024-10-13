@@ -25,6 +25,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
+        public virtual DbSet<HhUsuarioHistorial> HhUsuarioHistorials { get; set; } = null!;
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
@@ -273,6 +274,30 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
+            });
+
+            modelBuilder.Entity<HhUsuarioHistorial>(entity =>
+            {
+                entity.ToTable("HH_USUARIO_HISTORIAL");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.HhConsultora).HasColumnName("HH_CONSULTORA");
+
+                entity.Property(e => e.HhConsultorb).HasColumnName("HH_CONSULTORB");
+
+                entity.Property(e => e.HhConsultorc).HasColumnName("HH_CONSULTORC");
+
+                entity.Property(e => e.HhSocios).HasColumnName("HH_SOCIOS");
+
+                entity.Property(e => e.HhStaff).HasColumnName("HH_STAFF");
+
+                entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
+
+                entity.HasOne(d => d.IdProyectoNavigation)
+                    .WithMany(p => p.HhUsuarioHistorials)
+                    .HasForeignKey(d => d.IdProyecto)
+                    .HasConstraintName("ID_PROYECT_FK");
             });
 
             modelBuilder.Entity<HistorialCosto>(entity =>

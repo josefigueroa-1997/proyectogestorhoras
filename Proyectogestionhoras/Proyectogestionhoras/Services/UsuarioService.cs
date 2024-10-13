@@ -376,7 +376,7 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "PROYECTOSUSUARIO";
+                    command.CommandText = "ObtenerProyectosPorUsuario  ";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
                
@@ -387,9 +387,9 @@ namespace Proyectogestionhoras.Services
                             UsuarioProyectoDTO usuario = new()
                             {
 
-                                ID = reader.IsDBNull(reader.GetOrdinal("ID")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID")),
-                                NUMPROYECTO = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
-                                NOMBREPROYECTO = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                ID = reader.IsDBNull(reader.GetOrdinal("ID_PROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID_PROYECTO")),
+                                NUMPROYECTO = reader.IsDBNull(reader.GetOrdinal("NUM_PROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
+                                NOMBREPROYECTO = reader.IsDBNull(reader.GetOrdinal("Nombre_Proyecto")) ? null : reader.GetString(reader.GetOrdinal("Nombre_Proyecto")),
                                 NOMBRECLIENTE = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? null : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE"))
 
 

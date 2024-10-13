@@ -62,14 +62,13 @@ namespace Proyectogestionhoras.Controllers
             {
                 var worksheet = package.Workbook.Worksheets.Add("Planilla_Mes");
 
+           
                 worksheet.Cells[1, 1].Value = "Nombre:";
                 worksheet.Cells[1, 2].Value = nombre;
 
-             
                 worksheet.Cells[2, 1].Value = "Rol:";
                 worksheet.Cells[2, 2].Value = rol;
 
-      
                 string mes = "";
                 int anio = 0;
                 if (planillas.Count > 0)
@@ -82,26 +81,35 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Cells[3, 1].Value = "Mes:";
                 worksheet.Cells[3, 2].Value = mes;
 
-              
                 worksheet.Cells[4, 1].Value = "Año:";
                 worksheet.Cells[4, 2].Value = anio;
 
-             
-                worksheet.Cells[5, 1].Value = "Fecha";
-                worksheet.Cells[5, 2].Value = "Nombre Proyecto";
-                worksheet.Cells[5, 3].Value = "Número Proyecto";
-                worksheet.Cells[5, 4].Value = "Nombre de la Actividad";
-                worksheet.Cells[5, 5].Value = "HH Registradas";
-                worksheet.Cells[5, 6].Value = "Observaciones";
+                worksheet.Cells[5, 1].Value = ""; 
 
+            
+                worksheet.Cells[6, 1].Value = "Fecha";
+                worksheet.Cells[6, 2].Value = "Nombre Proyecto";
+                worksheet.Cells[6, 3].Value = "Número Proyecto";
+                worksheet.Cells[6, 4].Value = "Nombre de la Actividad";
+                worksheet.Cells[6, 5].Value = "HH Registradas";
+                worksheet.Cells[6, 6].Value = "Observaciones";
+
+    
+                using (var range = worksheet.Cells[6, 1, 6, 6]) 
+                {
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
+                    range.Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                    range.Style.Font.Bold = true;
+                }
+
+                // Insertar los datos de la planilla
                 decimal totalhoras = 0;
                 int indice = 0;
-
-                
                 for (int i = 0; i < planillas.Count(); i++)
                 {
                     var planilla = planillas[i];
-                    indice = i + 6; 
+                    indice = i + 7; // Ajustado para reflejar la nueva fila
 
                     worksheet.Cells[indice, 1].Style.Numberformat.Format = "dd/MM/yyyy";
                     worksheet.Cells[indice, 1].Value = planilla.FechaRegistro.Date.ToString("dd/MM/yyyy");
@@ -114,7 +122,7 @@ namespace Proyectogestionhoras.Controllers
                     totalhoras += planilla.HHregistradas;
                 }
 
-       
+                // Total de horas
                 var style = worksheet.Cells[indice + 1, 4].Style;
                 style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
@@ -123,12 +131,14 @@ namespace Proyectogestionhoras.Controllers
 
                 style = worksheet.Cells[indice + 1, 5].Style;
                 style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Green);
+                style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(255, 255, 102, 102));
 
                 worksheet.Cells[indice + 1, 5].Value = totalhoras;
-                string nombreArchivo = $"planilla_{nombre}_{mes}_{anio}.xlsx";
 
+                // Guardar el archivo
+                string nombreArchivo = $"planilla_{nombre}_{mes}_{anio}.xlsx";
                 var stream = new MemoryStream(package.GetAsByteArray());
+
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo);
             }
         }
@@ -187,7 +197,7 @@ namespace Proyectogestionhoras.Controllers
             {
                 return Json(new { success = false, message = "Ya se han registrado horas para este proyecto en esta fecha." });
             }
-            else if (horasExcedidas)
+          else if (horasExcedidas)
             {
                 return Json(new { success = false, message = "No se pueden registrar más horas en esta semana, se ha excedido el límite permitido." });
             }

@@ -62,17 +62,17 @@ namespace Proyectogestionhoras.Services
                 var finSemana = inicioSemana.AddDays(6);
                 var horasRegistradasSemana = await context.PlanillaUsusarioProyectos
      .Join(
-         context.UsuarioProyectos, // Tabla con la que haremos el join
-         planilla => planilla.IdUsuProy, // Clave de la tabla 'PlanillaUsusarioProyectos'
-         usuarioProyecto => usuarioProyecto.Id, // Clave de la tabla 'UsuarioProyectos'
-         (planilla, usuarioProyecto) => new { planilla, usuarioProyecto } // Proyección del join
+         context.UsuarioProyectos, 
+         planilla => planilla.IdUsuProy, 
+         usuarioProyecto => usuarioProyecto.Id, 
+         (planilla, usuarioProyecto) => new { planilla, usuarioProyecto } 
      )
-     .Where(joinResult => joinResult.usuarioProyecto.IdUsuario == idusuario // Filtrar por IdUsuario
-                         && joinResult.planilla.FechaRegistro >= inicioSemana // Filtrar por la fecha de la semana
+     .Where(joinResult => joinResult.usuarioProyecto.IdUsuario == idusuario 
+                         && joinResult.planilla.FechaRegistro >= inicioSemana 
                          && joinResult.planilla.FechaRegistro <= finSemana)
      .SumAsync(joinResult => joinResult.planilla.RegistroHhProyecto);
 
-                // Buscar el UsuarioProyecto
+               
                 var usuarioproyecto = await context.UsuarioProyectos
                 .Include(up => up.IdUsuarioNavigation) 
                 .ThenInclude(u => u.IdRecursoNavigation) 
@@ -116,7 +116,7 @@ namespace Proyectogestionhoras.Services
                             {
                                 decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto/100);
                                 Debug.WriteLine(totalpermitidossemana);
-                                if (horasRegistradasSemana + horasasignadas > totalpermitidossemana)
+                               if (horasRegistradasSemana + horasasignadas > totalpermitidossemana)
                                 {
                                     Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
                                     return 3; 
