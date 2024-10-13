@@ -103,13 +103,18 @@ namespace Proyectogestionhoras.Controllers
                     range.Style.Font.Bold = true;
                 }
 
-                // Insertar los datos de la planilla
+                worksheet.Column(1).Width = 15; 
+                worksheet.Column(2).Width = 30;
+                worksheet.Column(3).Width = 20;
+                worksheet.Column(4).Width = 30; 
+                worksheet.Column(5).Width = 15; 
+                worksheet.Column(6).Width = 40; 
                 decimal totalhoras = 0;
                 int indice = 0;
                 for (int i = 0; i < planillas.Count(); i++)
                 {
                     var planilla = planillas[i];
-                    indice = i + 7; // Ajustado para reflejar la nueva fila
+                    indice = i + 7; 
 
                     worksheet.Cells[indice, 1].Style.Numberformat.Format = "dd/MM/yyyy";
                     worksheet.Cells[indice, 1].Value = planilla.FechaRegistro.Date.ToString("dd/MM/yyyy");
@@ -122,7 +127,6 @@ namespace Proyectogestionhoras.Controllers
                     totalhoras += planilla.HHregistradas;
                 }
 
-                // Total de horas
                 var style = worksheet.Cells[indice + 1, 4].Style;
                 style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
@@ -135,7 +139,7 @@ namespace Proyectogestionhoras.Controllers
 
                 worksheet.Cells[indice + 1, 5].Value = totalhoras;
 
-                // Guardar el archivo
+    
                 string nombreArchivo = $"planilla_{nombre}_{mes}_{anio}.xlsx";
                 var stream = new MemoryStream(package.GetAsByteArray());
 
@@ -166,7 +170,7 @@ namespace Proyectogestionhoras.Controllers
 
             try
             {
-                // Llamar al servicio que registra las horas
+      
                 int resultado = await planillaService.RegistrarHoras(idusuario, idusuproy, horasasignadas, Fecharegistro, observaciones, idactividad);
 
                 if (resultado == 1)
@@ -184,11 +188,10 @@ namespace Proyectogestionhoras.Controllers
             }
             catch (Exception ex)
             {
-                // Manejar errores inesperados
+               
                 return Json(new { success = false, message = "Ocurrió un error inesperado: " + ex.Message });
             }
 
-            // Devolver la respuesta basada en el resultado
             if (registroExitoso)
             {
                 return Json(new { success = true, message = "Horas registradas exitosamente." });
