@@ -43,19 +43,19 @@ namespace Proyectogestionhoras.Controllers
             return View("MisPlanillas");
         }
 
-        public async Task<IActionResult> PlanillaMes(int? idplanilla)
+        public async Task<IActionResult> PlanillaMes(int idplanilla)
         {
-            var planillames = await planillaService.ObtenerPlanillaUsuario(0, idplanilla);
+            var planillames = await planillaService.ObtenerPlanillaExcel(idplanilla);
             ViewBag.Planilla = planillames;
             return View("PlanillaMes");
         }
 
 
-        public async Task<ActionResult> ExportarExcel(int? idplanilla)
+        public async Task<ActionResult> ExportarExcel(int idplanilla)
         {
             var nombre = HttpContext.Session.GetString("nombre");
             var rol = HttpContext.Session.GetString("recurso");
-            var planillas = await planillaService.ObtenerPlanillaUsuario(0, idplanilla);
+            var planillas = await planillaService.ObtenerPlanillaExcel(idplanilla);
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var package = new ExcelPackage())
@@ -71,12 +71,12 @@ namespace Proyectogestionhoras.Controllers
 
       
                 string mes = "";
-                int año = 0;
+                int anio = 0;
                 if (planillas.Count > 0)
                 {
                     var primeraPlanilla = planillas[0];
                     mes = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(primeraPlanilla.FechaRegistro.Month);
-                    año = primeraPlanilla.FechaRegistro.Year;
+                    anio = primeraPlanilla.FechaRegistro.Year;
                 }
 
                 worksheet.Cells[3, 1].Value = "Mes:";
@@ -84,7 +84,7 @@ namespace Proyectogestionhoras.Controllers
 
               
                 worksheet.Cells[4, 1].Value = "Año:";
-                worksheet.Cells[4, 2].Value = año;
+                worksheet.Cells[4, 2].Value = anio;
 
              
                 worksheet.Cells[5, 1].Value = "Fecha";
@@ -126,10 +126,10 @@ namespace Proyectogestionhoras.Controllers
                 style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Green);
 
                 worksheet.Cells[indice + 1, 5].Value = totalhoras;
+                string nombreArchivo = $"planilla_{nombre}_{mes}_{anio}.xlsx";
 
-              
                 var stream = new MemoryStream(package.GetAsByteArray());
-                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "planilla.xlsx");
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo);
             }
         }
 
@@ -148,19 +148,17 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task <IActionResult> RegistrarHoras(int idusuario, int idusuproy, int horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
+        public async Task<IActionResult> RegistrarHoras(int idusuario, int idusuproy, int horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
         {
-        
             bool registroExitoso = false;
             bool yaSeRegistraronHoras = false;
-
+            bool horasExcedidas = false;
 
             try
             {
-            
+                // Llamar al servicio que registra las horas
                 int resultado = await planillaService.RegistrarHoras(idusuario, idusuproy, horasasignadas, Fecharegistro, observaciones, idactividad);
 
-    
                 if (resultado == 1)
                 {
                     registroExitoso = true;
@@ -169,15 +167,18 @@ namespace Proyectogestionhoras.Controllers
                 {
                     yaSeRegistraronHoras = true;
                 }
-      
+                else if (resultado == 3)
+                {
+                    horasExcedidas = true;
+                }
             }
             catch (Exception ex)
             {
-                
+                // Manejar errores inesperados
                 return Json(new { success = false, message = "Ocurrió un error inesperado: " + ex.Message });
             }
 
-    
+            // Devolver la respuesta basada en el resultado
             if (registroExitoso)
             {
                 return Json(new { success = true, message = "Horas registradas exitosamente." });
@@ -185,6 +186,10 @@ namespace Proyectogestionhoras.Controllers
             else if (yaSeRegistraronHoras)
             {
                 return Json(new { success = false, message = "Ya se han registrado horas para este proyecto en esta fecha." });
+            }
+            else if (horasExcedidas)
+            {
+                return Json(new { success = false, message = "No se pueden registrar más horas en esta semana, se ha excedido el límite permitido." });
             }
             else
             {

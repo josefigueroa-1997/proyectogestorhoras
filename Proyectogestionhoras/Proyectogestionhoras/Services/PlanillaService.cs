@@ -58,6 +58,20 @@ namespace Proyectogestionhoras.Services
                 };
                 context.PlanillaUsusarioProyectos.Add(registro);
 
+                var inicioSemana = Fecharegistro.AddDays(-(int)Fecharegistro.DayOfWeek + (int)DayOfWeek.Monday);
+                var finSemana = inicioSemana.AddDays(6);
+                var horasRegistradasSemana = await context.PlanillaUsusarioProyectos
+     .Join(
+         context.UsuarioProyectos, // Tabla con la que haremos el join
+         planilla => planilla.IdUsuProy, // Clave de la tabla 'PlanillaUsusarioProyectos'
+         usuarioProyecto => usuarioProyecto.Id, // Clave de la tabla 'UsuarioProyectos'
+         (planilla, usuarioProyecto) => new { planilla, usuarioProyecto } // Proyección del join
+     )
+     .Where(joinResult => joinResult.usuarioProyecto.IdUsuario == idusuario // Filtrar por IdUsuario
+                         && joinResult.planilla.FechaRegistro >= inicioSemana // Filtrar por la fecha de la semana
+                         && joinResult.planilla.FechaRegistro <= finSemana)
+     .SumAsync(joinResult => joinResult.planilla.RegistroHhProyecto);
+
                 // Buscar el UsuarioProyecto
                 var usuarioproyecto = await context.UsuarioProyectos
                 .Include(up => up.IdUsuarioNavigation) 
@@ -97,9 +111,16 @@ namespace Proyectogestionhoras.Services
                         var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
                         if (recurso != null)
                         {
-                        
+
                             if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
                             {
+                                decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto/100);
+                                Debug.WriteLine(totalpermitidossemana);
+                                if (horasRegistradasSemana + horasasignadas > totalpermitidossemana)
+                                {
+                                    Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
+                                    return 3; 
+                                }
                                 recurso.HhAnuales += horasasignadas; 
                             }
                         }
@@ -161,6 +182,54 @@ namespace Proyectogestionhoras.Services
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDPROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPROYECTO")),
                                 NombreActividad = reader.IsDBNull(reader.GetOrdinal("NOMBREACTIVIDAD")) ? null : reader.GetString(reader.GetOrdinal("NOMBREACTIVIDAD")),
                                
+                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHREGISTRADAS")),
+                                Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
+                            };
+                            planillausuario.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return planillausuario;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener la planilla del usuario:" + ex.Message);
+                return new List<PlanillaUsuarioDTO>();
+
+            }
+        }
+        public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaExcel(int idplanilla)
+        {
+            try
+            {
+
+                var planillausuario = new List<PlanillaUsuarioDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "RECUPERARPLANILLAUSUARIO_EXCEL";
+                    command.CommandType = CommandType.StoredProcedure;
+                 
+                    command.Parameters.Add(new SqlParameter("@IDPLANILLA", idplanilla));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            PlanillaUsuarioDTO datos = new()
+                            {
+                                IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IDPLANILLA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPLANILLA")),
+                                FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FECHA_REGISTRO")),
+                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
+                                IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDPROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPROYECTO")),
+                                NombreActividad = reader.IsDBNull(reader.GetOrdinal("NOMBREACTIVIDAD")) ? null : reader.GetString(reader.GetOrdinal("NOMBREACTIVIDAD")),
+
                                 HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHREGISTRADAS")),
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
                                 Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
