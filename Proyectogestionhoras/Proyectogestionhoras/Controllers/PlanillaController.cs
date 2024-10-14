@@ -5,6 +5,8 @@ using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
 using OfficeOpenXml;
 using System.IO;
+using System.Diagnostics;
+using Proyectogestionhoras.Models.DTO;
 
 namespace Proyectogestionhoras.Controllers
 {
@@ -93,9 +95,11 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Cells[6, 4].Value = "Nombre de la Actividad";
                 worksheet.Cells[6, 5].Value = "HH Registradas";
                 worksheet.Cells[6, 6].Value = "Observaciones";
+                worksheet.Cells[6, 7].Value = "ID Cuenta";
+                worksheet.Cells[6, 8].Value = "Cuenta";
+                worksheet.Cells[6, 9].Value = "Segmento";
 
-    
-                using (var range = worksheet.Cells[6, 1, 6, 6]) 
+                using (var range = worksheet.Cells[6, 1, 6, 9]) 
                 {
                     range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
@@ -108,7 +112,10 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Column(3).Width = 20;
                 worksheet.Column(4).Width = 30; 
                 worksheet.Column(5).Width = 15; 
-                worksheet.Column(6).Width = 40; 
+                worksheet.Column(6).Width = 40;
+                worksheet.Column(7).Width = 15;
+                worksheet.Column(8).Width = 40;
+                worksheet.Column(9).Width = 40;
                 decimal totalhoras = 0;
                 int indice = 0;
                 for (int i = 0; i < planillas.Count(); i++)
@@ -123,7 +130,9 @@ namespace Proyectogestionhoras.Controllers
                     worksheet.Cells[indice, 4].Value = planilla.NombreActividad;
                     worksheet.Cells[indice, 5].Value = planilla.HHregistradas;
                     worksheet.Cells[indice, 6].Value = planilla.Observaciones;
-
+                    worksheet.Cells[indice, 7].Value = planilla.IDCUENTA;
+                    worksheet.Cells[indice, 8].Value = planilla.Cuenta;
+                    worksheet.Cells[indice, 9].Value = planilla.NombreSegmento;
                     totalhoras += planilla.HHregistradas;
                 }
 
@@ -147,7 +156,44 @@ namespace Proyectogestionhoras.Controllers
             }
         }
 
+        public IActionResult GanttUsuario()
+        {
+            return View("GanttUsuario");
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GenerarGant(int idusuario)
+        {
+            try
+            {
+                // Obtén los datos de Gantt utilizando el servicio.
+                var resultado = await planillaService.ObtenerDatosGantt(idusuario);
+
+
+                // Proceso para estructurar los datos en el formato que necesitas
+                var gantData = resultado.Select(p => new
+                {
+                    NombreProyecto = p.NombreProyecto,
+                    // Asegúrate de que las fechas también estén disponibles
+                    FechaInicio = p.FechaInicio,
+                    FechaTermino = p.FechaTermino,
+                    HorasPorMes = p.HorasPorMes.Select(h => new
+                    {
+                        Año = h.Año,
+                        Mes = h.Mes.ToString("D2"), // Asegúrate de que el mes esté en formato de dos dígitos
+                        Horas = h.Horas
+                    }).ToList()
+                }).ToList();
+
+                return Json(gantData);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                Debug.WriteLine($"Hubo un error al generar el Gantt: {ex.Message}");
+                return StatusCode(500, "Ocurrió un error al generar el gráfico de Gantt.");
+            }
+        }
 
 
 

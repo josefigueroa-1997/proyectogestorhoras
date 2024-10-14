@@ -234,6 +234,9 @@ namespace Proyectogestionhoras.Services
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
                                 Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
                                 Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
+                                IDCUENTA = reader.IsDBNull(reader.GetOrdinal("IDCUENTA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                Cuenta = reader.IsDBNull(reader.GetOrdinal("CUENTA")) ? null : reader.GetString(reader.GetOrdinal("CUENTA")),
+                                NombreSegmento = reader.IsDBNull(reader.GetOrdinal("NOMBRESEGMENTO")) ? null : reader.GetString(reader.GetOrdinal("NOMBRESEGMENTO")),
                             };
                             planillausuario.Add(datos);
 
@@ -252,6 +255,78 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+        private static readonly string[] MonthNames = new[]
+   {
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    };
+
+        public async Task<List<ProyectoGantt>> ObtenerDatosGantt(int idusuario)
+        {
+            var proyectosGantt = new List<ProyectoGantt>();
+            var datosGantt = new List<DatosGanttDTO>();
+
+            try
+            {
+                using (DbConnection connection = await conexion.OpenDatabaseConnectionAsync())
+                {
+                    using (DbCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText = "sp_GetHorasPorUsuarioPorMes";
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add(new SqlParameter("@IdUsuario", idusuario));
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                var datos = new DatosGanttDTO
+                                {
+                                    NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NombreProyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreProyecto")),
+                                    Año = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
+                                    Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                    TotalHoras = reader.IsDBNull(reader.GetOrdinal("TotalHoras")) ? 0 : reader.GetInt32(reader.GetOrdinal("TotalHoras")),
+                                    FechaInicio = reader.IsDBNull(reader.GetOrdinal("Fecha_Inicio")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("Fecha_Inicio")),
+                                    FechaTermino = reader.IsDBNull(reader.GetOrdinal("Fecha_Termino")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("Fecha_Termino")),
+                                };
+
+                                // Agregar los datos a la lista
+                                datosGantt.Add(datos);
+                            }
+                        }
+                    }
+                }
+
+                // Agrupar los datos por proyecto
+                proyectosGantt = datosGantt
+                    .GroupBy(d => d.NombreProyecto)
+                    .Select(g => new ProyectoGantt
+                    {
+                        NombreProyecto = g.Key,
+                        FechaInicio = g.First().FechaInicio,  // Usar la primera fecha de inicio
+                        FechaTermino = g.First().FechaTermino,
+                        HorasPorMes = g.GroupBy(d => new { d.Año, d.Mes })
+                                       .Select(m => new HorasPorMes
+                                       {
+                                           Año = m.Key.Año,
+                                           Mes = m.Key.Mes,
+                                           Horas = m.Sum(x => x.TotalHoras) // Sumar las horas totales por año y mes
+                                       })
+                                       .ToList() // Convertir a lista
+                    })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener los datos de la gantt: {ex.Message}");
+                // Manejar la excepción según sea necesario
+            }
+
+            return proyectosGantt;
+        }
+
+
 
     }
 }

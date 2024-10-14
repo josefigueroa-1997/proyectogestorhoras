@@ -12,6 +12,9 @@
         public string? Observaciones { get; set; }
         public int Mes { get; set; }
         public int Anio { get; set; }
+        public int IDCUENTA { get; set; }
+        public string? Cuenta { get; set; }
+        public string? NombreSegmento { get; set;}
 
     }
 }

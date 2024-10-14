@@ -1,0 +1,156 @@
+﻿@{
+
+    ViewData["Title"] = "Mi Gantt";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .completed {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .no-hours {
+        background-color: #f9f9f9;
+    }
+</style>
+<div class="dashboard-container">
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Gantt</h2>
+        <div class="section-content">
+            <h1>Gráfico de Gantt - Horas Trabajadas por Usuario</h1>
+            <table>
+                <thead>
+                    <tr id="headRow">
+                        <th>Proyecto</th>
+                        <!-- Las columnas de los meses se generarán dinámicamente -->
+                    </tr>
+                </thead>
+                <tbody id="ganttBody">
+                    <!-- Filas con proyectos se llenarán con JavaScript -->
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+@{
+    var idusuario = Context.Session.GetInt32("id");
+}
+<script>
+    $(document).ready(function () {
+        const idusuario = @Context.Session.GetInt32("id"); // Obtener el valor de idusuario desde Razor
+
+        // Función para obtener todos los meses entre dos fechas
+        function getMesesEntreFechas(fechaInicio, fechaFin) {
+            const meses = [];
+            const fechaActual = new Date(fechaInicio);
+            const fechaFinal = new Date(fechaFin);
+
+            while (fechaActual <= fechaFinal) {
+                // Asegurarse de que el mes tenga dos dígitos
+                const mesFormateado = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+                meses.push({
+                    año: fechaActual.getFullYear(),
+                    mes: mesFormateado
+                });
+                fechaActual.setMonth(fechaActual.getMonth() + 1);
+            }
+
+            return meses;
+        }
+
+        // Función para generar el encabezado de la tabla
+        function generarEncabezado(mesesOrdenados) {
+            const headRow = $('#headRow');
+            mesesOrdenados.forEach(mes => {
+                const [año, mesNum] = mes.split('-');
+                const th = $('<th>').text(`${mesNum}/${año}`);
+                headRow.append(th);
+            });
+        }
+
+        // Función para llenar el cuerpo de la tabla
+        function llenarCuerpoTabla(ganttData, mesesOrdenados) {
+            const tbody = $('#ganttBody');
+            ganttData.forEach(proyecto => {
+                const tr = $('<tr>');
+                const tdProyecto = $('<td>').text(proyecto.nombreProyecto); // Nombre del proyecto
+                tr.append(tdProyecto);
+
+                mesesOrdenados.forEach(mes => {
+                    const [año, mesNum] = mes.split('-');
+                    const td = $('<td>');
+
+                    // Buscar el objeto dentro del array horasPorMes que coincida con el año y mes
+                    const horasData = proyecto.horasPorMes.find(h => h.año == parseInt(año) && h.mes.toString().padStart(2, '0') == mesNum);
+                    const horas = horasData ? horasData.horas : 0;
+
+                    // Depuración: imprimir los datos encontrados
+                    console.log(`Proyecto: ${proyecto.nombreProyecto}, Mes: ${mesNum}/${año}, Horas: ${horas}`);
+
+                    if (horas > 0) {
+                        td.addClass('completed').text(`${horas} hrs`); // Mostrar horas
+                    } else {
+                        td.addClass('no-hours').text('-'); // Mostrar guión si no hay horas
+                    }
+
+                    tr.append(td);
+                });
+
+                tbody.append(tr);
+            });
+        }
+
+        // Obtener los datos del Gantt desde el backend usando AJAX
+        $.ajax({
+            url: `/Planilla/GenerarGant`,
+            type: 'GET',
+            data: { idusuario: idusuario },
+            success: function (ganttData) {
+                console.log(ganttData);
+                // Encontrar el rango total de meses para todos los proyectos
+                let mesesUnicos = new Set();
+                ganttData.forEach(proyecto => {
+                    const meses = getMesesEntreFechas(proyecto.fechaInicio, proyecto.fechaTermino);
+                    meses.forEach(m => mesesUnicos.add(`${m.año}-${m.mes}`));
+                });
+
+                // Ordenar los meses únicos en orden cronológico
+                const mesesOrdenados = Array.from(mesesUnicos).sort((a, b) => {
+                    const [añoA, mesA] = a.split('-').map(Number);
+                    const [añoB, mesB] = b.split('-').map(Number);
+                    return new Date(añoA, mesA - 1) - new Date(añoB, mesB - 1);
+                });
+
+                // Generar el encabezado y llenar el cuerpo de la tabla
+                generarEncabezado(mesesOrdenados);
+                llenarCuerpoTabla(ganttData, mesesOrdenados);
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+</script>
+
+
