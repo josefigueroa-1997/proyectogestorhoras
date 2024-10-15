@@ -27,9 +27,15 @@
     }
 
     th, td {
-        padding: 10px;
+        padding: 8px;
         text-align: center;
         border: 1px solid #ddd;
+    }
+    td{
+        font-size:12px;
+        width: 40px;
+        word-wrap: break-word;
+
     }
 
     th {
@@ -145,19 +151,19 @@
                 const th = $('<th>').text(`${mesNum}/${año}`);
                 headRow.append(th);
             });
-            // Agregar la columna "Totales"
+
             headRow.append($('<th>').text('Totales'));
         }
 
         function llenarCuerpoTabla(ganttData, mesesOrdenados) {
             const tbody = $('#ganttBody');
-            const totalesPorMes = new Array(mesesOrdenados.length).fill(0); // Inicializa totales en 0
+            const totalesPorMes = new Array(mesesOrdenados.length).fill(0); 
 
             ganttData.forEach(proyecto => {
-                // Inicializar el total de horas del proyecto
+   
                 let totalHorasProyecto = 0;
 
-                // Encontrar los inputs correspondientes al proyecto en la otra tabla
+     
                 const inputRow = $(`td:contains('${proyecto.nombreProyecto}')`).closest('tr');
                 const inputHHRealizadas = inputRow.find('.hhrealizadas');
                 const inputHHRestantes = inputRow.find('.hhrestantes');
@@ -168,27 +174,28 @@
                     totalHorasProyecto += h.horas; // Sumar horas por mes
                 });
 
-                // Actualizar el input con el total de horas realizadas en el proyecto
+               
                 if (inputHHRealizadas.length && inputHHRestantes.length && inputTotalesHH.length) {
-                    inputHHRealizadas.val(totalHorasProyecto); // Aquí actualizamos el valor de HH Realizadas
+                    inputHHRealizadas.val(totalHorasProyecto); 
                     const hhRestantes = parseFloat(inputHHRestantes.val()) || 0;
                     const totalHH = totalHorasProyecto + hhRestantes;
 
-                    inputTotalesHH.val(totalHH); // Actualizamos el total de horas
+                    inputTotalesHH.val(totalHH); 
 
-                    // Nueva fila para el color amarillo
+      
                     const trAmarillo = $('<tr>');
                     const tdAmarillo = $('<td>')
                         .text(`Duración: ${proyecto.nombreProyecto}: ${totalHH} hrs`)
                         .attr('colspan', 1)
                         .css({
                             'background-color': 'yellow',
-                            'text-align': 'left'
+                            'text-align': 'left', 'word-wrap': 'break-word', // Permite que el texto se divida en varias líneas
+                            'white-space': 'normal'
                         });
 
                     trAmarillo.append(tdAmarillo);
 
-                    // Marcar los meses de duración del proyecto
+            
                     const mesesDuracion = getMesesEntreFechas(proyecto.fechaInicio, proyecto.fechaTermino);
                     const mesesIndices = mesesDuracion.map(m => `${m.año}-${m.mes}`);
 
@@ -200,17 +207,17 @@
                         trAmarillo.append(tdDuracion);
                     });
 
-                    // Agregar la fila amarilla a la tabla
+    
                     tbody.append(trAmarillo);
                 }
 
                 const tr = $('<tr>');
                 const tdProyecto = $('<td>')
-                    .text(`Horas Ejecutadas: ${proyecto.nombreProyecto}`) // Nombre del proyecto
+                    .text(`Hrs Ejec.: ${proyecto.nombreProyecto}`) // Nombre del proyecto
                     .css('text-align', 'left');
                 tr.append(tdProyecto);
 
-                let totalHorasFila = 0; // Inicializar el total de horas de la fila
+                let totalHorasFila = 0; 
 
                 mesesOrdenados.forEach((mes, index) => {
                     const [año, mesNum] = mes.split('-');
@@ -220,18 +227,17 @@
                     const horas = horasData ? horasData.horas : 0;
 
                     if (horas > 0) {
-                        td.addClass('completed').text(`${horas} hrs`); // Mostrar horas
+                        td.addClass('completed').text(`${horas} hrs`); 
                     } else {
-                        td.addClass('no-hours').text('-'); // Mostrar guión si no hay horas
+                        td.addClass('no-hours').text('-');
                     }
 
-                    // Sumar las horas al total correspondiente
+                  
                     totalesPorMes[index] += horas;
-                    totalHorasFila += horas; // Sumar horas de la fila
+                    totalHorasFila += horas;
                     tr.append(td);
                 });
 
-                // Agregar el total de horas de la fila a la columna "Totales"
                 const tdTotal = $('<td>').text(totalHorasFila > 0 ? `${totalHorasFila} hrs` : '-').addClass('completed');
                 tr.append(tdTotal);
 
@@ -242,25 +248,23 @@
             llenarFilaTotales(totalesPorMes);
         }
 
-        // Función para llenar la fila de totales
         function llenarFilaTotales(totalesPorMes) {
             const totalRow = $('#totalRow');
             totalesPorMes.forEach(total => {
                 const tdTotal = $('<td>').text(total > 0 ? `${total} hrs` : '-');
                 totalRow.append(tdTotal);
             });
-            // Agregar la celda de total general al final
+           
             const totalGeneral = totalesPorMes.reduce((acc, curr) => acc + curr, 0);
             totalRow.append($('<td>').text(totalGeneral > 0 ? `${totalGeneral} hrs` : '-')); // Total General
         }
 
-        // Obtener los datos del Gantt desde el backend usando AJAX
         $.ajax({
             url: `/Planilla/GenerarGant`,
             type: 'GET',
             data: { idusuario: idusuario },
             success: function (ganttData) {
-                // Encontrar el rango total de meses para todos los proyectos
+     
                 let mesesUnicos = new Set();
                 ganttData.forEach(proyecto => {
                     const meses = getMesesEntreFechas(proyecto.fechaInicio, proyecto.fechaTermino);

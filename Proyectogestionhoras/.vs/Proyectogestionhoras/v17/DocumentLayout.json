@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\planilla\\ganttusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\planilla\\ganttusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\planilla\\planilla.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\planilla\\planilla.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\planillaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\services\\planillaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\views\\planilla\\ganttusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|solutionrelative:proyectogestionhoras\\views\\planilla\\ganttusuario.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6260630-0BAB-4C18-B625-8889A07349E0}|Proyectogestionhoras\\Proyectogestionhoras.csproj|c:\\users\\pepef\\desktop\\proyecto gestion\\proyectogestorhoras\\proyectogestionhoras\\proyectogestionhoras\\services\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -294,7 +294,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -311,7 +311,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "PlanillaController.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Controllers\\PlanillaController.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Controllers\\PlanillaController.cs",
@@ -319,18 +319,17 @@
               "RelativeToolTip": "Proyectogestionhoras\\Controllers\\PlanillaController.cs",
               "ViewState": "AQIAANoAAAAAAAAAAAAuwDgBAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-11T15:56:14.057Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-11T15:56:14.057Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "GanttUsuario.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Planilla\\GanttUsuario.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Planilla\\GanttUsuario.cshtml",
               "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Planilla\\GanttUsuario.cshtml",
               "RelativeToolTip": "Proyectogestionhoras\\Views\\Planilla\\GanttUsuario.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFQAAAAdAAAA",
+              "ViewState": "AQIAAK0AAAAAAAAAAAAAALwAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-10-14T13:24:49.44Z",
               "EditorCaption": ""
@@ -349,7 +348,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "PlanillaService.cs",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Services\\PlanillaService.cs",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Services\\PlanillaService.cs",
@@ -357,18 +356,17 @@
               "RelativeToolTip": "Proyectogestionhoras\\Services\\PlanillaService.cs",
               "ViewState": "AQIAABwAAAAAAAAAAAAwwCcAAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-12T15:49:10.921Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-12T15:49:10.921Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Planilla.cshtml",
               "DocumentMoniker": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Planilla\\Planilla.cshtml",
               "RelativeDocumentMoniker": "Proyectogestionhoras\\Views\\Planilla\\Planilla.cshtml",
               "ToolTip": "C:\\Users\\pepef\\Desktop\\proyecto gestion\\proyectogestorhoras\\Proyectogestionhoras\\Proyectogestionhoras\\Views\\Planilla\\Planilla.cshtml",
               "RelativeToolTip": "Proyectogestionhoras\\Views\\Planilla\\Planilla.cshtml",
-              "ViewState": "AQIAAJQAAAAAAAAAAAAAwAIBAAAUAAAA",
+              "ViewState": "AQIAAGoAAAAAAAAAAAAAwIEAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-10-12T13:36:07.316Z",
               "EditorCaption": ""
