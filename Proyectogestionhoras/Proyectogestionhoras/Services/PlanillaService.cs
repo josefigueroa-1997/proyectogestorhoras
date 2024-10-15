@@ -61,16 +61,16 @@ namespace Proyectogestionhoras.Services
                 var inicioSemana = Fecharegistro.AddDays(-(int)Fecharegistro.DayOfWeek + (int)DayOfWeek.Monday);
                 var finSemana = inicioSemana.AddDays(6);
                 var horasRegistradasSemana = await context.PlanillaUsusarioProyectos
-     .Join(
-         context.UsuarioProyectos, 
-         planilla => planilla.IdUsuProy, 
-         usuarioProyecto => usuarioProyecto.Id, 
-         (planilla, usuarioProyecto) => new { planilla, usuarioProyecto } 
-     )
-     .Where(joinResult => joinResult.usuarioProyecto.IdUsuario == idusuario 
+                    .Join(
+                    context.UsuarioProyectos, 
+                    planilla => planilla.IdUsuProy, 
+                    usuarioProyecto => usuarioProyecto.Id, 
+                    (planilla, usuarioProyecto) => new { planilla, usuarioProyecto } 
+                    )
+                    .Where(joinResult => joinResult.usuarioProyecto.IdUsuario == idusuario 
                          && joinResult.planilla.FechaRegistro >= inicioSemana 
                          && joinResult.planilla.FechaRegistro <= finSemana)
-     .SumAsync(joinResult => joinResult.planilla.RegistroHhProyecto);
+                    .SumAsync(joinResult => joinResult.planilla.RegistroHhProyecto);
 
                
                 var usuarioproyecto = await context.UsuarioProyectos
@@ -255,12 +255,7 @@ namespace Proyectogestionhoras.Services
 
             }
         }
-        private static readonly string[] MonthNames = new[]
-   {
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    };
-
+   
         public async Task<List<ProyectoGantt>> ObtenerDatosGantt(int idusuario)
         {
             var proyectosGantt = new List<ProyectoGantt>();
@@ -291,20 +286,20 @@ namespace Proyectogestionhoras.Services
                                     FechaTermino = reader.IsDBNull(reader.GetOrdinal("Fecha_Termino")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("Fecha_Termino")),
                                 };
 
-                                // Agregar los datos a la lista
+                            
                                 datosGantt.Add(datos);
                             }
                         }
                     }
                 }
 
-                // Agrupar los datos por proyecto
+               
                 proyectosGantt = datosGantt
                     .GroupBy(d => d.NombreProyecto)
                     .Select(g => new ProyectoGantt
                     {
                         NombreProyecto = g.Key,
-                        FechaInicio = g.First().FechaInicio,  // Usar la primera fecha de inicio
+                        FechaInicio = g.First().FechaInicio, 
                         FechaTermino = g.First().FechaTermino,
                         HorasPorMes = g.GroupBy(d => new { d.Año, d.Mes })
                                        .Select(m => new HorasPorMes
@@ -313,7 +308,7 @@ namespace Proyectogestionhoras.Services
                                            Mes = m.Key.Mes,
                                            Horas = m.Sum(x => x.TotalHoras) // Sumar las horas totales por año y mes
                                        })
-                                       .ToList() // Convertir a lista
+                                       .ToList() 
                     })
                     .ToList();
             }
@@ -324,6 +319,52 @@ namespace Proyectogestionhoras.Services
             }
 
             return proyectosGantt;
+        }
+
+        public async Task<List<HHUSUARIOPROYECTOTOTALDTO>> RecuperarHHUsuarios(int idusuario)
+        {
+            try
+            {
+
+                var proyectoshh = new List<HHUSUARIOPROYECTOTOTALDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "HH_USUARIO_PROYECTOS_TOTAL";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            HHUSUARIOPROYECTOTOTALDTO hhproyecto = new()
+                            {
+                                IDUSUARIOPROYCTO = reader.IsDBNull(reader.GetOrdinal("IDUSUARIOPROYCTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDUSUARIOPROYCTO")),
+                                IDUSUARIO = reader.IsDBNull(reader.GetOrdinal("ID_USUARIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID_USUARIO")),
+                                Recurso = reader.IsDBNull(reader.GetOrdinal("RECURSO")) ? null : reader.GetString(reader.GetOrdinal("RECURSO")),
+                                Nombre_Usuario = reader.IsDBNull(reader.GetOrdinal("NOMBRE_USUARIO")) ? null : reader.GetString(reader.GetOrdinal("NOMBRE_USUARIO")),
+                                IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("ID_PROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID_PROYECTO")),
+                                HHRESTANTES = reader.IsDBNull(reader.GetOrdinal("HHASIGNADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHASIGNADAS")),
+                                NOMBREPROYECTO = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+
+                            };
+                            proyectoshh.Add(hhproyecto);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return proyectoshh;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
+                return new List<HHUSUARIOPROYECTOTOTALDTO>();
+
+            }
         }
 
 

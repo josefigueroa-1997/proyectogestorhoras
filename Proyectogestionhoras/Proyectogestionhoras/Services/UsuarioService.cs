@@ -462,7 +462,47 @@ namespace Proyectogestionhoras.Services
         }
 
 
+        public async Task<List<StockHorasDTO>> ConsultaStockHoras(int idusuario)
+        {
+            try
+            {
 
+                var stock = new List<StockHorasDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "CONSULTA_HH_USUARIOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            StockHorasDTO hh = new()
+                            {
+                                hhasignadas = reader.IsDBNull(reader.GetOrdinal("HHASIGNADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHASIGNADAS")),
+                                hhanuales = reader.IsDBNull(reader.GetOrdinal("HHANUALES")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHANUALES")),
+
+
+                            };
+                            stock.Add(hh);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return stock;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
+                return new List<StockHorasDTO>();
+
+            }
+        }
 
 
         private void EnviarCorreo(string email)

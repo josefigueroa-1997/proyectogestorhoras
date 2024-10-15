@@ -3,11 +3,27 @@
     ViewData["Title"] = "Mi Gantt";
 
 }
-<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
 <style>
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-header {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-bottom: 30px;
     }
 
     th, td {
@@ -28,29 +44,62 @@
     .no-hours {
         background-color: #f9f9f9;
     }
+
+    .table-separator {
+        margin-bottom: 50px;
+    }
 </style>
-<div class="dashboard-container">
-    <div class="dashboard-section projects-section">
-        <h2 class="section-header">Gantt</h2>
-        <div class="section-content">
-            <h1>Gráfico de Gantt - Horas Trabajadas por Usuario</h1>
-            <table>
-                <thead>
-                    <tr id="headRow">
-                        <th>Proyecto</th>
-                        <!-- Las columnas de los meses se generarán dinámicamente -->
-                    </tr>
-                </thead>
-                <tbody id="ganttBody">
-                    <!-- Filas con proyectos se llenarán con JavaScript -->
-                </tbody>
-            </table>
 
+<div class="form-container">
+    <h2 class="section-header">Mi Gantt</h2>
+    <!-- Botón para descargar el PDF -->
 
-
-        </div>
+    <div class="table-separator">
+        <table>
+            <thead>
+                <tr id="headRow">
+                    <th>Proyecto</th>
+                </tr>
+            </thead>
+            <tbody id="ganttBody">
+                <!-- Filas del cuerpo de la tabla -->
+            </tbody>
+            <tfoot>
+                <tr id="totalRow">
+                    <th>Totales</th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 
+    <div class="section-content table-separator">
+        <table>
+            <thead>
+                <tr style="background-color: #f9eb8b; color: black;">
+                    <th style="text-align:center;">Nombre Proyecto</th>
+                    <th style="text-align:center;">HH Realizadas</th>
+                    <th style="text-align:center;">HH Restantes</th>
+                    <th style="text-align:center;">Totales HH</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Proyectos != null)
+                {
+                    @foreach (var proyecto in ViewBag.Proyectos)
+                    {
+                        <tr>
+                            <td><strong>@proyecto.NOMBREPROYECTO</strong></td>
+                            <td style="text-align:center;"><input class="hhrealizadas" type="number" /></td>
+                            <td style="text-align:center;"><input class="hhrestantes" type="number" value="@proyecto.HHRESTANTES" /></td>
+                            <td style="text-align:center;"><input type="number" class="totaleshh" /></td>
+                        </tr>
+                    }
+                }
+
+              
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @{
@@ -67,7 +116,6 @@
             const fechaFinal = new Date(fechaFin);
 
             while (fechaActual <= fechaFinal) {
-                // Asegurarse de que el mes tenga dos dígitos
                 const mesFormateado = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
                 meses.push({
                     año: fechaActual.getFullYear(),
@@ -89,24 +137,30 @@
             });
         }
 
-        // Función para llenar el cuerpo de la tabla
+        // Función para llenar el cuerpo de la tabla Gantt
         function llenarCuerpoTabla(ganttData, mesesOrdenados) {
             const tbody = $('#ganttBody');
+            const totalesPorMes = new Array(mesesOrdenados.length).fill(0); // Inicializa totales en 0
+
             ganttData.forEach(proyecto => {
                 const tr = $('<tr>');
                 const tdProyecto = $('<td>').text(proyecto.nombreProyecto); // Nombre del proyecto
                 tr.append(tdProyecto);
 
-                mesesOrdenados.forEach(mes => {
+                // Encontrar los inputs correspondientes al proyecto en la otra tabla
+                const inputRow = $(`td:contains('${proyecto.nombreProyecto}')`).closest('tr');
+                const inputHHRealizadas = inputRow.find('.hhrealizadas');
+                const inputHHRestantes = inputRow.find('.hhrestantes');
+                const inputTotalesHH = inputRow.find('.totaleshh');
+
+                let totalHorasProyecto = 0; // Variable para almacenar las horas totales de cada proyecto
+
+                mesesOrdenados.forEach((mes, index) => {
                     const [año, mesNum] = mes.split('-');
                     const td = $('<td>');
 
-                    // Buscar el objeto dentro del array horasPorMes que coincida con el año y mes
                     const horasData = proyecto.horasPorMes.find(h => h.año == parseInt(año) && h.mes.toString().padStart(2, '0') == mesNum);
                     const horas = horasData ? horasData.horas : 0;
-
-                    // Depuración: imprimir los datos encontrados
-                    console.log(`Proyecto: ${proyecto.nombreProyecto}, Mes: ${mesNum}/${año}, Horas: ${horas}`);
 
                     if (horas > 0) {
                         td.addClass('completed').text(`${horas} hrs`); // Mostrar horas
@@ -114,10 +168,34 @@
                         td.addClass('no-hours').text('-'); // Mostrar guión si no hay horas
                     }
 
+                    // Sumar las horas al total correspondiente
+                    totalesPorMes[index] += horas;
+                    totalHorasProyecto += horas; // Sumar al total de horas del proyecto
                     tr.append(td);
                 });
 
                 tbody.append(tr);
+
+                // Actualizar el input con el total de horas realizadas en el proyecto
+                if (inputHHRealizadas.length && inputHHRestantes.length && inputTotalesHH.length) {
+                    inputHHRealizadas.val(totalHorasProyecto); // Aquí actualizamos el valor de HH Realizadas
+                    const hhRestantes = parseFloat(inputHHRestantes.val()) || 0;
+                    const totalHH = totalHorasProyecto + hhRestantes;
+
+                    inputTotalesHH.val(totalHH); // Actualizamos el total de horas
+                }
+            });
+
+            // Llenar la fila de totales
+            llenarFilaTotales(totalesPorMes);
+        }
+
+        // Función para llenar la fila de totales
+        function llenarFilaTotales(totalesPorMes) {
+            const totalRow = $('#totalRow');
+            totalesPorMes.forEach(total => {
+                const tdTotal = $('<td>').text(total > 0 ? `${total} hrs` : '-');
+                totalRow.append(tdTotal);
             });
         }
 
@@ -127,7 +205,6 @@
             type: 'GET',
             data: { idusuario: idusuario },
             success: function (ganttData) {
-                console.log(ganttData);
                 // Encontrar el rango total de meses para todos los proyectos
                 let mesesUnicos = new Set();
                 ganttData.forEach(proyecto => {
