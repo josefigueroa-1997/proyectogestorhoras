@@ -48,6 +48,16 @@
     .table-separator {
         margin-bottom: 50px;
     }
+
+   
+
+    .yellow-row td {
+        background-color: yellow; /* Color amarillo para la fila */
+    }
+
+    .izquierda {
+        text-align: left; /* Alinear texto a la izquierda */
+    }
 </style>
 
 <div class="form-container">
@@ -72,7 +82,7 @@
         </table>
     </div>
 
-    <div class="section-content table-separator">
+    <div style="display:none;" class="section-content table-separator">
         <table>
             <thead>
                 <tr style="background-color: #f9eb8b; color: black;">
@@ -89,9 +99,9 @@
                     {
                         <tr>
                             <td><strong>@proyecto.NOMBREPROYECTO</strong></td>
-                            <td style="text-align:center;"><input class="hhrealizadas" type="number" /></td>
-                            <td style="text-align:center;"><input class="hhrestantes" type="number" value="@proyecto.HHRESTANTES" /></td>
-                            <td style="text-align:center;"><input type="number" class="totaleshh" /></td>
+                            <td style="text-align:center;"><input class="hhrealizadas" type="number" readonly/></td>
+                            <td style="text-align:center;"><input class="hhrestantes" type="number" value="@proyecto.HHRESTANTES" readonly/></td>
+                            <td style="text-align:center;"><input type="number" class="totaleshh" readonly/></td>
                         </tr>
                     }
                 }
@@ -135,17 +145,17 @@
                 const th = $('<th>').text(`${mesNum}/${año}`);
                 headRow.append(th);
             });
+            // Agregar la columna "Totales"
+            headRow.append($('<th>').text('Totales'));
         }
 
-        // Función para llenar el cuerpo de la tabla Gantt
         function llenarCuerpoTabla(ganttData, mesesOrdenados) {
             const tbody = $('#ganttBody');
             const totalesPorMes = new Array(mesesOrdenados.length).fill(0); // Inicializa totales en 0
 
             ganttData.forEach(proyecto => {
-                const tr = $('<tr>');
-                const tdProyecto = $('<td>').text(proyecto.nombreProyecto); // Nombre del proyecto
-                tr.append(tdProyecto);
+                // Inicializar el total de horas del proyecto
+                let totalHorasProyecto = 0;
 
                 // Encontrar los inputs correspondientes al proyecto en la otra tabla
                 const inputRow = $(`td:contains('${proyecto.nombreProyecto}')`).closest('tr');
@@ -153,7 +163,54 @@
                 const inputHHRestantes = inputRow.find('.hhrestantes');
                 const inputTotalesHH = inputRow.find('.totaleshh');
 
-                let totalHorasProyecto = 0; // Variable para almacenar las horas totales de cada proyecto
+                // Calcular las horas totales del proyecto
+                proyecto.horasPorMes.forEach(h => {
+                    totalHorasProyecto += h.horas; // Sumar horas por mes
+                });
+
+                // Actualizar el input con el total de horas realizadas en el proyecto
+                if (inputHHRealizadas.length && inputHHRestantes.length && inputTotalesHH.length) {
+                    inputHHRealizadas.val(totalHorasProyecto); // Aquí actualizamos el valor de HH Realizadas
+                    const hhRestantes = parseFloat(inputHHRestantes.val()) || 0;
+                    const totalHH = totalHorasProyecto + hhRestantes;
+
+                    inputTotalesHH.val(totalHH); // Actualizamos el total de horas
+
+                    // Nueva fila para el color amarillo
+                    const trAmarillo = $('<tr>');
+                    const tdAmarillo = $('<td>')
+                        .text(`Duración: ${proyecto.nombreProyecto}: ${totalHH} hrs`)
+                        .attr('colspan', 1)
+                        .css({
+                            'background-color': 'yellow',
+                            'text-align': 'left'
+                        });
+
+                    trAmarillo.append(tdAmarillo);
+
+                    // Marcar los meses de duración del proyecto
+                    const mesesDuracion = getMesesEntreFechas(proyecto.fechaInicio, proyecto.fechaTermino);
+                    const mesesIndices = mesesDuracion.map(m => `${m.año}-${m.mes}`);
+
+                    mesesOrdenados.forEach((mes, index) => {
+                        const tdDuracion = $('<td>');
+                        if (mesesIndices.includes(mes)) {
+                            tdDuracion.addClass('duracion').css('background-color', 'yellow'); // Aplicar color amarillo
+                        }
+                        trAmarillo.append(tdDuracion);
+                    });
+
+                    // Agregar la fila amarilla a la tabla
+                    tbody.append(trAmarillo);
+                }
+
+                const tr = $('<tr>');
+                const tdProyecto = $('<td>')
+                    .text(`Horas Ejecutadas: ${proyecto.nombreProyecto}`) // Nombre del proyecto
+                    .css('text-align', 'left');
+                tr.append(tdProyecto);
+
+                let totalHorasFila = 0; // Inicializar el total de horas de la fila
 
                 mesesOrdenados.forEach((mes, index) => {
                     const [año, mesNum] = mes.split('-');
@@ -170,20 +227,15 @@
 
                     // Sumar las horas al total correspondiente
                     totalesPorMes[index] += horas;
-                    totalHorasProyecto += horas; // Sumar al total de horas del proyecto
+                    totalHorasFila += horas; // Sumar horas de la fila
                     tr.append(td);
                 });
 
+                // Agregar el total de horas de la fila a la columna "Totales"
+                const tdTotal = $('<td>').text(totalHorasFila > 0 ? `${totalHorasFila} hrs` : '-').addClass('completed');
+                tr.append(tdTotal);
+
                 tbody.append(tr);
-
-                // Actualizar el input con el total de horas realizadas en el proyecto
-                if (inputHHRealizadas.length && inputHHRestantes.length && inputTotalesHH.length) {
-                    inputHHRealizadas.val(totalHorasProyecto); // Aquí actualizamos el valor de HH Realizadas
-                    const hhRestantes = parseFloat(inputHHRestantes.val()) || 0;
-                    const totalHH = totalHorasProyecto + hhRestantes;
-
-                    inputTotalesHH.val(totalHH); // Actualizamos el total de horas
-                }
             });
 
             // Llenar la fila de totales
@@ -197,6 +249,9 @@
                 const tdTotal = $('<td>').text(total > 0 ? `${total} hrs` : '-');
                 totalRow.append(tdTotal);
             });
+            // Agregar la celda de total general al final
+            const totalGeneral = totalesPorMes.reduce((acc, curr) => acc + curr, 0);
+            totalRow.append($('<td>').text(totalGeneral > 0 ? `${totalGeneral} hrs` : '-')); // Total General
         }
 
         // Obtener los datos del Gantt desde el backend usando AJAX
@@ -229,5 +284,4 @@
         });
     });
 </script>
-
 

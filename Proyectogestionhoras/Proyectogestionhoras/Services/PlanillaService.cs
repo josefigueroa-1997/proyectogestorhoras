@@ -41,7 +41,7 @@ namespace Proyectogestionhoras.Services
                 }
 
               
-                bool existereigstro = await context.PlanillaUsusarioProyectos.AnyAsync(p => p.IdUsuProy == idusuproy && p.FechaRegistro.Date == Fecharegistro.Date);
+                bool existereigstro = await context.PlanillaUsusarioProyectos.AnyAsync(p => p.IdUsuProy == idusuproy && p.FechaRegistro.Date == Fecharegistro.Date && p.IdActividad == idactividad);
                 if (existereigstro)
                 {
                     return 2; 

@@ -312,7 +312,7 @@ namespace Proyectogestionhoras.Controllers
             }
             else if (yaSeRegistraronHoras)
             {
-                return Json(new { success = false, message = "Ya se han registrado horas para este proyecto en esta fecha." });
+                return Json(new { success = false, message = "Ya se han registrado horas para esta actividad en este proyecto durante esta fecha." });
             }
           else if (horasExcedidas)
             {
