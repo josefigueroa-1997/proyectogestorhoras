@@ -134,13 +134,32 @@
     .tabla-margen td {
         text-align: right;
     }
+
+    .alert {
+        padding: 15px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+    }
 </style>
 
 <div class="form-container">
     @foreach (var proyecto in ViewBag.Proyectos)
     {
-        
-    
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
+            </div>
+        }
         <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
     <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
 
@@ -508,10 +527,10 @@
                     <div style="display: flex; justify-content: space-between;">
 
 
-                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;display:none;">
                             <thead>
                                 <tr style="background-color: #b2e6a5; color: black;">
-                                    <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Socio</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
@@ -520,8 +539,14 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @{
+                                    decimal totalsocios = 0;
+                                }
                                 @if (ViewBag.Recursos != null)
                                 {
+
+
+
                                     @foreach (var recurso in ViewBag.Recursos)
                                     {
                                         if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
@@ -534,6 +559,8 @@
                                                 <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                             </tr>
 
+                                            totalsocios += recurso.HH_ANUALES;
+
                                         }
                                     }
                                 }
@@ -541,7 +568,7 @@
                             </tbody>
                         </table>
                         <!-- Tabla de Staff -->
-                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                        <table style="width: 40%; border-collapse: collapse; text-align: left; display:none;">
                             <thead>
                                 <tr style="background-color: #b2e6a5; color: black;">
                                     <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
@@ -553,6 +580,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @{
+                                    decimal totalstaff = 0;
+                                }
                                 @if (ViewBag.Recursos != null)
                                 {
                                     @foreach (var recurso in ViewBag.Recursos)
@@ -566,13 +596,37 @@
                                                 <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
                                                 <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                             </tr>
-
+                                            totalstaff += recurso.HH_ANUALES;
                                         }
                                     }
                                 }
 
 
                             </tbody>
+                        </table>
+
+
+
+                        <table style="width: 40%; border-collapse: collapse; text-align: left; ">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios</th>
+                                </tr>
+                                <tr>
+                                    <th id="totalSocios" style="padding: 10px; border: 1px solid #ddd;">@totalsocios</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff</th>
+                                </tr>
+                                <tr>
+                                    <th id="totalStaff" style="padding: 10px; border: 1px solid #ddd;">@totalstaff</th>
+                                </tr>
+                            </thead>
                         </table>
                         <div style="display:none;">
                             @if (ViewBag.Recursos != null)
@@ -1102,6 +1156,7 @@
             }
             else{
 
+
                 <input type="hidden" name="idproyecto" value="@proyecto.Id" />
                 <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
                 <div class="form-row">
@@ -1455,11 +1510,10 @@
                     <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
                     <div style="display: flex; justify-content: space-between;">
 
-
-                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;display:none;">
                             <thead>
                                 <tr style="background-color: #b2e6a5; color: black;">
-                                    <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Socio</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">HH/Anuales Disponibles</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">Hrs. a Proyectos</th>
@@ -1468,8 +1522,14 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @{
+                                    decimal totalsocios = 0;
+                                }
                                 @if (ViewBag.Recursos != null)
                                 {
+
+
+
                                     @foreach (var recurso in ViewBag.Recursos)
                                     {
                                         if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
@@ -1482,6 +1542,8 @@
                                                 <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                             </tr>
 
+                                            totalsocios += recurso.HH_ANUALES;
+
                                         }
                                     }
                                 }
@@ -1489,7 +1551,7 @@
                             </tbody>
                         </table>
                         <!-- Tabla de Staff -->
-                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                        <table style="width: 40%; border-collapse: collapse; text-align: left; display:none;">
                             <thead>
                                 <tr style="background-color: #b2e6a5; color: black;">
                                     <th style="padding: 10px; border: 1px solid #ddd;">Staff</th>
@@ -1501,6 +1563,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @{
+                                    decimal totalstaff = 0;
+                                }
                                 @if (ViewBag.Recursos != null)
                                 {
                                     @foreach (var recurso in ViewBag.Recursos)
@@ -1514,13 +1579,37 @@
                                                 <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
                                                 <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                             </tr>
-
+                                            totalstaff += recurso.HH_ANUALES;
                                         }
                                     }
                                 }
 
 
                             </tbody>
+                        </table>
+
+
+
+                        <table style="width: 40%; border-collapse: collapse; text-align: left; ">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios</th>
+                                </tr>
+                                <tr>
+                                    <th id="totalSocioss" style="padding: 10px; border: 1px solid #ddd;">@totalsocios</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #b2e6a5; color: black;">
+                                    <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff</th>
+                                </tr>
+                                <tr>
+                                    <th id="totalStafff" style="padding: 10px; border: 1px solid #ddd;">@totalstaff</th>
+                                </tr>
+                            </thead>
                         </table>
                         <div style="display:none;">
                             @if (ViewBag.Recursos != null)
@@ -3143,6 +3232,32 @@
 
     const formulario = document.querySelector('form');
     formulario.addEventListener('submit', validarFormulario);
+    document.getElementById('horasSocios').addEventListener('input', function () {
+        // Obtener el valor del input
+        let horasSocios = parseFloat(this.value);
+
+        // Obtener el valor de  desde la tabla
+        let totalSocioss = parseFloat(document.getElementById('totalSocioss').innerText);
+
+        // Validar que horasSocios no sea mayor que totalSocios
+        if (horasSocios > totalSocioss) {
+            alert("Las horas de socios no pueden ser mayores que " + totalSocioss);
+            this.value = ''; // O puedes resetear el valor del input si es mayor
+        }
+    });
+    document.getElementById('horasStaff').addEventListener('input', function () {
+        // Obtener el valor del input
+        let horasStaff = parseFloat(this.value);
+
+        // Obtener el valor de  desde la tabla
+        let totalStafff = parseFloat(document.getElementById('totalStafff').innerText);
+
+        // Validar que horasStaff no sea mayor que totalStaff
+        if (horasStaff > totalStafff) {
+            alert("Las horas de staff no pueden ser mayores que " + totalStafff);
+            this.value = ''; // Resetear el valor del input si es mayor
+        }
+    });
 </script>
 
             

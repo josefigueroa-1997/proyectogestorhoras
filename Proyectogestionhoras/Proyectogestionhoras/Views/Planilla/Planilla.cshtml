@@ -263,6 +263,7 @@
         </div>
 
     </div>
+    <input type="hidden" class="hhrestantes" name="hhrestanes" />
     <input type="hidden" class="rolrecurso" name="rolrecurso"/>
     <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" />
     <div class="fixed inset-0 flex items-center justify-center z-50" id="mensajeModal" style="display: none;">
@@ -343,7 +344,7 @@
                 success: function (informacionusuario) {
                     if (informacionusuario && informacionusuario.length > 0) {
                         $('.rolrecurso').val(informacionusuario[0].recurso);
-                        
+                        $('.hhrestantes').val(informacionusuario[0].hhasignadas);
                         $('.idusuarioproyecto').val(informacionusuario[0].idusuarioproyecto);
                         cargarActividades(informacionusuario[0].recurso);
                     } else {
@@ -392,13 +393,16 @@
             var horasRegistradas = parseInt($('input[name="hhregistradas"]').val()) || 0;
             var observaciones = $('input[name="observaciones"]').val();
             var idusuarioproyecto = $('.idusuarioproyecto').val();
-            
+            var hhrestantesinput = $('.hhrestantes').val();
 
             if (!fecha || !idproyecto || !idactividad || horasRegistradas === 0) {
                 alert("Por favor, completa todos los campos requeridos.");
                 return;
             }
-
+            if (horasRegistradas > hhrestantesinput) {
+                alert("Las Horas registradas no puede ser mayor a las restantes");
+                return;
+            }
 
            
 

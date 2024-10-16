@@ -338,9 +338,9 @@ namespace Proyectogestionhoras.Controllers
                     usuariohoras.Add(usuarioh);
                 }
             }
-            
-            
-            
+
+
+            var idclientes = Request.Form["idcliente"];
 
 
 
@@ -353,7 +353,8 @@ namespace Proyectogestionhoras.Controllers
             }
             else
             {
-                return View();
+                ViewBag.Error = "No hay suficientes horas para asignar a uno o más usuarios";
+                return View("EditarProyecto", new {id=idproyecto,idcliente=idclientes});
             }
 
         }

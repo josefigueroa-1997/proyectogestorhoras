@@ -147,7 +147,12 @@ namespace Proyectogestionhoras.Services
                     await command.ExecuteNonQueryAsync();
                     await GestorServiciosProyecto(idproyecto, servicios);
                     await GestorProyectoGastos(idproyecto, gastos);
-                    await AsignarHHUsuarios(idproyecto, usuariohoras);
+                   var resultadoAsignacion = await AsignarHHUsuarios(idproyecto, usuariohoras);
+                    if (resultadoAsignacion == 2)
+                    {
+                        // Si no hay suficientes horas, lanzamos una excepción o manejamos el error de otra forma
+                        throw new Exception("No hay suficientes horas anuales para asignar a uno o más usuarios.");
+                    }
 
                     return true;
                 }
@@ -275,22 +280,22 @@ namespace Proyectogestionhoras.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task AsignarHHUsuarios(int idproyecto, List<UsuarioProyectoViewModel> usuariohoras)
+        public async Task<int> AsignarHHUsuarios(int idproyecto, List<UsuarioProyectoViewModel> usuariohoras)
         {
             if (usuariohoras == null || !usuariohoras.Any())
             {
-                return;
+                return 0; // No se proporcionaron horas para asignar
             }
 
             var idsUsuarios = usuariohoras.Select(uh => uh.IdUsuario).ToList();
 
-         
+            // Obtener los usuarios con su navegación a IdRecursoNavigation
             var usuarios = await context.Usuarios
                 .Include(u => u.IdRecursoNavigation)
                 .Where(u => idsUsuarios.Contains(u.Id))
                 .ToListAsync();
 
-           
+            // Obtener las relaciones UsuarioProyecto
             var proyectosUsuarios = await context.UsuarioProyectos
                 .Where(up => idsUsuarios.Contains(up.IdUsuario) && up.IdProyecto == idproyecto)
                 .ToListAsync();
@@ -305,7 +310,14 @@ namespace Proyectogestionhoras.Services
 
                     if (usuarioProyecto != null)
                     {
-                        
+                        // Verificar si el usuario tiene horas anuales suficientes
+                        var recurso = usuario.IdRecursoNavigation;
+                        if (recurso.HhAnuales.HasValue && recurso.HhAnuales.Value < usuariovm.HHAsignadas)
+                        {
+                            return 2; // Horas insuficientes
+                        }
+
+                        // Asignar horas según el tipo de recurso
                         if (tiporecurso == "Socio")
                         {
                             usuarioProyecto.HhSocios = usuariovm.HHAsignadas;
@@ -315,14 +327,13 @@ namespace Proyectogestionhoras.Services
                             usuarioProyecto.HhStaff = usuariovm.HHAsignadas;
                         }
 
-                      
-                        var recurso = usuario.IdRecursoNavigation;
+                        // Restar las horas anuales del recurso
                         if (recurso.HhAnuales.HasValue)
                         {
                             recurso.HhAnuales -= usuariovm.HHAsignadas;
                         }
 
-                        
+                        // Si no se asignan horas, eliminar la relación UsuarioProyecto
                         if (usuariovm.HHAsignadas == 0)
                         {
                             context.UsuarioProyectos.Remove(usuarioProyecto);
@@ -332,8 +343,8 @@ namespace Proyectogestionhoras.Services
             }
 
             await context.SaveChangesAsync();
+            return 1; // Asignación exitosa
         }
-
 
 
         public async Task<List<ProyectoDTO>> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
