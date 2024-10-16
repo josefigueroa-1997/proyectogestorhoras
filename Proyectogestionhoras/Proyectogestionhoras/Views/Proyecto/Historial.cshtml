@@ -1,0 +1,35 @@
+﻿@{
+
+    ViewData["Title"] = "Historial de Negocioaciones";
+    var historialNegociaciones = ViewBag.Historial as List<Proyectogestionhoras.Models.DTO.HistorailNegociacionDTO>;
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Historial</h2>
+        <div class="section-content">
+
+            @if (historialNegociaciones != null && historialNegociaciones.Count > 0)
+            {
+                @foreach (var historial in historialNegociaciones)
+                {
+                    <a href="@Url.Action("DetalleNegociacion","Proyecto",new{idnegociación=historial.IdNegociacion})">
+                        <div class="card">
+                            <h3>Fecha de Negociación: @historial.Fecha.ToString("dd/MM/yyyy")</h3>
+                            <p>Num. Proyecto: @historial.NumProyecto</p>
+                        </div>
+                    </a>
+                }
+            }
+            else
+            {
+                <p>Este Proyecto no tiene Historial de Negociaciones</p>
+            }
+           
+
+        </div>
+    </div>
+
+</div>

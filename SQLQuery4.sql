@@ -1,0 +1,221 @@
+create PROCEDURE [dbo].[GENERARFACTURAPROYECTONEGOCIACION]
+    @IDNEGOCIO INT
+AS
+BEGIN
+    -- Evita mostrar el conteo de filas afectadas
+    SET NOCOUNT ON;
+
+    -- Declarar las variables necesarias
+    DECLARE @PLAZO INT;
+    DECLARE @AFECTAIVA VARCHAR(100);
+    DECLARE @MONTO DECIMAL(18, 2);  -- Ajustar precisión para montos grandes
+    DECLARE @FECHAINICIO DATE;
+    DECLARE @VALORIVA DECIMAL(10, 2);
+    DECLARE @MONTO_MENSUAL DECIMAL(18, 2);
+    DECLARE @MONTO_CON_IVA DECIMAL(18, 2);
+    DECLARE @FECHAFACTURA DATE;
+    DECLARE @MES INT = 1;
+    DECLARE @SUMA_MONTOS DECIMAL(18, 2) = 0;  -- Para llevar el control de los montos acumulados
+    DECLARE @SUMA_IVA DECIMAL(18, 2) = 0;     -- Para llevar el control del IVA acumulado
+
+    -- Obtener la información del proyecto usando @IDPROYECTO
+    SELECT @PLAZO = HN.PLAZO,
+           @FECHAINICIO = HN.FECHAINICIO,
+           @MONTO = HN.MONTO,
+           @AFECTAIVA = HN.AFECTAIVA,
+           @VALORIVA = 0.19
+    FROM HISTORIAL_NEGOCIACION HN
+    
+    WHERE HN.ID = @IDNEGOCIO;
+
+    -- Calcular el monto mensual
+    SET @MONTO_MENSUAL = ROUND(@MONTO / @PLAZO, 2);
+
+    -- Crear una tabla temporal para almacenar los resultados
+    CREATE TABLE #FacturasTemp (
+        
+        FechaFactura DATE,
+        Monto DECIMAL(18, 2),
+        MontoIVA DECIMAL(18, 2),
+        Total DECIMAL(18, 2)
+    );
+
+    -- Generar facturas para cada mes y guardarlas en la tabla temporal
+    WHILE @MES <= @PLAZO
+    BEGIN
+        -- Calcular la fecha de la factura (un mes después de la fecha de inicio)
+        SET @FECHAFACTURA = DATEADD(MONTH, @MES, @FECHAINICIO);
+
+        -- Ajustar el último mes para corregir diferencias por redondeo
+        IF @MES = @PLAZO
+        BEGIN
+            -- Ajustar el último monto mensual para que el total sea exacto
+            SET @MONTO_MENSUAL = ROUND(@MONTO - @SUMA_MONTOS, 2);
+        END
+
+        -- Calcular el monto con IVA si aplica
+        IF @AFECTAIVA = 'si'
+        BEGIN
+            IF @MES = @PLAZO
+            BEGIN
+                -- Ajustar el IVA del último mes para que el total sea exacto
+                SET @MONTO_CON_IVA = ROUND((@MONTO_MENSUAL * (1 + @VALORIVA)), 2);
+            END
+            ELSE
+            BEGIN
+                SET @MONTO_CON_IVA = ROUND(@MONTO_MENSUAL * (1 + @VALORIVA), 2);
+            END
+        END
+        ELSE
+        BEGIN
+            SET @MONTO_CON_IVA = ROUND(@MONTO_MENSUAL, 2);
+        END
+
+        -- Insertar los datos en la tabla temporal, redondeando
+        INSERT INTO #FacturasTemp (FechaFactura, Monto, MontoIVA, Total)
+        VALUES ( @FECHAFACTURA, 
+                ROUND(@MONTO_MENSUAL, 2), 
+                ROUND(@MONTO_CON_IVA - @MONTO_MENSUAL, 2), 
+                ROUND(@MONTO_CON_IVA, 2));
+
+        -- Acumular el monto e IVA, redondeando al acumular
+        SET @SUMA_MONTOS = ROUND(@SUMA_MONTOS + @MONTO_MENSUAL, 2);
+        SET @SUMA_IVA = ROUND(@SUMA_IVA + (@MONTO_CON_IVA - @MONTO_MENSUAL), 2);
+
+        -- Incrementar el mes
+        SET @MES = @MES + 1;
+    END
+
+    -- Mostrar las facturas generadas y redondear los totales
+    SELECT 
+           FechaFactura AS 'Fecha_Factura', 
+           ROUND(Monto, 2) AS 'Neto', 
+           ROUND(MontoIVA, 2) AS 'IVA', 
+           ROUND(Total, 2) AS 'Total'
+    FROM #FacturasTemp;
+
+  
+
+    -- Eliminar la tabla temporal
+    DROP TABLE #FacturasTemp;
+
+    -- Restablecer el comportamiento normal si es necesario
+    SET NOCOUNT OFF;
+END;
+
+
+
+
+ALTER PROCEDURE TRAER_NEGOCIACIONES
+@IDPROYECTO INT,
+@IDNEGOCIACION INT
+AS
+BEGIN
+    -- Consulta de negociaciones basadas en el ID del proyecto
+    SELECT 
+		HN.ID AS IDNEGOCIACION,
+        P.ID, 
+        P.NUM_PROYECTO, 
+        P.NOMBRE, 
+        HN.AFECTAIVA, 
+        HN.MONTO, 
+        HN.PLAZO, 
+        HN.FECHAINICIO, 
+        HN.FECHATERMINO,
+        HN.FECHANEGOCIACION, 
+        HN.PROBABILIDAD, 
+        HN.NIVELPROBABILIDAD, 
+        HN.HHSOCIOS, 
+        HN.HHSTAFF, 
+        HN.HHCONSULTORA, 
+        HN.HHCONSULTORB, 
+        HN.HHCONSULTORC, 
+        HN.FECHA, 
+        T.TIPO_TIPOLOGIA, 
+        CC.CODIGO,
+		C.NOMBRE AS NOMBRECLIENTE,
+		S.NOMBRE AS NOMBREDEPARTAMENTO,
+		HN.COSTOSOCIO,
+		HN.COSTOSTAFF,
+		HN.COSTOCONSULTORA,
+		HN.COSTOCONSULTORB,
+		HN.COSTOCONSULTORC     
+    FROM 
+        HISTORIAL_NEGOCIACION HN
+    INNER JOIN 
+        PROYECTO P ON HN.ID_PROYECTO = P.ID
+	INNER JOIN SUCURSAL_CLIENTE SC ON SC.ID = P.ID_CLIENTE_SUCURSAL
+	INNER JOIN CLIENTE C ON C.ID = SC.ID_CLIENTE
+	INNER JOIN SUCURSAL S ON S.ID = SC.ID_SUCURSAL
+    INNER JOIN 
+        TIPOLOGIA T ON T.ID = P.ID_TIPOLOGIA
+    INNER JOIN 
+        CCOSTO_UNEGOCIO CC ON CC.ID = P.ID_CCOSTO_UNEGOCIO
+    WHERE 
+        (HN.ID_PROYECTO = @IDPROYECTO OR @IDPROYECTO=0 OR @IDPROYECTO IS NULL) AND (HN.ID=@IDNEGOCIACION OR @IDNEGOCIACION=0 OR @IDNEGOCIACION IS NULL)
+END;
+
+
+
+
+
+
+
+
+ALTER TABLE HISTORIAL_NEGOCIACION
+ADD COSTOSOCIO DECIMAL(10,2)
+
+ALTER TABLE HISTORIAL_NEGOCIACION
+ADD COSTOSTAFF DECIMAL(10,2)
+
+
+ALTER TABLE HISTORIAL_NEGOCIACION
+ADD COSTOCONSULTORA DECIMAL(10,2)
+
+
+
+ALTER TABLE HISTORIAL_NEGOCIACION
+ADD COSTOCONSULTORB DECIMAL(10,2)
+
+ALTER TABLE HISTORIAL_NEGOCIACION
+ADD COSTOCONSULTORC DECIMAL(10,2)
+
+
+
+ALTER PROCEDURE [dbo].[INSERTARNEGOCIACION]
+@IDPROYECTO INT,
+@AFECTAIVA VARCHAR(10),
+@MONTO DECIMAL(10,2),
+@PLAZO INT,
+@FECHAINICIO DATE,
+@FECHATERMINO DATE,
+@FECHANEGOCIACION DATE,
+@PROBABILIDAD VARCHAR(20),
+@NIVELPROBABILIDAD DECIMAL(10,2),
+@HHSOCIOS INT,
+@HHSTAFF INT,
+@HHCONSULTORA INT,
+@HHCONSULTORB INT,
+@HHCONSULTORC INT
+AS
+BEGIN
+DECLARE @COSTOSOCIO INT;
+DECLARE @COSTOSTAFF INT;
+DECLARE @COSTOCONSULTORA INT;
+DECLARE @COSTOCONSULTORB INT;
+DECLARE @COSTOCONSULTORC INT;
+
+SELECT @COSTOSOCIO=COSTO_UNITARIO  FROM RECURSO WHERE NOMBRE_RECURSO = 'Socio'
+SELECT @COSTOSTAFF=COSTO_UNITARIO  FROM RECURSO WHERE NOMBRE_RECURSO = 'Staff'
+SELECT @COSTOCONSULTORA=COSTO_UNITARIO  FROM RECURSO WHERE TIPO_CONSULTOR = 'Consultor A'
+SELECT @COSTOCONSULTORB=COSTO_UNITARIO  FROM RECURSO WHERE TIPO_CONSULTOR = 'Consultor B'
+SELECT @COSTOCONSULTORC=COSTO_UNITARIO  FROM RECURSO WHERE TIPO_CONSULTOR = 'Consultor C'
+
+
+INSERT INTO HISTORIAL_NEGOCIACION(ID_PROYECTO,AFECTAIVA,MONTO,PLAZO,FECHA,FECHAINICIO,FECHATERMINO,FECHANEGOCIACION,PROBABILIDAD,NIVELPROBABILIDAD
+,HHSOCIOS,HHSTAFF,HHCONSULTORA,HHCONSULTORB,HHCONSULTORC,COSTOSOCIO,COSTOSTAFF,COSTOCONSULTORA,COSTOCONSULTORB,COSTOCONSULTORC)
+VALUES (@IDPROYECTO,@AFECTAIVA,@MONTO,@PLAZO,GETDATE(),@FECHAINICIO,@FECHATERMINO,@FECHANEGOCIACION,@PROBABILIDAD,@NIVELPROBABILIDAD,@HHSOCIOS
+,@HHSTAFF,@HHCONSULTORA,@HHCONSULTORB,@HHCONSULTORC,@COSTOSOCIO,@COSTOSTAFF,@COSTOCONSULTORA,@COSTOCONSULTORB,@COSTOCONSULTORC)
+
+
+END;

@@ -58,17 +58,17 @@
    
 
     .yellow-row td {
-        background-color: yellow; /* Color amarillo para la fila */
+        background-color: yellow; 
     }
 
     .izquierda {
-        text-align: left; /* Alinear texto a la izquierda */
+        text-align: left; 
     }
 </style>
 
 <div class="form-container">
     <h2 class="section-header">Mi Gantt</h2>
-    <!-- Botón para descargar el PDF -->
+    
 
     <div class="table-separator">
         <table>
@@ -78,7 +78,7 @@
                 </tr>
             </thead>
             <tbody id="ganttBody">
-                <!-- Filas del cuerpo de la tabla -->
+              
             </tbody>
             <tfoot>
                 <tr id="totalRow">
@@ -123,9 +123,9 @@
 }
 <script>
     $(document).ready(function () {
-        const idusuario = @Context.Session.GetInt32("id"); // Obtener el valor de idusuario desde Razor
+        const idusuario = @Context.Session.GetInt32("id"); 
 
-        // Función para obtener todos los meses entre dos fechas
+    
         function getMesesEntreFechas(fechaInicio, fechaFin) {
             const meses = [];
             const fechaActual = new Date(fechaInicio);
@@ -158,7 +158,7 @@
         function llenarCuerpoTabla(ganttData, mesesOrdenados) {
             const tbody = $('#ganttBody');
             const totalesPorMes = new Array(mesesOrdenados.length).fill(0); 
-
+            
             ganttData.forEach(proyecto => {
    
                 let totalHorasProyecto = 0;
@@ -256,7 +256,7 @@
             });
            
             const totalGeneral = totalesPorMes.reduce((acc, curr) => acc + curr, 0);
-            totalRow.append($('<td>').text(totalGeneral > 0 ? `${totalGeneral} hrs` : '-')); // Total General
+            totalRow.append($('<td>').text(totalGeneral > 0 ? `${totalGeneral} hrs` : '-')); 
         }
 
         $.ajax({
@@ -271,14 +271,13 @@
                     meses.forEach(m => mesesUnicos.add(`${m.año}-${m.mes}`));
                 });
 
-                // Ordenar los meses únicos en orden cronológico
                 const mesesOrdenados = Array.from(mesesUnicos).sort((a, b) => {
                     const [añoA, mesA] = a.split('-').map(Number);
                     const [añoB, mesB] = b.split('-').map(Number);
                     return new Date(añoA, mesA - 1) - new Date(añoB, mesB - 1);
                 });
 
-                // Generar el encabezado y llenar el cuerpo de la tabla
+           
                 generarEncabezado(mesesOrdenados);
                 llenarCuerpoTabla(ganttData, mesesOrdenados);
             },

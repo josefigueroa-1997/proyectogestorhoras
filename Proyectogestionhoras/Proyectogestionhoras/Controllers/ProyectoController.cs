@@ -9,6 +9,8 @@ using Proyectogestionhoras.Services.Interface;
 using System.Text.RegularExpressions;
 using Serilog;
 using Microsoft.Extensions.Primitives;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Proyectogestionhoras.Controllers
 {
     public class ProyectoController : Controller
@@ -30,33 +32,72 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task <IActionResult> GetProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
-            ViewBag.Proyectos = proyectos;
-            return View("Proyectos");
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                        ViewBag.Proyectos = proyectos;
+                        return View("Proyectos");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+            
         }
 
 
 
         public async Task<IActionResult> NuevoProyecto()
         {
-            var unegocios = await proyectoService.ObtenerUnegocio();
-            var ccostos = await proyectoService.ObtenerCcosto();
-            var empresas = await proyectoService.ObtenerEmpresa();
-            var tipologias = await proyectoService.ObtenerTipoligias();
-            
-            var status = await proyectoService.ObtenerStatus();
-            var recursos = await usuarioService.ObtenerUusario(0,null,0);
-            var segmentoscostos = await ObtenerSegmentosCostos();
-            var clientes = await context.Clientes.ToListAsync();
-            ViewBag.SegmentoCosto = segmentoscostos;
-            ViewBag.Recursos = recursos;
-            ViewBag.Clientes = clientes;
-            ViewBag.Tipologias = tipologias;
-            ViewBag.Empresas = empresas;
-            ViewBag.Ccostos = ccostos;
-            ViewBag.Unegocios = unegocios;
-            ViewBag.Status = status;
-            return View();
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var unegocios = await proyectoService.ObtenerUnegocio();
+                        var ccostos = await proyectoService.ObtenerCcosto();
+                        var empresas = await proyectoService.ObtenerEmpresa();
+                        var tipologias = await proyectoService.ObtenerTipoligias();
+
+                        var status = await proyectoService.ObtenerStatus();
+                        var recursos = await usuarioService.ObtenerUusario(0, null, 0);
+                        var segmentoscostos = await ObtenerSegmentosCostos();
+                        var clientes = await context.Clientes.ToListAsync();
+                        ViewBag.SegmentoCosto = segmentoscostos;
+                        ViewBag.Recursos = recursos;
+                        ViewBag.Clientes = clientes;
+                        ViewBag.Tipologias = tipologias;
+                        ViewBag.Empresas = empresas;
+                        ViewBag.Ccostos = ccostos;
+                        ViewBag.Unegocios = unegocios;
+                        ViewBag.Status = status;
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+
+           
         }
 
 
@@ -144,16 +185,36 @@ namespace Proyectogestionhoras.Controllers
        
         public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            var proyectos = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto, idusuario);
-            var servicios = await proyectoService.ObtenerServiciosProyecto(id);
-            var gastos = await proyectoService.ObtenerGastosProyectos(id);
-            var facturas = await facturaService.RecuperarFacturas(id);
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                        var servicios = await proyectoService.ObtenerServiciosProyecto(id);
+                        var gastos = await proyectoService.ObtenerGastosProyectos(id);
+                        var facturas = await facturaService.RecuperarFacturas(id);
+
+                        ViewBag.Facturas = facturas;
+                        ViewBag.Proyectos = proyectos;
+                        ViewBag.Servicios = servicios;
+                        ViewBag.Gastos = gastos;
+                        return View("DetalleProyecto");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+
             
-            ViewBag.Facturas = facturas;
-            ViewBag.Proyectos = proyectos;
-            ViewBag.Servicios = servicios;
-            ViewBag.Gastos = gastos;
-            return View("DetalleProyecto");
         }
 
         public int ultimoidproyecto()
@@ -173,35 +234,54 @@ namespace Proyectogestionhoras.Controllers
         }
         public async Task<IActionResult> EditarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto,int? idusuario)
         {
-            var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            var unegocios = await proyectoService.ObtenerUnegocio();
-            var ccostos = await proyectoService.ObtenerCcosto();
-            var empresas = await proyectoService.ObtenerEmpresa();
-            var tipologias = await proyectoService.ObtenerTipoligias();
-            var clientes = await clienteService.ObtenerClientesIndex(0);
-            var status = await RecuperarEstados();
-            var recursos = await usuarioService.ObtenerUusario(0, null, 0);
-            var segmentoscostos = await ObtenerSegmentosCostos();
-            var sucursales = await ObtenerSucursales(idcliente);
-            var serviciosproyectos = await proyectoService.ObtenerServiciosProyecto(id);
-            var gastosproyectos = await proyectoService.ObtenerGastosProyectos(id);
-            var servicios = await GetServicios();
-            var gastos = await GetGastos();
-            ViewBag.Gastos = gastos;
-            ViewBag.GastosProyectos = gastosproyectos;
-            ViewBag.Servicios = servicios;
-            ViewBag.ServiciosProyectos = serviciosproyectos;
-            ViewBag.SegmentoCosto = segmentoscostos;
-            ViewBag.Recursos = recursos;
-            ViewBag.Clientes = clientes;
-            ViewBag.Tipologias = tipologias;
-            ViewBag.Empresas = empresas;
-            ViewBag.Ccostos = ccostos;
-            ViewBag.Unegocios = unegocios;
-            ViewBag.Status = status;
-            ViewBag.Proyectos = proyecto;
-            ViewBag.Sucursales = sucursales;
-            return View();
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                        var unegocios = await proyectoService.ObtenerUnegocio();
+                        var ccostos = await proyectoService.ObtenerCcosto();
+                        var empresas = await proyectoService.ObtenerEmpresa();
+                        var tipologias = await proyectoService.ObtenerTipoligias();
+                        var clientes = await clienteService.ObtenerClientesIndex(0);
+                        var status = await RecuperarEstados();
+                        var recursos = await usuarioService.ObtenerUusario(0, null, 0);
+                        var segmentoscostos = await ObtenerSegmentosCostos();
+                        var sucursales = await ObtenerSucursales(idcliente);
+                        var serviciosproyectos = await proyectoService.ObtenerServiciosProyecto(id);
+                        var gastosproyectos = await proyectoService.ObtenerGastosProyectos(id);
+                        var servicios = await GetServicios();
+                        var gastos = await GetGastos();
+                        ViewBag.Gastos = gastos;
+                        ViewBag.GastosProyectos = gastosproyectos;
+                        ViewBag.Servicios = servicios;
+                        ViewBag.ServiciosProyectos = serviciosproyectos;
+                        ViewBag.SegmentoCosto = segmentoscostos;
+                        ViewBag.Recursos = recursos;
+                        ViewBag.Clientes = clientes;
+                        ViewBag.Tipologias = tipologias;
+                        ViewBag.Empresas = empresas;
+                        ViewBag.Ccostos = ccostos;
+                        ViewBag.Unegocios = unegocios;
+                        ViewBag.Status = status;
+                        ViewBag.Proyectos = proyecto;
+                        ViewBag.Sucursales = sucursales;
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+          
         }
 
         public async Task<int> Obtenerstatusproyecto(int idproyecto)
@@ -359,6 +439,59 @@ namespace Proyectogestionhoras.Controllers
 
         }
 
+        public async Task<IActionResult> ObtenerhistorialNegociaciones(int? idproyecto,int? idnegociacion)
+        {
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var historial = await proyectoService.RecuperarHistorialNegociacion(idproyecto, idnegociacion);
+                        ViewBag.Historial = historial;
+                        return View("Historial");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+            
+        }
+
+        public async Task<IActionResult> DetalleNegociacion(int? idproyecto,int? idnegociación)
+        {
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var historial = await proyectoService.RecuperarHistorialNegociacion(idproyecto, idnegociación);
+                        var factura = await proyectoService.RecuperarFacturaNegociacion(idnegociación);
+                        ViewBag.Historial = historial;
+                        ViewBag.Facturas = factura;
+                        return View("DetalleNegociacion");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+            
+        }
 
         public async Task<List<StatusProyecto>> RecuperarEstados()
         {

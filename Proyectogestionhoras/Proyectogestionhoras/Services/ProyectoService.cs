@@ -12,6 +12,8 @@ using Proyectogestionhoras.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Proyectogestionhoras.Services
 {
     public class ProyectoService : IProyecto
@@ -310,14 +312,14 @@ namespace Proyectogestionhoras.Services
 
                     if (usuarioProyecto != null)
                     {
-                        // Verificar si el usuario tiene horas anuales suficientes
+               
                         var recurso = usuario.IdRecursoNavigation;
                         if (recurso.HhAnuales.HasValue && recurso.HhAnuales.Value < usuariovm.HHAsignadas)
                         {
-                            return 2; // Horas insuficientes
+                            return 2; 
                         }
 
-                        // Asignar horas según el tipo de recurso
+                        
                         if (tiporecurso == "Socio")
                         {
                             usuarioProyecto.HhSocios = usuariovm.HHAsignadas;
@@ -327,13 +329,13 @@ namespace Proyectogestionhoras.Services
                             usuarioProyecto.HhStaff = usuariovm.HHAsignadas;
                         }
 
-                        // Restar las horas anuales del recurso
+                    
                         if (recurso.HhAnuales.HasValue)
                         {
                             recurso.HhAnuales -= usuariovm.HHAsignadas;
                         }
 
-                        // Si no se asignan horas, eliminar la relación UsuarioProyecto
+                 
                         if (usuariovm.HHAsignadas == 0)
                         {
                             context.UsuarioProyectos.Remove(usuarioProyecto);
@@ -554,6 +556,116 @@ namespace Proyectogestionhoras.Services
             }
         }
 
+
+        public async Task<List<HistorailNegociacionDTO>> RecuperarHistorialNegociacion(int? idproyecto,int? idnegociacion)
+        {
+            try
+            {
+#pragma warning disable CS8600
+                object idproyectoparameter = (object)idproyecto ?? DBNull.Value;
+                object idnegociacionparameter = (object)idnegociacion ?? DBNull.Value;
+#pragma warning restore CS8600
+                var negociaciones = new List<HistorailNegociacionDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = "TRAER_NEGOCIACIONES";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyectoparameter));
+                    cmd.Parameters.Add(new SqlParameter("@IDNEGOCIACION", idnegociacionparameter));
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            HistorailNegociacionDTO historial = new()
+                            {
+                                IdNegociacion = reader.IsDBNull(reader.GetOrdinal("IDNEGOCIACION")) ? default : reader.GetInt32(reader.GetOrdinal("IDNEGOCIACION")),
+                                Id = reader.IsDBNull(reader.GetOrdinal("ID")) ? default : reader.GetInt32(reader.GetOrdinal("ID")),
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUM_PROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
+                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBRE")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                AfectaIva = reader.IsDBNull(reader.GetOrdinal("AFECTAIVA")) ? string.Empty : reader.GetString(reader.GetOrdinal("AFECTAIVA")),
+                                Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? default : reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                Plazo = reader.IsDBNull(reader.GetOrdinal("PLAZO")) ? default : reader.GetInt32(reader.GetOrdinal("PLAZO")),
+                                Fechainicio = reader.IsDBNull(reader.GetOrdinal("FECHAINICIO")) ? default(DateTime) : reader.GetDateTime(reader.GetOrdinal("FECHAINICIO")),
+                                FechaTermino = reader.IsDBNull(reader.GetOrdinal("FECHATERMINO")) ? default(DateTime) : reader.GetDateTime(reader.GetOrdinal("FECHATERMINO")),
+                                FechaPlazoNeg = reader.IsDBNull(reader.GetOrdinal("FECHANEGOCIACION")) ? default(DateTime) : reader.GetDateTime(reader.GetOrdinal("FECHANEGOCIACION")),
+                                Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
+                                NivelProbabilidad = reader.IsDBNull(reader.GetOrdinal("NIVELPROBABILIDAD")) ? default : reader.GetDecimal(reader.GetOrdinal("NIVELPROBABILIDAD")),
+                                Hhsocios = reader.IsDBNull(reader.GetOrdinal("HHSOCIOS")) ? default : reader.GetInt32(reader.GetOrdinal("HHSOCIOS")),
+                                Hhstaff = reader.IsDBNull(reader.GetOrdinal("HHSTAFF")) ? default : reader.GetInt32(reader.GetOrdinal("HHSTAFF")),
+                                Hhconsultora = reader.IsDBNull(reader.GetOrdinal("HHCONSULTORA")) ? default : reader.GetInt32(reader.GetOrdinal("HHCONSULTORA")),
+                                hhconsultorb = reader.IsDBNull(reader.GetOrdinal("HHCONSULTORB")) ? default : reader.GetInt32(reader.GetOrdinal("HHCONSULTORB")),
+                                hhconsultorc = reader.IsDBNull(reader.GetOrdinal("HHCONSULTORC")) ? default : reader.GetInt32(reader.GetOrdinal("HHCONSULTORC")),
+                                Fecha = reader.IsDBNull(reader.GetOrdinal("FECHA")) ? default(DateTime) : reader.GetDateTime(reader.GetOrdinal("FECHA")),
+                                Tipologia = reader.IsDBNull(reader.GetOrdinal("TIPO_TIPOLOGIA")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
+                                CentroCosto = reader.IsDBNull(reader.GetOrdinal("CODIGO")) ? string.Empty : reader.GetString(reader.GetOrdinal("CODIGO")),
+                                NombreCliente = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
+                                NombreDepartamento = reader.IsDBNull(reader.GetOrdinal("NOMBREDEPARTAMENTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREDEPARTAMENTO")),
+                                COSTOSOCIO = reader.IsDBNull(reader.GetOrdinal("COSTOSOCIO")) ? default : reader.GetDecimal(reader.GetOrdinal("COSTOSOCIO")),
+                                CostoStaff = reader.IsDBNull(reader.GetOrdinal("COSTOSTAFF")) ? default : reader.GetDecimal(reader.GetOrdinal("COSTOSTAFF")),
+                                CostoConsA = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORA")) ? default : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORA")),
+                                CostoConsB = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORB")) ? default : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORB")),
+                                CostoConsC = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORC")) ? default : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORC")),
+
+
+                            };
+
+                            negociaciones.Add(historial);
+
+                        }
+                    }
+                    await conexion.CloseDatabaseConnectionAsync();
+                    return negociaciones;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las negociaciones" + ex);
+                return new List<HistorailNegociacionDTO>();
+
+            }
+        }
+
+        public async Task<List<FacturaNegociacionDTO>> RecuperarFacturaNegociacion(int? idnegociacion)
+        {
+            try
+            {
+                var factura = new List<FacturaNegociacionDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "GENERARFACTURAPROYECTONEGOCIACION";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDNEGOCIO", idnegociacion));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            FacturaNegociacionDTO datos = new()
+                            {
+                                FechaFactura = reader.GetDateTime(reader.GetOrdinal("Fecha_Factura")),
+                                Neto = reader.GetDecimal(reader.GetOrdinal("Neto")),
+                                Iva = reader.GetDecimal(reader.GetOrdinal("IVA")),
+                                Total = reader.GetDecimal(reader.GetOrdinal("Total")),
+                                
+                            };
+                            factura.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return factura;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las facturas de la negociación:" + ex.Message);
+                return new List<FacturaNegociacionDTO>();
+            }
+        }
 
         public async Task<List<Unegocio>> ObtenerUnegocio()
         {

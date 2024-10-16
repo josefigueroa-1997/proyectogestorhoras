@@ -1,0 +1,434 @@
+﻿@{
+    ViewData["Title"] = "Detalle Negociación";
+}
+
+<style>
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .tables-wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .table-container {
+        flex: 1;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .highlight {
+        background-color: #f8d7da;
+        font-weight: bold;
+    }
+
+    .update-btn, .nuevo-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-left: 10px;
+        margin-bottom: 20px;
+    }
+
+    .update-btn {
+        color: #fff;
+        background-color: #fcaa67;
+    }
+
+        .update-btn:hover {
+            background-color: #e39450;
+        }
+
+    .nuevo-btn {
+        color: #fff;
+        background-color: #007bff;
+    }
+
+        .nuevo-btn:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="form-container">
+    <div class="form-group">
+        @foreach (var historial in ViewBag.Historial)
+        {
+            <p class="form-subtitle" style="color:black;">Detalles de la Negociación:@historial.NumProyecto - @historial.Fecha.ToString("dd/MM/yyyy")</p>
+           
+
+            <div class="tables-wrapper">
+
+                <div class="table-container">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="highlight">Número del Proyecto</td>
+                                <td>@historial.NumProyecto</td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="highlight">Código</td>
+                                <td>@historial.CentroCosto</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">Cliente</td>
+                                <td>@historial.NombreCliente</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">Departamento</td>
+                                <td>@historial.NombreDepartamento</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">Proyecto</td>
+                                <td>@historial.NombreProyecto</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">Tipología Proyecto</td>
+                                <td>@historial.Tipologia</td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="highlight">IVA</td>
+                                <td>@historial.AfectaIva </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Segunda tabla -->
+                <div class="table-container">
+                    <table>
+                        <tbody>
+                           
+                            <tr>
+                                @if (@historial.NivelProbabilidad > 0)
+                                {
+                                    <td class="highlight">Probabilidad</td>
+                                    <td>@historial.Probabilidad</td>
+                                }
+
+                            </tr>
+                            <tr>
+
+                                @if (@historial.NivelProbabilidad > 0)
+                                {
+                                    <td class="highlight">Porc.Probabilidad</td>
+                                    <td>@historial.NivelProbabilidad %</td>
+                                }
+
+                            </tr>
+                            <tr>
+                                <td class="highlight">Plazo</td>
+                                <td>@historial.Plazo</td>
+                            </tr>
+                            <tr>
+                                @if (historial.FechaPlazoNeg != null)
+                                {
+                                    <td class="highlight">Fecha Plazo Negociación</td>
+                                    <td>@historial.FechaPlazoNeg.ToString("dd/MM/yyyy")</td>
+                                }
+
+
+                            </tr>
+                            <tr>
+                                <td class="highlight">Fecha Inicio</td>
+                                <td>@historial.Fechainicio.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">Fecha Termino</td>
+                                <td>@historial.FechaTermino.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">Monto</td>
+                                <td>@String.Format("{0:N2}", @historial.Monto)</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+
+    @*FACTURAS PROYECTO*@
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black">Facturas</p>
+        <div style="display: flex; justify-content: space-between;">
+
+            <table style="width: 100%; border-collapse: collapse; text-align: left; justify-content:center;">
+                <thead>
+                    <tr style="background-color: #d9e2f3; color: black;">
+
+
+                        
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Mes</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Neto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Iva</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+                        decimal totalesneto = 0;
+                        decimal totaliva = 0;
+                        decimal totalfactura = 0;
+                    }
+
+                    @foreach (var factura in ViewBag.Facturas)
+                    {
+                        <tr>
+
+                            <td style="padding: 10px; border: 1px solid #ddd;">@factura.FechaFactura.ToString("MM/yyyy")</td>
+                            <td id="neto" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", factura.Neto)</td>
+                            <td id="iva" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", factura.Iva)</td>
+                            <td id="totalf" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", factura.Total)</td>
+                            @{
+                                totalesneto += factura.Neto;
+                                totaliva += factura.Iva;
+                                totalfactura += factura.Total;
+                            }
+                        </tr>
+                    }
+
+                    @{
+
+
+                        decimal totalNetoRounded = totalesneto;
+                        decimal totalIvaRounded = totaliva;
+                        decimal totalFacturaRounded = totalfactura;
+
+                        if (totalIvaRounded % 100 == 99)
+                        {
+                            totalIvaRounded += 1;
+                        }
+                        else if (totalIvaRounded % 100 != 0)
+                        {
+                            totalIvaRounded += (100 - (totalIvaRounded % 100));
+                        }
+
+                        if (totalFacturaRounded % 100 == 99)
+                        {
+                            totalFacturaRounded += 1;
+                        }
+                        else if (totalFacturaRounded % 100 != 0)
+                        {
+                            totalFacturaRounded += (100 - (totalFacturaRounded % 100));
+                        }
+                    }
+                    <tr>
+                        <td colspan="1" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Totales</strong></td>
+                        <td id="totalesNeto" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N2}", totalNetoRounded)</strong></td>
+                        <td id="totalesIva" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N2}", totalIvaRounded)</strong></td>
+                        <td id="totalesFacturas" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N2}", totalFacturaRounded)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+    
+
+
+
+    @*COSTOS DIRECTOS*@
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black">Costos Directos</p>
+        <div style="display: flex; justify-content: space-between;">
+            @{
+                decimal totalsocios = 0;
+                decimal totalstaff = 0;
+                decimal totalconsultores = 0;
+            }
+            @foreach (var historial in ViewBag.Historial)
+            {
+
+
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background-color: #b2e6a5; color: black;">
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Costo</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Horas</th>
+                           
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@historial.Hhsocios</td>
+                           
+                            @{
+                                totalsocios = historial.Hhsocios * @historial.COSTOSOCIO;
+                            }
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalsocios)</td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@historial.Hhstaff</td>
+                            
+                           
+                            @{
+                                totalstaff = historial.Hhstaff * @historial.CostoStaff;
+                            }
+
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalstaff)</td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@historial.Hhconsultora</td>
+                          
+                           
+                            @{
+                                decimal totalconsultora = historial.Hhconsultora * @historial.CostoConsA;
+                            }
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultora) </td>
+
+
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@historial.hhconsultorb</td>
+                            
+                            @{
+                                decimal totalconsultorB = historial.hhconsultorb * @historial.CostoConsB;
+                            }
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultorB)</td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">@historial.hhconsultorc</td>
+                          
+                           
+                            @{
+                                decimal totalconsultorC = historial.hhconsultorc * @historial.CostoConsC;
+                            }
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultorC)</td>
+
+                        </tr>
+                        @{
+                            decimal totalescostos = totalconsultorC + totalconsultorB + totalconsultora + totalstaff + totalsocios;
+                            totalconsultores = totalconsultorC + totalconsultorB + totalconsultora;
+                        }
+                        <tr>
+                            <td colspan="2" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
+                            <td id="totalcostos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"><strong>@String.Format("{0:N2}", totalescostos)</strong> </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            }
+        </div>
+    </div>
+
+
+
+
+
+    
+   
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+        <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
+            <thead>
+                <tr style="background-color: #fa8164; color: black; text-align:center">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N2}", totalesneto)</strong></td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalsocios)</td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalstaff)</td>
+
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultores)</td>
+
+                </tr>
+
+              
+                @{
+                    decimal totalegresos = totalsocios + totalstaff + totalconsultores;
+                }
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong>@String.Format("{0:N2}", totalegresos)</strong>
+                    </td>
+
+                </tr>
+                @{
+                    decimal margen = totalesneto - totalegresos;
+                }
+                <tr style="background-color: #fa8164; color: black;">
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N2}", margen)</strong></td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    
+
+</div>
+

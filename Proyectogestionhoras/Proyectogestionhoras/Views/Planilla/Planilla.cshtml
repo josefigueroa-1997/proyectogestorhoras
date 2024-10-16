@@ -203,7 +203,7 @@
                     <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Actividad</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Número Horas</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Num. Hrs</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
                     
                     
@@ -227,8 +227,13 @@
 
                         </select>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" name="hhregistradas" style="text-align:center;"/></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" name="observaciones" /></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                        <textarea rows="4" name="observaciones" style="width:100%;">
+
+                        </textarea>
+                        
+                        </td>
                 
                     <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
 
@@ -391,7 +396,7 @@
             var idproyecto = $('.proyectosSelect').val();
             var idactividad = $('.actividadesSelect').val();
             var horasRegistradas = parseInt($('input[name="hhregistradas"]').val()) || 0;
-            var observaciones = $('input[name="observaciones"]').val();
+            var observaciones = $('textarea[name="observaciones"]').val();
             var idusuarioproyecto = $('.idusuarioproyecto').val();
             var hhrestantesinput = $('.hhrestantes').val();
 
@@ -450,8 +455,13 @@
                                             <option value="" disabled selected>Seleccione una actividad</option>
                                         </select>
                                     </td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" name="hhregistradas" style="text-align:center;"/></td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" name="observaciones" /></td>
+                                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <textarea rows="4" name="observaciones" style="width:100%;">
+
+                            </textarea>
+
+                            </td>
                                         
                                     <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
                                 </tr>`;
