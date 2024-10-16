@@ -695,9 +695,39 @@ namespace Proyectogestionhoras.Controllers
         }
         
 
-        public IActionResult GetProyectosUnidadNegocio()
+        public async Task<IActionResult> GetProyectosCategoria(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            return View("UnidadNegocio");
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var tipologias = await proyectoService.ObtenerTipoligias();
+                        var ccosto = await proyectoService.ObtenerCcosto();
+                        var unegocio = await proyectoService.ObtenerUnegocio();
+                        var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                        ViewBag.Proyectos = proyectos;
+                        ViewBag.Tipologias = tipologias;
+                        ViewBag.Ccosto = ccosto;
+                        ViewBag.Unegocio = unegocio;
+                        return View("ProyectosCategoria");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+            
         }
+
+
+        
     }
 }

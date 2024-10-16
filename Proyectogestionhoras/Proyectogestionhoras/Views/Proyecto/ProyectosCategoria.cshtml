@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "Clasificación de Proyectos";
+}
+
+
+<link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
+
+
+<div class="projects-container p-6">
+    <h1 class="text-2xl font-bold mb-6">Clasificación de Proyectos</h1>
+
+    <!-- Unidades de Negocio -->
+    <div class="projects-section mb-4">
+        <div class="section-header">
+            <button class="accordion-header w-full text-left py-2 px-4 bg-gray-200 font-semibold rounded-t-lg focus:outline-none"
+                    onclick="toggleAccordion('unegocio')">
+                Unidades de Negocio
+            </button>
+        </div>
+        <div id="unegocio" class="accordion-content hidden bg-gray-100 p-4 rounded-b-lg">
+            @if (ViewBag.Unegocio != null)
+            {
+                @foreach (var unegocio in ViewBag.Unegocio)
+                {
+                    <h2 class="text-lg font-semibold mb-2">@unegocio.TipoUnegocio</h2>
+                    <div class="section-content">
+                        @if (ViewBag.Proyectos != null)
+                        {
+                            @foreach (var proyecto in ViewBag.Proyectos)
+                            {
+                                if (proyecto.IDUNEGOCIO == unegocio.Id)
+                                {
+                                    <a href="@Url.Action("ObtenerProyectos", "Proyecto", new { id = proyecto.Id })"
+                                       class="block mb-4">
+                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
+                                            <h3 class="text-lg font-bold transition hover:text-orange-400">@proyecto.numproyecto</h3>
+                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: @proyecto.NombreCliente</p>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <!-- Centros de Costo -->
+    <div class="projects-section mb-4">
+        <div class="section-header">
+            <button class="accordion-header w-full text-left py-2 px-4 bg-gray-200 font-semibold rounded-t-lg focus:outline-none"
+                    onclick="toggleAccordion('ccosto')">
+                Centros de Costo
+            </button>
+        </div>
+        <div id="ccosto" class="accordion-content hidden bg-gray-100 p-4 rounded-b-lg">
+            @if (ViewBag.Ccosto != null)
+            {
+                @foreach (var ccosto in ViewBag.Ccosto)
+                {
+                    <h2 class="text-lg font-semibold mb-2">@ccosto.TipoCcosto</h2>
+                    <div class="section-content">
+                        @if (ViewBag.Proyectos != null)
+                        {
+                            @foreach (var proyecto in ViewBag.Proyectos)
+                            {
+                                if (proyecto.IDCOSTO == ccosto.Id)
+                                {
+                                    <a href="@Url.Action("ObtenerProyectos", "Proyecto", new { id = proyecto.Id })"
+                                       class="block mb-4">
+                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
+                                            <h3 class="text-lg font-bold transition hover:text-orange-400">@proyecto.numproyecto</h3>
+                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: @proyecto.NombreCliente</p>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <!-- Tipologías -->
+    <div class="projects-section mb-4">
+        <div class="section-header">
+            <button class="accordion-header w-full text-left py-2 px-4 bg-gray-200 font-semibold rounded-t-lg focus:outline-none"
+                    onclick="toggleAccordion('tipologia')">
+                Tipologías
+            </button>
+        </div>
+        <div id="tipologia" class="accordion-content hidden bg-gray-100 p-4 rounded-b-lg">
+            @if (ViewBag.Tipologias != null)
+            {
+                @foreach (var tipologia in ViewBag.Tipologias)
+                {
+                    <h2 class="text-lg font-semibold mb-2">@tipologia.TipoTipologia</h2>
+                    <div class="section-content">
+                        @if (ViewBag.Proyectos != null)
+                        {
+                            @foreach (var proyecto in ViewBag.Proyectos)
+                            {
+                                if (proyecto.IDTIPOLOGIA == tipologia.Id)
+                                {
+                                    <a href="@Url.Action("ObtenerProyectos", "Proyecto", new { id = proyecto.Id })"
+                                       class="block mb-4">
+                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
+                                            <h3 class="text-lg font-bold transition hover:text-orange-400">@proyecto.numproyecto</h3>
+                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: @proyecto.NombreCliente</p>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        content.classList.toggle('hidden');
+    }
+</script>
