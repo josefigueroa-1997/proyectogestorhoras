@@ -1,0 +1,58 @@
+﻿@{
+
+    ViewData["Title"] = "Parametros";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Parametros del Proyecto</h2>
+        <div class="section-content">
+
+            <a href="@Url.Action("GestorCuentas","Parametros")">
+                    <div class="card">
+                        <h3>Cuentas</h3>
+                    </div>
+
+                </a>
+            <a href="@Url.Action("AddPersonal","Usuario")">
+                <div class="card">
+                    <h3>Personal</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("GestorGastos","Parametros")">
+                <div class="card">
+                    <h3>Gastos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("GestorServicios","Parametros")">
+                <div class="card">
+                    <h3>Servicios</h3>
+                </div>
+
+            </a>
+            <a href="">
+                <div class="card">
+                    <h3>Segmentos</h3>
+                </div>
+
+            </a>
+            <a href="">
+                <div class="card">
+                    <h3>Tipologías</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("GestorActividades","Parametros")">
+                <div class="card">
+                    <h3>Actividades</h3>
+                </div>
+
+            </a>
+        </div>
+    </div>
+
+</div>

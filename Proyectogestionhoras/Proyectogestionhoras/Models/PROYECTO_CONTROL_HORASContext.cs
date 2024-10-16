@@ -27,6 +27,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
         public virtual DbSet<HhUsuarioHistorial> HhUsuarioHistorials { get; set; } = null!;
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
+        public virtual DbSet<HistorialNegociacion> HistorialNegociacions { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
         public virtual DbSet<Presupuesto> Presupuestos { get; set; } = null!;
@@ -263,13 +264,6 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Cuenta)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("CUENTA");
-
-                entity.Property(e => e.IdCuenta).HasColumnName("ID_CUENTA");
-
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(200)
                     .IsUnicode(false)
@@ -318,6 +312,86 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.HistorialCostos)
                     .HasForeignKey(d => d.IdUsuario)
                     .HasConstraintName("FK_HISTORIAL_COSTOS_USUARIO");
+            });
+
+            modelBuilder.Entity<HistorialNegociacion>(entity =>
+            {
+                entity.ToTable("HISTORIAL_NEGOCIACION");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Afectaiva)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("AFECTAIVA");
+
+                entity.Property(e => e.Costoconsultora)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORA");
+
+                entity.Property(e => e.Costoconsultorb)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORB");
+
+                entity.Property(e => e.Costoconsultorc)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORC");
+
+                entity.Property(e => e.Costosocio)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOSOCIO");
+
+                entity.Property(e => e.Costostaff)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOSTAFF");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA");
+
+                entity.Property(e => e.Fechainicio)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHAINICIO");
+
+                entity.Property(e => e.Fechanegociacion)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHANEGOCIACION");
+
+                entity.Property(e => e.Fechatermino)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHATERMINO");
+
+                entity.Property(e => e.Hhconsultora).HasColumnName("HHCONSULTORA");
+
+                entity.Property(e => e.Hhconsultorb).HasColumnName("HHCONSULTORB");
+
+                entity.Property(e => e.Hhconsultorc).HasColumnName("HHCONSULTORC");
+
+                entity.Property(e => e.Hhsocios).HasColumnName("HHSOCIOS");
+
+                entity.Property(e => e.Hhstaff).HasColumnName("HHSTAFF");
+
+                entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("MONTO");
+
+                entity.Property(e => e.Nivelprobabilidad)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("NIVELPROBABILIDAD");
+
+                entity.Property(e => e.Plazo).HasColumnName("PLAZO");
+
+                entity.Property(e => e.Probabilidad)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("PROBABILIDAD");
+
+                entity.HasOne(d => d.IdProyectoNavigation)
+                    .WithMany(p => p.HistorialNegociacions)
+                    .HasForeignKey(d => d.IdProyecto)
+                    .HasConstraintName("IDPROYECTONEG");
             });
 
             modelBuilder.Entity<Planilla>(entity =>

@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Gestor Cuentas";
+}
+
+<div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; display: flex; justify-content: space-between;">
+    <div style="width: 60%;">
+        <h2 style="text-align: center; color: #333;">Cuentas</h2>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
+            <thead>
+                <tr style="background-color: #d9e2f3; color: black;">
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Seleccionar</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">IDCUENTA</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 20%;">Cuenta</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Cuentas != null)
+                {
+                    foreach (var cuenta in ViewBag.Cuentas)
+                    {
+                        <tr>
+                            <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
+                                <button type="button"
+                                        onclick="cargarDatosAlternativa('@cuenta.Id', '@Html.Encode(cuenta.Idcuenta.ToString())', '@Html.Encode(cuenta.Cuenta)')">
+                                    Seleccionar
+                                </button>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">
+                                @cuenta.Idcuenta
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">
+                                @cuenta.Cuenta
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div style="width: 35%; margin-left: 20px;">
+        <h2 style="text-align: center; color: #333;">Agregar Cuenta</h2>
+
+        <form action="@Url.Action("GuardarActualizarCuenta", "Parametros")" method="post">
+            <input type="hidden" id="id" name="Id" />
+
+            <label for="idcuenta" style="display: block; margin-bottom: 10px;">IDCUENTA:</label>
+            <input type="text" id="idcuenta" name="Idcuenta" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+            <label for="cuenta" style="display: block; margin-bottom: 10px;">Cuenta:</label>
+            <input type="text" id="cuenta" name="Cuenta" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Guardar
+            </button>
+            <button type="button" onclick="limpiarFormulario()" style="width: 100%; padding: 10px; background-color: cornflowerblue; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">
+                Limpiar
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function cargarDatosAlternativa(id, idcuenta, cuenta) {
+        const idInput = document.querySelector('#id');
+        const idcuentaInput = document.querySelector('#idcuenta');
+        const cuentaInput = document.querySelector('#cuenta');
+
+        idInput.value = id;
+        idcuentaInput.value = idcuenta;
+        cuentaInput.value = cuenta;
+        idcuentaInput.readOnly = true; // Establecer el campo IDCUENTA como solo lectura
+    }
+    function limpiarFormulario() {
+        location.reload();
+    }
+</script>
