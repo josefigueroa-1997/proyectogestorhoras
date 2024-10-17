@@ -4,14 +4,14 @@
 
 <div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; display: flex; justify-content: space-between;">
     <div style="width: 60%;">
-        <h2 style="text-align: center; color: #333;">Servicios</h2>
+        <h2 style="text-align: center; color: #333;">Actividades</h2>
 
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
             <thead>
                 <tr style="background-color: #d9e2f3; color: black;">
                     <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Seleccionar</th>
                     <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Nombre</th>
-
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Rol</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@
                         <tr>
                             <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
                                 <button type="button"
-                                        onclick="cargarDatosAlternativa('@actividad.Id', '@Html.Encode(actividad.Nombre)')">
+                                        onclick="cargarDatosAlternativa('@actividad.Id', '@Html.Encode(actividad.Nombre)','@Html.Encode(actividad.TipoAcatividad)')">
                                     Seleccionar
                                 </button>
                             </td>
@@ -41,23 +41,21 @@
     </div>
 
     <div style="width: 35%; margin-left: 20px;">
-        <h2 style="text-align: center; color: #333;">Agregar Servicio</h2>
+        <h2 style="text-align: center; color: #333;">Agregar Actividad</h2>
 
         <form action="@Url.Action("GuardarActualizarActividades", "Parametros")" method="post">
             <input type="hidden" id="id" name="Id" />
 
             <label for="idcuenta" style="display: block; margin-bottom: 10px;">Nombre:</label>
             <input type="text" id="nombre" name="Nombre" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
-            <select id="tipo" name="TipoAcatividad">
-                <option value="Socio">
-                    Socio
-                </option>
-                <option value="Staff">
-                    Staff
-                </option>
-                <option value="Consultor Externo">
-                    Consultor Externo
-                </option>
+            <label for="tipo" style="display: block; margin-bottom: 10px;">Rol de Actividad:</label>
+            <select id="tipo" name="TipoAcatividad" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                
+                    <option value="Socio">Socio</option>
+                    <option value="Staff">Staff</option>
+                    <option value="Consultor Externo">Consultor Externo</option>
+                
+               
             </select>
             <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
                 Guardar
@@ -70,13 +68,14 @@
 </div>
 
 <script>
-    function cargarDatosAlternativa(id, nombre, cuenta) {
+    function cargarDatosAlternativa(id, nombre, tipo) {
         const idInput = document.querySelector('#id');
         const idcuentaInput = document.querySelector('#nombre');
-
+        const tipoactividadInput = document.querySelector('#tipo');
 
         idInput.value = id;
         idcuentaInput.value = nombre;
+        tipoactividadInput.value = tipo;
     }
     function limpiarFormulario() {
         location.reload();

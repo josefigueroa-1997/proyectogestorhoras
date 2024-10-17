@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models;
+using System.Diagnostics;
 
 namespace Proyectogestionhoras.Controllers
 {
@@ -158,5 +159,124 @@ namespace Proyectogestionhoras.Controllers
             return View();
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarActualizarActividades(Actividade actividades)
+        {
+            if (actividades == null)
+            {
+                return BadRequest("La Actividad es nula.");
+            }
+
+
+            if (actividades.Id == 0)
+            {
+
+                context.Actividades.Add(actividades);
+            }
+            else
+            {
+
+                var actividadexistente = await context.Actividades.FindAsync(actividades.Id);
+                if (actividadexistente == null)
+                {
+                    return NotFound("Actividad no encontrada.");
+                }
+
+                actividadexistente.Nombre = actividades.Nombre;
+                actividadexistente.TipoAcatividad = actividades.TipoAcatividad;
+                context.Actividades.Update(actividadexistente);
+            }
+
+
+            await context.SaveChangesAsync();
+            return RedirectToAction("GestorActividades");
+        }
+
+        /*Segmentos*/
+        public async Task<IActionResult> GestorSegmentos()
+        {
+            var query = from un in context.CcostoUnegocios
+                        join sc in context.SegmentoCcostos on un.Id equals sc.IdCcosto
+                        join s in context.Segmentos on sc.IdSegmento equals s.Id
+                        join c in context.Cuenta on s.IdCuenta equals c.Id
+                        select new
+                        {   
+                            idsegmento = s.Id,
+                            tiposegmento = s.TipoSegmento,
+                            SegmentoNombre = s.Nombre,
+                            UnidadCodigo = un.Codigo,
+                            CuentaId = c.Idcuenta,
+                            CuentaNombre = c.Cuenta,
+                            idcuenta = s.IdCuenta,
+                            Idunidad = un.Id,
+                        };
+
+            var segmentos = await query.ToListAsync();
+            var cuentas = await context.Cuenta.ToListAsync();
+            var ccostos = await context.CcostoUnegocios.ToListAsync();
+            ViewBag.Ccostos = ccostos;
+            ViewBag.Cuentas = cuentas;
+            ViewBag.Segmentos = segmentos;
+            return View();
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> GuardarActualizarSegmentos(Segmento segmentos,SegmentoCcosto segmentoCcostos)
+        {
+            try
+            {
+                if (segmentos == null || segmentoCcostos == null)
+                {
+                    return BadRequest("La Actividad es nula.");
+                }
+
+
+
+                if (segmentos.Id == 0)
+                {
+
+                    context.Segmentos.Add(segmentos);
+                    await context.SaveChangesAsync();
+                    segmentoCcostos.IdSegmento = segmentos.Id;
+                    segmentoCcostos.IdCcosto = int.Parse(Request.Form["Idccosto"].ToString());
+                    context.SegmentoCcostos.Add(segmentoCcostos);
+                    await context.SaveChangesAsync();
+                }
+                else
+                {
+
+                    var segmentoexistente = await context.Segmentos.FindAsync(segmentos.Id);
+                    
+                    if (segmentoexistente == null)
+                    {
+                        return NotFound("Segmento no encontrado.");
+                    }
+
+                    segmentoexistente.Nombre = segmentos.Nombre;
+                    segmentoexistente.TipoSegmento = segmentos.TipoSegmento;
+                    segmentoexistente.IdCuenta = segmentos.IdCuenta;
+                    context.Segmentos.Update(segmentoexistente);
+                    await context.SaveChangesAsync();
+
+                   
+
+
+
+                }
+
+
+
+                return RedirectToAction("GestorSegmentos");
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al registrar el segmento:{ex.Message}");
+                return View();
+            }
+         }
+            
+            
+
     }
 }
