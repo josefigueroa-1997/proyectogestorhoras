@@ -370,9 +370,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                             decimal totalsocios = 0;
-                        }
+                       
                         @if (ViewBag.Recursos!=null){
                             
                                
@@ -389,7 +387,7 @@
                                         <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                     </tr>
                                     
-                                        totalsocios += recurso.HH_ANUALES;
+                                   
                                     
                                 }
                             }
@@ -410,9 +408,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            decimal totalstaff = 0;
-                        }
+                       
                         @if(ViewBag.Recursos!=null){
                             @foreach (var recurso in ViewBag.Recursos)
                             {
@@ -425,7 +421,7 @@
                                         <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
                                         <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
                                     </tr>
-                                    totalstaff += recurso.HH_ANUALES;
+                                    
                                 }
                             }
                         }
@@ -434,29 +430,42 @@
                     </tbody>
                 </table >
 
+                @if (ViewBag.Totales != null)
+                {
+                    @foreach (var total in ViewBag.Totales)
+                    {
+                        @if(total.TipoRecurso == "Socio")
+                        {
+                            <table style="width: 40%; border-collapse: collapse; text-align: left; ">
+                                <thead>
+                                    <tr style="background-color: #b2e6a5; color: black;">
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios</th>
+                                    </tr>
+                                    <tr>
+                                        <th id="totalSocios" style="padding: 10px; border: 1px solid #ddd;">@total.TotalHhAnuales</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        }
+                        @if(total.TipoRecurso == "Staff")
+                        {
 
+                            <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                                <thead>
+                                    <tr style="background-color: #b2e6a5; color: black;">
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff</th>
+                                    </tr>
+                                    <tr>
+                                        <th id="totalStaff" style="padding: 10px; border: 1px solid #ddd;">@total.TotalHhAnuales</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        }
+                    }
+                }
 
-                     <table style="width: 40%; border-collapse: collapse; text-align: left; ">
-                        <thead>
-                            <tr style="background-color: #b2e6a5; color: black;">
-                                <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios</th>
-                            </tr>
-                            <tr>
-                            <th id="totalSocios" style="padding: 10px; border: 1px solid #ddd;">@totalsocios</th>
-                            </tr>
-                        </thead>
-                    </table>
+                   
 
-                <table style="width: 40%; border-collapse: collapse; text-align: left;">
-                        <thead>
-                            <tr style="background-color: #b2e6a5; color: black;">
-                                <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff</th>
-                            </tr>
-                            <tr>
-                                <th id="totalStaff" style="padding: 10px; border: 1px solid #ddd;">@totalstaff</th>
-                            </tr>
-                        </thead>
-                    </table>
 
                 
                 <div style="display:none;">

@@ -40,11 +40,11 @@ namespace Proyectogestionhoras.Services
                     await context.SaveChangesAsync();
                 }
 
-              
+
                 bool existereigstro = await context.PlanillaUsusarioProyectos.AnyAsync(p => p.IdUsuProy == idusuproy && p.FechaRegistro.Date == Fecharegistro.Date && p.IdActividad == idactividad);
                 if (existereigstro)
                 {
-                    return 2; 
+                    return 2;
                 }
 
                 var registro = new PlanillaUsusarioProyecto
@@ -62,34 +62,34 @@ namespace Proyectogestionhoras.Services
                 var finSemana = inicioSemana.AddDays(6);
                 var horasRegistradasSemana = await context.PlanillaUsusarioProyectos
                     .Join(
-                    context.UsuarioProyectos, 
-                    planilla => planilla.IdUsuProy, 
-                    usuarioProyecto => usuarioProyecto.Id, 
-                    (planilla, usuarioProyecto) => new { planilla, usuarioProyecto } 
+                    context.UsuarioProyectos,
+                    planilla => planilla.IdUsuProy,
+                    usuarioProyecto => usuarioProyecto.Id,
+                    (planilla, usuarioProyecto) => new { planilla, usuarioProyecto }
                     )
-                    .Where(joinResult => joinResult.usuarioProyecto.IdUsuario == idusuario 
-                         && joinResult.planilla.FechaRegistro >= inicioSemana 
+                    .Where(joinResult => joinResult.usuarioProyecto.IdUsuario == idusuario
+                         && joinResult.planilla.FechaRegistro >= inicioSemana
                          && joinResult.planilla.FechaRegistro <= finSemana)
                     .SumAsync(joinResult => joinResult.planilla.RegistroHhProyecto);
 
-               
+
                 var usuarioproyecto = await context.UsuarioProyectos
-                .Include(up => up.IdUsuarioNavigation) 
-                .ThenInclude(u => u.IdRecursoNavigation) 
+                .Include(up => up.IdUsuarioNavigation)
+                .ThenInclude(u => u.IdRecursoNavigation)
                 .FirstOrDefaultAsync(up => up.Id == idusuproy);
 
                 if (usuarioproyecto != null)
                 {
-                    
-                    if (usuarioproyecto.HhSocios.HasValue)
+
+                    /*if (usuarioproyecto.HhSocios.HasValue)
                     {
                         usuarioproyecto.HhSocios -= horasasignadas;
                     }
                     else if (usuarioproyecto.HhStaff.HasValue)
                     {
                         usuarioproyecto.HhStaff -= horasasignadas;
-                    }
-                    else if (usuarioproyecto.HhConsultora.HasValue)
+                    }*/
+                    if (usuarioproyecto.HhConsultora.HasValue)
                     {
                         usuarioproyecto.HhConsultora -= horasasignadas;
                     }
@@ -102,10 +102,10 @@ namespace Proyectogestionhoras.Services
                         usuarioproyecto.HhConsultorc -= horasasignadas;
                     }
 
-                   
+
                     var usuario = usuarioproyecto.IdUsuarioNavigation;
-                    
-                   
+
+
                     if (usuario != null && usuario.IdRecurso != 0)
                     {
                         var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
@@ -114,14 +114,49 @@ namespace Proyectogestionhoras.Services
 
                             if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
                             {
-                                decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto/100);
+                                recurso.HhAnuales -= horasasignadas;
+                                if (recurso.NombreRecurso == "Socio")
+                                {
+                                   
+
+                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
+                                    .ToListAsync();
+
+                                    // Resta las horas asignadas a los socios relacionados
+                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                    {
+                                        usuarioRelacionado.HhSocios -= horasasignadas;
+                                    }
+                                }
+                                // Solo para Staff
+                                else if (recurso.NombreRecurso == "Staff")
+                                {
+                                   
+
+                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
+                                    .ToListAsync();
+
+                                    // Resta las horas asignadas al staff relacionado
+                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                    {
+                                        usuarioRelacionado.HhStaff -= horasasignadas;
+                                    }
+                                }
+
+
+                                decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
                                 Debug.WriteLine(totalpermitidossemana);
-                               if (horasRegistradasSemana + horasasignadas > totalpermitidossemana)
+                                if (horasRegistradasSemana + horasasignadas > totalpermitidossemana)
                                 {
                                     Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
-                                    return 3; 
+                                    return 3;
                                 }
-                                recurso.HhAnuales += horasasignadas; 
+                                
+
+
+
                             }
                         }
                         else
@@ -137,18 +172,18 @@ namespace Proyectogestionhoras.Services
                     }
 
                     await context.SaveChangesAsync();
-                    return 1; 
+                    return 1;
                 }
                 else
                 {
                     Debug.WriteLine("Error: UsuarioProyecto no se encontró.");
-                    return 2; 
+                    return 2;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Hubo un error al registrar la hora en la planilla: {ex}");
-                return 2; 
+                return 2;
             }
         }
 
@@ -330,7 +365,7 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "HH_USUARIO_PROYECTOS_TOTAL";
+                    command.CommandText = "HH_USUARIO_PROYECTOS_GANTT";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
                     

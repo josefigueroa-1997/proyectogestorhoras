@@ -68,6 +68,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
+                        var totalanuales = await context.TotalRecursos.ToListAsync();
                         var unegocios = await proyectoService.ObtenerUnegocio();
                         var ccostos = await proyectoService.ObtenerCcosto();
                         var empresas = await proyectoService.ObtenerEmpresa();
@@ -85,6 +86,7 @@ namespace Proyectogestionhoras.Controllers
                         ViewBag.Ccostos = ccostos;
                         ViewBag.Unegocios = unegocios;
                         ViewBag.Status = status;
+                        ViewBag.Totales = totalanuales;
                         return View();
                     }
                     else
@@ -242,6 +244,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
+                        var totalanuales = await context.TotalRecursos.ToListAsync();
                         var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         var unegocios = await proyectoService.ObtenerUnegocio();
                         var ccostos = await proyectoService.ObtenerCcosto();
@@ -270,6 +273,7 @@ namespace Proyectogestionhoras.Controllers
                         ViewBag.Status = status;
                         ViewBag.Proyectos = proyecto;
                         ViewBag.Sucursales = sucursales;
+                        ViewBag.Totales = totalanuales;
                         return View();
                     }
                     else
@@ -402,10 +406,8 @@ namespace Proyectogestionhoras.Controllers
 
                 gastos.Add(gasto);
             }
-            List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
-            var statusedicion = int.Parse(Request.Form["status"].ToString());
-            if (statusedicion == 2)
-            {
+            /*List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
+             
                 var idusuarios = Request.Form["idusuarios[]"];
                 var hhasignadas = Request.Form["hhasignadas"];
                 for (int i = 0; i < idusuarios.Count; i++)
@@ -417,14 +419,23 @@ namespace Proyectogestionhoras.Controllers
                     };
                     usuariohoras.Add(usuarioh);
                 }
+             
+             
+             */
+            var statusedicion = int.Parse(Request.Form["status"].ToString());
+            if (statusedicion == 2)
+            {
+
+                await proyectoService.RestarHHAnaulesSocios(hhsocios);
+                await proyectoService.RestarHHAnaulesStaff(hhstaff);
+
             }
 
 
-            var idclientes = Request.Form["idcliente"];
 
 
 
-            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, servicios, gastos, usuariohoras);
+            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, servicios, gastos);
             
            
             if (resultado)
@@ -433,8 +444,8 @@ namespace Proyectogestionhoras.Controllers
             }
             else
             {
-                ViewBag.Error = "No hay suficientes horas para asignar a uno o más usuarios";
-                return View("EditarProyecto", new {id=idproyecto,idcliente=idclientes});
+                
+                return View();
             }
 
         }

@@ -20,6 +20,8 @@ namespace Proyectogestionhoras.Models
         public decimal? HhMensuales { get; set; }
         public decimal? HhAnuales { get; set; }
         public string? TipoConsultor { get; set; }
+        public decimal? TotalSocios { get; set; }
+        public decimal? TotalStaff { get; set; }
 
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }

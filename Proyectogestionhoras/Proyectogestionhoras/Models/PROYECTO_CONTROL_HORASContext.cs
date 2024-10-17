@@ -43,6 +43,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Sucursal> Sucursals { get; set; } = null!;
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
+        public virtual DbSet<TotalRecurso> TotalRecursos { get; set; } = null!;
         public virtual DbSet<Unegocio> Unegocios { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
@@ -241,9 +242,25 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.FechaFactura)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_FACTURA");
+
                 entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
 
                 entity.Property(e => e.Idsegmento).HasColumnName("IDSEGMENTO");
+
+                entity.Property(e => e.Montoiva)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("MONTOIVA");
+
+                entity.Property(e => e.Neto)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("NETO");
+
+                entity.Property(e => e.Total)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("TOTAL");
 
                 entity.HasOne(d => d.IdProyectoNavigation)
                     .WithMany(p => p.Facturas)
@@ -681,6 +698,14 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("TIPO_CONSULTOR");
+
+                entity.Property(e => e.TotalSocios)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("TOTAL_SOCIOS");
+
+                entity.Property(e => e.TotalStaff)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("TOTAL_STAFF");
             });
 
             modelBuilder.Entity<Rol>(entity =>
@@ -811,6 +836,22 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("TIPO_TIPOLOGIA");
+            });
+
+            modelBuilder.Entity<TotalRecurso>(entity =>
+            {
+                entity.ToTable("TOTAL_RECURSOS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.TipoRecurso)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPO_RECURSO");
+
+                entity.Property(e => e.TotalHhAnuales)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("TOTAL_HH_ANUALES");
             });
 
             modelBuilder.Entity<Unegocio>(entity =>

@@ -97,7 +97,7 @@ namespace Proyectogestionhoras.Services
 
       
         /*EDITAR PROYECTO*/
-        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<UsuarioProyectoViewModel> usuariohoras)
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -149,12 +149,12 @@ namespace Proyectogestionhoras.Services
                     await command.ExecuteNonQueryAsync();
                     await GestorServiciosProyecto(idproyecto, servicios);
                     await GestorProyectoGastos(idproyecto, gastos);
-                   var resultadoAsignacion = await AsignarHHUsuarios(idproyecto, usuariohoras);
+                  /* var resultadoAsignacion = await AsignarHHUsuarios(idproyecto, usuariohoras);
                     if (resultadoAsignacion == 2)
                     {
                         // Si no hay suficientes horas, lanzamos una excepción o manejamos el error de otra forma
                         throw new Exception("No hay suficientes horas anuales para asignar a uno o más usuarios.");
-                    }
+                    }*/
 
                     return true;
                 }
@@ -280,6 +280,39 @@ namespace Proyectogestionhoras.Services
             }
 
             await context.SaveChangesAsync();
+        }
+
+        public async Task RestarHHAnaulesSocios(int hhsocios)
+        {
+            var socio = context.TotalRecursos
+                       .Where(tr => tr.TipoRecurso == "Socio") 
+                       .FirstOrDefault();                    
+
+            if (socio != null)
+            {
+                
+                socio.TotalHhAnuales -= hhsocios;
+
+               
+                await context.SaveChangesAsync();
+            }
+
+        }
+
+        public async Task RestarHHAnaulesStaff(int hhstaff)
+        {
+            var staff = context.TotalRecursos
+                      .Where(tr => tr.TipoRecurso == "Staff")
+                      .FirstOrDefault();
+
+            if (staff != null)
+            {
+
+                staff.TotalHhAnuales -= hhstaff;
+
+
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<int> AsignarHHUsuarios(int idproyecto, List<UsuarioProyectoViewModel> usuariohoras)

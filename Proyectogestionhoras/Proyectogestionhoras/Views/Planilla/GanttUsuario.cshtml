@@ -65,9 +65,11 @@
         text-align: left; 
     }
 </style>
-
+@{
+    string? nombre = Context.Session.GetString("nombre");
+}
 <div class="form-container">
-    <h2 class="section-header">Mi Gantt</h2>
+    <h2 class="section-header">Mi Gantt:@nombre</h2>
     
 
     <div class="table-separator">
@@ -88,7 +90,7 @@
         </table>
     </div>
 
-    <div style="display:none;" class="section-content table-separator">
+    <div style="display:none;"  class="section-content table-separator">
         <table>
             <thead>
                 <tr style="background-color: #f9eb8b; color: black;">
@@ -105,9 +107,9 @@
                     {
                         <tr>
                             <td><strong>@proyecto.NOMBREPROYECTO</strong></td>
-                            <td style="text-align:center;"><input class="hhrealizadas" type="number" readonly/></td>
+                            
                             <td style="text-align:center;"><input class="hhrestantes" type="number" value="@proyecto.HHRESTANTES" readonly/></td>
-                            <td style="text-align:center;"><input type="number" class="totaleshh" readonly/></td>
+                            
                         </tr>
                     }
                 }
@@ -165,9 +167,9 @@
 
      
                 const inputRow = $(`td:contains('${proyecto.nombreProyecto}')`).closest('tr');
-                const inputHHRealizadas = inputRow.find('.hhrealizadas');
+                
                 const inputHHRestantes = inputRow.find('.hhrestantes');
-                const inputTotalesHH = inputRow.find('.totaleshh');
+                
 
                 // Calcular las horas totales del proyecto
                 proyecto.horasPorMes.forEach(h => {
@@ -175,17 +177,16 @@
                 });
 
                
-                if (inputHHRealizadas.length && inputHHRestantes.length && inputTotalesHH.length) {
-                    inputHHRealizadas.val(totalHorasProyecto); 
+                
                     const hhRestantes = parseFloat(inputHHRestantes.val()) || 0;
                     const totalHH = totalHorasProyecto + hhRestantes;
 
-                    inputTotalesHH.val(totalHH); 
+                   
 
       
                     const trAmarillo = $('<tr>');
                     const tdAmarillo = $('<td>')
-                        .text(`Duración: ${proyecto.nombreProyecto}: ${totalHH} hrs`)
+                        .text(`Duración: ${proyecto.nombreProyecto}: ${hhRestantes} hrs`)
                         .attr('colspan', 1)
                         .css({
                             'background-color': 'yellow',
@@ -209,7 +210,7 @@
 
     
                     tbody.append(trAmarillo);
-                }
+                
 
                 const tr = $('<tr>');
                 const tdProyecto = $('<td>')

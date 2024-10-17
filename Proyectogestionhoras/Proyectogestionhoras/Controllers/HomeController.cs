@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Proyectogestionhoras.Models;
 using System.Diagnostics;
 using Proyectogestionhoras.Services;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 namespace Proyectogestionhoras.Controllers
 {
     public class HomeController : Controller
@@ -46,6 +47,7 @@ namespace Proyectogestionhoras.Controllers
 
            
             return RedirectToAction("Login", "Usuario");
+           
         }
 
         public IActionResult Privacy()
