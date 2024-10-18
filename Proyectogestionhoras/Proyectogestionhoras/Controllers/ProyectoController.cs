@@ -260,6 +260,8 @@ namespace Proyectogestionhoras.Controllers
                         var gastosproyectos = await proyectoService.ObtenerGastosProyectos(id);
                         var servicios = await GetServicios();
                         var gastos = await GetGastos();
+                        var historialcosto = await context.HistorialCostosProyectos.Where(p=>p.Idproyecto == id).ToListAsync();
+                        var costopromedio = await context.CostoPromedios.ToListAsync();
                         ViewBag.Gastos = gastos;
                         ViewBag.GastosProyectos = gastosproyectos;
                         ViewBag.Servicios = servicios;
@@ -275,6 +277,8 @@ namespace Proyectogestionhoras.Controllers
                         ViewBag.Proyectos = proyecto;
                         ViewBag.Sucursales = sucursales;
                         ViewBag.Totales = totalanuales;
+                        ViewBag.Costos = costopromedio;
+                        ViewBag.HistorialCosto = historialcosto;
                         return View();
                     }
                     else

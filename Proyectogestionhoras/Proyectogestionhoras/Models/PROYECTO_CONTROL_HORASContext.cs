@@ -28,6 +28,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
         public virtual DbSet<HhUsuarioHistorial> HhUsuarioHistorials { get; set; } = null!;
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
+        public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
         public virtual DbSet<HistorialNegociacion> HistorialNegociacions { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
@@ -346,6 +347,41 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.HistorialCostos)
                     .HasForeignKey(d => d.IdUsuario)
                     .HasConstraintName("FK_HISTORIAL_COSTOS_USUARIO");
+            });
+
+            modelBuilder.Entity<HistorialCostosProyecto>(entity =>
+            {
+                entity.ToTable("HISTORIAL_COSTOS_PROYECTOS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Costoconsultora)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORA");
+
+                entity.Property(e => e.Costoconsultorb)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORB");
+
+                entity.Property(e => e.Costoconsultorc)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOCONSULTORC");
+
+                entity.Property(e => e.Costosocio)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOSOCIO");
+
+                entity.Property(e => e.Costostaff)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("COSTOSTAFF");
+
+                entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
+
+                entity.HasOne(d => d.IdproyectoNavigation)
+                    .WithMany(p => p.HistorialCostosProyectos)
+                    .HasForeignKey(d => d.Idproyecto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("COST_PRO");
             });
 
             modelBuilder.Entity<HistorialNegociacion>(entity =>
