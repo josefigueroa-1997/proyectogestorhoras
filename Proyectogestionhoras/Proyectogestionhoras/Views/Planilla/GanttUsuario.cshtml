@@ -64,6 +64,11 @@
     .izquierda {
         text-align: left; 
     }
+
+    .linea-gruesa {
+        border-bottom: 4px solid black; 
+    }
+
 </style>
 @{
     string? nombre = Context.Session.GetString("nombre");
@@ -159,66 +164,70 @@
 
         function llenarCuerpoTabla(ganttData, mesesOrdenados) {
             const tbody = $('#ganttBody');
-            const totalesPorMes = new Array(mesesOrdenados.length).fill(0); 
-            
+            const totalesPorMes = new Array(mesesOrdenados.length).fill(0);
+
             ganttData.forEach(proyecto => {
-   
                 let totalHorasProyecto = 0;
 
-     
                 const inputRow = $(`td:contains('${proyecto.nombreProyecto}')`).closest('tr');
-                
                 const inputHHRestantes = inputRow.find('.hhrestantes');
-                
 
                 // Calcular las horas totales del proyecto
                 proyecto.horasPorMes.forEach(h => {
                     totalHorasProyecto += h.horas; // Sumar horas por mes
                 });
 
-               
-                
-                    const hhRestantes = parseFloat(inputHHRestantes.val()) || 0;
-                    const totalHH = totalHorasProyecto + hhRestantes;
+                const hhRestantes = parseFloat(inputHHRestantes.val()) || 0;
+                const totalHH = totalHorasProyecto + hhRestantes;
 
-                   
+                // **Agregar la fila con línea gruesa antes de la fila amarilla**
+                const trLineaGruesa = $('<tr>').addClass('linea-gruesa');
+                const tdLineaGruesa = $('<td>')
+                    .attr('colspan', mesesOrdenados.length + 2) // Colspan que cubre todas las columnas
+                    .css('border-bottom', '4px solid black'); // Aplicar borde inferior grueso
+                trLineaGruesa.append(tdLineaGruesa);
+                tbody.append(trLineaGruesa);
 
-      
-                    const trAmarillo = $('<tr>');
-                    const tdAmarillo = $('<td>')
-                        .text(`Duración: ${proyecto.nombreProyecto}: ${hhRestantes} hrs`)
-                        .attr('colspan', 1)
-                        .css({
-                            'background-color': 'yellow',
-                            'text-align': 'left', 'word-wrap': 'break-word', // Permite que el texto se divida en varias líneas
-                            'white-space': 'normal'
-                        });
-
-                    trAmarillo.append(tdAmarillo);
-
-            
-                    const mesesDuracion = getMesesEntreFechas(proyecto.fechaInicio, proyecto.fechaTermino);
-                    const mesesIndices = mesesDuracion.map(m => `${m.año}-${m.mes}`);
-
-                    mesesOrdenados.forEach((mes, index) => {
-                        const tdDuracion = $('<td>');
-                        if (mesesIndices.includes(mes)) {
-                            tdDuracion.addClass('duracion').css('background-color', 'yellow'); // Aplicar color amarillo
-                        }
-                        trAmarillo.append(tdDuracion);
+                // Crear la fila amarilla
+                const trAmarillo = $('<tr>');
+                const tdAmarillo = $('<td>')
+                    .text(`Duración: ${proyecto.nombreProyecto}: ${hhRestantes} hrs`)
+                    .attr('colspan', 1)
+                    .css({
+                        'background-color': 'yellow',
+                        'text-align': 'left',
+                        'word-wrap': 'break-word',
+                        'white-space': 'normal'
                     });
 
-    
-                    tbody.append(trAmarillo);
-                
+                trAmarillo.append(tdAmarillo);
 
+                const mesesDuracion = getMesesEntreFechas(proyecto.fechaInicio, proyecto.fechaTermino);
+                const mesesIndices = mesesDuracion.map(m => `${m.año}-${m.mes}`);
+
+                mesesOrdenados.forEach((mes, index) => {
+                    const tdDuracion = $('<td>');
+                    if (mesesIndices.includes(mes)) {
+                        tdDuracion.addClass('duracion').css('background-color', 'yellow');
+                    }
+                    trAmarillo.append(tdDuracion);
+                });
+
+                const tdTotalAmarillo = $('<td>')
+                    .text(`${hhRestantes} hrs`)
+                    .css('background-color', 'yellow');
+                trAmarillo.append(tdTotalAmarillo);
+
+                tbody.append(trAmarillo);
+
+                // Crear la fila verde (horas ejecutadas)
                 const tr = $('<tr>');
                 const tdProyecto = $('<td>')
-                    .text(`Hrs Ejec.: ${proyecto.nombreProyecto}`) // Nombre del proyecto
+                    .text(`Hrs Ejec.: ${proyecto.nombreProyecto}`)
                     .css('text-align', 'left');
                 tr.append(tdProyecto);
 
-                let totalHorasFila = 0; 
+                let totalHorasFila = 0;
 
                 mesesOrdenados.forEach((mes, index) => {
                     const [año, mesNum] = mes.split('-');
@@ -228,12 +237,11 @@
                     const horas = horasData ? horasData.horas : 0;
 
                     if (horas > 0) {
-                        td.addClass('completed').text(`${horas} hrs`); 
+                        td.addClass('completed').text(`${horas} hrs`);
                     } else {
                         td.addClass('no-hours').text('-');
                     }
 
-                  
                     totalesPorMes[index] += horas;
                     totalHorasFila += horas;
                     tr.append(td);
@@ -245,7 +253,6 @@
                 tbody.append(tr);
             });
 
-            // Llenar la fila de totales
             llenarFilaTotales(totalesPorMes);
         }
 
