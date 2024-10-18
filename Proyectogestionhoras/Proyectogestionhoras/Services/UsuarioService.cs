@@ -72,6 +72,46 @@ namespace Proyectogestionhoras.Services
             
             }
         }
+
+        public async Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino)
+        {
+            try
+            {
+            #pragma warning disable CS8600
+                object numhorasparameter = (object)hhsemanales ?? 0;
+                object porcentajeparameter = (object)porcentaje ?? DBNull.Value;
+                object fechainicioparamater = (object)fechainicio ?? DBNull.Value;
+                object fechafinparamater = (object)fechatermino ?? DBNull.Value;
+#pragma warning restore CS8600
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "EDITARUSUARIO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE_USUARIO", nombreusuario));
+                    command.Parameters.Add(new SqlParameter("@TELEFONO", telefono));
+                    command.Parameters.Add(new SqlParameter("@EMAIL", email));
+                    command.Parameters.Add(new SqlParameter("@NUMERO_HORAS_SEMANALES", numhorasparameter));
+                    command.Parameters.Add(new SqlParameter("@COSTO_UNITARIO", costo));
+                    command.Parameters.Add(new SqlParameter("@PORCENTAJEHORAS", porcentajeparameter));
+                    command.Parameters.Add(new SqlParameter("@FECHAINICIO", fechainicioparamater));
+                    command.Parameters.Add(new SqlParameter("@FECHAFIN", fechafinparamater));
+                    await command.ExecuteNonQueryAsync();
+                    await conexion.CloseDatabaseConnectionAsync();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al editar el usuario:{e.Message}");
+                return false;
+            }
+            
+        }
+
+
         public async Task<List<UsuarioDTO>> ObtenerUusario(int? id, string? nombre, int? id_recurso)
         {
             try
@@ -108,8 +148,14 @@ namespace Proyectogestionhoras.Services
                                 HH_MENSUALES = reader.IsDBNull(reader.GetOrdinal("HH_MENSUALES")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HH_MENSUALES")),
                                 ID_RECURSO = reader.GetInt32(reader.GetOrdinal("ID_RECURSO")),
                                 HH_ANUALES = reader.IsDBNull(reader.GetOrdinal("HH_ANUALES")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HH_ANUALES")),
-                                PROCENTAJE_PROYECTO = reader.IsDBNull(reader.GetOrdinal("PROCENTAJE_PROYECTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("PROCENTAJE_PROYECTO"))
-
+                                PROCENTAJE_PROYECTO = reader.IsDBNull(reader.GetOrdinal("PROCENTAJE_PROYECTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("PROCENTAJE_PROYECTO")),
+                                Desde = reader.IsDBNull(reader.GetOrdinal("DESDE"))
+                                ? (DateTime?)null
+    :                            reader.GetDateTime(reader.GetOrdinal("DESDE")),
+                                Hasta = reader.IsDBNull(reader.GetOrdinal("HASTA"))
+                                ? (DateTime?)null
+    :                           reader.GetDateTime(reader.GetOrdinal("HASTA")),
+                                Tipo_Consultor = reader.IsDBNull(reader.GetOrdinal("TIPO_CONSULTOR")) ? null : reader.GetString(reader.GetOrdinal("TIPO_CONSULTOR")),
                             };
                             usuarios.Add(usuario);
 
@@ -128,6 +174,8 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+
 
         public async Task<bool> Login(string rut, string contrasena)
         {

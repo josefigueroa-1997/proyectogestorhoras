@@ -73,7 +73,7 @@ namespace Proyectogestionhoras.Controllers
                         var ccostos = await proyectoService.ObtenerCcosto();
                         var empresas = await proyectoService.ObtenerEmpresa();
                         var tipologias = await proyectoService.ObtenerTipoligias();
-
+                        var costopromedio = await context.CostoPromedios.ToListAsync();
                         var status = await proyectoService.ObtenerStatus();
                         var recursos = await usuarioService.ObtenerUusario(0, null, 0);
                         var segmentoscostos = await ObtenerSegmentosCostos();
@@ -87,6 +87,7 @@ namespace Proyectogestionhoras.Controllers
                         ViewBag.Unegocios = unegocios;
                         ViewBag.Status = status;
                         ViewBag.Totales = totalanuales;
+                        ViewBag.Costos = costopromedio;
                         return View();
                     }
                     else

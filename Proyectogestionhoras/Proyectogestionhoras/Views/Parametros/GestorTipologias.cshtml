@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "Gestor Tipologias";
+}
+
+<div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+    <div style="width: 100%;">
+        <h2 style="text-align: center; color: #333;">Tipologías</h2>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
+            <thead>
+                <tr style="background-color: #d9e2f3; color: black;">
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Seleccionar</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Nombre</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Monto</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Desde</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Hasta</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">HHSocios</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">HHStaff</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">HHConsultorA</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">HHConsultorB</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">HHConsultorC</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Tipologias != null)
+                {
+                    foreach (var tipologia in ViewBag.Tipologias)
+                    {
+                        <tr>
+                            <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
+                                <button type="button" onclick="cargarDatosAlternativa('@tipologia.Id', '@Html.Encode(tipologia.TipoTipologia)','@Html.Encode(tipologia.Monto)','@Html.Encode(tipologia.Desde)','@Html.Encode(tipologia.Hasta)','@Html.Encode(tipologia.Hhsocios)','@Html.Encode(tipologia.Hhstaff)','@Html.Encode(tipologia.Consultora)','@Html.Encode(tipologia.Consutlrob)','@Html.Encode(tipologia.Consultorc)')">Seleccionar</button>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.TipoTipologia</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@String.Format("{0:N2}",@tipologia.Monto)</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Desde ms</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Hasta ms</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Hhsocios Hr/ms</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Hhstaff Hr/ms</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Consultora Hr/ms</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Consutlrob Hr/ms</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Consultorc Hr/ms</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div style="width: 100%; margin-top: 20px;">
+        <h2 style="text-align: center; color: #333;">Agregar Tipologia</h2>
+
+        <form action="@Url.Action("GuardarActualizarTipologias", "Parametros")" method="post" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+            <input type="hidden" id="id" name="Id" />
+
+            <div style="width: 48%;">
+                <label for="idcuenta" style="display: block; margin-bottom: 10px;">Nombre:</label>
+                <input type="text" id="nombre" name="TipoTipologia" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+                <label for="desde" style="display: block; margin-bottom: 10px;">Desde:</label>
+                <input type="number" id="desde" name="Desde" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+                <label for="hhsocios" style="display: block; margin-bottom: 10px;">HHSocios:</label>
+                <input type="number" id="hhsocios" name="Hhsocios" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+                <label for="hhconsultora" style="display: block; margin-bottom: 10px;">HHConsultorA:</label>
+                <input type="number" id="hhconsultora" name="Consultora" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+            </div>
+
+            <div style="width: 48%;">
+                <label for="monto" style="display: block; margin-bottom: 10px;">Monto:</label>
+                <input type="text" id="monto" name="Monto" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+                <label for="hasta" style="display: block; margin-bottom: 10px;">Hasta:</label>
+                <input type="number" id="hasta" name="Hasta" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+                <label for="hhstaff" style="display: block; margin-bottom: 10px;">HHStaff:</label>
+                <input type="number" id="hhstaff" name="Hhstaff" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+                <label for="hhconsultorb" style="display: block; margin-bottom: 10px;">HHConsultorB:</label>
+                <input type="number" id="hhconsultorb" name="Consutlrob" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+
+                <label for="hhconsultorc" style="display: block; margin-bottom: 10px;">HHConsultorC:</label>
+                <input type="number" id="hhconsultorc" name="Consultorc" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+            </div>
+
+            <div style="width: 100%; margin-top: 20px;">
+                <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">Guardar</button>
+                <button type="button" onclick="limpiarFormulario()" style="width: 100%; padding: 10px; background-color: cornflowerblue; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">Limpiar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function cargarDatosAlternativa(id, nombre,monto,desde,hasta,hhsocio,hhstaff,consultora,consultorb,consultorc) {
+        const idInput = document.querySelector('#id');
+        const idcuentaInput = document.querySelector('#nombre');
+        const montoInput = document.querySelector('#monto');
+        const desdeInput = document.querySelector('#desde');
+        const hastaInput = document.querySelector('#hasta');
+        const hhsocioInput = document.querySelector('#hhsocios');
+        const hhstaffInput = document.querySelector('#hhstaff');
+        const consultoraInput = document.querySelector('#hhconsultora');
+        const consultorbInput = document.querySelector('#hhconsultorb');
+        const consultorcInput = document.querySelector('#hhconsultorc');
+        idInput.value = id;
+        idcuentaInput.value = nombre;
+        montoInput.value = monto;
+        desdeInput.value = desde;
+        hastaInput.value = hasta;
+        hhsocioInput.value = hhsocio;
+        hhstaffInput.value = hhstaff;
+        consultoraInput.value = consultora;
+        consultorbInput.value = consultorb;
+        consultorcInput.value = consultorc;
+    }
+    function limpiarFormulario() {
+        location.reload();
+    }
+</script>

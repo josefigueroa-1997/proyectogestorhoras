@@ -47,7 +47,7 @@ namespace Proyectogestionhoras.Controllers
 
            
             return RedirectToAction("Login", "Usuario");
-           
+        
         }
 
         public IActionResult Privacy()

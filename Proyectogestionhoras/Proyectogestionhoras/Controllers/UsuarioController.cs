@@ -25,6 +25,10 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> Personal(int? id,string? nombre,int? id_recurso)
         {
             var usuarios = await _usuarioService.ObtenerUusario(id,nombre, id_recurso);
+            var totalhhanuales = await context.TotalRecursos.ToListAsync();
+            var costopromedio = await context.CostoPromedios.ToListAsync();
+            ViewBag.TotalAnuales = totalhhanuales;
+            ViewBag.Costos = costopromedio;
             ViewBag.Usuarios = usuarios;
             return View();
         }
@@ -40,6 +44,10 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> EditarDatosUsuario(int? idusuario,string? nombre,int? idrecurso)
         {
             var usuario = await _usuarioService.ObtenerUusario(idusuario,nombre,idrecurso);
+            if (usuario == null)
+            {
+                return NotFound(); // Esto es útil para manejar errores
+            }
             ViewBag.Usuario = usuario;
             return View("EditarUsuario");
         }
@@ -67,6 +75,20 @@ namespace Proyectogestionhoras.Controllers
                 return View();
 
 
+            }
+        }
+
+        [HttpPost]
+        public async Task <IActionResult> ActualizarDatos(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino)
+        {
+            bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino);
+            if (resultado)
+            {
+                return RedirectToAction("Personal", "Usuario");
+            }
+            else
+            {
+                return View();
             }
         }
 

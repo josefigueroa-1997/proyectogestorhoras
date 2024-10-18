@@ -128,7 +128,10 @@
                                     <td class="p-4 border">
                                         <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
                                     </td> <!-- Botón Editar -->
+                                    
                                 </tr>
+                                
+                      
                             }
                         }
                     }
@@ -161,7 +164,7 @@
                                     <td class="p-4 border">@recurso.PROCENTAJE_PROYECTO %</td>
                                     <td class="p-4 border">$@recurso.Costo_Unitario</td>
                                     <td class="p-4 border">
-                                        <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { id = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                        <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
                                     </td> <!-- Botón Editar -->
                                 </tr>
                             }
@@ -173,6 +176,61 @@
     </div>
 
     <!-- Separación entre las tablas -->
+    <div class="mt-12 mb-8"></div>
+
+    <div class="flex justify-around mt-12 mb-8">
+        <!-- Contenedor flex para las tablas -->
+        <div class="form-group w-1/2">
+            <!-- Primera tabla -->
+            <table class="w-full border-collapse text-left">
+                <!-- Cambia w-1/2 por w-full para que la tabla ocupe todo el espacio del div -->
+                <thead>
+                    <tr class="bg-green-200 text-black">
+                        <th class="p-4 border">Rol</th>
+                        <th class="p-4 border">Total HH/Anuales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.TotalAnuales != null)
+                    {
+                        @foreach (var recurso in ViewBag.TotalAnuales)
+                        {
+                            <tr>
+                                <td class="p-4 border">@recurso.TipoRecurso</td>
+                                <td class="p-4 border">@recurso.TotalHhAnuales</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group w-1/2">
+            <!-- Segunda tabla -->
+            <table class="w-full border-collapse text-left">
+                <!-- Cambia w-1/2 por w-full para que la tabla ocupe todo el espacio del div -->
+                <thead>
+                    <tr class="bg-green-200 text-black">
+                        <th class="p-4 border">Rol</th>
+                        <th class="p-4 border">Costo Promedio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Costos != null)
+                    {
+                        @foreach (var recurso in ViewBag.Costos)
+                        {
+                            <tr>
+                                <td class="p-4 border">@recurso.TipoRecurso</td>
+                                <td class="p-4 border">@recurso.Valor</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="mt-12 mb-8"></div>
 
     <div class="form-group">
@@ -198,8 +256,9 @@
                                 <td class="p-4 border">@recurso.Nombre</td>
                                 <td class="p-4 border">$@recurso.Costo_Unitario</td>
                                 <td class="p-4 border">
-                                    <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { id = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                    <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
                                 </td> <!-- Botón Editar -->
+                                
                             </tr>
                         }
                     }

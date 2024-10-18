@@ -275,8 +275,59 @@ namespace Proyectogestionhoras.Controllers
                 return View();
             }
          }
-            
-            
+
+        /*Tipologias*/
+        public async Task<IActionResult> GestorTipologias()
+        {
+
+            var tipologias = await context.Tipologia
+                              .OrderByDescending(t => t.Id)
+                              .ToListAsync();
+            ViewBag.Tipologias = tipologias;
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarActualizarTipologias(Tipologium tipologias)
+        {
+            if (tipologias == null)
+            {
+                return BadRequest("La tipología es nula.");
+            }
+
+
+            if (tipologias.Id == 0)
+            {
+
+                context.Tipologia.Add(tipologias);
+            }
+            else
+            {
+
+                var tipologiaexistente = await context.Tipologia.FindAsync(tipologias.Id);
+                if (tipologiaexistente == null)
+                {
+                    return NotFound("tipología no encontrada.");
+                }
+                decimal monto = decimal.Parse(Request.Form["Monto"].ToString());
+
+                tipologiaexistente.TipoTipologia = tipologias.TipoTipologia;
+                tipologiaexistente.Monto = monto;
+                tipologiaexistente.Desde = tipologias.Desde;
+                tipologiaexistente.Hasta = tipologias.Hasta;
+                tipologiaexistente.Hhsocios = tipologias.Hhsocios;
+                tipologiaexistente.Hhstaff = tipologias.Hhstaff;
+                tipologiaexistente.Consultora = tipologias.Consultora;
+                tipologiaexistente.Consutlrob = tipologias.Consutlrob;
+                tipologiaexistente.Consultorc = tipologias.Consultorc;
+                context.Tipologia.Update(tipologiaexistente);
+            }
+
+
+            await context.SaveChangesAsync();
+            return RedirectToAction("GestorTipologias");
+        }
 
     }
 }

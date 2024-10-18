@@ -244,7 +244,7 @@
                 <input type="number" id="nivelprobabilidad" name="porcentajeprobabilidad" min="1" max="100" required>
             </div>
             <div style="display:none" class="form-group">
-                <label for="fechaPlazo">Fecha de Plazo</label>
+                <label for="fechaPlazo">Fecha de Plazo de Negociación</label>
                 <input type="date" id="fechaPlazo" name="fechaplazoneg">
             </div>
         </div>
@@ -371,20 +371,17 @@
                     </thead>
                     <tbody>
                        
-                        @if (ViewBag.Recursos!=null){
-                            
-                               
-                            
-                            @foreach (var recurso in ViewBag.Recursos)
+                        @if (ViewBag.Costos != null)
+                        {
+
+
+
+                            @foreach (var recurso in ViewBag.Costos)
                             {
-                                if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio"))
+                                if (recurso.TipoRecurso == "Socio")
                                 {
                                     <tr>
-                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;" data-costo-unitario="@recurso.Valor">$ @recurso.Valor</td>
                                     </tr>
                                     
                                    
@@ -409,17 +406,14 @@
                     </thead>
                     <tbody>
                        
-                        @if(ViewBag.Recursos!=null){
-                            @foreach (var recurso in ViewBag.Recursos)
+                        @if(ViewBag.Costos != null){
+                            @foreach (var recurso in ViewBag.Costos)
                             {
-                                if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+                                if (recurso.TipoRecurso == "Staff")
                                 {
                                     <tr>
-                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.Nombre</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;" class="hh-anuales" data-id="@recurso.Id" data-tipo="Socio">@recurso.HH_ANUALES</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;">@recurso.PROCENTAJE_PROYECTO %</td>
-                                        <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Costo_Unitario">$ @recurso.Costo_Unitario</td>
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;" data-costo-staff="@recurso.Valor">$ @recurso.Valor</td>
                                     </tr>
                                     
                                 }
@@ -442,7 +436,7 @@
                                         <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios</th>
                                     </tr>
                                     <tr>
-                                        <th id="totalSocios" style="padding: 10px; border: 1px solid #ddd;">@total.TotalHhAnuales</th>
+                                        <th id="totalSocios" style="padding: 10px; border: 1px solid #ddd;">@String.Format("{0:N2}",@total.TotalHhAnuales)</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -456,7 +450,7 @@
                                         <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff</th>
                                     </tr>
                                     <tr>
-                                        <th id="totalStaff" style="padding: 10px; border: 1px solid #ddd;">@total.TotalHhAnuales</th>
+                                        <th id="totalStaff" style="padding: 10px; border: 1px solid #ddd;">@String.Format("{0:N2}",@total.TotalHhAnuales)</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -526,10 +520,10 @@
                     <tr>
                         <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" required>
+                            <input type="number" class="horas-socios" min="0" step="0.01" id="horasSocios" name="hhsocios" placeholder="Horas Socios" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" required>
+                            <input type="number" class="horas-staff" min="0" step="0.01" id="horasStaff" name="hhstaff" placeholder="Horas Staff" required>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" required>
@@ -2168,31 +2162,46 @@
         }
     }
 
-    // Escuchar el evento de cambio en el input
     document.getElementById('horasSocios').addEventListener('input', function () {
-        // Obtener el valor del input
+        // Obtener el valor del input y convertirlo a un número
         let horasSocios = parseFloat(this.value);
 
-        // Obtener el valor de  desde la tabla
-        let totalSocios = parseFloat(document.getElementById('totalSocios').innerText);
+        // Obtener el valor total desde la tabla y convertirlo a un número
+        let totalSocios = parseFloat(
+            document.getElementById('totalSocios').innerText
+                .replace(/\./g, '')   // Eliminar puntos
+                .replace(/,/g, '.')    // Cambiar la coma por un punto
+        );
 
         // Validar que horasSocios no sea mayor que totalSocios
-        if (horasSocios > totalSocios) {
+        if (!isNaN(horasSocios) && horasSocios > totalSocios) {
             alert("Las horas de socios no pueden ser mayores que " + totalSocios);
-            this.value = ''; // O puedes resetear el valor del input si es mayor
+            this.value = ''; // Resetear el valor del input si es mayor
         }
     });
+
     document.getElementById('horasStaff').addEventListener('input', function () {
-        // Obtener el valor del input
-        let horasStaff = parseFloat(this.value);
+        // Obtener el valor del input y eliminar puntos y comas
+        let horasStaff = this.value.replace(/\./g, '').replace(/,/g, '');
 
-        // Obtener el valor de  desde la tabla
-        let totalStaff = parseFloat(document.getElementById('totalStaff').innerText);
+        // Convertir a número
+        let horasStaffNum = parseFloat(horasStaff);
 
-        // Validar que horasStaff no sea mayor que totalStaff
-        if (horasStaff > totalStaff) {
-            alert("Las horas de staff no pueden ser mayores que " + totalStaff);
-            this.value = ''; // Resetear el valor del input si es mayor
+        // Obtener el valor total de la tabla, quitar puntos y comas, y convertir a número
+        let totalStaff = parseFloat(
+            document.getElementById('totalStaff').innerText
+                .replace(/\./g, '')   // Eliminar puntos de miles
+                .replace(/,/g, '.')    // Cambiar la coma por punto para el decimal
+        );
+
+        // Verificar si horasStaffNum y totalStaff son números válidos
+        if (!isNaN(horasStaffNum) && !isNaN(totalStaff)) {
+            // Comparar el valor ingresado con el total
+            if (horasStaffNum > totalStaff) {
+                // Mostrar alerta si el valor ingresado es mayor al total
+                alert("Las horas de staff no pueden ser mayores que " + totalStaff.toLocaleString('es-ES'));
+                this.value = ''; // Resetear el valor del input si es mayor
+            }
         }
     });
 </script>

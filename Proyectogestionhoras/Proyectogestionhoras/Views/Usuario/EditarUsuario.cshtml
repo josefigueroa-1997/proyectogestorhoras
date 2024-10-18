@@ -71,66 +71,86 @@
 
 <div class="form-container">
     <h1 class="form-title">Editar Personal</h1>
-    @foreach(var usuario in ViewBag.Usuario)
+    @if (ViewBag.Usuario != null)
     {
-        <form action="" method="post" enctype="multipart/form-data">
-            <!-- Nombre -->
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" value="@usuario.Nombre" required>
-            </div>
+        @foreach (var usuario in ViewBag.Usuario)
+        {
+            <form action="@Url.Action("ActualizarDatos","Usuario")" method="post" enctype="multipart/form-data">
+                <!-- Nombre -->
+                <input type="hidden" name="idusuario" value="@usuario.Id" />
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" value="@usuario.Nombre" required>
+                </div>
 
-            <!-- RUT -->
-            <div class="form-group">
-                <label for="rut">RUT(Sin Puntos Ni Guiones)</label>
-                <input type="number" id="rut" name="rut" value="@usuario.Nombre_Usuario" required>
-                <span id="rutStatus"></span>
-            </div>
+                <!-- RUT -->
+                <div class="form-group">
+                    <label for="rut">RUT(Sin Puntos Ni Guiones)</label>
+                    <input type="number" id="rut" name="nombreusuario" value="@usuario.Nombre_Usuario" required>
+                    <span id="rutStatus"></span>
+                </div>
 
-            <!-- Teléfono -->
-            <div class="form-group">
-                <label for="telefono">Teléfono</label>
-                <input type="tel" id="telefono" name="telefono" value="@usuario.Telefono" required>
-            </div>
+                <!-- Teléfono -->
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" value="@usuario.Telefono" required>
+                </div>
 
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="@usuario.Email" required>
-                <span id="emailStatus"></span>
-            </div>
-
-
-
-            <!-- Número de Horas -->
-            <div class="form-group">
-                <label for="numeroHoras">Contrato de Número de Horas Semanales</label>
-                <input type="number" id="numeroHoras" name="numhoras" value="@usuario.Numero_Horas" min="1">
-            </div>
-            <!-- % Horas a Proyectos -->
-            <div class="form-group">
-                <label for="porcentaje">Porcentaje de Horas a Proyectos</label>
-                <input type="text" id="porcentaje" name="porcentajehoras" value="@usuario.PROCENTAJE_PROYECTO" min="1">
-            </div>
-
-            <!-- Costo Unitario -->
-            <div class="form-group">
-                <label for="costoUnitario">Costo Unitario</label>
-                <input type="text" id="costoUnitario" name="costounitario" value="@usuario.Costo_Unitario" required step="0.01" min="0">
-            </div>
-            <div class="form-group">
-                <label for="desde">Desde</label>
-                <input type="date" id="desde" name="fechainicio">
-            </div>
-            <div class="form-group">
-                <label for="hasta">Hasta</label>
-                <input type="date" id="hasta" name="fechafin">
-            </div>
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="@usuario.Email" required>
+                    <span id="emailStatus"></span>
+                </div>
 
 
-            <button type="submit" class="submit-btn">Guardar Cambios</button>
-        </form>
+                @if (usuario.Numero_Horas > 0)
+                {
+                    <div class="form-group">
+                        <label for="numeroHoras">Contrato de Número de Horas Semanales</label>
+                        <input type="number" id="numeroHoras" name="hhsemanales" value="@usuario.Numero_Horas" min="1">
+                    </div>
+                }
+                <!-- Número de Horas -->
+                
+
+                <!-- % Horas a Proyectos -->
+                @if (usuario.PROCENTAJE_PROYECTO > 0)
+                {
+                    <div class="form-group">
+                        <label for="porcentaje">Porcentaje de Horas a Proyectos</label>
+                        <input type="text" id="porcentaje" name="porcentaje" value="@usuario.PROCENTAJE_PROYECTO" min="1">
+                    </div>
+                }
+               
+
+                <!-- Costo Unitario -->
+                <div class="form-group">
+                    <label for="costoUnitario">Costo Unitario</label>
+                    <input type="text" id="costoUnitario" name="costo" value="@usuario.Costo_Unitario" required step="0.01" min="0">
+                </div>
+                @if (usuario.Desde != null)
+                {
+                    <div class="form-group">
+                        <label for="desde">Desde</label>
+                        <input type="date" id="desde" name="fechainicio" value="@usuario.Desde.ToString("yyyy/MM/dd")">
+                    </div>
+                }
+                @if(usuario.Hasta!= null)
+                {
+                    <div class="form-group">
+                        <label for="hasta">Hasta</label>
+                        <input type="date" id="hasta" name="fechatermino" value="@usuario.Hasta.ToString("yyyy/MM/dd")">
+                    </div>
+                }
+               
+
+
+                <button type="submit" class="submit-btn">Guardar Cambios</button>
+            </form>
+        }
     }
+   
     
 </div>
 

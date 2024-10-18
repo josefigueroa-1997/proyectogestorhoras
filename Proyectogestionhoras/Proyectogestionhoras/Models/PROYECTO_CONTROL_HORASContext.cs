@@ -21,6 +21,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<CcostoUnegocio> CcostoUnegocios { get; set; } = null!;
         public virtual DbSet<Cliente> Clientes { get; set; } = null!;
         public virtual DbSet<Contacto> Contactos { get; set; } = null!;
+        public virtual DbSet<CostoPromedio> CostoPromedios { get; set; } = null!;
         public virtual DbSet<Cuentum> Cuenta { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
@@ -209,6 +210,22 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.IdCliente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_CLIENTE_FK");
+            });
+
+            modelBuilder.Entity<CostoPromedio>(entity =>
+            {
+                entity.ToTable("COSTO_PROMEDIO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.TipoRecurso)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPO_RECURSO");
+
+                entity.Property(e => e.Valor)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("VALOR");
             });
 
             modelBuilder.Entity<Cuentum>(entity =>
@@ -831,6 +848,24 @@ namespace Proyectogestionhoras.Models
                 entity.ToTable("TIPOLOGIA");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Consultora).HasColumnName("CONSULTORA");
+
+                entity.Property(e => e.Consultorc).HasColumnName("CONSULTORC");
+
+                entity.Property(e => e.Consutlrob).HasColumnName("CONSUTLROB");
+
+                entity.Property(e => e.Desde).HasColumnName("DESDE");
+
+                entity.Property(e => e.Hasta).HasColumnName("HASTA");
+
+                entity.Property(e => e.Hhsocios).HasColumnName("HHSOCIOS");
+
+                entity.Property(e => e.Hhstaff).HasColumnName("HHSTAFF");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(12, 2)")
+                    .HasColumnName("MONTO");
 
                 entity.Property(e => e.TipoTipologia)
                     .HasMaxLength(200)
