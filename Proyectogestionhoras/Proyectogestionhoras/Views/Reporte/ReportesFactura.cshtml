@@ -1,0 +1,288 @@
+﻿@model List<Proyectogestionhoras.Models.DTO.RepoteFacturasDTO>
+@using Newtonsoft.Json;
+
+<h2 class="text-2xl font-bold mb-4">Facturas por Proyecto</h2>
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-100">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Num Proyecto</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipología</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200"></tbody>
+        </table>
+    </div>
+</div>
+<style>
+    .bg-yellow {
+        background-color: yellow; /* Cambia el color según tus necesidades */
+    }
+
+    .text-right {
+        text-align: right; /* Alineación del texto a la derecha */
+    }
+    .totales{
+        background-color: #a1d7f3;
+    }
+</style>
+<script>
+    const datosFactura = @Html.Raw(JsonConvert.SerializeObject(Model));
+
+    function formatearMes(fecha) {
+        const date = new Date(fecha);
+        const mes = date.getMonth() + 1;
+        const año = date.getFullYear();
+        return `${mes.toString().padStart(2, '0')}-${año}`;
+    }
+
+    function formatearMiles(valor) {
+        return valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // Función para limpiar los puntos del separador de miles y convertir a decimal
+    function limpiarFormatoMiles(valor) {
+        return parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
+    }
+
+    const datosAgrupados = {};
+    const totalesPorEstado = {
+        "En Ejecución": { sumaNeto: 0, meses: {}, totalAnual: {} },
+        "En Negociación": { sumaNeto: 0, meses: {}, totalAnual: {} },
+        "A Licitar": { sumaNeto: 0, meses: {}, totalAnual: {} }
+    };
+
+    const totalPorMes = {};
+    const totalPorAño = {};
+    let totalFinal = 0; // Suma total general
+
+    datosFactura.forEach(factura => {
+        const mes = formatearMes(factura.FechaFactura);
+        const año = factura.FechaFactura.split('-')[0];
+
+        if (!datosAgrupados[factura.NumProyecto]) {
+            datosAgrupados[factura.NumProyecto] = {
+                Nombre: factura.Nombre,
+                NombreCliente: factura.NombreCliente,
+                TipoStatus: factura.TipoStatus,
+                TipoTipologia: factura.TipoTipologia,
+                Meses: {},
+                TotalAnual: {}
+            };
+        }
+
+        if (!datosAgrupados[factura.NumProyecto].Meses[mes]) {
+            datosAgrupados[factura.NumProyecto].Meses[mes] = 0;
+        }
+        datosAgrupados[factura.NumProyecto].Meses[mes] += factura.Neto;
+
+        if (!datosAgrupados[factura.NumProyecto].TotalAnual[año]) {
+            datosAgrupados[factura.NumProyecto].TotalAnual[año] = 0;
+        }
+        datosAgrupados[factura.NumProyecto].TotalAnual[año] += factura.Neto;
+
+        if (totalesPorEstado[factura.TipoStatus]) {
+            totalesPorEstado[factura.TipoStatus].sumaNeto += factura.Neto;
+            if (!totalesPorEstado[factura.TipoStatus].meses[mes]) {
+                totalesPorEstado[factura.TipoStatus].meses[mes] = 0;
+            }
+            totalesPorEstado[factura.TipoStatus].meses[mes] += factura.Neto;
+
+            if (!totalesPorEstado[factura.TipoStatus].totalAnual[año]) {
+                totalesPorEstado[factura.TipoStatus].totalAnual[año] = 0;
+            }
+            totalesPorEstado[factura.TipoStatus].totalAnual[año] += factura.Neto;
+
+            if (!totalPorMes[mes]) {
+                totalPorMes[mes] = 0;
+            }
+            totalPorMes[mes] += factura.Neto;
+
+            if (!totalPorAño[año]) {
+                totalPorAño[año] = 0;
+            }
+            totalPorAño[año] += factura.Neto;
+        }
+
+        totalFinal += factura.Neto; // Acumula el total general
+    });
+
+    const generarTabla = (datos) => {
+        const tabla = document.querySelector('#facturasTable tbody');
+        const cabecera = document.querySelector('#facturasTable thead tr');
+
+        const mesesUnicos = new Set();
+        const añosUnicos = new Set();
+        for (let proyecto in datos) {
+            for (let mes in datos[proyecto].Meses) {
+                mesesUnicos.add(mes);
+            }
+            Object.keys(datos[proyecto].TotalAnual).forEach(año => añosUnicos.add(año));
+        }
+
+        const mesesArray = Array.from(mesesUnicos).sort((a, b) => {
+            const [mesA, añoA] = a.split('-').map(Number);
+            const [mesB, añoB] = b.split('-').map(Number);
+            return añoA - añoB || mesA - mesB;
+        });
+
+        const añosArray = Array.from(añosUnicos).sort((a, b) => a - b);
+
+        mesesArray.forEach(mes => {
+            const th = document.createElement('th');
+            th.innerText = mes;
+            cabecera.appendChild(th);
+        });
+
+        añosArray.forEach(año => {
+            const thAño = document.createElement('th');
+            thAño.innerText = `Total ${año}`;
+            cabecera.appendChild(thAño);
+        });
+
+        const thTotalProyecto = document.createElement('th');
+        thTotalProyecto.innerText = 'Totales Generales';
+        cabecera.appendChild(thTotalProyecto);
+
+        const proyectosOrdenados = Object.keys(datos).sort((a, b) => {
+            const estadoA = datos[a].TipoStatus.toLowerCase();
+            const estadoB = datos[b].TipoStatus.toLowerCase();
+            const tipologiaA = datos[a].TipoTipologia.toLowerCase();
+            const tipologiaB = datos[b].TipoTipologia.toLowerCase();
+
+            const ordenEstado = {
+                "en ejecución": 1,
+                "en negociación": 2,
+                "a licitar": 3
+            };
+
+            const ordenEstadoComparacion = (ordenEstado[estadoA] || 99) - (ordenEstado[estadoB] || 99);
+            if (ordenEstadoComparacion !== 0) return ordenEstadoComparacion;
+
+            return tipologiaA.localeCompare(tipologiaB);
+        });
+
+        let totalPorEstado = {};
+        let totalEstadoActual = null;
+
+        proyectosOrdenados.forEach(proyecto => {
+            const proyectoData = datos[proyecto];
+
+            if (totalEstadoActual !== proyectoData.TipoStatus) {
+                if (totalEstadoActual !== null) {
+                    const totalRow = tabla.insertRow();
+                    const totalCell = totalRow.insertCell();
+                    totalCell.colSpan = 5;
+                    totalCell.innerText = `Total ${totalEstadoActual}`;
+                    totalCell.classList.add("border", "border-black", "bg-yellow");
+                    mesesArray.forEach(mes => {
+                        const cell = totalRow.insertCell();
+                        const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
+                        cell.innerText = formatearMiles(totalMes);
+                        cell.classList.add("border", "border-black", "bg-yellow", "text-right");
+                    });
+
+                    añosArray.forEach(año => {
+                        const totalAnualCell = totalRow.insertCell();
+                        const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
+                        totalAnualCell.innerText = formatearMiles(totalAnual);
+                        totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right");
+                    });
+                }
+
+                totalEstadoActual = proyectoData.TipoStatus;
+                totalPorEstado[totalEstadoActual] = { sumaNeto: 0, meses: {}, totalAnual: {} };
+            }
+
+            const row = tabla.insertRow();
+            row.insertCell().innerText = proyecto;
+            row.insertCell().innerText = proyectoData.Nombre;
+            row.insertCell().innerText = proyectoData.NombreCliente;
+            row.insertCell().innerText = proyectoData.TipoStatus;
+            row.insertCell().innerText = proyectoData.TipoTipologia;
+
+            let totalProyecto = 0;
+            mesesArray.forEach(mes => {
+                const cell = row.insertCell();
+                const valorMes = proyectoData.Meses[mes] || 0;
+                cell.innerText = formatearMiles(valorMes);
+                cell.classList.add("border", "border-black", "text-right");
+                totalProyecto += valorMes;
+                if (!totalPorEstado[totalEstadoActual].meses[mes]) {
+                    totalPorEstado[totalEstadoActual].meses[mes] = 0;
+                }
+                totalPorEstado[totalEstadoActual].meses[mes] += valorMes;
+            });
+
+            añosArray.forEach(año => {
+                const totalAnual = proyectoData.TotalAnual[año] || 0;
+                const totalAnualCell = row.insertCell();
+                const totalAnualTruncado = Math.floor(totalAnual);
+                totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
+                totalAnualCell.classList.add("border", "border-black", "text-right");
+                totalPorEstado[totalEstadoActual].totalAnual[año] = (totalPorEstado[totalEstadoActual].totalAnual[año] || 0) + totalAnual;
+            });
+
+            const totalCell = row.insertCell();
+            totalproyectotruncado = Math.round(totalProyecto);
+            totalCell.innerText = formatearMiles(totalproyectotruncado);
+            totalCell.classList.add("border", "border-black", "text-right");
+        });
+
+        if (totalEstadoActual !== null) {
+            const totalRow = tabla.insertRow();
+            const totalCell = totalRow.insertCell();
+            totalCell.colSpan = 5;
+            totalCell.innerText = `Total ${totalEstadoActual}`;
+            totalCell.classList.add("border", "border-black", "bg-yellow");
+            mesesArray.forEach(mes => {
+                const cell = totalRow.insertCell();
+                const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
+                cell.innerText = formatearMiles(totalMes);
+                cell.classList.add("border", "border-black", "bg-yellow", "text-right");
+            });
+
+            añosArray.forEach(año => {
+                const totalAnualCell = totalRow.insertCell();
+                const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
+                const totalAnualTruncado = Math.floor(totalAnual);
+                totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
+                totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right");
+            });
+        }
+
+        // Añadir fila de totales generales
+        const filaTotalGeneral = tabla.insertRow();
+        const celdaTotalGeneral = filaTotalGeneral.insertCell();
+        celdaTotalGeneral.colSpan = 5;
+        celdaTotalGeneral.innerText = 'Total General';
+        celdaTotalGeneral.classList.add("border", "border-black", "totales");
+        mesesArray.forEach(mes => {
+            const celdaMes = filaTotalGeneral.insertCell();
+            const totalMesGeneral = totalPorMes[mes] || 0;
+            const totalMesGeneralTruncado = Math.floor(totalMesGeneral);
+            celdaMes.innerText = formatearMiles(totalMesGeneralTruncado);
+            celdaMes.classList.add("border", "border-black", "text-right", "totales", "text-right");
+        });
+
+        añosArray.forEach(año => {
+            const celdaAnual = filaTotalGeneral.insertCell();
+            const totalAnualGeneral = totalPorAño[año] || 0;
+            const totalAnualGeneralTruncado = Math.floor(totalAnualGeneral);
+            celdaAnual.innerText = formatearMiles(totalAnualGeneralTruncado);
+            celdaAnual.classList.add("border", "border-black", "text-right", "totales", "text-right");
+        });
+
+        // Celda para total general
+        const celdaTotalGeneralFinal = filaTotalGeneral.insertCell();
+        celdaTotalGeneralFinal.innerText = formatearMiles(Math.floor(totalFinal));
+        celdaTotalGeneralFinal.classList.add("border", "border-black", "totales", "text-right");
+    }
+
+    generarTabla(datosAgrupados);
+</script>
