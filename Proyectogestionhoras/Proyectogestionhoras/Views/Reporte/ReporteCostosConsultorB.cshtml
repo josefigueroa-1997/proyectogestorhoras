@@ -1,11 +1,11 @@
-﻿@model List<Proyectogestionhoras.Models.DTO.RepoteFacturasDTO>
+﻿@model List<Proyectogestionhoras.Models.DTO.ReportesCostoRecursosDTO>
 @using Newtonsoft.Json;
 
 @{
-    ViewData["Title"] = "Reportes Facturas";
+    ViewData["Title"] = "Reportes Costos Consultor B";
 }
 
-<h2 class="text-2xl font-bold mb-4">Proyección de Facturación</h2>
+<h2 class="text-2xl font-bold mb-4">Costos HH Consultor B Asignables a Proyecto</h2>
 
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
@@ -31,10 +31,14 @@
     .text-right {
         text-align: right; /* Alineación del texto a la derecha */
     }
-    .totales{
+
+    .totales {
         background-color: #a1d7f3;
     }
 </style>
+
+
+
 <script>
     const datosFactura = @Html.Raw(JsonConvert.SerializeObject(Model));
 
@@ -49,7 +53,7 @@
         return valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    // Función para limpiar los puntos del separador de miles y convertir a decimal
+
     function limpiarFormatoMiles(valor) {
         return parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
     }
@@ -83,37 +87,37 @@
         if (!datosAgrupados[factura.NumProyecto].Meses[mes]) {
             datosAgrupados[factura.NumProyecto].Meses[mes] = 0;
         }
-        datosAgrupados[factura.NumProyecto].Meses[mes] += factura.Neto;
+        datosAgrupados[factura.NumProyecto].Meses[mes] += factura.CostoRecurso;
 
         if (!datosAgrupados[factura.NumProyecto].TotalAnual[año]) {
             datosAgrupados[factura.NumProyecto].TotalAnual[año] = 0;
         }
-        datosAgrupados[factura.NumProyecto].TotalAnual[año] += factura.Neto;
+        datosAgrupados[factura.NumProyecto].TotalAnual[año] += factura.CostoRecurso;
 
         if (totalesPorEstado[factura.TipoStatus]) {
-            totalesPorEstado[factura.TipoStatus].sumaNeto += factura.Neto;
+            totalesPorEstado[factura.TipoStatus].sumaNeto += factura.CostoRecurso;
             if (!totalesPorEstado[factura.TipoStatus].meses[mes]) {
                 totalesPorEstado[factura.TipoStatus].meses[mes] = 0;
             }
-            totalesPorEstado[factura.TipoStatus].meses[mes] += factura.Neto;
+            totalesPorEstado[factura.TipoStatus].meses[mes] += factura.CostoRecurso;
 
             if (!totalesPorEstado[factura.TipoStatus].totalAnual[año]) {
                 totalesPorEstado[factura.TipoStatus].totalAnual[año] = 0;
             }
-            totalesPorEstado[factura.TipoStatus].totalAnual[año] += factura.Neto;
+            totalesPorEstado[factura.TipoStatus].totalAnual[año] += factura.CostoRecurso;
 
             if (!totalPorMes[mes]) {
                 totalPorMes[mes] = 0;
             }
-            totalPorMes[mes] += factura.Neto;
+            totalPorMes[mes] += factura.CostoRecurso;
 
             if (!totalPorAño[año]) {
                 totalPorAño[año] = 0;
             }
-            totalPorAño[año] += factura.Neto;
+            totalPorAño[año] += factura.CostoRecurso;
         }
 
-        totalFinal += factura.Neto; // Acumula el total general
+        totalFinal += factura.CostoRecurso; // Acumula el total general
     });
 
     const generarTabla = (datos) => {
@@ -187,7 +191,7 @@
                     mesesArray.forEach(mes => {
                         const cell = totalRow.insertCell();
                         const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                        cell.innerText = formatearMiles(totalMes);
+                        cell.innerText = formatearMiles(Math.round(totalMes));
                         cell.classList.add("border", "border-black", "bg-yellow", "text-right");
                     });
 
@@ -214,7 +218,7 @@
             mesesArray.forEach(mes => {
                 const cell = row.insertCell();
                 const valorMes = proyectoData.Meses[mes] || 0;
-                cell.innerText = formatearMiles(valorMes);
+                cell.innerText = formatearMiles(Math.round(valorMes));
                 cell.classList.add("border", "border-black", "text-right");
                 totalProyecto += valorMes;
                 if (!totalPorEstado[totalEstadoActual].meses[mes]) {
@@ -247,7 +251,7 @@
             mesesArray.forEach(mes => {
                 const cell = totalRow.insertCell();
                 const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                cell.innerText = formatearMiles(totalMes);
+                cell.innerText = formatearMiles(Math.floor(totalMes));
                 cell.classList.add("border", "border-black", "bg-yellow", "text-right");
             });
 

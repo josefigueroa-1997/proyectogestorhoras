@@ -1,0 +1,91 @@
+﻿@{
+
+    ViewData["Title"] = "Reportes";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Reportes del Proyecto</h2>
+        <div class="section-content">
+
+            <a href="@Url.Action("ReportesFactura","Reporte")">
+                <div class="card">
+                    <h3>Proyección de Facturación</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteHHSocios","Reporte",new{recurso = "Socio"})">
+                <div class="card">
+                    <h3>HH Socios Asignadas a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteHHStaff","Reporte",new{recurso = "Staff"})">
+                <div class="card">
+                    <h3>HH Staff Asignadas a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteHHConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
+                <div class="card">
+                    <h3>HH Consultor A Asignadas a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteHHConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
+                <div class="card">
+                    <h3>HH Consultor B Asignadas a Proyectos</h3>
+                </div>
+
+            </a>
+
+            <a href="@Url.Action("ReporteHHConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
+                <div class="card">
+                    <h3>HH Consultor C Asignadas a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteCostosSocios","Reporte",new{recurso = "Socio"})">
+                <div class="card">
+                    <h3>Costos HH Socios Asignable a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteCostosStaff","Reporte",new{recurso = "Staff"})">
+                <div class="card">
+                    <h3>Costos HH Staff Asignable a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteCostosConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
+                <div class="card">
+                    <h3>Costos HH Consultor A Asignable a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteCostosConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
+                <div class="card">
+                    <h3>Costos HH Consultor B Asignable a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteCostosConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
+                <div class="card">
+                    <h3>Costos HH Consultor C Asignable a Proyectos</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteMargenProyectos","Reporte")">
+                <div class="card">
+                    <h3>Margen de Contribución de Proyectos</h3>
+                </div>
+
+            </a>
+        </div>
+    </div>
+
+</div>
+
+            
