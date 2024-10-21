@@ -6,7 +6,7 @@
 }
 
 <h2 class="text-2xl font-bold mb-4">Proyección de Facturación</h2>
-
+<button id="exportButton" class="mt-4 bg-blue-500 text-white p-2 rounded">Exportar a Excel</button>
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
@@ -35,6 +35,7 @@
         background-color: #a1d7f3;
     }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 <script>
     const datosFactura = @Html.Raw(JsonConvert.SerializeObject(Model));
 
@@ -286,7 +287,106 @@
         const celdaTotalGeneralFinal = filaTotalGeneral.insertCell();
         celdaTotalGeneralFinal.innerText = formatearMiles(Math.floor(totalFinal));
         celdaTotalGeneralFinal.classList.add("border", "border-black", "totales", "text-right");
+        
     }
 
     generarTabla(datosAgrupados);
+    const exportarAExcel = () => {
+        const wb = XLSX.utils.book_new();
+        const wsData = [];
+
+        // Extrae los datos de la tabla
+        const tabla = document.getElementById('facturasTable');
+        const filas = tabla.getElementsByTagName('tr');
+
+        // Añadir encabezados con soporte de colspan
+        const encabezados = [];
+        for (let i = 0; i < filas[0].cells.length; i++) {
+            const celda = filas[0].cells[i];
+            const colspan = celda.colSpan || 1;
+            for (let j = 0; j < colspan; j++) {
+                encabezados.push(celda.innerText);
+            }
+        }
+        wsData.push(encabezados);
+
+        // Añadir filas de datos
+        for (let i = 1; i < filas.length; i++) {
+            const celdas = filas[i].cells;
+            const filaData = [];
+
+            for (let j = 0; j < celdas.length; j++) {
+                const celda = celdas[j];
+                const colspan = celda.colSpan || 1;
+
+                // Manejar el formato de texto para Num Proyecto (asumiendo que es la primera columna)
+                if (j === 0) {
+                    filaData.push(`'${celda.innerText}`); // Agregar un apóstrofo al inicio
+                } else {
+                    filaData.push(celda.innerText);
+                }
+
+                // Agregar celdas vacías para respetar el colspan
+                for (let k = 1; k < colspan; k++) {
+                    filaData.push('');
+                }
+            }
+
+            wsData.push(filaData);
+        }
+
+        // Añadir la hoja de cálculo con los datos
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        XLSX.utils.book_append_sheet(wb, ws, "Facturas");
+
+        // Agregar el logo
+        const logoPath = '@Url.Content("~/images/unitt.png")'; // Usando Razor para obtener la ruta correcta
+        const logo = new Image();
+        logo.src = logoPath;
+
+        logo.onload = () => {
+            const imgObj = {
+                name: "Logo",
+                data: getBase64Image(logo), // Convierte la imagen a base64
+                opts: {
+                    x: 10, // Coordenadas X
+                    y: 10, // Coordenadas Y
+                    width: 100, // Ancho de la imagen
+                    height: 50, // Alto de la imagen
+                    position: {
+                        tl: { col: 0, row: 0 }, // Coloca el logo en A1
+                        br: { col: 1, row: 1 },
+                        ext: { width: 100, height: 50 }
+                    }
+                }
+            };
+
+            // Agregar imagen al workbook
+            if (!wb.images) wb.images = [];
+            wb.images.push(imgObj);
+
+            // Exportar archivo
+            XLSX.writeFile(wb, 'ReporteFacturas.xlsx');
+        };
+
+        logo.onerror = () => {
+            console.error("Error al cargar la imagen.");
+        };
+    };
+
+    // Función para convertir la imagen a base64
+    function getBase64Image(img) {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        return canvas.toDataURL("image/png").replace(/^data:image\/(png|jpg);base64,/, "");
+    }
+
+    // Asigna el evento al botón de exportación
+    document.getElementById('exportButton').addEventListener('click', exportarAExcel);
+
 </script>
+
+

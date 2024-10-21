@@ -1,15 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services;
+using Proyectogestionhoras.Services.Interface;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Proyectogestionhoras.Controllers
 {
     public class ReporteController : Controller
     {
         private readonly ReporteService _reporteService;
-        public ReporteController(ReporteService reporteService)
+        private readonly PROYECTO_CONTROL_HORASContext context;
+        public ReporteController(ReporteService reporteService,PROYECTO_CONTROL_HORASContext context)
         {
             _reporteService = reporteService;
+            this.context = context;
         }
 
         public IActionResult TodosReportes()
@@ -79,5 +84,36 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Margen = margen;
             return View();
         }
+        public IActionResult SeleccionarProyecto()
+        {
+            var proyectos = context.Proyectos.Where(p=>p.StatusProyecto == 2);
+            ViewBag.Proyectos = proyectos;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult BuscarReporte(int idproyecto)
+        {
+            int proyecto = int.Parse(Request.Form["proyecto"].ToString());
+            var numProyecto = context.Proyectos
+            .Where(p => p.Id == proyecto) 
+            .Select(p => p.NumProyecto) 
+            .FirstOrDefault();
+            var nombre = context.Proyectos
+            .Where(p => p.Id == proyecto)
+            .Select(p => p.Nombre)
+            .FirstOrDefault();
+            HttpContext.Session.SetString("numproyecto",numProyecto);
+            HttpContext.Session.SetString("nombreproyecto", nombre);
+            return RedirectToAction("ReporteControlAsignacionHH", new { idproyecto = proyecto });
+
+
+        }
+        public async Task<IActionResult> ReporteControlAsignacionHH(int idproyecto)
+        {
+            var controlhh = await _reporteService.ReporteControlHH(idproyecto);
+            ViewBag.Controlhh = controlhh;
+            return View();
+        }
+
     }
 }

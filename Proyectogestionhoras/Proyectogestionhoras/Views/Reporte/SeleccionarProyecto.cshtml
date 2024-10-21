@@ -1,0 +1,29 @@
+﻿@{
+
+    ViewData["Title"] = "Seleccionar Proyecto";
+
+}
+<div class="flex items-center justify-center min-h-[90vh] bg-gray-100">
+    <!-- Cambiado a min-h-[90vh] -->
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-md w-full mt-8">
+        <!-- Ajusta el margen superior aquí -->
+        <div class="text-center">
+            <h2 class="text-xl font-semibold mb-4">Selecciona un proyecto de la lista para ver su avance en HH</h2>
+            <div class="section-content">
+                <form action="@Url.Action("BuscarReporte","Reporte")" method="post">
+                    <select name="proyecto" class="border border-gray-300 rounded-md p-2 w-full mb-4">
+                        <option selected disabled value="">Selecciona un proyecto</option>
+                        @if (ViewBag.Proyectos != null)
+                        {
+                            @foreach (var proyecto in ViewBag.Proyectos)
+                            {
+                                <option value="@proyecto.Id">@proyecto.NumProyecto - @proyecto.Nombre</option>
+                            }
+                        }
+                    </select>
+                    <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

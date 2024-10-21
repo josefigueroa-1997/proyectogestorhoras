@@ -8,14 +8,26 @@
 <div class="dashboard-container">
     <div class="dashboard-section projects-section">
         <h2 class="section-header">Reportes del Proyecto</h2>
+        <h2 class="section-header">Facturaciones</h2>
         <div class="section-content">
-
             <a href="@Url.Action("ReportesFactura","Reporte")">
                 <div class="card">
                     <h3>Proyección de Facturación</h3>
                 </div>
 
             </a>
+            <a href="@Url.Action("ReporteMargenProyectos","Reporte")">
+                <div class="card">
+                    <h3>Margen de Contribución de Proyectos</h3>
+                </div>
+
+            </a>
+
+
+
+        </div>
+        <h2 class="section-header">Reportes HH Asignadas</h2>
+        <div class="section-content">
             <a href="@Url.Action("ReporteHHSocios","Reporte",new{recurso = "Socio"})">
                 <div class="card">
                     <h3>HH Socios Asignadas a Proyectos</h3>
@@ -47,6 +59,11 @@
                 </div>
 
             </a>
+
+        </div>
+        <h2 class="section-header">Reportes Costos Asignadas</h2>
+        <div class="section-content">
+
             <a href="@Url.Action("ReporteCostosSocios","Reporte",new{recurso = "Socio"})">
                 <div class="card">
                     <h3>Costos HH Socios Asignable a Proyectos</h3>
@@ -77,12 +94,24 @@
                 </div>
 
             </a>
-            <a href="@Url.Action("ReporteMargenProyectos","Reporte")">
+
+        </div>
+        <h2 class="section-header">Reporte Control Avance HH</h2>
+        <div class="section-content">
+            <a href="@Url.Action("SeleccionarProyecto","Reporte")">
                 <div class="card">
-                    <h3>Margen de Contribución de Proyectos</h3>
+                    <h3>Control Avances HH</h3>
                 </div>
 
             </a>
+
+
+        </div>
+           
+           
+          
+            
+            
         </div>
     </div>
 

@@ -288,5 +288,52 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+        public async Task<List<ReporteControlHHDTO>> ReporteControlHH(int idproyecto)
+        {
+            try
+            {
+                var controlhh = new List<ReporteControlHHDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ObtenerHorasPoryejecutadasProyecto";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ProyectoId", idproyecto));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ReporteControlHHDTO datos = new()
+                            {
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                                HorasSociosEjecutadas = reader.IsDBNull(reader.GetOrdinal("HorasSociosEjecutadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasSociosEjecutadas")),
+                                HorasStaffEjecutadas = reader.IsDBNull(reader.GetOrdinal("HorasStaffEjecutadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasStaffEjecutadas")),
+                                HorasConsultorAEjecutadas = reader.IsDBNull(reader.GetOrdinal("HorasConsultorAEjecutadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasConsultorAEjecutadas")),
+                                HorasConsultorBEjecutadas = reader.IsDBNull(reader.GetOrdinal("HorasConsultorBEjecutadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasConsultorBEjecutadas")),
+                                HorasConsultorCEjecutadas = reader.IsDBNull(reader.GetOrdinal("HorasConsultorCEjecutadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasConsultorCEjecutadas")),
+                                HorasSociosPlaneadas = reader.IsDBNull(reader.GetOrdinal("HorasSociosPlaneadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasSociosPlaneadas")),
+                                HorasStaffPlaneadas = reader.IsDBNull(reader.GetOrdinal("HorasStaffPlaneadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasStaffPlaneadas")),
+                                HorasConsultorAPlaneadas = reader.IsDBNull(reader.GetOrdinal("HorasConsultorAPlaneadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasConsultorAPlaneadas")),
+                                HorasConsultorBPlaneadas = reader.IsDBNull(reader.GetOrdinal("HorasConsultorBPlaneadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasConsultorBPlaneadas")),
+                                HorasConsultorCPlaneadas = reader.IsDBNull(reader.GetOrdinal("HorasConsultorCPlaneadas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HorasConsultorCPlaneadas")),
+                            };
+
+                            controlhh.Add(datos);
+                        }
+                    }
+                }
+
+                await conexion.CloseDatabaseConnectionAsync();
+                return controlhh;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener el control hh asignados de los proyectos: {ex.Message}");
+                return new List<ReporteControlHHDTO>();
+            }
+        }
     }
 }

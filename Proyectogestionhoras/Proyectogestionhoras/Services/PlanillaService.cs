@@ -114,7 +114,7 @@ namespace Proyectogestionhoras.Services
 
                             if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
                             {
-                                recurso.HhAnuales -= horasasignadas;
+                                
                                 if (recurso.NombreRecurso == "Socio")
                                 {
                                    
