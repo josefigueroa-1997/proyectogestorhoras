@@ -115,5 +115,24 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+        public async Task<IActionResult> HHsociosActividad(int mes)
+        {
+            var horasmesactual = await _reporteService.HorasPorSociosMesActual(mes);
+            var horasanioactual = await _reporteService.HorasPorSociosAnioActual(mes);
+            var horasdocemeses = await _reporteService.HorasPorSociosUltimosDoceMeses(mes);
+            ViewBag.Anioactual = horasanioactual;
+            ViewBag.Docemeses = horasdocemeses;
+            return View(horasmesactual);
+        }
+        public IActionResult ReporteProyectosNegociacion()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ObtenerDatosNegociacion()
+        {
+            var proyectos = await _reporteService.ReporteProyectoNegociacion();
+            return Json(proyectos);
+        }
     }
 }

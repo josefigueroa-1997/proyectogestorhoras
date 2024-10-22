@@ -1,0 +1,78 @@
+﻿@model List<Proyectogestionhoras.Models.DTO.HorasSociosActDTO>
+
+@{
+    ViewData["Title"] = "Actividades Socios";
+    var actividades = Model.SelectMany(m => m.HorasPorActividad.Keys).Distinct().ToList();
+    var horasAnioActual = ViewBag.Anioactual as List<Proyectogestionhoras.Models.DTO.HorasSociosActDTO>;
+    var horasdocemeses = ViewBag.Docemeses as List<Proyectogestionhoras.Models.DTO.HorasSociosActDTO>;
+    var sociosInvertidos = Model.OrderByDescending(s => s.NombreSocio).ToList();
+}
+
+<div class="container mx-auto p-4">
+    <h1 class="text-xl font-bold mb-4 text-center">Actividades Socios</h1>
+    <h1 class="text-xl font-bold mb-4 text-center">Mes: @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(@DateTime.Now.Month)</h1>
+
+    @foreach (var socio in sociosInvertidos) 
+    {
+        <h3 class="text-xl font-bold mb-4">Socio: @socio.NombreSocio</h3>
+        <div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6">
+            <table class="min-w-full border-collapse border border-black">
+                <thead class="bg-yellow-200">
+                    <tr>
+                        <th class="border border-black px-4 py-2">Tiempo</th>
+                        @foreach (var actividad in actividades)
+                        {
+                            <th class="border border-black px-4 py-2">@actividad</th>
+                        }
+                        <th class="border border-black px-4 py-2">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-black px-4 py-2">Mes Actual</td>
+                        @{
+                            int totalMesActual = 0;
+                        }
+                        @foreach (var actividad in actividades)
+                        {
+                            int horas = socio.HorasPorActividad.ContainsKey(actividad) ? socio.HorasPorActividad[actividad] : 0;
+                            totalMesActual += horas;
+                            <td class="border border-black px-4 py-2 text-right">@horas</td>
+                        }
+                        <td class="border border-black px-4 py-2 text-right">@totalMesActual</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border border-black px-4 py-2">Acumulado Año</td>
+                        @{
+                            int totalAnio = 0;
+                        }
+                        @foreach (var actividad in actividades)
+                        {
+                            var socioAnio = horasAnioActual.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
+                            int horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
+                            totalAnio += horas;
+                            <td class="border border-black px-4 py-2 text-right">@horas</td>
+                        }
+                        <td class="border border-black px-4 py-2 text-right">@totalAnio</td>
+                    </tr>
+
+                    <tr>
+                        <td class="border border-black px-4 py-2">Últimos 12 meses</td>
+                        @{
+                            int totalDoceMeses = 0;
+                        }
+                        @foreach (var actividad in actividades)
+                        {
+                            var socioAnio = horasdocemeses.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
+                            int horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
+                            totalDoceMeses += horas;
+                            <td class="border border-black px-4 py-2 text-right">@horas</td>
+                        }
+                        <td class="border border-black px-4 py-2 text-right">@totalDoceMeses</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

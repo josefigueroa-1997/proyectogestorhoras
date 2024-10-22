@@ -1,0 +1,111 @@
+﻿<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+<h1>Reporte de Negociación</h1>
+<table id="tablaReporte">
+    <thead>
+        <tr>
+            <th>Num Proyecto</th>
+            <th>Nombre</th>
+            <th>Tipo Tipología</th>
+            <th>Nombre Cliente</th>
+            <th>Probabilidad</th>
+            <th>Unidad de Negocio</th>
+            <th>Centro Costo</th>
+            <!-- Las fechas se añadirán dinámicamente -->
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Los datos se añadirán dinámicamente -->
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        cargarReporte();
+    });
+
+    function cargarReporte() {
+        $.ajax({
+            url: '/Reporte/ObtenerDatosNegociacion', // Cambia la URL según tu configuración
+            method: 'GET',
+            dataType: 'json',
+            success: function (datos) {
+                const tabla = $('#tablaReporte');
+                const fechasUnicas = new Set();
+
+                // Recolectar todas las fechas únicas (solo mes y año en formato numérico)
+                datos.forEach(item => {
+                    const fecha = new Date(item.fechaFactura);
+                    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Obtener el mes en formato 2 dígitos
+                    const anio = fecha.getFullYear(); // Obtener el año
+                    const mesAnio = `${mes}/${anio}`; // Formato "mm/yyyy"
+                    fechasUnicas.add(mesAnio);
+                });
+
+                // Crear la fila de cabecera con las fechas
+                const filaCabecera = tabla.find('thead tr');
+                fechasUnicas.forEach(mesAnio => {
+                    const th = $('<th></th>').text(mesAnio);
+                    filaCabecera.append(th);
+                });
+
+                // Agrupar los datos por proyecto
+                const datosAgrupados = {};
+
+                datos.forEach(item => {
+                    const numProyecto = item.numProyecto;
+                    if (!datosAgrupados[numProyecto]) {
+                        datosAgrupados[numProyecto] = {
+                            ...item,
+                            montos: {}
+                        };
+                    }
+                    const fecha = new Date(item.fechaFactura);
+                    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                    const anio = fecha.getFullYear();
+                    const mesAnio = `${mes}/${anio}`;
+                    datosAgrupados[numProyecto].montos[mesAnio] = item.neto;
+                });
+
+                // Llenar el cuerpo de la tabla
+                for (const [numProyecto, item] of Object.entries(datosAgrupados)) {
+                    const fila = $('<tr></tr>').html(`
+                                    <td>${item.numProyecto}</td>
+                                    <td>${item.nombre}</td>
+                                    <td>${item.tipoTipologia}</td>
+                                    <td>${item.nombreCliente}</td>
+                                    <td>${item.probabilidad}</td>
+                                    <td>${item.unegocio}</td>
+                                    <td>${item.cCosto}</td>
+                                `);
+
+                    // Agregar los montos correspondientes a cada mes y año
+                    fechasUnicas.forEach(mesAnio => {
+                        const monto = item.montos[mesAnio] || 0;
+                        const td = $('<td></td>').text(monto.toFixed(2));
+                        fila.append(td);
+                    });
+
+                    tabla.find('tbody').append(fila);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error al cargar los datos:', textStatus, errorThrown);
+            }
+        });
+    }
+</script>

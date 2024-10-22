@@ -335,5 +335,202 @@ namespace Proyectogestionhoras.Services
                 return new List<ReporteControlHHDTO>();
             }
         }
+        public async Task<List<HorasSociosActDTO>> HorasPorSociosMesActual(int mes)
+        {
+            try
+            {
+                var horas = new List<HorasSociosActDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "sp_HorasSociosPorActividadMESACTUAL";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        var sociosDict = new Dictionary<string, HorasSociosActDTO>();
+
+                        while (await reader.ReadAsync())
+                        {
+                            string nombreSocio = reader["NombreUsuario"] != DBNull.Value ? reader["NombreUsuario"].ToString() : "Sin nombre";
+                            string actividad = reader["Actividad"] != DBNull.Value ? reader["Actividad"].ToString() : "Sin actividad";
+                            int horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToInt32(reader["HorasTotalesMesActual"]) : 0;
+
+                            // Si el socio ya está en el diccionario, solo agrega la actividad
+                            if (!sociosDict.ContainsKey(nombreSocio))
+                            {
+                                sociosDict[nombreSocio] = new HorasSociosActDTO
+                                {
+                                    NombreSocio = nombreSocio
+                                };
+                            }
+
+                            // Agregar actividad y horas a ese socio
+                            sociosDict[nombreSocio].HorasPorActividad[actividad] = horasTotales;
+                        }
+
+                        horas = sociosDict.Values.ToList();
+                    }
+                }
+
+                await conexion.CloseDatabaseConnectionAsync();
+                return horas;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las horas por socios en el mes de los proyectos: {ex.Message}");
+                return new List<HorasSociosActDTO>();
+            }
+
+        }
+
+        public async Task<List<HorasSociosActDTO>> HorasPorSociosAnioActual(int mes)
+        {
+            try
+            {
+                var horas = new List<HorasSociosActDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "sp_HorasSociosPorActividadANIOACTUAL";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        var sociosDict = new Dictionary<string, HorasSociosActDTO>();
+
+                        while (await reader.ReadAsync())
+                        {
+                            string nombreSocio = reader["NombreUsuario"] != DBNull.Value ? reader["NombreUsuario"].ToString() : "Sin nombre";
+                            string actividad = reader["Actividad"] != DBNull.Value ? reader["Actividad"].ToString() : "Sin actividad";
+                            int horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToInt32(reader["HorasTotalesMesActual"]) : 0;
+
+                            // Si el socio ya está en el diccionario, solo agrega la actividad
+                            if (!sociosDict.ContainsKey(nombreSocio))
+                            {
+                                sociosDict[nombreSocio] = new HorasSociosActDTO
+                                {
+                                    NombreSocio = nombreSocio
+                                };
+                            }
+
+                            // Agregar actividad y horas a ese socio
+                            sociosDict[nombreSocio].HorasPorActividad[actividad] = horasTotales;
+                        }
+
+                        horas = sociosDict.Values.ToList();
+                    }
+                }
+
+                await conexion.CloseDatabaseConnectionAsync();
+                return horas;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las horas por socios en el mes de los proyectos: {ex.Message}");
+                return new List<HorasSociosActDTO>();
+            }
+
+        }
+        public async Task<List<HorasSociosActDTO>> HorasPorSociosUltimosDoceMeses(int mes)
+        {
+            try
+            {
+                var horas = new List<HorasSociosActDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "sp_HorasSociosPorActividad12meses";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        var sociosDict = new Dictionary<string, HorasSociosActDTO>();
+
+                        while (await reader.ReadAsync())
+                        {
+                            string nombreSocio = reader["NombreUsuario"] != DBNull.Value ? reader["NombreUsuario"].ToString() : "Sin nombre";
+                            string actividad = reader["Actividad"] != DBNull.Value ? reader["Actividad"].ToString() : "Sin actividad";
+                            int horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToInt32(reader["HorasTotalesMesActual"]) : 0;
+
+                            // Si el socio ya está en el diccionario, solo agrega la actividad
+                            if (!sociosDict.ContainsKey(nombreSocio))
+                            {
+                                sociosDict[nombreSocio] = new HorasSociosActDTO
+                                {
+                                    NombreSocio = nombreSocio
+                                };
+                            }
+
+                            // Agregar actividad y horas a ese socio
+                            sociosDict[nombreSocio].HorasPorActividad[actividad] = horasTotales;
+                        }
+
+                        horas = sociosDict.Values.ToList();
+                    }
+                }
+
+                await conexion.CloseDatabaseConnectionAsync();
+                return horas;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las horas por socios en el mes de los proyectos: {ex.Message}");
+                return new List<HorasSociosActDTO>();
+            }
+
+        }
+        public async Task<List<ReporteNegociacionDTO>> ReporteProyectoNegociacion()
+        {
+            try
+            {
+
+
+                var facturas = new List<ReporteNegociacionDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "REPORTENEOGOCIACION";
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ReporteNegociacionDTO datos = new()
+                            {
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("Num_Proyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("Num_Proyecto")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nombre")),
+                                Probabilidad = reader.IsDBNull(reader.GetOrdinal("Probabilidad")) ? string.Empty : reader.GetString(reader.GetOrdinal("Probabilidad")),
+                                Neto = reader.IsDBNull(reader.GetOrdinal("Neto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Neto")),
+                                FechaFactura = reader.GetDateTime(reader.GetOrdinal("Fecha_Factura")),
+                                TipoTipologia = reader.IsDBNull(reader.GetOrdinal("TIPO_TIPOLOGIA")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
+                                NombreCliente = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
+                                Unegocio = reader.IsDBNull(reader.GetOrdinal("Unegocio")) ? string.Empty : reader.GetString(reader.GetOrdinal("Unegocio")),
+                                CCosto = reader.IsDBNull(reader.GetOrdinal("CCosto")) ? string.Empty : reader.GetString(reader.GetOrdinal("CCosto")),
+                            };
+                            facturas.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return facturas;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las facturas de los proyectos en negociación:" + ex.Message);
+                return new List<ReporteNegociacionDTO>();
+
+            }
+        }
     }
 }
