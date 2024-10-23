@@ -134,5 +134,11 @@ namespace Proyectogestionhoras.Controllers
             var proyectos = await _reporteService.ReporteProyectoNegociacion();
             return Json(proyectos);
         }
+        public async Task<IActionResult> ReporteResumenQuarter()
+        {
+            var quarter = await _reporteService.RecuperarQuarter();
+            ViewBag.Quarter = quarter;
+            return View();
+        }
     }
 }

@@ -1,0 +1,140 @@
+﻿@{
+    decimal ingresoq1 = 0;
+    decimal ingresoq2 = 0;
+    decimal ingresoq3 = 0;
+    decimal ingresoq4 = 0;
+    decimal sociosq1 = 0;
+    decimal sociosq2 = 0;
+    decimal sociosq3 = 0;
+    decimal sociosq4 = 0;
+    decimal staffq1 = 0;
+    decimal staffq2 = 0;
+    decimal staffq3 = 0;
+    decimal staffq4 = 0;
+    decimal externosq1 = 0;
+    decimal externosq2 = 0;
+    decimal externosq3 = 0;
+    decimal externosq4 = 0;
+    decimal serviciosq1 = 0;
+    decimal serviciosq2 = 0;
+    decimal serviciosq3 = 0;
+    decimal serviciosq4 = 0;
+    decimal gastosq1 = 0;
+    decimal gastosq2 = 0;
+    decimal gastosq3 = 0;
+    decimal gastosq4 = 0;
+    decimal margenq1 = 0;
+    decimal margenq2 = 0;
+    decimal margenq3 = 0;
+    decimal margenq4 = 0;
+    foreach (var q in ViewBag.Quarter)
+    {
+        if (q.Quarter == 1)
+        {
+            ingresoq1 += q.Ingresos;
+            sociosq1 += q.CostoSocios;
+            staffq1 += q.CostoStaff;
+            externosq1 += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
+            serviciosq1 += q.TotalServicios;
+            gastosq1 += q.TotalGastos;
+            margenq1 += q.Margen;
+        }
+        if (q.Quarter == 2)
+        {
+            ingresoq2 += q.Ingresos;
+            sociosq2 += q.CostoSocios;
+            staffq2 += q.CostoStaff;
+            externosq2 += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
+            serviciosq2 += q.TotalServicios;
+            gastosq2 += q.TotalGastos;
+            margenq2 += q.Margen;
+        }
+        if (q.Quarter == 3)
+        {
+            ingresoq3 += q.Ingresos;
+            sociosq3 += q.CostoSocios;
+            staffq3 += q.CostoStaff;
+            externosq3 += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
+            serviciosq3 += q.TotalServicios;
+            gastosq3 += q.TotalGastos;
+            margenq3 += q.Margen;
+        }
+        if (q.Quarter == 4)
+        {
+            ingresoq4 += q.Ingresos;
+            sociosq4 += q.CostoSocios;
+            staffq4 += q.CostoStaff;
+            externosq4 += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
+            serviciosq4 += q.TotalServicios;
+            gastosq4 += q.TotalGastos;
+            margenq4 += q.Margen;
+        }
+    }
+}
+
+<div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6">
+    <table class="min-w-full border-collapse border border-black">
+        <thead class="bg-yellow-200">
+            <tr>
+                <th class="border border-black px-4 py-2">Tipo</th>
+              
+                <th class="border border-black px-4 py-2">Q1</th>
+                <th class="border border-black px-4 py-2">Q2</th>
+                <th class="border border-black px-4 py-2">Q3</th>
+                <th class="border border-black px-4 py-2">Q4</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td >Ingresos</td>
+                <td class="text-right">@String.Format("{0:N2}",@ingresoq1)</td>
+                <td class="text-right">@String.Format("{0:N2}",@ingresoq2)</td>
+                <td class="text-right">@String.Format("{0:N2}",@ingresoq3)</td>
+                <td class="text-right">@String.Format("{0:N2}",@ingresoq4)</td>
+            </tr>
+            <tr>        
+                <td>Costo HH_Socios</td>
+                <td class="text-right">@String.Format("{0:N2}",@sociosq1)</td>
+                <td class="text-right">@String.Format("{0:N2}",@sociosq2)</td>
+                <td class="text-right">@String.Format("{0:N2}",@sociosq3)</td>
+                <td class="text-right">@String.Format("{0:N2}",@sociosq4)</td>
+            </tr>
+            <tr>
+                <td>Costo HH_Leads</td>
+                <td class="text-right">@String.Format("{0:N2}",@staffq1)</td>
+                <td class="text-right">@String.Format("{0:N2}",@staffq2)</td>
+                <td class="text-right">@String.Format("{0:N2}",@staffq3)</td>
+                <td class="text-right">@String.Format("{0:N2}",@staffq4)</td>
+            </tr>
+            <tr>
+                <td>Costo Consultores Externos</td>
+                <td class="text-right">@String.Format("{0:N2}",@externosq1)</td>
+                <td class="text-right">@String.Format("{0:N2}",@externosq2)</td>
+                <td class="text-right">@String.Format("{0:N2}",@externosq3)</td>
+                <td class="text-right">@String.Format("{0:N2}",@externosq4)</td>
+            </tr>
+            <tr>
+                <td>Total Servicios</td>
+                <td class="text-right">@String.Format("{0:N2}",@serviciosq1)</td>
+                <td class="text-right">@String.Format("{0:N2}",@serviciosq2)</td>
+                <td class="text-right">@String.Format("{0:N2}",@serviciosq3)</td>
+                <td class="text-right">@String.Format("{0:N2}",@serviciosq4)</td>
+            </tr>
+            <tr>
+                <td>Total Gastos</td>
+                <td class="text-right">@String.Format("{0:N2}",@gastosq1)</td>
+                <td class="text-right">@String.Format("{0:N2}",@gastosq2)</td>
+                <td class="text-right">@String.Format("{0:N2}",@gastosq3)</td>
+                <td class="text-right">@String.Format("{0:N2}",@gastosq4)</td>
+            </tr>
+            <tr>
+                <td>Margen de Contribución</td>
+                <td class="text-right">@String.Format("{0:N2}",@margenq1)</td>
+                <td class="text-right">@String.Format("{0:N2}",@margenq2)</td>
+                <td class="text-right">@String.Format("{0:N2}",@margenq3)</td>
+                <td class="text-right">@String.Format("{0:N2}",@margenq4)</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
