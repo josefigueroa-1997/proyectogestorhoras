@@ -11,7 +11,7 @@
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-blue-100">
+            <thead class="totales">
                 <tr>
                     <th class="text-left text-xs font-medium "> Estado</th>
                     <th class="text-left text-xs font-medium ">Tipología </th>
@@ -26,7 +26,7 @@
 </div>
 <style>
     .bg-yellow {
-        background-color: yellow; /* Cambia el color según tus necesidades */
+        background-color: #fcf3cf; /* Cambia el color según tus necesidades */
     }
 
     .text-right {
@@ -34,7 +34,7 @@
     }
 
     .totales {
-        background-color: #a1d7f3;
+        background-color: #d6eaf8;
     }
 
     .ancho {
@@ -199,14 +199,14 @@
                     mesesArray.forEach(mes => {
                         const cell = totalRow.insertCell();
                         const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                        cell.innerText = formatearMiles(totalMes);
+                        cell.innerText = formatearMiles(Math.round(totalMes));
                         cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
                     });
 
                     añosArray.forEach(año => {
                         const totalAnualCell = totalRow.insertCell();
                         const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
-                        totalAnualCell.innerText = formatearMiles(totalAnual);
+                        totalAnualCell.innerText = formatearMiles(Math.round(totalAnual));
                         totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
                     });
                     const totalProyectoCell = totalRow.insertCell();
@@ -244,7 +244,7 @@
             mesesArray.forEach(mes => {
                 const cell = row.insertCell();
                 const valorMes = proyectoData.Meses[mes] || 0;
-                cell.innerText = formatearMiles(valorMes);
+                cell.innerText = formatearMiles(Math.round(valorMes));
                 cell.classList.add("border", "border-black", "text-right", "text-xs");
                 totalProyecto += valorMes;
                 if (!totalPorEstado[totalEstadoActual].meses[mes]) {
@@ -278,7 +278,7 @@
             mesesArray.forEach(mes => {
                 const cell = totalRow.insertCell();
                 const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                cell.innerText = formatearMiles(totalMes);
+                cell.innerText = formatearMiles(Math.round(totalMes));
                 cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
             });
 
@@ -290,7 +290,7 @@
                 totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
             });
             const totalProyectoCell = totalRow.insertCell();
-            totalProyectoCell.innerText = formatearMiles(totalPorEstado[totalEstadoActual].sumaNeto);
+            totalProyectoCell.innerText = formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
             totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
 
         }
@@ -304,15 +304,15 @@
         mesesArray.forEach(mes => {
             const celdaMes = filaTotalGeneral.insertCell();
             const totalMesGeneral = totalPorMes[mes] || 0;
-            const totalMesGeneralTruncado = Math.floor(totalMesGeneral);
-            celdaMes.innerText = formatearMiles(totalMesGeneral);
+            const totalMesGeneralTruncado = Math.round(totalMesGeneral);
+            celdaMes.innerText = formatearMiles(totalMesGeneralTruncado);
             celdaMes.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs");
         });
 
         añosArray.forEach(año => {
             const celdaAnual = filaTotalGeneral.insertCell();
             const totalAnualGeneral = totalPorAño[año] || 0;
-            const totalAnualGeneralTruncado = Math.floor(totalAnualGeneral);
+            const totalAnualGeneralTruncado = Math.round(totalAnualGeneral);
             celdaAnual.innerText = formatearMiles(totalAnualGeneralTruncado);
             celdaAnual.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs");
         });

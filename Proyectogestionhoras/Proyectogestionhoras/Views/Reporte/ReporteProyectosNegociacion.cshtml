@@ -26,10 +26,8 @@
 
 <script>
     function formatearNumero(num) {
-        num = parseFloat(num).toFixed(2);
-        const partes = num.split('.');
-        partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return partes.join(',');
+        num = Math.round(num);  
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
     $(document).ready(function () {
@@ -137,7 +135,7 @@
 
                 datosArray.forEach(item => {
                     if (tipologiaActual && (tipologiaActual !== item.tipoTipologia || probabilidadActual !== item.probabilidad)) {
-                        const filaTotal = crearFilaTotal(`Unidad de Negocio ${negocioActual}`, totalPorMesNegocio);
+                        const filaTotal = crearFilaTotal(`Unidad de Negocio ${negocioActual}`, Math.round(totalPorMesNegocio));
                         if (filaTotal) {
                             tabla.find('tbody').append(filaTotal);
                         }
@@ -183,7 +181,7 @@
 
                     fechasOrdenadas.forEach(mesAnio => {
                         const monto = item.montos[mesAnio] || 0;
-                        const td = $('<td class="text-left text-xs border font-medium text-right border-black"></td>').text(formatearNumero(monto));
+                        const td = $('<td class="text-left text-xs border font-medium text-right border-black"></td>').text(formatearNumero(Math.round(monto)));
                         fila.append(td);
 
                         totalFila += monto;
@@ -198,11 +196,11 @@
                         totalPorMesNegocio[mesAnio] = (totalPorMesNegocio[mesAnio] || 0) + monto;
                     });
 
-                    fila.append(`<td class="text-left text-xs font-medium border text-right border-black">${formatearNumero(totalFila)}</td>`);
+                    fila.append(`<td class="text-left text-xs font-medium border text-right border-black">${formatearNumero(Math.round(totalFila))}</td>`);
                     tabla.find('tbody').append(fila);
                 });
 
-                const filaTotalNegocio = crearFilaTotal(`Unidad de Negocio ${negocioActual}`, totalPorMesNegocio);
+                const filaTotalNegocio = crearFilaTotal(`Unidad de Negocio ${negocioActual}`, Math.round(totalPorMesNegocio));
                 if (filaTotalNegocio) {
                     tabla.find('tbody').append(filaTotalNegocio);
                 }
@@ -223,11 +221,11 @@
                     const totalPorMes = datosArray.reduce((acumulado, item) => {
                         return acumulado + (item.montos[mesAnio] || 0);
                     }, 0);
-                    const td = $('<td class="text-left text-xs font-medium text-right border border-black"></td>').html(`${formatearNumero(totalPorMes)}`);
+                    const td = $('<td class="text-left text-xs font-medium text-right border border-black"></td>').html(`${formatearNumero(Math.round(totalPorMes))}`);
                     filaTotalGeneral.append(td);
                 });
 
-                filaTotalGeneral.append(`<td class="text-left text-xs font-medium text-right border border-black">${formatearNumero(totalGeneral)}</td>`);
+                filaTotalGeneral.append(`<td class="text-left text-xs font-medium text-right border border-black">${formatearNumero(Math.round(totalGeneral))}</td>`);
                 tabla.find('tbody').append(filaTotalGeneral);
                 $('.fila-total').css('background-color', '#f2f2f2');
                 $('.totales').css('background-color', '#a1d7f3');

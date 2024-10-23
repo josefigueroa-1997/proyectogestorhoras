@@ -416,13 +416,13 @@
                     <div class="form-group-radio">
                         <label>¿Afecta el IVA?</label>
                         <label>
-                            <input type="radio" readonly name="afectaiva" value="si"
+                            <input disabled type="radio"  name="afectaiva" value="si"
                                    required onchange="generarFilas()"
                             @(proyecto.AfectaIva == "si" ? "checked" : "")>
                             Sí
                         </label>
                         <label>
-                            <input type="radio" readonly name="afectaiva" value="no"
+                            <input type="radio" disabled name="afectaiva" value="no"
                                    required onchange="generarFilas()"
                             @(proyecto.AfectaIva == "no" ? "checked" : "")>
                             No

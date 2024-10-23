@@ -33,19 +33,19 @@
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color:#d4efdf;">@hhsociosplaneadas.HorasSociosPlaneadas  hr/mes</td>
+                        <td class="border border-black">@hhsociosplaneadas.HorasSociosPlaneadas  hr/mes</td>
                         totalpresupuestosocio+= hhsociosplaneadas.HorasSociosPlaneadas;
                     }
-                    <td class="border border-black" style="background-color:#d4efdf;">@totalpresupuestosocio  hr/mes</td>
+                    <td class="border border-black">@Math.Round(totalpresupuestosocio)  hr/mes</td>
                 </tr>
                     <tr>
                     <td class="border border-black">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color: #f9e79f;">@hhsociosplaneadas.HorasSociosEjecutadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasSociosEjecutadas  hr/mes</td>
                         totalejecutadosocio += hhsociosplaneadas.HorasSociosEjecutadas;
                     }
-                    <td class="border border-black" style="background-color: #f9e79f;">@totalejecutadosocio hr/mes</td>
+                    <td class="border border-black" >@totalejecutadosocio hr/mes</td>
                     </tr>
               
 
@@ -75,19 +75,19 @@
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color:#d4efdf;">@hhsociosplaneadas.HorasStaffPlaneadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasStaffPlaneadas  hr/mes</td>
                         totalpresupuestostaff += hhsociosplaneadas.HorasStaffPlaneadas;
                     }
-                    <td class="border border-black" style="background-color:#d4efdf;">@totalpresupuestostaff  hr/mes</td>
+                    <td class="border border-black" >@Math.Round(@totalpresupuestostaff)  hr/mes</td>
                 </tr>
                 <tr>
                     <td class="border border-black">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color: #f9e79f;">@hhsociosplaneadas.HorasStaffEjecutadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasStaffEjecutadas  hr/mes</td>
                         totalejecutadostaff += hhsociosplaneadas.HorasStaffEjecutadas;
                     }
-                    <td class="border border-black" style="background-color: #f9e79f;">@totalejecutadostaff hr/mes</td>
+                    <td class="border border-black">@totalejecutadostaff hr/mes</td>
                 </tr>
 
 
@@ -116,19 +116,19 @@
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color:#d4efdf;">@hhsociosplaneadas.HorasConsultorAPlaneadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorAPlaneadas  hr/mes</td>
                         totalpresupuestoconsultora += hhsociosplaneadas.HorasConsultorAPlaneadas;
                     }
-                    <td class="border border-black" style="background-color:#d4efdf;">@totalpresupuestoconsultora  hr/mes</td>
+                    <td class="border border-black" >@Math.Round(@totalpresupuestoconsultora)  hr/mes</td>
                 </tr>
                 <tr>
                     <td class="border border-black">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color: #f9e79f;">@hhsociosplaneadas.HorasConsultorAEjecutadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorAEjecutadas  hr/mes</td>
                         totalejecutadosconsultora += hhsociosplaneadas.HorasConsultorAEjecutadas;
                     }
-                    <td class="border border-black" style="background-color: #f9e79f;">@totalejecutadosconsultora hr/mes</td>
+                    <td class="border border-black" >@totalejecutadosconsultora hr/mes</td>
                 </tr>
 
 
@@ -157,19 +157,19 @@
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color:#d4efdf;">@hhsociosplaneadas.HorasConsultorBPlaneadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorBPlaneadas  hr/mes</td>
                         totalpresupuestoconsultorb += hhsociosplaneadas.HorasConsultorBPlaneadas;
                     }
-                    <td class="border border-black" style="background-color:#d4efdf;">@totalpresupuestoconsultorb  hr/mes</td>
+                    <td class="border border-black">@Math.Round(@totalpresupuestoconsultorb)  hr/mes</td>
                 </tr>
                 <tr>
                     <td class="border border-black">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color: #f9e79f;">@hhsociosplaneadas.HorasConsultorBEjecutadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorBEjecutadas  hr/mes</td>
                         totalejecutadosconsultorb += hhsociosplaneadas.HorasConsultorBEjecutadas;
                     }
-                    <td class="border border-black" style="background-color: #f9e79f;">@totalejecutadosconsultorb hr/mes</td>
+                    <td class="border border-black">@totalejecutadosconsultorb hr/mes</td>
                 </tr>
 
 
@@ -198,19 +198,19 @@
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color:#d4efdf;">@hhsociosplaneadas.HorasConsultorCPlaneadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorCPlaneadas  hr/mes</td>
                         totalpresupuestoconsultorc += hhsociosplaneadas.HorasConsultorCPlaneadas;
                     }
-                    <td class="border border-black" style="background-color:#d4efdf;">@totalpresupuestoconsultorc  hr/mes</td>
+                    <td class="border border-black" >@Math.Round(@totalpresupuestoconsultorc)  hr/mes</td>
                 </tr>
                 <tr>
                     <td class="border border-black">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" style="background-color: #f9e79f;">@hhsociosplaneadas.HorasConsultorCEjecutadas  hr/mes</td>
+                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorCEjecutadas  hr/mes</td>
                         totalejecutadosconsultorc += hhsociosplaneadas.HorasConsultorCEjecutadas;
                     }
-                    <td class="border border-black" style="background-color: #f9e79f;">@totalejecutadosconsultorc hr/mes</td>
+                    <td class="border border-black" >@totalejecutadosconsultorc hr/mes</td>
                 </tr>
 
 
