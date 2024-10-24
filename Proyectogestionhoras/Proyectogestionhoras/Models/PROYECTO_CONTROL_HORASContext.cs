@@ -31,6 +31,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
         public virtual DbSet<HistorialNegociacion> HistorialNegociacions { get; set; } = null!;
         public virtual DbSet<MetaFacturacionesqx> MetaFacturacionesqxes { get; set; } = null!;
+        public virtual DbSet<Metatipologia> Metatipologias { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
         public virtual DbSet<Presupuesto> Presupuestos { get; set; } = null!;
@@ -47,6 +48,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
         public virtual DbSet<TotalRecurso> TotalRecursos { get; set; } = null!;
+        public virtual DbSet<Totalmetatipologium> Totalmetatipologia { get; set; } = null!;
         public virtual DbSet<Totalquarterfacturaanio> Totalquarterfacturaanios { get; set; } = null!;
         public virtual DbSet<Unegocio> Unegocios { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
@@ -489,6 +491,15 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.MontoQ4)
                     .HasColumnType("decimal(15, 2)")
                     .HasColumnName("MONTO_Q4");
+            });
+
+            modelBuilder.Entity<Metatipologia>(entity =>
+            {
+                entity.ToTable("METATIPOLOGIAS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
             });
 
             modelBuilder.Entity<Planilla>(entity =>
@@ -950,6 +961,27 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.TotalHhAnuales)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("TOTAL_HH_ANUALES");
+            });
+
+            modelBuilder.Entity<Totalmetatipologium>(entity =>
+            {
+                entity.ToTable("TOTALMETATIPOLOGIA");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
+                entity.Property(e => e.Duracionmedia).HasColumnName("DURACIONMEDIA");
+
+                entity.Property(e => e.Totalmensuales)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("TOTALMENSUALES");
+
+                entity.Property(e => e.Totalporproyecto)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("TOTALPORPROYECTO");
+
+                entity.Property(e => e.Totalproyecto).HasColumnName("TOTALPROYECTO");
             });
 
             modelBuilder.Entity<Totalquarterfacturaanio>(entity =>

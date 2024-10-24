@@ -2,49 +2,49 @@
     ViewData["Title"] = "Parametros Metas";
 
 }
-<h1 class="text-2xl font-bold mb-4 text-gray-800">Meta Facturación Qx</h1>
+<h1 class="text-2xl font-bold mb-6 text-gray-800">Meta Facturación Qx</h1>
 
-<div class="container mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
-    <!-- Contenedor con Flexbox para colocar la tabla a la izquierda y el formulario a la derecha -->
-    <div class="flex space-x-8">
+<div class="container mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <!-- Flexbox container for table and form -->
+    <div class="flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0">
 
-        <!-- Contenedor de la Tabla -->
-        <div class="w-2/3 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-lg font-semibold mb-4">Tabla de Facturación</h2>
+        <!-- Table container -->
+        <div class="md:w-2/3 w-full bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4 text-gray-800">Tabla de Facturación</h2>
             <table class="min-w-full divide-y divide-gray-200" id="tablaReporte">
                 <thead class="bg-blue-200">
                     <tr>
                         <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Año</th>
-                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Q1</th>
-                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Q2</th>
-                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Q3</th>
-                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Q4</th>
-                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Total</th>
+                        <th class="text-right text-sm font-semibold text-gray-700 px-4 py-2">Q1</th>
+                        <th class="text-right text-sm font-semibold text-gray-700 px-4 py-2">Q2</th>
+                        <th class="text-right text-sm font-semibold text-gray-700 px-4 py-2">Q3</th>
+                        <th class="text-right text-sm font-semibold text-gray-700 px-4 py-2">Q4</th>
+                        <th class="text-right text-sm font-semibold text-gray-700 px-4 py-2">Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var factura in ViewBag.DatosFacturas)
                     {
-                        <tr>
-                            <td class="text-left text-sm font-semibold text-gray-700 px-4 py-2">@factura.Anio</td>
-                            <td class="text-right text-sm font-semibold text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q1)</td>
-                            <td class="text-right text-sm font-semibold text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q2)</td>
-                            <td class="text-right text-sm font-semibold text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q3)</td>
-                            <td class="text-right text-sm font-semibold text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q4)</td>
-                            <td class="text-right text-sm font-semibold text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.totalq)</td>
+                        <tr data-anio="@factura.Anio" data-q1="@factura.q1" data-q2="@factura.q2" data-q3="@factura.q3" data-q4="@factura.q4" data-totalq="@factura.totalq">
+                            <td class="text-left text-sm text-gray-700 px-4 py-2">@factura.Anio</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q1)</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q2)</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q3)</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q4)</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.totalq)</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
 
-        <!-- Contenedor del Formulario -->
-        <div class="w-1/3 bg-gray-50 p-6 rounded-lg shadow">
-            <h2 class="text-lg font-semibold mb-4">Registrar Nueva Meta</h2>
+        <!-- Form container -->
+        <div class="md:w-1/3 w-full bg-gray-50 p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4 text-gray-800">Registrar Nueva Meta</h2>
             <form action="@Url.Action("RegistrarMetaFacturas", "Metas")" method="post" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="anio" class="block text-sm font-semibold text-gray-700">Año</label>
-                    <input type="number" name="anio" id="anio" required class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <input type="number" name="anio" id="año" required class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
                 </div>
 
                 <div class="mb-4">
@@ -77,10 +77,137 @@
                 </div>
             </form>
         </div>
-
     </div>
 </div>
 
+<h1 class="text-2xl font-bold mt-8 mb-6 text-gray-800">Metas Mix Por Tipologías</h1>
+
+<div class="container mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <!-- Flex container for form and tables -->
+    <div class="flex flex-col space-y-8">
+        <!-- First table -->
+        <div class="md:w-full bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4 text-gray-800">Duración por Tipología</h2>
+            <table class="min-w-full divide-y divide-gray-200" id="tablaReporte">
+                <thead class="bg-blue-200">
+                    <tr >
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T1-L</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T2-M</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T3-S</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T4-XS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-left text-sm text-gray-700 px-4 py-2">8</td>
+                        <td class="text-left text-sm text-gray-700 px-4 py-2">6</td>
+                        <td class="text-left text-sm text-gray-700 px-4 py-2">3</td>
+                        <td class="text-left text-sm text-gray-700 px-4 py-2">1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Formulario sobre la segunda tabla -->
+        <div class="md:w-full bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4 text-gray-800">Formulario de Tipologías</h2>
+            <form action="#" method="POST" class="flex flex-wrap space-x-4">
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">
+                        Año:
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="anio" name="año" type="number">
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="t1">
+                        T1-L:
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t1" type="number" name="t1" >
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="t2">
+                        T2-M:
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t2" type="number" name="t2" >
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="t3">
+                        T3-S:
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t3" type="number" name="t3" >
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="t4">
+                        T4-XS:
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t4" type="number" name="t4" >
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="total">
+                        Total:
+                    </label>
+                    <input readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="totals" type="number" name="totals" value="0">
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="anio">
+                        Total/Proyecto:
+                    </label>
+                    <input readonly class="format-number  shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="totalproyecto" type="text" name="totalproyecto">
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="anio">
+                        Duración Media/Mensual:
+                    </label>
+                    <input readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="duracion" type="number" name="duracion">
+                </div>
+                <div class="mb-4 w-full md:w-1/3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="anio">
+                        Monto Mensual:
+                    </label>
+                    <input readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="montomensual" type="text" name="montomensual">
+                </div>
+                <div class="flex items-center justify-between w-full">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring" type="submit">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Second table -->
+        <div class="md:w-full bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4 mt-8 text-gray-800">Año y Tipologías</h2>
+            <table class="min-w-full divide-y divide-gray-200" id="tablaReporte">
+                <thead class="bg-blue-200">
+                    <tr>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Año</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T1-K</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T2-M</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T3-S</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T4-XS</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Total</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Total/Proyecto</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Duración Media</th>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Monto Mensual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-left text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <script>
     // Función para formatear el número con puntos por miles
     function formatNumberWithDots(number) {
@@ -116,4 +243,150 @@
             updateTotal();
         });
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Obtener los inputs por su id
+        const t1Input = document.getElementById('t1');
+        const t2Input = document.getElementById('t2');
+        const t3Input = document.getElementById('t3');
+        const t4Input = document.getElementById('t4');
+        const totalInput = document.getElementById('totals');
+
+        // Función para sumar los valores y actualizar el total
+        function updateTotals() {
+            // Convertir los valores de los inputs a números
+            const t1 = parseFloat(t1Input.value) || 0;
+            const t2 = parseFloat(t2Input.value) || 0;
+            const t3 = parseFloat(t3Input.value) || 0;
+            const t4 = parseFloat(t4Input.value) || 0;
+
+            // Calcular la suma
+            const totals = t1 + t2 + t3 + t4;
+
+            // Actualizar el input de total
+            totalInput.value = totals;
+        }
+
+        // Agregar el evento 'input' a cada campo para que se ejecute la función al cambiar el valor
+        t1Input.addEventListener('input', updateTotals);
+        t2Input.addEventListener('input', updateTotals);
+        t3Input.addEventListener('input', updateTotals);
+        t4Input.addEventListener('input', updateTotals);
+
+
+
+
+    });
+</script>
+
+
+
+
+<script>
+    // Inputs donde se ingresan t1, t2, t3, t4 y el año
+    const t1Input = document.querySelector("#t1");
+    const t2Input = document.querySelector("#t2");
+    const t3Input = document.querySelector("#t3");
+    const t4Input = document.querySelector("#t4");
+    const anioInput = document.querySelector("#anio");
+
+    // Input donde está el Total del Proyecto
+    const totalProyectoInput = document.querySelector("#totals");
+
+    // Input donde se mostrará el resultado de Total/Proyecto
+    const totalPorProyectoInput = document.querySelector("#totalproyecto");
+
+    // Input donde se mostrará la duración media
+    const duracionmediaInput = document.getElementById('duracion');
+
+    // Input donde se mostrará el monto mensual
+    const montoMensualInput = document.getElementById('montomensual');
+
+    // Función para calcular la suma de t1, t2, t3, t4
+    function calcularSumaTotales() {
+        const t1 = parseFloat(t1Input.value) || 0;
+        const t2 = parseFloat(t2Input.value) || 0;
+        const t3 = parseFloat(t3Input.value) || 0;
+        const t4 = parseFloat(t4Input.value) || 0;
+        const sumaTotales = t1 + t2 + t3 + t4;
+
+        // Actualizar el input de total del proyecto con la suma
+        totalProyectoInput.value = sumaTotales;
+
+        // Calcular duración media
+        calcularDuracionMedia(t1, t2, t3, t4);
+
+        // Llamar a la función para calcular el total por proyecto
+        calcularTotalProyecto();
+    }
+
+    // Función para calcular la duración media
+    function calcularDuracionMedia(t1, t2, t3, t4) {
+        const totalHorasTipologias = t1 * 8 + t2 * 6 + t3 * 3 + t4;
+        const totalTipologias = t1 + t2 + t3 + t4;
+
+        // Si hay tipologías ingresadas, calcular la media
+        if (totalTipologias > 0) {
+            const media = totalHorasTipologias / totalTipologias;
+            duracionmediaInput.value = Math.round(media); // Mostrar duración media
+        } else {
+            duracionmediaInput.value = ""; // Limpiar si no hay valores
+        }
+    }
+
+    // Función para calcular Total/Proyecto
+    function calcularTotalProyecto() {
+        const t1 = parseFloat(t1Input.value) || 0;
+        const t2 = parseFloat(t2Input.value) || 0;
+        const t3 = parseFloat(t3Input.value) || 0;
+        const t4 = parseFloat(t4Input.value) || 0;
+
+        if (t1 === 0 && t2 === 0 && t3 === 0 && t4 === 0) {
+            totalPorProyectoInput.value = ""; // Limpiar el resultado
+            return;
+        }
+
+        const anioIngresado = anioInput.value;
+        const filaFactura = document.querySelector(`tr[data-anio="${anioIngresado}"]`);
+
+        if (filaFactura) {
+            const q1 = parseFloat(filaFactura.getAttribute("data-q1")) || 0;
+            const q2 = parseFloat(filaFactura.getAttribute("data-q2")) || 0;
+            const q3 = parseFloat(filaFactura.getAttribute("data-q3")) || 0;
+            const q4 = parseFloat(filaFactura.getAttribute("data-q4")) || 0;
+
+            const totalAnioFactura = q1 + q2 + q3 + q4;
+            const totalProyecto = parseFloat(totalProyectoInput.value) || 0;
+
+            if (totalProyecto > 0) {
+                const totalPorProyecto = Math.round(totalAnioFactura / totalProyecto / 1000000) * 1000000;
+                totalPorProyectoInput.value = totalPorProyecto;
+
+                // Calcular monto mensual
+                const duracion = parseFloat(duracionmediaInput.value) || 1;
+                const montoMensual = Math.round(totalPorProyecto / duracion / 1000000) * 1000000;
+                montoMensualInput.value = montoMensual.toFixed(2); // Mostrar monto mensual
+            } else {
+                totalPorProyectoInput.value = "";
+                montoMensualInput.value = "";
+                alert("El total del proyecto no puede ser cero o vacío.");
+            }
+        } else {
+            totalPorProyectoInput.value = "";
+            montoMensualInput.value = "";
+            alert("No se encontraron datos para el año ingresado.");
+        }
+    }
+
+    // Escuchar cambios en los inputs de t1, t2, t3, t4 para recalcular
+    t1Input.addEventListener("input", calcularSumaTotales);
+    t2Input.addEventListener("input", calcularSumaTotales);
+    t3Input.addEventListener("input", calcularSumaTotales);
+    t4Input.addEventListener("input", calcularSumaTotales);
+
+    // Escuchar cambio en el año para recalcular el Total/Proyecto
+    anioInput.addEventListener("change", calcularTotalProyecto);
+
 </script>

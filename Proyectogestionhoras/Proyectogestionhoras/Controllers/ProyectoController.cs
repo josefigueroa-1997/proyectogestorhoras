@@ -161,6 +161,26 @@ namespace Proyectogestionhoras.Controllers
 
                     gastos.Add(gastoviewmodel);
                 }
+                if (Request.Form["hhsocios"].ToString() == "")
+                {
+                    hhsocios = 0;
+                }
+                if(Request.Form["hhstaff"].ToString() == "")
+                {
+                    hhstaff = 0;
+                }
+                if (Request.Form["hhconsultora"].ToString() == "")
+                {
+                    hhconsultora = 0;
+                }
+                if (Request.Form["hhconsultorb"].ToString() == "")
+                {
+                    hhconsultorb = 0;
+                }
+                if (Request.Form["hhconsultorc"].ToString() == "")
+                {
+                    hhconsultorc = 0;
+                }
 
                 bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
                 if (resultado)
