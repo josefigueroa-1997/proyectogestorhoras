@@ -47,6 +47,7 @@ builder.Services.AddScoped<SegmentoService>();
 builder.Services.AddScoped<FacturaService>();
 builder.Services.AddScoped<PlanillaService>();
 builder.Services.AddScoped<ReporteService>();
+builder.Services.AddScoped<MetaService>();
 builder.Services.AddDbContext<PROYECTO_CONTROL_HORASContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("cadenasql")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

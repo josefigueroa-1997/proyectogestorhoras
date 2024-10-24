@@ -1,0 +1,31 @@
+﻿@{
+
+    ViewData["Title"] = "Metas";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Metas</h2>
+        <div class="section-content">
+
+            <a href="@Url.Action("ParametrosMetas","Metas")">
+                <div class="card">
+                    <h3>Parametros</h3>
+                    <p>Facturación Qx</p>
+                    <p>Mix Proyectos Por Tipología</p>
+                </div>
+
+            </a>
+           @* <a href="@Url.Action("Personal","Usuario")">
+                <div class="card">
+                    <h3>Personal</h3>
+                </div>
+
+            </a>
+            *@
+        </div>
+    </div>
+
+</div>

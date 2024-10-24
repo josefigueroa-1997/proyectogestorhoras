@@ -30,6 +30,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
         public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
         public virtual DbSet<HistorialNegociacion> HistorialNegociacions { get; set; } = null!;
+        public virtual DbSet<MetaFacturacionesqx> MetaFacturacionesqxes { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
         public virtual DbSet<Presupuesto> Presupuestos { get; set; } = null!;
@@ -46,6 +47,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
         public virtual DbSet<TotalRecurso> TotalRecursos { get; set; } = null!;
+        public virtual DbSet<Totalquarterfacturaanio> Totalquarterfacturaanios { get; set; } = null!;
         public virtual DbSet<Unegocio> Unegocios { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
@@ -462,6 +464,31 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.HistorialNegociacions)
                     .HasForeignKey(d => d.IdProyecto)
                     .HasConstraintName("IDPROYECTONEG");
+            });
+
+            modelBuilder.Entity<MetaFacturacionesqx>(entity =>
+            {
+                entity.ToTable("META_FACTURACIONESQX");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
+                entity.Property(e => e.MontoQ1)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO_Q1");
+
+                entity.Property(e => e.MontoQ2)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO_Q2");
+
+                entity.Property(e => e.MontoQ3)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO_Q3");
+
+                entity.Property(e => e.MontoQ4)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO_Q4");
             });
 
             modelBuilder.Entity<Planilla>(entity =>
@@ -923,6 +950,19 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.TotalHhAnuales)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("TOTAL_HH_ANUALES");
+            });
+
+            modelBuilder.Entity<Totalquarterfacturaanio>(entity =>
+            {
+                entity.ToTable("TOTALQUARTERFACTURAANIO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO");
             });
 
             modelBuilder.Entity<Unegocio>(entity =>
