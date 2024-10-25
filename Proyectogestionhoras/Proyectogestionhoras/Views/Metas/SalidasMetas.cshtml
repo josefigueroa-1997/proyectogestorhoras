@@ -1,0 +1,352 @@
+﻿
+<h2 class="text-2xl font-bold mb-4">Metas Cierre de Negocios y Prospecciones de Clientes</h2>
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-100">
+                <tr>
+                    <th class="text-left text-xs font-medium "> Tipo</th>
+                    <th class="text-left text-xs font-medium ">Año </th>
+                    <th class="text-left text-xs font-medium">Total</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr id="facturacionObjetivo">
+                    <td>Facturación Objetivo</td>
+                    <td class="year-cell"></td>
+                    <td class="factura-total text-right" ></td>
+                </tr>
+                <tr id="facturacionPromedio">
+                    <td>Facturación Promedio Por Cliente</td>
+                    <td class="year-cell"></td>
+                    <td class="factura-total text-right"></td>
+                </tr>
+                <tr>
+                    <td>Tasa De Cierre De Negocio Por Cliente Contactado</td>
+                    <td class="year-cell"></td>
+                    <td class="text-right">50 %</td>
+                </tr>
+                <tr id="duracionMedia">
+                    <td>Duración Media Proyectos</td>
+                    <td class="year-cell"></td>
+                    <td class="factura-total text-right"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <table id="facturasTable2" class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-100">
+                <tr>
+                    <th class="text-left text-xs font-medium ">Distribución de Facturación</th>
+                    <th class="text-left text-xs font-medium ">Facturación Q</th>
+                    <th class="text-left text-xs font-medium">Facturas Mes</th>
+                    <th class="text-left text-xs font-medium">Cliente/Mes</th>
+                    <th class="text-left text-xs font-medium">Clientes Prospectados</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                    <td>Q1</td>
+                    <td class="facturaq1 text-right"></td>
+                    <td class=" text-right"></td>
+                    <td class=" text-right"></td>
+                    <td class=" text-right"></td>
+                </tr>
+                <tr>
+                    <td>Q2</td>
+                    <td class="facturaq2  text-right"></td>
+                    <td class="text-right"></td>
+                    <td class=" text-right"></td>
+                    <td class=" text-right"></td>
+                </tr>
+                <tr>
+                    <td>Q3</td>
+                    <td class="facturaq3  text-right"></td>
+                    <td class=" text-right"></td>
+                    <td class=" text-right"></td>
+                    <td class=" text-right"></td>
+                </tr>
+                <tr>
+                    <td>Q4</td>
+                    <td class="facturaq4  text-right"></td>
+                    <td class=" text-right"></td>
+                    <td class=" text-right"></td>
+                    <td class=" text-right"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <table id="facturasTable3" class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-100">
+                <tr id="headerMonths">
+                    <th class="text-left text-xs font-medium text-gray-700 py-2 px-4">Tipo</th>
+            
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr class="hover:bg-gray-100 transition duration-150">
+                   
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    const fechaActual = new Date();
+    const mesActual = fechaActual.getMonth() + 1;
+    let anio = fechaActual.getFullYear();
+    if (mesActual >= 10) {
+        anio += 1;
+    }
+
+    // Completa las celdas de año
+    $(".year-cell").text(anio);
+
+    // Realizar la solicitud AJAX
+    $.ajax({
+        url: `/Metas/GetDatosMetas?anio=${anio}`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            if (data.length > 0) {
+                $("#facturacionObjetivo .factura-total").text(data[0].factura.toLocaleString("es-ES"));
+                $("#facturacionPromedio .factura-total").text(data[0].totalproyecto.toLocaleString("es-ES"));
+                $("#duracionMedia .factura-total").text(data[0].duracion);
+            }
+
+            // Segunda llamada AJAX
+            $.ajax({
+                url: `/Metas/GetFacturasQuarter?anio=${anio}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.length > 0) {
+                        const montoQ1 = data[0].montoq1 || 0;
+                        const montoQ2 = data[0].montoq2 || 0;
+                        const montoQ3 = data[0].montoq3 || 0;
+                        const montoQ4 = data[0].montoq4 || 0;
+
+                        $(".facturaq1").text(montoQ1.toLocaleString("es-ES"));
+                        $(".facturaq2").text(montoQ2.toLocaleString("es-ES"));
+                        $(".facturaq3").text(montoQ3.toLocaleString("es-ES"));
+                        $(".facturaq4").text(montoQ4.toLocaleString("es-ES"));
+
+                        // Dividir cada monto trimestral por 3 y colocar el resultado en la segunda columna
+                        $(".facturaq1").next().text(Math.round(montoQ1 / 3).toLocaleString("es-ES"));
+                        $(".facturaq2").next().text(Math.round(montoQ2 / 3).toLocaleString("es-ES"));
+                        $(".facturaq3").next().text(Math.round(montoQ3 / 3).toLocaleString("es-ES"));
+                        $(".facturaq4").next().text(Math.round(montoQ4 / 3).toLocaleString("es-ES"));
+
+                        let totalProyectoText = $("#facturacionPromedio .factura-total").text();
+                        totalProyectoText = totalProyectoText.replace(/\./g, '');
+                        totalProyectoText = totalProyectoText.replace(/,/g, '.');
+                        let totalProyecto = parseFloat(totalProyectoText);
+
+                        if (!isNaN(totalProyecto) && totalProyecto > 0) {
+                            console.log("El valor real de totalProyecto es:", totalProyecto);
+
+                            $(".facturaq1").parent().find("td:nth-child(4)").text(Math.round(montoQ1 / totalProyecto).toLocaleString("es-ES"));
+                            $(".facturaq2").parent().find("td:nth-child(4)").text(Math.round(montoQ2 / totalProyecto).toLocaleString("es-ES"));
+                            $(".facturaq3").parent().find("td:nth-child(4)").text(Math.round(montoQ3 / totalProyecto).toLocaleString("es-ES"));
+                            $(".facturaq4").parent().find("td:nth-child(4)").text(Math.round(montoQ4 / totalProyecto).toLocaleString("es-ES"));
+
+                            let tasaCierreText = $("tr:contains('Tasa De Cierre De Negocio Por Cliente Contactado')").find("td.text-right").text();
+                            let tasaCierre = parseFloat(tasaCierreText.replace('%', '').trim()) / 100;
+
+                            const valorQ1 = Math.round(montoQ1 / totalProyecto);
+                            const valorQ2 = Math.round(montoQ2 / totalProyecto);
+                            const valorQ3 = Math.round(montoQ3 / totalProyecto);
+                            const valorQ4 = Math.round(montoQ4 / totalProyecto);
+
+                            $(".facturaq1").parent().find("td:nth-child(5)").text(Math.round(valorQ1 / tasaCierre).toLocaleString("es-ES"));
+                            $(".facturaq2").parent().find("td:nth-child(5)").text(Math.round(valorQ2 / tasaCierre).toLocaleString("es-ES"));
+                            $(".facturaq3").parent().find("td:nth-child(5)").text(Math.round(valorQ3 / tasaCierre).toLocaleString("es-ES"));
+                            $(".facturaq4").parent().find("td:nth-child(5)").text(Math.round(valorQ4 / tasaCierre).toLocaleString("es-ES"));
+
+                            const totalFacturasQ = montoQ1 + montoQ2 + montoQ3 + montoQ4;
+                            const totalFacturasMes = Math.round(montoQ1 / 3) + Math.round(montoQ2 / 3) + Math.round(montoQ3 / 3) + Math.round(montoQ4 / 3);
+                            const totalClienteMes = Math.round(totalFacturasQ / totalProyecto);
+                            const totalClientesProspectados = Math.round(valorQ1 / tasaCierre) + Math.round(valorQ2 / tasaCierre) + Math.round(valorQ3 / tasaCierre) + Math.round(valorQ4 / tasaCierre);
+
+                            const totalesRow = `
+                                <tr>
+                                    <td><strong>Totales</strong></td>
+                                    <td class='text-right'>${totalFacturasQ.toLocaleString("es-ES")}</td>
+                                        <td class='text-right'>${totalFacturasMes.toLocaleString("es-ES")}</td>
+                                        <td class='text-right'>${totalClienteMes.toLocaleString("es-ES")}</td>
+                                        <td class='text-right'>${totalClientesProspectados.toLocaleString("es-ES")}</td>
+                                </tr>
+                            `;
+                            $("#facturasTable2 tbody").append(totalesRow);
+
+
+
+
+                            const fechaActuales = new Date();
+                            const mesActuales = fechaActuales.getMonth() + 1; 
+                            let anios = fechaActuales.getFullYear();
+                            let meses = [];
+
+                
+                            const clientesProspectadosRow = $("<tr></tr>").append("<td>Clientes Prospectados</td>");
+                            const totalProspectadosPorMes = [
+                                Math.round(valorQ1 / 3 / tasaCierre), 
+                                Math.round(valorQ1 / 3 / tasaCierre), 
+                                Math.round(valorQ1 / 3 / tasaCierre), 
+                                Math.round(valorQ2 / 3 / tasaCierre), 
+                                Math.round(valorQ2 / 3 / tasaCierre), 
+                                Math.round(valorQ2 / 3 / tasaCierre), 
+                                Math.round(valorQ3 / 3 / tasaCierre), 
+                                Math.round(valorQ3 / 3 / tasaCierre), 
+                                Math.round(valorQ3 / 3 / tasaCierre), 
+                                Math.round(valorQ4 / 3 / tasaCierre), 
+                                Math.round(valorQ4 / 3 / tasaCierre),
+                                Math.round(valorQ4 / 3 / tasaCierre)  
+                            ];
+
+                     
+                            let totalClientesProspectadoss = 0;
+                            totalProspectadosPorMes.forEach((valor) => {
+                                const mesValor = Math.round(valor); 
+                                clientesProspectadosRow.append(`<td class='text-right'>${mesValor.toLocaleString("es-ES")}</td>`);
+                                totalClientesProspectadoss += mesValor;
+                            });
+                            clientesProspectadosRow.append(`<td colspan='4' class='text-right'>${totalClientesProspectadoss.toLocaleString("es-ES")}</td>`);
+                          
+                            $("#facturasTable3 tbody").append(clientesProspectadosRow);
+                        
+                            const cierreNegociosRow = $("<tr></tr>").append("<td>Cierre de Negocios</td>");
+
+                      
+                            cierreNegociosRow.append("<td class='text-right' colspan='2'></td>"); 
+
+                 
+                            const cierreNegociosPorMes = [];
+
+                      
+                            for (let mes = 0; mes < 12; mes++) {
+                                let cierreMes;
+
+                                if (mes === 0) {
+                           
+                                    cierreMes = Math.round(totalProspectadosPorMes[2] * tasaCierre);
+                                } else if (mes === 1) {
+                         
+                                    cierreMes = Math.round(totalProspectadosPorMes[3] * tasaCierre);
+                                } else if (mes >= 2 && mes <= 10) {
+                              
+                                    cierreMes = Math.round(totalProspectadosPorMes[mes] * tasaCierre);
+                                } else {
+                             
+                                    cierreMes = Math.round(totalProspectadosPorMes[10] * tasaCierre);
+                                }
+
+                                cierreNegociosPorMes.push(cierreMes);
+                            }
+
+                     
+                            let totalCierreNegocios = 0;
+                            cierreNegociosRow.append(`<td class='text-right '>${cierreNegociosPorMes[0].toLocaleString("es-ES")}</td>`); // Diciembre 2024
+
+                     
+                            for (let i = 1; i < cierreNegociosPorMes.length; i++) {
+                                cierreNegociosRow.append(`<td class='text-right '>${cierreNegociosPorMes[i].toLocaleString("es-ES")}</td>`); // Los demás meses
+                                totalCierreNegocios += cierreNegociosPorMes[i];
+                            }
+                            totalCierreNegocios += cierreNegociosPorMes[0];
+                            cierreNegociosRow.append(`<td colspan='2' class='text-right '>${totalCierreNegocios.toLocaleString("es-ES")}</td>`);
+           
+                            $("#facturasTable3 tbody").append(cierreNegociosRow);
+
+
+                            const filaMontoPromedio = $("<tr></tr>").append("<td colspan='3'>Monto Promedio Cierre Mensual</td>");
+
+               
+                            const valorPromedioFacturacion = Number($("#facturacionPromedio .factura-total").text().replace(/\./g, '').replace(',', '.')); // Formato correcto
+
+                        
+                            const negociosMensuales = [];
+
+                  
+                            for (let mesIndex = 0; mesIndex < 12; mesIndex++) {
+                                let valorMensual;
+
+                          
+                                if (mesIndex < 10) {
+                                 
+                                    valorMensual = Math.round(totalProspectadosPorMes[mesIndex + 2] * tasaCierre);
+                                } else {
+                                 
+                                    valorMensual = Math.round(totalProspectadosPorMes[9] * tasaCierre); // Usar el valor de septiembre 2025
+                                }
+
+                                negociosMensuales.push(valorMensual);
+                            }
+                            let totalMontoPromedio = 0;
+                 
+                            negociosMensuales.forEach((valorMensual) => {
+                       
+                                const montoPromedioCierre = (valorMensual * valorPromedioFacturacion).toLocaleString("es-ES");
+                                filaMontoPromedio.append(`<td class='text-right'>${montoPromedioCierre}</td>`);
+                                totalMontoPromedio += valorMensual * valorPromedioFacturacion;
+                            });
+                            filaMontoPromedio.append(`<td colspan='2' class='text-right '>${totalMontoPromedio.toLocaleString("es-ES")}</td>`);
+            
+                            $("#facturasTable3 tbody").append(filaMontoPromedio);
+
+
+                            meses = [
+                                `10/ ${anios}`,
+                                `11/ ${anios}`,
+                                `12/ ${anios}`,
+                                `01/ ${anios + 1}`,
+                                `02/ ${anios + 1}`,
+                                `03/ ${anios + 1}`,
+                                `04/ ${anios + 1}`,
+                                `05/ ${anios + 1}`,
+                                `06/ ${anios + 1}`,
+                                `07/ ${anios + 1}`,
+                                `08/ ${anios + 1}`,
+                                `09/ ${anios + 1}`,
+                                `10/ ${anios + 1}`,
+                                `11/ ${anios + 1}`,
+                                `12/ ${anios + 1}`
+                            ];
+
+
+                            meses.forEach(mes => {
+                                $("#headerMonths").append(`<th class="text-left text-xs font-medium">${mes}</th>`);
+                            });
+                
+                            $("#headerMonths").append(`<th class="text-left text-xs font-medium">Totales</th>`);
+                        } else {
+                            console.warn("totalProyecto no es un número real válido o es cero. Valor recibido:", totalProyecto);
+                            totalProyecto = null;
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al obtener los datos:", error);
+                }
+            });
+        },
+        error: function (error) {
+            console.error("Error al obtener los datos:", error);
+        }
+    });
+</script>
+

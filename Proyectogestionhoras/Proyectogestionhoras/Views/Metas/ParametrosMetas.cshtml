@@ -114,12 +114,12 @@
         <!-- Formulario sobre la segunda tabla -->
         <div class="md:w-full bg-white p-6 rounded-lg shadow">
             <h2 class="text-lg font-semibold mb-4 text-gray-800">Formulario de Metas de Tipologías</h2>
-            <form action="#" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <form action="@Url.Action("RegistrarMetaTipologia","Metas")" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="anio">
                         Año:
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="anio" name="año" type="number">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="anio" name="aniotipologia" type="number">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="t1">
@@ -196,17 +196,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="text-left text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                        <td class="text-right text-sm text-gray-700 px-4 py-2"></td>
-                    </tr>
+                    @foreach (var t in ViewBag.Tipologias)
+                    {
+                        <tr>
+                            <td class="text-left text-sm text-gray-700 px-4 py-2">@t.Anio</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T1</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T2</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T3</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T4</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@t.TotalProyecto</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @t.TotalPorProyecto)</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@t.DuracionMedia</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @t.MontoMensual)</td>
+                        </tr>
+                    }
+                  
                 </tbody>
             </table>
         </div>
@@ -231,10 +235,10 @@
         document.querySelector('input[name="total"]').value = formatNumberWithDots(total);
     }
 
-    // Evento para formatear el valor del input y actualizar el total
+
     document.querySelectorAll('.format-number').forEach(function (input) {
         input.addEventListener('input', function () {
-            // Remover los puntos para evitar problemas al sumar
+            
             let value = this.value.replace(/\./g, '');
 
             if (!isNaN(value) && value !== '') {
