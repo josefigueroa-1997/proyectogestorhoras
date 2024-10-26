@@ -117,7 +117,7 @@ namespace Proyectogestionhoras.Controllers
                 int idsucursal = int.Parse(Request.Form["sucursal"]);
                 var montopresupuesto = Request.Form["monto"].ToString();
                 var montopresupuestostr = montopresupuesto.Replace(".", "");
-                decimal montofinal = decimal.Parse(montopresupuestostr);
+                decimal montofinal = decimal.Parse(montopresupuestostr, System.Globalization.CultureInfo.InvariantCulture);
                 int idsucursalcliente = await GetIdClienteSucrusal(idcliente, idsucursal);
                 int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
                 List<ServicioViewModel> servicios = new List<ServicioViewModel>();

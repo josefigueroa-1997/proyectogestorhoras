@@ -17,6 +17,7 @@ namespace Proyectogestionhoras.Models
         }
 
         public virtual DbSet<Actividade> Actividades { get; set; } = null!;
+        public virtual DbSet<Bono> Bonos { get; set; } = null!;
         public virtual DbSet<Ccosto> Ccostos { get; set; } = null!;
         public virtual DbSet<CcostoUnegocio> CcostoUnegocios { get; set; } = null!;
         public virtual DbSet<Cliente> Clientes { get; set; } = null!;
@@ -79,6 +80,31 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("TIPO_ACATIVIDAD");
+            });
+
+            modelBuilder.Entity<Bono>(entity =>
+            {
+                entity.ToTable("BONOS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO");
+
+                entity.Property(e => e.Porcentaje)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("PORCENTAJE");
+
+                entity.Property(e => e.Valorfinal)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("VALORFINAL");
+
+                entity.Property(e => e.Valorreal)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("VALORREAL");
             });
 
             modelBuilder.Entity<Ccosto>(entity =>
@@ -448,7 +474,7 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
 
                 entity.Property(e => e.Monto)
-                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnType("decimal(15, 2)")
                     .HasColumnName("MONTO");
 
                 entity.Property(e => e.Nivelprobabilidad)
@@ -573,7 +599,7 @@ namespace Proyectogestionhoras.Models
                     .HasColumnName("MONEDA");
 
                 entity.Property(e => e.Monto)
-                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnType("decimal(15, 2)")
                     .HasColumnName("MONTO");
 
                 entity.Property(e => e.Montoiva)

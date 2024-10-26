@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "Gestor Bonos";
+    
+}
+
+<div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; display: flex; justify-content: space-between;">
+    <div style="width: 60%;">
+        <h2 style="text-align: center; color: #333;">Bonos Socios</h2>
+        <h2 style="text-align: center; color: #333;">Meta Q:@String.Format("{0:N2}", @ViewBag.Promedioquarter)  - @DateTime.Now.Year</h2>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
+            <thead>
+                <tr style="background-color: #d9e2f3; color: black;">
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Seleccionar</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Ventas Q</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Ventas Real Entre</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Y Este Valor</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Kata</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Nicolás</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Juan Felipe</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                        <tr>
+                            <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
+                                <button disabled type="button"
+                                        >
+                                    Seleccionar
+                                </button>
+                            </td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">
+                                Menor a @String.Format("{0:N2}", @ViewBag.Promedioquarter)
+                            </td>
+                                
+                            <td style="padding: 5px; border: 1px solid #ddd;text-align:right;">
+                               0
+                            </td>
+                    <td style="padding: 5px; border: 1px solid #ddd;text-align:right;">
+                                0
+                            </td>
+                    <td style="padding: 5px; border: 1px solid #ddd;text-align:right;">
+                                0
+                            </td>
+                    <td style="padding: 5px; border: 1px solid #ddd;text-align:right;">
+                                0
+                            </td>
+                    <td style="padding: 5px; border: 1px solid #ddd;text-align:right;">
+                                0
+                            </td>
+                            
+                        </tr>
+                @foreach (var bonos in ViewBag.Bonos)
+                {
+                    <tr>
+                        <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
+                            <button type="button"
+                                    onclick="cargarDatosAlternativa('@Html.Encode(bonos.Id)','@Html.Encode(bonos.Monto)')">
+                                Seleccionar
+                            </button>
+                        </td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">
+                            @bonos.Porcentaje %
+                        </td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">
+                            @String.Format("{0:N2}", @bonos.Valorreal)
+                        </td>
+                        @if (bonos.Valorfinal > 0)
+                        {
+                            <td style="padding: 5px; border: 1px solid #ddd;">
+                                @String.Format("{0:N2}", @bonos.Valorfinal)
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="padding: 5px; border: 1px solid #ddd;">
+                               
+                            </td>
+                        }
+                        <td style="padding: 5px; border: 1px solid #ddd;">
+                            @String.Format("{0:N2}", @bonos.Monto)
+                        </td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">
+                            @String.Format("{0:N2}", @bonos.Monto)
+                        </td>
+                        <td style="padding: 5px; border: 1px solid #ddd;">
+                            @String.Format("{0:N2}", @bonos.Monto)
+                        </td>
+                    </tr>
+               
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <div style="width: 35%; margin-left: 20px;">
+        <h2 style="text-align: center; color: #333;">Editar Bono</h2>
+
+        <form action="@Url.Action("ActualizarBonos", "Parametros")" method="post">
+            <input type="hidden" id="id" name="Id" />
+
+           
+            <label for="idcuenta" style="display: block; margin-bottom: 10px;">Monto Bono por Socio:</label>
+            <input disabled type="text" id="monto" name="monto" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;text-align:right;" required>
+
+
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Guardar
+            </button>
+            <button type="button" onclick="limpiarFormulario()" style="width: 100%; padding: 10px; background-color: cornflowerblue; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">
+                Limpiar
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function cargarDatosAlternativa(id,monto) {
+        const idInput = document.querySelector('#id');
+        const idcuentaInput = document.querySelector('#monto');
+        
+
+        idInput.value = id;
+        idcuentaInput.value = monto;
+        idcuentaInput.disabled = false;
+        
+    }
+    function limpiarFormulario() {
+        location.reload();
+    }
+
+
+    function formatNumber(input) {
+  
+        let value = input.value.replace(/\D/g, '');
+   
+        input.value = new Intl.NumberFormat('de-DE').format(value);
+    }
+    
+
+    
+
+    document.getElementById('monto').addEventListener('input', function () {
+        formatNumber(this);
+    });
+</script>

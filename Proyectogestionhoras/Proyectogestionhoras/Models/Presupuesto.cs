@@ -11,7 +11,7 @@ namespace Proyectogestionhoras.Models
         }
 
         public int Id { get; set; }
-        public decimal Monto { get; set; }
+        public decimal? Monto { get; set; }
         public string Moneda { get; set; } = null!;
         public string Afectaiva { get; set; } = null!;
         public decimal? Montoiva { get; set; }

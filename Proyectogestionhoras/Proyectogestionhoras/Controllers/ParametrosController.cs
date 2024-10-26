@@ -193,6 +193,57 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("GestorActividades");
         }
 
+        /*Bonos*/
+
+        public async Task<IActionResult> GestorBonos(int anio)
+        {
+            var bonos = await context.Bonos.Where(b=>b.Anio==anio).ToListAsync();
+            var promedioquarter = await TraerMontoPromedioQuarter(anio);
+            ViewBag.Promedioquarter = promedioquarter;
+            ViewBag.Bonos = bonos;
+            return View();
+        }
+
+
+        public async Task<decimal?> TraerMontoPromedioQuarter(int anio)
+        {
+            var facturacion = await context.MetaFacturacionesqxes
+           .Where(m => m.Anio == anio)
+           .Select(m => new { m.MontoQ1, m.MontoQ2, m.MontoQ3, m.MontoQ4 })
+           .FirstOrDefaultAsync();
+
+            if (facturacion != null)
+            {
+                decimal? promedio = (facturacion.MontoQ1 + facturacion.MontoQ2 + facturacion.MontoQ3 + facturacion.MontoQ4) / 4;
+                return promedio;
+            }
+
+            return 0; 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActualizarBonos(Bono bonos)
+        {
+            if (bonos == null)
+            {
+                return BadRequest("El Bono es nulo.");
+            }
+                var bonoexistente = await context.Bonos.FindAsync(bonos.Id);
+                if (bonoexistente == null)
+                {
+                    return NotFound("Bono no encontrado.");
+                }
+
+                bonoexistente.Monto = bonos.Monto;
+                
+                context.Bonos.Update(bonoexistente);
+            
+
+
+            await context.SaveChangesAsync();
+            return RedirectToAction("GestorBonos", new {anio = DateTime.Now.Year});
+        }
+
         /*Segmentos*/
         public async Task<IActionResult> GestorSegmentos()
         {
