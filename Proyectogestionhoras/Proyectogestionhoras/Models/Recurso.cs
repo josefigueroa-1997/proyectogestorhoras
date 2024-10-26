@@ -7,6 +7,7 @@ namespace Proyectogestionhoras.Models
     {
         public Recurso()
         {
+            Bonosocios = new HashSet<Bonosocio>();
             Usuarios = new HashSet<Usuario>();
         }
 
@@ -23,6 +24,7 @@ namespace Proyectogestionhoras.Models
         public decimal? TotalSocios { get; set; }
         public decimal? TotalStaff { get; set; }
 
+        public virtual ICollection<Bonosocio> Bonosocios { get; set; }
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

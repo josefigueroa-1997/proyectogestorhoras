@@ -140,5 +140,21 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Quarter = quarter;
             return View();
         }
+        [HttpPost]
+        public IActionResult ConsultarResumenAnio()
+        {
+            int anios = int.Parse(Request.Form["anio"].ToString());
+            HttpContext.Session.SetInt32("anio", anios);
+            return RedirectToAction("ComparacionQuarter", new {anio=anios});
+        }
+
+        public async Task<IActionResult> ComparacionQuarter(int anio)
+        {
+            var quarter = await _reporteService.RecuperarQuarter();
+            var quarteranio = await _reporteService.RecuperarQuarterAnio(anio);
+            ViewBag.Quarter = quarter;
+            ViewBag.QuarterAnio = quarteranio;
+            return View();
+        }
     }
 }

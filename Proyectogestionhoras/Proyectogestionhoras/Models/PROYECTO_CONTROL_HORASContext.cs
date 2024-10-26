@@ -18,6 +18,7 @@ namespace Proyectogestionhoras.Models
 
         public virtual DbSet<Actividade> Actividades { get; set; } = null!;
         public virtual DbSet<Bono> Bonos { get; set; } = null!;
+        public virtual DbSet<Bonosocio> Bonosocios { get; set; } = null!;
         public virtual DbSet<Ccosto> Ccostos { get; set; } = null!;
         public virtual DbSet<CcostoUnegocio> CcostoUnegocios { get; set; } = null!;
         public virtual DbSet<Cliente> Clientes { get; set; } = null!;
@@ -49,6 +50,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
         public virtual DbSet<TotalRecurso> TotalRecursos { get; set; } = null!;
+        public virtual DbSet<Totalfacturaejecucion> Totalfacturaejecucions { get; set; } = null!;
         public virtual DbSet<Totalmetatipologium> Totalmetatipologia { get; set; } = null!;
         public virtual DbSet<Totalquarterfacturaanio> Totalquarterfacturaanios { get; set; } = null!;
         public virtual DbSet<Unegocio> Unegocios { get; set; } = null!;
@@ -105,6 +107,33 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Valorreal)
                     .HasColumnType("decimal(15, 2)")
                     .HasColumnName("VALORREAL");
+            });
+
+            modelBuilder.Entity<Bonosocio>(entity =>
+            {
+                entity.ToTable("BONOSOCIO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
+                entity.Property(e => e.Idbono).HasColumnName("IDBONO");
+
+                entity.Property(e => e.Idrecurso).HasColumnName("IDRECURSO");
+
+                entity.Property(e => e.Trimeste).HasColumnName("TRIMESTE");
+
+                entity.HasOne(d => d.IdbonoNavigation)
+                    .WithMany(p => p.Bonosocios)
+                    .HasForeignKey(d => d.Idbono)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("IDBONOFK");
+
+                entity.HasOne(d => d.IdrecursoNavigation)
+                    .WithMany(p => p.Bonosocios)
+                    .HasForeignKey(d => d.Idrecurso)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("IDRECURSOBONO");
             });
 
             modelBuilder.Entity<Ccosto>(entity =>
@@ -987,6 +1016,21 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.TotalHhAnuales)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("TOTAL_HH_ANUALES");
+            });
+
+            modelBuilder.Entity<Totalfacturaejecucion>(entity =>
+            {
+                entity.ToTable("TOTALFACTURAEJECUCION");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
+                entity.Property(e => e.Total)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("TOTAL");
+
+                entity.Property(e => e.Trimestre).HasColumnName("TRIMESTRE");
             });
 
             modelBuilder.Entity<Totalmetatipologium>(entity =>
