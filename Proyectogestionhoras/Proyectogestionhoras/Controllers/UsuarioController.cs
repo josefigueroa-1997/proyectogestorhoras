@@ -25,7 +25,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> Personal(int? id,string? nombre,int? id_recurso)
         {
             var usuarios = await _usuarioService.ObtenerUusario(id,nombre, id_recurso);
-            var totalhhanuales = await context.TotalRecursos.ToListAsync();
+            var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
             var costopromedio = await context.CostoPromedios.ToListAsync();
             ViewBag.TotalAnuales = totalhhanuales;
             ViewBag.Costos = costopromedio;

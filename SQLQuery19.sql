@@ -1,0 +1,214 @@
+
+
+USE PROYECTO_CONTROL_HORAS
+
+
+ALTER TABLE TOTAL_RECURSOS
+ADD ANIO INT 
+
+
+ALTER PROCEDURE [dbo].[INGRESAR_USUARIO]
+@NOMBRE VARCHAR(200),
+@NOMBRE_USUARIO VARCHAR(200),
+@CONTRASENA NVARCHAR(MAX),
+@TELEFONO VARCHAR(20),
+@EMAIL VARCHAR(90),
+@ID_ROL INT,
+@NOMBRE_RECURSO VARCHAR(200),
+@NUMERO_HORAS_SEMANALES INT,
+@COSTO_UNITARIO DECIMAL(10,2),
+@PORCENTAJEHORAS FLOAT,
+@FECHAINICIO DATE,
+@FECHAFIN DATE
+AS
+BEGIN
+DECLARE @IDRECURSO INT;
+DECLARE @HHMENSUALES DECIMAL(10,2);
+DECLARE @HHANUALES DECIMAL(10,2);
+DECLARE @PROMEDIO_COSTO DECIMAL(10,2);
+declare @TIPO_CONSULTOR varchar(200);
+DECLARE @ANIO INT;
+SET @ANIO = YEAR(@FECHAINICIO)
+
+ IF @NOMBRE_RECURSO = 'Consultor Externo'
+    BEGIN
+        DECLARE @CONSULTOR_COUNT INT;
+
+        -- Contar cuántos consultores externos ya existen
+        SELECT @CONSULTOR_COUNT = COUNT(*)
+        FROM RECURSO
+        WHERE NOMBRE_RECURSO = 'Consultor Externo';
+
+        -- Determinar el siguiente tipo de consultor
+        SET @TIPO_CONSULTOR = 'Consultor ' + CHAR(65 + @CONSULTOR_COUNT); -- A = 65, B = 66, C = 67, etc.
+    END
+ELSE
+BEGIN
+SET @TIPO_CONSULTOR = ''
+END
+
+
+SET @HHANUALES = dbo.CALCULARHHANUALES(@NUMERO_HORAS_SEMANALES, @PORCENTAJEHORAS);
+SET @HHMENSUALES =  dbo.CALCULARHHMENSUALES(@NUMERO_HORAS_SEMANALES, @PORCENTAJEHORAS);
+INSERT INTO RECURSO (NOMBRE_RECURSO,NUMERO_HORAS,COSTO_UNITARIO,PROCENTAJE_PROYECTO,HH_MENSUALES,DESDE,HASTA,HH_ANUALES,TIPO_CONSULTOR) VALUES (@NOMBRE_RECURSO,@NUMERO_HORAS_SEMANALES,@COSTO_UNITARIO,@PORCENTAJEHORAS,@HHMENSUALES,@FECHAINICIO,@FECHAFIN,@HHANUALES,@TIPO_CONSULTOR)
+
+SET @IDRECURSO = SCOPE_IDENTITY();
+
+
+INSERT INTO USUARIO(NOMBRE,NOMBRE_USUARIO,CONTRASENA,TELEFONO,EMAIL,ID_ROL,ID_RECURSO) VALUES(@NOMBRE,@NOMBRE_USUARIO,@CONTRASENA,@TELEFONO,@EMAIL,@ID_ROL,@IDRECURSO)
+
+
+  IF @NOMBRE_RECURSO = 'Socio'
+    BEGIN
+        -- Actualizar horas anuales en TOTAL_HORAS_ANUALES
+        UPDATE TOTAL_RECURSOS
+        SET TOTAL_HH_ANUALES = TOTAL_HH_ANUALES + @HHANUALES
+        WHERE TIPO_RECURSO = 'Socio' AND ANIO = @ANIO;
+
+        -- Calcular el promedio de costo unitario para 'Socio'
+        SELECT @PROMEDIO_COSTO = AVG(COSTO_UNITARIO)
+        FROM RECURSO
+        WHERE NOMBRE_RECURSO = 'Socio';
+
+        -- Actualizar o insertar en COSTO_PROMEDIO
+        IF EXISTS (SELECT 1 FROM COSTO_PROMEDIO WHERE TIPO_RECURSO = 'Socio')
+        BEGIN
+            -- Si existe, actualizar el valor promedio
+            UPDATE COSTO_PROMEDIO
+            SET VALOR = @PROMEDIO_COSTO
+            WHERE TIPO_RECURSO = 'Socio';
+        END
+        ELSE
+        BEGIN
+            -- Si no existe, insertar un nuevo registro
+            INSERT INTO COSTO_PROMEDIO (TIPO_RECURSO, VALOR)
+            VALUES ('Socio', @PROMEDIO_COSTO);
+			INSERT INTO TOTAL_RECURSOS(TIPO_RECURSO, TOTAL_HH_ANUALES,ANIO)
+            VALUES ('Socio', @HHANUALES,@ANIO);
+        END
+    END
+    ELSE IF @NOMBRE_RECURSO = 'Staff'
+    BEGIN
+        -- Actualizar horas anuales en TOTAL_HORAS_ANUALES
+        UPDATE TOTAL_RECURSOS
+        SET TOTAL_HH_ANUALES = TOTAL_HH_ANUALES + @HHANUALES
+        WHERE TIPO_RECURSO = 'Staff' AND ANIO = @ANIO;
+
+        -- Calcular el promedio de costo unitario para 'Staff'
+        SELECT @PROMEDIO_COSTO = AVG(COSTO_UNITARIO)
+        FROM RECURSO
+        WHERE NOMBRE_RECURSO = 'Staff';
+
+        -- Actualizar o insertar en COSTO_PROMEDIO
+        IF EXISTS (SELECT 1 FROM COSTO_PROMEDIO WHERE TIPO_RECURSO = 'Staff')
+        BEGIN
+            -- Si existe, actualizar el valor promedio
+            UPDATE COSTO_PROMEDIO
+            SET VALOR = @PROMEDIO_COSTO
+            WHERE TIPO_RECURSO = 'Staff';
+        END
+        ELSE
+        BEGIN
+            -- Si no existe, insertar un nuevo registro
+            INSERT INTO COSTO_PROMEDIO (TIPO_RECURSO, VALOR)
+            VALUES ('Staff', @PROMEDIO_COSTO);
+			INSERT INTO TOTAL_RECURSOS(TIPO_RECURSO, TOTAL_HH_ANUALES,ANIO)
+            VALUES ('Staff', @HHANUALES,@ANIO);
+        END
+    END
+END;
+
+
+ALTER PROCEDURE [dbo].[EDITARUSUARIO]
+    @IDUSUARIO INT,
+    @NOMBRE VARCHAR(200),
+    @NOMBRE_USUARIO VARCHAR(200),
+    @TELEFONO VARCHAR(20),
+    @EMAIL VARCHAR(90),
+    @NUMERO_HORAS_SEMANALES INT,
+    @COSTO_UNITARIO DECIMAL(10,2),
+    @PORCENTAJEHORAS FLOAT,
+    @FECHAINICIO DATE,
+    @FECHAFIN DATE
+AS
+BEGIN
+    DECLARE @IDRECURSO INT;
+    DECLARE @HHANUALES DECIMAL(10,2);
+    DECLARE @TOTALHHANUAL DECIMAL(10,2);
+    DECLARE @HHANUALES_ACTUAL DECIMAL(10,2);
+    DECLARE @RECURSO VARCHAR(100);
+    DECLARE @PROMEDIO_COSTO DECIMAL(10,2);
+    DECLARE @ANIO INT;
+    
+    SET @ANIO = YEAR(@FECHAINICIO);
+    
+    -- Cálculo de horas anuales
+    SET @HHANUALES = dbo.CALCULARHHANUALES(@NUMERO_HORAS_SEMANALES, @PORCENTAJEHORAS);
+
+    -- Obtener tipo de recurso (Socio, Staff, Consultor Externo) para este usuario
+    SELECT @RECURSO = R.NOMBRE_RECURSO, @HHANUALES_ACTUAL = R.HH_ANUALES
+    FROM USUARIO U
+    INNER JOIN RECURSO R ON R.ID = U.ID_RECURSO
+    WHERE U.ID = @IDUSUARIO;
+
+    -- Aplicar solo si el recurso es de tipo Socio o Staff
+    IF (@RECURSO = 'Socio' OR @RECURSO = 'Staff')
+    BEGIN
+        -- Verificar si ya existe una entrada en TOTAL_RECURSOS para el tipo de recurso y año actual
+        IF NOT EXISTS (
+            SELECT 1 
+            FROM TOTAL_RECURSOS 
+            WHERE TIPO_RECURSO = @RECURSO AND ANIO = @ANIO
+        )
+        BEGIN
+            -- Insertar una nueva fila para el nuevo año con HHANUALES como total inicial
+            INSERT INTO TOTAL_RECURSOS (TIPO_RECURSO, ANIO, TOTAL_HH_ANUALES)
+            VALUES (@RECURSO, @ANIO, @HHANUALES);
+        END
+        ELSE
+        BEGIN
+            -- Obtener el total de horas anuales actual
+            SELECT @TOTALHHANUAL = TOTAL_HH_ANUALES 
+            FROM TOTAL_RECURSOS 
+            WHERE TIPO_RECURSO = @RECURSO AND ANIO = @ANIO;
+            
+            -- Actualizar el total sumando las horas anuales actuales y restando las anteriores
+            SET @TOTALHHANUAL = @TOTALHHANUAL - @HHANUALES_ACTUAL + @HHANUALES;
+
+            -- Actualizar el total de horas anuales en TOTAL_RECURSOS
+            UPDATE TOTAL_RECURSOS
+            SET TOTAL_HH_ANUALES = @TOTALHHANUAL
+            WHERE TIPO_RECURSO = @RECURSO AND ANIO = @ANIO;
+        END;
+
+        -- Calcular el costo promedio para Socios o Staff
+        SELECT @PROMEDIO_COSTO = AVG(COSTO_UNITARIO)
+        FROM RECURSO
+        WHERE NOMBRE_RECURSO = @RECURSO;
+
+        -- Actualizar el costo promedio en la tabla COSTO_PROMEDIO
+        UPDATE COSTO_PROMEDIO
+        SET VALOR = @PROMEDIO_COSTO
+        WHERE TIPO_RECURSO = @RECURSO;
+    END;
+
+    -- Actualizar el recurso con los nuevos datos
+    UPDATE RECURSO 
+    SET 
+        NUMERO_HORAS = @NUMERO_HORAS_SEMANALES,
+        COSTO_UNITARIO = @COSTO_UNITARIO,
+        PROCENTAJE_PROYECTO = @PORCENTAJEHORAS,
+        DESDE = @FECHAINICIO,
+        HASTA = @FECHAFIN,
+        HH_ANUALES = @HHANUALES
+    WHERE ID = (SELECT ID_RECURSO FROM USUARIO WHERE ID = @IDUSUARIO);
+
+    -- Actualizar el usuario con los nuevos datos
+    UPDATE USUARIO 
+    SET 
+        NOMBRE = @NOMBRE,
+        NOMBRE_USUARIO = @NOMBRE_USUARIO,
+        TELEFONO = @TELEFONO,
+        EMAIL = @EMAIL 
+    WHERE ID = @IDUSUARIO;
+END;

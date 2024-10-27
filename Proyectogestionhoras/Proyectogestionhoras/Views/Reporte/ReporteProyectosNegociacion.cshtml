@@ -4,6 +4,7 @@
 }
 <h1 class="text-2xl font-bold mb-4">Proyectos en Negociación</h1>
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <button id="exportButton" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200" id="tablaReporte">
             <thead class="bg-blue-100">
@@ -24,14 +25,21 @@
     </div>
 </div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
 <script>
     function formatearNumero(num) {
         num = Math.round(num);  
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-
+    let indicesFechas = [];
     $(document).ready(function () {
         cargarReporte();
+    
+        $('#exportButton').click(function () {
+            exportarExcel();
+        });
     });
 
     function cargarReporte() {
@@ -47,20 +55,22 @@
                     const fecha = new Date(item.fechaFactura);
                     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
                     const anio = fecha.getFullYear();
-                    const mesAnio = `${mes}/${anio}`;
+                    const mesAnio = `${mes}-${anio}`;
                     fechasUnicas.add(mesAnio);
                 });
 
                 const fechasOrdenadas = Array.from(fechasUnicas).sort((a, b) => {
-                    const [mesA, anioA] = a.split('/');
-                    const [mesB, anioB] = b.split('/');
+                    const [mesA, anioA] = a.split('-');
+                    const [mesB, anioB] = b.split('-');
                     return anioA - anioB || mesA - mesB;
                 });
 
                 const filaCabecera = tabla.find('thead tr');
-                fechasOrdenadas.forEach(mesAnio => {
+                
+                fechasOrdenadas.forEach((mesAnio,index) => {
                     const th = $('<th class="text-left text-xs font-medium "></th>').text(mesAnio);
                     filaCabecera.append(th);
+                    indicesFechas.push(index + 7);
                 });
                 filaCabecera.append('<th class="text-left text-xs font-medium ">Total General</th>');
 
@@ -82,7 +92,7 @@
                     const fecha = new Date(item.fechaFactura);
                     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
                     const anio = fecha.getFullYear();
-                    const mesAnio = `${mes}/${anio}`;
+                    const mesAnio = `${mes}-${anio}`;
                     datosAgrupados[numProyecto].montos[mesAnio] = item.neto;
                 });
 
@@ -106,7 +116,7 @@
                         totalFila += totalPorMes[mesAnio] || 0;
                     }
 
-                    // Solo crear la fila si el total es mayor a 0
+                  
                     if (totalFila > 0) {
                         const filaTotal = $('<tr class="text-left text-xs font-medium border border-black"></tr>').addClass('fila-total').html(
                             `<td class="text-left text-xs font-medium border border-black" colspan="7">Total ${titulo}</td>`
@@ -121,7 +131,7 @@
                         filaTotal.append(`<td class="text-left text-xs font-medium text-right border border-black">${formatearNumero(totalFila)}</td>`);
                         return filaTotal;
                     }
-                    return null; // No crear fila si el total es 0
+                    return null; 
                 }
 
                 let totalPorMesProbabilidad = {};
@@ -172,7 +182,8 @@
                          <td class="text-left text-xs font-medium ">${item.tipoTipologia}</td>
                          <td class="text-left text-xs font-medium">${item.unegocio}</td>
                          <td class="text-left text-xs font-medium">${item.nombreCliente}</td>
-                         <td class="text-left text-xs font-medium"> ${item.numProyecto}</td>
+             <td class="text-left text-xs font-medium">${"'" + item.numProyecto}</td>
+
                          <td class="text-left text-xs font-medium">${item.nombre}</td>
                          <td class="text-left text-xs font-medium">${item.cCosto}</td>`
                     );
@@ -236,4 +247,85 @@
         });
     }
 
+
+    function exportarExcel() {
+        const tabla = document.getElementById('tablaReporte');
+        const wb = new ExcelJS.Workbook();
+        const ws = wb.addWorksheet('Proyectos');
+
+        const filas = Array.from(tabla.rows);
+
+     
+        const encabezadosExcel = Array.from(filas[0].cells).map(celda => {
+            return { header: celda.innerText.trim(), key: celda.innerText.trim(), width: 15 };
+        });
+
+        
+        ws.columns = encabezadosExcel;
+
+        
+        for (let i = 1; i < filas.length; i++) {
+            const celdas = Array.from(filas[i].cells); 
+            const filaDatos = [];
+
+            for (let j = 0; j < celdas.length; j++) {
+                const valor = celdas[j].innerText.trim();
+                const colspan = celdas[j].colSpan || 1; 
+
+               
+                let dato;
+             
+                const monto = parseFloat(valor.replace(/\./g, '').replace(/,/g, '.'));
+                dato = !isNaN(monto) ? monto : valor; 
+
+ 
+
+                filaDatos.push(dato);
+
+           
+                for (let k = 1; k < colspan; k++) {
+                    filaDatos.push(''); 
+                }
+            }
+
+       
+            while (filaDatos.length < encabezadosExcel.length) {
+                filaDatos.push('');
+            }
+
+       
+            const nuevaFila = ws.addRow(filaDatos);
+
+          
+            filaDatos.forEach((cellValue, index) => {
+                if (typeof cellValue === 'number' && !isNaN(cellValue)) {
+                    nuevaFila.getCell(index + 1).numFmt = '#,##0'; 
+                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'right' }; 
+                } else {
+                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'left' }; 
+                }
+            });
+        }
+
+     
+        wb.xlsx.writeBuffer().then(buffer => {
+            const blob = new Blob([buffer], { type: 'application/octet-stream' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'Proyectos_Negociacion.xlsx';
+            link.click();
+        });
+    }
+
+    function formatMesAno(valor) {
+        const partes = valor.split('-');
+        if (partes.length === 2) {
+            const mes = parseInt(partes[0]);
+            const anio = parseInt(partes[1]);
+            if (!isNaN(mes) && !isNaN(anio) && mes >= 1 && mes <= 12) {
+                return new Date(anio, mes - 1); 
+            }
+        }
+        return null;
+    }
 </script>

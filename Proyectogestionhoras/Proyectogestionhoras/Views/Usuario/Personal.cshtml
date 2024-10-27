@@ -92,7 +92,7 @@
 </style>
 
 <div class="container relative">
-    <!-- Botón "Agregar Personal" -->
+    
     <a href="@Url.Action("Addpersonal","Usuario")" class="add-personal-btn">Agregar Personal</a>
 
     <h1 class="client-title">Personal</h1>
@@ -106,10 +106,10 @@
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Socio</th>
                         <th class="p-4 border">Nombre</th>
-                        <th class="p-4 border">HH/Anuales Disponibles</th>
+                        <th class="p-4 border">HH/Anuales</th>
                         <th class="p-4 border">Hrs. a Proyectos</th>
                         <th class="p-4 border">Costo Unitario</th>
-                        <th class="p-4 border">Editar</th> <!-- Nueva columna Editar -->
+                        <th class="p-4 border">Editar</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -127,7 +127,7 @@
                                     <td class="p-4 border">$@String.Format("{0:N2}",@recurso.Costo_Unitario)</td>
                                     <td class="p-4 border">
                                         <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
-                                    </td> <!-- Botón Editar -->
+                                    </td> 
                                     
                                 </tr>
                                 
@@ -138,7 +138,7 @@
                 </tbody>
             </table>
 
-            <!-- Tabla de Staff -->
+           
             <table class="w-1/2 border-collapse text-left">
                 <thead>
                     <tr class="bg-green-200 text-black">
@@ -147,7 +147,7 @@
                         <th class="p-4 border">HH/Anuales Disponibles</th>
                         <th class="p-4 border">Hrs. a Proyectos</th>
                         <th class="p-4 border">Costo Unitario</th>
-                        <th class="p-4 border">Editar</th> <!-- Nueva columna Editar -->
+                        <th class="p-4 border">Editar</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -165,7 +165,7 @@
                                     <td class="p-4 border">$@String.Format("{0:N2}",@recurso.Costo_Unitario)</td>
                                     <td class="p-4 border">
                                         <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
-                                    </td> <!-- Botón Editar -->
+                                    </td> 
                                 </tr>
                             }
                         }
@@ -175,15 +175,15 @@
         </div>
     </div>
 
-    <!-- Separación entre las tablas -->
+    
     <div class="mt-12 mb-8"></div>
 
     <div class="flex justify-around mt-12 mb-8">
-        <!-- Contenedor flex para las tablas -->
+        
         <div class="form-group w-1/2">
-            <!-- Primera tabla -->
+         
             <table class="w-full border-collapse text-left">
-                <!-- Cambia w-1/2 por w-full para que la tabla ocupe todo el espacio del div -->
+                
                 <thead>
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Rol</th>
@@ -206,9 +206,9 @@
         </div>
 
         <div class="form-group w-1/2">
-            <!-- Segunda tabla -->
+            
             <table class="w-full border-collapse text-left">
-                <!-- Cambia w-1/2 por w-full para que la tabla ocupe todo el espacio del div -->
+                
                 <thead>
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Rol</th>
@@ -234,14 +234,14 @@
     <div class="mt-12 mb-8"></div>
 
     <div class="form-group">
-        <!-- Tabla de Consultores Externos -->
+        
         <table class="w-1/2 mx-auto border-collapse text-left">
             <thead>
                 <tr class="bg-green-200 text-black">
                     <th class="p-4 border">Consultores Externos</th>
                     <th class="p-4 border">Nombre</th>
                     <th class="p-4 border">Costo Unitario</th>
-                    <th class="p-4 border">Editar</th> <!-- Nueva columna Editar -->
+                    <th class="p-4 border">Editar</th> 
                 </tr>
             </thead>
             <tbody>
@@ -257,7 +257,7 @@
                                 <td class="p-4 border">$@String.Format("{0:N2}",@recurso.Costo_Unitario)</td>
                                 <td class="p-4 border">
                                     <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
-                                </td> <!-- Botón Editar -->
+                                </td> 
                                 
                             </tr>
                         }
@@ -267,7 +267,7 @@
         </table>
     </div>
 
-    <!-- MODAL DE MENSAJE DE ÉXITO AL EDITAR DATOS -->
+    
     <div id="successModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
@@ -276,7 +276,7 @@
         </div>
     </div>
 </div>
-<!--MODAL DE MENSAJE DE ÉXITO AL EDITAR DATOS-->
+
 <script>
 
     window.addEventListener('DOMContentLoaded', (event) => {

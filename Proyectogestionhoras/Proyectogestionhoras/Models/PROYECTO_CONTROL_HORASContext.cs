@@ -1008,6 +1008,8 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Anio).HasColumnName("ANIO");
+
                 entity.Property(e => e.TipoRecurso)
                     .HasMaxLength(100)
                     .IsUnicode(false)
