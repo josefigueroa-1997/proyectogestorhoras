@@ -335,7 +335,21 @@
     const exportarAExcel = async () => {
         const wb = new ExcelJS.Workbook();
         const ws = wb.addWorksheet("Facturas");
+        const response = await fetch('/images/unitt.png'); // Ruta relativa a wwwroot
+        const imageBlob = await response.blob();
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const logoImageId = wb.addImage({
+            buffer: arrayBuffer,
+            extension: 'png' // Cambia esto si la imagen es otro tipo (ej. jpg)
+        });
 
+        // Insertar la imagen en la primera fila (puedes ajustar las celdas según el tamaño de la imagen)
+        ws.addImage(logoImageId, {
+            tl: { col: 0, row: 0 }, // Posición inicial (columna A, fila 1)
+            ext: { width: 150, height: 50 } // Ajusta el tamaño de la imagen
+        });
+        ws.addRow([]);
+        ws.addRow([]);
         // Extrae los datos de la tabla
         const tabla = document.getElementById('facturasTable');
         const filas = tabla.getElementsByTagName('tr');
