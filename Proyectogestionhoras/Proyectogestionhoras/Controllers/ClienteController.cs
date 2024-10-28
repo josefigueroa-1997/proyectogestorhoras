@@ -49,13 +49,13 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCliente(string nombre,string? direccion,string? ciudad,string? pais,string? telefono,string? pagweb,string? linkedin,string? instagram,string idcliente, string sucursal)
+        public async Task<IActionResult> RegistrarCliente(string nombre,string? direccion,string? ciudad,string? pais,string? telefono,string? pagweb,string? linkedin,string? instagram,string idcliente, string sucursal,string tipocliente)
         {
             try
             {
 
                 var idusuario = HttpContext.Session.GetInt32("id");
-                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente,sucursal);
+                bool registro = await service.RegistrarCliente(nombre, direccion, ciudad, pais, telefono, pagweb, linkedin, instagram,idcliente,sucursal, tipocliente);
                 if (registro) {
                     TempData["SuccessMessage"] = "¡Se Agregó con éxito el nuevo cliente!";
                     return RedirectToAction("Index", "Home");
@@ -110,11 +110,11 @@ namespace Proyectogestionhoras.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram, int idsucursal, string nombresucursal)
+        public async Task<IActionResult> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram, int idsucursal, string nombresucursal,string tipocliente)
         {
             try
             {
-                bool resultado = await service.EditarCliente(id,nombre,direccion, ciudad,pais, telefono,pagweb, linkedin, instagram,idsucursal, nombresucursal);
+                bool resultado = await service.EditarCliente(id,nombre,direccion, ciudad,pais, telefono,pagweb, linkedin, instagram,idsucursal, nombresucursal, tipocliente);
                 if (resultado) {
                     TempData["SuccessMessage"] = "¡Se Edito con éxito la información del cliente!";
                     return RedirectToAction("ProyectosCliente", "Cliente", new {idcliente=id});

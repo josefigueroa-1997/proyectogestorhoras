@@ -51,7 +51,47 @@
                     <label class="form-label" for="Nombre">Nombre</label>
                     <input class="form-input" type="text" id="Nombre" name="nombre" value="@cliente.Nombre" required>
                 </div>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <label class="form-label" for="TipoCliente">Tipo Cliente</label>
 
+                    <select name="tipocliente" class="form-input" required>
+                        <option selected disabled>Seleccione un Tipo Cliente</option>
+                        @if (cliente.TipoCliente == "Empr.Públicas Chile")
+                        {
+                            <option value="Empr.Públicas Chile" selected>Empr.Públicas Chile</option>
+                        }
+                        else
+                        {
+                            <option value="Empr.Públicas Chile">Empr.Públicas Chile</option>
+                        }
+
+                        @if (cliente.TipoCliente == "Empr.Privadas Chile")
+                        {
+                            <option value="Empr.Privadas Chile" selected>Empr.Privadas Chile</option>
+                        }
+                        else
+                        {
+                            <option value="Empr.Privadas Chile">Empr.Privadas Chile</option>
+                        }
+
+                        @if (cliente.TipoCliente == "Fundaciones y Org.Sin Fin Lucro")
+                        {
+                            <option value="Fundaciones y Org.Sin Fin Lucro" selected>Fundaciones y Org.Sin Fin Lucro</option>
+                        }
+                        else
+                        {
+                            <option value="Fundaciones y Org.Sin Fin Lucro">Fundaciones y Org.Sin Fin Lucro</option>
+                        }
+                        @if (cliente.TipoCliente == "Empr.Internacional")
+                        {
+                            <option value="Empr.Internacional" selected>Empr.Internacional</option>
+                        }
+                        else
+                        {
+                            <option value="Empr.Internacional">Empr.Internacional</option>
+                        }
+                    </select>
+                </div>
                 <div class="grid grid-cols-1 gap-4 mb-4">
                     <label class="form-label" for="Direccion">Dirección</label>
                     <input class="form-input" type="text" id="direccion" name="direccion" value="@cliente.Direccion" >

@@ -118,17 +118,17 @@
 
                   
                     if (totalFila > 0) {
-                        const filaTotal = $('<tr class="text-left text-xs font-medium border border-black"></tr>').addClass('fila-total').html(
-                            `<td class="text-left text-xs font-medium border border-black" colspan="7">Total ${titulo}</td>`
+                        const filaTotal = $('<tr class="text-left text-xs font-medium border border-black px-4 py-2 min-w-[150px]"></tr>').addClass('fila-total').html(
+                            `<td class="text-left text-xs font-medium border border-black px-4 py-2 min-w-[150px]" colspan="7">Total ${titulo}</td>`
                         );
 
                         fechasOrdenadas.forEach(mesAnio => {
                             const totalMes = totalPorMes[mesAnio] || 0;
-                            const td = $('<td class="text-left text-xs font-medium text-right border border-black"></td>').html(`${formatearNumero(totalMes)}`);
+                            const td = $('<td class="text-left text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]"></td>').html(`${formatearNumero(totalMes)}`);
                             filaTotal.append(td);
                         });
 
-                        filaTotal.append(`<td class="text-left text-xs font-medium text-right border border-black">${formatearNumero(totalFila)}</td>`);
+                        filaTotal.append(`<td class="text-left text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]">${formatearNumero(totalFila)}</td>`);
                         return filaTotal;
                     }
                     return null; 
@@ -179,20 +179,20 @@
 
                     const fila = $('<tr></tr>').html(
                         `<td class="text-left text-xs font-medium ">${item.probabilidad}</td>
-                         <td class="text-left text-xs font-medium ">${item.tipoTipologia}</td>
-                         <td class="text-left text-xs font-medium">${item.unegocio}</td>
-                         <td class="text-left text-xs font-medium">${item.nombreCliente}</td>
-             <td class="text-left text-xs font-medium">${"'" + item.numProyecto}</td>
+                             <td class="text-left text-xs font-medium ">${item.tipoTipologia}</td>
+                             <td class="text-left text-xs font-medium ">${item.unegocio}</td>
+                             <td class="text-left text-xs font-medium ">${item.nombreCliente}</td>
+                 <td class="text-left text-xs font-medium ">${"'" + item.numProyecto}</td>
 
-                         <td class="text-left text-xs font-medium">${item.nombre}</td>
-                         <td class="text-left text-xs font-medium">${item.cCosto}</td>`
+                             <td class="text-left text-xs font-medium ">${item.nombre}</td>
+                             <td class="text-left text-xs font-medium ">${item.cCosto}</td>`
                     );
 
                     let totalFila = 0;
 
                     fechasOrdenadas.forEach(mesAnio => {
                         const monto = item.montos[mesAnio] || 0;
-                        const td = $('<td class="text-left text-xs border font-medium text-right border-black"></td>').text(formatearNumero(Math.round(monto)));
+                        const td = $('<td class="text-left text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>').text(formatearNumero(Math.round(monto)));
                         fila.append(td);
 
                         totalFila += monto;
@@ -207,7 +207,7 @@
                         totalPorMesNegocio[mesAnio] = (totalPorMesNegocio[mesAnio] || 0) + monto;
                     });
 
-                    fila.append(`<td class="text-left text-xs font-medium border text-right border-black">${formatearNumero(Math.round(totalFila))}</td>`);
+                    fila.append(`<td class="text-left text-xs font-medium border text-right border-black px-4 py-2 min-w-[150px]">${formatearNumero(Math.round(totalFila))}</td>`);
                     tabla.find('tbody').append(fila);
                 });
 
@@ -224,7 +224,7 @@
                     tabla.find('tbody').append(filaTotalProbabilidad);
                 }
 
-                const filaTotalGeneral = $('<tr class="text-left text-xs font-medium text-right border border-black"></tr>').addClass('totales').html(
+                const filaTotalGeneral = $('<tr class="text-left text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]"></tr>').addClass('totales').html(
                     '<td class="text-left text-xs font-medium border border-black" colspan="7">Total General</td>'
                 );
 
@@ -232,11 +232,11 @@
                     const totalPorMes = datosArray.reduce((acumulado, item) => {
                         return acumulado + (item.montos[mesAnio] || 0);
                     }, 0);
-                    const td = $('<td class="text-left text-xs font-medium text-right border border-black"></td>').html(`${formatearNumero(Math.round(totalPorMes))}`);
+                    const td = $('<td class="text-left text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]"></td>').html(`${formatearNumero(Math.round(totalPorMes))}`);
                     filaTotalGeneral.append(td);
                 });
 
-                filaTotalGeneral.append(`<td class="text-left text-xs font-medium text-right border border-black">${formatearNumero(Math.round(totalGeneral))}</td>`);
+                filaTotalGeneral.append(`<td class="text-left text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]">${formatearNumero(Math.round(totalGeneral))}</td>`);
                 tabla.find('tbody').append(filaTotalGeneral);
                 $('.fila-total').css('background-color', '#f2f2f2');
                 $('.totales').css('background-color', '#d6eaf8');
@@ -248,10 +248,30 @@
     }
 
 
-    function exportarExcel() {
-        const tabla = document.getElementById('tablaReporte');
+    async function exportarExcel() {
+        
         const wb = new ExcelJS.Workbook();
-        const ws = wb.addWorksheet('Proyectos');
+            const ws = wb.addWorksheet('Proyectos');
+        const response = await fetch('/images/unitt.png'); 
+        const imageBlob = await response.blob();
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const logoImageId = wb.addImage({
+            buffer: arrayBuffer,
+            extension: 'png' 
+        });
+
+        
+        ws.addImage(logoImageId, {
+            tl: { col: 0, row: 0 }, 
+            ext: { width: 150, height: 50 } 
+        });
+        
+        ws.getRow(1).height = 70; 
+
+       
+        ws.getRow(2).height = 20; 
+
+        const tabla = document.getElementById('tablaReporte');
 
         const filas = Array.from(tabla.rows);
 

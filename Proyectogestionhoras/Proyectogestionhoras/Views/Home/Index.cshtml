@@ -9,7 +9,7 @@
 <div class="dashboard-container">
     <!-- Sección de Proyectos -->
     <div class="dashboard-section projects-section">
-        <h2 class="section-header">Mis Proyectos</h2>
+        <h2 class="section-header">Principal</h2>
         <div class="section-content">
             <!-- Nuevo Proyecto -->
        
@@ -19,83 +19,15 @@
                     <h3>+ Nuevo Proyecto</h3>
                     <p>Crear un nuevo proyecto</p>
                 </a>
-            
-           
-            <!-- Proyecto 1 -->
-            @*@foreach(var proyecto in ViewBag.Proyectos)
-            {
-                <a href="">
-                    <div class="card">
-                        <h3>@proyecto.NUM_PROYECTO</h3>
-                        <p>Cliente: @proyecto.NOMBRECLIENTE</p>
-                       
-                    </div>
-
-                </a>
-            }*@
-            
-           <!-- Proyecto 2 -->
-            <div class="card">
-                <h3>Proyecto Contabilidad</h3>
-                <p>Cliente: Empresa ABC</p>
-                <p>Fecha de inicio: 15/04/2024</p>
-            </div>
-            <!-- Proyecto 3 -->
-            <div class="card">
-                <h3>Proyecto Gobierno</h3>
-                <p>Cliente: colegio de administración</p>
-                <p>Fecha de inicio: 21/05/2024</p>
-            </div>
-            <!-- Proyecto 4 -->
-            <div class="card">
-                <h3>Proyecto Caja de Compensación</h3>
-                <p>Cliente: Empresa Tech Solutions</p>
-                <p>Fecha de inicio: 10/06/2024</p>
-            </div>
-            <!-- Proyecto 5 -->
-            <div class="card">
-                <h3>Proyecto Hospital Salud</h3>
-                <p>Cliente: Hospital San Juan</p>
-                <p>Fecha de inicio: 05/07/2024</p>
-            </div>
-            </div>
-        <div class="text-center mt-4">
-            <a href="@Url.Action("GetProyectos", "Proyecto")" class="btn-ver-mas">Ver más</a>
-        </div>
-    </div>
-
-    <!-- Sección de Clientes -->
-    <div class="dashboard-section reports-section">
-        <h2 class="section-header">Clientes</h2>
-        <div class="section-content">
-            <!-- Nuevo Cliente -->
             <div id="nuevoClienteBtn" class="card new-cliente">
                 <h3>+ Nuevo Cliente</h3>
                 <p>Agregar un nuevo cliente</p>
             </div>
-            @{
-                int count = 1; 
-            }
-            @foreach (var cliente in ViewBag.clientes)
-            {
-                @if (count > 9)
-                {
-                    break;
-                }
-                <a href="@Url.Action("ProyectosCliente","Cliente",new {idcliente=cliente.Id})" class="card">
-
-                    <h3>@cliente.Nombre</h3>
-                    <p>@cliente.Pais</p>
-                    <p>@cliente.Linkedin</p>
-                </a>
-                count++;
-                
-            }
-        </div>
-        <div class="text-center mt-4">
-            <a href="@Url.Action("NuestrosClientes", "Cliente")" class="btn-ver-mas">Ver más</a>
-        </div>
+           
+         
     </div>
+
+  </div>
     <!-- Modal para agregar nuevo cliente  -->
     <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
@@ -115,7 +47,24 @@
                     <label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:</label>
                     <input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
-
+                <div>
+                    <label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:</label>
+                    
+                    <select name="tipocliente" class="w-full p-2 border border-gray-300 rounded" required>
+                        <option value="Empr.Públicas Chile">
+                            Empr.Públicas Chile
+                        </option>
+                        <option value="Empr.Privadas Chile">
+                            Empr.Privadas Chile
+                        </option>
+                        <option value="Fundaciones y Org.Sin Fin Lucro">
+                            Fundaciones y Org.Sin Fin Lucro
+                        </option>
+                        <option value="Empr.Internacional">
+                            Empr.Internacional
+                        </option>
+                    </select>
+                </div>
             
                 <div>
                     <label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>

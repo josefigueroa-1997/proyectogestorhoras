@@ -148,20 +148,20 @@
         mesesArray.forEach(mes => {
             const th = document.createElement('th');
             th.innerText = mes;
-            th.classList.add("text-xs", "font-medium", "ancho");
+            th.classList.add("text-xs", "font-medium", "px-4", "py-2", "min-w-[100px]");
             cabecera.appendChild(th);
         });
 
         añosArray.forEach(año => {
             const thAño = document.createElement('th');
             thAño.innerText = `Total ${año}`;
-            thAño.classList.add("text-xs", "font-medium", "ancho");
+            thAño.classList.add("text-xs", "font-medium", "px-4", "py-2", "min-w-[100px]");
             cabecera.appendChild(thAño);
         });
 
         const thTotalProyecto = document.createElement('th');
         thTotalProyecto.innerText = 'Totales Generales';
-        thTotalProyecto.classList.add("text-xs", "font-medium");
+        thTotalProyecto.classList.add("text-xs", "font-medium", "px-4", "py-2", "min-w-[100px]");
         cabecera.appendChild(thTotalProyecto);
 
         const proyectosOrdenados = Object.keys(datos).sort((a, b) => {
@@ -194,23 +194,23 @@
                     const totalCell = totalRow.insertCell();
                     totalCell.colSpan = 5;
                     totalCell.innerText = `Total ${totalEstadoActual}`;
-                    totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs");
+                    totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs", "px-4", "py-2", "min-w-[100px]");
                     mesesArray.forEach(mes => {
                         const cell = totalRow.insertCell();
                         const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
                         cell.innerText = formatearMiles(Math.round(totalMes));
-                        cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
+                        cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                     });
 
                     añosArray.forEach(año => {
                         const totalAnualCell = totalRow.insertCell();
                         const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
                         totalAnualCell.innerText = formatearMiles(Math.round(totalAnual));
-                        totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
+                        totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                     });
                     const totalProyectoCell = totalRow.insertCell();
                     totalProyectoCell.innerText = formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
-                    totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
+                    totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                 }
 
                 totalEstadoActual = proyectoData.TipoStatus;
@@ -244,7 +244,7 @@
                 const cell = row.insertCell();
                 const valorMes = proyectoData.Meses[mes] || 0;
                 cell.innerText = formatearMiles(Math.round(valorMes));
-                cell.classList.add("border", "border-black", "text-right", "text-xs");
+                cell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                 totalProyecto += valorMes;
                 if (!totalPorEstado[totalEstadoActual].meses[mes]) {
                     totalPorEstado[totalEstadoActual].meses[mes] = 0;
@@ -257,14 +257,14 @@
                 const totalAnualCell = row.insertCell();
                 const totalAnualTruncado = Math.floor(totalAnual);
                 totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
-                totalAnualCell.classList.add("border", "border-black", "text-right", "text-xs");
+                totalAnualCell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                 totalPorEstado[totalEstadoActual].totalAnual[año] = (totalPorEstado[totalEstadoActual].totalAnual[año] || 0) + totalAnual;
             });
 
             const totalCell = row.insertCell();
             totalproyectotruncado = Math.round(totalProyecto);
             totalCell.innerText = formatearMiles(totalproyectotruncado);
-            totalCell.classList.add("border", "border-black", "text-right", "text-xs");
+            totalCell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
             totalPorEstado[totalEstadoActual].sumaNeto += totalProyecto;
         });
 
@@ -273,12 +273,12 @@
             const totalCell = totalRow.insertCell();
             totalCell.colSpan = 5;
             totalCell.innerText = `Total ${totalEstadoActual}`;
-            totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs");
+            totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs", "px-4", "py-2", "min-w-[100px]");
             mesesArray.forEach(mes => {
                 const cell = totalRow.insertCell();
                 const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
                 cell.innerText = formatearMiles(Math.round(totalMes));
-                cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
+                cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
             });
 
             añosArray.forEach(año => {
@@ -286,11 +286,11 @@
                 const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
                 const totalAnualTruncado = Math.floor(totalAnual);
                 totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
-                totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
+                totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
             });
             const totalProyectoCell = totalRow.insertCell();
             totalProyectoCell.innerText = formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
-            totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs");
+            totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
 
         }
 
@@ -299,13 +299,13 @@
         const celdaTotalGeneral = filaTotalGeneral.insertCell();
         celdaTotalGeneral.colSpan = 5;
         celdaTotalGeneral.innerText = 'Total General';
-        celdaTotalGeneral.classList.add("border", "border-black", "totales", "text-xs");
+        celdaTotalGeneral.classList.add("border", "border-black", "totales", "text-xs", "px-4", "py-2", "min-w-[100px]");
         mesesArray.forEach(mes => {
             const celdaMes = filaTotalGeneral.insertCell();
             const totalMesGeneral = totalPorMes[mes] || 0;
             const totalMesGeneralTruncado = Math.round(totalMesGeneral);
             celdaMes.innerText = formatearMiles(totalMesGeneralTruncado);
-            celdaMes.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs");
+            celdaMes.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
         });
 
         añosArray.forEach(año => {
@@ -313,13 +313,13 @@
             const totalAnualGeneral = totalPorAño[año] || 0;
             const totalAnualGeneralTruncado = Math.floor(totalAnualGeneral);
             celdaAnual.innerText = formatearMiles(totalAnualGeneralTruncado);
-            celdaAnual.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs");
+            celdaAnual.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
         });
 
         // Celda para total general
         const celdaTotalGeneralFinal = filaTotalGeneral.insertCell();
         celdaTotalGeneralFinal.innerText = formatearMiles(Math.round(totalFinal));
-        celdaTotalGeneralFinal.classList.add("border", "border-black", "totales", "text-right", "text-xs");
+        celdaTotalGeneralFinal.classList.add("border", "border-black", "totales", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
     }
 
     generarTabla(datosAgrupados);

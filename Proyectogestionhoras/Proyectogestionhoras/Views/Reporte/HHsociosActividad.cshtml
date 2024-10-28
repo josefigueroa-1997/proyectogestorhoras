@@ -19,17 +19,17 @@
             <table class="min-w-full border-collapse border border-black">
                 <thead class="bg-yellow-200">
                     <tr>
-                        <th class="border border-black px-4 py-2">Tiempo</th>
+                        <th class="text-left text-xs font-medium">Tiempo</th>
                         @foreach (var actividad in actividades)
                         {
-                            <th class="border border-black px-4 py-2">@actividad</th>
+                            <th class="text-left text-xs font-medium">@actividad</th>
                         }
-                        <th class="border border-black px-4 py-2">Total</th>
+                        <th class="text-left text-xs font-medium">Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-black px-4 py-2">Mes Actual</td>
+                        <td class="text-left text-xs font-medium border border-black">Mes Actual</td>
                         @{
                             int totalMesActual = 0;
                         }
@@ -37,13 +37,13 @@
                         {
                             int horas = socio.HorasPorActividad.ContainsKey(actividad) ? socio.HorasPorActividad[actividad] : 0;
                             totalMesActual += horas;
-                            <td class="border border-black px-4 py-2 text-right">@horas</td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
                         }
-                        <td class="border border-black px-4 py-2 text-right">@totalMesActual</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalMesActual</td>
                     </tr>
 
                     <tr>
-                        <td class="border border-black px-4 py-2">Acumulado Año</td>
+                        <td class="text-left text-xs font-medium border border-black">Acumulado Año</td>
                         @{
                             int totalAnio = 0;
                         }
@@ -52,13 +52,13 @@
                             var socioAnio = horasAnioActual.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
                             int horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
                             totalAnio += horas;
-                            <td class="border border-black px-4 py-2 text-right">@horas</td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
                         }
-                        <td class="border border-black px-4 py-2 text-right">@totalAnio</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalAnio</td>
                     </tr>
 
                     <tr>
-                        <td class="border border-black px-4 py-2">Últimos 12 meses</td>
+                        <td class="text-left text-xs font-medium border border-black">Últimos 12 meses</td>
                         @{
                             int totalDoceMeses = 0;
                         }
@@ -67,9 +67,9 @@
                             var socioAnio = horasdocemeses.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
                             int horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
                             totalDoceMeses += horas;
-                            <td class="border border-black px-4 py-2 text-right">@horas</td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
                         }
-                        <td class="border border-black px-4 py-2 text-right">@totalDoceMeses</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalDoceMeses</td>
                     </tr>
                 </tbody>
             </table>

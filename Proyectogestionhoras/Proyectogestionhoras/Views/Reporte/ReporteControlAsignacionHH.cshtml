@@ -14,38 +14,38 @@
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="text-left text-xs font-medium">Estado</th>
                     @foreach (var meses in ViewBag.Controlhh)
                     {
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@meses.Mes/@meses.Anio</th>
+                        <th class="text-left text-xs font-medium">@meses.Mes/@meses.Anio</th>
                     }
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Totales</th>
+                    <th class="text-left text-xs font-medium">Totales</th>
                     
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
             
                 <tr>
-                    <td class="border border-black">Presupuesto</td>
+                    <td class="border border-black text-left text-xs font-medium">Presupuesto</td>
                     @{
                         decimal totalpresupuestosocio = 0;
                         decimal totalejecutadosocio = 0;
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black">@hhsociosplaneadas.HorasSociosPlaneadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasSociosPlaneadas  hr/mes</td>
                         totalpresupuestosocio+= hhsociosplaneadas.HorasSociosPlaneadas;
                     }
-                    <td class="border border-black">@Math.Round(totalpresupuestosocio)  hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@Math.Round(totalpresupuestosocio)  hr/mes</td>
                 </tr>
                     <tr>
-                    <td class="border border-black">Avance Real</td>
+                    <td class="border border-black text-left text-xs font-medium">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasSociosEjecutadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasSociosEjecutadas  hr/mes</td>
                         totalejecutadosocio += hhsociosplaneadas.HorasSociosEjecutadas;
                     }
-                    <td class="border border-black" >@totalejecutadosocio hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalejecutadosocio hr/mes</td>
                     </tr>
               
 
@@ -56,38 +56,38 @@
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="text-left text-xs font-medium">Estado</th>
                     @foreach (var meses in ViewBag.Controlhh)
                     {
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@meses.Mes/@meses.Anio</th>
+                        <th class="text-left text-xs font-medium">@meses.Mes/@meses.Anio</th>
                     }
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Totales</th>
+                    <th class="text-left text-xs font-medium">Totales</th>
 
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
 
                 <tr>
-                    <td class="border border-black">Presupuesto</td>
+                    <td class="border border-black text-left text-xs font-medium">Presupuesto</td>
                     @{
                         decimal totalpresupuestostaff = 0;
                         decimal totalejecutadostaff = 0;
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasStaffPlaneadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasStaffPlaneadas  hr/mes</td>
                         totalpresupuestostaff += hhsociosplaneadas.HorasStaffPlaneadas;
                     }
-                    <td class="border border-black" >@Math.Round(@totalpresupuestostaff)  hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@Math.Round(@totalpresupuestostaff)  hr/mes</td>
                 </tr>
                 <tr>
-                    <td class="border border-black">Avance Real</td>
+                    <td class="border border-black text-left text-xs font-medium">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasStaffEjecutadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasStaffEjecutadas  hr/mes</td>
                         totalejecutadostaff += hhsociosplaneadas.HorasStaffEjecutadas;
                     }
-                    <td class="border border-black">@totalejecutadostaff hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalejecutadostaff hr/mes</td>
                 </tr>
 
 
@@ -97,38 +97,38 @@
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="text-left text-xs font-medium">Estado</th>
                     @foreach (var meses in ViewBag.Controlhh)
                     {
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@meses.Mes/@meses.Anio</th>
+                        <th class="text-left text-xs font-medium">@meses.Mes/@meses.Anio</th>
                     }
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Totales</th>
+                    <th class="text-left text-xs font-medium">Totales</th>
 
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
 
                 <tr>
-                    <td class="border border-black">Presupuesto</td>
+                    <td class="border border-black text-left text-xs font-medium">Presupuesto</td>
                     @{
                         decimal totalpresupuestoconsultora = 0;
                         decimal totalejecutadosconsultora = 0;
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorAPlaneadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasConsultorAPlaneadas  hr/mes</td>
                         totalpresupuestoconsultora += hhsociosplaneadas.HorasConsultorAPlaneadas;
                     }
-                    <td class="border border-black" >@Math.Round(@totalpresupuestoconsultora)  hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@Math.Round(@totalpresupuestoconsultora)  hr/mes</td>
                 </tr>
                 <tr>
-                    <td class="border border-black">Avance Real</td>
+                    <td class="border border-black text-left text-xs font-medium">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorAEjecutadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasConsultorAEjecutadas  hr/mes</td>
                         totalejecutadosconsultora += hhsociosplaneadas.HorasConsultorAEjecutadas;
                     }
-                    <td class="border border-black" >@totalejecutadosconsultora hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalejecutadosconsultora hr/mes</td>
                 </tr>
 
 
@@ -138,38 +138,38 @@
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="text-left text-xs font-medium">Estado</th>
                     @foreach (var meses in ViewBag.Controlhh)
                     {
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@meses.Mes/@meses.Anio</th>
+                        <th class="text-left text-xs font-medium">@meses.Mes/@meses.Anio</th>
                     }
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Totales</th>
+                    <th class="text-left text-xs font-medium">Totales</th>
 
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
 
                 <tr>
-                    <td class="border border-black">Presupuesto</td>
+                    <td class="border border-black text-left text-xs font-medium">Presupuesto</td>
                     @{
                         decimal totalpresupuestoconsultorb = 0;
                         decimal totalejecutadosconsultorb = 0;
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorBPlaneadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasConsultorBPlaneadas  hr/mes</td>
                         totalpresupuestoconsultorb += hhsociosplaneadas.HorasConsultorBPlaneadas;
                     }
-                    <td class="border border-black">@Math.Round(@totalpresupuestoconsultorb)  hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@Math.Round(@totalpresupuestoconsultorb)  hr/mes</td>
                 </tr>
                 <tr>
-                    <td class="border border-black">Avance Real</td>
+                    <td class="border border-black text-left text-xs font-medium">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorBEjecutadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasConsultorBEjecutadas  hr/mes</td>
                         totalejecutadosconsultorb += hhsociosplaneadas.HorasConsultorBEjecutadas;
                     }
-                    <td class="border border-black">@totalejecutadosconsultorb hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalejecutadosconsultorb hr/mes</td>
                 </tr>
 
 
@@ -179,38 +179,38 @@
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="text-left text-xs font-medium">Estado</th>
                     @foreach (var meses in ViewBag.Controlhh)
                     {
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@meses.Mes/@meses.Anio</th>
+                        <th class="text-left text-xs font-medium">@meses.Mes/@meses.Anio</th>
                     }
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Totales</th>
+                    <th class="text-left text-xs font-medium">Totales</th>
 
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
 
                 <tr>
-                    <td class="border border-black">Presupuesto</td>
+                    <td class="border border-black text-left text-xs font-medium">Presupuesto</td>
                     @{
                         decimal totalpresupuestoconsultorc = 0;
                         decimal totalejecutadosconsultorc = 0;
                     }
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorCPlaneadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasConsultorCPlaneadas  hr/mes</td>
                         totalpresupuestoconsultorc += hhsociosplaneadas.HorasConsultorCPlaneadas;
                     }
-                    <td class="border border-black" >@Math.Round(@totalpresupuestoconsultorc)  hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@Math.Round(@totalpresupuestoconsultorc)  hr/mes</td>
                 </tr>
                 <tr>
-                    <td class="border border-black">Avance Real</td>
+                    <td class="border border-black text-left text-xs font-medium">Avance Real</td>
                     @foreach (var hhsociosplaneadas in ViewBag.Controlhh)
                     {
-                        <td class="border border-black" >@hhsociosplaneadas.HorasConsultorCEjecutadas  hr/mes</td>
+                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@hhsociosplaneadas.HorasConsultorCEjecutadas  hr/mes</td>
                         totalejecutadosconsultorc += hhsociosplaneadas.HorasConsultorCEjecutadas;
                     }
-                    <td class="border border-black" >@totalejecutadosconsultorc hr/mes</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalejecutadosconsultorc hr/mes</td>
                 </tr>
 
 

@@ -50,7 +50,8 @@ namespace Proyectogestionhoras.Services
                                 Instagram = reader.IsDBNull(reader.GetOrdinal("INSTAGRAM")) ? string.Empty : reader.GetString(reader.GetOrdinal("INSTAGRAM")),
                                 Id_Cliente = reader.GetString(reader.GetOrdinal("ID_CLIENTE")),
                                 Sucursales_Cliente = reader.IsDBNull(reader.GetOrdinal("SUCURSALES_CLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("SUCURSALES_CLIENTE")),
-                                SucursalIds = new List<int>()
+                                TipoCliente = reader.IsDBNull(reader.GetOrdinal("TIPOCLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPOCLIENTE")),
+                                SucursalIds = new List<int>(),
 
                             };
                             clientes.Add(cliente);
@@ -79,7 +80,7 @@ namespace Proyectogestionhoras.Services
             }
 
         }
-        public async Task<bool> RegistrarCliente(string nombre, string? direccion, string? ciudad, string? pais, string? telefono, string? pagweb, string? linkedin, string? instagram,string idcliente,string sucursal)
+        public async Task<bool> RegistrarCliente(string nombre, string? direccion, string? ciudad, string? pais, string? telefono, string? pagweb, string? linkedin, string? instagram,string idcliente,string sucursal, string tipocliente)
         {
             try
             {
@@ -107,6 +108,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
                     command.Parameters.Add(new SqlParameter("@ID_CLIENTE", idcliente));
                     command.Parameters.Add(new SqlParameter("@NOMBRE_SUCURSAL", sucursal));
+                    command.Parameters.Add(new SqlParameter("@TIPOCLIENTE", tipocliente));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
@@ -118,7 +120,7 @@ namespace Proyectogestionhoras.Services
                 return false;
             }
         }
-        public async Task<bool> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idsucursal,string nombresucursal)
+        public async Task<bool> EditarCliente(int id, string nombre, string direccion, string ciudad, string pais, string telefono, string? pagweb, string? linkedin, string? instagram,int idsucursal,string nombresucursal, string tipocliente)
         {
             try
             {
@@ -148,6 +150,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@INSTAGRAM", instagramparameter));
                     command.Parameters.Add(new SqlParameter("@IDSUCURSAL", idsucursal));
                     command.Parameters.Add(new SqlParameter("@NOMBRESUCURSAL", nombresucursal));
+                    command.Parameters.Add(new SqlParameter("@TIPOCLIENTE", tipocliente));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
