@@ -8,7 +8,7 @@
         public string? NumProyecto { get; set; }
         public int IDPROYECTO { get; set; }
         public string? NombreActividad { get; set; }
-        public int HHregistradas { get; set; }
+        public decimal HHregistradas { get; set; }
         public string? Observaciones { get; set; }
         public int Mes { get; set; }
         public int Anio { get; set; }

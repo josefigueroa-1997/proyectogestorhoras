@@ -21,6 +21,7 @@ namespace Proyectogestionhoras.Models
         public string? Linkedin { get; set; }
         public string? Instagram { get; set; }
         public string IdCliente { get; set; } = null!;
+        public string? Tipocliente { get; set; }
 
         public virtual ICollection<Contacto> Contactos { get; set; }
         public virtual ICollection<SucursalCliente> SucursalClientes { get; set; }

@@ -202,7 +202,7 @@
     
     <div style="display: flex; justify-content: flex-end; margin-top: 10px; margin-right: 20px;">
         <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=idusuario})" class="planilla-btn">Mis Planillas</a>
-        @*<a href="@Url.Action("GanttUsuario","Planilla")" class="gantt-btn">Ver mi Gantt</a>*@
+    
     </div>
     <h1 class="form-title">Planilla: @nombre</h1>
     <p class="form-subtitle">Rol:@recurso</p>
@@ -223,7 +223,7 @@
             <tbody id="tabla-body">
                 <tr>
 
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro"   /></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" /></td>
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <select class="proyectosSelect" name="proyecto">
                             <option value="" disabled selected></option>
@@ -238,14 +238,14 @@
 
                         </select>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" step="0.5" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <textarea rows="4" name="observaciones" style="width:100%;">
 
                         </textarea>
-                        
-                        </td>
-                
+
+                    </td>
+
                     <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
 
                 </tr>
@@ -406,7 +406,7 @@
             var fecha = $('.fecharegistro').val();
             var idproyecto = $('.proyectosSelect').val();
             var idactividad = $('.actividadesSelect').val();
-            var horasRegistradas = parseInt($('input[name="hhregistradas"]').val()) || 0;
+            var horasRegistradas = $('input[name="hhregistradas"]').val();
             var observaciones = $('textarea[name="observaciones"]').val();
             var idusuarioproyecto = $('.idusuarioproyecto').val();
             var hhrestantesinput = $('.hhrestantes').val();
@@ -420,7 +420,7 @@
                 return;
             }
 
-           
+
 
             $('#modalMensaje').text("Procesando Su Solicitud...");
             $('#mensajeModal').show();
@@ -438,11 +438,11 @@
                 success: function (response) {
                     if (response.success) {
                         $('#modalMensaje').text(response.message);
-                       
+
 
                         $('#planillausuario input, #planillausuario select').prop('disabled', true);
                         $('.submit-btn').hide();
-                      
+
 
                         let filaRegistrada = $('#tabla-body tr:first-child');
 
@@ -454,28 +454,28 @@
 
 
                         let nuevaFila = `
-                                <tr>
-                                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <select class="proyectosSelect" name="proyecto">
-                                            <option value="" disabled selected>Seleccione un proyecto</option>
-                                        </select>
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">
-                                        <select class="actividadesSelect" name="actividad">
-                                            <option value="" disabled selected>Seleccione una actividad</option>
-                                        </select>
-                                    </td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+                                    <tr>
+                                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <textarea rows="4" name="observaciones" style="width:100%;">
+                                            <select class="proyectosSelect" name="proyecto">
+                                                <option value="" disabled selected>Seleccione un proyecto</option>
+                                            </select>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <select class="actividadesSelect" name="actividad">
+                                                <option value="" disabled selected>Seleccione una actividad</option>
+                                            </select>
+                                        </td>
+                                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+                                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <textarea rows="4" name="observaciones" style="width:100%;">
 
-                            </textarea>
+                                </textarea>
 
-                            </td>
-                                        
-                                    <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
-                                </tr>`;
+                                </td>
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
+                                    </tr>`;
 
                         $('#tabla-body').prepend(nuevaFila);
                         cargarProyectosEnNuevaFila($('#tabla-body tr:first-child'));
@@ -523,33 +523,33 @@
 
         // Paginación
         let currentPage = 1;
-        let rowsPerPage = 10; 
+        let rowsPerPage = 10;
         let totalPages = Math.ceil($('#tabla-body tr').length / rowsPerPage);
 
         function updatePagination() {
-            $('.pagination').empty(); 
+            $('.pagination').empty();
 
             // Crear la nueva paginación
             for (let i = 1; i <= totalPages; i++) {
                 const pageButton = $('<button class="page-btn"></button>').text(i);
                 pageButton.on('click', function () {
-                    currentPage = i; 
-                    displayPage(currentPage); 
+                    currentPage = i;
+                    displayPage(currentPage);
                 });
                 $('.pagination').append(pageButton);
             }
-            displayPage(currentPage); 
+            displayPage(currentPage);
         }
 
         function displayPage(page) {
             const start = (page - 1) * rowsPerPage;
             const end = start + rowsPerPage;
 
-            $('#tabla-body tr').hide(); 
-            $('#tabla-body tr').slice(start, end).show(); 
+            $('#tabla-body tr').hide();
+            $('#tabla-body tr').slice(start, end).show();
         }
 
-        
+
         updatePagination();
     });
 

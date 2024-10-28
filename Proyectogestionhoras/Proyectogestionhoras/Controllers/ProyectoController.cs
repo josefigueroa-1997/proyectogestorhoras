@@ -11,6 +11,7 @@ using Serilog;
 using Microsoft.Extensions.Primitives;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using iText.Commons.Actions.Contexts;
 namespace Proyectogestionhoras.Controllers
 {
     public class ProyectoController : Controller
@@ -741,6 +742,11 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
+                        var ccostoUnegocios = context.CcostoUnegocios.ToList();
+
+                        // Filtrar datos antes de pasarlos a la vista
+                        var filteredData = ccostoUnegocios.Where(x => x.IdCcosto.HasValue && x.IdUnegocio.HasValue).ToList();
+
                         var tipologias = await proyectoService.ObtenerTipoligias();
                         var ccosto = await proyectoService.ObtenerCcosto();
                         var unegocio = await proyectoService.ObtenerUnegocio();
@@ -749,6 +755,7 @@ namespace Proyectogestionhoras.Controllers
                         ViewBag.Tipologias = tipologias;
                         ViewBag.Ccosto = ccosto;
                         ViewBag.Unegocio = unegocio;
+                        ViewBag.CcostoUnegocio = filteredData;
                         return View("ProyectosCategoria");
                     }
                     else
@@ -763,7 +770,43 @@ namespace Proyectogestionhoras.Controllers
             
         }
 
+        [HttpPost]
+        public IActionResult FiltrarProyectos(int? tipologiaId,int? unegocioId)
+        {
+            var proyectosFiltrados = context.Proyectos
+                                            .Include(p => p.IdCcostoUnegocioNavigation)
+                                            .ThenInclude(cu => cu.IdCcostoNavigation)
+                                            .Include(p => p.IdCcostoUnegocioNavigation)
+                                            .ThenInclude(cu => cu.IdUnegocioNavigation)
+                                            .AsQueryable();
 
-        
+            if (tipologiaId.HasValue)
+            {
+                proyectosFiltrados = proyectosFiltrados.Where(p => p.IdTipologia == tipologiaId.Value);
+            }
+
+           
+
+            if (unegocioId.HasValue)
+            {
+                proyectosFiltrados = proyectosFiltrados.Where(p => p.IdCcostoUnegocioNavigation != null &&
+                                                                   p.IdCcostoUnegocioNavigation.IdUnegocio == unegocioId.Value);
+            }
+
+            var proyectosList = proyectosFiltrados
+                .Select(p => new {
+                    p.Id,
+                    p.NumProyecto,
+                    p.Nombre,
+                    NombreCliente = p.IdClienteSucursalNavigation.IdClienteNavigation.Nombre
+                })
+                .ToList();
+
+            return Json(proyectosList);
+        }
+
+
+
+
     }
 }

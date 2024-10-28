@@ -32,10 +32,10 @@ namespace Proyectogestionhoras.Controllers
             var id = HttpContext.Session.GetInt32("id");
             if(id.HasValue)
             {
-                var stockhoras = await usuarioService.ConsultaStockHoras(id.Value);
+              
                 var planilla = await planillaService.ObtenerPlanillaUsuario(id.Value,0);
                 ViewBag.Planilla = planilla;
-                ViewBag.Stock = stockhoras;
+      
                 return View("Planilla");
 
             }
@@ -276,7 +276,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarHoras(int idusuario, int idusuproy, int horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
+        public async Task<IActionResult> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
         {
             bool registroExitoso = false;
             bool yaSeRegistraronHoras = false;

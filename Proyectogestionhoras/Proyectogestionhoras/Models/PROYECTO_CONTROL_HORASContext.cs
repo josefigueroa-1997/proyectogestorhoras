@@ -227,6 +227,11 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("TELEFONO");
+
+                entity.Property(e => e.Tipocliente)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPOCLIENTE");
             });
 
             modelBuilder.Entity<Contacto>(entity =>
@@ -597,7 +602,9 @@ namespace Proyectogestionhoras.Models
                     .IsUnicode(false)
                     .HasColumnName("OBSERVACIONES");
 
-                entity.Property(e => e.RegistroHhProyecto).HasColumnName("REGISTRO_HH_PROYECTO");
+                entity.Property(e => e.RegistroHhProyecto)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("REGISTRO_HH_PROYECTO");
 
                 entity.HasOne(d => d.IdActividadNavigation)
                     .WithMany(p => p.PlanillaUsusarioProyectos)
@@ -1146,15 +1153,25 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("COSTOCONSULTORC");
 
-                entity.Property(e => e.HhConsultora).HasColumnName("HH_CONSULTORA");
+                entity.Property(e => e.HhConsultora)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("HH_CONSULTORA");
 
-                entity.Property(e => e.HhConsultorb).HasColumnName("HH_CONSULTORB");
+                entity.Property(e => e.HhConsultorb)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("HH_CONSULTORB");
 
-                entity.Property(e => e.HhConsultorc).HasColumnName("HH_CONSULTORC");
+                entity.Property(e => e.HhConsultorc)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("HH_CONSULTORC");
 
-                entity.Property(e => e.HhSocios).HasColumnName("HH_SOCIOS");
+                entity.Property(e => e.HhSocios)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("HH_SOCIOS");
 
-                entity.Property(e => e.HhStaff).HasColumnName("HH_STAFF");
+                entity.Property(e => e.HhStaff)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("HH_STAFF");
 
                 entity.Property(e => e.IdProyecto).HasColumnName("ID_PROYECTO");
 

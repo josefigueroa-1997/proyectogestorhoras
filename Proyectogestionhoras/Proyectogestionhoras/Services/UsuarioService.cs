@@ -487,7 +487,7 @@ namespace Proyectogestionhoras.Services
                                 RECURSO = reader.IsDBNull(reader.GetOrdinal("RECURSO")) ? null : reader.GetString(reader.GetOrdinal("RECURSO")),
                                 NOMBREUSUARIO = reader.IsDBNull(reader.GetOrdinal("NOMBRE_USUARIO")) ? null : reader.GetString(reader.GetOrdinal("NOMBRE_USUARIO")),
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("ID_PROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID_PROYECTO")),
-                                HHASIGNADAS = reader.IsDBNull(reader.GetOrdinal("HHASIGNADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHASIGNADAS")),
+                                HHASIGNADAS = reader.IsDBNull(reader.GetOrdinal("HHASIGNADAS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHASIGNADAS")),
                                 TIPOCONSULTOR = reader.IsDBNull(reader.GetOrdinal("TIPO_CONSULTOR")) ? null : reader.GetString(reader.GetOrdinal("TIPO_CONSULTOR")),
 
                             };
@@ -503,7 +503,7 @@ namespace Proyectogestionhoras.Services
             catch (Exception ex)
             {
 
-                Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
+                Debug.WriteLine($"Hubo un error al obtener los hh usuarios:" + ex.Message);
                 return new List<HH_AsignaciónDTO>();
 
             }
@@ -546,7 +546,7 @@ namespace Proyectogestionhoras.Services
             catch (Exception ex)
             {
 
-                Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
+                Debug.WriteLine($"Hubo un error al obtener los stock horas:" + ex.Message);
                 return new List<StockHorasDTO>();
 
             }

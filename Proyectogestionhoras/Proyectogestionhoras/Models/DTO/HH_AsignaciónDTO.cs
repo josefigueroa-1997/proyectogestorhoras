@@ -7,7 +7,7 @@
         public string? RECURSO { get; set; }
         public string? NOMBREUSUARIO { get; set; }
         public int IDPROYECTO { get; set; } 
-        public int HHASIGNADAS { get; set; }
+        public decimal HHASIGNADAS { get; set; }
         public string? TIPOCONSULTOR { get; set; }
     }
 }

@@ -8,11 +8,11 @@ namespace Proyectogestionhoras.Models
         public int Id { get; set; }
         public int IdProyecto { get; set; }
         public int IdUsuario { get; set; }
-        public int? HhStaff { get; set; }
-        public int? HhConsultora { get; set; }
-        public int? HhConsultorb { get; set; }
-        public int? HhConsultorc { get; set; }
-        public int? HhSocios { get; set; }
+        public decimal? HhStaff { get; set; }
+        public decimal? HhConsultora { get; set; }
+        public decimal? HhConsultorb { get; set; }
+        public decimal? HhConsultorc { get; set; }
+        public decimal? HhSocios { get; set; }
         public decimal? CostoUnitarioAsignado { get; set; }
         public int? Idsegmento { get; set; }
         public decimal? Costoconsultora { get; set; }

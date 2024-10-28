@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Globalization;
 namespace Proyectogestionhoras.Services
 {
     public class PlanillaService : IPlanilla
@@ -20,10 +21,16 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public async Task<int> RegistrarHoras(int idusuario, int idusuproy, int horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
+        public async Task<int> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
         {
             try
             {
+                decimal horasAsignadasDecimal;
+                if (!decimal.TryParse(horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
+                {
+                    // Si la conversión falla, puedes decidir qué hacer. Por ejemplo:
+                    return 0; // O cualquier código que indique error
+                }
                 int mesregistro = Fecharegistro.Month;
                 int anioregistro = Fecharegistro.Year;
 
@@ -51,7 +58,7 @@ namespace Proyectogestionhoras.Services
                 {
                     IdPlanilla = planilla.Id,
                     IdUsuProy = idusuproy,
-                    RegistroHhProyecto = horasasignadas,
+                    RegistroHhProyecto = horasAsignadasDecimal,
                     FechaRegistro = Fecharegistro,
                     Observaciones = observaciones,
                     IdActividad = idactividad,
@@ -91,15 +98,15 @@ namespace Proyectogestionhoras.Services
                     }*/
                     if (usuarioproyecto.HhConsultora.HasValue)
                     {
-                        usuarioproyecto.HhConsultora -= horasasignadas;
+                        usuarioproyecto.HhConsultora -= horasAsignadasDecimal;
                     }
                     else if (usuarioproyecto.HhConsultorb.HasValue)
                     {
-                        usuarioproyecto.HhConsultorb -= horasasignadas;
+                        usuarioproyecto.HhConsultorb -= horasAsignadasDecimal;
                     }
                     else if (usuarioproyecto.HhConsultorc.HasValue)
                     {
-                        usuarioproyecto.HhConsultorc -= horasasignadas;
+                        usuarioproyecto.HhConsultorc -= horasAsignadasDecimal;
                     }
 
 
@@ -126,7 +133,7 @@ namespace Proyectogestionhoras.Services
                                     // Resta las horas asignadas a los socios relacionados
                                     foreach (var usuarioRelacionado in usuariosRelacionados)
                                     {
-                                        usuarioRelacionado.HhSocios -= horasasignadas;
+                                        usuarioRelacionado.HhSocios -= horasAsignadasDecimal;
                                     }
                                 }
                                 // Solo para Staff
@@ -141,14 +148,14 @@ namespace Proyectogestionhoras.Services
                                     // Resta las horas asignadas al staff relacionado
                                     foreach (var usuarioRelacionado in usuariosRelacionados)
                                     {
-                                        usuarioRelacionado.HhStaff -= horasasignadas;
+                                        usuarioRelacionado.HhStaff -= horasAsignadasDecimal;
                                     }
                                 }
 
 
                                 decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
                                 Debug.WriteLine(totalpermitidossemana);
-                                if (horasRegistradasSemana + horasasignadas > totalpermitidossemana)
+                                if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
                                 {
                                     Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
                                     return 3;
@@ -217,7 +224,7 @@ namespace Proyectogestionhoras.Services
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDPROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPROYECTO")),
                                 NombreActividad = reader.IsDBNull(reader.GetOrdinal("NOMBREACTIVIDAD")) ? null : reader.GetString(reader.GetOrdinal("NOMBREACTIVIDAD")),
                                
-                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHREGISTRADAS")),
+                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHREGISTRADAS")),
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
                                 Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
                                 Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
@@ -396,7 +403,7 @@ namespace Proyectogestionhoras.Services
             catch (Exception ex)
             {
 
-                Debug.WriteLine($"Hubo un error al obtener los clientes:" + ex.Message);
+                Debug.WriteLine($"Hubo un error al obtener los gantt:" + ex.Message);
                 return new List<HHUSUARIOPROYECTOTOTALDTO>();
 
             }
