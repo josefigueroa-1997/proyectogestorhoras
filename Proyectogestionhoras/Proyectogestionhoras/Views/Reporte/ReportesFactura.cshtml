@@ -64,7 +64,7 @@
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
 
 
 
@@ -372,6 +372,12 @@
             tl: { col: 0, row: 0 }, 
             ext: { width: 150, height: 50 } 
         });
+        ws.mergeCells('F3:H3'); 
+        const titulo = ws.getCell('F3');
+        titulo.value = "Proyección de Facturación"; 
+        titulo.font = { size: 16, bold: true }; 
+        titulo.alignment = { vertical: 'middle', horizontal: 'center' }; 
+
         ws.addRow([]);
         ws.addRow([]);
      
@@ -426,7 +432,7 @@
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "facturas.xlsx";
+        a.download = "Reporte_Facturas.xlsx";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

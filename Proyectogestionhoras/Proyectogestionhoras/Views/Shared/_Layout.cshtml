@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script> 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
 </head>
 <body class="bg-gray-100">
@@ -54,7 +54,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
                 <div class="dropdown-menu" id="userMenu">
                     <p style="text-align:center">Hola,@nombre</p>
-                    <a href="#">Editar perfil</a>
+                   
                     <a href="@Url.Action("Logout","Usuario")">Cerrar sesión</a>
                 </div>
             </div>

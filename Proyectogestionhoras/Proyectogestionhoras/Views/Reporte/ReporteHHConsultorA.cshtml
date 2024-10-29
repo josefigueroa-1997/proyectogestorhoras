@@ -7,7 +7,7 @@
 
 
 <h2 class="text-2xl font-bold mb-4">Horas Consultor A Asignables A Proyectos</h2>
-
+<button id="exportButton" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</button>
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
@@ -237,7 +237,7 @@
             cell4.className = "text-xs"; // Aplica clase CSS
 
             const cell5 = row.insertCell();
-            cell5.innerText = proyecto;
+            cell5.innerText = "'" + proyecto;
             cell5.className = "text-xs";
 
             let totalProyecto = 0;
@@ -324,4 +324,88 @@
     }
 
     generarTabla(datosAgrupados);
+
+    const exportarAExcel = async () => {
+        const wb = new ExcelJS.Workbook();
+        const ws = wb.addWorksheet("ConsultorA");
+        const response = await fetch('/images/unitt.png');
+        const imageBlob = await response.blob();
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const logoImageId = wb.addImage({
+            buffer: arrayBuffer,
+            extension: 'png'
+        });
+
+
+        ws.addImage(logoImageId, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 150, height: 50 }
+        });
+        ws.mergeCells('E3:I3');
+        const titulo = ws.getCell('E3');
+        titulo.value = "Horas Consultor A Asignables A Proyectos";
+        titulo.font = { size: 16, bold: true };
+        titulo.alignment = { vertical: 'middle', horizontal: 'center' };
+
+        ws.addRow([]);
+        ws.addRow([]);
+
+        const tabla = document.getElementById('facturasTable');
+        const filas = tabla.getElementsByTagName('tr');
+
+
+        const encabezados = [];
+        for (let i = 0; i < filas[0].cells.length; i++) {
+            const celda = filas[0].cells[i];
+            const colspan = celda.colSpan || 1;
+            for (let j = 0; j < colspan; j++) {
+                encabezados.push(celda.innerText);
+            }
+        }
+        ws.addRow(encabezados);
+        ws.columns = encabezados.map(() => ({ width: 15 }));
+
+        for (let i = 1; i < filas.length; i++) {
+            const celdas = filas[i].cells;
+            const filaData = [];
+
+            for (let j = 0; j < celdas.length; j++) {
+                const celda = celdas[j];
+                const colspan = celda.colSpan || 1;
+
+
+                const valorTexto = celda.innerText.replace(/\./g, '').replace(/,/g, '.');
+                const valorFloat = parseFloat(valorTexto);
+                filaData.push(isNaN(valorFloat) ? celda.innerText : valorFloat);
+
+
+                for (let k = 1; k < colspan; k++) {
+                    filaData.push('');
+                }
+            }
+
+            const nuevaFila = ws.addRow(filaData);
+            filaData.forEach((cellValue, index) => {
+                if (typeof cellValue === 'number' && !isNaN(cellValue)) {
+                    nuevaFila.getCell(index + 1).numFmt = '#,##0';
+                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'right' };
+                } else {
+                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'left' };
+                }
+            });
+        }
+
+
+        const buffer = await wb.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: "application/octet-stream" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Reporte_HH_ConsultorA.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    };
+    document.getElementById('exportButton').addEventListener('click', exportarAExcel);
 </script>

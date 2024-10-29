@@ -11,7 +11,7 @@
 <div class="container mx-auto p-4">
     <h1 class="text-xl font-bold mb-4 text-center">Actividades Socios</h1>
     <h1 class="text-xl font-bold mb-4 text-center">Mes: @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(@DateTime.Now.Month)</h1>
-
+    <button onclick="exportToExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
     @foreach (var socio in sociosInvertidos) 
     {
         <h3 class="text-xl font-bold mb-4">Socio: @socio.NombreSocio</h3>
@@ -76,3 +76,81 @@
         </div>
     }
 </div>
+<script>
+    
+    const actividades = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SelectMany(m => m.HorasPorActividad.Keys).Distinct().ToList()));
+    const sociosInvertidos = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.OrderByDescending(s => s.NombreSocio).ToList()));
+    const horasAnioActual = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Anioactual));
+    const horasDocemeses = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Docemeses));
+
+   async function exportToExcel() {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Actividades Socios');
+        const response = await fetch('/images/unitt.png');
+        const imageBlob = await response.blob();
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const logoImageId = workbook.addImage({
+            buffer: arrayBuffer,
+            extension: 'png'
+        });
+
+
+        worksheet.addImage(logoImageId, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 150, height: 50 }
+        });
+
+        const fechaActual = new Date();
+        const mesActual = fechaActual.toLocaleString('default', { month: 'long' });
+        worksheet.mergeCells('D3:H3');
+
+        const titulo = worksheet.getCell('D3');
+        titulo.value = "Actividades Socios";
+        titulo.font = { size: 16, bold: true };
+        titulo.alignment = { vertical: 'middle', horizontal: 'center' };
+
+        const subtitulo = worksheet.getCell('F4'); 
+        subtitulo.value = `Mes: ${mesActual}`;
+        subtitulo.font = { size: 14, italic: true }; 
+        subtitulo.alignment = { vertical: 'middle', horizontal: 'center' };
+
+
+
+        worksheet.addRow([]);
+        worksheet.addRow([]);
+        const headers = ['Socio', 'Tiempo', ...actividades, 'Total'];
+        worksheet.addRow(headers);
+        worksheet.columns = headers.map(() => ({ width: 15 }));
+        sociosInvertidos.forEach(socio => {
+            
+            const mesActualHoras = actividades.map(actividad => socio.HorasPorActividad[actividad] || 0);
+            const totalMesActual = mesActualHoras.reduce((a, b) => a + b, 0);
+
+            const acumuladoAñoHoras = actividades.map(actividad => {
+                const socioAnio = horasAnioActual.find(h => h.NombreSocio === socio.NombreSocio);
+                return (socioAnio && socioAnio.HorasPorActividad[actividad]) || 0;
+            });
+            const totalAnio = acumuladoAñoHoras.reduce((a, b) => a + b, 0);
+
+            const últimos12MesesHoras = actividades.map(actividad => {
+                const socio12Meses = horasDocemeses.find(h => h.NombreSocio === socio.NombreSocio);
+                return (socio12Meses && socio12Meses.HorasPorActividad[actividad]) || 0;
+            });
+            const total12Meses = últimos12MesesHoras.reduce((a, b) => a + b, 0);
+
+            
+            worksheet.addRow([socio.NombreSocio, 'Mes Actual', ...mesActualHoras, totalMesActual]);
+            worksheet.addRow([socio.NombreSocio, 'Acumulado Año', ...acumuladoAñoHoras, totalAnio]);
+            worksheet.addRow([socio.NombreSocio, 'Últimos 12 meses', ...últimos12MesesHoras, total12Meses]);
+        });
+
+        
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], { type: 'application/octet-stream' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'actividades_socios.xlsx';
+            link.click();
+        });
+   }
+</script>

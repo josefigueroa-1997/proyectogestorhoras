@@ -7,11 +7,11 @@
     string? nombreproyecto = Context.Session.GetString("nombreproyecto");
 }
 <h2 class="text-2xl font-bold mb-4">Control Avance HH Proyecto:@numproyecto - @nombreproyecto</h2>
-
+<button id="exportBtn" class="bg-green-500 text-white py-2 px-4 rounded">Exportar a Excel</button>
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <h2>Socios</h2>
-        <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
+        <table id="facturasTableSocios" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
                     <th class="text-left text-xs font-medium">Estado</th>
@@ -53,7 +53,7 @@
         </table>
 
         <h2>Staff</h2>
-        <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
+        <table id="facturasTableStaff" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
                     <th class="text-left text-xs font-medium">Estado</th>
@@ -94,7 +94,7 @@
             </tbody>
         </table>
         <h2>Consultor A</h2>
-        <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
+        <table id="facturasTableConsultorA" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
                     <th class="text-left text-xs font-medium">Estado</th>
@@ -135,7 +135,7 @@
             </tbody>
         </table>
         <h2>Consultor B</h2>
-        <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
+        <table id="facturasTableConsultorB" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
                     <th class="text-left text-xs font-medium">Estado</th>
@@ -176,7 +176,7 @@
             </tbody>
         </table>
         <h2>Consultor C</h2>
-        <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
+        <table id="facturasTableConsultorC" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
                 <tr>
                     <th class="text-left text-xs font-medium">Estado</th>
@@ -218,3 +218,80 @@
         </table>
     </div>
 </div>
+<script>
+    document.getElementById('exportBtn').addEventListener('click', exportToExcel);
+
+    async function exportToExcel() {
+      
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Control Avance HH');
+        const response = await fetch('/images/unitt.png');
+        const imageBlob = await response.blob();
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const logoImageId = workbook.addImage({
+            buffer: arrayBuffer,
+            extension: 'png'
+        });
+        worksheet.addImage(logoImageId, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 150, height: 50 }
+        });
+        worksheet.mergeCells('D3:G3');
+        const titulo = worksheet.getCell('D3');
+        titulo.value = "Control HH Avance de Proyecto";
+        titulo.font = { size: 16, bold: true };
+        titulo.alignment = { vertical: 'middle', horizontal: 'center' };
+       
+        const numproyecto = '@Context.Session.GetString("numproyecto")'; 
+        const nombreproyecto = '@Context.Session.GetString("nombreproyecto")'; 
+        worksheet.mergeCells('D4:G4');
+        const subtitulo1 = worksheet.getCell('D4');
+        subtitulo1.value = `Número de Proyecto: ${numproyecto}`;
+        subtitulo1.font = { size: 12, italic: true };
+        subtitulo1.alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.mergeCells('D5:G5');
+        const subtitulo2 = worksheet.getCell('D5');
+        subtitulo2.value = `Nombre de Proyecto: ${nombreproyecto}`;
+        subtitulo2.font = { size: 12, italic: true };
+        subtitulo2.alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.addRow([]);
+        worksheet.addRow([]);
+
+    
+        function addTableData(title, tableId) {
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tr');
+
+  
+            worksheet.addRow([title]);
+            worksheet.addRow([]); 
+
+            rows.forEach(row => {
+                const columns = row.querySelectorAll('th, td');
+                const rowData = Array.from(columns).map(column => column.innerText.replace(' hr/mes', ''));
+                worksheet.addRow(rowData);
+            });
+
+            worksheet.addRow([]); 
+        }
+
+        addTableData('Control Avance HH - Socios', 'facturasTableSocios');
+        addTableData('Control Avance HH - Staff', 'facturasTableStaff');
+        addTableData('Control Avance HH - Consultor A', 'facturasTableConsultorA');
+        addTableData('Control Avance HH - Consultor B', 'facturasTableConsultorB');
+        addTableData('Control Avance HH - Consultor C', 'facturasTableConsultorC');
+
+  
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Control_Avance_HH_Proyecto.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    }
+</script>

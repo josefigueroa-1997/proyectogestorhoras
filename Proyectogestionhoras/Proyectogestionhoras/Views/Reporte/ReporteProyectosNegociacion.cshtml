@@ -249,85 +249,85 @@
 
 
     async function exportarExcel() {
-        
+
         const wb = new ExcelJS.Workbook();
-            const ws = wb.addWorksheet('Proyectos');
-        const response = await fetch('/images/unitt.png'); 
+        const ws = wb.addWorksheet('Proyectos');
+        const response = await fetch('/images/unitt.png');
         const imageBlob = await response.blob();
         const arrayBuffer = await imageBlob.arrayBuffer();
         const logoImageId = wb.addImage({
             buffer: arrayBuffer,
-            extension: 'png' 
+            extension: 'png'
         });
 
-        
+
         ws.addImage(logoImageId, {
-            tl: { col: 0, row: 0 }, 
-            ext: { width: 150, height: 50 } 
+            tl: { col: 0, row: 0 },
+            ext: { width: 150, height: 50 }
         });
-        
-        ws.getRow(1).height = 70; 
 
-       
-        ws.getRow(2).height = 20; 
+        ws.getRow(1).height = 70;
+
+
+        ws.getRow(2).height = 20;
 
         const tabla = document.getElementById('tablaReporte');
 
         const filas = Array.from(tabla.rows);
 
-     
+
         const encabezadosExcel = Array.from(filas[0].cells).map(celda => {
             return { header: celda.innerText.trim(), key: celda.innerText.trim(), width: 15 };
         });
 
-        
+
         ws.columns = encabezadosExcel;
 
-        
+
         for (let i = 1; i < filas.length; i++) {
-            const celdas = Array.from(filas[i].cells); 
+            const celdas = Array.from(filas[i].cells);
             const filaDatos = [];
 
             for (let j = 0; j < celdas.length; j++) {
                 const valor = celdas[j].innerText.trim();
-                const colspan = celdas[j].colSpan || 1; 
+                const colspan = celdas[j].colSpan || 1;
 
-               
+
                 let dato;
-             
-                const monto = parseFloat(valor.replace(/\./g, '').replace(/,/g, '.'));
-                dato = !isNaN(monto) ? monto : valor; 
 
- 
+                const monto = parseFloat(valor.replace(/\./g, '').replace(/,/g, '.'));
+                dato = !isNaN(monto) ? monto : valor;
+
+
 
                 filaDatos.push(dato);
 
-           
+
                 for (let k = 1; k < colspan; k++) {
-                    filaDatos.push(''); 
+                    filaDatos.push('');
                 }
             }
 
-       
+
             while (filaDatos.length < encabezadosExcel.length) {
                 filaDatos.push('');
             }
 
-       
+
             const nuevaFila = ws.addRow(filaDatos);
 
-          
+
             filaDatos.forEach((cellValue, index) => {
                 if (typeof cellValue === 'number' && !isNaN(cellValue)) {
-                    nuevaFila.getCell(index + 1).numFmt = '#,##0'; 
-                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'right' }; 
+                    nuevaFila.getCell(index + 1).numFmt = '#,##0';
+                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'right' };
                 } else {
-                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'left' }; 
+                    nuevaFila.getCell(index + 1).alignment = { horizontal: 'left' };
                 }
             });
         }
 
-     
+
         wb.xlsx.writeBuffer().then(buffer => {
             const blob = new Blob([buffer], { type: 'application/octet-stream' });
             const link = document.createElement('a');
