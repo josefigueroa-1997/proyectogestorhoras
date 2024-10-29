@@ -156,5 +156,12 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.QuarterAnio = quarteranio;
             return View();
         }
+
+        public async Task<IActionResult> ReporteNeogiciacionKey()
+        {
+            var reporte = await _reporteService.ReporteNegociacionKeys();
+            ViewBag.Negociacion = reporte;
+            return View();
+        }
     }
 }

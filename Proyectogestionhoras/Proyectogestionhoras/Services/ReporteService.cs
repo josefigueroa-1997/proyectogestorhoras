@@ -632,5 +632,49 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+        public async Task<List<ReporteNegociacionKeyDTO>> ReporteNegociacionKeys()
+        {
+            try
+            {
+
+
+                var negociacion = new List<ReporteNegociacionKeyDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERNEGOCIACIONKEYIND";
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ReporteNegociacionKeyDTO datos = new()
+                            {
+                                NombreCliente = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
+                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                HHSocios = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
+                                Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
+                                FechaPlazo = reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
+                                
+                            };
+                            negociacion.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return negociacion;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los proyectos en negociacion en key:" + ex.Message);
+                return new List<ReporteNegociacionKeyDTO>();
+
+            }
+        }
     }
 }
