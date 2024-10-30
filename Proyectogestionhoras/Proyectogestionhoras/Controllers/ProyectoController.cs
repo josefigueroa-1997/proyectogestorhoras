@@ -69,7 +69,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
-                        var totalanuales = await context.TotalRecursos.ToListAsync();
+                        var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
                         var unegocios = await proyectoService.ObtenerUnegocio();
                         var ccostos = await proyectoService.ObtenerCcosto();
                         var empresas = await proyectoService.ObtenerEmpresa();
@@ -87,7 +87,7 @@ namespace Proyectogestionhoras.Controllers
                         ViewBag.Ccostos = ccostos;
                         ViewBag.Unegocios = unegocios;
                         ViewBag.Status = status;
-                        ViewBag.Totales = totalanuales;
+                        ViewBag.Totales = totalhhanuales;
                         ViewBag.Costos = costopromedio;
                         return View();
                     }
@@ -266,7 +266,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
-                        var totalanuales = await context.TotalRecursos.ToListAsync();
+                        var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
                         var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         var unegocios = await proyectoService.ObtenerUnegocio();
                         var ccostos = await proyectoService.ObtenerCcosto();
@@ -297,7 +297,7 @@ namespace Proyectogestionhoras.Controllers
                         ViewBag.Status = status;
                         ViewBag.Proyectos = proyecto;
                         ViewBag.Sucursales = sucursales;
-                        ViewBag.Totales = totalanuales;
+                        ViewBag.Totales = totalhhanuales;
                         ViewBag.Costos = costopromedio;
                         ViewBag.HistorialCosto = historialcosto;
                         return View();

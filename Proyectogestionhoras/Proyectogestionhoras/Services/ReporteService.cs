@@ -676,5 +676,180 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task<List<CuotasMensualesDTO>> recuperarcuotasmensuales(int mes,int anio)
+        {
+            try
+            {
+
+
+                var cuotas = new List<CuotasMensualesDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ObtenerCuotasMensuales";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+                    command.Parameters.Add(new SqlParameter("@Ano", anio));
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            CuotasMensualesDTO datos = new()
+                            {
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Ano")) ? 0 : reader.GetInt32(reader.GetOrdinal("Ano")),
+                                Monto = reader.IsDBNull(reader.GetOrdinal("MontoTotal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoTotal")),
+                                
+                            };
+                            cuotas.Add(datos);
+                            
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return cuotas;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las cuotas mensuales:" + ex.Message);
+                return new List<CuotasMensualesDTO>();
+
+            }
+        }
+
+        public async Task<List<CuotasMensualesDTO>> recuperarfacturamensual(int mes, int anio)
+        {
+            try
+            {
+
+
+                var cuotas = new List<CuotasMensualesDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "GetMontosUltimosYProximosTresMeses";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+                    command.Parameters.Add(new SqlParameter("@Anio", anio));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            CuotasMensualesDTO datos = new()
+                            {
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                
+                                Monto = reader.IsDBNull(reader.GetOrdinal("Monto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto")),
+
+                            };
+                            cuotas.Add(datos);
+                            Debug.WriteLine(datos.Mes);
+                            Debug.WriteLine(datos.Monto);
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return cuotas;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las cuotas mensuales:" + ex.Message);
+                return new List<CuotasMensualesDTO>();
+
+            }
+        }
+        public async Task<List<HorasKeyDTO>> recuperarhhposibles(int mes, int anio)
+        {
+            try
+            {
+
+
+                var horas = new List<HorasKeyDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ObtenerHorasPorMeses";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+                    command.Parameters.Add(new SqlParameter("@Anio", anio));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            HorasKeyDTO datos = new()
+                            {
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                                Horas = reader.IsDBNull(reader.GetOrdinal("Horas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Horas")),
+
+                            };
+                            horas.Add(datos);
+            
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return horas;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las horas mensuales:" + ex.Message);
+                return new List<HorasKeyDTO>();
+
+            }
+        }
+        public async Task<List<HorasKeyDTO>> recuperarhhproyectos(int mes, int anio)
+        {
+            try
+            {
+
+
+                var horas = new List<HorasKeyDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ObtenerHorasSocioPorMes";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+                    command.Parameters.Add(new SqlParameter("@Anio", anio));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            HorasKeyDTO datos = new()
+                            {
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                          
+                                Horas = reader.IsDBNull(reader.GetOrdinal("TotalHoras")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TotalHoras")),
+
+                            };
+                            horas.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return horas;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las horas mensuales:" + ex.Message);
+                return new List<HorasKeyDTO>();
+
+            }
+        }
     }
 }

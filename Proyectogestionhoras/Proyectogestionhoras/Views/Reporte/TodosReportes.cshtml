@@ -8,6 +8,26 @@
 <div class="dashboard-container">
     <div class="dashboard-section projects-section">
         <h2 class="section-header">Reportes del Proyecto</h2>
+        <h2 class="section-header">Key Indicators</h2>
+        <div class="section-content">
+            <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
+                <div class="card">
+                    <h3>Facturación</h3>
+                </div>
+
+            </a>
+            <a href="@Url.Action("ReporteNeogiciacionKey","Reporte")">
+                <div class="card">
+                    <h3>Proyectos en Negociación</h3>
+                </div>
+            </a>
+            <a href="@Url.Action("ReportehorasSociosProyectos","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
+                <div class="card">
+                    <h3>HH-Socios a Proyectos</h3>
+                </div>
+            </a>
+     
+        </div>
         <h2 class="section-header">Facturaciones</h2>
         <div class="section-content">
             <a href="@Url.Action("ReportesFactura","Reporte")">
@@ -125,15 +145,7 @@
 
 
         </div>
-        <h2 class="section-header">Key Indicators</h2>
-        <div class="section-content">
-            <a href="@Url.Action("ReporteNeogiciacionKey","Reporte")">
-                <div class="card">
-                    <h3>Proyectos en Negociación</h3>
-                </div>
-
-            </a>
-        </div>
+       
     </div>
 </div>
 

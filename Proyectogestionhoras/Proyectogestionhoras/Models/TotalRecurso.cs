@@ -9,5 +9,6 @@ namespace Proyectogestionhoras.Models
         public string TipoRecurso { get; set; } = null!;
         public decimal TotalHhAnuales { get; set; }
         public int? Anio { get; set; }
+        public decimal? Totalinmodificable { get; set; }
     }
 }

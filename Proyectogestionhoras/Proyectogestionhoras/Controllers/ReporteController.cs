@@ -163,5 +163,22 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Negociacion = reporte;
             return View();
         }
+
+        public async Task<IActionResult> recuperarcuotas(int mes,int anio)
+        {
+            var cuotas = await _reporteService.recuperarcuotasmensuales(mes, anio);
+            var montofactura = await _reporteService.recuperarfacturamensual(mes, anio);
+            ViewBag.Cuotas = cuotas;
+            ViewBag.Montofactura = montofactura;
+            return View();
+        }
+        public async Task<IActionResult> ReportehorasSociosProyectos(int mes,int anio)
+        {
+            var horasmaximas = await _reporteService.recuperarhhposibles(mes, anio);
+            var horasproyectos = await _reporteService.recuperarhhproyectos(mes, anio);
+            ViewBag.HorasProyectos = horasproyectos;
+            ViewBag.HorasMaximas = horasmaximas;
+            return View("recuperarhoras");
+        }
     }
 }

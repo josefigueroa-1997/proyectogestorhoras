@@ -1025,6 +1025,10 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.TotalHhAnuales)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("TOTAL_HH_ANUALES");
+
+                entity.Property(e => e.Totalinmodificable)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("TOTALINMODIFICABLE");
             });
 
             modelBuilder.Entity<Totalfacturaejecucion>(entity =>
