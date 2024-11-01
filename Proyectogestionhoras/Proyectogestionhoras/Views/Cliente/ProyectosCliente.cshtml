@@ -240,19 +240,24 @@
     }
 
     .card.negotiation {
-        background-color: #ffe0b3; /* Color suave para negociación */
+        background-color: #ffe0b3; 
     }
 
     .card.execution {
-        background-color: #cceeff; /* Color suave para ejecución */
+        background-color: #cceeff; 
+    }
+
+    .card.bidding {
+        background-color: #fff3cd; 
+        border: 1px solid #ffeeba; 
     }
 
     .card.finished {
-        background-color: #cceac6; /* Color suave para proyectos terminados */
+        background-color: #cceac6; 
     }
 
     .card.rejected {
-        background-color: #ffcccc; /* Color suave para proyectos rechazados */
+        background-color: #ffcccc; 
     }
 </style>
 <div class="dashboard-container">
@@ -405,7 +410,7 @@
                 if (proyecto.Tipo_Status == "A Licitar")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new {id = proyecto.Id})">
-                    <div class="card execution">
+                        <div class="card bidding">
                         <h3>@proyecto.numproyecto</h3>
                             <p>@proyecto.NOMBREDEPARTAMENTO</p>
                     </div>
@@ -425,7 +430,7 @@
                 if (proyecto.Tipo_Status == "En Ejecución")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new {id = proyecto.Id})">
-                        <div class="card finished">
+                        <div class="card execution">
                             <h3>@proyecto.numproyecto</h3>
                             <p>@proyecto.NOMBREDEPARTAMENTO</p>
                         </div>
@@ -434,6 +439,23 @@
             }
           
             
+        </div>
+        <div class="section-subheader">
+            Proyectos Terminados
+        </div>
+        <div class="section-content">
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                if (proyecto.Tipo_Status == "Terminado")
+                {
+                    <a href="@Url.Action("ObtenerProyectos","Proyecto",new {id = proyecto.Id})">
+                        <div class="card finished">
+                            <h3>@proyecto.numproyecto</h3>
+                            <p>@proyecto.NOMBREDEPARTAMENTO</p>
+                        </div>
+                    </a>
+                }
+            }
         </div>
 
         <!-- Proyectos Rechazados -->

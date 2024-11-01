@@ -15,6 +15,7 @@
                 <table class="min-w-full divide-y divide-gray-200" id="tablaReporte">
                     <thead class="bg-blue-200">
                         <tr>
+                            <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Editar</th>
                             <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Año</th>
                             <th class="text-right text-sm font-semibold text-gray-700 px-4 py-2">Q1</th>
                             <th class="text-right text-sm font-semibold text-gray-700 px-4 py-2">Q2</th>
@@ -27,6 +28,12 @@
                         @foreach (var factura in ViewBag.DatosFacturas)
                         {
                             <tr data-anio="@factura.Anio" data-q1="@factura.q1" data-q2="@factura.q2" data-q3="@factura.q3" data-q4="@factura.q4" data-totalq="@factura.totalq">
+                                <td class="text-left text-sm text-gray-700 px-4 py-2">
+                                    <a href="@Url.Action("EditarMetaFactura","Metas",new{ id= factura.Id })"
+                                       class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">
+                                        Editar
+                                    </a>
+                                </td>
                                 <td class="text-left text-sm text-gray-700 px-4 py-2">@factura.Anio</td>
                                 <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q1)</td>
                                 <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q2)</td>
@@ -46,7 +53,8 @@
             <form action="@Url.Action("RegistrarMetaFacturas", "Metas")" method="post" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="anio" class="block text-sm font-semibold text-gray-700">Año</label>
-                    <input type="number" name="anio" id="año" required class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <input type="number" name="anio" id="aniofactura" required class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <span id="anioError" class="text-red-500 text-sm hidden">Ya existe una meta facturación para este año.</span>
                 </div>
 
                 <div class="mb-4">
@@ -75,7 +83,7 @@
                 </div>
 
                 <div>
-                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow focus:ring focus:ring-blue-300 focus:outline-none">Guardar</button>
+                    <button type="submit" id="submitButton" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow focus:ring focus:ring-blue-300 focus:outline-none">Guardar</button>
                 </div>
             </form>
         </div>
@@ -119,58 +127,59 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="anio">
                         Año:
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="anio" name="aniotipologia" type="number">
+                    <input class="shadow  appearance-none border rounded w-full py-2 px-3 text-gray-700 text-right leading-tight focus:outline-none focus:ring" id="anio" name="aniotipologia" type="number" required>
+                    <span id="aniotError" class="text-red-500 text-sm hidden">Ya existe una meta tipología para este año.</span>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="t1">
                         T1-L:
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t1" type="number" name="t1">
+                    <input class="shadow appearance-none border rounded w-full py-2  px-3 text-right text-gray-700 leading-tight focus:outline-none focus:ring" id="t1" type="number" name="t1" required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="t2">
                         T2-M:
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t2" type="number" name="t2">
+                    <input class="text-right shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t2" type="number" name="t2" required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="t3">
                         T3-S:
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t3" type="number" name="t3">
+                    <input class="text-right shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t3" type="number" name="t3" required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="t4">
                         T4-XS:
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t4" type="number" name="t4">
+                    <input class="text-right shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="t4" type="number" name="t4" required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="totals">
                         Total:
                     </label>
-                    <input readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="totals" type="number" name="totals" value="0">
+                    <input readonly class="text-right shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="totals" type="number" name="totals" value="0">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="totalproyecto">
                         Total/Proyecto:
                     </label>
-                    <input readonly class="format-number shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="totalproyecto" type="text" name="totalproyecto">
+                    <input readonly class="text-right format-number shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-right leading-tight focus:outline-none focus:ring" id="totalproyecto" type="text" name="totalproyecto">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="duracion">
                         Duración Media/Mensual:
                     </label>
-                    <input readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="duracion" type="number" name="duracion">
+                    <input readonly class="text-right shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="duracion" type="number" name="duracion">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="montomensual">
                         Monto Mensual:
                     </label>
-                    <input readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="montomensual" type="text" name="montomensual">
+                    <input readonly class="text-right shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="montomensual" type="text" name="montomensual">
                 </div>
                 <div class="col-span-1 md:col-span-3">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring w-full md:w-auto" type="submit">
+                    <button id="guardartipolgia" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring w-full md:w-auto" type="submit">
                         Guardar
                     </button>
                 </div>
@@ -184,6 +193,7 @@
             <table class="min-w-full divide-y divide-gray-200" id="tablaReporte">
                 <thead class="bg-blue-200">
                     <tr>
+                        <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Editar</th>
                         <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">Año</th>
                         <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T1-K</th>
                         <th class="text-left text-sm font-semibold text-gray-700 px-4 py-2">T2-M</th>
@@ -199,6 +209,12 @@
                     @foreach (var t in ViewBag.Tipologias)
                     {
                         <tr>
+                            <td class="text-left text-sm text-gray-700 px-4 py-2">
+                                <a href="@Url.Action("EditarMetaTipologia","Metas",new{ id= t.Id })"
+                                   class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">
+                                    Editar
+                                </a>
+                            </td>
                             <td class="text-left text-sm text-gray-700 px-4 py-2">@t.Anio</td>
                             <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T1</td>
                             <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T2</td>
@@ -289,25 +305,51 @@
 
 
 <script>
-    
+    const anioInput = document.getElementById('anio');
     const t1Input = document.querySelector("#t1");
     const t2Input = document.querySelector("#t2");
     const t3Input = document.querySelector("#t3");
     const t4Input = document.querySelector("#t4");
-    const anioInput = document.querySelector("#anio");
-
- 
     const totalProyectoInput = document.querySelector("#totals");
-
- 
     const totalPorProyectoInput = document.querySelector("#totalproyecto");
-
-
     const duracionmediaInput = document.getElementById('duracion');
-
-    
     const montoMensualInput = document.getElementById('montomensual');
+    const submitButton = document.getElementById('guardartipolgia');
+    const anioError = document.getElementById('aniotError');
 
+    function validarAnio() {
+        const anio = anioInput.value;
+
+        if (anio) {
+            fetch(`/Metas/Validaddisptipo?anio=${anio}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data > 0) { // Si el año ya existe
+                        anioError.classList.remove('hidden'); // Muestra el mensaje de error
+                        submitButton.disabled = true;
+                        t1Input.value = "";
+                        t2Input.value = "";
+                        t3Input.value = "";
+                        t4Input.value = "";
+                    } else {
+                        anioError.classList.add('hidden'); // Oculta el mensaje de error
+                        verificarBotonHabilitado(); // Verificar si el botón debe estar habilitado
+                    }
+                })
+                .catch(error => console.error('Error en la validación:', error));
+        }
+    }
+
+    function verificarBotonHabilitado() {
+        const t1 = parseFloat(t1Input.value) || 0;
+        const t2 = parseFloat(t2Input.value) || 0;
+        const t3 = parseFloat(t3Input.value) || 0;
+        const t4 = parseFloat(t4Input.value) || 0;
+        const totalProyecto = parseFloat(totalProyectoInput.value) || 0;
+
+        // Habilitar el botón solo si hay montos ingresados y no hay errores
+        submitButton.disabled = (t1 === 0 && t2 === 0 && t3 === 0 && t4 === 0) || (totalProyecto <= 0);
+    }
 
     function calcularSumaTotales() {
         const t1 = parseFloat(t1Input.value) || 0;
@@ -320,12 +362,9 @@
 
         // Calcular duración media
         calcularDuracionMedia(t1, t2, t3, t4);
-
-    
         calcularTotalProyecto();
     }
 
-   
     function calcularDuracionMedia(t1, t2, t3, t4) {
         const totalHorasTipologias = t1 * 8 + t2 * 6 + t3 * 3 + t4;
         const totalTipologias = t1 + t2 + t3 + t4;
@@ -370,26 +409,55 @@
                 // Calcular monto mensual
                 const duracion = parseFloat(duracionmediaInput.value) || 1;
                 const montoMensual = Math.round(totalPorProyecto / duracion / 1000000) * 1000000;
-                montoMensualInput.value = montoMensual.toFixed(2); // Mostrar monto mensual
+                totalPorProyectoInput.value = totalPorProyecto.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                montoMensualInput.value = montoMensual.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                submitButton.disabled = false; // Habilitar el botón si no hay errores
             } else {
                 totalPorProyectoInput.value = "";
                 montoMensualInput.value = "";
                 alert("El total del proyecto no puede ser cero o vacío.");
+                submitButton.disabled = true; // Deshabilitar el botón si hay un error
             }
         } else {
             totalPorProyectoInput.value = "";
             montoMensualInput.value = "";
-            alert("No se encontraron datos para el año ingresado.");
+            alert("No se encontraron datos para el año ingresado, ya que no hay una meta factura ingresada");
+            anioInput.value = "";
+            submitButton.disabled = true; // Deshabilitar el botón si no hay fila de factura
         }
     }
 
-    
-    t1Input.addEventListener("input", calcularSumaTotales);
-    t2Input.addEventListener("input", calcularSumaTotales);
-    t3Input.addEventListener("input", calcularSumaTotales);
-    t4Input.addEventListener("input", calcularSumaTotales);
-
-
-    anioInput.addEventListener("change", calcularTotalProyecto);
-
+    // Escuchar eventos
+    t1Input.addEventListener("input", () => { calcularSumaTotales(); verificarBotonHabilitado(); });
+    t2Input.addEventListener("input", () => { calcularSumaTotales(); verificarBotonHabilitado(); });
+    t3Input.addEventListener("input", () => { calcularSumaTotales(); verificarBotonHabilitado(); });
+    t4Input.addEventListener("input", () => { calcularSumaTotales(); verificarBotonHabilitado(); });
+    anioInput.addEventListener("change", () => { validarAnio(); calcularTotalProyecto(); });
 </script>
+
+
+
+
+<script>
+    document.getElementById('aniofactura').addEventListener('change', function () {
+        const anio = this.value;
+        const anioError = document.getElementById('anioError');
+        const submitButton = document.getElementById('submitButton');
+
+        if (anio) {
+            fetch(`/Metas/ValidaddispFactura?anio=${anio}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data > 0) { // Si el año ya existe
+                        anioError.classList.remove('hidden'); // Muestra el mensaje de error
+                        submitButton.disabled = true; // Deshabilita el botón de envío
+                    } else {
+                        anioError.classList.add('hidden'); // Oculta el mensaje de error
+                        submitButton.disabled = false; // Habilita el botón de envío
+                    }
+                })
+                .catch(error => console.error('Error en la validación:', error));
+        }
+    });
+</script>
+

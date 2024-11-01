@@ -4,10 +4,36 @@
 
 }
 <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+<style>
+  
+    .dashboard-container {
+        padding: 0; 
+        background-color: transparent; 
+    }
 
-<div class="dashboard-container">
-    <div class="dashboard-section projects-section">
-        <h2 class="section-header">Reportes del Proyecto</h2>
+
+    .section-content {
+        background-color: #ffffff; 
+        padding: 20px; 
+        margin-bottom: 20px; 
+        border-radius: 10px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+
+
+    .card {
+        padding: 10px;
+        background-color: #e9ecef; 
+        text-align: center;
+        transition: background-color 0.3s ease;
+        height: 100px;
+        justify-content: center;
+    }
+
+      
+</style>
+
+    
         <h2 class="section-header">Key Indicators</h2>
         <div class="section-content">
             <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
@@ -146,8 +172,7 @@
 
         </div>
        
-    </div>
-</div>
+    
 
 
 

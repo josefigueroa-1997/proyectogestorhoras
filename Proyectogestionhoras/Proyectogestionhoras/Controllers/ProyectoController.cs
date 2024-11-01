@@ -475,7 +475,27 @@ namespace Proyectogestionhoras.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> TerminarProyecto(int id)
+        {
+        
+            var proyecto = await context.Proyectos.FindAsync(id);
 
+        
+            if (proyecto == null)
+            {
+                return NotFound(); 
+            }
+
+       
+            proyecto.StatusProyecto = 4;
+
+       
+            await context.SaveChangesAsync();
+
+
+            return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = proyecto.Id });
+        }
         public async Task<IActionResult> ObtenerhistorialNegociaciones(int? idproyecto,int? idnegociacion)
         {
             var iduser = HttpContext.Session.GetInt32("id");

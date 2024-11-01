@@ -48,7 +48,38 @@ namespace Proyectogestionhoras.Services
                 return false;
             }
         }
-        public async Task<List<MetaFacturacionqxDTO>> GetMetaFacturacionqx()
+
+        public async Task<bool> ActualizarMetaFactura(int id, int anio, decimal q1, decimal q2, decimal q3, decimal q4)
+        {
+            try
+            {
+
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ACTUALIZARMETAFACTURA";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ID", id));
+                    command.Parameters.Add(new SqlParameter("@ANIO", anio));
+                    command.Parameters.Add(new SqlParameter("@MONTOQ1", q1));
+                    command.Parameters.Add(new SqlParameter("@MONTOQ2", q2));
+                    command.Parameters.Add(new SqlParameter("@MONTOQ3", q3));
+                    command.Parameters.Add(new SqlParameter("@MONTOQ4", q4));
+
+                    await command.ExecuteNonQueryAsync();
+                    await conexion.CloseDatabaseConnectionAsync();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al actualizar la meta de facturación" + ex);
+                return false;
+            }
+        }
+
+        public async Task<List<MetaFacturacionqxDTO>> GetMetaFacturacionqx(int id)
         {
             try
             {
@@ -58,6 +89,7 @@ namespace Proyectogestionhoras.Services
                 using (DbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "OBTENERMETAFACTURACIONQX";
+                    command.Parameters.Add(new SqlParameter("@ID", id));
                     command.CommandType = CommandType.StoredProcedure;
                
                     using (var reader = await command.ExecuteReaderAsync())
@@ -66,6 +98,7 @@ namespace Proyectogestionhoras.Services
                         {
                             MetaFacturacionqxDTO datos = new()
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 Anio = reader.GetInt32(reader.GetOrdinal("ANIO")),
                                 q1 = reader.GetDecimal(reader.GetOrdinal("MONTO_Q1")),
                                 q2 = reader.GetDecimal(reader.GetOrdinal("MONTO_Q2")),
@@ -75,7 +108,7 @@ namespace Proyectogestionhoras.Services
                                
                             };
                             facturas.Add(datos);
-
+                            
                         }
                     }
 
@@ -123,7 +156,7 @@ namespace Proyectogestionhoras.Services
                 return false;
             }
         }
-        public async Task<List<MetasTipologiaDTO>> GetMetasTipologias()
+        public async Task<List<MetasTipologiaDTO>> GetMetasTipologias(int id)
         {
             try
             {
@@ -133,6 +166,7 @@ namespace Proyectogestionhoras.Services
                 using (DbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "OBTENERMETASTIPOLOGIAS";
+                    command.Parameters.Add(new SqlParameter("@ID", id));
                     command.CommandType = CommandType.StoredProcedure;
 
                     using (var reader = await command.ExecuteReaderAsync())
@@ -141,6 +175,7 @@ namespace Proyectogestionhoras.Services
                         {
                             MetasTipologiaDTO datos = new()
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("IdMeta")),
                                 Anio = reader.GetInt32(reader.GetOrdinal("ANIO")),
                                 T1 = reader.GetInt32(reader.GetOrdinal("T1")),
                                 T2 = reader.GetInt32(reader.GetOrdinal("T2")),
@@ -150,6 +185,7 @@ namespace Proyectogestionhoras.Services
                                 TotalPorProyecto = reader.GetDecimal(reader.GetOrdinal("TOTALPORPROYECTO")),
                                 DuracionMedia = reader.GetInt32(reader.GetOrdinal("DURACIONMEDIA")),
                                 MontoMensual = reader.GetDecimal(reader.GetOrdinal("TOTALMENSUALES")),
+                                totalfactura = reader.GetDecimal(reader.GetOrdinal("TOTALFACTURA")),
 
                             };
                             tipologias.Add(datos);
@@ -167,6 +203,36 @@ namespace Proyectogestionhoras.Services
                 Debug.WriteLine($"Hubo un error al obtener las metas de la tipologias:" + ex.Message);
                 return new List<MetasTipologiaDTO>();
 
+            }
+        }
+        public async Task<bool> ActualizarMetaTipologia(int id, int anio, int t1, int t2, int t3, int t4)
+        {
+            try
+            {
+
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ACTUALIZARMETATIPOLOGIA";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ID", id));
+                    command.Parameters.Add(new SqlParameter("@ANIO", anio));
+                    command.Parameters.Add(new SqlParameter("@T1", t1));
+                    command.Parameters.Add(new SqlParameter("@T2", t2));
+                    command.Parameters.Add(new SqlParameter("@T3", t3));
+                    command.Parameters.Add(new SqlParameter("@T4", t4));
+                    
+
+                    await command.ExecuteNonQueryAsync();
+                    await conexion.CloseDatabaseConnectionAsync();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al registrar la meta de facturación" + ex);
+                return false;
             }
         }
         public async Task<List<DatosMetasDTO>> GetDatosMeta(int anio)

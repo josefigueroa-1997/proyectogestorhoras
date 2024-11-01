@@ -81,7 +81,7 @@
         <div class="section-content" id="terminadosProjects">
             @foreach (var proyecto in ViewBag.Proyectos)
             {
-                @if (proyecto.Tipo_Status == "Terminados")
+                @if (proyecto.Tipo_Status == "Terminado")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
                         <div class="card">

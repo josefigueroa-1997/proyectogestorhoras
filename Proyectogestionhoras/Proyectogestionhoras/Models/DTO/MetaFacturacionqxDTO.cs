@@ -2,6 +2,7 @@
 {
     public class MetaFacturacionqxDTO
     {
+        public int Id { get; set; } 
         public int Anio { get;set; }
         public decimal q1 { get;set; }
         public decimal q2 { get;set; }

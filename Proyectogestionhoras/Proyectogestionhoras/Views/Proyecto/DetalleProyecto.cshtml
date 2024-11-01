@@ -54,7 +54,8 @@
         font-weight: bold;
     }
 
-    .update-btn, .nuevo-btn {
+   
+    .update-btn, .nuevo-btn,.finish-btn {
         padding: 10px 30px;
         font-size: 1rem;
         font-weight: 600;
@@ -75,6 +76,14 @@
             background-color: #e39450;
         }
 
+    .finish-btn{
+        color: #fff;
+        background-color: #82e0aa;
+    }
+
+        .finish-btn:hover {
+            background-color: #82e0aa;
+        }
     .nuevo-btn {
         color: #fff;
         background-color: #007bff;
@@ -90,14 +99,20 @@
         @foreach (var proyecto in ViewBag.Proyectos)
         {
             <p class="form-subtitle" style="color:black;">Detalles del Proyecto</p>
-            @if (proyecto.Tipo_Status != "Rechazado" || proyecto.Tipo_Status != "Terminado")
-            {
-                <a href="@Url.Action("EditarProyecto","Proyecto",new {id=proyecto.Id,idcliente=proyecto.IDCLIENTE})" class="update-btn">Editar Proyecto</a>
-            }
-
-
-            <a href="@Url.Action("ObtenerhistorialNegociaciones", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Ver Historial de Negociación</a>
-            
+            <div style="display: flex; gap: 10px;">
+                <!-- Contenedor de botones con flex -->
+                @if (proyecto.Tipo_Status != "Rechazado" && proyecto.Tipo_Status != "Terminado")
+                {
+                    <a href="@Url.Action("EditarProyecto", "Proyecto", new { id = proyecto.Id, idcliente = proyecto.IDCLIENTE })" class="update-btn">Editar Proyecto</a>
+                }
+                @if (proyecto.Tipo_Status == "En Ejecución")
+                {
+                    <form method="post" action="@Url.Action("TerminarProyecto", "Proyecto", new { id = proyecto.Id })" onsubmit="return confirmTermination();">
+                        <button id="finish" class="finish-btn" type="submit">Terminar Proyecto</button>
+                    </form>
+                }
+                <a href="@Url.Action("ObtenerhistorialNegociaciones", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Ver Historial de Negociación</a>
+            </div>
             <div class="tables-wrapper">
                 
                 <div class="table-container">
@@ -605,6 +620,8 @@
 </div>
 
 <script>
-
-   
+    function confirmTermination() {
+        // Muestra la alerta de confirmación
+        return confirm("¿Está seguro de que quiere terminar el proyecto? Ya no podrá realizar modificaciones.");
+    }
 </script>
