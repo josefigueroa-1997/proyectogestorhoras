@@ -4,6 +4,8 @@ using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
 using System.Reflection.Metadata.Ecma335;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyectogestionhoras.Controllers
 {
@@ -19,7 +21,26 @@ namespace Proyectogestionhoras.Controllers
 
         public IActionResult TodosReportes()
         {
-            return View();
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+            
         }
         public async Task<IActionResult> ReportesFactura()
         {

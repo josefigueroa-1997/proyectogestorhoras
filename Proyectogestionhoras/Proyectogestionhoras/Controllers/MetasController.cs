@@ -20,27 +20,103 @@ namespace Proyectogestionhoras.Controllers
 
         public IActionResult MetasFunciones()
         {
-            return View();
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+   
         }
         public async Task<IActionResult> ParametrosMetas()
         {
-            var datos = await _metaService.GetMetaFacturacionqx(0);
-            var tipologias = await _metaService.GetMetasTipologias(0);
-            ViewBag.DatosFacturas = datos;
-            ViewBag.Tipologias = tipologias;
-            return View();
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var datos = await _metaService.GetMetaFacturacionqx(0);
+                        var tipologias = await _metaService.GetMetasTipologias(0);
+                        ViewBag.DatosFacturas = datos;
+                        ViewBag.Tipologias = tipologias;
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+            
         }
         public async Task<IActionResult> EditarMetaFactura(int id)
         {
-            var datosmetafactura = await _metaService.GetMetaFacturacionqx(id);
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var datosmetafactura = await _metaService.GetMetaFacturacionqx(id);
+
+                        return View(datosmetafactura);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
             
-            return View(datosmetafactura);
         }
 
         public async Task<IActionResult> EditarMetaTipologia(int id)
         {
-            var datosmetatipologia = await _metaService.GetMetasTipologias(id);
-            return View(datosmetatipologia);
+            var iduser = HttpContext.Session.GetInt32("id");
+            if (iduser.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1)
+                    {
+                        var datosmetatipologia = await _metaService.GetMetasTipologias(id);
+                        return View(datosmetatipologia);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Usuario");
+                    }
+                }
+            }
+
+
+            return RedirectToAction("Login", "Usuario");
+            
         }
 
         [HttpPost]

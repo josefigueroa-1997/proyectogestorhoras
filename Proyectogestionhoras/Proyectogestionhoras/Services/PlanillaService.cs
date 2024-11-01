@@ -272,7 +272,7 @@ namespace Proyectogestionhoras.Services
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDPROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPROYECTO")),
                                 NombreActividad = reader.IsDBNull(reader.GetOrdinal("NOMBREACTIVIDAD")) ? null : reader.GetString(reader.GetOrdinal("NOMBREACTIVIDAD")),
 
-                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HHREGISTRADAS")),
+                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHREGISTRADAS")),
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
                                 Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
                                 Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
@@ -292,7 +292,7 @@ namespace Proyectogestionhoras.Services
             catch (Exception ex)
             {
 
-                Debug.WriteLine($"Hubo un error al obtener la planilla del usuario:" + ex.Message);
+                Debug.WriteLine($"Hubo un error al obtener la planilla excel del usuario:" + ex.Message);
                 return new List<PlanillaUsuarioDTO>();
 
             }
