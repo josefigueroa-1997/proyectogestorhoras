@@ -649,7 +649,6 @@ namespace Proyectogestionhoras.Controllers
                                        
                                     }).ToListAsync();
 
-            // Retorna el resultado como JSON
             return Ok(resultados);
         }
 
@@ -752,7 +751,7 @@ namespace Proyectogestionhoras.Controllers
         }
         
 
-        public async Task<IActionResult> GetProyectosCategoria(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
+        public async Task<IActionResult> GetProyectosCategoria()
         {
             var iduser = HttpContext.Session.GetInt32("id");
             if (iduser.HasValue)
@@ -762,21 +761,23 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
-                        var ccostoUnegocios = context.CcostoUnegocios.ToList();
-
-                        // Filtrar datos antes de pasarlos a la vista
-                        var filteredData = ccostoUnegocios.Where(x => x.IdCcosto.HasValue && x.IdUnegocio.HasValue).ToList();
-
+                     
                         var tipologias = await proyectoService.ObtenerTipoligias();
                         var ccosto = await proyectoService.ObtenerCcosto();
                         var unegocio = await proyectoService.ObtenerUnegocio();
-                        var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-                        ViewBag.Proyectos = proyectos;
-                        ViewBag.Tipologias = tipologias;
-                        ViewBag.Ccosto = ccosto;
-                        ViewBag.Unegocio = unegocio;
-                        ViewBag.CcostoUnegocio = filteredData;
-                        return View("ProyectosCategoria");
+                        
+                        var ccostoUnegocios = await context.CcostoUnegocios
+       .Include(c => c.IdCcostoNavigation) 
+       .Include(c => c.IdUnegocioNavigation) 
+       .ToListAsync();
+                        var viewModel = new ProyectosCategoriaViewModel
+                        {
+                            Tipologias = tipologias,
+                            Ccosto = ccosto,
+                            Unegocio = unegocio,
+                            CcostoUnegocios = ccostoUnegocios
+                        };
+                        return View("ProyectosCategoria", viewModel);
                     }
                     else
                     {
@@ -791,7 +792,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public IActionResult FiltrarProyectos(int? tipologiaId,int? unegocioId)
+        public IActionResult FiltrarProyectos(int? tipologiaId, int? ccostoUnegocioId, int? unegocioId)
         {
             var proyectosFiltrados = context.Proyectos
                                             .Include(p => p.IdCcostoUnegocioNavigation)
@@ -805,14 +806,15 @@ namespace Proyectogestionhoras.Controllers
                 proyectosFiltrados = proyectosFiltrados.Where(p => p.IdTipologia == tipologiaId.Value);
             }
 
-           
-
-            if (unegocioId.HasValue)
+            if (ccostoUnegocioId.HasValue && ccostoUnegocioId.Value != 0)
             {
-                proyectosFiltrados = proyectosFiltrados.Where(p => p.IdCcostoUnegocioNavigation != null &&
-                                                                   p.IdCcostoUnegocioNavigation.IdUnegocio == unegocioId.Value);
+                proyectosFiltrados = proyectosFiltrados.Where(p => p.IdCcostoUnegocio == ccostoUnegocioId.Value);
             }
-
+            else if (unegocioId.HasValue && unegocioId.Value != 0)
+            {
+                proyectosFiltrados = proyectosFiltrados
+                    .Where(p => p.IdCcostoUnegocioNavigation.IdUnegocio == unegocioId.Value);
+            }
             var proyectosList = proyectosFiltrados
                 .Select(p => new {
                     p.Id,

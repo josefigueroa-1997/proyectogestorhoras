@@ -54,7 +54,7 @@
             <div>
                 <label for="montototal" class="block text-sm font-medium text-gray-700">Monto Promedio por Proyecto</label>
                 <input type="text" id="totalporproyecto" name="totalporproyecto"
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-right" value="@String.Format("{0:N2}",@f.TotalPorProyecto)" readonly />
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-right" value="@String.Format("{0:N0}",@f.TotalPorProyecto)" readonly />
             </div>
             <div>
                 <label for="montototal" class="block text-sm font-medium text-gray-700">Duración Media por Proyecto</label>
@@ -64,7 +64,7 @@
             <div>
                 <label for="montototal" class="block text-sm font-medium text-gray-700">Monto Promedio Mensual por Proyecto</label>
                 <input type="text" id="montomensual" name="montomensual"
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-right" value="@String.Format("{0:N2}",@f.MontoMensual)" readonly />
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-right" value="@String.Format("{0:N0}",@f.MontoMensual)" readonly />
             </div>
             <!-- Botón Guardar -->
             <div>
@@ -94,11 +94,11 @@
         const montomensual = Math.round(nuevototalporproyecto / duracionmedia / 1000000) * 1000000;
         // Actualiza el valor del campo Total
         document.getElementById("totalproyecto").value = totalProyecto;
-        document.getElementById("totalporproyecto").value = nuevototalporproyecto.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        document.getElementById("totalporproyecto").value = nuevototalporproyecto.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         document.getElementById("duracionmedia").value = duracionmedia;
-        document.getElementById("montomensual").value = montomensual.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        document.getElementById("montomensual").value = montomensual.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
-
+        
     // Escucha los cambios en los campos de monto
     document.getElementById("t1").addEventListener("input", actualizarTotal);
     document.getElementById("t2").addEventListener("input", actualizarTotal);

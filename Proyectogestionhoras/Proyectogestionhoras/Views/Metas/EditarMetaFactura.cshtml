@@ -18,7 +18,7 @@
                 <label for="montoQ1" class="block text-sm font-medium text-gray-700">Monto Q1</label>
                 <input type="text" id="montoQ1" name="montoQ1"
                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                       value="@String.Format("{0:N2}", @f.q1)" required oninput="formatAndCalculate(this);" />
+                       value="@String.Format("{0:N0}", @f.q1)" required oninput="formatAndCalculate(this);" />
             </div>
 
             <!-- Campo para Monto Q2 -->
@@ -26,7 +26,7 @@
                 <label for="montoQ2" class="block text-sm font-medium text-gray-700">Monto Q2</label>
                 <input type="text" id="montoQ2" name="montoQ2"
                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                       value="@String.Format("{0:N2}", @f.q2)" required oninput="formatAndCalculate(this);" />
+                       value="@String.Format("{0:N0}", @f.q2)" required oninput="formatAndCalculate(this);" />
             </div>
 
             <!-- Campo para Monto Q3 -->
@@ -34,7 +34,7 @@
                 <label for="montoQ3" class="block text-sm font-medium text-gray-700">Monto Q3</label>
                 <input type="text" id="montoQ3" name="montoQ3"
                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                       value="@String.Format("{0:N2}", @f.q3)" required oninput="formatAndCalculate(this);" />
+                       value="@String.Format("{0:N0}", @f.q3)" required oninput="formatAndCalculate(this);" />
             </div>
 
             <!-- Campo para Monto Q4 -->
@@ -42,7 +42,7 @@
                 <label for="montoQ4" class="block text-sm font-medium text-gray-700">Monto Q4</label>
                 <input type="text" id="montoQ4" name="montoQ4"
                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                       value="@String.Format("{0:N2}", @f.q4)" required oninput="formatAndCalculate(this);" />
+                       value="@String.Format("{0:N0}", @f.q4)" required oninput="formatAndCalculate(this);" />
             </div>
 
             <div>
@@ -98,7 +98,7 @@
         });
 
         // Formatear el total para que tenga el formato correcto
-        document.getElementById('montototal').value = total.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        document.getElementById('montototal').value = total.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
 
     // Calcular el total al cargar la página

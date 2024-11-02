@@ -176,7 +176,7 @@
                             </tr>
                             <tr>
                                 <td class="highlight">Monto</td>
-                                <td>@String.Format("{0:N2}", @historial.Monto)</td>
+                                <td>@String.Format("{0:N0}", @historial.Monto)</td>
                             </tr>
                             
                         </tbody>
@@ -216,9 +216,9 @@
                         <tr>
 
                             <td style="padding: 10px; border: 1px solid #ddd;">@factura.FechaFactura.ToString("MM/yyyy")</td>
-                            <td id="neto" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", factura.Neto)</td>
-                            <td id="iva" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", factura.Iva)</td>
-                            <td id="totalf" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", factura.Total)</td>
+                            <td id="neto" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", factura.Neto)</td>
+                            <td id="iva" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", factura.Iva)</td>
+                            <td id="totalf" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", factura.Total)</td>
                             @{
                                 totalesneto += factura.Neto;
                                 totaliva += factura.Iva;
@@ -254,9 +254,9 @@
                     }
                     <tr>
                         <td colspan="1" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Totales</strong></td>
-                        <td id="totalesNeto" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N2}", totalNetoRounded)</strong></td>
-                        <td id="totalesIva" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N2}", totalIvaRounded)</strong></td>
-                        <td id="totalesFacturas" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N2}", totalFacturaRounded)</strong></td>
+                        <td id="totalesNeto" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N0}", totalNetoRounded)</strong></td>
+                        <td id="totalesIva" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N0}", totalIvaRounded)</strong></td>
+                        <td id="totalesFacturas" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N0}", totalFacturaRounded)</strong></td>
                     </tr>
                 </tbody>
             </table>
@@ -299,7 +299,7 @@
                             @{
                                 totalsocios = historial.Hhsocios * @historial.COSTOSOCIO;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalsocios)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalsocios)</td>
 
                         </tr>
                         <tr>
@@ -311,7 +311,7 @@
                                 totalstaff = historial.Hhstaff * @historial.CostoStaff;
                             }
 
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalstaff)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalstaff)</td>
 
                         </tr>
                         <tr>
@@ -322,7 +322,7 @@
                             @{
                                 decimal totalconsultora = historial.Hhconsultora * @historial.CostoConsA;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultora) </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultora) </td>
 
 
 
@@ -334,7 +334,7 @@
                             @{
                                 decimal totalconsultorB = historial.hhconsultorb * @historial.CostoConsB;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultorB)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultorB)</td>
 
                         </tr>
                         <tr>
@@ -345,7 +345,7 @@
                             @{
                                 decimal totalconsultorC = historial.hhconsultorc * @historial.CostoConsC;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultorC)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultorC)</td>
 
                         </tr>
                         @{
@@ -354,7 +354,7 @@
                         }
                         <tr>
                             <td colspan="2" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
-                            <td id="totalcostos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"><strong>@String.Format("{0:N2}", totalescostos)</strong> </td>
+                            <td id="totalcostos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"><strong>@String.Format("{0:N0}", totalescostos)</strong> </td>
 
                         </tr>
                     </tbody>
@@ -386,22 +386,22 @@
             <tbody>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N2}", totalesneto)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", totalesneto)</strong></td>
 
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalsocios)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalsocios)</td>
 
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalstaff)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalstaff)</td>
 
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", totalconsultores)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultores)</td>
 
                 </tr>
 
@@ -412,7 +412,7 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N2}", totalegresos)</strong>
+                        <strong>@String.Format("{0:N0}", totalegresos)</strong>
                     </td>
 
                 </tr>
@@ -421,7 +421,7 @@
                 }
                 <tr style="background-color: #fa8164; color: black;">
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N2}", margen)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margen)</strong></td>
 
                 </tr>
             </tbody>

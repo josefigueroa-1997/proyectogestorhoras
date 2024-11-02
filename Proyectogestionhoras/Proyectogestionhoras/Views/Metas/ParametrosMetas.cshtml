@@ -35,11 +35,11 @@
                                     </a>
                                 </td>
                                 <td class="text-left text-sm text-gray-700 px-4 py-2">@factura.Anio</td>
-                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q1)</td>
-                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q2)</td>
-                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q3)</td>
-                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.q4)</td>
-                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @factura.totalq)</td>
+                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N0}", @factura.q1)</td>
+                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N0}", @factura.q2)</td>
+                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N0}", @factura.q3)</td>
+                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N0}", @factura.q4)</td>
+                                <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N0}", @factura.totalq)</td>
                             </tr>
                         }
                     </tbody>
@@ -221,9 +221,9 @@
                             <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T3</td>
                             <td class="text-right text-sm text-gray-700 px-4 py-2">@t.T4</td>
                             <td class="text-right text-sm text-gray-700 px-4 py-2">@t.TotalProyecto</td>
-                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @t.TotalPorProyecto)</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N0}", @t.TotalPorProyecto)</td>
                             <td class="text-right text-sm text-gray-700 px-4 py-2">@t.DuracionMedia</td>
-                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N2}", @t.MontoMensual)</td>
+                            <td class="text-right text-sm text-gray-700 px-4 py-2">@String.Format("{0:N0}", @t.MontoMensual)</td>
                         </tr>
                     }
                   
@@ -409,21 +409,21 @@
                 // Calcular monto mensual
                 const duracion = parseFloat(duracionmediaInput.value) || 1;
                 const montoMensual = Math.round(totalPorProyecto / duracion / 1000000) * 1000000;
-                totalPorProyectoInput.value = totalPorProyecto.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                montoMensualInput.value = montoMensual.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                submitButton.disabled = false; // Habilitar el botón si no hay errores
+                totalPorProyectoInput.value = totalPorProyecto.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                montoMensualInput.value = montoMensual.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                submitButton.disabled = false; 
             } else {
                 totalPorProyectoInput.value = "";
                 montoMensualInput.value = "";
                 alert("El total del proyecto no puede ser cero o vacío.");
-                submitButton.disabled = true; // Deshabilitar el botón si hay un error
+                submitButton.disabled = true; 
             }
         } else {
             totalPorProyectoInput.value = "";
             montoMensualInput.value = "";
             alert("No se encontraron datos para el año ingresado, ya que no hay una meta factura ingresada");
             anioInput.value = "";
-            submitButton.disabled = true; // Deshabilitar el botón si no hay fila de factura
+            submitButton.disabled = true; 
         }
     }
 

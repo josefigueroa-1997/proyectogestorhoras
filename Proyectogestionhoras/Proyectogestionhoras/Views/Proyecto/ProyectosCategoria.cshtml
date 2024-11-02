@@ -1,133 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Clasificación de Proyectos";
-}
 
+}
+@using Proyectogestionhoras.Models.ViewModel 
+@model ProyectosCategoriaViewModel
 
 <link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
 
 
-@*<div class="projects-container p-6">
-    <h1 class="text-2xl font-bold mb-6">Clasificación de Proyectos</h1>
-
-    <!-- Unidades de Negocio -->
-    <div class="projects-section mb-4">
-        <div class="section-header">
-            <button class="accordion-header w-full text-left py-2 px-4 bg-gray-200 font-semibold rounded-t-lg focus:outline-none"
-                    onclick="toggleAccordion('unegocio')">
-                Unidades de Negocio
-            </button>
-        </div>
-        <div id="unegocio" class="accordion-content hidden bg-gray-100 p-4 rounded-b-lg">
-            @if (ViewBag.Unegocio != null)
-            {
-                @foreach (var unegocio in ViewBag.Unegocio)
-                {
-                    <h2 class="text-lg font-semibold mb-2">@unegocio.TipoUnegocio</h2>
-                    <div class="section-content">
-                        @if (ViewBag.Proyectos != null)
-                        {
-                            @foreach (var proyecto in ViewBag.Proyectos)
-                            {
-                                if (proyecto.IDUNEGOCIO == unegocio.Id)
-                                {
-                                    <a href="@Url.Action("ObtenerProyectos", "Proyecto", new { id = proyecto.Id })"
-                                       class="block mb-4">
-                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
-                                            <h3 class="text-lg font-bold transition hover:text-orange-400">@proyecto.numproyecto</h3>
-                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: @proyecto.NombreCliente</p>
-                                        </div>
-                                    </a>
-                                }
-                            }
-                        }
-                    </div>
-                }
-            }
-        </div>
-    </div>
-
-    <!-- Centros de Costo -->
-    <div class="projects-section mb-4">
-        <div class="section-header">
-            <button class="accordion-header w-full text-left py-2 px-4 bg-gray-200 font-semibold rounded-t-lg focus:outline-none"
-                    onclick="toggleAccordion('ccosto')">
-                Centros de Costo
-            </button>
-        </div>
-        <div id="ccosto" class="accordion-content hidden bg-gray-100 p-4 rounded-b-lg">
-            @if (ViewBag.Ccosto != null)
-            {
-                @foreach (var ccosto in ViewBag.Ccosto)
-                {
-                    <h2 class="text-lg font-semibold mb-2">@ccosto.TipoCcosto</h2>
-                    <div class="section-content">
-                        @if (ViewBag.Proyectos != null)
-                        {
-                            @foreach (var proyecto in ViewBag.Proyectos)
-                            {
-                                if (proyecto.IDCOSTO == ccosto.Id)
-                                {
-                                    <a href="@Url.Action("ObtenerProyectos", "Proyecto", new { id = proyecto.Id })"
-                                       class="block mb-4">
-                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
-                                            <h3 class="text-lg font-bold transition hover:text-orange-400">@proyecto.numproyecto</h3>
-                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: @proyecto.NombreCliente</p>
-                                        </div>
-                                    </a>
-                                }
-                            }
-                        }
-                    </div>
-                }
-            }
-        </div>
-    </div>
-
-    <!-- Tipologías -->
-    <div class="projects-section mb-4">
-        <div class="section-header">
-            <button class="accordion-header w-full text-left py-2 px-4 bg-gray-200 font-semibold rounded-t-lg focus:outline-none"
-                    onclick="toggleAccordion('tipologia')">
-                Tipologías
-            </button>
-        </div>
-        <div id="tipologia" class="accordion-content hidden bg-gray-100 p-4 rounded-b-lg">
-            @if (ViewBag.Tipologias != null)
-            {
-                @foreach (var tipologia in ViewBag.Tipologias)
-                {
-                    <h2 class="text-lg font-semibold mb-2">@tipologia.TipoTipologia</h2>
-                    <div class="section-content">
-                        @if (ViewBag.Proyectos != null)
-                        {
-                            @foreach (var proyecto in ViewBag.Proyectos)
-                            {
-                                if (proyecto.IDTIPOLOGIA == tipologia.Id)
-                                {
-                                    <a href="@Url.Action("ObtenerProyectos", "Proyecto", new { id = proyecto.Id })"
-                                       class="block mb-4">
-                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
-                                            <h3 class="text-lg font-bold transition hover:text-orange-400">@proyecto.numproyecto</h3>
-                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: @proyecto.NombreCliente</p>
-                                        </div>
-                                    </a>
-                                }
-                            }
-                        }
-                    </div>
-                }
-            }
-        </div>
-    </div>
-</div>
-
-<script>
-    function toggleAccordion(id) {
-        const content = document.getElementById(id);
-        content.classList.toggle('hidden');
-    }
-</script>
-*@
 
 <h2 class="text-2xl font-bold mb-4">Clasificación de Proyectos</h2>
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
@@ -138,13 +18,13 @@
                     <th class="text-left text-xs font-medium">
                         <select name="tipologia" id="tipologia" class="form-input">
                             <option value="" disabled selected>Seleccione una Tipología</option>
-                            @foreach (var t in ViewBag.Tipologias)
+                            @foreach (var t in Model.Tipologias)
                             {
                                 <option value="@t.Id">@t.TipoTipologia</option>
                             }
                         </select>
                     </th>
-                    @foreach (var c in ViewBag.Ccosto)
+                    @foreach (var c in Model.Ccosto)
                     {
                         <th class="text-left text-xs font-medium">
                             @c.TipoCcosto
@@ -154,21 +34,25 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @foreach (var u in ViewBag.Unegocio)
+                @foreach (var u in Model.Unegocio)
                 {
                     <tr>
-                        <td>@u.TipoUnegocio</td>
+                        <td class="text-left text-xs font-medium">@u.TipoUnegocio</td>
 
-                        @foreach (var c in ViewBag.Ccosto) 
+                        @foreach (var ccosto in Model.Ccosto)
                         {
+                            var ccostoUnegocio = Model.CcostoUnegocios
+                            .FirstOrDefault(cu => cu.IdUnegocio == u.Id && cu.IdCcosto == ccosto.Id);
+
+                            var ccostoUnegocioId = ccostoUnegocio?.Id ?? 0;
+
                             <td>
-                                <input type="radio" name="unegocio_@u.Id" value="@u.Id" class="form-radio" />
+                                <input type="radio" name="ccostoUnegocio_radio" value="@ccostoUnegocioId" class="form-radio" />
                             </td>
                         }
                         <td>
-                            <input type="radio" name="unegocio_@u.Id" value="@u.Id" class="form-radio" />
+                            <input type="radio" name="unegocio_radio" value="@u.Id" class="form-radio" />
                         </td>
-                        
                     </tr>
                 }
             </tbody>
@@ -178,41 +62,61 @@
 
 <div id="proyectosContainer" class="section-content"></div>
 
-
 <script>
+    $(document).ready(function () {
+        function filtrarProyectos() {
+            var tipologiaId = $('#tipologia').val() || null;
+            var ccostoUnegocioId = $('input[name="ccostoUnegocio_radio"]:checked').val() || null;
+            var unegocioId = $('input[name="unegocio_radio"]:checked').val() || null;
 
-        $(document).ready(function () {
-            function filtrarProyectos() {
-                var tipologiaId = $('#tipologia').val();
-                var unegocioId = $('input[name^="unegocio_"]:checked').val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("FiltrarProyectos", "Proyecto")',
+                data: {
+                    tipologiaId: tipologiaId,
+                    ccostoUnegocioId: ccostoUnegocioId,
+                    unegocioId: unegocioId
+                },
+                cache: false,
+                success: function (data) {
+                    $('#proyectosContainer').empty();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("FiltrarProyectos", "Proyecto")',
-                    data: {
-                        tipologiaId: tipologiaId,
-                        unegocioId: unegocioId
-                    },
-                    success: function (data) {
-                        $('#proyectosContainer').empty();
-                    console.log(data);
-                    $.each(data, function (index, proyecto) {
+                    if (!data || data.length === 0) {
                         $('#proyectosContainer').append(`
-            <a href="/Proyecto/ObtenerProyectos/${proyecto.id}" class="block mb-4">
-                <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
-                    <h3 class="text-lg font-bold transition hover:text-orange-400">${proyecto.nombre}</h3>
-                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: ${proyecto.numProyecto}</p>
-                    <p class="text-sm text-gray-600 transition hover:text-white">Cliente: ${proyecto.nombreCliente}</p>
-                </div>
-            </a>
-        `);
-                    });
+                                <p class="text-center text-white-500">No se encontraron proyectos para la selección actual.</p>
+                            `);
+                    } else {
+                        $.each(data, function (index, proyecto) {
+                            $('#proyectosContainer').append(`
+                                    <a href="/Proyecto/ObtenerProyectos/${proyecto.id}" class="block mb-4">
+                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
+                                            <h3 class="text-lg font-bold transition hover:text-orange-400">${proyecto.nombre}</h3>
+                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: ${proyecto.numProyecto}</p>
+                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: ${proyecto.nombreCliente}</p>
+                                        </div>
+                                    </a>
+                                `);
+                        });
                     }
-                });
-            }
+                }
+            });
+        }
 
-            $('#tipologia').change(filtrarProyectos);
-            $(document).on('change', 'input[name^="unegocio_"]', filtrarProyectos);
+      
+        $('#tipologia').change(filtrarProyectos);
+
+
+        $(document).on('change', 'input[name="ccostoUnegocio_radio"]', function () {
+        
+            $('input[name="unegocio_radio"]').prop('checked', false);
+            filtrarProyectos(); 
         });
-</script>
 
+      
+        $(document).on('change', 'input[name="unegocio_radio"]', function () {
+           
+            $('input[name="ccostoUnegocio_radio"]').prop('checked', false);
+            filtrarProyectos(); 
+        });
+    });
+</script>

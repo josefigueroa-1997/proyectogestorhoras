@@ -29,7 +29,7 @@
                   
                     @foreach (var f in ViewBag.Montofactura)
                     {
-                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@f.Monto))</td>
+                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(@f.Monto))</td>
                     }
                     </tr>
                 }
@@ -42,7 +42,7 @@
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Proyectos</td>
                         @foreach (var c in ViewBag.Cuotas)
                         {
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(  @c.Monto))</td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(  @c.Monto))</td>
                         }
 
 

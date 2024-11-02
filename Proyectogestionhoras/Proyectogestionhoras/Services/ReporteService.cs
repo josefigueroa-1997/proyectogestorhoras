@@ -356,7 +356,7 @@ namespace Proyectogestionhoras.Services
                         {
                             string nombreSocio = reader["NombreUsuario"] != DBNull.Value ? reader["NombreUsuario"].ToString() : "Sin nombre";
                             string actividad = reader["Actividad"] != DBNull.Value ? reader["Actividad"].ToString() : "Sin actividad";
-                            int horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToInt32(reader["HorasTotalesMesActual"]) : 0;
+                            decimal horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToDecimal(reader["HorasTotalesMesActual"]) : 0;
 
                             // Si el socio ya está en el diccionario, solo agrega la actividad
                             if (!sociosDict.ContainsKey(nombreSocio))
@@ -407,7 +407,7 @@ namespace Proyectogestionhoras.Services
                         {
                             string nombreSocio = reader["NombreUsuario"] != DBNull.Value ? reader["NombreUsuario"].ToString() : "Sin nombre";
                             string actividad = reader["Actividad"] != DBNull.Value ? reader["Actividad"].ToString() : "Sin actividad";
-                            int horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToInt32(reader["HorasTotalesMesActual"]) : 0;
+                            decimal horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToDecimal(reader["HorasTotalesMesActual"]) : 0;
 
                             // Si el socio ya está en el diccionario, solo agrega la actividad
                             if (!sociosDict.ContainsKey(nombreSocio))
@@ -457,7 +457,7 @@ namespace Proyectogestionhoras.Services
                         {
                             string nombreSocio = reader["NombreUsuario"] != DBNull.Value ? reader["NombreUsuario"].ToString() : "Sin nombre";
                             string actividad = reader["Actividad"] != DBNull.Value ? reader["Actividad"].ToString() : "Sin actividad";
-                            int horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToInt32(reader["HorasTotalesMesActual"]) : 0;
+                            decimal horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToDecimal(reader["HorasTotalesMesActual"]) : 0;
 
                             // Si el socio ya está en el diccionario, solo agrega la actividad
                             if (!sociosDict.ContainsKey(nombreSocio))

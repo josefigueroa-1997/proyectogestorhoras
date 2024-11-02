@@ -31,11 +31,11 @@
                     <tr>
                         <td class="text-left text-xs font-medium border border-black">Mes Actual</td>
                         @{
-                            int totalMesActual = 0;
+                            decimal totalMesActual = 0;
                         }
                         @foreach (var actividad in actividades)
                         {
-                            int horas = socio.HorasPorActividad.ContainsKey(actividad) ? socio.HorasPorActividad[actividad] : 0;
+                            decimal horas = socio.HorasPorActividad.ContainsKey(actividad) ? socio.HorasPorActividad[actividad] : 0;
                             totalMesActual += horas;
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
                         }
@@ -45,12 +45,12 @@
                     <tr>
                         <td class="text-left text-xs font-medium border border-black">Acumulado Año</td>
                         @{
-                            int totalAnio = 0;
+                            decimal totalAnio = 0;
                         }
                         @foreach (var actividad in actividades)
                         {
                             var socioAnio = horasAnioActual.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
-                            int horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
+                            decimal horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
                             totalAnio += horas;
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
                         }
@@ -60,12 +60,12 @@
                     <tr>
                         <td class="text-left text-xs font-medium border border-black">Últimos 12 meses</td>
                         @{
-                            int totalDoceMeses = 0;
+                            decimal totalDoceMeses = 0;
                         }
                         @foreach (var actividad in actividades)
                         {
                             var socioAnio = horasdocemeses.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
-                            int horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
+                            decimal horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
                             totalDoceMeses += horas;
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
                         }

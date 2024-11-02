@@ -31,7 +31,7 @@
                                 <button type="button" onclick="cargarDatosAlternativa('@tipologia.Id', '@Html.Encode(tipologia.TipoTipologia)','@Html.Encode(tipologia.Monto)','@Html.Encode(tipologia.Desde)','@Html.Encode(tipologia.Hasta)','@Html.Encode(tipologia.Hhsocios)','@Html.Encode(tipologia.Hhstaff)','@Html.Encode(tipologia.Consultora)','@Html.Encode(tipologia.Consutlrob)','@Html.Encode(tipologia.Consultorc)')">Seleccionar</button>
                             </td>
                             <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.TipoTipologia</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">@String.Format("{0:N2}",@tipologia.Monto)</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}",@tipologia.Monto)</td>
                             <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Desde ms</td>
                             <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Hasta ms</td>
                             <td style="padding: 5px; border: 1px solid #ddd;">@tipologia.Hhsocios Hr/ms</td>
