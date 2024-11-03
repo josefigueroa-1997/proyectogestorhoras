@@ -52,7 +52,7 @@
     }
 
     function formatearMiles(valor) {
-        return valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
 
 
@@ -300,7 +300,7 @@
         mesesArray.forEach(mes => {
             const celdaMes = filaTotalGeneral.insertCell();
             const totalMesGeneral = totalPorMes[mes] || 0;
-            const totalMesGeneralTruncado = Math.floor(totalMesGeneral);
+            const totalMesGeneralTruncado = Math.round(totalMesGeneral);
             celdaMes.innerText = formatearMiles(totalMesGeneralTruncado);
             celdaMes.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
         });
@@ -308,14 +308,14 @@
         añosArray.forEach(año => {
             const celdaAnual = filaTotalGeneral.insertCell();
             const totalAnualGeneral = totalPorAño[año] || 0;
-            const totalAnualGeneralTruncado = Math.floor(totalAnualGeneral);
+            const totalAnualGeneralTruncado = Math.round(totalAnualGeneral);
             celdaAnual.innerText = formatearMiles(totalAnualGeneralTruncado);
             celdaAnual.classList.add("border", "border-black", "text-right", "totales", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
         });
 
         // Celda para total general
         const celdaTotalGeneralFinal = filaTotalGeneral.insertCell();
-        celdaTotalGeneralFinal.innerText = formatearMiles(Math.floor(totalFinal));
+        celdaTotalGeneralFinal.innerText = formatearMiles(Math.round(totalFinal));
         celdaTotalGeneralFinal.classList.add("border", "border-black", "totales", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
     }
 

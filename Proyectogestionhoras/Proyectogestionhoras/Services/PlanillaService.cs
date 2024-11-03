@@ -21,15 +21,44 @@ namespace Proyectogestionhoras.Services
         }
 
 
+        public Proyecto ObtenerProyectoPorUsuarioProyectoId(int idUsuarioProyecto)
+        {
+            
+              
+                var usuarioProyecto = context.UsuarioProyectos
+                    .Include(up => up.IdProyectoNavigation) 
+                    .FirstOrDefault(up => up.Id == idUsuarioProyecto);
+
+  
+                return usuarioProyecto?.IdProyectoNavigation;
+            
+        }
+
+
+
+
+
         public async Task<int> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
         {
             try
             {
+                bool existereigstro = await context.PlanillaUsusarioProyectos.AnyAsync(p => p.IdUsuProy == idusuproy && p.FechaRegistro.Date == Fecharegistro.Date && p.IdActividad == idactividad);
+                if (existereigstro)
+                {
+                    return 2;
+                }
+                var proyecto = ObtenerProyectoPorUsuarioProyectoId(idusuproy);
+                DateTime fechainicio = proyecto.FechaInicio;
+                DateTime fechatermino = proyecto.FechaTermino;
+                if (Fecharegistro < fechainicio || Fecharegistro > fechatermino)
+                {
+                    return 4;
+                }
                 decimal horasAsignadasDecimal;
                 if (!decimal.TryParse(horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
                 {
-                    // Si la conversión falla, puedes decidir qué hacer. Por ejemplo:
-                    return 0; // O cualquier código que indique error
+                    
+                    return 0; 
                 }
                 int mesregistro = Fecharegistro.Month;
                 int anioregistro = Fecharegistro.Year;
@@ -45,13 +74,6 @@ namespace Proyectogestionhoras.Services
                     };
                     context.Planillas.Add(planilla);
                     await context.SaveChangesAsync();
-                }
-
-
-                bool existereigstro = await context.PlanillaUsusarioProyectos.AnyAsync(p => p.IdUsuProy == idusuproy && p.FechaRegistro.Date == Fecharegistro.Date && p.IdActividad == idactividad);
-                if (existereigstro)
-                {
-                    return 2;
                 }
 
                 var registro = new PlanillaUsusarioProyecto

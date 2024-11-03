@@ -13,7 +13,7 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<ReporteControlHHDTO>> ReporteControlHH(int idproyecto);
         public Task<List<HorasSociosActDTO>> HorasPorSociosMesActual(int mes);
         public Task<List<ReporteNegociacionDTO>> ReporteProyectoNegociacion();
-        public Task<List<ReporteQuarterDTO>> RecuperarQuarter();
+        public Task<List<ReportQuarterDTO>> RecuperarQuarter(int anio);
         public Task<List<ReporteNegociacionKeyDTO>> ReporteNegociacionKeys();
     }
 }

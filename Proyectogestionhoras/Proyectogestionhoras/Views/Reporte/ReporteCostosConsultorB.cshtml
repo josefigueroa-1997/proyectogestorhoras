@@ -54,7 +54,7 @@
     }
 
     function formatearMiles(valor) {
-        return valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
 
 
@@ -277,14 +277,14 @@
             mesesArray.forEach(mes => {
                 const cell = totalRow.insertCell();
                 const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                cell.innerText = formatearMiles(Math.floor(totalMes));
+                cell.innerText = formatearMiles(Math.round(totalMes));
                 cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
             });
 
             añosArray.forEach(año => {
                 const totalAnualCell = totalRow.insertCell();
                 const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
-                const totalAnualTruncado = Math.floor(totalAnual);
+                const totalAnualTruncado = Math.round(totalAnual);
                 totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
                 totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
             });

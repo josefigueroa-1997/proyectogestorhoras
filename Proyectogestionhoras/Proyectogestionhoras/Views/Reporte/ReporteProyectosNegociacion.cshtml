@@ -31,7 +31,7 @@
 <script>
     function formatearNumero(num) {
         num = Math.round(num);  
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return num.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
     let indicesFechas = [];
     $(document).ready(function () {

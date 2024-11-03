@@ -5,6 +5,7 @@ using Proyectogestionhoras.Services.Interface;
 using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
+using iText.Bouncycastle.Crypto;
 
 namespace Proyectogestionhoras.Services
 {
@@ -533,105 +534,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<ReporteQuarterDTO>> RecuperarQuarter()
-        {
-            try
-            {
-
-
-                var quarter = new List<ReporteQuarterDTO>();
-                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-                using (DbCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "REPORTEMARGENquarter";
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            ReporteQuarterDTO datos = new()
-                            {
-                                Quarter = reader.IsDBNull(reader.GetOrdinal("Quarter")) ? 0 : reader.GetInt32(reader.GetOrdinal("Quarter")),
-                                Anio = reader.IsDBNull(reader.GetOrdinal("Year")) ? 0 : reader.GetInt32(reader.GetOrdinal("Year")),
-                                Ingresos = reader.IsDBNull(reader.GetOrdinal("MONTO_PROYECTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO_PROYECTO")),
-                                TotalGastos = reader.IsDBNull(reader.GetOrdinal("TOTAL_GASTOS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TOTAL_GASTOS")),
-                                TotalServicios = reader.IsDBNull(reader.GetOrdinal("TOTAL_SERVICIOS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TOTAL_SERVICIOS")),
-                                CostoSocios = reader.IsDBNull(reader.GetOrdinal("COSTO_SOCIOS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_SOCIOS")),
-                                CostoStaff = reader.IsDBNull(reader.GetOrdinal("COSTO_STAFF")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_STAFF")),
-                                CostoConsultorA = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORA")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORA")),
-                                CostoConsultorB = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORB")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORB")),
-                                CostoConsultorC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
-                                Margen = reader.IsDBNull(reader.GetOrdinal("MARGEN_DE_CONTRIBUCION")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MARGEN_DE_CONTRIBUCION")),
-                                BonoSocios = reader.IsDBNull(reader.GetOrdinal("MONTO_TOTAL_BONO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO_TOTAL_BONO")),
-                            };
-                            quarter.Add(datos);
-
-                        }
-                    }
-
-                }
-                await conexion.CloseDatabaseConnectionAsync();
-                return quarter;
-            }
-            catch (Exception ex)
-            {
-
-                Debug.WriteLine($"Hubo un error al obtener los quarters  de los proyectos:" + ex.Message);
-                return new List<ReporteQuarterDTO>();
-
-            }
-        }
-
-        public async Task<List<ReporteQuarterDTO>> RecuperarQuarterAnio(int anio)
-        {
-            try
-            {
-
-
-                var quarter = new List<ReporteQuarterDTO>();
-                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-                using (DbCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "REPORTEMARGENquarterANIO";
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@ANIO", anio));
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            ReporteQuarterDTO datos = new()
-                            {
-                                Quarter = reader.IsDBNull(reader.GetOrdinal("Quarter")) ? 0 : reader.GetInt32(reader.GetOrdinal("Quarter")),
-                                Anio = reader.IsDBNull(reader.GetOrdinal("Year")) ? 0 : reader.GetInt32(reader.GetOrdinal("Year")),
-                                Ingresos = reader.IsDBNull(reader.GetOrdinal("MONTO_PROYECTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO_PROYECTO")),
-                                TotalGastos = reader.IsDBNull(reader.GetOrdinal("TOTAL_GASTOS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TOTAL_GASTOS")),
-                                TotalServicios = reader.IsDBNull(reader.GetOrdinal("TOTAL_SERVICIOS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TOTAL_SERVICIOS")),
-                                CostoSocios = reader.IsDBNull(reader.GetOrdinal("COSTO_SOCIOS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_SOCIOS")),
-                                CostoStaff = reader.IsDBNull(reader.GetOrdinal("COSTO_STAFF")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_STAFF")),
-                                CostoConsultorA = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORA")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORA")),
-                                CostoConsultorB = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORB")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORB")),
-                                CostoConsultorC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
-                                Margen = reader.IsDBNull(reader.GetOrdinal("MARGEN_DE_CONTRIBUCION")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MARGEN_DE_CONTRIBUCION")),
-                                BonoSocios = reader.IsDBNull(reader.GetOrdinal("MONTO_TOTAL_BONO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO_TOTAL_BONO")),
-                            };
-                            quarter.Add(datos);
-
-                        }
-                    }
-
-                }
-                await conexion.CloseDatabaseConnectionAsync();
-                return quarter;
-            }
-            catch (Exception ex)
-            {
-
-                Debug.WriteLine($"Hubo un error al obtener los quarters  de los proyectos:" + ex.Message);
-                return new List<ReporteQuarterDTO>();
-
-            }
-        }
+      
         public async Task<List<ReporteNegociacionKeyDTO>> ReporteNegociacionKeys()
         {
             try
@@ -848,6 +751,55 @@ namespace Proyectogestionhoras.Services
 
                 Debug.WriteLine($"Hubo un error al obtener las horas mensuales:" + ex.Message);
                 return new List<HorasKeyDTO>();
+
+            }
+        }
+
+
+        public async Task<List<ReportQuarterDTO>> RecuperarQuarter(int anio)
+        {
+            try
+            {
+
+
+                var ingresos = new List<ReportQuarterDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "ObtenerResumenTrimestral";
+                    command.CommandType = CommandType.StoredProcedure;
+                    
+                    command.Parameters.Add(new SqlParameter("@Anio", anio));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ReportQuarterDTO datos = new()
+                            {
+                                Tipo = reader.IsDBNull(reader.GetOrdinal("Tipo")) ? string.Empty : reader.GetString(reader.GetOrdinal("Tipo")),
+                                MontoQ1 = reader.IsDBNull(reader.GetOrdinal("MontoQ1")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoQ1")),
+                                MontoQ2 = reader.IsDBNull(reader.GetOrdinal("MontoQ2")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoQ2")),
+                                MontoQ3 = reader.IsDBNull(reader.GetOrdinal("MontoQ3")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoQ3")),
+                                MontoQ4 = reader.IsDBNull(reader.GetOrdinal("MontoQ4")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoQ4")),
+
+                                
+
+                            };
+                            ingresos.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return ingresos;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el resumen de los quarters:" + ex.Message);
+                return new List<ReportQuarterDTO>();
 
             }
         }

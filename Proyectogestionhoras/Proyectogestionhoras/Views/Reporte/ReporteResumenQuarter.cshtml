@@ -1,37 +1,8 @@
-﻿@{
-    
-    var resultados = new Dictionary<string, decimal[]>
-    {
-        { "Ingresos", new decimal[4] },
-        { "CostoSocios", new decimal[4] },
-        { "CostoStaff", new decimal[4] },
-        { "CostoExternos", new decimal[4] },
-        { "TotalServicios", new decimal[4] },
-        { "TotalGastos", new decimal[4] },
-        { "Margen", new decimal[4] },
-        { "BonoSocios", new decimal[4] }
-    };
-
- 
-    foreach (var q in ViewBag.Quarter)
-    {
-        int index = q.Quarter - 1; 
-
-        resultados["Ingresos"][index] += q.Ingresos;
-        resultados["CostoSocios"][index] += q.CostoSocios;
-        resultados["CostoStaff"][index] += q.CostoStaff;
-        resultados["CostoExternos"][index] += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
-        resultados["TotalServicios"][index] += q.TotalServicios;
-        resultados["TotalGastos"][index] += q.TotalGastos;
-        resultados["Margen"][index] += q.Margen;
-        resultados["BonoSocios"][index] += q.BonoSocios;
-    }
-}
-
+﻿
 <h1 class="text-xl font-bold mb-4 text-center">Resumen por Quarter</h1>
 <h1 class="text-xl font-bold mb-4 text-center">Año: @DateTime.Now.Year</h1>
-<button onclick="exportToExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
-
+@*<button onclick="exportToExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
+*@
 <div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6">
     <table class="min-w-full border-collapse border border-black">
         <thead class="bg-yellow-200">
@@ -44,18 +15,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var key in resultados.Keys)
+          
+            @foreach (var f in ViewBag.Resumen)
             {
                 <tr>
-                    <td class="text-left text-xs font-medium">@key</td>
-                    @for (int i = 0; i < 4; i++)
-                    {
-                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                            @String.Format("{0:N2}", Math.Round( resultados[key][i]))
-                        </td>
-                    }
+                    <td class="text-left text-xs font-medium">@f.Tipo</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ1))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ2))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ3))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ4))
+                    </td>
                 </tr>
             }
+            
         </tbody>
     </table>
 
@@ -82,60 +61,3 @@
         </div>
     </form>
 </div>
-<script>
-    
-    const resultados = @Html.Raw(Json.Serialize(resultados));
-
-    async function exportToExcel() {
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Resumen');
-        const response = await fetch('/images/unitt.png');
-        const imageBlob = await response.blob();
-        const arrayBuffer = await imageBlob.arrayBuffer();
-        const logoImageId = workbook.addImage({
-            buffer: arrayBuffer,
-            extension: 'png'
-        });
-        worksheet.addImage(logoImageId, {
-            tl: { col: 0, row: 0 },
-            ext: { width: 150, height: 50 }
-        });
-        const year = new Date().getFullYear();
-        worksheet.mergeCells('C3:E3');
-        const titulo = worksheet.getCell('C3');
-        titulo.value = `Resumen por Quarter - Año: ${year}`;
-        titulo.font = { size: 16, bold: true };
-        titulo.alignment = { vertical: 'middle', horizontal: 'center' };
-
-        worksheet.addRow([]);
-        worksheet.addRow([]);
-
-        
-        worksheet.addRow(['Tipo', 'Q1', 'Q2', 'Q3', 'Q4']);
-        worksheet.columns = [
-            { width: 15 }, 
-            { width: 15 }, 
-            { width: 15 }, 
-            { width: 15 }, 
-            { width: 15 }  
-        ];
-       
-        for (const [key, values] of Object.entries(resultados)) {
-            worksheet.addRow([key, ...values]);
-        }
-
-      
-        worksheet.columns.forEach(column => {
-            column.alignment = { vertical: 'middle', horizontal: 'right' }; 
-            column.numFmt = '#,##0.00'; 
-        });
-
-        
-        const buffer = await workbook.xlsx.writeBuffer();
-        const blob = new Blob([buffer], { type: 'application/octet-stream' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'Resumen.xlsx';
-        link.click();
-    }
-</script>

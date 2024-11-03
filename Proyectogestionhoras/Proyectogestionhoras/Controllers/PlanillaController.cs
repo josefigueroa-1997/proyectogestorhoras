@@ -281,6 +281,7 @@ namespace Proyectogestionhoras.Controllers
             bool registroExitoso = false;
             bool yaSeRegistraronHoras = false;
             bool horasExcedidas = false;
+            bool fechafuerarango = false;
 
             try
             {
@@ -298,6 +299,10 @@ namespace Proyectogestionhoras.Controllers
                 else if (resultado == 3)
                 {
                     horasExcedidas = true;
+                }
+                else if(resultado == 4)
+                {
+                    fechafuerarango = true;
                 }
             }
             catch (Exception ex)
@@ -317,6 +322,10 @@ namespace Proyectogestionhoras.Controllers
           else if (horasExcedidas)
             {
                 return Json(new { success = false, message = "No se pueden registrar más horas en esta semana, se ha excedido el límite permitido." });
+            }
+            else if (fechafuerarango)
+            {
+                return Json(new { success = false, message = "Error en el registro.La fecha de registro tiene que estar en el rango de fecha de la ejecución del proyecto." });
             }
             else
             {

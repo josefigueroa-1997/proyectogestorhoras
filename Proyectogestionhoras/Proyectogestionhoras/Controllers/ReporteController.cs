@@ -45,7 +45,15 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ReportesFactura()
         {
             var facturas = await _reporteService.RecuperarFacturasProyectos();
+            
             return View(facturas);
+        }
+
+        public async Task<IActionResult> pruebafactura()
+        {
+            var facturas = await _reporteService.RecuperarFacturasProyectos();
+            ViewBag.Facturas = facturas;
+            return View();
         }
 
         public async Task<IActionResult> ReporteHHSocios(string recurso)
@@ -155,10 +163,12 @@ namespace Proyectogestionhoras.Controllers
             var proyectos = await _reporteService.ReporteProyectoNegociacion();
             return Json(proyectos);
         }
-        public async Task<IActionResult> ReporteResumenQuarter()
+        public async Task<IActionResult> ReporteResumenQuarter(int anio)
         {
-            var quarter = await _reporteService.RecuperarQuarter();
-            ViewBag.Quarter = quarter;
+            
+            var resumen = await _reporteService.RecuperarQuarter(anio);
+            
+            ViewBag.Resumen = resumen;
             return View();
         }
         [HttpPost]
@@ -171,10 +181,14 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> ComparacionQuarter(int anio)
         {
-            var quarter = await _reporteService.RecuperarQuarter();
+            /*var quarter = await _reporteService.RecuperarQuarter();
             var quarteranio = await _reporteService.RecuperarQuarterAnio(anio);
             ViewBag.Quarter = quarter;
-            ViewBag.QuarterAnio = quarteranio;
+            ViewBag.QuarterAnio = quarteranio;*/
+            var resumen = await _reporteService.RecuperarQuarter(DateTime.Now.Year);
+            ViewBag.Resumen = resumen;
+            var resumenanio = await _reporteService.RecuperarQuarter(anio);
+            ViewBag.ResumenA = resumenanio;
             return View();
         }
 

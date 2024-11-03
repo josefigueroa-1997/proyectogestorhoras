@@ -1,36 +1,6 @@
-﻿@{
-
-    var resultados = new Dictionary<string, decimal[]>
-    {
-        { "Ingresos", new decimal[4] },
-        { "CostoSocios", new decimal[4] },
-        { "CostoStaff", new decimal[4] },
-        { "CostoExternos", new decimal[4] },
-        { "TotalServicios", new decimal[4] },
-        { "TotalGastos", new decimal[4] },
-        { "Margen", new decimal[4] },
-        { "BonoSocios", new decimal[4] }
-    };
-
-
-    foreach (var q in ViewBag.Quarter)
-    {
-        int index = q.Quarter - 1;
-
-        resultados["Ingresos"][index] += q.Ingresos;
-        resultados["CostoSocios"][index] += q.CostoSocios;
-        resultados["CostoStaff"][index] += q.CostoStaff;
-        resultados["CostoExternos"][index] += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
-        resultados["TotalServicios"][index] += q.TotalServicios;
-        resultados["TotalGastos"][index] += q.TotalGastos;
-        resultados["Margen"][index] += q.Margen;
-        resultados["BonoSocios"][index] += q.BonoSocios;
-    }
-}
-
+﻿
 <h1 class="text-xl font-bold mb-4 text-center">Resumen por Quarter</h1>
 <h1 class="text-xl font-bold mb-4 text-center">Año: @DateTime.Now.Year</h1>
-
 
 <div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6">
     <table class="min-w-full border-collapse border border-black">
@@ -44,178 +14,77 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var key in resultados.Keys)
+
+            @foreach (var f in ViewBag.Resumen)
             {
                 <tr>
-                    <td class="text-left text-xs font-medium">@key</td>
-                    @for (int i = 0; i < 4; i++)
-                    {
-                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                            @String.Format("{0:N2}", Math.Round(resultados[key][i]))
-                        </td>
-                    }
+                    <td class="text-left text-xs font-medium">@f.Tipo</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ1))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ2))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ3))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ4))
+                    </td>
                 </tr>
             }
+
         </tbody>
     </table>
+
+    
+   
+   
 </div>
-    @{
-        decimal ingresoq1a = 0;
-        decimal ingresoq2a = 0;
-        decimal ingresoq3a = 0;
-        decimal ingresoq4a = 0;
-        decimal sociosq1a = 0;
-        decimal sociosq2a = 0;
-        decimal sociosq3a= 0;
-        decimal sociosq4a = 0;
-        decimal staffq1a = 0;
-        decimal staffq2a = 0;
-        decimal staffq3a = 0;
-        decimal staffq4a = 0;
-        decimal externosq1a = 0;
-        decimal externosq2a = 0;
-        decimal externosq3a = 0;
-        decimal externosq4a = 0;
-        decimal serviciosq1a = 0;
-        decimal serviciosq2a = 0;
-        decimal serviciosq3a = 0;
-        decimal serviciosq4a = 0;
-        decimal gastosq1a = 0;
-        decimal gastosq2a = 0;
-        decimal gastosq3a = 0;
-        decimal gastosq4a = 0;
-        decimal margenq1a = 0;
-        decimal margenq2a = 0;
-        decimal margenq3a = 0;
-        decimal margenq4a = 0;
-        decimal bonoq1a =0;
-        decimal bonoq2a = 0;
-        decimal bonoq3a = 0;
-        decimal bonoq4a= 0;
-        foreach (var q in ViewBag.QuarterAnio)
-        {
-            if (q.Quarter == 1)
-            {
-                ingresoq1a += q.Ingresos;
-                sociosq1a += q.CostoSocios;
-                staffq1a += q.CostoStaff;
-                externosq1a += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
-                serviciosq1a += q.TotalServicios;
-                gastosq1a += q.TotalGastos;
-                margenq1a += q.Margen;
-                bonoq1a += q.BonoSocios;
-            }
-            if (q.Quarter == 2)
-            {
-                ingresoq2a += q.Ingresos;
-                sociosq2a += q.CostoSocios;
-                staffq2a += q.CostoStaff;
-                externosq2a += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
-                serviciosq2a += q.TotalServicios;
-                gastosq2a += q.TotalGastos;
-                margenq2a += q.Margen;
-                bonoq2a += q.BonoSocios;
-            }
-            if (q.Quarter == 3)
-            {
-                ingresoq3a += q.Ingresos;
-                sociosq3a += q.CostoSocios;
-                staffq3a += q.CostoStaff;
-                externosq3a += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
-                serviciosq3a += q.TotalServicios;
-                gastosq3a += q.TotalGastos;
-                margenq3a += q.Margen;
-                bonoq3a += q.BonoSocios;
-            }
-            if (q.Quarter == 4)
-            {
-                ingresoq4a += q.Ingresos;
-                sociosq4a += q.CostoSocios;
-                staffq4a += q.CostoStaff;
-                externosq4a += q.CostoConsultorA + q.CostoConsultorB + q.CostoConsultorC;
-                serviciosq4a += q.TotalServicios;
-                gastosq4a += q.TotalGastos;
-                margenq4a += q.Margen;
-                bonoq4a += q.BonoSocios;
-            }
-        }
-    }
 
-    <h1 class="text-xl font-bold mb-4 text-center">Resumen por Quarter</h1>
-    @{
-        int? anio = Context.Session.GetInt32("anio");
-    }
-    <h1 class="text-xl font-bold mb-4 text-center">Año: @anio</h1>
 
-    <div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6">
-        <table class="min-w-full border-collapse border border-black">
-            <thead class="bg-green-200">
-                <tr>
-                <th class="text-left text-xs font-medium ">Tipo</th>
 
-                <th class="text-left text-xs font-medium ">Q1</th>
-                <th class="text-left text-xs font-medium ">Q2</th>
-                <th class="text-left text-xs font-medium ">Q3</th>
-                <th class="text-left text-xs font-medium ">Q4</th>
-                </tr>
-            </thead>
-            <tbody>
+
+<h1 class="text-xl font-bold mb-4 text-center">Resumen por Quarter</h1>
+@{
+    int? anio = Context.Session.GetInt32("anio");
+}
+<h1 class="text-xl font-bold mb-4 text-center">Año: @anio</h1>
+
+
+<div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6">
+    <table class="min-w-full border-collapse border border-black">
+        <thead class="bg-green-200">
+            <tr>
+                <th class="text-left text-xs font-medium">Tipo</th>
+                <th class="text-left text-xs font-medium">Q1</th>
+                <th class="text-left text-xs font-medium">Q2</th>
+                <th class="text-left text-xs font-medium">Q3</th>
+                <th class="text-left text-xs font-medium">Q4</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var f in ViewBag.ResumenA)
+            {
                 <tr>
-                <td class="text-left text-xs font-medium ">Ingresos</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @ingresoq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@ingresoq2a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@ingresoq3a) )</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@ingresoq4a))</td>
+                    <td class="text-left text-xs font-medium">@f.Tipo</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ1))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ2))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ3))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        @String.Format("{0:N0}", Math.Round(f.MontoQ4))
+                    </td>
                 </tr>
-                <tr>
-                <td class="text-left text-xs font-medium ">Costo HH_Socios</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @sociosq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @sociosq2a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]" >@String.Format("{0:N2}", Math.Round( @sociosq3a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @sociosq4a))</td>
-                </tr>
-                <tr>
-                <td class="text-left text-xs font-medium ">Costo HH_Leads</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @staffq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @staffq2a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @staffq3a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @staffq4a))</td>
-                </tr>
-                <tr>
-                <td class="text-left text-xs font-medium "> Costo Consultores Externos</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @externosq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@externosq2a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@externosq3a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@externosq4a))</td>
-                </tr>
-                <tr>
-                <td class="text-left text-xs font-medium ">Total Servicios</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @serviciosq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@serviciosq2a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@serviciosq3a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@serviciosq4a))</td>
-                </tr>
-                <tr>
-                <td class="text-left text-xs font-medium ">Total Gastos</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @gastosq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@gastosq2a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@gastosq3a) )</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@gastosq4a))</td>
-                </tr>
-                <tr>
-                <td class="text-left text-xs font-medium ">Margen de Contribución</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round( @margenq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@margenq2a) )</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@margenq3a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@margenq4a))</td>
-                </tr>
-                <tr>
-                <td class="text-left text-xs font-medium ">Bonos Socios</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}",Math.Round( @bonoq1a))</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@bonoq2a) )</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@bonoq3a) )</td>
-                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(@bonoq4a) )</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+            }
+
+        </tbody>
+    </table>
+
+</div>

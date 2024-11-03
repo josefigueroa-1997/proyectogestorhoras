@@ -285,7 +285,7 @@ namespace Proyectogestionhoras.Services
         public async Task RestarHHAnaulesSocios(int hhsocios)
         {
             var socio = context.TotalRecursos
-                       .Where(tr => tr.TipoRecurso == "Socio") 
+                       .Where(tr => tr.TipoRecurso == "Socio" && tr.Anio == DateTime.Now.Year) 
                        .FirstOrDefault();                    
 
             if (socio != null)
@@ -302,7 +302,7 @@ namespace Proyectogestionhoras.Services
         public async Task RestarHHAnaulesStaff(int hhstaff)
         {
             var staff = context.TotalRecursos
-                      .Where(tr => tr.TipoRecurso == "Staff")
+                      .Where(tr => tr.TipoRecurso == "Staff" && tr.Anio == DateTime.Now.Year)
                       .FirstOrDefault();
 
             if (staff != null)
