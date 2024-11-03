@@ -181,10 +181,7 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> ComparacionQuarter(int anio)
         {
-            /*var quarter = await _reporteService.RecuperarQuarter();
-            var quarteranio = await _reporteService.RecuperarQuarterAnio(anio);
-            ViewBag.Quarter = quarter;
-            ViewBag.QuarterAnio = quarteranio;*/
+            
             var resumen = await _reporteService.RecuperarQuarter(DateTime.Now.Year);
             ViewBag.Resumen = resumen;
             var resumenanio = await _reporteService.RecuperarQuarter(anio);

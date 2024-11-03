@@ -6,7 +6,21 @@
 @model ProyectosCategoriaViewModel
 
 <link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
+<style>
+    .form-radio {
+        transform: scale(1.5); /* Ajusta el valor para cambiar el tamaño */
+        width: 15px; /* Controla el tamaño horizontal del área de clic */
+        height: 15px;
+      
+    }
 
+    .radio-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+</style>
 
 
 <h2 class="text-2xl font-bold mb-4">Clasificación de Proyectos</h2>
@@ -26,11 +40,11 @@
                     </th>
                     @foreach (var c in Model.Ccosto)
                     {
-                        <th class="text-left text-xs font-medium">
+                        <th class="text-center text-xs font-medium">
                             @c.TipoCcosto
                         </th>
                     }
-                    <th class="text-left text-xs font-medium">Todos</th>
+                    <th class="text-center text-xs font-medium">Todos</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -47,11 +61,15 @@
                             var ccostoUnegocioId = ccostoUnegocio?.Id ?? 0;
 
                             <td>
+                                <div class="radio-container">
                                 <input type="radio" name="ccostoUnegocio_radio" value="@ccostoUnegocioId" class="form-radio" />
+                                </div>
                             </td>
                         }
-                        <td>
+                        <td class="px-4 py-2 min-w-[150px]">
+                            <div class="radio-container">
                             <input type="radio" name="unegocio_radio" value="@u.Id" class="form-radio" />
+                            </div>
                         </td>
                     </tr>
                 }

@@ -12,11 +12,30 @@
                     <th class="text-left text-xs font-medium">Cliente</th>
                     <th class="text-left text-xs font-medium ">Num Proyecto</th>
                     @foreach (var i in ViewBag.Facturas){
-                        <th class="text-left text-xs font-medium ">@i.FechaFactura</th>
+                        <th class="text-left text-xs font-medium ">@i.FechaFactura.ToString("MM/yyyy")</th>
                     }
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200"></tbody>
+            <tbody class="bg-white divide-y divide-gray-200">
+
+                @foreach (var i in ViewBag.Facturas)
+                {
+                    <tr>
+                        <td class="text-left text-xs font-medium ">@i.TipoStatus</td>
+                        <td class="text-left text-xs font-medium ">@i.TipoTipologia</td>
+                        <td class="text-left text-xs font-medium ">@i.Nombre</td>
+                        <td class="text-left text-xs font-medium ">@i.NombreCliente</td>
+                        <td class="text-left text-xs font-medium ">@i.NumProyecto</td>
+                        @foreach (var n in ViewBag.Facturas)
+                        {
+                            <td class="text-left text-xs font-medium ">@n.Neto</td>
+                        }
+                    </tr>
+                }
+                
+
+
+            </tbody>
         </table>
     </div>
 </div>

@@ -13,24 +13,24 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 <tr id="facturacionObjetivo">
-                    <td>Facturación Objetivo</td>
-                    <td class="year-cell"></td>
-                    <td class="factura-total text-right" ></td>
+                    <td class="text-xs font-medium">Facturación Objetivo</td>
+                    <td class="year-cell text-xs font-medium"></td>
+                    <td class="factura-total text-right text-xs font-medium"></td>
                 </tr>
                 <tr id="facturacionPromedio">
-                    <td>Facturación Promedio Por Cliente</td>
-                    <td class="year-cell"></td>
-                    <td class="factura-total text-right"></td>
+                    <td class="text-xs font-medium">Facturación Promedio Por Cliente</td>
+                    <td class="year-cell text-xs font-medium"></td>
+                    <td class="factura-total text-right text-xs font-medium"></td>
                 </tr>
                 <tr>
-                    <td>Tasa De Cierre De Negocio Por Cliente Contactado</td>
-                    <td class="year-cell"></td>
-                    <td class="text-right">50 %</td>
+                    <td class="text-xs font-medium">Tasa De Cierre De Negocio Por Cliente Contactado</td>
+                    <td class="year-cell text-xs font-medium"></td>
+                    <td class="text-right text-xs font-medium">50 %</td>
                 </tr>
                 <tr id="duracionMedia">
-                    <td>Duración Media Proyectos</td>
-                    <td class="year-cell"></td>
-                    <td class="factura-total text-right"></td>
+                    <td class="text-xs font-medium">Duración Media Proyectos</td>
+                    <td class="year-cell text-xs font-medium"></td>
+                    <td class="factura-total text-xs font-medium text-right"></td>
                 </tr>
             </tbody>
         </table>
@@ -51,32 +51,32 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 <tr>
-                    <td>Q1</td>
-                    <td class="facturaq1 text-right"></td>
-                    <td class=" text-right"></td>
-                    <td class=" text-right"></td>
-                    <td class=" text-right"></td>
+                    <td class="text-xs font-medium">Q1</td>
+                    <td class="facturaq1 text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
                 </tr>
                 <tr>
-                    <td>Q2</td>
-                    <td class="facturaq2  text-right"></td>
-                    <td class="text-right"></td>
-                    <td class=" text-right"></td>
-                    <td class=" text-right"></td>
+                    <td class="text-xs font-medium">Q2</td>
+                    <td class="facturaq2 text-xs font-medium  text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
                 </tr>
                 <tr>
-                    <td>Q3</td>
-                    <td class="facturaq3  text-right"></td>
-                    <td class=" text-right"></td>
-                    <td class=" text-right"></td>
-                    <td class=" text-right"></td>
+                    <td class="text-xs font-medium">Q3</td>
+                    <td class="facturaq3 text-xs font-medium  text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
                 </tr>
                 <tr>
-                    <td>Q4</td>
-                    <td class="facturaq4  text-right"></td>
-                    <td class=" text-right"></td>
-                    <td class=" text-right"></td>
-                    <td class=" text-right"></td>
+                    <td class="text-xs font-medium">Q4</td>
+                    <td class="facturaq4 text-xs font-medium  text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
+                    <td class="text-xs font-medium text-right"></td>
                 </tr>
             </tbody>
         </table>
@@ -113,7 +113,7 @@
         anio += 1;
     }
 
-    // Completa las celdas de año
+    
     $(".year-cell").text(anio);
 
     // Realizar la solicitud AJAX
@@ -145,7 +145,7 @@
                         $(".facturaq3").text(montoQ3.toLocaleString("es-ES"));
                         $(".facturaq4").text(montoQ4.toLocaleString("es-ES"));
 
-                        // Dividir cada monto trimestral por 3 y colocar el resultado en la segunda columna
+                 
                         $(".facturaq1").next().text(Math.round(montoQ1 / 3).toLocaleString("es-ES"));
                         $(".facturaq2").next().text(Math.round(montoQ2 / 3).toLocaleString("es-ES"));
                         $(".facturaq3").next().text(Math.round(montoQ3 / 3).toLocaleString("es-ES"));
@@ -184,11 +184,11 @@
 
                             const totalesRow = `
                                 <tr>
-                                    <td><strong>Totales</strong></td>
-                                    <td class='text-right'>${totalFacturasQ.toLocaleString("es-ES")}</td>
-                                        <td class='text-right'>${totalFacturasMes.toLocaleString("es-ES")}</td>
-                                        <td class='text-right'>${totalClienteMes.toLocaleString("es-ES")}</td>
-                                        <td class='text-right'>${totalClientesProspectados.toLocaleString("es-ES")}</td>
+                                        <td class="text-xs font-medium"><strong>Totales</strong></td>
+                                        <td class='text-right text-xs font-medium'>${totalFacturasQ.toLocaleString("es-ES")}</td>
+                                            <td class='text-right text-xs font-medium'>${totalFacturasMes.toLocaleString("es-ES")}</td>
+                                            <td class='text-right text-xs font-medium'>${totalClienteMes.toLocaleString("es-ES")}</td>
+                                            <td class='text-right text-xs font-medium'>${totalClientesProspectados.toLocaleString("es-ES")}</td>
                                 </tr>
                             `;
                             $("#facturasTable2 tbody").append(totalesRow);
@@ -202,7 +202,7 @@
                             let meses = [];
 
                 
-                            const clientesProspectadosRow = $("<tr></tr>").append("<td>Clientes Prospectados</td>");
+                            const clientesProspectadosRow = $("<tr></tr>").append("<td class='text-xs font-medium'>Clientes Prospectados</td>");
                             const totalProspectadosPorMes = [
                                 Math.round(valorQ1 / 3 / tasaCierre), 
                                 Math.round(valorQ1 / 3 / tasaCierre), 
@@ -222,19 +222,19 @@
                             let totalClientesProspectadoss = 0;
                             totalProspectadosPorMes.forEach((valor) => {
                                 const mesValor = Math.round(valor); 
-                                clientesProspectadosRow.append(`<td class='text-right'>${mesValor.toLocaleString("es-ES")}</td>`);
+                                clientesProspectadosRow.append(`<td class='text-right text-xs font-medium'>${mesValor.toLocaleString("es-ES")}</td>`);
                                 totalClientesProspectadoss += mesValor;
                             });
-                            clientesProspectadosRow.append(`<td colspan='4' class='text-right'>${totalClientesProspectadoss.toLocaleString("es-ES")}</td>`);
+                            clientesProspectadosRow.append(`<td colspan='4' class='text-right text-xs font-medium'>${totalClientesProspectadoss.toLocaleString("es-ES")}</td>`);
                           
                             $("#facturasTable3 tbody").append(clientesProspectadosRow);
                         
-                            const cierreNegociosRow = $("<tr></tr>").append("<td>Cierre de Negocios</td>");
+                            const cierreNegociosRow = $("<tr></tr>").append("<td class='text-xs font-medium'>Cierre de Negocios</td>");
 
                       
-                            cierreNegociosRow.append("<td class='text-right' colspan='2'></td>"); 
+                            cierreNegociosRow.append("<td class='text-right text-xs font-medium' colspan='2'></td>");
 
-                 
+
                             const cierreNegociosPorMes = [];
 
                       
@@ -260,20 +260,20 @@
 
                      
                             let totalCierreNegocios = 0;
-                            cierreNegociosRow.append(`<td class='text-right '>${cierreNegociosPorMes[0].toLocaleString("es-ES")}</td>`); // Diciembre 2024
+                            cierreNegociosRow.append(`<td class='text-right text-xs font-medium'>${cierreNegociosPorMes[0].toLocaleString("es-ES")}</td>`); // Diciembre 2024
 
                      
                             for (let i = 1; i < cierreNegociosPorMes.length; i++) {
-                                cierreNegociosRow.append(`<td class='text-right '>${cierreNegociosPorMes[i].toLocaleString("es-ES")}</td>`); // Los demás meses
+                                cierreNegociosRow.append(`<td class='text-right text-xs font-medium'>${cierreNegociosPorMes[i].toLocaleString("es-ES")}</td>`); // Los demás meses
                                 totalCierreNegocios += cierreNegociosPorMes[i];
                             }
                             totalCierreNegocios += cierreNegociosPorMes[0];
-                            cierreNegociosRow.append(`<td colspan='2' class='text-right '>${totalCierreNegocios.toLocaleString("es-ES")}</td>`);
+                            cierreNegociosRow.append(`<td colspan='2' class='text-right text-xs font-medium'>${totalCierreNegocios.toLocaleString("es-ES")}</td>`);
            
                             $("#facturasTable3 tbody").append(cierreNegociosRow);
 
 
-                            const filaMontoPromedio = $("<tr></tr>").append("<td colspan='3'>Monto Promedio Cierre Mensual</td>");
+                            const filaMontoPromedio = $("<tr></tr>").append("<td colspan='3' class='text-xs font-medium'>Monto Prom. Cierre Mens.</td>");
 
                
                             const valorPromedioFacturacion = Number($("#facturacionPromedio .factura-total").text().replace(/\./g, '').replace(',', '.')); // Formato correcto
@@ -301,10 +301,10 @@
                             negociosMensuales.forEach((valorMensual) => {
                        
                                 const montoPromedioCierre = (valorMensual * valorPromedioFacturacion).toLocaleString("es-ES");
-                                filaMontoPromedio.append(`<td class='text-right'>${montoPromedioCierre}</td>`);
+                                filaMontoPromedio.append(`<td class='text-right text-xs font-medium'>${montoPromedioCierre}</td>`);
                                 totalMontoPromedio += valorMensual * valorPromedioFacturacion;
                             });
-                            filaMontoPromedio.append(`<td colspan='2' class='text-right '>${totalMontoPromedio.toLocaleString("es-ES")}</td>`);
+                            filaMontoPromedio.append(`<td colspan='2' class='text-right text-xs font-medium'>${totalMontoPromedio.toLocaleString("es-ES")}</td>`);
             
                             $("#facturasTable3 tbody").append(filaMontoPromedio);
 
