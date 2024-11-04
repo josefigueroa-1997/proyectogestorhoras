@@ -1,11 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Agregar Personal";
+    ViewData["Title"] = "Editar Usuario";
 }
 <style>
     body {
         font-family: 'Montserrat', sans-serif;
         background-color: #f5f5f5;
     }
+
+    .change-password-btn {
+        position: absolute;
+        top: 120px;
+        right: 20px;
+        padding: 10px 15px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: #007bff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .change-password-btn:hover {
+            background-color: #0056b3;
+        }
 
     .form-container {
         max-width: 600px;
@@ -14,6 +32,7 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
     }
 
     .form-title {
@@ -75,6 +94,7 @@
     {
         @foreach (var usuario in ViewBag.Usuario)
         {
+            <a href="@Url.Action("EditarContrasena","Usuario",new{idusuario=usuario.Id})" class="change-password-btn">Cambiar Contraseña</a>
             <form action="@Url.Action("ActualizarDatos","Usuario")" method="post" enctype="multipart/form-data">
                 <!-- Nombre -->
                 <input type="hidden" name="idusuario" value="@usuario.Id" />

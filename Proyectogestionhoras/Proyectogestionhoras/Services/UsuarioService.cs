@@ -112,6 +112,35 @@ namespace Proyectogestionhoras.Services
         }
 
 
+        public async Task<bool> CambiarContrasena(Usuario usuario)
+        {
+            try
+            {
+                if(usuario == null)
+                {
+                    return false;
+                }
+
+                var user = await context.Usuarios.FindAsync(usuario.Id);
+                if (user == null)
+                {
+                    return false; 
+                }
+                string contraencriptada = EncriptarContrasena(usuario.Contrasena);
+                user.Contrasena = contraencriptada;
+                context.Usuarios.Update(user);
+                await context.SaveChangesAsync();
+                return true;
+
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al cambiar la contraseña:{e.Message}");
+                return false;
+            }
+        }
+
+
         public async Task<List<UsuarioDTO>> ObtenerUusario(int? id, string? nombre, int? id_recurso)
         {
             try

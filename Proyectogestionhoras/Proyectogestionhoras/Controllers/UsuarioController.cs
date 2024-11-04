@@ -46,12 +46,37 @@ namespace Proyectogestionhoras.Controllers
             var usuario = await _usuarioService.ObtenerUusario(idusuario,nombre,idrecurso);
             if (usuario == null)
             {
-                return NotFound(); // Esto es útil para manejar errores
+                return NotFound(); 
             }
             ViewBag.Usuario = usuario;
             return View("EditarUsuario");
         }
 
+        public async Task<IActionResult> EditarContrasena(int? idusuario, string? nombre, int? idrecurso)
+        {
+            var usuario = await _usuarioService.ObtenerUusario(idusuario, nombre, idrecurso);
+            ViewBag.Usuario = usuario;
+            return View();
+        }
+
+        public IActionResult ConfirmationSuccessfullPass()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActualizarContrasena(Usuario usuario)
+        {
+            bool resultado = await _usuarioService.CambiarContrasena(usuario);
+            if (resultado)
+            {
+                return RedirectToAction("ConfirmationSuccessfullPass");
+            }
+            else
+            {
+                return View();
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> RegistrarUsuario(string nombre, string rut, string telefono, string email, int idrol, string nombrerecurso, int? numhoras, decimal costounitario, float? porcentajehoras, DateTime? fechainicio, DateTime? fechafin)

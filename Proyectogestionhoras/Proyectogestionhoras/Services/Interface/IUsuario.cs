@@ -14,5 +14,7 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<HH_AsignaciónDTO>> RecuperarHHUsuarios(int idusuario, int idproyecto);
         public Task<List<StockHorasDTO>> ConsultaStockHoras(int idusuario);
 
+        public Task<bool> CambiarContrasena(Usuario usuario);
+
     }
 }

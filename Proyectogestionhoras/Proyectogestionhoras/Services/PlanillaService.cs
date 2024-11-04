@@ -47,13 +47,13 @@ namespace Proyectogestionhoras.Services
                 {
                     return 2;
                 }
-                var proyecto = ObtenerProyectoPorUsuarioProyectoId(idusuproy);
+               /* var proyecto = ObtenerProyectoPorUsuarioProyectoId(idusuproy);
                 DateTime fechainicio = proyecto.FechaInicio;
                 DateTime fechatermino = proyecto.FechaTermino;
                 if (Fecharegistro < fechainicio || Fecharegistro > fechatermino)
                 {
                     return 4;
-                }
+                }*/
                 decimal horasAsignadasDecimal;
                 if (!decimal.TryParse(horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
                 {
@@ -175,13 +175,13 @@ namespace Proyectogestionhoras.Services
                                 }
 
 
-                                decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
+                               /* decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
                                 Debug.WriteLine(totalpermitidossemana);
                                 if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
                                 {
                                     Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
                                     return 3;
-                                }
+                                }*/
                                 
 
 

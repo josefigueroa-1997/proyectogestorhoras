@@ -9,6 +9,7 @@
     .dashboard-container {
         padding: 0; 
         background-color: transparent; 
+        margin-top: 50px;
     }
 
 
@@ -17,7 +18,8 @@
         padding: 20px; 
         margin-bottom: 20px; 
         border-radius: 10px; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
     }
 
 
@@ -33,8 +35,8 @@
       
 </style>
 
-    
-        <h2 class="section-header">Key Indicators</h2>
+
+<h2 style="margin-top: 50px;" class="section-header">Key Indicators</h2>
         <div class="section-content">
             <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
                 <div class="card">

@@ -15,47 +15,54 @@
 <body class="bg-gray-100">
     <!-- Top Panel (New Header) -->
     <header class="shadow">
-        <div class="container mx-auto flex justify-between items-center">
-            <!-- Logo -->
-            <div class="logo flex items-center">
-                <img src="~/images/logo.PNG" alt="Logo" class="h-12">
+        <div class="container mx-auto flex flex-col">
+            <!-- Encabezado adicional -->
+            <div class="header-title w-full flex items-center justify-center py-2">
+                <!-- Logo -->
+                <img src="~/images/logo.PNG" alt="Logo" class="h-10 mr-4">
+                <!-- Título -->
+                <p class="text-lg font-semibold">Dashboard: Plataforma de Control y Gestión de Proyectos</p>
             </div>
-            @{
-                int? idrol = Context.Session.GetInt32("idrol");
-            }
-            <!-- Navigation Menu -->
-            <nav class="flex-grow">
-                <ul class="menu-items">
-                    @if (idrol == 1)
-                    {
-                        <li><a href="@Url.Action("Index","Home")">Dashboard</a></li>
-                        <li><a href="@Url.Action("GetProyectos","Proyecto")">Proyectos</a></li>
-                        <li><a href="@Url.Action("NuestrosClientes","Cliente")">Clientes</a></li>
-                        <li><a href="@Url.Action("GetProyectosCategoria","Proyecto")">U.Negocio-C.Costo-Tipologías</a></li>
-                        <li><a href="@Url.Action("PlanillaRegistro","Planilla")">Control HH </a></li>
-                        <li><a href="@Url.Action("TodosReportes","Reporte")">Reportes</a></li>
-                        <li><a href="@Url.Action("MetasFunciones","Metas")">Metas</a></li>
-                        <li><a href="@Url.Action("TodoslosParametros","Parametros")">Parametros</a></li>
-                       
-                    }
-                    else
-                    {
-                        <li><a href="@Url.Action("PlanillaRegistro","Planilla")">Control HH </a></li>
-                        
-                    }
 
-                </ul>
-            </nav>
-            @{
-                string? nombre = Context.Session.GetString("nombre");
-            }
-            <!-- User Profile -->
-            <div class="user-profile">
-                <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
-                <div class="dropdown-menu" id="userMenu">
-                    <p style="text-align:center">Hola,@nombre</p>
-                   
-                    <a href="@Url.Action("Logout","Usuario")">Cerrar sesión</a>
+            <!-- Contenido Principal del Header -->
+            <div class="flex justify-between items-center w-full">
+                <!-- Logo -->
+                <div class="logo flex items-center">
+                    <img src="~/images/logo.PNG" alt="Logo" class="h-12">
+                </div>
+                @{
+                    int? idrol = Context.Session.GetInt32("idrol");
+                }
+                <!-- Navigation Menu -->
+                <nav class="flex-grow">
+                    <ul class="menu-items">
+                        @if (idrol == 1)
+                        {
+                            <li><a href="@Url.Action("Index","Home")">Ingreso</a></li>
+                            <li><a href="@Url.Action("GetProyectos","Proyecto")">Proyectos</a></li>
+                            <li><a href="@Url.Action("NuestrosClientes","Cliente")">Clientes</a></li>
+                            <li><a href="@Url.Action("GetProyectosCategoria","Proyecto")">U.Negocio-C.Costo-Tipologías</a></li>
+                            <li><a href="@Url.Action("PlanillaRegistro","Planilla")">Control HH </a></li>
+                            <li><a href="@Url.Action("TodosReportes","Reporte")">Reportes</a></li>
+                            <li><a href="@Url.Action("MetasFunciones","Metas")">Metas</a></li>
+                            <li><a href="@Url.Action("TodoslosParametros","Parametros")">Parametros</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("PlanillaRegistro","Planilla")">Control HH </a></li>
+                        }
+                    </ul>
+                </nav>
+                @{
+                    string? nombre = Context.Session.GetString("nombre");
+                }
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
+                    <div class="dropdown-menu" id="userMenu">
+                        <p style="text-align:center">Hola, @nombre</p>
+                        <a href="@Url.Action("Logout","Usuario")">Cerrar sesión</a>
+                    </div>
                 </div>
             </div>
         </div>

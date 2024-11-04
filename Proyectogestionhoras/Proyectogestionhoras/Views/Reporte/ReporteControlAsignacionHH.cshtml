@@ -6,9 +6,9 @@
     string? numproyecto = Context.Session.GetString("numproyecto");
     string? nombreproyecto = Context.Session.GetString("nombreproyecto");
 }
-<h2 class="text-2xl font-bold mb-4">Control Avance HH Proyecto:@numproyecto - @nombreproyecto</h2>
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Control Avance HH Proyecto:@numproyecto - @nombreproyecto</h2>
 <button id="exportBtn" class="bg-green-500 text-white py-2 px-4 rounded">Exportar a Excel</button>
-<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+<div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <h2>Socios</h2>
         <table id="facturasTableSocios" class="min-w-full divide-y divide-gray-200">

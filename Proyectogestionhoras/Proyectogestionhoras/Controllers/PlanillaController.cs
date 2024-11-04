@@ -296,14 +296,14 @@ namespace Proyectogestionhoras.Controllers
                 {
                     yaSeRegistraronHoras = true;
                 }
-                else if (resultado == 3)
+               /* else if (resultado == 3)
                 {
                     horasExcedidas = true;
                 }
                 else if(resultado == 4)
                 {
                     fechafuerarango = true;
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -319,14 +319,14 @@ namespace Proyectogestionhoras.Controllers
             {
                 return Json(new { success = false, message = "Ya se han registrado horas para esta actividad en este proyecto durante esta fecha." });
             }
-          else if (horasExcedidas)
+          /*else if (horasExcedidas)
             {
                 return Json(new { success = false, message = "No se pueden registrar más horas en esta semana, se ha excedido el límite permitido." });
             }
             else if (fechafuerarango)
             {
                 return Json(new { success = false, message = "Error en el registro.La fecha de registro tiene que estar en el rango de fecha de la ejecución del proyecto." });
-            }
+            }*/
             else
             {
                 return Json(new { success = false, message = "Ocurrió un error inesperado." });

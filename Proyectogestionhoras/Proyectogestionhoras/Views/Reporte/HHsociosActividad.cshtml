@@ -8,7 +8,7 @@
     var sociosInvertidos = Model.OrderByDescending(s => s.NombreSocio).ToList();
 }
 
-<div class="container mx-auto p-4">
+<div class="container mx-auto p-4" style="margin-top: 50px;">
     <h1 class="text-xl font-bold mb-4 text-center">Actividades Socios</h1>
     <h1 class="text-xl font-bold mb-4 text-center">Mes: @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(@DateTime.Now.Month)</h1>
     <button onclick="exportToExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>

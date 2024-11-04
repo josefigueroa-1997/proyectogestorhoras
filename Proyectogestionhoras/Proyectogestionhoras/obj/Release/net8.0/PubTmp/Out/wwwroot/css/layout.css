@@ -15,7 +15,20 @@ header {
     display: flex;
     align-items: center;
 }
+.header-title {
+    background-color: #f7f6f5;
+    border-bottom: 2px solid #ccc;
+    color: #333;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+}
 
+/* Ajuste la posición del contenido principal */
+.main-content {
+    margin-top: 200px; /* Ajuste suficiente para la altura total del encabezado */
+    padding: 20px;
+}
 nav ul {
     display: flex;
     justify-content: space-between;

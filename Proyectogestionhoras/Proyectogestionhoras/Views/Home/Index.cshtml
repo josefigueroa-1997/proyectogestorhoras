@@ -29,7 +29,7 @@
 
   </div>
     <!-- Modal para agregar nuevo cliente  -->
-    <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 70px;">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
             <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
             <form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
@@ -109,7 +109,7 @@
         </div>
     </div>
     <!-- Modal para mostrar el mensaje de éxito -->
-    <div id="successModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
+    <div id="successModal" style="margin-top: 70px;" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
             <p>@TempData["SuccessMessage"]</p>
