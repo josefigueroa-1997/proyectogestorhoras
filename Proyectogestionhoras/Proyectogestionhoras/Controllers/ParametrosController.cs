@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models;
+using Proyectogestionhoras.Services;
 using System.Diagnostics;
 
 namespace Proyectogestionhoras.Controllers
@@ -9,10 +10,11 @@ namespace Proyectogestionhoras.Controllers
     public class ParametrosController : Controller
     {
         private readonly PROYECTO_CONTROL_HORASContext context;
-
-        public ParametrosController(PROYECTO_CONTROL_HORASContext context)
+        private readonly BonoService bonoService;
+        public ParametrosController(PROYECTO_CONTROL_HORASContext context,BonoService bonoService)
         {
             this.context = context;
+            this.bonoService = bonoService;
         }
 
         public IActionResult TodoslosParametros()
@@ -197,28 +199,38 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> GestorBonos(int anio)
         {
-            var bonos = await context.Bonos.Where(b=>b.Anio==anio).ToListAsync();
-            var promedioquarter = await TraerMontoPromedioQuarter(anio);
-            ViewBag.Promedioquarter = promedioquarter;
+            var bonos = await bonoService.RecuperarDatosBonos(anio);
+            var montoactual = ObtenerMontoTrimestreActual(anio);
             ViewBag.Bonos = bonos;
+            ViewBag.Metaq = montoactual;
             return View();
         }
 
 
-        public async Task<decimal?> TraerMontoPromedioQuarter(int anio)
+        public decimal? ObtenerMontoTrimestreActual(int anio)
         {
-            var facturacion = await context.MetaFacturacionesqxes
-           .Where(m => m.Anio == anio)
-           .Select(m => new { m.MontoQ1, m.MontoQ2, m.MontoQ3, m.MontoQ4 })
-           .FirstOrDefaultAsync();
+         
+            int mesActual = DateTime.Now.Month;
+            int trimestreActual = (mesActual + 2) / 3; 
 
-            if (facturacion != null)
-            {
-                decimal? promedio = (facturacion.MontoQ1 + facturacion.MontoQ2 + facturacion.MontoQ3 + facturacion.MontoQ4) / 4;
-                return promedio;
-            }
+           
+                var registro = context.MetaFacturacionesqxes
+                                     .FirstOrDefault(m => m.Anio == anio);
 
-            return 0; 
+                if (registro != null)
+                {
+                    
+                    switch (trimestreActual)
+                    {
+                        case 1: return registro.MontoQ1;
+                        case 2: return registro.MontoQ2;
+                        case 3: return registro.MontoQ3;
+                        case 4: return registro.MontoQ4;
+                        default: return null;
+                    }
+                }
+                return null;
+            
         }
 
         [HttpPost]
@@ -228,20 +240,26 @@ namespace Proyectogestionhoras.Controllers
             {
                 return BadRequest("El Bono es nulo.");
             }
-                var bonoexistente = await context.Bonos.FindAsync(bonos.Id);
-                if (bonoexistente == null)
-                {
-                    return NotFound("Bono no encontrado.");
-                }
 
-                bonoexistente.Monto = bonos.Monto;
-                
-                context.Bonos.Update(bonoexistente);
             
+            var bonosExistentes = await context.Bonos
+                .Where(b => b.Anio == bonos.Anio && b.Porcentaje == bonos.Porcentaje)
+                .ToListAsync();
 
+            if (!bonosExistentes.Any())
+            {
+                return NotFound("No se encontraron bonos que actualizar.");
+            }
 
+            
+            foreach (var bono in bonosExistentes)
+            {
+                bono.Monto = bonos.Monto; 
+            }
+            context.Bonos.UpdateRange(bonosExistentes);
             await context.SaveChangesAsync();
-            return RedirectToAction("GestorBonos", new {anio = DateTime.Now.Year});
+
+            return RedirectToAction("GestorBonos", new { anio = DateTime.Now.Year });
         }
 
         /*Segmentos*/

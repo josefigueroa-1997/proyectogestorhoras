@@ -6,7 +6,7 @@
 <div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; display: flex; justify-content: space-between;">
     <div style="width: 60%;">
         <h2 style="text-align: center; color: #333;">Bonos Socios</h2>
-        <h2 style="text-align: center; color: #333;">Meta Q:@String.Format("{0:N2}", @ViewBag.Promedioquarter)  - @DateTime.Now.Year</h2>
+        <h2 style="text-align: center; color: #333;">Meta Q:@String.Format("{0:N0}",@ViewBag.Metaq) - Año:@DateTime.Now.Year</h2>
 
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
             <thead>
@@ -30,7 +30,7 @@
                                 </button>
                             </td>
                             <td style="padding: 5px; border: 1px solid #ddd;">
-                                Menor a @String.Format("{0:N2}", @ViewBag.Promedioquarter)
+                        Menor a @String.Format("{0:N0}", @ViewBag.Metaq)
                             </td>
                                 
                             <td style="padding: 5px; border: 1px solid #ddd;text-align:right;">
@@ -55,20 +55,23 @@
                     <tr>
                         <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
                             <button type="button"
-                                    onclick="cargarDatosAlternativa('@Html.Encode(bonos.Id)','@Html.Encode(bonos.Monto)')">
+                                    onclick="cargarDatosAlternativa('@Html.Encode(bonos.Anio)','@Html.Encode(bonos.Porcentaje)','@Html.Encode(bonos.Monto)')">
                                 Seleccionar
                             </button>
                         </td>
                         <td style="padding: 5px; border: 1px solid #ddd;">
-                            @bonos.Porcentaje %
+                            @{
+                                decimal porcentajereal = bonos.Porcentaje * 100;
+                            }
+                            @porcentajereal %
                         </td>
                         <td style="padding: 5px; border: 1px solid #ddd;">
-                            @String.Format("{0:N2}", @bonos.Valorreal)
+                            @String.Format("{0:N1}", @bonos.ValorReal)
                         </td>
-                        @if (bonos.Valorfinal > 0)
+                        @if (bonos.ValorFinal > 0)
                         {
                             <td style="padding: 5px; border: 1px solid #ddd;">
-                                @String.Format("{0:N2}", @bonos.Valorfinal)
+                                @String.Format("{0:N1}", @bonos.ValorFinal)
                             </td>
                         }
                         else
@@ -78,13 +81,13 @@
                             </td>
                         }
                         <td style="padding: 5px; border: 1px solid #ddd;">
-                            @String.Format("{0:N2}", @bonos.Monto)
+                            @String.Format("{0:N0}", @bonos.Monto)
                         </td>
                         <td style="padding: 5px; border: 1px solid #ddd;">
-                            @String.Format("{0:N2}", @bonos.Monto)
+                            @String.Format("{0:N0}", @bonos.Monto)
                         </td>
                         <td style="padding: 5px; border: 1px solid #ddd;">
-                            @String.Format("{0:N2}", @bonos.Monto)
+                            @String.Format("{0:N0}", @bonos.Monto)
                         </td>
                     </tr>
                
@@ -98,8 +101,8 @@
         <h2 style="text-align: center; color: #333;">Editar Bono</h2>
 
         <form action="@Url.Action("ActualizarBonos", "Parametros")" method="post">
-            <input type="hidden" id="id" name="Id" />
-
+            <input type="hidden" id="anio" name="Anio" />
+            <input type="hidden" id="porcentaje" name="Porcentaje" />
            
             <label for="idcuenta" style="display: block; margin-bottom: 10px;">Monto Bono por Socio:</label>
             <input disabled type="text" id="monto" name="monto" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;text-align:right;" required>
@@ -116,12 +119,14 @@
 </div>
 
 <script>
-    function cargarDatosAlternativa(id,monto) {
-        const idInput = document.querySelector('#id');
+    function cargarDatosAlternativa(anio,porcentaje,monto) {
+       const anioInput = document.querySelector('#anio');
+        const porcentajeInput = document.querySelector('#porcentaje');
         const idcuentaInput = document.querySelector('#monto');
-        
 
-        idInput.value = id;
+
+        anioInput.value = anio;
+        porcentajeInput.value = porcentaje;
         idcuentaInput.value = monto;
         idcuentaInput.disabled = false;
         
