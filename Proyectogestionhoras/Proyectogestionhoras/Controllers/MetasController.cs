@@ -26,7 +26,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                         return View();
                     }
@@ -49,7 +49,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                         var datos = await _metaService.GetMetaFacturacionqx(0);
                         var tipologias = await _metaService.GetMetasTipologias(0);
@@ -76,7 +76,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                         var datosmetafactura = await _metaService.GetMetaFacturacionqx(id);
 
@@ -102,7 +102,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                         var datosmetatipologia = await _metaService.GetMetasTipologias(id);
                         return View(datosmetatipologia);

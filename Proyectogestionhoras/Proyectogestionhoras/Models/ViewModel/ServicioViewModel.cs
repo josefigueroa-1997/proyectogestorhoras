@@ -6,7 +6,7 @@
         public int IdSegmento { get; set; }        
         public decimal MontoServicio { get; set; }
         public DateTime Fecha { get; set; }
-
+        public bool EsEliminado { get; set; }
 
     }
 }

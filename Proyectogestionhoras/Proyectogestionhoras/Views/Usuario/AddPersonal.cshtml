@@ -108,6 +108,7 @@
                 <option value="Socio">Socio</option>
                 <option value="Staff" >Staff</option>
                 <option value="Consultor Externo">Consultor Externo</option>
+                <option value="Administrador MyCFO">Administrador MyCFO</option>
             </select>
         </div>
 
@@ -137,7 +138,7 @@
         </div>
         <!-- Tipo de Usuario (Select) -->
         <div class="form-group">
-            <label for="tipoUsuario">Tipo de Usuario</label>
+            <label for="tipoUsuario">Tipo de Usuario del Sistema</label>
             <select id="tipoUsuario" name="idrol" required>
                 <option value="" disabled selected>Seleccione un tipo de usuario</option>
                 @foreach(var rol in ViewBag.Roles)
@@ -217,6 +218,7 @@
         const porcentajeInput = document.getElementById('porcentaje').parentElement;
         const fechainicioInput = document.getElementById('desde').parentElement
         const fechafinInput = document.getElementById('hasta').parentElement
+        const costoInput = document.getElementById('costoUnitario').parentElement
         // Función para mostrar/ocultar los inputs en función del valor seleccionado
         function toggleInputs() {
             const selectedValue = tipopersonal.value;
@@ -227,13 +229,34 @@
                 porcentajeInput.style.display = 'none';
                 fechainicioInput.style.display = 'none';
                 fechafinInput.style.display = 'none';
-            } else {
+                const costoInputField = costoInput.querySelector('input');
+                costoInputField.value = "";
+                costoInputField.readOnly = false;
+            }
+            else if (selectedValue == "Administrador MyCFO"){
+                numerohorasInput.style.display = 'none';
+                porcentajeInput.style.display = 'none';
+                fechainicioInput.style.display = 'none';
+                fechafinInput.style.display = 'none';
+                costoInput.style.display = 'block';
+                const costoInputField = costoInput.querySelector('input'); // Selecciona el input dentro del div
+                costoInputField.value = 0;
+                costoInputField.readOnly = true; // Aplica readonly al input
+
+            }
+            
+            
+            else {
 
                 numerohorasInput.style.display = 'block';
                 porcentajeInput.style.display = 'block';
                 fechainicioInput.style.display = 'block';
                 fechafinInput.style.display = 'block';
+                const costoInputField = costoInput.querySelector('input');
+                costoInputField.value = "";
+                costoInputField.readOnly = false;
             }
+            
         }
         tipopersonal.addEventListener('change', toggleInputs);
         toggleInputs();

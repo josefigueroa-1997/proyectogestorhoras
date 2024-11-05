@@ -6,6 +6,8 @@ using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
 using iText.Bouncycastle.Crypto;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyectogestionhoras.Services
 {
@@ -800,6 +802,80 @@ namespace Proyectogestionhoras.Services
 
                 Debug.WriteLine($"Hubo un error al obtener el resumen de los quarters:" + ex.Message);
                 return new List<ReportQuarterDTO>();
+
+            }
+        }
+
+        public async Task<List<BasedeDatosDTO>> ExportarBasedeDatos()
+        {
+            try
+            {
+
+                var proyectos = new List<BasedeDatosDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = "DESCARGARBASEDEDATOS";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                  
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            BasedeDatosDTO proyecto = new()
+                            {
+
+                                Id = reader.IsDBNull(reader.GetOrdinal("ID")) ? 0 : reader.GetInt32(reader.GetOrdinal("ID")),
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUM_PROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
+                                Unegocio = reader.IsDBNull(reader.GetOrdinal("TIPO_UNEGOCIO")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_UNEGOCIO")),
+                                CCosto = reader.IsDBNull(reader.GetOrdinal("TIPO_CCOSTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_CCOSTO")),
+                                Codigo = reader.IsDBNull(reader.GetOrdinal("CODIGO")) ? string.Empty : reader.GetString(reader.GetOrdinal("CODIGO")),
+                                Cliente = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
+                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                Tipologia = reader.IsDBNull(reader.GetOrdinal("TIPO_TIPOLOGIA")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
+                                Empresa = reader.IsDBNull(reader.GetOrdinal("TIPO_EMPRESA")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_EMPRESA")),
+                                AfectaIva = reader.IsDBNull(reader.GetOrdinal("AFECTAIVA")) ? string.Empty : reader.GetString(reader.GetOrdinal("AFECTAIVA")),
+                                Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0m : reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                Moneda = reader.IsDBNull(reader.GetOrdinal("MONEDA")) ? string.Empty : reader.GetString(reader.GetOrdinal("MONEDA")),
+                                Status = reader.IsDBNull(reader.GetOrdinal("TIPO_STATUS")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_STATUS")),
+                                Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
+                                Porcentaje = reader.IsDBNull(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")) ? 0m : reader.GetDecimal(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")),
+                                Plazo = reader.IsDBNull(reader.GetOrdinal("PLAZO")) ? 0 : reader.GetInt32(reader.GetOrdinal("PLAZO")),
+                                Fechainicio = reader.IsDBNull(reader.GetOrdinal("FECHA_INICIO")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")),
+                                Fechatermino = reader.IsDBNull(reader.GetOrdinal("FECHA_TERMINO")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")),
+                                FechaPlazo = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
+                                Departamento = reader.IsDBNull(reader.GetOrdinal("NOMBREDEPARTAMENTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREDEPARTAMENTO")),
+                                HHsocios = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
+                                HHstaff = reader.IsDBNull(reader.GetOrdinal("HH_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_STAFF")),
+                                HHConsultorA = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTORA")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTORA")),
+                                HHConsultorB = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTORB")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTORB")),
+                                HHConsultorC = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTORC")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTORC")),
+                                Costosocios = reader.IsDBNull(reader.GetOrdinal("COSTOSOCIOS")) ? 0m : reader.GetDecimal(reader.GetOrdinal("COSTOSOCIOS")),
+                                Costostaff = reader.IsDBNull(reader.GetOrdinal("COSTOSSTAFF")) ? 0m : reader.GetDecimal(reader.GetOrdinal("COSTOSSTAFF")),
+                                CostoconsultorA = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORA")) ? 0m : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORA")),
+                                CostoconsultorB = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORB")) ? 0m : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORB")),
+                                CostoconsultorC = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORC")) ? 0m : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORC")),
+                                TotalServicios = reader.IsDBNull(reader.GetOrdinal("TOTALSERVICIO")) ? 0m : reader.GetDecimal(reader.GetOrdinal("TOTALSERVICIO")),
+                                TotalGastos = reader.IsDBNull(reader.GetOrdinal("TOTALGASTOS")) ? 0m : reader.GetDecimal(reader.GetOrdinal("TOTALGASTOS")),
+                                
+
+
+                            };
+
+                            proyectos.Add(proyecto);
+                            Debug.WriteLine(proyecto.CCosto);
+                            Debug.WriteLine(proyecto.AfectaIva);
+                        }
+                    }
+                    await conexion.CloseDatabaseConnectionAsync();
+                    return proyectos;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al descargar la base de datos de los proyectos:{ex.Message}");
+                return new List<BasedeDatosDTO>();
 
             }
         }

@@ -39,7 +39,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                         var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         ViewBag.Proyectos = proyectos;
@@ -67,7 +67,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                         var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
                         var unegocios = await proyectoService.ObtenerUnegocio();
@@ -215,7 +215,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3) 
                     {
                         var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         var servicios = await proyectoService.ObtenerServiciosProyecto(id);
@@ -336,29 +336,31 @@ namespace Proyectogestionhoras.Controllers
                 var idsegmentoservicioejecucion = Request.Form["idsegmentoservicio"];
                 var montoservicioListejecucion = Request.Form["montoservicio"];
                 var fechaservicioejecucion = Request.Form["fechaservicio"];
+                var esEliminado = Request.Form["esEliminado"];
+
+                // Asegúrate de que todas las listas tengan el mismo tamaño
                 for (int i = 0; i < idsserviciosejecucion.Count; i++)
                 {
-                    var montoservicioStr = montoservicioListejecucion[i].ToString();
-
-                    montoservicioStr = montoservicioStr.Replace(".", "");
-
-                    decimal montoservicio = decimal.Parse(montoservicioStr);
                     var servicioViewModel = new ServicioViewModel
                     {
                         Idservicios = int.Parse(idsserviciosejecucion[i]),
                         IdSegmento = int.Parse(idsegmentoservicioejecucion[i]),
-                        MontoServicio = montoservicio,
+                        MontoServicio = decimal.Parse(montoservicioListejecucion[i].Replace(".", "")),
                         Fecha = DateTime.Parse(fechaservicioejecucion[i]),
+                        EsEliminado = esEliminado[i] == "true" // Aquí es donde agregas esta línea
                     };
 
                     serviciosejecucion.Add(servicioViewModel);
                 }
+
+
 
                 List<GastoViewModel> gastosejecucion = new List<GastoViewModel>();
                 var idgastosejecuion = Request.Form["idgastos[]"];
                 var idsegmentogastoejecucion = Request.Form["idsegmentogasto"];
                 var montogastoListejecucion = Request.Form["montogasto"];
                 var fechagastoejecucion = Request.Form["fechagasto"];
+                var esEliminadogasto = Request.Form["esEliminados"];
                 for (int i = 0; i < idgastosejecuion.Count; i++)
                 {
                     var montogastoStr = montogastoListejecucion[i].ToString();
@@ -372,6 +374,7 @@ namespace Proyectogestionhoras.Controllers
                         IdSegmento = int.Parse(idsegmentogastoejecucion[i]),
                         MontoGasto = montogasto,
                         Fecha = DateTime.Parse(fechagastoejecucion[i]),
+                        EsEliminado = esEliminadogasto[i] == "true",
                     };
 
                     gastosejecucion.Add(gasto);
@@ -392,6 +395,7 @@ namespace Proyectogestionhoras.Controllers
             var idsegmentoservicio = Request.Form["idsegmentoservicio"];
             var montoservicioList = Request.Form["montoservicio"];
             var fechaservicio = Request.Form["fechaservicio"];
+            var esEliminados = Request.Form["esEliminado"];
             for (int i = 0; i < idsservicios.Count; i++)
             {
                 var montoservicioStr = montoservicioList[i].ToString();
@@ -405,6 +409,7 @@ namespace Proyectogestionhoras.Controllers
                     IdSegmento = int.Parse(idsegmentoservicio[i]),
                     MontoServicio = montoservicio,
                     Fecha = DateTime.Parse(fechaservicio[i]),
+                    EsEliminado = esEliminados[i] == "true",
                 };
 
                 servicios.Add(servicioViewModel);
@@ -504,7 +509,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                         var historial = await proyectoService.RecuperarHistorialNegociacion(idproyecto, idnegociacion);
                         ViewBag.Historial = historial;
@@ -759,7 +764,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || rol == 3)
                     {
                      
                         var tipologias = await proyectoService.ObtenerTipoligias();

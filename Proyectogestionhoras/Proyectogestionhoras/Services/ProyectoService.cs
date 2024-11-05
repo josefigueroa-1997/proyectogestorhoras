@@ -174,56 +174,49 @@ namespace Proyectogestionhoras.Services
                 return;
             }
 
-            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+            var serviciosExistentes = await context.ProyectoServicios
+                .Where(ps => ps.IdProyecto == idProyecto)
+                .ToListAsync();
 
-            using (DbCommand command = connection.CreateCommand())
+            // Eliminar servicios marcados como eliminados
+            foreach (var servicio in servicios.Where(s => s.EsEliminado))
             {
-            
-                var serviciosExistentes = await context.ProyectoServicios
-                    .Where(ps => ps.IdProyecto == idProyecto)
-                    .ToListAsync();
+                var servicioExistente = serviciosExistentes
+                    .FirstOrDefault(se => se.IdServicio == servicio.Idservicios && se.Fecha == servicio.Fecha);
 
-                
-                var serviciosAEliminar = serviciosExistentes
-                    .Where(se => !servicios.Any(s => s.Idservicios == se.IdServicio && s.Fecha == se.Fecha))
-                    .ToList();
-
-                foreach (var servicioEliminado in serviciosAEliminar)
+                if (servicioExistente != null)
                 {
-                    context.ProyectoServicios.Remove(servicioEliminado);
+                    context.ProyectoServicios.Remove(servicioExistente);
                 }
-
-           
-                foreach (var servicio in servicios)
-                {
-          
-                    var servicioExistente = serviciosExistentes
-                        .FirstOrDefault(se => se.IdServicio == servicio.Idservicios && se.Fecha == servicio.Fecha);
-
-                    if (servicioExistente != null)
-                    {
-                     
-                        servicioExistente.Idsegmento = servicio.IdSegmento;
-                        servicioExistente.Monto = servicio.MontoServicio;
-                    }
-                    else
-                    {
-                       
-                        var nuevoServicio = new ProyectoServicio
-                        {
-                            IdProyecto = idProyecto,
-                            IdServicio = servicio.Idservicios,
-                            Idsegmento = servicio.IdSegmento,
-                            Monto = servicio.MontoServicio,
-                            Fecha = servicio.Fecha.Date,
-                        };
-
-                        await context.ProyectoServicios.AddAsync(nuevoServicio);
-                    }
-                }
-
-                await context.SaveChangesAsync();
             }
+
+            // Agregar o actualizar servicios
+            foreach (var servicio in servicios.Where(s => !s.EsEliminado))
+            {
+                var servicioExistente = serviciosExistentes
+                    .FirstOrDefault(se => se.IdServicio == servicio.Idservicios && se.Fecha == servicio.Fecha);
+
+                if (servicioExistente != null)
+                {
+                    servicioExistente.Idsegmento = servicio.IdSegmento;
+                    servicioExistente.Monto = servicio.MontoServicio;
+                }
+                else
+                {
+                    var nuevoServicio = new ProyectoServicio
+                    {
+                        IdProyecto = idProyecto,
+                        IdServicio = servicio.Idservicios,
+                        Idsegmento = servicio.IdSegmento,
+                        Monto = servicio.MontoServicio,
+                        Fecha = servicio.Fecha.Date,
+                    };
+
+                    await context.ProyectoServicios.AddAsync(nuevoServicio);
+                }
+            }
+
+            await context.SaveChangesAsync();
         }
 
 
@@ -234,49 +227,46 @@ namespace Proyectogestionhoras.Services
                 return;
             }
 
-            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-
-          
-            var gastosExistentes = await context.ProyectoGastos
-                .Where(pg => pg.IdProyecto == idProyecto)
+            var serviciosExistentes = await context.ProyectoGastos
+                .Where(ps => ps.IdProyecto == idProyecto)
                 .ToListAsync();
 
-
-            foreach (var gasto in gastos)
+            // Eliminar servicios marcados como eliminados
+            foreach (var servicio in gastos.Where(s => s.EsEliminado))
             {
-                
-                var gastoExistente = gastosExistentes
-                    .FirstOrDefault(g => g.IdGastos == gasto.Idgastos && g.Fecha == gasto.Fecha.Date);
+                var servicioExistente = serviciosExistentes
+                    .FirstOrDefault(se => se.IdGastos == servicio.Idgastos && se.Fecha == servicio.Fecha);
 
-                if (gastoExistente != null)
+                if (servicioExistente != null)
                 {
-             
-                    gastoExistente.Monto = gasto.MontoGasto;
-                    context.ProyectoGastos.Update(gastoExistente);
-                }
-                else
-                {
-          
-                    var nuevoGasto = new ProyectoGasto
-                    {
-                        IdProyecto = idProyecto,
-                        IdGastos = gasto.Idgastos,
-                        Idsegmento=gasto.IdSegmento,
-                        Monto = gasto.MontoGasto,
-                        Fecha = gasto.Fecha.Date,
-                    };
-
-                    await context.ProyectoGastos.AddAsync(nuevoGasto);
+                    context.ProyectoGastos.Remove(servicioExistente);
                 }
             }
 
-            var gastosAEliminar = gastosExistentes
-                .Where(ge => !gastos.Any(g => g.Idgastos == ge.IdGastos && g.Fecha == ge.Fecha))
-                .ToList();
-
-            if (gastosAEliminar.Any())
+            // Agregar o actualizar servicios
+            foreach (var servicio in gastos.Where(s => !s.EsEliminado))
             {
-                context.ProyectoGastos.RemoveRange(gastosAEliminar);
+                var servicioExistente = serviciosExistentes
+                    .FirstOrDefault(se => se.IdGastos == servicio.Idgastos && se.Fecha == servicio.Fecha);
+
+                if (servicioExistente != null)
+                {
+                    servicioExistente.Idsegmento = servicio.IdSegmento;
+                    servicioExistente.Monto = servicio.MontoGasto;
+                }
+                else
+                {
+                    var nuevoServicio = new ProyectoGasto
+                    {
+                        IdProyecto = idProyecto,
+                        IdGastos = servicio.Idgastos,
+                        Idsegmento = servicio.IdSegmento,
+                        Monto = servicio.MontoGasto,
+                        Fecha = servicio.Fecha.Date,
+                    };
+
+                    await context.ProyectoGastos.AddAsync(nuevoServicio);
+                }
             }
 
             await context.SaveChangesAsync();

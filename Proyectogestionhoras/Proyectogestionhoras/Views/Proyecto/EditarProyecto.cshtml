@@ -960,6 +960,9 @@
                                         <td style="display:none;">
                                             <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
                                         </td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
                                         </td>
@@ -994,6 +997,9 @@
                                 </td>
                                 <td style="display:none;">
                                     <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                </td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
@@ -1068,8 +1074,11 @@
                                         <td style="display:none">
                                             <input type="text" class="idsegmentogasto" name="idsegmentogasto" value="@gp.IDSEGMENTO" />
                                         </td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                            <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
                                         </td>
 
                                     </tr>
@@ -1101,8 +1110,11 @@
                                 <td style="display:none">
                                     <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
                                 </td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -1942,6 +1954,9 @@
                                         <td style="display:none;">
                                             <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
                                         </td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
                                         </td>
@@ -1976,6 +1991,9 @@
                                 </td>
                                 <td style="display:none;">
                                     <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                </td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
@@ -2050,8 +2068,11 @@
                                         <td style="display:none">
                                             <input type="text" class="idsegmentogasto" name="idsegmentogasto" value="@gp.IDSEGMENTO" />
                                         </td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                        </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                            <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
                                         </td>
 
                                     </tr>
@@ -2083,8 +2104,11 @@
                                 <td style="display:none">
                                     <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
                                 </td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -2630,6 +2654,9 @@
                 <td style="display:none;">
                     <input class="idsegmentoservicio" name="idsegmentoservicio"  />
                 </td>
+                    <td style="display:none;">
+                                        <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
+                                    </td>
                 <td style="padding: 10px; border: 1px solid #ddd;">
                     <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
                 </td>
@@ -2663,16 +2690,23 @@
     function updateTotal() {
         let total = 0;
         const montoInputs = document.querySelectorAll('.montoservicio');
+
         montoInputs.forEach(input => {
-            if (input.value !== '') {
-                let value = input.value.replace(/\./g, '').replace(/[^0-9,]/g, '').replace(',', '.');
-                value = parseFloat(value); // Convertir el valor a número flotante
-                if (!isNaN(value)) {
-                    total += value;
+            
+            const fila = input.closest('tr');
+            if (fila && fila.style.display !== 'none') {
+                if (input.value !== '') {
+                    
+                    let value = input.value.replace(/\./g, '').replace(/[^0-9,]/g, '').replace(',', '.');
+                    value = parseFloat(value); 
+                    if (!isNaN(value)) {
+                        total += value;
+                    }
                 }
             }
         });
 
+       
         totalMontoElement.innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         return total;
     }
@@ -2877,6 +2911,17 @@
 
             cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
 
+            const hiddenCell = document.createElement('td');
+            hiddenCell.style.display = 'none'; // Mantenerlo oculto
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'esEliminados';
+            hiddenInput.className = 'esEliminados';
+            hiddenInput.value = 'false';
+            hiddenCell.appendChild(hiddenInput);
+
+
+
             // Botón para eliminar la fila
             const eliminarBtn = document.createElement('button');
             eliminarBtn.textContent = 'Eliminar';
@@ -2910,7 +2955,7 @@
             newRow.appendChild(cuentaCell);
             newRow.appendChild(eliminarCell);
             newRow.appendChild(idSegmentoGastoCell);
-
+            newRow.appendChild(hiddenCell);
             // Cargar los datos del select de gastos
             cargarGastos(newRow.querySelector('.gastosSelect'));
 
@@ -3014,9 +3059,13 @@
         const montos = document.querySelectorAll('.montogasto');
         montos.forEach(input => {
 
-            const value = parseFloat(input.value.replace(/\./g, '').replace(',', '.'));
-            if (!isNaN(value)) {
-                total += value;
+            const fila = input.closest('tr');
+            if (fila && fila.style.display !== 'none') {
+                
+                const value = parseFloat(input.value.replace(/\./g, '').replace(',', '.'));
+                if (!isNaN(value)) {
+                    total += value;
+                }
             }
         });
 
@@ -3025,26 +3074,41 @@
     }
 
     function limpiarFila(button) {
-   
         var fila = button.closest('tr');
 
 
-        var inputs = fila.querySelectorAll('input');
-        inputs.forEach(function (input) {
-            if (!input.readOnly) { 
-                input.value = '';
-            }
-        });
-
-   
-        var select = fila.querySelector('select');
-        if (select) {
-            select.selectedIndex = 0; 
+        var esEliminado = fila.querySelector('input.esEliminado');
+        if (esEliminado) {
+            esEliminado.value = 'true';
         }
+       
+        fila.style.display = 'none';
+
+        updateTotal();
+        obtenerMargenEsperado();
+        
+        
+    }
+    function limpiarFilagasto(button){
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.esEliminados');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+        
+
+        // Eliminar la fila completa del DOM
+        fila.style.display = 'none';
+
+
+        // Actualizar el total de gastos y margen esperado
         updateTotalGasto();
         obtenerMargenEsperado();
+        
+    
     }
-
 
 
 

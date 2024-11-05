@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
 <style>
     .form-radio {
-        transform: scale(1.5); /* Ajusta el valor para cambiar el tamaño */
-        width: 15px; /* Controla el tamaño horizontal del área de clic */
+        transform: scale(1.5); 
+        width: 15px; 
         height: 15px;
       
     }
@@ -23,8 +23,8 @@
 </style>
 
 
-<h2 class="text-2xl font-bold mb-4">Clasificación de Proyectos</h2>
-<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+<h2 style="margin-top:60px" class="text-2xl font-bold mb-4">Clasificación de Proyectos</h2>
+<div style="margin-top:20px" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto relative">
         <table id="proyectotable" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
@@ -77,7 +77,7 @@
         </table>
     </div>
 </div>
-
+<br />
 <div id="proyectosContainer" class="section-content"></div>
 
 <script>
@@ -109,7 +109,7 @@
                                     <a href="/Proyecto/ObtenerProyectos/${proyecto.id}" class="block mb-4">
                                         <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
                                             <h3 class="text-lg font-bold transition hover:text-orange-400">${proyecto.nombre}</h3>
-                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: ${proyecto.numProyecto}</p>
+                                            <p class="text-sm text-gray-600 transition hover:text-white">Num.Proyecto: ${proyecto.numProyecto}</p>
                                             <p class="text-sm text-gray-600 transition hover:text-white">Cliente: ${proyecto.nombreCliente}</p>
                                         </div>
                                     </a>

@@ -15,5 +15,6 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<ReporteNegociacionDTO>> ReporteProyectoNegociacion();
         public Task<List<ReportQuarterDTO>> RecuperarQuarter(int anio);
         public Task<List<ReporteNegociacionKeyDTO>> ReporteNegociacionKeys();
+        public Task<List<BasedeDatosDTO>> ExportarBasedeDatos();
     }
 }

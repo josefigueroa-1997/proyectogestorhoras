@@ -41,7 +41,7 @@
         font-size: 1.2rem;
         color: #666;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .form-row {
@@ -207,8 +207,9 @@
     </div>
     <h1 class="form-title">Planilla: @nombre</h1>
     <p class="form-subtitle">Rol:@recurso</p>
+    <p class="form-subtitle">Mes:@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month) - Año:@DateTime.Now.Year</p>
     <div class="form-group">
-        <input type="text" id="searchInput" placeholder="Buscar...">
+        <input type="text" id="searchInput" placeholder="Buscar por fecha,proyecto o actividad">
         <table id="planillausuario" style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>
                 <tr style="background-color: #d9e2f3; color: black;">
