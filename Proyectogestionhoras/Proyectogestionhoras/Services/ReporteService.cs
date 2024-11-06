@@ -879,5 +879,51 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task<List<ReporteBalanceDTO>> RecuperarBalanceHoras()
+        {
+            try
+            {
+
+
+                var balance = new List<ReporteBalanceDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "BalanceHoras";
+                    command.CommandType = CommandType.StoredProcedure;
+                   
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ReporteBalanceDTO datos = new()
+                            {
+                                nombreproyecto = reader.IsDBNull(reader.GetOrdinal("NombreProyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreProyecto")),
+                                numeroproyecto = reader.IsDBNull(reader.GetOrdinal("NumeroProyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("NumeroProyecto")),
+                                tipologia = reader.IsDBNull(reader.GetOrdinal("Tipologia")) ? string.Empty : reader.GetString(reader.GetOrdinal("Tipologia")),
+                                nombrecliente = reader.IsDBNull(reader.GetOrdinal("NombreCliente")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreCliente")),
+                                anio = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
+                                mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                tiporecurso = reader.IsDBNull(reader.GetOrdinal("TipoRecurso")) ? string.Empty : reader.GetString(reader.GetOrdinal("TipoRecurso")),
+                                totalhorasporrecurso = reader.IsDBNull(reader.GetOrdinal("TotalHorasPorRecurso")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TotalHorasPorRecurso")),
+                            };
+                            balance.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return balance;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el balance de horas de los proyectos:{ex.Message}" );
+                return new List<ReporteBalanceDTO>();
+
+            }
+        }
     }
 }
