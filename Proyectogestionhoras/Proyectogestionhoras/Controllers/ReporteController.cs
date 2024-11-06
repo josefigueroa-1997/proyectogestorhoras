@@ -5,6 +5,7 @@ using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -14,10 +15,12 @@ namespace Proyectogestionhoras.Controllers
     {
         private readonly ReporteService _reporteService;
         private readonly PROYECTO_CONTROL_HORASContext context;
-        public ReporteController(ReporteService reporteService,PROYECTO_CONTROL_HORASContext context)
+        private readonly UsuarioService usuarioService;
+        public ReporteController(ReporteService reporteService,PROYECTO_CONTROL_HORASContext context, UsuarioService usuarioService)
         {
             _reporteService = reporteService;
             this.context = context;
+            this.usuarioService = usuarioService;
         }
 
         public IActionResult TodosReportes()
@@ -215,6 +218,12 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
+        public async Task<IActionResult> PersonalChoice(int? idusuario,string?nombre,int? idrecurso)
+        {
+            var usuarios = await usuarioService.ObtenerUusario(idusuario,nombre,idrecurso);
+            ViewBag.Usuarios = usuarios;
+            return View();
+        }
 
 
         /*DECARGAR BASE DE DATOS*/

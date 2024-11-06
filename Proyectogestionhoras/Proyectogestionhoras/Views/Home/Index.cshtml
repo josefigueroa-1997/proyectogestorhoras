@@ -29,26 +29,26 @@
 
   </div>
     <!-- Modal para agregar nuevo cliente  -->
-    <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 70px;">
-        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+    <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 100px;">
+        <div class="modal-content bg-white p-3 rounded-lg shadow-lg w-full max-w-5xl">
             <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
             <form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
                 
                 <div>
-                    <label for="nombre" class="block text-gray-700 font-bold">Nombre:</label>
+                    <label for="nombre" class="block text-gray-700 font-bold">Nombre:<span class="text-red-500">*</span></label>
                     <input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
                 <div>
-                    <label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:</label>
+                    <label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:<span class="text-red-500">*</span></label>
                     <input type="text" id="idcliente" name="idcliente" class="w-full p-2 border border-gray-300 rounded" required>
                     <span id="idClienteStatus"></span>
                 </div>
                 <div>
-                    <label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:</label>
+                    <label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:<span class="text-red-500">*</span></label>
                     <input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
                 </div>
                 <div>
-                    <label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:</label>
+                    <label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:<span class="text-red-500">*</span></label>
                     
                     <select name="tipocliente" class="w-full p-2 border border-gray-300 rounded" required>
                         <option value="" selected disabled>
@@ -100,7 +100,9 @@
                     <input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
                 </div>
 
-      
+                <div class="col-span-3 text-gray-600 mb-4">
+                    <p>Los campos marcados con <span class="text-red-500">*</span> son obligatorios.</p>
+                </div>
                 <div class="col-span-3 flex justify-end gap-4 mt-6">
                     <button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
                     <button type="submit" id="submit-btn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>

@@ -1,0 +1,129 @@
+﻿@{
+
+    ViewData["Title"] = "Selección Planilla Usuario";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+<style>
+
+    .dashboard-container {
+        padding: 0;
+        background-color: transparent;
+        margin-top: 50px;
+    }
+
+
+    .section-content {
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+
+    .card {
+        background-color: #ffffff;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: background-color 0.3s, border-color 0.3s;
+        height: 100px;
+        margin-right: 1rem;
+        justify-content: center;
+    }
+
+        .card.new-cliente {
+            background-color: #333;
+            border-left: 4px solid #fcaa67;
+            cursor: pointer;
+            color: #fff;
+        }
+
+            .card.new-cliente h3 {
+                color: #fcaa67;
+                font-size: 18px;
+            }
+
+            .card.new-cliente:hover {
+                background-color: #fcaa67;
+                border-color: #fff;
+            }
+
+                .card.new-cliente:hover h3 {
+                    color: #fff;
+                }
+
+                .card.new-cliente:hover p {
+                    color: #fff;
+                }
+
+</style>
+
+
+@*Socios*@
+<h2 style="margin-top: 60px;" class="section-header">Socios</h2>
+<div style="margin-top:20px;" class="section-content">
+    @if (ViewBag.Usuarios!=null){
+        @foreach (var u in ViewBag.Usuarios){
+            if (u.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio")){
+                <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=u.Id})">
+                    <div class="card new-cliente">
+                        <h3>@u.Nombre</h3>
+                    </div>
+
+                </a>
+            }
+            
+
+        }
+    }
+</div>
+
+@*Staff*@
+<h2 class="section-header">Staff</h2>
+<div style="margin-top:20px;" class="section-content">
+    @if (ViewBag.Usuarios != null)
+    {
+        @foreach (var u in ViewBag.Usuarios)
+        {
+            if (u.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
+            {
+                <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=u.Id})">
+                    <div class="card new-cliente">
+                        <h3>@u.Nombre</h3>
+                    </div>
+
+                </a>
+            }
+
+
+        }
+    }
+</div>
+@*Consultores Externos*@
+<h2 class="section-header">Consultores Externos</h2>
+<div style="margin-top:20px;" class="section-content">
+    @if (ViewBag.Usuarios != null)
+    {
+        @foreach (var u in ViewBag.Usuarios)
+        {
+            if (u.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
+            {
+                <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=u.Id})">
+                    <div class="card new-cliente">
+                        <h3>@u.Nombre</h3>
+                    </div>
+
+                </a>
+            }
+
+
+        }
+    }
+</div>
+

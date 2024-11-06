@@ -11,6 +11,7 @@ using iText.Html2pdf;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using iText.Layout;
 
 namespace Proyectogestionhoras.Controllers
 {
@@ -63,8 +64,8 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<ActionResult> ExportarExcel(int idplanilla)
         {
-            var nombre = HttpContext.Session.GetString("nombre");
-            var rol = HttpContext.Session.GetString("recurso");
+           // var nombre = HttpContext.Session.GetString("nombre");
+            //var rol = HttpContext.Session.GetString("recurso");
             var planillas = await planillaService.ObtenerPlanillaExcel(idplanilla);
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -87,21 +88,28 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Cells["A1:B1"].Merge = true; 
                 worksheet.Cells["A1"].Value = "";
 
-                // Cambiar la fila para los datos de nombre y rol
-                worksheet.Cells[5, 1].Value = "Nombre:"; // Cambiar a fila 5
-                worksheet.Cells[5, 2].Value = nombre;
+                
+                
 
-                worksheet.Cells[6, 1].Value = "Rol:"; // Cambiar a fila 6
-                worksheet.Cells[6, 2].Value = rol;
+                
 
                 string mes = "";
-                int anio = 0;
+                string anio = "";
+                string nombre = "";
+                string rol = "";
                 if (planillas.Count > 0)
                 {
                     var primeraPlanilla = planillas[0];
                     mes = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(primeraPlanilla.FechaRegistro.Month);
-                    anio = primeraPlanilla.FechaRegistro.Year;
+                    anio ="'" + primeraPlanilla.FechaRegistro.Year.ToString();
+                    nombre = primeraPlanilla.NombreUsuario;
+                    rol = primeraPlanilla.Rol;
                 }
+                worksheet.Cells[5, 1].Value = "Nombre:";
+                worksheet.Cells[5, 2].Value = nombre;
+                
+                worksheet.Cells[6, 1].Value = "Rol:";
+                worksheet.Cells[6, 2].Value = rol;
 
                 worksheet.Cells[7, 1].Value = "Mes:"; 
                 worksheet.Cells[7, 2].Value = mes;
@@ -117,17 +125,19 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Cells[10, 3].Value = "Número Proyecto";
                 worksheet.Cells[10, 4].Value = "Nombre de la Actividad";
                 worksheet.Cells[10, 5].Value = "HH Registradas";
-                worksheet.Cells[10, 6].Value = "Observaciones";
-                worksheet.Cells[10, 7].Value = "ID Cuenta";
-                worksheet.Cells[10, 8].Value = "Cuenta";
-                worksheet.Cells[10, 9].Value = "Segmento";
+                worksheet.Cells[10, 6].Value = "Costo Unitario";
+                worksheet.Cells[10, 7].Value = "Costo Total";
+                worksheet.Cells[10, 8].Value = "Observaciones";
+               
+                
+                /*worksheet.Cells[10, 9].Value = "Segmento";*/
 
-                using (var range = worksheet.Cells[10, 1, 10, 9])
+                using (var rango = worksheet.Cells[10, 1, 10, 8])
                 {
-                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
-                    range.Style.Font.Color.SetColor(System.Drawing.Color.Black);
-                    range.Style.Font.Bold = true;
+                    rango.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    rango.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                    rango.Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                    rango.Style.Font.Bold = true;
                 }
 
          
@@ -136,17 +146,18 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Column(3).Width = 20;
                 worksheet.Column(4).Width = 30;
                 worksheet.Column(5).Width = 15;
-                worksheet.Column(6).Width = 40;
+                worksheet.Column(6).Width = 15;
                 worksheet.Column(7).Width = 15;
                 worksheet.Column(8).Width = 40;
-                worksheet.Column(9).Width = 40;
+                /*worksheet.Column(9).Width = 40;*/
 
                 decimal totalhoras = 0;
+                decimal totalcosto = 0;
                 int indice = 0;
                 for (int i = 0; i < planillas.Count(); i++)
                 {
                     var planilla = planillas[i];
-                    indice = i + 11; // Ajustar el índice para comenzar en la fila 11
+                    indice = i + 11; 
 
                     worksheet.Cells[indice, 1].Style.Numberformat.Format = "dd/MM/yyyy";
                     worksheet.Cells[indice, 1].Value = planilla.FechaRegistro.Date.ToString("dd/MM/yyyy");
@@ -154,26 +165,27 @@ namespace Proyectogestionhoras.Controllers
                     worksheet.Cells[indice, 3].Value = planilla.NumProyecto;
                     worksheet.Cells[indice, 4].Value = planilla.NombreActividad;
                     worksheet.Cells[indice, 5].Value = planilla.HHregistradas;
-                    worksheet.Cells[indice, 6].Value = planilla.Observaciones;
-                    worksheet.Cells[indice, 7].Value = planilla.IDCUENTA;
-                    worksheet.Cells[indice, 8].Value = planilla.Cuenta;
-                    worksheet.Cells[indice, 9].Value = planilla.NombreSegmento;
+                    worksheet.Cells[indice, 6].Style.Numberformat.Format = "#,##0";
+                    worksheet.Cells[indice, 6].Value = planilla.CostoUnitario;
+                    worksheet.Cells[indice, 7].Style.Numberformat.Format = "#,##0";
+                    worksheet.Cells[indice, 7].Value = planilla.CostoTotal;
+                    worksheet.Cells[indice, 8].Value = planilla.Observaciones;
+                    /*worksheet.Cells[indice, 9].Value = planilla.NombreSegmento;*/
                     totalhoras += planilla.HHregistradas;
+                    totalcosto += planilla.CostoTotal;
                 }
 
-                var style = worksheet.Cells[indice + 1, 4].Style;
-                style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                var range = worksheet.Cells[indice + 1, 1, indice + 1, 8];
+                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                range.Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                range.Style.Font.Bold = true;
 
-                worksheet.Cells[indice + 1, 4].Value = "Total";
-
-                style = worksheet.Cells[indice + 1, 5].Style;
-                style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(255, 255, 102, 102));
-
+                worksheet.Cells[indice + 1, 4].Value = "Totales";
                 worksheet.Cells[indice + 1, 5].Value = totalhoras;
+                worksheet.Cells[indice + 1,7].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells[indice + 1, 7].Value = totalcosto;
 
-                // Nombre del archivo Excel
                 string nombreArchivo = $"planilla_{nombre}_{mes}_{anio}.xlsx";
                 var stream = new MemoryStream(package.GetAsByteArray());
 

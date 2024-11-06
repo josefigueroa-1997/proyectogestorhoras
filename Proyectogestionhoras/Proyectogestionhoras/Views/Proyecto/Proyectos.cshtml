@@ -26,7 +26,7 @@
                 @if (proyecto.Tipo_Status == "A Licitar")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
-                        <div class="card">
+                        <div class="card new-cliente">
 
                             <h3>@proyecto.NombreProyecto</h3>
                             <p>@proyecto.numproyecto</p>
@@ -46,7 +46,7 @@
                 @if (proyecto.Tipo_Status == "En Negociación")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
-                        <div class="card">
+                        <div class="card new-cliente">
                             <h3>@proyecto.NombreProyecto</h3>
                             <p>@proyecto.numproyecto</p>
                             <p>@proyecto.NombreCliente</p>
@@ -65,7 +65,7 @@
                 @if (proyecto.Tipo_Status == "En Ejecución")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
-                        <div class="card">
+                        <div class="card new-cliente">
                             <h3>@proyecto.NombreProyecto</h3>
                             <p>@proyecto.numproyecto</p>
                             <p>@proyecto.NombreCliente</p>
@@ -84,7 +84,7 @@
                 @if (proyecto.Tipo_Status == "Terminado")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
-                        <div class="card">
+                        <div class="card new-cliente">
                             <h3>@proyecto.NombreProyecto</h3>
                             <p>@proyecto.numproyecto</p>
                             <p>@proyecto.NombreCliente</p>
@@ -103,7 +103,7 @@
                 @if (proyecto.Tipo_Status == "Rechazado")
                 {
                     <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=proyecto.Id})">
-                        <div class="card">
+                        <div class="card new-cliente">
                             <h3>@proyecto.NombreProyecto</h3>
                             <p>@proyecto.numproyecto</p>
                             <p>@proyecto.NombreCliente</p>

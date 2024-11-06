@@ -139,13 +139,13 @@
         int? idusuario = Context.Session.GetInt32("id");
         string? recurso = Context.Session.GetString("recurso");
     }
-    
-    <h1 class="form-title">Planilla: @nombre</h1>
-    <p class="form-subtitle">Rol:@recurso</p>
     @if (ViewBag.Planilla != null)
     {
-        @foreach(var planilla in ViewBag.Planilla)
+        @foreach (var planilla in ViewBag.Planilla)
         {
+            <h1 class="form-title">Planilla: @planilla.NombreUsuario</h1>
+            <p class="form-subtitle">Rol:@planilla.Rol</p>
+    
             <p class="form-subtitle">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(planilla.Mes) - @planilla.Anio</p>
             <div class="button-container">
                 <a href="@Url.Action("ExportarExcel", new { idplanilla = planilla.IdPlanilla })" class="planilla-btn" style="background-color: #28a745; color: white;">Descargar Planilla</a>
@@ -153,6 +153,7 @@
             break;
         }
     }
+    <br />
     <div class="form-group">
         <table id="planillausuario" style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>
@@ -161,14 +162,19 @@
                     <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Actividad</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Número Horas</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
-
+                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Total</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Observaciones</th>
                 </tr>
             </thead>
             <tbody id="tabla-body">
                 
                 @if (ViewBag.Planilla != null)
                 {
+                    
+                        decimal totalhoras = 0;
+                        decimal totalcostoshoras = 0;
+
                     @foreach (var planilla in ViewBag.Planilla)
                     {
                         <tr>
@@ -179,14 +185,29 @@
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
                                 @planilla.NombreActividad
                             </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                                 @planilla.HHregistradas
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                                @String.Format("{0:N0}", @planilla.CostoUnitario)
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                                @String.Format("{0:N0}", @planilla.CostoTotal)
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
                                 @planilla.Observaciones
                             </td>
                         </tr>
+                        totalhoras += planilla.HHregistradas;
+                        totalcostoshoras += planilla.CostoTotal;
                     }
+                    <tr>
+                        <td colspan="3"  style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Totales</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@totalhoras</strong></td>
+                        <td colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong> @String.Format("{0:N0}", totalcostoshoras)</strong></td>
+                        
+                        
+                    </tr>
                 }
 
 

@@ -293,14 +293,14 @@ namespace Proyectogestionhoras.Services
                                 NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDPROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPROYECTO")),
                                 NombreActividad = reader.IsDBNull(reader.GetOrdinal("NOMBREACTIVIDAD")) ? null : reader.GetString(reader.GetOrdinal("NOMBREACTIVIDAD")),
-
                                 HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHREGISTRADAS")),
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
                                 Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
                                 Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
-                                IDCUENTA = reader.IsDBNull(reader.GetOrdinal("IDCUENTA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                Cuenta = reader.IsDBNull(reader.GetOrdinal("CUENTA")) ? null : reader.GetString(reader.GetOrdinal("CUENTA")),
-                                NombreSegmento = reader.IsDBNull(reader.GetOrdinal("NOMBRESEGMENTO")) ? null : reader.GetString(reader.GetOrdinal("NOMBRESEGMENTO")),
+                                NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NOMBREUSUARIO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREUSUARIO")),
+                                Rol = reader.IsDBNull(reader.GetOrdinal("ROL")) ? string.Empty : reader.GetString(reader.GetOrdinal("ROL")),
+                                CostoUnitario = reader.IsDBNull(reader.GetOrdinal("COSTOUNITARIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOUNITARIO")),
+                                CostoTotal = reader.IsDBNull(reader.GetOrdinal("COSTOHORASTOTAL")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOHORASTOTAL")),
                             };
                             planillausuario.Add(datos);
 

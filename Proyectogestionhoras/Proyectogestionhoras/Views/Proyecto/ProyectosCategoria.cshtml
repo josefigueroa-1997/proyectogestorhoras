@@ -78,7 +78,13 @@
     </div>
 </div>
 <br />
-<div id="proyectosContainer" class="section-content"></div>
+<div style="margin-top:20px;" class="projects-container">
+
+    <div id="proyectosContainer" class="section-content"></div>
+
+
+</div>
+
 
 <script>
     $(document).ready(function () {
@@ -107,10 +113,10 @@
                         $.each(data, function (index, proyecto) {
                             $('#proyectosContainer').append(`
                                     <a href="/Proyecto/ObtenerProyectos/${proyecto.id}" class="block mb-4">
-                                        <div class="card bg-white p-4 rounded-lg shadow-md transition hover:bg-gray-800 hover:border-2 hover:border-orange-400 cursor-pointer">
-                                            <h3 class="text-lg font-bold transition hover:text-orange-400">${proyecto.nombre}</h3>
-                                            <p class="text-sm text-gray-600 transition hover:text-white">Num.Proyecto: ${proyecto.numProyecto}</p>
-                                            <p class="text-sm text-gray-600 transition hover:text-white">Cliente: ${proyecto.nombreCliente}</p>
+                                            <div class="card new-cliente">
+                                            <h3>${proyecto.nombre}</h3>
+                                            <p >${proyecto.numProyecto}</p>
+                                            <p >${proyecto.nombreCliente}</p>
                                         </div>
                                     </a>
                                 `);

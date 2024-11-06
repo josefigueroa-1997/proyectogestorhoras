@@ -40,7 +40,6 @@
     gap: 1rem;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
-
 .card {
     background-color: #ffffff;
     padding: 1rem;
@@ -50,29 +49,29 @@
     flex-direction: column;
     gap: 0.5rem;
     transition: background-color 0.3s, border-color 0.3s;
+    height: 150px;
+    margin-right: 1rem;
 }
-
-    .card h3 {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #000;
-    }
-
-    .card p {
-        font-size: 0.875rem;
-        color: #6c6c6c;
-    }
-
-    .card:hover {
+    .card.new-cliente {
         background-color: #333;
-        border: 2px solid #fcaa67;
+        border-left: 4px solid #fcaa67;
         cursor: pointer;
+        color: #fff;
     }
 
-        .card:hover h3 {
+        .card.new-cliente h3 {
             color: #fcaa67;
         }
 
-        .card:hover p {
+    .card.new-cliente:hover {
+        background-color: #fcaa67;
+        border-color: #fff;
+    }
+
+        .card.new-cliente:hover h3 {
+            color: #fff;
+        }
+
+        .card.new-cliente:hover p {
             color: #fff;
         }

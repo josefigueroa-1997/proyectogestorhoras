@@ -24,13 +24,44 @@
 
 
     .card {
-        padding: 10px;
-        background-color: #e9ecef; 
-        text-align: center;
-        transition: background-color 0.3s ease;
+        background-color: #ffffff;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: background-color 0.3s, border-color 0.3s;
         height: 100px;
-        justify-content: center;
+        margin-right: 1rem;
+        justify-content:center;
     }
+
+        .card.new-cliente {
+            background-color: #333;
+            border-left: 4px solid #fcaa67;
+            cursor: pointer;
+            color: #fff;
+        }
+
+            .card.new-cliente h3 {
+                color: #fcaa67;
+                font-size:18px;
+            }
+
+            .card.new-cliente:hover {
+                background-color: #fcaa67;
+                border-color: #fff;
+            }
+
+                .card.new-cliente:hover h3 {
+                    color: #fff;
+                }
+
+                .card.new-cliente:hover p {
+                    color: #fff;
+                }
+
 
       
 </style>
@@ -39,18 +70,18 @@
 <h2 style="margin-top: 50px;" class="section-header">Key Indicators</h2>
         <div class="section-content">
             <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Facturación</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteNeogiciacionKey","Reporte")">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Proyectos en Negociación</h3>
                 </div>
             </a>
             <a href="@Url.Action("ReportehorasSociosProyectos","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>HH-Socios a Proyectos</h3>
                 </div>
             </a>
@@ -59,25 +90,25 @@
         <h2 class="section-header">Facturaciones</h2>
         <div class="section-content">
             <a href="@Url.Action("ReportesFactura","Reporte")">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Proyección de Facturación</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteMargenProyectos","Reporte")">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Margen de Contribución de Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteProyectosNegociacion","Reporte")">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Proyectos en Negociación</h3>
                 </div>
 
             </a>
            <a href="@Url.Action("ReporteResumenQuarter","Reporte",new{anio = DateTime.Now.Year})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Resumen por Quarter</h3>
                 </div>
 
@@ -89,33 +120,33 @@
         <h2 class="section-header">Reportes HH Asignadas</h2>
         <div class="section-content">
             <a href="@Url.Action("ReporteHHSocios","Reporte",new{recurso = "Socio"})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>HH Socios Asignadas a Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteHHStaff","Reporte",new{recurso = "Staff"})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>HH Staff Asignadas a Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteHHConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
-                <div class="card">
-                    <h3>HH Consultor A Asignadas a Proyectos</h3>
+        <div class="card new-cliente">
+                    <h3>HH Cons. A Asignadas a Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteHHConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
-                <div class="card">
-                    <h3>HH Consultor B Asignadas a Proyectos</h3>
+        <div class="card new-cliente">
+                    <h3>HH Cons. B Asignadas a Proyectos</h3>
                 </div>
 
             </a>
 
             <a href="@Url.Action("ReporteHHConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
-                <div class="card">
-                    <h3>HH Consultor C Asignadas a Proyectos</h3>
+        <div class="card new-cliente">
+                    <h3>HH Cons. C Asignadas a Proyectos</h3>
                 </div>
 
             </a>
@@ -125,32 +156,32 @@
         <div class="section-content">
 
             <a href="@Url.Action("ReporteCostosSocios","Reporte",new{recurso = "Socio"})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Costos HH Socios Asignable a Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteCostosStaff","Reporte",new{recurso = "Staff"})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Costos HH Staff Asignable a Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteCostosConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
-                <div class="card">
-                    <h3>Costos HH Consultor A Asignable a Proyectos</h3>
+        <div class="card new-cliente">
+                    <h3>Costos HH Cons. A Asignable a Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteCostosConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
-                <div class="card">
-                    <h3>Costos HH Consultor B Asignable a Proyectos</h3>
+        <div class="card new-cliente">
+                    <h3>Costos HH Cons. B Asignable a Proyectos</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("ReporteCostosConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
-                <div class="card">
-                    <h3>Costos HH Consultor C Asignable a Proyectos</h3>
+        <div class="card new-cliente">
+                    <h3>Costos HH Cons. C Asignable a Proyectos</h3>
                 </div>
 
             </a>
@@ -159,24 +190,29 @@
         <h2 class="section-header">Reporte Control Avance HH</h2>
         <div class="section-content">
             <a href="@Url.Action("SeleccionarProyecto","Reporte")">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Control Avances HH</h3>
                 </div>
 
             </a>
             <a href="@Url.Action("HHsociosActividad","Reporte",new{mes=DateTime.Now.Month})">
-                <div class="card">
+        <div class="card new-cliente">
                     <h3>Actividades Socios</h3>
                 </div>
 
             </a>
+            <a href="@Url.Action("PersonalChoice","Reporte")">
+        <div class="card new-cliente">
+                    <h3>Detalle HH Personal</h3>
+                </div>
 
-
+            </a>
+             
         </div>
 <h2 class="section-header">Base de Datos</h2>
 <div class="section-content">
     <a href="@Url.Action("DescargarBasedeDatos","Reporte")">
-        <div class="card">
+        <div class="card new-cliente">
             <h3>Descargar Base de Datos de Proyectos</h3>
         </div>
 

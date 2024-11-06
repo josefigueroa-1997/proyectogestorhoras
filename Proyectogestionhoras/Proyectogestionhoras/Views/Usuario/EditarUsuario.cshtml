@@ -94,7 +94,7 @@
     {
         @foreach (var usuario in ViewBag.Usuario)
         {
-            <a href="@Url.Action("EditarContrasena","Usuario",new{idusuario=usuario.Id})" class="change-password-btn">Cambiar Contraseña</a>
+            @*<a href="@Url.Action("EditarContrasena","Usuario",new{idusuario=usuario.Id})" class="change-password-btn">Cambiar Contraseña</a>*@
             <form action="@Url.Action("ActualizarDatos","Usuario")" method="post" enctype="multipart/form-data">
                 <!-- Nombre -->
                 <input type="hidden" name="idusuario" value="@usuario.Id" />
@@ -145,10 +145,21 @@
                
 
                 <!-- Costo Unitario -->
-                <div class="form-group">
-                    <label for="costoUnitario">Costo Unitario</label>
-                    <input type="text" id="costoUnitario" name="costo" value="@usuario.Costo_Unitario" required step="0.01" min="0">
-                </div>
+                @if (usuario.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Admin.") || usuario.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Administrador"))
+                {
+                    <div class="form-group">
+                        <label for="costoUnitario">Costo Unitario</label>
+                        <input readonly type="text" id="costoUnitario" name="costo" value="@usuario.Costo_Unitario" required step="0.01" min="0">
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label for="costoUnitario">Costo Unitario</label>
+                        <input type="text" id="costoUnitario" name="costo" value="@usuario.Costo_Unitario" required step="0.01" min="0">
+                    </div>
+                }
+                
                 @if (usuario.Desde != null)
                 {
                     <div class="form-group">

@@ -123,7 +123,7 @@
                                     <td class="p-4 border">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
                                     <td class="p-4 border">@recurso.Nombre</td>
                                     <td class="p-4 border">@String.Format("{0:N2}",@recurso.HH_ANUALES)</td>
-                                    <td class="p-4 border">@recurso.PROCENTAJE_PROYECTO %</td>
+                                    <td class="p-4 border">@String.Format("{0:N0}",@recurso.PROCENTAJE_PROYECTO) %</td>
                                     <td class="p-4 border">$@String.Format("{0:N0}",@recurso.Costo_Unitario)</td>
                                     <td class="p-4 border">
                                         <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
@@ -161,7 +161,7 @@
                                     <td class="p-4 border">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
                                     <td class="p-4 border">@recurso.Nombre</td>
                                     <td class="p-4 border">@String.Format("{0:N2}",@recurso.HH_ANUALES)</td>
-                                    <td class="p-4 border">@recurso.PROCENTAJE_PROYECTO %</td>
+                                    <td class="p-4 border">@String.Format("{0:N0}",@recurso.PROCENTAJE_PROYECTO) %</td>
                                     <td class="p-4 border">$@String.Format("{0:N0}",@recurso.Costo_Unitario)</td>
                                     <td class="p-4 border">
                                         <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
@@ -187,7 +187,7 @@
                 <thead>
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Rol</th>
-                        <th class="p-4 border">Total HH/Anuales</th>
+                        <th class="p-4 border">Total HH/Anuales - @DateTime.Now.Year</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -267,7 +267,79 @@
         </table>
     </div>
 
-    
+    <div class="mt-12 mb-8"></div>
+
+    <div class="form-group">
+
+        <div class="flex justify-between mt-8">
+            <!-- Tabla de admin mcyfo -->
+            <table class="w-1/2 border-collapse text-left mr-8">
+                <thead>
+                    <tr class="bg-green-200 text-black">
+                        <th class="p-4 border">Admin. Mcyfo</th>
+                        <th class="p-4 border">Nombre</th>
+                        <th class="p-4 border">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Usuarios != null)
+                    {
+                        @foreach (var recurso in ViewBag.Usuarios)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Administrador"))
+                            {
+                                <tr>
+                                    <td class="p-4 border">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                    <td class="p-4 border">@recurso.Nombre</td>
+                                    <td class="p-4 border">
+                                        <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                    </td>
+
+                                </tr>
+
+
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+
+
+            <table class="w-1/2 border-collapse text-left">
+                <thead>
+                    <tr class="bg-green-200 text-black">
+                        <th class="p-4 border">Admin. Sistema</th>
+                        <th class="p-4 border">Nombre</th>
+                        <th class="p-4 border">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Usuarios != null)
+                    {
+                        @foreach (var recurso in ViewBag.Usuarios)
+                        {
+                            if (recurso.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Admin."))
+                            {
+                                <tr>
+                                    <td class="p-4 border">@recurso.NOMBRE_RECURSO_CORRELATIVO</td>
+                                    <td class="p-4 border">@recurso.Nombre</td>
+                                    <td class="p-4 border">
+                                        <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+    @*MODAL*@
     <div id="successModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>

@@ -15,6 +15,10 @@
         public int IDCUENTA { get; set; }
         public string? Cuenta { get; set; }
         public string? NombreSegmento { get; set;}
+        public string? NombreUsuario { get; set;}
+        public string? Rol { get; set;}
+        public decimal CostoUnitario  { get; set;}
+        public decimal CostoTotal  { get; set;}
 
     }
 }
