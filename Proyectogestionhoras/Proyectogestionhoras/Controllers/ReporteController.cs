@@ -226,6 +226,18 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
+        public IActionResult ReporteBalanceHoras()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RecuperarBalanceHoras()
+        {
+            var balance = await _reporteService.RecuperarBalanceHoras();
+            return Json(balance);
+        }
+
         /*DECARGAR BASE DE DATOS*/
         public async Task<ActionResult> DescargarBasedeDatos()
         {

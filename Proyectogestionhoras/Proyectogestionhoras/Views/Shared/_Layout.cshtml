@@ -81,8 +81,9 @@
     <!-- Main Content -->
     <div class="main-content">
       @RenderBody()
+        
     </div>
-
+    @RenderSection("Scripts", required: false)
     <script>
         document.getElementById('userMenuButton').addEventListener('click', (event) => {
             event.stopPropagation(); 
