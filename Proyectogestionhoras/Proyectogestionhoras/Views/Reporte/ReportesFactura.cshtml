@@ -6,13 +6,16 @@
 }
 
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Proyección de Facturación</h2>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra el plan de facturaciones para los meses venideros, de acuerdo a los tipo de proyectos, separándolos en proyectos en ejecución, negociación, licitación.</p>
+</div>
 <button id="exportButton" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</button>
-<div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+<div  class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto relative">
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
             <thead class="totales sticky top-0 bg-white">
                 <tr>
-                    <th class="text-left text-xs font-medium"> Estado</th>
+                    <th style="display:none;" class="text-left text-xs font-medium "> Estado</th>
                     <th class="text-left text-xs font-medium">Tipología</th>
                     <th class="text-left text-xs font-medium">Nombre</th>
                     <th class="text-left text-xs font-medium">Cliente</th>
@@ -39,27 +42,26 @@
 
     th, td {
         position: relative;
-        z-index: 1; /* Para asegurar que las celdas se muestren por encima del fondo */
+        z-index: 1; 
     }
 
-    /* Estilo para la columna "Num Proyecto" */
+    
     .sticky-column {
         position: sticky;
-        left: 0; /* Para que se mantenga a la izquierda */
-/* Asegúrate de que el fondo sea blanco */
-        z-index: 10; /* Para que esté por encima de otras celdas */
+        left: 0; 
+
+        z-index: 10; 
     }
 
-    /* Fijar el encabezado de la tabla */
     .sticky {
         position: sticky;
         top: 0;
-        z-index: 20; /* Mantener el encabezado por encima */
+        z-index: 20; 
     }
-    /* Estilo adicional para la barra de desplazamiento horizontal */
+    
     .overflow-x-auto {
-        overflow-x: auto; /* Habilitar desplazamiento horizontal */
-        max-width: 100%; /* Limitar el ancho para evitar desbordamiento */
+        overflow-x: auto; 
+        max-width: 100%; 
     }
 </style>
 
@@ -217,14 +219,14 @@
                 if (totalEstadoActual !== null) {
                     const totalRow = tabla.insertRow();
                     const totalCell = totalRow.insertCell();
-                    totalCell.colSpan = 5;
+                    totalCell.colSpan = 4;
                     totalCell.innerText = `Total ${totalEstadoActual}`;
                     totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs", "px-4", "py-2", "min-w-[150px]");
                     
                     mesesArray.forEach(mes => {
                         const cell = totalRow.insertCell();
                         const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                        cell.innerText = formatearMiles(Math.round(totalMes));
+                        cell.innerText = totalMes === 0 ? "" : formatearMiles(Math.round(totalMes));
                         cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
                         
                     });
@@ -232,12 +234,12 @@
                     añosArray.forEach(año => {
                         const totalAnualCell = totalRow.insertCell();
                         const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
-                        totalAnualCell.innerText = formatearMiles(Math.round(totalAnual));
+                        totalAnualCell.innerText = totalAnual === 0 ? "" : formatearMiles(Math.round(totalAnual));
                         totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
                     });
                   
                     const totalProyectoCell = totalRow.insertCell();
-                    totalProyectoCell.innerText = formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
+                    totalProyectoCell.innerText = totalProyectoCell === 0 ? "" : formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
                     totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
                     
                 }
@@ -251,6 +253,7 @@
             const cell1 = row.insertCell();
             cell1.innerText = proyectoData.TipoStatus;
             cell1.className = "text-xs ";
+            cell1.style.display = "none";
 
             const cell2 = row.insertCell();
             cell2.innerText = proyectoData.TipoTipologia;
@@ -273,7 +276,7 @@
             mesesArray.forEach(mes => {
                 const cell = row.insertCell();
                 const valorMes = proyectoData.Meses[mes] || 0;
-                cell.innerText = formatearMiles(Math.round(valorMes));
+                cell.innerText = valorMes === 0 ? "" : formatearMiles(Math.round(valorMes));
                 cell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
                 totalProyecto += valorMes;
                 if (!totalPorEstado[totalEstadoActual].meses[mes]) {
@@ -286,14 +289,14 @@
                 const totalAnual = proyectoData.TotalAnual[año] || 0;
                 const totalAnualCell = row.insertCell();
                 const totalAnualTruncado = Math.floor(totalAnual);
-                totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
+                totalAnualCell.innerText = totalAnualTruncado === 0 ? "" : formatearMiles(totalAnualTruncado);
                 totalAnualCell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
                 totalPorEstado[totalEstadoActual].totalAnual[año] = (totalPorEstado[totalEstadoActual].totalAnual[año] || 0) + totalAnual;
             });
 
             const totalCell = row.insertCell();
             totalproyectotruncado = Math.round(totalProyecto);
-            totalCell.innerText = formatearMiles(totalproyectotruncado);
+            totalCell.innerText = totalproyectotruncado === 0 ? "" : formatearMiles(totalproyectotruncado);
             totalCell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
             totalPorEstado[totalEstadoActual].sumaNeto += totalProyecto;
         });
@@ -301,13 +304,13 @@
         if (totalEstadoActual !== null) {
             const totalRow = tabla.insertRow();
             const totalCell = totalRow.insertCell();
-            totalCell.colSpan = 5;
+            totalCell.colSpan = 4;
             totalCell.innerText = `Total ${totalEstadoActual}`;
             totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs", "px-4", "py-2", "min-w-[150px]");
             mesesArray.forEach(mes => {
                 const cell = totalRow.insertCell();
                 const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                cell.innerText = formatearMiles(totalMes);
+                cell.innerText = totalMes === 0 ? "" : formatearMiles(Math.round(totalMes));
                 cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
               
             });
@@ -316,12 +319,12 @@
                 const totalAnualCell = totalRow.insertCell();
                 const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
                 const totalAnualTruncado = Math.floor(totalAnual);
-                totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
+                totalAnualCell.innerText = totalAnualTruncado === 0 ? "" : formatearMiles(totalAnualTruncado);
                 totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
             });
           
             const totalProyectoCell = totalRow.insertCell();
-            totalProyectoCell.innerText = formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
+            totalProyectoCell.innerText = totalProyectoCell === 0 ? "" : formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
             totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[150px]");
             
         }
@@ -329,7 +332,7 @@
        
         const filaTotalGeneral = tabla.insertRow();
         const celdaTotalGeneral = filaTotalGeneral.insertCell();
-        celdaTotalGeneral.colSpan = 5;
+        celdaTotalGeneral.colSpan = 4;
         celdaTotalGeneral.innerText = 'Total General';
         celdaTotalGeneral.classList.add("border", "border-black", "totales", "text-xs", "px-4", "py-2", "min-w-[150px]");
         mesesArray.forEach(mes => {
@@ -358,44 +361,47 @@
     
     const exportarAExcel = async () => {
         const wb = new ExcelJS.Workbook();
-        const ws = wb.addWorksheet("Facturas");
-        const response = await fetch('/images/unitt.png'); 
+        const ws = wb.addWorksheet("Facturación");
+        const response = await fetch('/images/unitt.png');
         const imageBlob = await response.blob();
         const arrayBuffer = await imageBlob.arrayBuffer();
         const logoImageId = wb.addImage({
             buffer: arrayBuffer,
-            extension: 'png' 
+            extension: 'png'
         });
 
- 
         ws.addImage(logoImageId, {
-            tl: { col: 0, row: 0 }, 
-            ext: { width: 150, height: 50 } 
+            tl: { col: 0, row: 0 },
+            ext: { width: 150, height: 50 }
         });
-        ws.mergeCells('F3:H3'); 
-        const titulo = ws.getCell('F3');
-        titulo.value = "Proyección de Facturación"; 
-        titulo.font = { size: 16, bold: true }; 
-        titulo.alignment = { vertical: 'middle', horizontal: 'center' }; 
+        ws.mergeCells('E3:I3');
+        const titulo = ws.getCell('E3');
+        titulo.value = "Proyección de Facturación";
+        titulo.font = { size: 16, bold: true };
+        titulo.alignment = { vertical: 'middle', horizontal: 'center' };
 
         ws.addRow([]);
         ws.addRow([]);
-     
+
         const tabla = document.getElementById('facturasTable');
         const filas = tabla.getElementsByTagName('tr');
 
-       
+
         const encabezados = [];
         for (let i = 0; i < filas[0].cells.length; i++) {
             const celda = filas[0].cells[i];
             const colspan = celda.colSpan || 1;
             for (let j = 0; j < colspan; j++) {
-                encabezados.push(celda.innerText);
+
+                if (celda.style.display !== "none") {
+                    encabezados.push(celda.innerText);
+                }
             }
         }
         ws.addRow(encabezados);
         ws.columns = encabezados.map(() => ({ width: 15 }));
-      
+
+
         for (let i = 1; i < filas.length; i++) {
             const celdas = filas[i].cells;
             const filaData = [];
@@ -404,11 +410,12 @@
                 const celda = celdas[j];
                 const colspan = celda.colSpan || 1;
 
-              
-                    const valorTexto = celda.innerText.replace(/\./g, '').replace(/,/g, '.'); 
-                    const valorFloat = parseFloat(valorTexto); 
-                    filaData.push(isNaN(valorFloat) ? celda.innerText : valorFloat); 
-                
+
+                if (celda.style.display !== "none") {
+                    const valorTexto = celda.innerText.replace(/\./g, '').replace(/,/g, '.');
+                    const valorFloat = parseFloat(valorTexto);
+                    filaData.push(isNaN(valorFloat) ? celda.innerText : valorFloat);
+                }
 
                 for (let k = 1; k < colspan; k++) {
                     filaData.push('');
@@ -425,8 +432,7 @@
                 }
             });
         }
-        
-        
+
         const buffer = await wb.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: "application/octet-stream" });
         const url = window.URL.createObjectURL(blob);
@@ -438,6 +444,7 @@
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
     };
+
     document.getElementById('exportButton').addEventListener('click', exportarAExcel);
 </script>
 

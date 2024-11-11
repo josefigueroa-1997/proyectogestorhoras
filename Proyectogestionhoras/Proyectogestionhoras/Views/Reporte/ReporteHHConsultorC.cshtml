@@ -7,13 +7,16 @@
 
 
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Horas Consultor C Asignables A Proyectos</h2>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra las horas reportadas para el consultor C mensualmente y distribuidas en cada proyecto.</p>
+</div>
 <button id="exportButton" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</button>
-<div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table id="facturasTable" class="min-w-full divide-y divide-gray-200">
             <thead class="totales">
                 <tr>
-                    <th class="text-left text-xs font-medium "> Estado</th>
+                    <th style="display:none;" class="text-left text-xs font-medium "> Estado</th>
                     <th class="text-left text-xs font-medium ">Tipología </th>
                     <th class="text-left text-xs font-medium">Nombre</th>
                     <th class="text-left text-xs font-medium">Cliente</th>
@@ -193,24 +196,24 @@
                 if (totalEstadoActual !== null) {
                     const totalRow = tabla.insertRow();
                     const totalCell = totalRow.insertCell();
-                    totalCell.colSpan = 5;
+                    totalCell.colSpan = 4;
                     totalCell.innerText = `Total ${totalEstadoActual}`;
                     totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs", "px-4", "py-2", "min-w-[100px]");
                     mesesArray.forEach(mes => {
                         const cell = totalRow.insertCell();
                         const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                        cell.innerText = formatearMiles(Math.round(totalMes));
+                        cell.innerText = totalMes === 0 ? "" : formatearMiles(Math.round(totalMes));
                         cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                     });
 
                     añosArray.forEach(año => {
                         const totalAnualCell = totalRow.insertCell();
                         const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
-                        totalAnualCell.innerText = formatearMiles(Math.round(totalAnual));
+                        totalAnualCell.innerText = totalAnual === 0 ? "" : formatearMiles(Math.round(totalAnual));
                         totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                     });
                     const totalProyectoCell = totalRow.insertCell();
-                    totalProyectoCell.innerText = formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
+                    totalProyectoCell.innerText = totalProyectoCell === 0 ? "" : formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
                     totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                 }
 
@@ -219,11 +222,11 @@
             }
 
             const row = tabla.insertRow();
-            // Crea las celdas y aplica las clases CSS
+
             const cell1 = row.insertCell();
             cell1.innerText = proyectoData.TipoStatus;
-            cell1.className = "text-xs"; // Aplica clase CSS
-
+            cell1.className = "text-xs";
+            cell1.style.display = "none";
             const cell2 = row.insertCell();
             cell2.innerText = proyectoData.TipoTipologia;
             cell2.className = "text-xs"; // Aplica clase CSS
@@ -244,7 +247,7 @@
             mesesArray.forEach(mes => {
                 const cell = row.insertCell();
                 const valorMes = proyectoData.Meses[mes] || 0;
-                cell.innerText = formatearMiles(Math.round(valorMes));
+                cell.innerText = valorMes === 0 ? "" : formatearMiles(Math.round(valorMes));
                 cell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                 totalProyecto += valorMes;
                 if (!totalPorEstado[totalEstadoActual].meses[mes]) {
@@ -257,14 +260,14 @@
                 const totalAnual = proyectoData.TotalAnual[año] || 0;
                 const totalAnualCell = row.insertCell();
                 const totalAnualTruncado = Math.floor(totalAnual);
-                totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
+                totalAnualCell.innerText = totalAnualTruncado === 0 ? "" : formatearMiles(totalAnualTruncado);
                 totalAnualCell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
                 totalPorEstado[totalEstadoActual].totalAnual[año] = (totalPorEstado[totalEstadoActual].totalAnual[año] || 0) + totalAnual;
             });
 
             const totalCell = row.insertCell();
             totalproyectotruncado = Math.round(totalProyecto);
-            totalCell.innerText = formatearMiles(totalproyectotruncado);
+            totalCell.innerText = totalproyectotruncado === 0 ? "" : formatearMiles(totalproyectotruncado);
             totalCell.classList.add("border", "border-black", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
             totalPorEstado[totalEstadoActual].sumaNeto += totalProyecto;
         });
@@ -272,13 +275,13 @@
         if (totalEstadoActual !== null) {
             const totalRow = tabla.insertRow();
             const totalCell = totalRow.insertCell();
-            totalCell.colSpan = 5;
+            totalCell.colSpan = 4;
             totalCell.innerText = `Total ${totalEstadoActual}`;
             totalCell.classList.add("border", "border-black", "bg-yellow", "text-xs", "px-4", "py-2", "min-w-[100px]");
             mesesArray.forEach(mes => {
                 const cell = totalRow.insertCell();
                 const totalMes = totalPorEstado[totalEstadoActual]?.meses[mes] || 0;
-                cell.innerText = formatearMiles(Math.round(totalMes));
+                cell.innerText = totalMes === 0 ? "" : formatearMiles(Math.round(totalMes));
                 cell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
             });
 
@@ -286,11 +289,11 @@
                 const totalAnualCell = totalRow.insertCell();
                 const totalAnual = totalPorEstado[totalEstadoActual]?.totalAnual[año] || 0;
                 const totalAnualTruncado = Math.floor(totalAnual);
-                totalAnualCell.innerText = formatearMiles(totalAnualTruncado);
+                totalAnualCell.innerText = totalAnualTruncado === 0 ? "" : formatearMiles(totalAnualTruncado);
                 totalAnualCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
             });
             const totalProyectoCell = totalRow.insertCell();
-            totalProyectoCell.innerText = formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
+            totalProyectoCell.innerText = totalProyectoCell === 0 ? "" : formatearMiles(Math.round(totalPorEstado[totalEstadoActual].sumaNeto));
             totalProyectoCell.classList.add("border", "border-black", "bg-yellow", "text-right", "text-xs", "px-4", "py-2", "min-w-[100px]");
 
         }
@@ -298,7 +301,7 @@
         // Añadir fila de totales generales
         const filaTotalGeneral = tabla.insertRow();
         const celdaTotalGeneral = filaTotalGeneral.insertCell();
-        celdaTotalGeneral.colSpan = 5;
+        celdaTotalGeneral.colSpan = 4;
         celdaTotalGeneral.innerText = 'Total General';
         celdaTotalGeneral.classList.add("border", "border-black", "totales", "text-xs", "px-4", "py-2", "min-w-[100px]");
         mesesArray.forEach(mes => {
@@ -336,7 +339,6 @@
             extension: 'png'
         });
 
-
         ws.addImage(logoImageId, {
             tl: { col: 0, row: 0 },
             ext: { width: 150, height: 50 }
@@ -359,11 +361,15 @@
             const celda = filas[0].cells[i];
             const colspan = celda.colSpan || 1;
             for (let j = 0; j < colspan; j++) {
-                encabezados.push(celda.innerText);
+
+                if (celda.style.display !== "none") {
+                    encabezados.push(celda.innerText);
+                }
             }
         }
         ws.addRow(encabezados);
         ws.columns = encabezados.map(() => ({ width: 15 }));
+
 
         for (let i = 1; i < filas.length; i++) {
             const celdas = filas[i].cells;
@@ -374,10 +380,11 @@
                 const colspan = celda.colSpan || 1;
 
 
-                const valorTexto = celda.innerText.replace(/\./g, '').replace(/,/g, '.');
-                const valorFloat = parseFloat(valorTexto);
-                filaData.push(isNaN(valorFloat) ? celda.innerText : valorFloat);
-
+                if (celda.style.display !== "none") {
+                    const valorTexto = celda.innerText.replace(/\./g, '').replace(/,/g, '.');
+                    const valorFloat = parseFloat(valorTexto);
+                    filaData.push(isNaN(valorFloat) ? celda.innerText : valorFloat);
+                }
 
                 for (let k = 1; k < colspan; k++) {
                     filaData.push('');
@@ -395,7 +402,6 @@
             });
         }
 
-
         const buffer = await wb.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: "application/octet-stream" });
         const url = window.URL.createObjectURL(blob);
@@ -407,5 +413,6 @@
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
     };
+
     document.getElementById('exportButton').addEventListener('click', exportarAExcel);
 </script>
