@@ -10,5 +10,7 @@
         public decimal? MONTO { get; set; }
         public int IDSEGMENTO { get; set; }
         public DateTime? FECHA { get; set; }
+
+        public string? Espresupuesto { get; set; }
     }
 }

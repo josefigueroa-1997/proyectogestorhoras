@@ -260,6 +260,10 @@
     .card.rejected {
         background-color: #ffcccc; 
     }
+
+    .card.presupuesto {
+        background-color: #d0ece7;
+    }
 </style>
 <div class="dashboard-container">
     <div class="client-container">
@@ -379,6 +383,28 @@
             Proyectos
         </div>
 
+        <!-- Proyectos en Presupuesto -->
+        <div class="section-subheader">
+            Proyectos En Presupuesto
+        </div>
+        <div class="section-content">
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                if (proyecto.Tipo_Status == "Presupuesto")
+                {
+                    <a href="@Url.Action("ObtenerPresupuestoProyecto","Proyecto",new {id = proyecto.Id})">
+                        <div class="card presupuesto">
+                            <h3>@proyecto.NombreProyecto</h3>
+                            <p>@proyecto.numproyecto</p>
+                            <p>@proyecto.NombreCliente</p>
+                        </div>
+                    </a>
+                }
+
+            }
+
+
+        </div>
         <!-- Proyectos en Negociación -->
         <div class="section-subheader">
             Proyectos En Negociación

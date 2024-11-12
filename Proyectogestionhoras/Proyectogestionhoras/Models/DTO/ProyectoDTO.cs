@@ -67,5 +67,12 @@
         public string? NOMBRE_RECURSO { get; set; }
         public string? TIPO_CONSULTOR { get; set; }
 
+        public decimal MontoPresupuesto { get; set; }
+        public decimal CostoSocioPresupuesto { get; set; }
+        public decimal CostoStaffPresupuesto { get; set; }
+        public decimal CostoConsultorAPresupuesto { get; set; }
+        public decimal CostoConsultorBPresupuesto { get; set; }
+        public decimal CostoConsultorCPresupuesto { get; set; }
+
     }
 }

@@ -473,7 +473,14 @@ namespace Proyectogestionhoras.Services
                                 CUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_C")),
                                 IDCUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")),
                                 SEGMENTO_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")),
-                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC"))
+                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
+                                /*PRESUPUESTO*/
+                                MontoPresupuesto = reader.IsDBNull(reader.GetOrdinal("MONTOPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOPRESUPUESTO")),
+                                CostoSocioPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOSOCIOPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOSOCIOPRESUPUESTO")),
+                                CostoStaffPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOSTAFFPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOSTAFFPRESUPUESTO")),
+                                CostoConsultorAPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")),
+                                CostoConsultorBPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")),
+                                CostoConsultorCPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")),
 
                                 
 
@@ -522,6 +529,7 @@ namespace Proyectogestionhoras.Services
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
+                                Espresupuesto = reader.GetString(reader.GetOrdinal("ESPRESUPUESTO")),
                             };
                             serviciosProyectos.Add(servicio);
 
@@ -565,6 +573,7 @@ namespace Proyectogestionhoras.Services
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO")),
                                 FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
+                                Espresupuesto = reader.GetString(reader.GetOrdinal("ESPRESUPUESTO")),
                             };
                             gastosproyectos.Add(gasto);
 

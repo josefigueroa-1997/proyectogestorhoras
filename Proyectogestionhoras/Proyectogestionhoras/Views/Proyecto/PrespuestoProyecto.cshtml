@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Detalle Proyecto";
+    ViewData["Title"] = "Detalle Presupuesto Proyecto";
 }
 
 <style>
@@ -55,8 +55,8 @@
         font-weight: bold;
     }
 
-   
-    .update-btn, .nuevo-btn,.finish-btn {
+
+    .update-btn, .nuevo-btn, .finish-btn {
         padding: 10px 30px;
         font-size: 1rem;
         font-weight: 600;
@@ -77,7 +77,7 @@
             background-color: #e39450;
         }
 
-    .finish-btn{
+    .finish-btn {
         color: #fff;
         background-color: #82e0aa;
     }
@@ -85,6 +85,7 @@
         .finish-btn:hover {
             background-color: #82e0aa;
         }
+
     .nuevo-btn {
         color: #fff;
         background-color: #007bff;
@@ -97,26 +98,21 @@
 
 <div class="form-container">
     <div class="form-group">
-        @foreach (var proyecto in ViewBag.Proyectos)
+        @foreach (var proyecto in ViewBag.Presupuesto)
         {
 
-            <p class="form-subtitle" style="color:black;">Detalles del Proyecto</p>
+            <p class="form-subtitle" style="color:black;">Detalle Presupuesto del Proyecto</p>
             <div style="display: flex; gap: 10px;">
-            
+
                 @if (proyecto.Tipo_Status != "Rechazado" && proyecto.Tipo_Status != "Terminado")
                 {
                     <a href="@Url.Action("EditarProyecto", "Proyecto", new { id = proyecto.Id, idcliente = proyecto.IDCLIENTE })" class="update-btn">Editar Proyecto</a>
                 }
-                @if (proyecto.Tipo_Status == "En Ejecución")
-                {
-                    <form method="post" action="@Url.Action("TerminarProyecto", "Proyecto", new { id = proyecto.Id })" onsubmit="return confirmTermination();">
-                        <button id="finish" class="finish-btn" type="submit">Terminar Proyecto</button>
-                    </form>
-                }
-                <a href="@Url.Action("ObtenerhistorialNegociaciones", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Ver Historial de Negociación</a>
+                
+                <a href="@Url.Action("", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Editar Presupuesto</a>
             </div>
             <div class="tables-wrapper">
-                
+
                 <div class="table-container">
                     <table>
                         <tbody>
@@ -148,8 +144,8 @@
                                 <td class="highlight">Código</td>
                                 <td>@proyecto.Codigo</td>
                             </tr>
-                            
-                            
+
+
                             <tr>
                                 <td class="highlight">Tipología Proyecto</td>
                                 <td>@proyecto.Tipo_Tipologia</td>
@@ -180,28 +176,29 @@
                                     <td class="highlight">Probabilidad</td>
                                     <td>@proyecto.Probabilidad</td>
                                 }
-                              
+
                             </tr>
                             <tr>
-                                
+
                                 @if (@proyecto.Porcentaje_Probabilidad > 0)
                                 {
                                     <td class="highlight">Porc.Probabilidad</td>
                                     <td>@proyecto.Porcentaje_Probabilidad %</td>
                                 }
-                               
+
                             </tr>
                             <tr>
                                 <td class="highlight">Plazo</td>
                                 <td>@proyecto.Plazo</td>
                             </tr>
                             <tr>
-                                @if (proyecto.Fecha_Plazo_Neg!= null){
+                                @if (proyecto.Fecha_Plazo_Neg != null)
+                                {
                                     <td class="highlight">Fecha Plazo Negociación</td>
                                     <td>@proyecto.Fecha_Plazo_Neg.ToString("dd/MM/yyyy")</td>
                                 }
-                                
-                                
+
+
                             </tr>
                             <tr>
                                 <td class="highlight">Fecha Inicio</td>
@@ -213,7 +210,7 @@
                             </tr>
                             <tr>
                                 <td class="highlight">Monto</td>
-                                <td>@String.Format("{0:N0}", @proyecto.MONTO)</td>
+                                <td>@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
                             </tr>
                             <tr>
                                 <td class="highlight">Moneda</td>
@@ -271,30 +268,30 @@
                         </tr>
                     }
 
-                  @{
+                    @{
 
-              
-                    decimal totalNetoRounded = totalesneto;
-                    decimal totalIvaRounded = totaliva;
-                    decimal totalFacturaRounded = totalfactura;
 
-                    if (totalIvaRounded % 100 == 99)
-                    {
-                    totalIvaRounded += 1;
-                    }
-                    else if (totalIvaRounded % 100 != 0)
-                    {
-                    totalIvaRounded += (100 - (totalIvaRounded % 100));
-                    }
+                        decimal totalNetoRounded = totalesneto;
+                        decimal totalIvaRounded = totaliva;
+                        decimal totalFacturaRounded = totalfactura;
 
-                    if (totalFacturaRounded % 100 == 99)
-                    {
-                    totalFacturaRounded += 1;
-                    }
-                    else if (totalFacturaRounded % 100 != 0)
-                    {
-                    totalFacturaRounded += (100 - (totalFacturaRounded % 100));
-                    }
+                        if (totalIvaRounded % 100 == 99)
+                        {
+                            totalIvaRounded += 1;
+                        }
+                        else if (totalIvaRounded % 100 != 0)
+                        {
+                            totalIvaRounded += (100 - (totalIvaRounded % 100));
+                        }
+
+                        if (totalFacturaRounded % 100 == 99)
+                        {
+                            totalFacturaRounded += 1;
+                        }
+                        else if (totalFacturaRounded % 100 != 0)
+                        {
+                            totalFacturaRounded += (100 - (totalFacturaRounded % 100));
+                        }
                     }
                     <tr>
                         <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Totales</strong></td>
@@ -309,7 +306,7 @@
         </div>
     </div>
 
-
+    
 
 
 
@@ -323,177 +320,182 @@
                 decimal totalstaff = 0;
                 decimal totalconsultores = 0;
             }
-            @foreach (var proyecto in ViewBag.Proyectos)
+            @foreach (var proyecto in ViewBag.Presupuesto)
             {
-                
-            
-            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                <thead>
-                    <tr style="background-color: #b2e6a5; color: black;">
-                        <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Costo</th>
+
+
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background-color: #b2e6a5; color: black;">
+                            <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Costo</th>
                             <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Horas</th>
                             <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
                             <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
                             <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
                             <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HHSOCIOS</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_SOCIOS</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_SOCIOS</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <td style="padding: 10px; border: 1px solid #ddd;">
                                 @proyecto.SEGMENTO_SOCIOS
-                            
 
-                        </td>
+
+                            </td>
                             @{
-                                totalsocios = proyecto.HHSOCIOS * @proyecto.COSTO_SOCIO;
+                                totalsocios = proyecto.CostoSocioPresupuesto;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalsocios)</td>
-                      
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", @proyecto.CostoSocioPresupuesto)</td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HHSTAFF</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_STAFF</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_STAFF</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <td style="padding: 10px; border: 1px solid #ddd;">
                                 @proyecto.SEGMENTO_STAFF
-                           
-                        </td>
+
+                            </td>
                             @{
-                                totalstaff = proyecto.HHSTAFF * @proyecto.COSTO_STAFF;
+                                totalstaff = proyecto.CostoStaffPresupuesto;
                             }
 
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalstaff)</td>
-                     
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", @proyecto.CostoStaffPresupuesto)</td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HH_CONSULTOR_A</td>
                             <td style="padding: 10px; border: 1px solid #ddd;"> @proyecto.IDCUENTA_CONSULTOR_A</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_A</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <td style="padding: 10px; border: 1px solid #ddd;">
                                 @proyecto.SEGMENTO_CONSULTOR_A
-                           
 
-                        </td>
+
+                            </td>
                             @{
-                                decimal totalconsultora = proyecto.HH_CONSULTOR_A * @proyecto.COSTO_CONSULTORA;
+                                decimal totalconsultora = proyecto.CostoConsultorAPresupuesto;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultora) </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", @proyecto.CostoConsultorAPresupuesto) </td>
 
-               
-                     
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
+
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HH_CONSULTOR_B</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_B</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_B</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <td style="padding: 10px; border: 1px solid #ddd;">
                                 @proyecto.SEGMENTO_CONSULTOR_B
-                           
-                        </td>
+
+                            </td>
                             @{
-                                decimal totalconsultorB = proyecto.HH_CONSULTOR_B * @proyecto.COSTO_CONSULTORB;
+                                decimal totalconsultorB = proyecto.CostoConsultorBPresupuesto;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultorB)</td>
-                      
-                    </tr>
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", @proyecto.CostoConsultorBPresupuesto)</td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HH_CONSULTOR_C</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_C</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_C</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <td style="padding: 10px; border: 1px solid #ddd;">
                                 @proyecto.SEGMENTO_CONSULTOR_C
-                            
-                        </td>
+
+                            </td>
                             @{
-                                decimal totalconsultorC = proyecto.HH_CONSULTOR_C * @proyecto.COSTO_CONSULTORC;
+                                decimal totalconsultorC = proyecto.CostoConsultorCPresupuesto;
                             }
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultorC)</td>
-                     
-                    </tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", @proyecto.CostoConsultorCPresupuesto)</td>
+
+                        </tr>
                         @{
                             decimal totalescostos = totalconsultorC + totalconsultorB + totalconsultora + totalstaff + totalsocios;
                             totalconsultores = totalconsultorC + totalconsultorB + totalconsultora;
                         }
-                    <tr>
-                        <td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
+                        <tr>
+                            <td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
                             <td id="totalcostos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"><strong>@String.Format("{0:N0}", totalescostos)</strong> </td>
 
-                    </tr>
-                </tbody>
-            </table>
-            
+                        </tr>
+                    </tbody>
+                </table>
+
 
             }
         </div>
     </div>
+    
 
 
 
-   
     
 
     <div class="form-group">
         <p class="form-subtitle" style="color:black">Subcontratación de Servicios</p>
         <div style="display: flex; justify-content: space-between;">
 
-            
 
 
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
+
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
                     <tr style="background-color: #f9eb8b; color: black;">
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Servicio</th>
-                        
+
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Fecha</th>
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Monto</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            
-                           decimal totalservicios = 0;
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+
+                        decimal totalservicios = 0;
+                    }
+                    @foreach (var proyecto in ViewBag.Servicios)
+                    {
+                        @if(proyecto.Espresupuesto == "Si")
+                        {
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><strong>@proyecto.NOMBRESERVICIO</strong></td>
+
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.FECHA.ToString("dd/MM/yyyy")</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
+
+                                    @String.Format("{0:N0}", @proyecto.MONTO)
+
+
+                                </td>
+                                @{
+                                    totalservicios += proyecto.MONTO;
+                                }
+
+                            </tr>
                         }
-                        @foreach(var proyecto in ViewBag.Servicios){
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>@proyecto.NOMBRESERVICIO</strong></td>
-                            
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.FECHA.ToString("dd/MM/yyyy")</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
-
-                                @String.Format("{0:N0}", @proyecto.MONTO)
-
-
-                            </td>
-                            @{
-                                totalservicios += proyecto.MONTO;
-                            }
-
-                        </tr>
-                       }
-                       <tr>
+                        
+                    }
+                    <tr>
                         <td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#f9eb8b;text-align:left;"><strong>Total</strong></td>
                         <td id="totalservicios" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f9eb8b; text-align:right">@String.Format("{0:N0}", totalservicios) </td>
-                       </tr>
-                    </tbody>
-                </table>
+                    </tr>
+                </tbody>
+            </table>
 
-            
+
         </div>
     </div>
 
@@ -508,7 +510,7 @@
                 <thead>
                     <tr style="background-color: #f5bd89; color: black;">
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Gasto</th>
-                        
+
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
                         <th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
@@ -524,23 +526,27 @@
                     }
                     @foreach (var proyecto in ViewBag.Gastos)
                     {
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>@proyecto.NOMBREGASTO</strong></td>
-                            
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.FECHA.ToString("dd/MM/yyyy")</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
+                        @if (proyecto.Espresupuesto == "Si")
+                        {
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;"><strong>@proyecto.NOMBREGASTO</strong></td>
+
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.FECHA.ToString("dd/MM/yyyy")</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
 
 
-                                @String.Format("{0:N0}", @proyecto.MONTO)
-                            </td>
-                            @{
-                                totalgastos += proyecto.MONTO;
-                            }
+                                    @String.Format("{0:N0}", @proyecto.MONTO)
+                                </td>
+                                @{
+                                    totalgastos += proyecto.MONTO;
+                                }
 
-                        </tr>
+                            </tr>
+                        }
+                        
                     }
                     <tr>
                         <td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#f5bd89;text-align:left;"><strong>Total</strong></td>
@@ -552,6 +558,8 @@
 
         </div>
     </div>
+
+    
     <div class="form-group">
         <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
         <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
@@ -618,7 +626,7 @@
         </table>
 
     </div>
-
+    
 </div>
 
 <script>

@@ -189,7 +189,7 @@ namespace Proyectogestionhoras.Controllers
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
-                    return RedirectToAction("ObtenerProyectos","Proyecto",new {id= idproyectoultimo });
+                    return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto",new {id= idproyectoultimo });
                 }
                 else
                 {
@@ -507,6 +507,24 @@ namespace Proyectogestionhoras.Controllers
 
             return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = proyecto.Id });
         }
+
+
+
+        public async Task<IActionResult> ObtenerPresupuestoProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
+        {
+            var presupuesto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+            var facturas = await facturaService.RecuperarFacturasPresupuesto(id);
+            var servicios = await proyectoService.ObtenerServiciosProyecto(id);
+            var gastos = await proyectoService.ObtenerGastosProyectos(id);
+            ViewBag.Gastos = gastos;
+            ViewBag.Servicios = servicios;
+            ViewBag.Presupuesto = presupuesto;
+            ViewBag.Facturas = facturas;
+            return View("PrespuestoProyecto");
+        }
+
+
+
         public async Task<IActionResult> ObtenerhistorialNegociaciones(int? idproyecto,int? idnegociacion)
         {
             var iduser = HttpContext.Session.GetInt32("id");

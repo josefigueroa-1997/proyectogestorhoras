@@ -9,6 +9,7 @@
     <div class="filter-select">
         <select id="projectStatus" onchange="filterProjects()">
             <option value="">Todos los Estados</option>
+            <option value="presupuesto">Proyectos En Presupuesto</option>
             <option value="licitado">Proyectos A Licitar</option>
             <option value="negociacion">Proyectos En Negociación</option>
             <option value="ejecucion">Proyectos En Ejecución</option>
@@ -18,6 +19,26 @@
     </div>
 
     <!-- Secciones de proyectos -->
+    <div class="projects-section" id="presupuestoSection" style="display: none;">
+        <div class="section-header">Proyectos En Presupuesto</div>
+        <div class="section-content" id="presupuestoProjects">
+            @foreach (var proyecto in ViewBag.Proyectos)
+            {
+                @if (proyecto.Tipo_Status == "Presupuesto")
+                {
+                    <a href="@Url.Action("ObtenerPresupuestoProyecto","Proyecto",new{id=proyecto.Id})">
+                        <div class="card new-cliente">
+
+                            <h3>@proyecto.NombreProyecto</h3>
+                            <p>@proyecto.numproyecto</p>
+                            <p>@proyecto.NombreCliente</p>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+
     <div class="projects-section" id="licitadoSection" style="display: none;">
         <div class="section-header">Proyectos A Licitar</div>
         <div class="section-content" id="licitadoProjects">
@@ -120,7 +141,7 @@
         const statusFilter = document.getElementById('projectStatus').value;
 
         // Ocultar todas las secciones
-        const sections = ['licitadoSection', 'negociacionSection', 'ejecucionSection', 'terminadosSection', 'rechazadosSection'];
+        const sections = ['presupuestoSection', 'licitadoSection', 'negociacionSection', 'ejecucionSection', 'terminadosSection', 'rechazadosSection'];
         sections.forEach(section => {
             document.getElementById(section).style.display = 'none';
         });
