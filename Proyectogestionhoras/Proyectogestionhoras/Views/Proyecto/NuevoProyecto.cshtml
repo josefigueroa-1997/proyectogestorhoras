@@ -220,15 +220,8 @@
             <div class="form-group">
                 <label for="estadoProyecto">Estado del proyecto</label>
                 <select id="estadoProyecto" name="status" required>
-                    <option value="" disabled selected>Seleccione el estado del proyecto</option>
-                    @if (ViewBag.Status!=null){
-                        @foreach (var statu in ViewBag.Status)
-                        {
-                            <option value="@statu.Id">@statu.TipoStatus</option>
-                        }
-                    }
+                    <option value="6" selected>Prespuesto</option>
                     
-
                 </select>
             </div>
             <div style="display:none" class="form-group">

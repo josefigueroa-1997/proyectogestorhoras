@@ -14,10 +14,12 @@ namespace Proyectogestionhoras.Services
     public class ReporteService : IReporte
     {
         private readonly Conexion conexion;
+        private readonly PROYECTO_CONTROL_HORASContext context;
 
-        public ReporteService(Conexion conexion)
+        public ReporteService(Conexion conexion, PROYECTO_CONTROL_HORASContext context)
         {
             this.conexion = conexion;
+            this.context = context;
         }
         public async Task<List<RepoteFacturasDTO>> RecuperarFacturasProyectos()
         {
@@ -562,7 +564,12 @@ namespace Proyectogestionhoras.Services
                                 Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
                                 FechaPlazo = reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
-                                
+                                FechaInicio = reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")),
+                                FechaTermino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")),
+                                Tipologia = reader.IsDBNull(reader.GetOrdinal("TIPO_TIPOLOGIA")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
+                                Codigo = reader.IsDBNull(reader.GetOrdinal("CODIGO")) ? string.Empty : reader.GetString(reader.GetOrdinal("CODIGO")),
+                                Plazo = reader.IsDBNull(reader.GetOrdinal("PLAZO")) ? 0 : reader.GetInt32(reader.GetOrdinal("PLAZO")),
+
                             };
                             negociacion.Add(datos);
 
@@ -624,6 +631,25 @@ namespace Proyectogestionhoras.Services
                 return new List<CuotasMensualesDTO>();
 
             }
+        }
+
+        public  List<QuarterData> ObtenerMontosPorQuarter()
+        {
+            int anioActual = DateTime.Now.Year;
+            int anioSiguiente = anioActual + 1;
+
+            var datos = context.MetaFacturacionesqxes
+                .Where(m => m.Anio == anioActual || m.Anio == anioSiguiente)
+                .SelectMany(m => new List<QuarterData>
+                {
+            new QuarterData { Anio = m.Anio, Quarter = "Q1", Meses = "Enero, Febrero, Marzo", Monto = m.MontoQ1 ?? 0 },
+            new QuarterData { Anio = m.Anio, Quarter = "Q2", Meses = "Abril, Mayo, Junio", Monto = m.MontoQ2 ?? 0 },
+            new QuarterData { Anio = m.Anio, Quarter = "Q3", Meses = "Julio, Agosto, Septiembre", Monto = m.MontoQ3 ?? 0 },
+            new QuarterData { Anio = m.Anio, Quarter = "Q4", Meses = "Octubre, Noviembre, Diciembre", Monto = m.MontoQ4 ?? 0 }
+                })
+                .ToList();
+
+            return datos;
         }
 
         public async Task<List<CuotasMensualesDTO>> recuperarfacturamensual(int mes, int anio)

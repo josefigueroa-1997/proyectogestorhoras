@@ -32,6 +32,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
         public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
         public virtual DbSet<HistorialNegociacion> HistorialNegociacions { get; set; } = null!;
+        public virtual DbSet<Historialpresupuesto> Historialpresupuestos { get; set; } = null!;
         public virtual DbSet<MetaFacturacionesqx> MetaFacturacionesqxes { get; set; } = null!;
         public virtual DbSet<Metatipologia> Metatipologias { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
@@ -57,7 +58,14 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-       
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=PROYECTO_CONTROL_HORAS.mssql.somee.com;Database=PROYECTO_CONTROL_HORAS;user=pepelechero_SQLLogin_1;pwd=87zhqvm9wv;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -92,6 +100,8 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Porcentaje)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("PORCENTAJE");
+
+                entity.Property(e => e.Trimestre).HasColumnName("TRIMESTRE");
 
                 entity.Property(e => e.Valorfinal)
                     .HasColumnType("decimal(15, 2)")
@@ -521,6 +531,49 @@ namespace Proyectogestionhoras.Models
                     .HasConstraintName("IDPROYECTONEG");
             });
 
+            modelBuilder.Entity<Historialpresupuesto>(entity =>
+            {
+                entity.ToTable("HISTORIALPRESUPUESTO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Afectaiva)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("AFECTAIVA");
+
+                entity.Property(e => e.Costoconsultora)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("COSTOCONSULTORA");
+
+                entity.Property(e => e.Costoconsultorb)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("COSTOCONSULTORB");
+
+                entity.Property(e => e.Costoconsultorc)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("COSTOCONSULTORC");
+
+                entity.Property(e => e.Costosocio)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("COSTOSOCIO");
+
+                entity.Property(e => e.Costostaff)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("COSTOSTAFF");
+
+                entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO");
+
+                entity.HasOne(d => d.IdproyectoNavigation)
+                    .WithMany(p => p.Historialpresupuestos)
+                    .HasForeignKey(d => d.Idproyecto)
+                    .HasConstraintName("IDPROYECTOPRESUPUESTO");
+            });
+
             modelBuilder.Entity<MetaFacturacionesqx>(entity =>
             {
                 entity.ToTable("META_FACTURACIONESQX");
@@ -733,6 +786,11 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Espresupuesto)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ESPRESUPUESTO");
+
                 entity.Property(e => e.Fecha)
                     .HasColumnType("date")
                     .HasColumnName("FECHA");
@@ -770,6 +828,11 @@ namespace Proyectogestionhoras.Models
                 entity.ToTable("PROYECTO_SERVICIO");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Espresupuesto)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ESPRESUPUESTO");
 
                 entity.Property(e => e.Fecha)
                     .HasColumnType("date")
@@ -1009,6 +1072,8 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Anio).HasColumnName("ANIO");
+
+                entity.Property(e => e.Cantidad).HasColumnName("CANTIDAD");
 
                 entity.Property(e => e.TipoRecurso)
                     .HasMaxLength(100)

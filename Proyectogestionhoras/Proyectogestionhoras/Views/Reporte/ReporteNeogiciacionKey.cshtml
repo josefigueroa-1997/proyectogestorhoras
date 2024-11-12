@@ -3,18 +3,26 @@
 }
 
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Proyectos en Negociación</h2>
-
-<div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra el detalle de los proyectos que actualmente están en proceso de negociación y asigna la posibilidad de éxito y plazo final de decisión.</p>
+</div>
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table id="facturasTable" class="min-w-full border-collapse border border-black">
             <thead class="bg-blue-100">
                 <tr>
                     <th class="text-left text-xs font-medium ">Cliente</th>
                     <th class="text-left text-xs font-medium ">Proyecto</th>
+                    <th class="text-left text-xs font-medium ">Tipología</th>
+                    <th class="text-left text-xs font-medium ">Código</th>
+                    <th class="text-left text-xs font-medium ">Plazo</th>
+                    <th class="text-left text-xs font-medium ">Fecha Inicio</th>
+                    <th class="text-left text-xs font-medium ">Fecha Fin</th>
+                    <th class="text-left text-xs font-medium ">Fecha Cierre </th>
                     <th class="text-left text-xs font-medium ">HH-Socios</th>
                     <th class="text-left text-xs font-medium ">Monto</th>
                     <th class="text-left text-xs font-medium ">Probabilidad</th>
-                    <th class="text-left text-xs font-medium ">Fecha Cierre </th>
+                    
                     
                 </tr>
             </thead>
@@ -24,22 +32,44 @@
 
                 @if (ViewBag.Negociacion != null)
                 {
+                    decimal totalmonto = 0;
+                    decimal totalhh = 0;
                     @foreach (var p in ViewBag.Negociacion)
                     {
                         <tr>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.NombreCliente</td>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.NombreProyecto</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@p.HHSocios</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", @p.Monto)</td>
-                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.Probabilidad</td>
+                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[80px]">@p.Tipologia</td>
+                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[100px]">@p.Codigo</td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]">@p.Plazo ms</td>
+                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.FechaInicio.ToString("dd/MM/yyyy")</td>
+                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.FechaTermino.ToString("dd/MM/yyyy")</td>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.FechaPlazo.ToString("dd/MM/yyyy")</td>
-
+                            @if (p.HHSocios == 0)
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]"></td>
+                            }
+                            else
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]">@p.HHSocios</td>
+                            }
+                            
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", @p.Monto)</td>
+                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[100px]">@p.Probabilidad</td>
+                            
+                            
                             
                         </tr>
+                        totalmonto += p.Monto;
+                        totalhh += p.HHSocios;
 
-
-                       
                     }
+                    <tr>
+                        <td colspan="8" class="bg-blue-100 text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"><strong>Totales</strong></td>
+                        <td  class="bg-blue-100 text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]"><strong>@String.Format("{0:N0}", totalhh)</strong></td>
+                        <td  class="bg-blue-100 text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"><strong>@String.Format("{0:N0}", totalmonto)</strong></td>
+                        
+                    </tr>
                 }
 
             </tbody>

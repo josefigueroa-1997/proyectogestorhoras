@@ -28,7 +28,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@TIPO_EMPRESA", tipoempresa));
                     command.Parameters.Add(new SqlParameter("@ID_CCOSTO_UNEGOCIO", codigoccosto));
                     command.Parameters.Add(new SqlParameter("@ID_CLIENTE_SUCURSAL", idclientesucursal));
-                    command.Parameters.Add(new SqlParameter("@STATUS_PROYECTO", status));
+                    
                     command.Parameters.Add(new SqlParameter("@PROBABILIDAD", probabilidadparameter));
                     command.Parameters.Add(new SqlParameter("@PORCENTAJE_PROBABILIDAD", porcentajeparametr));
                     command.Parameters.Add(new SqlParameter("@FECHA_PLAZO_NEG", fechaplazoparameter));
@@ -200,6 +200,7 @@ namespace Proyectogestionhoras.Services
                 {
                     servicioExistente.Idsegmento = servicio.IdSegmento;
                     servicioExistente.Monto = servicio.MontoServicio;
+                    servicioExistente.Espresupuesto = servicio.espresupuesto;
                 }
                 else
                 {
@@ -210,6 +211,7 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = servicio.IdSegmento,
                         Monto = servicio.MontoServicio,
                         Fecha = servicio.Fecha.Date,
+                        Espresupuesto = servicio.espresupuesto
                     };
 
                     await context.ProyectoServicios.AddAsync(nuevoServicio);
@@ -253,6 +255,7 @@ namespace Proyectogestionhoras.Services
                 {
                     servicioExistente.Idsegmento = servicio.IdSegmento;
                     servicioExistente.Monto = servicio.MontoGasto;
+                    servicioExistente.Espresupuesto = servicio.espresupuesto;
                 }
                 else
                 {
@@ -263,6 +266,7 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = servicio.IdSegmento,
                         Monto = servicio.MontoGasto,
                         Fecha = servicio.Fecha.Date,
+                        Espresupuesto = servicio.espresupuesto
                     };
 
                     await context.ProyectoGastos.AddAsync(nuevoServicio);

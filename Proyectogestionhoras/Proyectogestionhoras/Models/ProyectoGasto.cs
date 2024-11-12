@@ -11,6 +11,7 @@ namespace Proyectogestionhoras.Models
         public decimal Monto { get; set; }
         public int? Idsegmento { get; set; }
         public DateTime? Fecha { get; set; }
+        public string? Espresupuesto { get; set; }
 
         public virtual Gasto IdGastosNavigation { get; set; } = null!;
         public virtual Proyecto IdProyectoNavigation { get; set; } = null!;

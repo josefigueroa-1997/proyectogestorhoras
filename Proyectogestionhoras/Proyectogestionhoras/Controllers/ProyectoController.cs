@@ -106,7 +106,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
         {
             try
             {
@@ -140,6 +140,7 @@ namespace Proyectogestionhoras.Controllers
                         IdSegmento = int.Parse(idsegmentoservicio[i]),
                         MontoServicio = montoservicio, 
                         Fecha = DateTime.Parse(fechaservicio[i]),
+                        espresupuesto = "Si",
                     };
 
                     servicios.Add(servicioViewModel);
@@ -158,6 +159,7 @@ namespace Proyectogestionhoras.Controllers
                         IdSegmento = int.Parse(idsegmentogasto[i]),
                         MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")) ,
                         Fecha = DateTime.Parse(fechagasto[i]),
+                        espresupuesto = "Si",
                     };
 
                     gastos.Add(gastoviewmodel);
@@ -183,7 +185,7 @@ namespace Proyectogestionhoras.Controllers
                     hhconsultorc = 0;
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,status,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
+                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
@@ -347,7 +349,8 @@ namespace Proyectogestionhoras.Controllers
                         IdSegmento = int.Parse(idsegmentoservicioejecucion[i]),
                         MontoServicio = decimal.Parse(montoservicioListejecucion[i].Replace(".", "")),
                         Fecha = DateTime.Parse(fechaservicioejecucion[i]),
-                        EsEliminado = esEliminado[i] == "true" // Aquí es donde agregas esta línea
+                        EsEliminado = esEliminado[i] == "true",
+                        espresupuesto = "No"
                     };
 
                     serviciosejecucion.Add(servicioViewModel);
@@ -375,6 +378,7 @@ namespace Proyectogestionhoras.Controllers
                         MontoGasto = montogasto,
                         Fecha = DateTime.Parse(fechagastoejecucion[i]),
                         EsEliminado = esEliminadogasto[i] == "true",
+                        espresupuesto = "No",
                     };
 
                     gastosejecucion.Add(gasto);
@@ -410,6 +414,7 @@ namespace Proyectogestionhoras.Controllers
                     MontoServicio = montoservicio,
                     Fecha = DateTime.Parse(fechaservicio[i]),
                     EsEliminado = esEliminados[i] == "true",
+                    espresupuesto = "No",
                 };
 
                 servicios.Add(servicioViewModel);
@@ -433,6 +438,7 @@ namespace Proyectogestionhoras.Controllers
                     IdSegmento = int.Parse(idsegmentogasto[i]),
                     MontoGasto = montogasto,
                     Fecha = DateTime.Parse(fechagasto[i]),
+                    espresupuesto = "No",
                 };
 
                 gastos.Add(gasto);

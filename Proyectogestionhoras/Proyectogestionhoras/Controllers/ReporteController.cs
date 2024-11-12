@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iText.Commons.Actions.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using Proyectogestionhoras.Models;
@@ -204,16 +205,21 @@ namespace Proyectogestionhoras.Controllers
         {
             var cuotas = await _reporteService.recuperarcuotasmensuales(mes, anio);
             var montofactura = await _reporteService.recuperarfacturamensual(mes, anio);
+            
             ViewBag.Cuotas = cuotas;
             ViewBag.Montofactura = montofactura;
+           
             return View();
         }
+       
         public async Task<IActionResult> ReportehorasSociosProyectos(int mes,int anio)
         {
             var horasmaximas = await _reporteService.recuperarhhposibles(mes, anio);
             var horasproyectos = await _reporteService.recuperarhhproyectos(mes, anio);
+            var montosporquarter = _reporteService.ObtenerMontosPorQuarter();
             ViewBag.HorasProyectos = horasproyectos;
             ViewBag.HorasMaximas = horasmaximas;
+            ViewBag.Montosporquarter = montosporquarter;
             return View("recuperarhoras");
         }
 
@@ -238,8 +244,15 @@ namespace Proyectogestionhoras.Controllers
             return Json(balance);
         }
 
-        /*DECARGAR BASE DE DATOS*/
-        public async Task<ActionResult> DescargarBasedeDatos()
+
+
+       
+    
+
+
+
+    /*DECARGAR BASE DE DATOS*/
+    public async Task<ActionResult> DescargarBasedeDatos()
         {
             
             var proyectos = await _reporteService.ExportarBasedeDatos();

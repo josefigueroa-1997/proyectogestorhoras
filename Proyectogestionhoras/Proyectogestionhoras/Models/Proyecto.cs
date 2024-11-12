@@ -11,6 +11,7 @@ namespace Proyectogestionhoras.Models
             HhUsuarioHistorials = new HashSet<HhUsuarioHistorial>();
             HistorialCostosProyectos = new HashSet<HistorialCostosProyecto>();
             HistorialNegociacions = new HashSet<HistorialNegociacion>();
+            Historialpresupuestos = new HashSet<Historialpresupuesto>();
             ProyectoGastos = new HashSet<ProyectoGasto>();
             ProyectoServicios = new HashSet<ProyectoServicio>();
             UsuarioProyectos = new HashSet<UsuarioProyecto>();
@@ -43,6 +44,7 @@ namespace Proyectogestionhoras.Models
         public virtual ICollection<HhUsuarioHistorial> HhUsuarioHistorials { get; set; }
         public virtual ICollection<HistorialCostosProyecto> HistorialCostosProyectos { get; set; }
         public virtual ICollection<HistorialNegociacion> HistorialNegociacions { get; set; }
+        public virtual ICollection<Historialpresupuesto> Historialpresupuestos { get; set; }
         public virtual ICollection<ProyectoGasto> ProyectoGastos { get; set; }
         public virtual ICollection<ProyectoServicio> ProyectoServicios { get; set; }
         public virtual ICollection<UsuarioProyecto> UsuarioProyectos { get; set; }

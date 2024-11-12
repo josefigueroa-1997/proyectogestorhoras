@@ -67,13 +67,15 @@
 
                 const filaCabecera = tabla.find('thead tr');
                 
+                
+
                 fechasOrdenadas.forEach((mesAnio,index) => {
                     const th = $('<th class="text-left text-xs font-medium "></th>').text(mesAnio);
-                    filaCabecera.append(th);
+                    filaCabecera.append(th); 
                     indicesFechas.push(index + 7);
                 });
-                filaCabecera.append('<th class="text-left text-xs font-medium ">Total General</th>');
-
+                
+                filaCabecera.append('<th class="text-left text-xs font-medium ">Total Proyecto</th>');
                 const ordenProbabilidad = {
                     "Alto": 1,
                     "Medio": 2,

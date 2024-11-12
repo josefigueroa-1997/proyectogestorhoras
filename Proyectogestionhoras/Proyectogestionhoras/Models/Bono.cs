@@ -16,6 +16,7 @@ namespace Proyectogestionhoras.Models
         public decimal? Porcentaje { get; set; }
         public decimal? Valorreal { get; set; }
         public decimal? Valorfinal { get; set; }
+        public int? Trimestre { get; set; }
 
         public virtual ICollection<Bonosocio> Bonosocios { get; set; }
     }

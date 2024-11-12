@@ -10,5 +10,6 @@ namespace Proyectogestionhoras.Models
         public decimal TotalHhAnuales { get; set; }
         public int? Anio { get; set; }
         public decimal? Totalinmodificable { get; set; }
+        public int? Cantidad { get; set; }
     }
 }
