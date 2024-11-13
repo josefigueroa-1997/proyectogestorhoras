@@ -178,7 +178,7 @@ namespace Proyectogestionhoras.Services
                 .Where(ps => ps.IdProyecto == idProyecto)
                 .ToListAsync();
 
-            // Eliminar servicios marcados como eliminados
+            
             foreach (var servicio in servicios.Where(s => s.EsEliminado))
             {
                 var servicioExistente = serviciosExistentes
@@ -190,7 +190,7 @@ namespace Proyectogestionhoras.Services
                 }
             }
 
-            // Agregar o actualizar servicios
+            
             foreach (var servicio in servicios.Where(s => !s.EsEliminado))
             {
                 var servicioExistente = serviciosExistentes
@@ -200,7 +200,7 @@ namespace Proyectogestionhoras.Services
                 {
                     servicioExistente.Idsegmento = servicio.IdSegmento;
                     servicioExistente.Monto = servicio.MontoServicio;
-                    
+                    servicioExistente.Espresupuesto = servicio.espresupuesto;
                 }
                 else
                 {
@@ -211,6 +211,7 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = servicio.IdSegmento,
                         Monto = servicio.MontoServicio,
                         Fecha = servicio.Fecha.Date,
+                        Espresupuesto = servicio.espresupuesto,
                         
                     };
 
@@ -233,7 +234,7 @@ namespace Proyectogestionhoras.Services
                 .Where(ps => ps.IdProyecto == idProyecto)
                 .ToListAsync();
 
-            // Eliminar servicios marcados como eliminados
+            
             foreach (var servicio in gastos.Where(s => s.EsEliminado))
             {
                 var servicioExistente = serviciosExistentes
@@ -245,7 +246,7 @@ namespace Proyectogestionhoras.Services
                 }
             }
 
-            // Agregar o actualizar servicios
+            
             foreach (var servicio in gastos.Where(s => !s.EsEliminado))
             {
                 var servicioExistente = serviciosExistentes
@@ -313,18 +314,18 @@ namespace Proyectogestionhoras.Services
         {
             if (usuariohoras == null || !usuariohoras.Any())
             {
-                return 0; // No se proporcionaron horas para asignar
+                return 0; 
             }
 
             var idsUsuarios = usuariohoras.Select(uh => uh.IdUsuario).ToList();
 
-            // Obtener los usuarios con su navegación a IdRecursoNavigation
+            
             var usuarios = await context.Usuarios
                 .Include(u => u.IdRecursoNavigation)
                 .Where(u => idsUsuarios.Contains(u.Id))
                 .ToListAsync();
 
-            // Obtener las relaciones UsuarioProyecto
+            
             var proyectosUsuarios = await context.UsuarioProyectos
                 .Where(up => idsUsuarios.Contains(up.IdUsuario) && up.IdProyecto == idproyecto)
                 .ToListAsync();

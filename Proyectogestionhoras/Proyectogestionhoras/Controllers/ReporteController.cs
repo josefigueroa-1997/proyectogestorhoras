@@ -216,10 +216,10 @@ namespace Proyectogestionhoras.Controllers
         {
             var horasmaximas = await _reporteService.recuperarhhposibles(mes, anio);
             var horasproyectos = await _reporteService.recuperarhhproyectos(mes, anio);
-            var montosporquarter = _reporteService.ObtenerMontosPorQuarter();
+            
             ViewBag.HorasProyectos = horasproyectos;
             ViewBag.HorasMaximas = horasmaximas;
-            ViewBag.Montosporquarter = montosporquarter;
+            
             return View("recuperarhoras");
         }
 
