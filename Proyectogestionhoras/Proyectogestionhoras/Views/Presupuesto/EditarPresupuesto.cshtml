@@ -1,0 +1,816 @@
+﻿@{
+    ViewData["Title"] = "Editar Presupuesto";
+}
+
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 60px;
+    }
+
+    .form-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+    .form-group-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .form-group-radio label {
+            margin-bottom: 0;
+        }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .submit-btn, .clear-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-left: 10px;
+    }
+
+    .submit-btn {
+        color: #fff;
+        background-color: #fcaa67;
+    }
+
+        .submit-btn:hover {
+            background-color: #e39450;
+        }
+
+
+    .clear-btn {
+        color: #fff;
+        background-color: #007bff;
+    }
+
+        .clear-btn:hover {
+            background-color: #0056b3;
+        }
+
+
+    .horas-disponibles {
+        display: block;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .eliminar-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: red;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .tabla-margen td {
+        text-align: right;
+    }
+
+    .alert {
+        padding: 15px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+    }
+</style>
+
+<div class="form-container">
+    @foreach (var proyecto in ViewBag.Proyectos)
+    {
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+        <h1 class="form-title">Editar Presupuesto:@proyecto.NombreProyecto</h1>
+
+
+        <form action="@Url.Action("ActualizarPresupuesto","Presupuesto")" method="post">
+
+
+                <input type="hidden" name="idproyecto" value="@proyecto.Id" />
+            <input type="hidden" name="idpresupuesto" value="@proyecto.idpresupuesto" />
+                
+                <div class="form-row">
+                    <div class="form-group">
+                    <label for="monto">Monto</label>
+                    <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MontoPresupuesto) " required>
+                    </div>
+                </div>
+
+         
+                <div class="form-row">
+                    
+
+                        <input type="hidden" id="idcuentafactura" name="idcuentafactura" readonly>
+                        <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
+                        <input type="hidden" id="cuentafactura" name="cuenta" readonly>
+                        <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
+                <input type="hidden" id="codigo" class="codigo" value="@proyecto.Codigo" />
+                        <input type="hidden" class="nombresegmentoservicio" />
+                        <input type="hidden" class="idcuentaservicio" name="idcuentaservicio" />
+                        <input type="hidden" class="cuentaservicio" />
+                        <input type="hidden" class="ccostoservicio" />
+                        <input type="hidden" class="nombresegmentoconsultor" />
+                        <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor" />
+                        <input type="hidden" class="cuentaconsultor" />
+                        <input type="hidden" class="nombresegmentohonorario" />
+                        <input type="hidden" class="idsegmentoservicio" id="idsegmentoservicio" />
+                <input type="hidden" class="unidadNegocio" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
+                <input type="hidden" class="centroCosto" id="centroCosto" value="@proyecto.IDCOSTO" />
+                    
+                </div>
+               
+
+               
+               
+
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Presupuesto Costos Directos</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #b2e6a5; color: black;">
+                                
+                                <th style="padding: 10px; border: 1px solid #ddd;">Costo/Proyecto Socio</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Costo/Proyecto Staff</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Costo/Proyecto Consultor A</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Costo/Proyecto Consultor B</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Costo/Proyecto Consultor C</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
+                                <input type="text" class="horas-socios" id="costoSocios" name="costosocio" placeholder="Horas Socios" value="@String.Format("{0:N0}", @proyecto.CostoSocioPresupuesto)" required>
+                                </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
+                                <input type="text" class="horas-staff" id="costoStaff" name="costostaff" placeholder="Horas Staff" value="@String.Format("{0:N0}", @proyecto.CostoStaffPresupuesto)" required>
+                                </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
+                                <input type="text" id="consultorA" name="costoconsultora" placeholder="Horas A" value="@String.Format("{0:N0}", @proyecto.CostoConsultorAPresupuesto)" required>
+                                </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
+                                <input type="text" id="consultorB" name="costoconsultorb" placeholder="Horas B" value="@String.Format("{0:N0}", @proyecto.CostoConsultorBPresupuesto)" required>
+                                </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
+                                <input type="text" id="consultorC" name="costoconsultorc" placeholder="Horas C" value="@String.Format("{0:N0}", @proyecto.CostoConsultorCPresupuesto)" required>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            <div class="form-group">
+                <p class="form-subtitle" style="color:black;">Presupuesto Subcontratación de Servicios</p>
+                <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablaservicios">
+                    <thead>
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.ServiciosProyectos != null)
+                        {
+                            @foreach (var sp in ViewBag.ServiciosProyectos)
+                            {
+                                
+                                    <tr>
+
+
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <select class="servicios" name="idservicio" onchange="checkRequired(this)">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Servicios != null)
+                                                {
+                                                    @foreach (var servicio in ViewBag.Servicios)
+                                                    {
+                                                        if (servicio.Id == sp.IDSERVICIO)
+                                                        {
+                                                            <option value="@servicio.Id" selected>@servicio.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@servicio.Id">@servicio.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+
+
+                                            </select>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" value="@String.Format("{0:N0}", sp.MONTO)" type="text"></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" value="@sp.FECHA.ToString("yyyy-MM-dd")" type="date"></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" value="@proyecto.Codigo" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
+
+                                        </td>
+
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
+                                        </td>
+                                        <td style="display:none;">
+                                            <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                                        </td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
+                                        </td>
+                                    </tr>
+                                
+                                
+                            }
+                        }
+
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
+                                    <option value="" disabled selected>Seleccione un Servicio</option>
+
+
+
+                                </select>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio" type="date"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input type="text" id="ccostoservicio" class="codigo" name="ccostoservicio" value="@proyecto.Codigo" readonly />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
+
+                            </td>
+
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
+                            </td>
+                            <td style="display:none;">
+                                <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                            </td>
+                            <td style="display:none;">
+                                <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+                <div id="totalMonto" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotal">0</span></div>
+               
+            </div>
+            <div class="form-group">
+                <p class="form-subtitle" style="color:black;">Presupuesto Gastos Operacionales</p>
+                <table style="width: 100%; border-collapse: collapse; text-align: left;" id="tablagastos">
+                    <thead>
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Tipo Gasto</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.GastosProyectos != null)
+                        {
+                            @foreach (var gp in ViewBag.GastosProyectos)
+                            {
+                                
+                                    <tr>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <select class="gastos" name="idgastos[]">
+                                                <option value="" disabled selected>Seleccione un Gasto</option>
+                                                @if (ViewBag.Gastos != null)
+                                                {
+                                                    @foreach (var gasto in ViewBag.Gastos)
+                                                    {
+                                                        if (gasto.Id == gp.IDGASTOS)
+                                                        {
+                                                            <option value="@gasto.Id" selected>@gasto.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@gasto.Id">@gasto.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input name="montogasto" class="montogasto" value="@String.Format("{0:N0}", gp.MONTO)" type="text">
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" value="@gp.FECHA.ToString("yyyy-MM-dd")" type="date"></td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" value="@proyecto.Codigo" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input type="text" class="segmentogastos" name="segmentogastos" value="@gp.NOMBRSEGMENTO" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input class="idcuentagastos" name="idcuentagasto" value="@gp.IDCUENTA" readonly />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <input class="cuentagastos" name="cuentagastos" value="@gp.CUENTA" readonly />
+                                        </td>
+                                        <td style="display:none">
+                                            <input type="text" class="idsegmentogasto" name="idsegmentogasto" value="@gp.IDSEGMENTO" />
+                                        </td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                        </td>
+                                        <td style="padding: 10px; border: 1px solid #ddd;">
+                                            <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
+                                        </td>
+
+                                    </tr>
+                                
+                                
+                            }
+                        }
+
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <select class="gastosSelect" name="idgastos[]">
+                                    <option value="" disabled selected>Seleccione un Gasto</option>
+                                </select>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input name="montogasto" class="montogasto" type="text">
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" class="fechagasto" type="date"></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" value="@proyecto.Codigo" readonly />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input type="text" class="segmentogastos" name="segmentogastos" readonly />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input class="idcuentagastos" name="idcuentagasto" readonly />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <input class="cuentagastos" name="cuentagastos" readonly />
+                            </td>
+                            <td style="display:none">
+                                <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                            </td>
+                            <td style="display:none;">
+                                <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="totalMontoGastos" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalGastos">0</span></div>
+               
+            </div>
+            <div class="form-group">
+                <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+                <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
+                    <thead>
+                        <tr style="background-color: #fa8164; color: black; text-align:center">
+                            <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
+                            <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Costos Socios</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="costosociosmargen"></span></td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="costostaffmargen"></span></td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="costoconsultoresmargen"></span></td>
+
+                        </tr>
+
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
+                            <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                                <strong><span id="egresosmargen"></span></strong>
+                            </td>
+
+                        </tr>
+                        <tr style="background-color: #fa8164; color: black;">
+                            <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
+                            <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="button-container">
+                <button type="submit" class="submit-btn">Guardar Cambios</button>
+
+            </div>
+
+
+        </form>
+    }
+</div>
+
+
+<script>
+
+    window.addEventListener("load", function () {
+        obtenermargen();
+        obtenerValoresServicio()
+    });
+
+
+    function obtenermargen(){
+        const ingreso = parseFloat(document.getElementById("monto").value.replace(/\./g, '')) || 0;
+
+        const costoSocios = parseFloat(document.getElementById("costoSocios").value.replace(/\./g, '')) || 0;
+        const costoStaff = parseFloat(document.getElementById("costoStaff").value.replace(/\./g, '')) || 0;
+        const costoConsultorA = parseFloat(document.getElementById("consultorA").value.replace(/\./g, '')) || 0;
+        const costoConsultorB = parseFloat(document.getElementById("consultorB").value.replace(/\./g, '')) || 0;
+        const costoConsultorC = parseFloat(document.getElementById("consultorC").value.replace(/\./g, '')) || 0;
+
+
+        const servicios = [...document.querySelectorAll(".montoservicio")].reduce((sum, input) => {
+            const row = input.closest('tr');
+            
+            if (!row.hasAttribute('data-estado') || row.getAttribute('data-estado') !== 'oculto') {
+                return sum + (parseFloat(input.value.replace(/\./g, '')) || 0);
+            }
+            return sum;
+        }, 0);
+
+        
+        const gastos = [...document.querySelectorAll(".montogasto")].reduce((sum, input) => {
+            const row = input.closest('tr');
+            
+            if (!row.hasAttribute('data-estado') || row.getAttribute('data-estado') !== 'oculto') {
+                return sum + (parseFloat(input.value.replace(/\./g, '')) || 0);
+            }
+            return sum;
+        }, 0);
+
+
+        const totalEgresos = costoSocios + costoStaff + costoConsultorA + costoConsultorB + costoConsultorC + servicios + gastos;
+        const margen = ingreso - totalEgresos;
+
+
+        document.getElementById("ingresosvalor").textContent = ingreso.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("costosociosmargen").textContent = costoSocios.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("costostaffmargen").textContent = costoStaff.toLocaleString();
+        document.getElementById("costoconsultoresmargen").textContent = (costoConsultorA + costoConsultorB + costoConsultorC).toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("serviciosmargen").textContent = servicios.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("gastosmargen").textContent = gastos.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("egresosmargen").textContent = totalEgresos.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("margenfinal").textContent = margen.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("montoTotalGastos").textContent = gastos.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        document.getElementById("montoTotal").textContent = servicios.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function formatearNumero(input) {
+        
+        let valor = input.value.replace(/\./g, ''); 
+      
+
+        const numero = parseFloat(valor) || 0; 
+
+        
+        const valorFormateado = numero.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+        
+        input.value = valorFormateado;
+        obtenermargen();
+    }
+
+    document.getElementById("monto").addEventListener("input", function () {
+        formatearNumero(this);
+    });
+
+    document.getElementById("costoSocios").addEventListener("input", function () {
+        formatearNumero(this);
+    });
+
+    document.getElementById("costoStaff").addEventListener("input", function () {
+        formatearNumero(this);
+    });
+
+    document.getElementById("consultorA").addEventListener("input", function () {
+        formatearNumero(this);
+    });
+
+    document.getElementById("consultorB").addEventListener("input", function () {
+        formatearNumero(this);
+    });
+
+    document.getElementById("consultorC").addEventListener("input", function () {
+        formatearNumero(this);
+    });
+
+    
+    document.querySelectorAll(".montoservicio").forEach(input => {
+        input.addEventListener("input", function () {
+            formatearNumero(this);
+        });
+    });
+
+    document.querySelectorAll(".montogasto").forEach(input => {
+        input.addEventListener("input", function () {
+            formatearNumero(this);
+        });
+    });
+
+    function cargarGastos(selectElement) {
+        $.ajax({
+            url: '/Proyecto/ObtenerGastos',
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty();
+                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
+
+
+                $.each(data, function (index, gasto) {
+                    $(selectElement).append('<option value="' + gasto.id + '">' + gasto.nombre + '</option>');
+                });
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los gastos.');
+            }
+        });
+    }
+    $(document).ready(function () {
+        $('.gastosSelect').each(function () {
+            cargarGastos(this);
+        });
+    });
+
+
+    function cargarServicios(selectElement) {
+        $.ajax({
+            url: '/Proyecto/ObtenerServicios',
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty();
+                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
+
+                $.each(data, function (index, servicio) {
+                    $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
+                });
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los servicios.');
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        $('.serviciosSelect').each(function () {
+            cargarServicios(this);
+        });
+    });
+
+
+
+
+
+    function obtenerValoresServicio() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+        if (idUnidadNegocio && idCentroCosto) {
+            $.ajax({
+                url: '/Proyecto/GetValoresServicios',
+                type: 'GET',
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio
+                },
+                success: function (response) {
+                    if (response && response.length > 0) {
+
+                        $(".nombresegmentoservicio").val(response[0].nombre);
+                        $(".idcuentaservicio").val(response[0].idcuenta);
+                        $(".cuentaservicio").val(response[0].cuenta);
+                        $(".idsegmentoservicio").val(response[0].idsegmento);
+
+                    } else {
+
+                        $(".nombresegmentoservicio").val('');
+                        $(".idcuentaservicio").val('');
+                        $(".cuentaservicio").val('');
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener el servicio:', error);
+                    $(".nombresegmentoservicio").val('').hide();
+
+                }
+            });
+        }
+    }
+
+    function obtenerValoresGastos(idUnidadNegocio, idCentroCosto, nombreSegmento, selectElement) {
+        $.ajax({
+            url: '/Proyecto/GetValoresGastosEdicion',
+            type: 'GET',
+            data: {
+                idcosto: idCentroCosto,
+                unegocio: idUnidadNegocio,
+                nombresegmento: nombreSegmento
+            },
+            success: function (data) {
+                if (data.length > 0) {
+                    const gasto = data[0];
+                    console.log(data);
+                    selectElement.closest('tr').find('.segmentogastos').val(gasto.nombre);  
+                    selectElement.closest('tr').find('.idcuentagastos').val(gasto.idcuenta);  
+                    selectElement.closest('tr').find('.cuentagastos').val(gasto.cuenta);  
+                    selectElement.closest('tr').find('.idsegmentogasto').val(gasto.idsegmento);  
+
+                } else {
+                    alert('No se encontraron valores para el gasto seleccionado.');
+                }
+            },
+            error: function () {
+                alert('Ocurrió un error al obtener los valores de gastos.');
+            }
+        });
+    }
+    $('.gastosSelect').on('change', function () {
+        
+        var idUnidadNegocio = $('#unidadNegocio').val();  
+        var idCentroCosto = $('#centroCosto').val();  
+        var nombreSegmento = $(this).find("option:selected").text();  
+
+       
+        obtenerValoresGastos(idUnidadNegocio, idCentroCosto, nombreSegmento, $(this));
+    });
+
+
+    function limpiarFila(button) {
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.esEliminado');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+        fila.setAttribute('data-estado', 'oculto');
+        fila.style.display = 'none';
+
+        obtenermargen();
+
+
+    }
+    function limpiarFilagasto(button) {
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.esEliminados');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+
+        fila.setAttribute('data-estado', 'oculto');
+        
+        fila.style.display = 'none';
+
+
+
+        obtenermargen();
+
+
+    }
+</script>

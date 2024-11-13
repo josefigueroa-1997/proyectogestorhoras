@@ -207,8 +207,17 @@ namespace Proyectogestionhoras.Controllers
             }
         }
 
+        public async Task<int> Obtenerstatusproyectos(int? idproyecto)
+        {
+            var statusProyecto = await context.Proyectos
+            .Where(p => p.Id == idproyecto)
+            .Select(p => p.StatusProyecto)
+            .FirstOrDefaultAsync();
 
-       
+            return statusProyecto;
+
+        }
+
         public async Task<IActionResult> ObtenerProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var iduser = HttpContext.Session.GetInt32("id");
@@ -219,6 +228,11 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1 || rol == 3) 
                     {
+                        int status = await Obtenerstatusproyectos(id);
+                        if (status == 6)
+                        {
+                            return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new {id=id});
+                        }
                         var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         var servicios = await proyectoService.ObtenerServiciosProyecto(id);
                         var gastos = await proyectoService.ObtenerGastosProyectos(id);
@@ -350,7 +364,7 @@ namespace Proyectogestionhoras.Controllers
                         MontoServicio = decimal.Parse(montoservicioListejecucion[i].Replace(".", "")),
                         Fecha = DateTime.Parse(fechaservicioejecucion[i]),
                         EsEliminado = esEliminado[i] == "true",
-                        espresupuesto = "No"
+                        
                     };
 
                     serviciosejecucion.Add(servicioViewModel);
@@ -378,7 +392,7 @@ namespace Proyectogestionhoras.Controllers
                         MontoGasto = montogasto,
                         Fecha = DateTime.Parse(fechagastoejecucion[i]),
                         EsEliminado = esEliminadogasto[i] == "true",
-                        espresupuesto = "No",
+                        
                     };
 
                     gastosejecucion.Add(gasto);
@@ -394,55 +408,68 @@ namespace Proyectogestionhoras.Controllers
             var montopresupuestostr = montopresupuesto.Replace(".", "");
             decimal montofinal = decimal.Parse(montopresupuestostr); 
             int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
+
+
             List<ServicioViewModel> servicios = new List<ServicioViewModel>();
             var idsservicios = Request.Form["idservicio"];
             var idsegmentoservicio = Request.Form["idsegmentoservicio"];
             var montoservicioList = Request.Form["montoservicio"];
             var fechaservicio = Request.Form["fechaservicio"];
             var esEliminados = Request.Form["esEliminado"];
-            for (int i = 0; i < idsservicios.Count; i++)
-            {
-                var montoservicioStr = montoservicioList[i].ToString();
 
-                montoservicioStr = montoservicioStr.Replace(".", "");
 
-                decimal montoservicio = decimal.Parse(montoservicioStr);
-                var servicioViewModel = new ServicioViewModel
-                {
-                    Idservicios = int.Parse(idsservicios[i]),
-                    IdSegmento = int.Parse(idsegmentoservicio[i]),
-                    MontoServicio = montoservicio,
-                    Fecha = DateTime.Parse(fechaservicio[i]),
-                    EsEliminado = esEliminados[i] == "true",
-                    espresupuesto = "No",
-                };
-
-                servicios.Add(servicioViewModel);
-            }
-
+            var statusedicion = int.Parse(Request.Form["status"].ToString());
             List<GastoViewModel> gastos = new List<GastoViewModel>();
             var idgastos = Request.Form["idgastos[]"];
             var idsegmentogasto = Request.Form["idsegmentogasto"];
             var montogastoList = Request.Form["montogasto"];
             var fechagasto = Request.Form["fechagasto"];
-            for (int i = 0; i < idgastos.Count; i++)
-            {
-                var montogastoStr = montogastoList[i].ToString();
-
-                montogastoStr = montogastoStr.Replace(".", "");
-
-                decimal montogasto = decimal.Parse(montogastoStr);
-                var gasto = new GastoViewModel
+            var esEliminadogastos = Request.Form["esEliminados"];
+            
+                for (int i = 0; i < idsservicios.Count; i++)
                 {
-                    Idgastos = int.Parse(idgastos[i]),
-                    IdSegmento = int.Parse(idsegmentogasto[i]),
-                    MontoGasto = montogasto,
-                    Fecha = DateTime.Parse(fechagasto[i]),
-                    espresupuesto = "No",
-                };
+                    var montoservicioStr = montoservicioList[i].ToString();
 
-                gastos.Add(gasto);
-            }
+                    montoservicioStr = montoservicioStr.Replace(".", "");
+
+                    decimal montoservicio = decimal.Parse(montoservicioStr);
+                    var servicioViewModel = new ServicioViewModel
+                    {
+                        Idservicios = int.Parse(idsservicios[i]),
+                        IdSegmento = int.Parse(idsegmentoservicio[i]),
+                        MontoServicio = montoservicio,
+                        Fecha = DateTime.Parse(fechaservicio[i]),
+                        EsEliminado = esEliminados[i] == "true",
+                        
+                    };
+
+                    servicios.Add(servicioViewModel);
+                }
+
+
+                for (int i = 0; i < idgastos.Count; i++)
+                {
+                    var montogastoStr = montogastoList[i].ToString();
+
+                    montogastoStr = montogastoStr.Replace(".", "");
+
+                    decimal montogasto = decimal.Parse(montogastoStr);
+                    var gasto = new GastoViewModel
+                    {
+                        Idgastos = int.Parse(idgastos[i]),
+                        IdSegmento = int.Parse(idsegmentogasto[i]),
+                        MontoGasto = montogasto,
+                        Fecha = DateTime.Parse(fechagasto[i]),
+                        EsEliminado = esEliminadogastos[i] == "true",
+                        
+                    };
+
+                    gastos.Add(gasto);
+                }
+            
+
+            
+            
             /*List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
              
                 var idusuarios = Request.Form["idusuarios[]"];
@@ -459,7 +486,7 @@ namespace Proyectogestionhoras.Controllers
              
              
              */
-            var statusedicion = int.Parse(Request.Form["status"].ToString());
+            
             if (statusedicion == 2)
             {
 
@@ -477,7 +504,15 @@ namespace Proyectogestionhoras.Controllers
            
             if (resultado)
             {
-                return RedirectToAction("ObtenerProyectos", "Proyecto", new {id=idproyecto});
+                if(statusedicion == 6)
+                {
+                    return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyecto });
+                }
+                else
+                {
+                    return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
+                }
+                
             }
             else
             {
@@ -510,9 +545,9 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-        public async Task<IActionResult> ObtenerPresupuestoProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
+        public async Task<IActionResult> ObtenerPresupuestoProyecto(int? idpresupuesto,int? id,int? idcliente)
         {
-            var presupuesto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+            var presupuesto = await proyectoService.ObtenerPresupuestoProyectos(idpresupuesto,id,idcliente);
             var facturas = await facturaService.RecuperarFacturasPresupuesto(id);
             var servicios = await proyectoService.ObtenerServiciosProyecto(id);
             var gastos = await proyectoService.ObtenerGastosProyectos(id);

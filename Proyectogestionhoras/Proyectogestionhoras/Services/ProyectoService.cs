@@ -200,7 +200,7 @@ namespace Proyectogestionhoras.Services
                 {
                     servicioExistente.Idsegmento = servicio.IdSegmento;
                     servicioExistente.Monto = servicio.MontoServicio;
-                    servicioExistente.Espresupuesto = servicio.espresupuesto;
+                    
                 }
                 else
                 {
@@ -211,7 +211,7 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = servicio.IdSegmento,
                         Monto = servicio.MontoServicio,
                         Fecha = servicio.Fecha.Date,
-                        Espresupuesto = servicio.espresupuesto
+                        
                     };
 
                     await context.ProyectoServicios.AddAsync(nuevoServicio);
@@ -255,7 +255,7 @@ namespace Proyectogestionhoras.Services
                 {
                     servicioExistente.Idsegmento = servicio.IdSegmento;
                     servicioExistente.Monto = servicio.MontoGasto;
-                    servicioExistente.Espresupuesto = servicio.espresupuesto;
+                   
                 }
                 else
                 {
@@ -266,7 +266,7 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = servicio.IdSegmento,
                         Monto = servicio.MontoGasto,
                         Fecha = servicio.Fecha.Date,
-                        Espresupuesto = servicio.espresupuesto
+                        
                     };
 
                     await context.ProyectoGastos.AddAsync(nuevoServicio);
@@ -481,6 +481,7 @@ namespace Proyectogestionhoras.Services
                                 CostoConsultorAPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")),
                                 CostoConsultorBPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")),
                                 CostoConsultorCPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")),
+                                idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
 
                                 
 
@@ -529,7 +530,7 @@ namespace Proyectogestionhoras.Services
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
-                                Espresupuesto = reader.GetString(reader.GetOrdinal("ESPRESUPUESTO")),
+                                
                             };
                             serviciosProyectos.Add(servicio);
 
@@ -573,7 +574,7 @@ namespace Proyectogestionhoras.Services
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO")),
                                 FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
-                                Espresupuesto = reader.GetString(reader.GetOrdinal("ESPRESUPUESTO")),
+                                
                             };
                             gastosproyectos.Add(gasto);
 
@@ -1328,6 +1329,126 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Hubo un error al obtener los gastos:" + ex.Message);
                 return new List<GastoDTO>();
+            }
+        }
+
+
+        public async Task<List<ProyectoDTO>> ObtenerPresupuestoProyectos(int? idpresupuesto,int? idproyecto, int? idcliente)
+        {
+            try
+            {
+#pragma warning disable CS8600
+                object idpresupuestoparameter = (object)idpresupuesto ?? DBNull.Value;
+                object idproyectoapramterer = (object)idproyecto ?? DBNull.Value;
+                object idclientepramemter = (object)idcliente ?? DBNull.Value;
+                
+#pragma warning restore CS8600
+                var proyectos = new List<ProyectoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = "OBTENERPROYECTOPRESUPUESTO";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@IDPRESUPUESTO", idpresupuestoparameter));
+                    cmd.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyectoapramterer));
+                    cmd.Parameters.Add(new SqlParameter("@IDCLIENTE", idclientepramemter));
+                    
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ProyectoDTO proyecto = new()
+                            {
+
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                numproyecto = reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
+                                Tipo_Unegocio = reader.GetString(reader.GetOrdinal("TIPO_UNEGOCIO")),
+                                IDUNEGOCIO = reader.GetInt32(reader.GetOrdinal("IDUNEGOCIO")),
+                                IDCOSTO = reader.GetInt32(reader.GetOrdinal("IDCOSTO")),
+                                Tipo_CCosto = reader.GetString(reader.GetOrdinal("TIPO_CCOSTO")),
+                                Codigo = reader.GetString(reader.GetOrdinal("CODIGO")),
+                                IDCLIENTE = reader.GetInt32(reader.GetOrdinal("IDCLIENTE")),
+                                NombreCliente = reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
+                                NombreProyecto = reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                Tipo_Tipologia = reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),
+                                IDTIPOLOGIA = reader.GetInt32(reader.GetOrdinal("IDTIPOLOGIA")),
+                                Tipo_Empresa = reader.GetString(reader.GetOrdinal("TIPO_EMPRESA")),
+                                IDEMPRESA = reader.GetInt32(reader.GetOrdinal("IDEMPRESA")),
+                                IDPRESUPESTO = reader.GetInt32(reader.GetOrdinal("IDPRESUPESTO")),
+                                AfectaIva = reader.GetString(reader.GetOrdinal("AFECTAIVA")),
+                                Tipo_Status = reader.GetString(reader.GetOrdinal("TIPO_STATUS")),
+                                STATUSPROYECTO = reader.GetInt32(reader.GetOrdinal("STATUSPROYECTO")),
+                                Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
+                                Porcentaje_Probabilidad = reader.IsDBNull(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")) ? 0 : reader.GetDecimal(reader.GetOrdinal("PORCENTAJE_PROBABILIDAD")),
+                                Plazo = reader.GetInt32(reader.GetOrdinal("PLAZO")),
+                                Fecha_Inicio = reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")).Date,
+                                Fecha_Termino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")).Date,
+
+                                Fecha_Plazo_Neg = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
+                                NOMBREDEPARTAMENTO = reader.GetString(reader.GetOrdinal("NOMBREDEPARTAMENTO")),
+                                IDDEPARTAMENTO = reader.GetInt32(reader.GetOrdinal("IDDEPARTAMENTO")),
+                                MONTO = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                MONEDA = reader.IsDBNull(reader.GetOrdinal("MONEDA")) ? string.Empty : reader.GetString(reader.GetOrdinal("MONEDA")),
+
+                                HHSOCIOS = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
+                                CUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("CUENTA_SOCIOS")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_SOCIOS")),
+                                IDCUENTA_SOCIOS = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_SOCIOS")),
+                                SEGMENTO_SOCIOS = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_SOCIOS")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_SOCIOS")),
+                                COSTO_SOCIO = reader.IsDBNull(reader.GetOrdinal("COSTO_SOCIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_SOCIO")),
+
+                                HHSTAFF = reader.IsDBNull(reader.GetOrdinal("HH_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_STAFF")),
+
+                                CUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("CUENTA_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_STAFF")),
+                                IDCUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_STAFF")),
+                                SEGMENTO_STAFF = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_STAFF")),
+                                COSTO_STAFF = reader.IsDBNull(reader.GetOrdinal("COSTO_STAFF")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_STAFF")),
+
+                                HH_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTOR_A")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTOR_A")),
+                                CUENTA_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_A")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_A")),
+                                IDCUENTA_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_A")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_A")),
+                                SEGMENTO_CONSULTOR_A = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_A")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_A")),
+                                COSTO_CONSULTORA = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORA")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORA")),
+
+                                HH_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTOR_B")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTOR_B")),
+                                CUENTA_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_B")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_B")),
+                                IDCUENTA_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_B")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_B")),
+                                SEGMENTO_CONSULTOR_B = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_B")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_B")),
+                                COSTO_CONSULTORB = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORB")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORB")),
+
+                                HH_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("HH_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_CONSULTOR_C")),
+                                CUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("CUENTA_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_CONSULTOR_C")),
+                                IDCUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")),
+                                SEGMENTO_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")),
+                                COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
+                                /*PRESUPUESTO*/
+                                MontoPresupuesto = reader.IsDBNull(reader.GetOrdinal("MONTOPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOPRESUPUESTO")),
+                                CostoSocioPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOSOCIOPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOSOCIOPRESUPUESTO")),
+                                CostoStaffPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOSTAFFPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOSTAFFPRESUPUESTO")),
+                                CostoConsultorAPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")),
+                                CostoConsultorBPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")),
+                                CostoConsultorCPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")),
+                                idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
+
+
+
+
+
+                            };
+
+                            proyectos.Add(proyecto);
+
+                        }
+                    }
+                    await conexion.CloseDatabaseConnectionAsync();
+                    return proyectos;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los proyectos" + ex);
+                return new List<ProyectoDTO>();
+
             }
         }
     }

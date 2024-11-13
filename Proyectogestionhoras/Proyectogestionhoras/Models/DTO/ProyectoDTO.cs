@@ -73,6 +73,6 @@
         public decimal CostoConsultorAPresupuesto { get; set; }
         public decimal CostoConsultorBPresupuesto { get; set; }
         public decimal CostoConsultorCPresupuesto { get; set; }
-
+        public int idpresupuesto { get; set; }
     }
 }

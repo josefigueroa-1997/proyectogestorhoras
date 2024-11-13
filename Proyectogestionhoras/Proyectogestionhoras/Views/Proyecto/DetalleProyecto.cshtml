@@ -56,7 +56,7 @@
     }
 
    
-    .update-btn, .nuevo-btn,.finish-btn {
+    .update-btn, .nuevo-btn,.finish-btn,.presupuesto-btn {
         padding: 10px 30px;
         font-size: 1rem;
         font-weight: 600;
@@ -93,6 +93,15 @@
         .nuevo-btn:hover {
             background-color: #0056b3;
         }
+
+    .presupuesto-btn {
+        color: #fff;
+        background-color: #ff0000; /* Rojo */
+    }
+
+    .presupuesto-btn:hover {
+        background-color: #cc0000; /* Rojo oscuro */
+    }
 </style>
 
 <div class="form-container">
@@ -114,6 +123,7 @@
                     </form>
                 }
                 <a href="@Url.Action("ObtenerhistorialNegociaciones", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Ver Historial de Negociación</a>
+                <a href="@Url.Action("ObtenerPresupuestoProyecto", "Proyecto", new { idpresupuesto = proyecto.idpresupuesto,id=proyecto.Id })" class="presupuesto-btn">Ver Presupuesto Proyecto</a>
             </div>
             <div class="tables-wrapper">
                 
