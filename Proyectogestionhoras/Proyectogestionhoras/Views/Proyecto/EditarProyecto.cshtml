@@ -524,6 +524,78 @@
                 </div>
 
                 <div class="form-group">
+                    <p class="form-subtitle">Ingresos Reales</p>
+                    <table id="tablaingresosreales" style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #d9e2f3; color: black;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">IDCuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta Contable</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text"  class="" id="montoreal" name="montoreal" value="2.000.000" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="date"  class="" id="fechaingresoreal" name="fechaingresoreal" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly class="idcuentafactura" id="idcuentafactura" name="idcuentaingresoreal">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="cuentafactura" readonly>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="nombresegmentofactura" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text"  class="" id="montoreal" name="montoreal" value="2.500.000" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="date"  class="" id="fechaingresoreal" name="fechaingresoreal" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly class="idcuentafactura" id="idcuentafactura" name="idcuentaingresoreal">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="cuentafactura" readonly>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="nombresegmentofactura" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="" id="montoreal" name="montoreal" value="3.000.000" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="date" class="" id="fechaingresoreal" name="fechaingresoreal" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly class="idcuentafactura" id="idcuentafactura" name="idcuentaingresoreal">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="cuentafactura" readonly>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" class="nombresegmentofactura" readonly>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                    <div id="totalMontorealingreso" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalingreso">7.500.000</span></div>
+                    <button id="agregarFilaingresoreal" class="submit-btn" style="margin-top: 10px;">Agregar Otro Ingreso</button>
+                </div>
+
+                <div class="form-group">
                     <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
                     <div style="display: flex; justify-content: space-between;">
 
@@ -729,6 +801,7 @@
                     </table>
                 </div>
 
+               
 
 
                @* <div style="display:none;" id="tablaintegrantes" class="form-group">
@@ -895,6 +968,73 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <p class="form-subtitle" style="color:black">Registro Costos Reales</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: #b2e6a5; color: black;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">Tipo Costo</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <select class="costosrealesSelect" name="tipocostoreal">
+                                        <option value="Socios" disabled selected>Socios</option>
+
+
+                                    </select>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" readonly id="montocostoreal" name="montocostoreal" value="100.000" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="date"  id="fechacostoreal" name="fechacostoreal" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly class="idcuentasocio">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" readonly class="cuentasocio">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" readonly class="nombresegmentosocio">
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <select class="costosrealesSelect" name="tipocostoreal">
+                                        <option value="Socios" disabled selected>Staff</option>
+
+
+                                    </select>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" readonly id="montocostoreal" name="montocostoreal" value="200.000" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="date"  id="fechacostoreal" name="fechacostoreal" required>
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="number" readonly class="idcuentaconsultor">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" readonly class="cuentaconsultor">
+                                </td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <input type="text" readonly class="nombresegmentoconsultor">
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="form-group">
                     <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
@@ -2431,6 +2571,9 @@
                         $("#cuentafactura").val(data[0].cuenta);
                         $("#nombresegmentofactura").val(data[0].nombre);
                         $("#idsegmentofactura").val(data[0].idsegmento);
+                          $(".idcuentafactura").val(data[0].idcuenta);
+                            $(".cuentafactura").val(data[0].cuenta);
+                            $(".nombresegmentofactura").val(data[0].nombre);
                         generarFilas();
                     } else {
                         $("#idcuentafactura").val('');
