@@ -1,0 +1,314 @@
+﻿@{
+    ViewData["Title"] = "Forecast Ingreso";
+}
+
+<style>
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 60px;
+    }
+
+    .form-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.0rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+
+
+    .highlight {
+        background-color: #f8d7da;
+        font-weight: bold;
+    }
+
+</style>
+<div class="form-container">
+
+    <div class="form-group">
+
+        @foreach (var proyecto in ViewBag.Proyecto)
+        {
+
+            <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
+
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-green-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Cliente</th>
+                            <th class="p-2 border border-gray-300 text-left">Monto</th>
+                            <th class="p-2 border border-gray-300 text-left">Departamento</th>
+                            <th class="p-2 border border-gray-300 text-left">C.Costo</th>
+                            <th class="p-2 border border-gray-300 text-left">Código</th>
+                            <th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Empresa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Empresa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        }
+    </div>
+
+    <div class="form-group">
+
+        <p class="form-subtitle" style="color:black;">Status Gastos HH</p>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-xs border-collapse">
+                <thead>
+                    <tr class="bg-green-100 text-black">
+                        <th class="p-2 border border-gray-300 text-left">TipoCosto</th>
+                        <th class="p-2 border border-gray-300 text-left">Fecha</th>
+                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                        <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                        <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                        <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
+                        <th class="p-2 border border-gray-300 text-left">Total</th>
+                        <th class="p-2 border border-gray-300 text-left">Acción</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">Pago HH Socios</td>
+                        <td class="p-2 border border-gray-300 text-left">31/08/2024</td>
+                        <td class="p-2 border border-gray-300 text-left"></td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Consultor Interno</td>
+                        <td class="p-2 border border-gray-300 text-right">30</td>
+                        <td class="p-2 border border-gray-300 text-right">1.200.000</td>
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto HH</button>
+                        </td>
+                       
+                        
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">Pago HH Staff</td>
+                        <td class="p-2 border border-gray-300 text-left">31/08/2024</td>
+                        <td class="p-2 border border-gray-300 text-left"></td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Consultor Interno</td>
+                        <td class="p-2 border border-gray-300 text-right">30</td>
+                        <td class="p-2 border border-gray-300 text-right">630.000</td>
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto HH</button>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">Pago HH Consultores</td>
+                        <td class="p-2 border border-gray-300 text-left">31/08/2024</td>
+                        <td class="p-2 border border-gray-300 text-left"></td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Honorario Consultor Externo</td>
+                        <td class="p-2 border border-gray-300 text-right">30</td>
+                        <td class="p-2 border border-gray-300 text-right">240.000</td>
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto HH</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+
+    </div>
+
+    <div class="form-group">
+
+        <p class="form-subtitle" style="color:black;">Status Servicios </p>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-xs border-collapse">
+                <thead>
+                    <tr class="bg-red-100 text-black">
+                        <th class="p-2 border border-gray-300 text-left">TipoServicios</th>
+                        <th class="p-2 border border-gray-300 text-left">Monto</th>
+                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                        <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                        <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                        
+                        <th class="p-2 border border-gray-300 text-left">Acción</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Diseño</option>
+                                <option>Otro</option>
+                                <option selected>Servicio Externo</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-right">120.000</td>
+                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
+                        
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Diseño</option>
+                                <option>Otro</option>
+                                <option selected>Servicio Externo</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-right">120.000</td>
+                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
+
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Diseño</option>
+                                <option>Otro</option>
+                                <option selected>Servicio Externo</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-right">120.000</td>
+                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
+
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="form-group">
+
+        <p class="form-subtitle" style="color:black;">Status Gastos </p>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-xs border-collapse">
+                <thead>
+                    <tr class="bg-yellow-100 text-black">
+                        <th class="p-2 border border-gray-300 text-left">TipoGasto</th>
+                        <th class="p-2 border border-gray-300 text-left">Monto</th>
+                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                        <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                        <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+
+                        <th class="p-2 border border-gray-300 text-left">Acción</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Pasaje</option>
+                                <option>Alimentación</option>
+                                <option selected>Otro</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-right">120.000</td>
+                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
+
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto</button>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Pasaje</option>
+                                <option>Alimentación</option>
+                                <option selected>Otro</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-right">120.000</td>
+                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
+
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto</button>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Pasaje</option>
+                                <option>Alimentación</option>
+                                <option selected>Otro</option>
+                            </select>
+                        </td>
+                        
+                        <td class="p-2 border border-gray-300 text-right">120.000</td>
+                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
+                        <td class="p-2 border border-gray-300 text-right">5101001</td>
+                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
+
+                        <td>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto</button>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>

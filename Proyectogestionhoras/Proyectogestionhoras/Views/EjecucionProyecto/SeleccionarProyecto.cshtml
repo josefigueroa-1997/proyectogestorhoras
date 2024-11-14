@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Proyectos en ejecución";
+}
+<link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
+
+<div class="projects-container">
+<h2 style="margin-top:60px" class="text-2xl font-bold mb-4">Seleccione un Proyecto</h2>
+<div class="projects-section">
+    <div class="section-header"></div>
+    <div class="section-content" id="presupuestoProjects">
+        @foreach (var proyecto in ViewBag.Proyectos)
+        {
+                <form id="myForm_@proyecto.Id" action="@Url.Action("RedirigirActividad","EjecucionProyecto")" method="POST">
+                <input type="hidden" name="idproyecto" value="@proyecto.Id"/>
+                    <a href="#" onclick="submitForm(@proyecto.Id); return false;">
+                        <div class="card new-cliente">
+                            <h3>@proyecto.NombreProyecto</h3>
+                            <p>@proyecto.numproyecto</p>
+                            <p>@proyecto.NombreCliente</p>
+                        </div>
+                    </a>
+            </form>
+        }
+    </div>
+</div>
+</div>
+<script>
+    function submitForm(proyectoId) {
+        document.getElementById(`myForm_${proyectoId}`).submit();
+    }
+</script>

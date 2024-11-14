@@ -1,0 +1,89 @@
+﻿@{
+
+    ViewData["Title"] = "Forecasts";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+<style>
+
+    .dashboard-container {
+        padding: 0;
+        background-color: transparent;
+        margin-top: 50px;
+    }
+
+
+    .section-content {
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+
+    .card {
+        background-color: #ffffff;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: background-color 0.3s, border-color 0.3s;
+        height: 100px;
+        margin-right: 1rem;
+        justify-content: center;
+    }
+
+        .card.new-cliente {
+            background-color: #333;
+            border-left: 4px solid #fcaa67;
+            cursor: pointer;
+            color: #fff;
+        }
+
+            .card.new-cliente h3 {
+                color: #fcaa67;
+                font-size: 18px;
+            }
+
+            .card.new-cliente:hover {
+                background-color: #fcaa67;
+                border-color: #fff;
+            }
+
+                .card.new-cliente:hover h3 {
+                    color: #fff;
+                }
+
+                .card.new-cliente:hover p {
+                    color: #fff;
+                }
+
+</style>
+
+@{
+    int? idproyecto = Context.Session.GetInt32("numproyecto");
+}
+<h2 style="margin-top: 50px;" class="section-header">Seleccione un Forecast</h2>
+<div class="section-content">
+    <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})">
+        <div class="card new-cliente">
+            <h3>Forecast de Ingreso</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})">
+        <div class="card new-cliente">
+            <h3>Forecast Costos</h3>
+        </div>
+    </a>
+    <a href="">
+        <div class="card new-cliente">
+            <h3>Forecast Flujo Caja</h3>
+        </div>
+    </a>
+
+</div>
