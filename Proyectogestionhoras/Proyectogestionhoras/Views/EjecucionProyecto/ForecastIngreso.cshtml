@@ -38,7 +38,9 @@
 
    
 </style>
-
+@{
+    int? idproyecto = Context.Session.GetInt32("numproyecto");
+}
 <div class="form-container">
 
     <div class="form-group">
@@ -56,8 +58,9 @@
                             <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
                             <th class="p-2 border border-gray-300 text-left">Proyecto</th>
                             <th class="p-2 border border-gray-300 text-left">Cliente</th>
-                            <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">Departamento</th>
+                            <th class="p-2 border border-gray-300 text-left">Monto</th>
+                            
                             <th class="p-2 border border-gray-300 text-left">C.Costo</th>
                             <th class="p-2 border border-gray-300 text-left">Código</th>
                             <th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
@@ -69,8 +72,9 @@
                             <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
-                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+                            
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
@@ -119,120 +123,324 @@
         </div>
     </div>
 
+    @*FORMULARIO INGRESO*@
+   
+        <form asp-action="RegistrarIngresos" asp-controller="EjecucionProyecto" method="post">
+            <input type="hidden" name="idproyecto" value="@idproyecto" />
+            <p class="form-subtitle" style="color:black">Ingreso Factura</p>
+        <div class="flex overflow-x-auto">
+            <table style="table-layout: auto;" class="w-full max-w-3xl border-collapse text-left text-xs">
+                    <thead>
+                        <tr class="bg-blue-100 text-black">
+                            @{
+                                int cuotareal = 0;
+                            }
+                            <th class="p-2 border border-gray-300 text-center">Cuotas</th>
+                            @foreach (var factura in ViewBag.Factura)
+                            {
+                                cuotareal++;
+                                <th class="p-2 border border-gray-300 text-center">Cuota @cuotareal</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Nº Documento -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Nº Documento</td>
 
-    <div class="form-group">
-        <p class="form-subtitle" style="color:black">Ingreso Factura</p>
-        <div class="flex justify-center overflow-x-auto">
-            <table class="w-full max-w-3xl border-collapse text-left text-xs">
-                <thead>
-                    <tr class="bg-blue-100 text-black">
-                        @{
-                            int cuotareal = 0;
-                        }
-                        <th class="p-2 border border-gray-300 text-center">Cuotas</th>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            cuotareal += 1;
-                            <th class="p-2 border border-gray-300 text-center">Cuota @cuotareal</th>
-                        }
-                    </tr>
-                    <tr class="bg-blue-100 text-black">
-                        <th class="p-2 border border-gray-300 text-center">Mes/Año</th>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <th class="p-2 border border-gray-300 text-center">@factura.Fecha_Factura.ToString("MM/yyyy")</th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Nº Documento</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-right"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha Emision</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha Vencimiento</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Monto US$</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">T/C</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Monto $</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-right min-w-[100px]"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">IVA</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Estado</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">IdCuenta</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha Pago</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center"></td>
-                        }
-                    </tr>
-                
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Guardar</td>
-                        @foreach (var factura in ViewBag.Factura)
-                        {
-                            <td class="p-2 border border-gray-300 text-center">
-                                <!-- Aquí agregamos el botón dentro de la celda -->
-                                <button type="button" class="bg-blue-500 text-white p-1 rounded">Guardar</button>
-                            </td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                            @for (int i = 0; i < cuota; i++)  
+    {
+                                    <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                            {
 
+                                        <input type="text" class="form-control px-3 py-2 text-right border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                        value="@ViewBag.Cuotas[i].Numdocumento"
+                                         name="ingresos[@i].Numdocumento" />
+                                        <input type="hidden" name="ingresos[@i].Cuota" value="@i" />
+                                        <input type="hidden" name="ingresos[@i].Id" value="@ViewBag.Cuotas[i].Id" />
+                                        }
+                                    else
+                                     {
 
+                                        <input type="text" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].Numdocumento" />
+                                                <input type="hidden" name="ingresos[@i].Cuota" value="@i" />
+                                    }
+                                    </td>
+    }
+                        </tr>
+
+                        <!-- Fecha Emisión -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha Emisión</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                        <input type="date" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               value="@ViewBag.Cuotas[i].FechaEmision?.ToString("yyyy-MM-dd")"
+                                               name="ingresos[@i].FechaEmision" />
+                                    }
+                                    else
+                                    {
+                                        <input type="date" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].FechaEmision" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- Fecha Vencimiento -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha Vencimiento</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                        <input type="date" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               value="@ViewBag.Cuotas[i].FechaVencimiento?.ToString("yyyy-MM-dd")"
+                                               name="ingresos[@i].FechaVencimiento" />
+                                    }
+                                    else
+                                    {
+                                        <input type="date" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].FechaVencimiento" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- Monto USD -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Monto (USD)</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                    <input type="text"  class="form-control px-3 text-right py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                           name="ingresos[@i].Montous"
+                                           value="@String.Format("{0:N0}", ViewBag.Cuotas[i]?.Montous ?? "")" />
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].Montous" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- T/C (Tipo de Cambio) -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">T/C</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                        <input type="text"  class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                           name="ingresos[@i].Tc"
+                                           value="@String.Format("{0:N0}", ViewBag.Cuotas[i]?.Tc ?? "")" />
+                                    }
+                                    else
+                                    {
+                                        <input type="text" step="0.01" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].Tc" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- Monto CLP -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">MontoClp</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                    <input type="text"  class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                           name="ingresos[@i].Montoclp"
+                                           value="@String.Format("{0:N0}", ViewBag.Cuotas[i]?.Montoclp ?? "")" />
+                                    }
+                                    else
+                                    {
+                                        <input type="text"  class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].Montoclp" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- IVA -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">IVA</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                    <input type="text"  class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                           name="ingresos[@i].Iva"
+                                           value="@String.Format("{0:N0}", ViewBag.Cuotas[i]?.Iva ?? "")" />
+                                    }
+                                    else
+                                    {
+                                        <input type="text"  class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].Iva" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- Estado -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Estado</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    <select class="px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                            name="ingresos[@i].Estado">
+                                        
+
+                                        @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                        {
+                                            @if (ViewBag.Cuotas[i].Estado == "Por Cobrar")
+                                            {
+                                                <option value="Por Cobrar" selected>Por Cobrar</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Por Cobrar">Por Cobrar</option>
+                                            }
+
+                                            @if (ViewBag.Cuotas[i].Estado == "Pagada")
+                                            {
+                                                <option value="Pagada" selected>Pagada</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Pagada">Pagada</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="Por Cobrar" selected>Por Cobrar</option>
+                                            <option value="Pagada">Pagada</option>
+                                        }
+                                    </select>
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- Cuenta Asociada -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Cuenta Asociada</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                        <input type="number" step="0.01" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].Idcuenta"
+                                               value="@ViewBag.Cuotas[i].Idcuenta" />
+                                    }
+                                    else
+                                    {
+                                        <input type="number" step="0.01" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].Idcuenta" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+
+                        <!-- Fecha de Pago -->
+                        <tr>
+                            <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha de Pago</td>
+                            @for (int i = 0; i < cuota; i++)
+                            {
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @if (ViewBag.Cuotas != null && ViewBag.Cuotas.Count > i)
+                                    {
+                                        <input type="date" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].FechaPago"
+                                               value="@ViewBag.Cuotas[i].FechaPago?.ToString("yyyy-MM-dd")" />
+                                    }
+                                    else
+                                    {
+                                        <input type="date" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
+                                               name="ingresos[@i].FechaPago" />
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-2">
+                <button type="submit" class="bg-blue-500 text-white p-1 rounded">Guardar</button>
+            </div>
+        </form>
+    
 
 
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+       
+        function formatCurrency(event) {
+            let value = event.target.value;
+
+            
+            value = value.replace(/[^\d]/g, '');
+
+            
+            if (value !== '') {
+               
+                let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                event.target.value = formattedValue;
+            }
+        }
+
+        function removePoints(event) {
+            let value = event.target.value;
+
+          
+            value = value.replace(/\./g, '');
+            event.target.value = value;
+        }
+
+        
+        function cleanInputsOnSubmit(event) {
+            
+            const inputs = event.target.querySelectorAll('input[name*="Montous"], input[name*="Montoclp"], input[name*="Iva"]');
+
+            inputs.forEach(input => {
+               
+                let value = input.value;
+                value = value.replace(/\./g, '');
+                input.value = value;
+            });
+        }
+
+        
+        const montoInputs = document.querySelectorAll('input[name*="Montous"], input[name*="Montoclp"], input[name*="Iva"]');
+
+        
+        montoInputs.forEach(input => {
+            input.addEventListener('input', formatCurrency);
+        });
+
+        
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', cleanInputsOnSubmit);
+        }
+    });
+</script>

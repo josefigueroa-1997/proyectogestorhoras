@@ -200,7 +200,7 @@ namespace Proyectogestionhoras.Services
                 {
                     servicioExistente.Idsegmento = servicio.IdSegmento;
                     servicioExistente.Monto = servicio.MontoServicio;
-                    servicioExistente.Espresupuesto = servicio.espresupuesto;
+                    
                 }
                 else
                 {
@@ -211,7 +211,7 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = servicio.IdSegmento,
                         Monto = servicio.MontoServicio,
                         Fecha = servicio.Fecha.Date,
-                        Espresupuesto = servicio.espresupuesto,
+                        
                         
                     };
 

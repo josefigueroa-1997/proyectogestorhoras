@@ -33,6 +33,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
         public virtual DbSet<HistorialNegociacion> HistorialNegociacions { get; set; } = null!;
         public virtual DbSet<Historialpresupuesto> Historialpresupuestos { get; set; } = null!;
+        public virtual DbSet<Ingresosreale> Ingresosreales { get; set; } = null!;
         public virtual DbSet<MetaFacturacionesqx> MetaFacturacionesqxes { get; set; } = null!;
         public virtual DbSet<Metatipologia> Metatipologias { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
@@ -572,6 +573,62 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.Historialpresupuestos)
                     .HasForeignKey(d => d.Idproyecto)
                     .HasConstraintName("IDPROYECTOPRESUPUESTO");
+            });
+
+            modelBuilder.Entity<Ingresosreale>(entity =>
+            {
+                entity.ToTable("INGRESOSREALES");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Cuota).HasColumnName("CUOTA");
+
+                entity.Property(e => e.Estado)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("ESTADO");
+
+                entity.Property(e => e.FechaEmision)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_EMISION");
+
+                entity.Property(e => e.FechaPago)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_PAGO");
+
+                entity.Property(e => e.FechaVencimiento)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_VENCIMIENTO");
+
+                entity.Property(e => e.Idcuenta).HasColumnName("IDCUENTA");
+
+                entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
+
+                entity.Property(e => e.Iva)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("IVA");
+
+                entity.Property(e => e.Montoclp)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTOCLP");
+
+                entity.Property(e => e.Montous)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTOUS");
+
+                entity.Property(e => e.Numdocumento)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("NUMDOCUMENTO");
+
+                entity.Property(e => e.Tc)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("TC");
+
+                entity.HasOne(d => d.IdproyectoNavigation)
+                    .WithMany(p => p.Ingresosreales)
+                    .HasForeignKey(d => d.Idproyecto)
+                    .HasConstraintName("IDPROYECTO_INGRESO");
             });
 
             modelBuilder.Entity<MetaFacturacionesqx>(entity =>
