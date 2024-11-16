@@ -70,5 +70,13 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Proyecto = proyecto;
             return View();
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerProveedoresServicios()
+        {
+            var proveedores =await context.Proveedores.Where(p=>p.Tipo.Contains("Servicio")).ToListAsync();
+            return Json(proveedores);
+        }
     }
 }

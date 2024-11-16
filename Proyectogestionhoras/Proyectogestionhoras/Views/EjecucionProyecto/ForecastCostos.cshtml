@@ -45,7 +45,8 @@
 
             <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
 
-
+            <input type="hidden" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
+            <input type="hidden" id="centroCosto" value="@proyecto.IDCOSTO" />
             <div class="overflow-x-auto">
                 <table class="min-w-full text-xs border-collapse">
                     <thead>
@@ -146,84 +147,53 @@
 
     </div>
 
+
+    @*SERVICIOS*@
+
+
     <div class="form-group">
 
         <p class="form-subtitle" style="color:black;">Status Servicios </p>
         <div class="overflow-x-auto">
-            <table class="min-w-full text-xs border-collapse">
+            <table id="tablaServicios" class="min-w-full text-xs border-collapse">
                 <thead>
                     <tr class="bg-red-100 text-black">
                         <th class="p-2 border border-gray-300 text-left">TipoServicios</th>
+                        <th class="p-2 border border-gray-300 text-left">Proveedor</th>
                         <th class="p-2 border border-gray-300 text-left">Monto</th>
                         <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                         <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                         
-                        <th class="p-2 border border-gray-300 text-left">Acción</th>
+                        
 
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="p-2 border border-gray-300 text-left">
-                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>Diseño</option>
-                                <option>Otro</option>
-                                <option selected>Servicio Externo</option>
+                            <select class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                
                             </select>
                         </td>
-                        <td class="p-2 border border-gray-300 text-right">120.000</td>
-                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
-                        <td class="p-2 border border-gray-300 text-right">5101001</td>
-                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                        <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
+                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
                         
-                        <td>
-                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
-                        </td>
+                       
 
 
                     </tr>
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">
-                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>Diseño</option>
-                                <option>Otro</option>
-                                <option selected>Servicio Externo</option>
-                            </select>
-                        </td>
-                        <td class="p-2 border border-gray-300 text-right">120.000</td>
-                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
-                        <td class="p-2 border border-gray-300 text-right">5101001</td>
-                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
-
-                        <td>
-                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
-                        </td>
-
-
-                    </tr>
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">
-                            <select class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>Diseño</option>
-                                <option>Otro</option>
-                                <option selected>Servicio Externo</option>
-                            </select>
-                        </td>
-                        <td class="p-2 border border-gray-300 text-right">120.000</td>
-                        <td class="p-2 border border-gray-300 text-left">31/10/2024</td>
-                        <td class="p-2 border border-gray-300 text-right">5101001</td>
-                        <td class="p-2 border border-gray-300 text-left">Costo Terceros</td>
-
-                        <td>
-                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
-                        </td>
-
-
-                    </tr>
+                    
                 </tbody>
             </table>
-
+            <button id="btnAgregarServicio" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
         </div>
 
     </div>
@@ -312,3 +282,223 @@
 
     </div>
 </div>
+
+
+<script>
+    /*CARGA INICIAL PAGINA */
+    document.addEventListener("DOMContentLoaded", function () {
+    
+    
+    
+          const filas = document.querySelectorAll('#tablaServicios tbody tr');
+
+            filas.forEach(fila => {
+             obtenerValoresServicioParaFila(fila);
+                });
+    
+    
+    });
+
+    /*SERVICIOS */
+
+        function obtenerValoresServicioParaFila(fila) {
+            const idUnidadNegocio = $("#unidadNegocio").val();
+            const idCentroCosto = $("#centroCosto").val();
+
+            if (idUnidadNegocio && idCentroCosto) {
+                $.ajax({
+                url: '/Proyecto/GetValoresServicios',
+                type: 'GET',
+                data: {
+                    idcosto: idCentroCosto,
+                    idunegocio: idUnidadNegocio
+                },
+                success: function (response) {
+                    if (response && response.length > 0) {
+                        
+                        $(fila).find('.idcuentaservicio').val(response[0].idcuenta);
+                        $(fila).find('.cuentaservicio').val(response[0].cuenta);
+                    } else {
+                       
+                        $(fila).find('.idcuentaservicio').val('');
+                        $(fila).find('.cuentaservicio').val('');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener el servicio:', error);
+                    $(fila).find('.idcuentaservicio').val('');
+                    $(fila).find('.cuentaservicio').val('');
+                }
+                });
+            }
+        }
+
+
+
+      function cargarServicios(selectElement) {
+        $.ajax({
+            url: '/Proyecto/ObtenerServicios',
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty();
+                $(selectElement).append('<option value="" disabled selected>Seleccione un Servicio</option>');
+
+                $.each(data, function (index, servicio) {
+                    $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
+                });
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los servicios.');
+            }
+        });
+      }
+
+
+    $(document).ready(function () {
+        $('.serviciosSelect').each(function () {
+            cargarServicios(this);
+        });
+        $('.proveedorSelect').each(function () {
+            cargarProveedoresServicios(this);
+        });
+    });
+
+    function cargarProveedoresServicios(selectElement) {
+        $.ajax({
+            url: '/EjecucionProyecto/ObtenerProveedoresServicios',
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty();
+                $(selectElement).append('<option value="" disabled selected>Seleccione un Proveedor</option>');
+
+                $.each(data, function (index, proveedor) {
+                    $(selectElement).append('<option value="' + proveedor.id + '">' + proveedor.nombre + '</option>');
+                });
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los proveedor.');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        function formatCurrency(event) {
+            let value = event.target.value;
+
+
+            value = value.replace(/[^\d]/g, '');
+
+
+            if (value !== '') {
+
+                let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                event.target.value = formattedValue;
+            }
+        }
+
+        function removePoints(event) {
+            let value = event.target.value;
+
+
+            value = value.replace(/\./g, '');
+            event.target.value = value;
+        }
+
+
+        function cleanInputsOnSubmit(event) {
+
+            const inputs = event.target.querySelectorAll('input[name*="montoservicio"]');
+
+            inputs.forEach(input => {
+
+                let value = input.value;
+                value = value.replace(/\./g, '');
+                input.value = value;
+            });
+        }
+
+
+        const montoInputs = document.querySelectorAll('input[name*="montoservicio"]');
+
+
+        montoInputs.forEach(input => {
+            input.addEventListener('input', formatCurrency);
+        });
+
+
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', cleanInputsOnSubmit);
+        }
+         document.getElementById("btnAgregarServicio").addEventListener("click", function () {
+        
+                setTimeout(() => {
+            
+                    const nuevosMontos = document.querySelectorAll('input[name*="montoservicio"]');
+
+                        nuevosMontos.forEach(input => {
+                            if (!input.hasAttribute('data-format-listener')) { 
+                            input.addEventListener('input', formatCurrency);
+                            input.setAttribute('data-format-listener', 'true'); 
+                        }
+                    });
+                }, 100);
+          });
+    });
+
+
+     document.addEventListener('DOMContentLoaded', function () {
+        
+        const agregarServicioButtons = document.querySelectorAll('button[id^="btnAgregarServicio"]');
+
+        agregarServicioButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                
+                const tablaId = button.id.replace('btnAgregarServicio', 'tablaServicios');
+                const tableBody = document.querySelector(`#${tablaId} tbody`);
+
+                if (!tableBody) {
+                    console.error(`No se encontró la tabla con ID ${tablaId}`);
+                    return;
+                }
+
+                
+                const lastRow = tableBody.querySelector('tr:last-child');
+
+                if (!lastRow) {
+                    console.error('No hay filas en la tabla para clonar.');
+                    return;
+                }
+
+                const newRow = lastRow.cloneNode(true);
+
+             
+                newRow.querySelectorAll('input').forEach(input => {
+                    input.value = '';
+                });
+
+                
+                newRow.querySelectorAll('select').forEach(select => {
+                    select.value = '';
+                });
+
+                
+                tableBody.appendChild(newRow);
+
+                newRow.querySelectorAll('.serviciosSelect').forEach(select => {
+                    cargarServicios(select);
+                });
+                newRow.querySelectorAll('.proveedorSelect').forEach(select => {
+                    cargarProveedoresServicios(select);
+                });
+
+                
+                obtenerValoresServicioParaFila(newRow);
+            });
+        });
+    });
+
+</script>
