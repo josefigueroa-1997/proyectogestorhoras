@@ -398,5 +398,50 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("GestorTipologias");
         }
 
+        /*Proveedores*/
+        public async Task<IActionResult> GestorProveedores()
+        {
+
+            var proveedores = await context.Proveedores.ToListAsync();
+            ViewBag.Proveedores = proveedores;
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarActualizarProveedor(Proveedore proveedor, [FromForm] List<string> Tipo)
+        {
+            if (proveedor == null)
+            {
+                return BadRequest("El proveedor es nulo.");
+            }
+
+            if (string.IsNullOrEmpty(proveedor.Rut) || string.IsNullOrEmpty(proveedor.Nombre) || string.IsNullOrEmpty(proveedor.Funcion))
+            {
+                return BadRequest("Todos los campos requeridos deben estar llenos.");
+            }
+
+            proveedor.Tipo = string.Join(",", Tipo);
+            if (proveedor.Id == 0) 
+            {
+                
+                await context.Proveedores.AddAsync(proveedor);
+            }
+            else
+            {
+                var proveedorExistente = await context.Proveedores.FindAsync(proveedor.Id);
+                if (proveedorExistente == null)
+                {
+                    return NotFound("Proveedor no encontrado.");
+                }
+                proveedorExistente.Nombre = proveedor.Nombre;
+                proveedorExistente.Funcion = proveedor.Funcion;
+                proveedorExistente.Tipo = proveedor.Tipo;
+                context.Proveedores.Update(proveedorExistente);
+            }
+            await context.SaveChangesAsync();
+            return RedirectToAction("GestorProveedores", "Parametros");
+        }
+
     }
 }

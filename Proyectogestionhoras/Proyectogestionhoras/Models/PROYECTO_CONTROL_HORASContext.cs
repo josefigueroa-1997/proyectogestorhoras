@@ -39,6 +39,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
         public virtual DbSet<Presupuesto> Presupuestos { get; set; } = null!;
+        public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
         public virtual DbSet<Proyecto> Proyectos { get; set; } = null!;
         public virtual DbSet<ProyectoGasto> ProyectoGastos { get; set; } = null!;
         public virtual DbSet<ProyectoServicio> ProyectoServicios { get; set; } = null!;
@@ -744,6 +745,32 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Montoiva)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("MONTOIVA");
+            });
+
+            modelBuilder.Entity<Proveedore>(entity =>
+            {
+                entity.ToTable("PROVEEDORES");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Funcion)
+                    .IsUnicode(false)
+                    .HasColumnName("FUNCION");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE");
+
+                entity.Property(e => e.Rut)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("RUT");
+
+                entity.Property(e => e.Tipo)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPO");
             });
 
             modelBuilder.Entity<Proyecto>(entity =>

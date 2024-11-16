@@ -57,7 +57,7 @@ namespace Proyectogestionhoras.Controllers
             if (ingresos == null || !ingresos.Any())
             {
                 ModelState.AddModelError("", "Debe ingresar al menos una factura.");
-                return View(); // Vuelve a la vista con un error
+                return View(); 
             }
 
             await ejecucionService.GestorIngresos(idproyecto, ingresos);

@@ -58,11 +58,11 @@ namespace Proyectogestionhoras.Services
                         Idcuenta = ingreso.Idcuenta,
                         FechaPago = ingreso.FechaPago
                     };
-                    await context.AddAsync(nuevoIngreso);
+                    await context.AddRangeAsync(nuevoIngreso);
                 }
             }
 
-            // Guardamos todos los cambios realizados
+            
             await context.SaveChangesAsync();
         }
     }
