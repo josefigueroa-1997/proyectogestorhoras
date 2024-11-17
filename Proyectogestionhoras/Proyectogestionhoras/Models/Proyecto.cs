@@ -15,6 +15,7 @@ namespace Proyectogestionhoras.Models
             Ingresosreales = new HashSet<Ingresosreale>();
             ProyectoGastos = new HashSet<ProyectoGasto>();
             ProyectoServicios = new HashSet<ProyectoServicio>();
+            Serviciosejecucions = new HashSet<Serviciosejecucion>();
             UsuarioProyectos = new HashSet<UsuarioProyecto>();
         }
 
@@ -49,6 +50,7 @@ namespace Proyectogestionhoras.Models
         public virtual ICollection<Ingresosreale> Ingresosreales { get; set; }
         public virtual ICollection<ProyectoGasto> ProyectoGastos { get; set; }
         public virtual ICollection<ProyectoServicio> ProyectoServicios { get; set; }
+        public virtual ICollection<Serviciosejecucion> Serviciosejecucions { get; set; }
         public virtual ICollection<UsuarioProyecto> UsuarioProyectos { get; set; }
     }
 }

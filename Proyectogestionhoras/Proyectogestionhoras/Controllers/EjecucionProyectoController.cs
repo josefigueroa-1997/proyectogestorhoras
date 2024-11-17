@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services;
@@ -40,6 +41,8 @@ namespace Proyectogestionhoras.Controllers
 
             return View();
         }
+
+        /*FORECAST INGRESOS*/
         public async Task<IActionResult> ForecastIngreso(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
@@ -50,6 +53,8 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Factura = factura;
             return View();
         }
+
+      
 
         [HttpPost]
         public async Task<IActionResult> RegistrarIngresos(int idproyecto, List<IngresoViewModel> ingresos)
@@ -64,18 +69,96 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new {id = idproyecto}); 
         }
 
+        /*FORECAST COSTOS*/
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+            var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == id).ToListAsync();
+            var servicios = await GetServicios();
+            var proveedores = await GetProveedoresServicios();
             ViewBag.Proyecto = proyecto;
+            ViewBag.ServiciosEjecucion = serviciosejecucion;
+            ViewBag.Servicios = servicios;
+            ViewBag.Proveedores = proveedores;
             return View();
+        }
+
+
+        public async Task<List<Servicio>> GetServicios()
+        {
+            var resultado = await context.Servicios
+            .ToListAsync();
+            return resultado;
+        }
+
+        public async Task<List<Proveedore>> GetProveedoresServicios()
+        {
+            var proveedores = await context.Proveedores
+            .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%"))
+            .ToListAsync();
+            return proveedores;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegistrarCostos(int idproyecto)
+        {
+            /*COSTOS SERVICIOS REALES*/
+            List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
+            var idsservicios = Request.Form["Idservicio"];
+            var idproveedores = Request.Form["Idproveedor"];
+            var montoservicioList = Request.Form["montoservicio"];
+            var fechaservicio = Request.Form["fechaservicio"];
+            var idservicioreal = Request.Form["IdServicioReal"];
+
+            for (int i = 0; i < idsservicios.Count; i++)
+            {
+                var montoservicioStr = montoservicioList[i]?.ToString().Trim() ?? ""; 
+                if (string.IsNullOrEmpty(montoservicioStr))
+                {
+                    montoservicioStr = "0"; 
+                }
+                else
+                {
+                    montoservicioStr = montoservicioStr.Replace(".", ""); 
+                }
+
+                decimal montoservicio = decimal.Parse(montoservicioStr);
+
+                int idServicioRealParsed = string.IsNullOrWhiteSpace(idservicioreal[i])
+                                           ? 0
+                                           : int.Parse(idservicioreal[i]);
+
+                DateTime fechaServicioParsed;
+                if (string.IsNullOrWhiteSpace(fechaservicio[i]))
+                {
+                    fechaServicioParsed = DateTime.Today;  
+                }
+                else
+                {
+                    fechaServicioParsed = DateTime.Parse(fechaservicio[i]);  
+                }
+                var servicioViewModel = new ServiciosRealesViewModel
+                {
+                    IdServicioReal = idServicioRealParsed, 
+                    Idservicio = int.Parse(idsservicios[i]),
+                    Idproveedor = int.Parse(idproveedores[i]),
+                    Monto = montoservicio,
+                    Fecha = fechaServicioParsed,
+                };
+
+                servicios.Add(servicioViewModel);
+            }
+            await ejecucionService.GestorServiciosReales(idproyecto, servicios);
+            return RedirectToAction("ForecastCostos", "EjecucionProyecto", new {id = idproyecto });
         }
 
 
         [HttpGet]
         public async Task<IActionResult> ObtenerProveedoresServicios()
         {
-            var proveedores =await context.Proveedores.Where(p=>p.Tipo.Contains("Servicio")).ToListAsync();
+            var proveedores = await context.Proveedores
+            .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%"))
+            .ToListAsync();
             return Json(proveedores);
         }
     }

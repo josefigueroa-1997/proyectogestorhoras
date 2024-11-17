@@ -48,6 +48,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Segmento> Segmentos { get; set; } = null!;
         public virtual DbSet<SegmentoCcosto> SegmentoCcostos { get; set; } = null!;
         public virtual DbSet<Servicio> Servicios { get; set; } = null!;
+        public virtual DbSet<Serviciosejecucion> Serviciosejecucions { get; set; } = null!;
         public virtual DbSet<StatusProyecto> StatusProyectos { get; set; } = null!;
         public virtual DbSet<Sucursal> Sucursals { get; set; } = null!;
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
@@ -1070,6 +1071,37 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
+            });
+
+            modelBuilder.Entity<Serviciosejecucion>(entity =>
+            {
+                entity.ToTable("SERVICIOSEJECUCION");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA");
+
+                entity.Property(e => e.Idproveedor).HasColumnName("IDPROVEEDOR");
+
+                entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
+
+                entity.Property(e => e.Idservicio).HasColumnName("IDSERVICIO");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO");
+
+                entity.HasOne(d => d.IdproveedorNavigation)
+                    .WithMany(p => p.Serviciosejecucions)
+                    .HasForeignKey(d => d.Idproveedor)
+                    .HasConstraintName("IDPROVEEDROFK");
+
+                entity.HasOne(d => d.IdproyectoNavigation)
+                    .WithMany(p => p.Serviciosejecucions)
+                    .HasForeignKey(d => d.Idproyecto)
+                    .HasConstraintName("IDPROYECTOSER");
             });
 
             modelBuilder.Entity<StatusProyecto>(entity =>
