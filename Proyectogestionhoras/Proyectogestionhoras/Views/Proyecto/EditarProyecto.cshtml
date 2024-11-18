@@ -2847,7 +2847,7 @@
         function obtenerFechaActualGasto() {
             const hoy = new Date();
             const dia = String(hoy.getDate()).padStart(2, '0');
-            const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Enero es 0
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0'); 
             const anio = hoy.getFullYear();
             return `${anio}-${mes}-${dia}`;
         }
@@ -2861,9 +2861,9 @@
                 const idUnidadNegocio = $("#unidadNegocio").val();
                 const idCentroCosto = $("#centroCosto").val();
                 const selectedText = selectGastos.options[selectGastos.selectedIndex].text;
-                const newRow = selectGastos.closest('tr'); // Encuentra la fila correspondiente
+                const newRow = selectGastos.closest('tr'); 
 
-                // Llamada AJAX al backend para obtener valores del gasto seleccionado
+             
                 obtenerValoresGastos(idUnidadNegocio, idCentroCosto, selectedText, newRow);
             }
         });
@@ -2884,7 +2884,7 @@
             const eliminarCell = document.createElement('td');
             const idSegmentoGastoCell = document.createElement('td');
 
-            // Campo oculto para 'idsegmentogasto'
+          
             const idSegmentoGastoInput = document.createElement('input');
             idSegmentoGastoInput.type = 'text';
             idSegmentoGastoInput.className = 'idsegmentogasto';
@@ -2892,14 +2892,14 @@
             idSegmentoGastoInput.style.display = 'none';
             idSegmentoGastoCell.appendChild(idSegmentoGastoInput);
 
-            // Crear select para gastos
+          
             const selectGastos = document.createElement('select');
             selectGastos.className = "gastosSelect";
             selectGastos.name = "idgastos[]";
             selectGastos.innerHTML = '<option value="" disabled selected>Seleccione un Gasto</option>';
             servicioCell.appendChild(selectGastos);
 
-            // Crear input para el monto del gasto
+          
             const montoInput = document.createElement('input');
             montoInput.type = 'text';
             montoInput.className = 'montogasto';
@@ -2919,7 +2919,7 @@
             cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
 
             const hiddenCell = document.createElement('td');
-            hiddenCell.style.display = 'none'; // Mantenerlo oculto
+            hiddenCell.style.display = 'none'; 
             const hiddenInput = document.createElement('input');
             hiddenInput.type = 'hidden';
             hiddenInput.name = 'esEliminados';
@@ -2929,7 +2929,7 @@
 
 
 
-            // Botón para eliminar la fila
+           
             const eliminarBtn = document.createElement('button');
             eliminarBtn.textContent = 'Eliminar';
             eliminarBtn.style.color = 'white';
@@ -2943,7 +2943,7 @@
             fechaCell.appendChild(fechaInput);
             fechaInput.value = obtenerFechaActualGasto();
 
-            // Evento para eliminar la fila
+            
             eliminarBtn.addEventListener('click', function () {
                 newRow.remove();
                 updateTotalGasto();
@@ -2952,7 +2952,7 @@
 
             eliminarCell.appendChild(eliminarBtn);
 
-            // Agregar todas las celdas a la fila
+           
             newRow.appendChild(servicioCell);
             newRow.appendChild(montoCell);
             newRow.appendChild(fechaCell);
@@ -2963,10 +2963,10 @@
             newRow.appendChild(eliminarCell);
             newRow.appendChild(idSegmentoGastoCell);
             newRow.appendChild(hiddenCell);
-            // Cargar los datos del select de gastos
+          
             cargarGastos(newRow.querySelector('.gastosSelect'));
 
-            // Agregar la nueva fila a la tabla
+           
             document.querySelector('#tablagastos tbody').appendChild(newRow);
         });
     });

@@ -28,6 +28,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
+        public virtual DbSet<Gastosejecucion> Gastosejecucions { get; set; } = null!;
         public virtual DbSet<HhUsuarioHistorial> HhUsuarioHistorials { get; set; } = null!;
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
         public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
@@ -373,6 +374,39 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("NOMBRE");
+            });
+
+            modelBuilder.Entity<Gastosejecucion>(entity =>
+            {
+                entity.ToTable("GASTOSEJECUCION");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA");
+
+                entity.Property(e => e.Idgasto).HasColumnName("IDGASTO");
+
+                entity.Property(e => e.Idproveedor).HasColumnName("IDPROVEEDOR");
+
+                entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
+
+                entity.Property(e => e.Monto)
+                    .HasColumnType("decimal(15, 2)")
+                    .HasColumnName("MONTO");
+
+                entity.Property(e => e.Segmento).HasColumnName("SEGMENTO");
+
+                entity.HasOne(d => d.IdproveedorNavigation)
+                    .WithMany(p => p.Gastosejecucions)
+                    .HasForeignKey(d => d.Idproveedor)
+                    .HasConstraintName("IDPROVEEDORGASTOFK");
+
+                entity.HasOne(d => d.IdproyectoNavigation)
+                    .WithMany(p => p.Gastosejecucions)
+                    .HasForeignKey(d => d.Idproyecto)
+                    .HasConstraintName("IDPROYECTOGASEJE");
             });
 
             modelBuilder.Entity<HhUsuarioHistorial>(entity =>

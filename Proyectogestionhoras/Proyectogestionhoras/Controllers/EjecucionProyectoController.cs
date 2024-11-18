@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Validations;
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services;
+using System.Diagnostics;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -74,12 +75,18 @@ namespace Proyectogestionhoras.Controllers
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
             var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == id).ToListAsync();
+            var gastosejecucion = await ejecucionService.ObtenerGastosReales(id);
             var servicios = await GetServicios();
-            var proveedores = await GetProveedoresServicios();
+            var gastos = await GetGastos();
+            var proveedoresservicios = await GetProveedoresServicios();
+            var proveedoresgastos = await GetProveedoresGastos();
             ViewBag.Proyecto = proyecto;
             ViewBag.ServiciosEjecucion = serviciosejecucion;
+            ViewBag.GastosEjecucion = gastosejecucion;
             ViewBag.Servicios = servicios;
-            ViewBag.Proveedores = proveedores;
+            ViewBag.Gastos = gastos;
+            ViewBag.Proveedores = proveedoresservicios;
+            ViewBag.ProGastos = proveedoresgastos;
             return View();
         }
 
@@ -90,11 +97,24 @@ namespace Proyectogestionhoras.Controllers
             .ToListAsync();
             return resultado;
         }
+        public async Task<List<Gasto>> GetGastos()
+        {
+            var resultado = await context.Gastos
+            .ToListAsync();
+            return resultado;
+        }
 
         public async Task<List<Proveedore>> GetProveedoresServicios()
         {
             var proveedores = await context.Proveedores
             .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%"))
+            .ToListAsync();
+            return proveedores;
+        }
+        public async Task<List<Proveedore>> GetProveedoresGastos()
+        {
+            var proveedores = await context.Proveedores
+            .Where(p => EF.Functions.Like(p.Tipo, "%Gasto%"))
             .ToListAsync();
             return proveedores;
         }
@@ -109,7 +129,7 @@ namespace Proyectogestionhoras.Controllers
             var montoservicioList = Request.Form["montoservicio"];
             var fechaservicio = Request.Form["fechaservicio"];
             var idservicioreal = Request.Form["IdServicioReal"];
-
+           
             for (int i = 0; i < idsservicios.Count; i++)
             {
                 var montoservicioStr = montoservicioList[i]?.ToString().Trim() ?? ""; 
@@ -148,7 +168,64 @@ namespace Proyectogestionhoras.Controllers
 
                 servicios.Add(servicioViewModel);
             }
+
+
+            /*Gastos*/
+            List<GastosRealesViewModel> gastos = new List<GastosRealesViewModel>();
+            var idsgastos = Request.Form["idgastos"];
+            var idproveedoresgastos = Request.Form["idproveedorgastos"];
+            var idsegmentogastos = Request.Form["idsegmentogasto"];
+            var montogastosList = Request.Form["montogasto"];
+            var fechagastos = Request.Form["fechagasto"];
+            var idgastoreal = Request.Form["IdGastoReal"];
+            
+            
+            
+            for (int i = 0; i < idsgastos.Count; i++)
+            {
+                var montogastoStr = montogastosList[i]?.ToString().Trim() ?? "";
+                if (string.IsNullOrEmpty(montogastoStr))
+                {
+                    montogastoStr = "0";
+                }
+                else
+                {
+                    montogastoStr = montogastoStr.Replace(".", "");
+                }
+
+                decimal montogasto = decimal.Parse(montogastoStr);
+
+                int idgastoRealParsed = string.IsNullOrWhiteSpace(idgastoreal[i])
+                                           ? 0
+                                           : int.Parse(idgastoreal[i]);
+
+                DateTime fechaGastoParsed;
+                if (string.IsNullOrWhiteSpace(fechagastos[i]))
+                {
+                    fechaGastoParsed = DateTime.Today;
+                }
+                else
+                {
+                    fechaGastoParsed = DateTime.Parse(fechagastos[i]);
+                }
+                var gastoViewModel = new GastosRealesViewModel
+                {
+                    IdGastoReal = idgastoRealParsed,
+                    Idgasto = int.Parse(idsgastos[i]),
+                    Idproveedor = int.Parse(idproveedoresgastos[i]),
+                    Segmento = int.Parse(idsegmentogastos[i]),
+                    Monto = montogasto,
+                    Fecha = fechaGastoParsed,
+                };
+
+                gastos.Add(gastoViewModel);
+
+
+            }
+            
+
             await ejecucionService.GestorServiciosReales(idproyecto, servicios);
+            await ejecucionService.GestorGastosReales(idproyecto, gastos);
             return RedirectToAction("ForecastCostos", "EjecucionProyecto", new {id = idproyecto });
         }
 
@@ -158,6 +235,15 @@ namespace Proyectogestionhoras.Controllers
         {
             var proveedores = await context.Proveedores
             .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%"))
+            .ToListAsync();
+            return Json(proveedores);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerProveedoresGastos()
+        {
+            var proveedores = await context.Proveedores
+            .Where(p => EF.Functions.Like(p.Tipo, "%Gasto%"))
             .ToListAsync();
             return Json(proveedores);
         }

@@ -1044,29 +1044,28 @@
             checkRequiredGasto(selectGastos);
         });
 
-        // Crear input para el monto del gasto
+        
         const montoInput = document.createElement('input');
         montoInput.type = 'text'; 
         montoInput.className = 'montogasto';
         montoInput.name = "montogasto";
         montoCell.appendChild(montoInput);
 
-        // Evento para formatear el input del monto
+   
         montoInput.addEventListener("input", formatInput);
 
-        // Campo de centro de costo (readonly)
+     
         centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
 
-        // Campo de segmento de gasto (readonly)
+    
         segmentoCell.innerHTML = '<input class="segmentogastos" name="segmentogastos" readonly />';
 
-        // Campo de ID de cuenta de gasto (readonly)
         idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagasto" readonly />';
 
-        // Campo de cuenta de gasto (readonly)
+       
         cuentaCell.innerHTML = '<input class="cuentagastos" name="cuentagastos" readonly>';
 
-        // Botón para eliminar la fila
+        
         const eliminarBtn = document.createElement('button');
         eliminarBtn.textContent = 'Eliminar';
         eliminarBtn.style.color = 'white';
@@ -1094,7 +1093,7 @@
             fechaInput.value = obtenerFechaActualGasto();
 
 
-        // Agregar todas las celdas a la fila
+        
         newRow.appendChild(servicioCell);
         newRow.appendChild(montoCell);
             newRow.appendChild(fechaCell);
@@ -1106,13 +1105,13 @@
         newRow.appendChild(eliminarCell);
         newRow.appendChild(idSegmentoGastoCell);
 
-        // Cargar los datos del select de gastos
+      
         cargarGastos(newRow.querySelector('.gastosSelect'));
 
-        // Agregar la nueva fila a la tabla
+       
         document.querySelector('#tablagastos tbody').appendChild(newRow);
 
-        // Actualizar márgenes o cálculos
+      
         obtenerMargenEsperado();
     });
 });
@@ -1376,7 +1375,7 @@
                 },
                 success: function (response) {
                     if (response && response.length > 0) {
-                        // Cuando hay datos
+                   
                         $(".idcuentaconsultor").val(response[0].idcuenta);
                         $(".cuentaconsultor").val(response[0].cuenta);
                         $(".idsegmentoconsultor").val(response[0].idsegmento);
@@ -1384,20 +1383,20 @@
                         $(".idsegmentosocio").val(response[0].idsegmento);
                         $(".idcuentasocio").val(response[0].idcuenta);
 
-                        // Ocultar los selects y mostrar los campos readonly
+                      
                         $(".nombresegmentoconsultor").val(response[0].nombre);
                         $(".nombresegmentosocio").val(response[0].nombre);
 
 
                     } else {
-                        // Cuando NO hay datos
+                    
                         $(".idcuentaconsultor").val('');
                         $(".cuentaconsultor").val('');
                         $(".idcuentasocio").val('');
                         $(".cuentasocio").val('');
 
 
-                        // Asegurarse de que los campos readonly estén ocultos
+                       
                         $(".nombresegmentoconsultor").val('');
                         $(".nombresegmentosocio").val('');
                         $(".idsegmentoconsultor").val('');

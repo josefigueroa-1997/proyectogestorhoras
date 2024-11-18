@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models;
+using Proyectogestionhoras.Models.DTO;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services.Interface;
 using System.Diagnostics;
@@ -125,6 +126,89 @@ namespace Proyectogestionhoras.Services
                     Debug.WriteLine($"Inner exception: {e.InnerException.Message}");
                 }
             }
+        }
+
+        public async Task GestorGastosReales(int idproyecto,List<GastosRealesViewModel> gastos)
+        {
+            try
+            {
+                if (gastos == null || !gastos.Any())
+                {
+                    return;
+                }
+                foreach(var gasto in gastos)
+                {
+                    if (gasto.IdGastoReal > 0)
+                    {
+                        var gastoexistente = await context.Gastosejecucions.FirstOrDefaultAsync(g => g.Id == gasto.IdGastoReal);
+                        if (gastoexistente != null)
+                        {
+                            gastoexistente.Idgasto = gasto.Idgasto;
+                            gastoexistente.Idproveedor = gasto.Idproveedor;
+                            gastoexistente.Segmento = gasto.Segmento;
+                            gastoexistente.Monto = gasto.Monto;
+                            gastoexistente.Fecha = gasto.Fecha;
+                        }
+                    }
+                    else
+                    {
+                        var nuevogasto = new Gastosejecucion
+                        {
+                            Idproyecto = idproyecto,
+                            Idgasto = gasto.Idgasto,
+                            Idproveedor = gasto.Idproveedor,
+                            Segmento = gasto.Segmento,
+                            Monto = gasto.Monto,
+                            Fecha = gasto.Fecha,
+                        };
+                        await context.AddRangeAsync(nuevogasto);
+
+
+                    }
+                }
+                await context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Error al registrar/actualizar un gastos de ejecución: {e.Message}");
+                if (e.InnerException != null)
+                {
+                    Debug.WriteLine($"Inner exception: {e.InnerException.Message}");
+                }
+            }
+
+
+        }
+        public async Task<List<GastosRealesDTO>> ObtenerGastosReales(int? idproyecto)
+        {
+            try
+            {
+                var resultado = await (from p in context.Proyectos
+                                       join g in context.Gastosejecucions on p.Id equals g.Idproyecto
+                                       join s in context.Segmentos on g.Segmento equals s.Id
+                                       join c in context.Cuenta on s.IdCuenta equals c.Id
+                                       where p.Id == idproyecto
+                                       select new GastosRealesDTO
+                                       {
+                                           IdGastosReal = g.Id,
+                                           IdGasto = g.Idgasto,
+                                           IdProveedor = g.Idproveedor,
+                                           IdSegmento = s.Id,
+                                           NombreSegmento = s.Nombre,
+                                           Cuenta = c.Cuenta,
+                                           IdCuenta = c.Idcuenta,
+                                           Monto = g.Monto,
+                                           Fecha = g.Fecha
+                                       }).ToListAsync();
+
+                return resultado;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Error al obtener los gastos de ejecución: {e.Message}");
+                return new List<GastosRealesDTO>();
+            }
+           
         }
     }
 }

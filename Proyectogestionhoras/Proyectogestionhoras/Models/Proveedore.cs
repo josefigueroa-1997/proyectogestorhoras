@@ -7,6 +7,7 @@ namespace Proyectogestionhoras.Models
     {
         public Proveedore()
         {
+            Gastosejecucions = new HashSet<Gastosejecucion>();
             Serviciosejecucions = new HashSet<Serviciosejecucion>();
         }
 
@@ -16,6 +17,7 @@ namespace Proyectogestionhoras.Models
         public string? Funcion { get; set; }
         public string? Tipo { get; set; }
 
+        public virtual ICollection<Gastosejecucion> Gastosejecucions { get; set; }
         public virtual ICollection<Serviciosejecucion> Serviciosejecucions { get; set; }
     }
 }
