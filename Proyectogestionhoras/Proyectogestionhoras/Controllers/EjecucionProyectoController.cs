@@ -80,6 +80,7 @@ namespace Proyectogestionhoras.Controllers
             var gastos = await GetGastos();
             var proveedoresservicios = await GetProveedoresServicios();
             var proveedoresgastos = await GetProveedoresGastos();
+            var gastoshh = await ejecucionService.ObtenerGastosHH(id);
             ViewBag.Proyecto = proyecto;
             ViewBag.ServiciosEjecucion = serviciosejecucion;
             ViewBag.GastosEjecucion = gastosejecucion;
@@ -87,6 +88,7 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Gastos = gastos;
             ViewBag.Proveedores = proveedoresservicios;
             ViewBag.ProGastos = proveedoresgastos;
+            ViewBag.GastosHH = gastoshh;
             return View();
         }
 

@@ -3,16 +3,21 @@ using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Models.DTO;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services.Interface;
+using System.Data.Common;
+using System.Data;
 using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 
 namespace Proyectogestionhoras.Services
 {
     public class EjecucionService : IEjecucion
     {
         private readonly PROYECTO_CONTROL_HORASContext context;
-        public EjecucionService(PROYECTO_CONTROL_HORASContext context)
+        private readonly Conexion conexion;
+        public EjecucionService(PROYECTO_CONTROL_HORASContext context, Conexion conexion)
         {
             this.context = context;
+            this.conexion = conexion;
         }
 
         public async Task GestorIngresos(int idproyecto, List<IngresoViewModel> ingresos)
@@ -209,6 +214,51 @@ namespace Proyectogestionhoras.Services
                 return new List<GastosRealesDTO>();
             }
            
+        }
+        public async Task<List<GastosHHRecursosDTO>> ObtenerGastosHH(int? idproyecto)
+        {
+            try
+            {
+
+
+                var gastoshh = new List<GastosHHRecursosDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "OBTENERGASTOSHHEJECUCION";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            GastosHHRecursosDTO datos = new()
+                            {
+                                idcuenta = reader.IsDBNull(reader.GetOrdinal("IDCUENTA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                cuenta = reader.IsDBNull(reader.GetOrdinal("CUENTA")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA")),
+                                anio = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
+                                mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                tiporecurso = reader.IsDBNull(reader.GetOrdinal("TipoRecurso")) ? string.Empty : reader.GetString(reader.GetOrdinal("TipoRecurso")),
+                                totalhh = reader.IsDBNull(reader.GetOrdinal("TotalHorasPorRecurso")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TotalHorasPorRecurso")),
+                                costorecurso = reader.IsDBNull(reader.GetOrdinal("COSTORECURSO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTORECURSO")),
+                                costoconsultoresexternos = reader.IsDBNull(reader.GetOrdinal("COSTOTOTALCONSULTORESEXTERNOS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOTOTALCONSULTORESEXTERNOS")),
+                            };
+                            gastoshh.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return gastoshh;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el gastos hh  de los proyectos:{ex.Message}");
+                return new List<GastosHHRecursosDTO>();
+
+            }
         }
     }
 }

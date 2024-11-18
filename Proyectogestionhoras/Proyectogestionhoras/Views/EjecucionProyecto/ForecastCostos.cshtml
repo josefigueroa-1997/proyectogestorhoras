@@ -89,63 +89,47 @@
     
     <div class="form-group">
 
-        <p class="form-subtitle" style="color:black;">Status Gastos HH</p>
+        <p class="form-subtitle" style="color:black;">Status Gastos HH Socios</p>
         <div class="overflow-x-auto">
             <table class="min-w-full text-xs border-collapse">
                 <thead>
-                    <tr class="bg-green-100 text-black">
-                        <th class="p-2 border border-gray-300 text-left">TipoCosto</th>
+                    <tr class="bg-blue-100 text-black">
+                        
                         <th class="p-2 border border-gray-300 text-left">Fecha</th>
                         <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                         <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                         <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
                         <th class="p-2 border border-gray-300 text-left">Total</th>
-                        <th class="p-2 border border-gray-300 text-left">Acción</th>
+                       
                         
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">Pago HH Socios</td>
-                        <td class="p-2 border border-gray-300 text-left">31/08/2024</td>
-                        <td class="p-2 border border-gray-300 text-left"></td>
-                        <td class="p-2 border border-gray-300 text-right">5101001</td>
-                        <td class="p-2 border border-gray-300 text-left">Costo Consultor Interno</td>
-                        <td class="p-2 border border-gray-300 text-right">30</td>
-                        <td class="p-2 border border-gray-300 text-right">1.200.000</td>
-                        <td>
-                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto HH</button>
-                        </td>
+                    @if (ViewBag.GastosHH != null)
+                    {
+                            @foreach(var gasto in ViewBag.GastosHH)
+                            {
+                                @if (gasto.tiporecurso == "Socio")
+                                {
+                                    <tr>
+                                       
+                                        <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
+                                        <td class="p-2 border border-gray-300 text-left"></td>
+                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
+                                        <td class="p-2 border border-gray-300 text-left">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.totalhh)</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.costorecurso)</td>
+
+
+
+                                    </tr>
+                                }
+                                
+                            }
+                    }
                        
-                        
-                    </tr>
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">Pago HH Staff</td>
-                        <td class="p-2 border border-gray-300 text-left">31/08/2024</td>
-                        <td class="p-2 border border-gray-300 text-left"></td>
-                        <td class="p-2 border border-gray-300 text-right">5101001</td>
-                        <td class="p-2 border border-gray-300 text-left">Costo Consultor Interno</td>
-                        <td class="p-2 border border-gray-300 text-right">30</td>
-                        <td class="p-2 border border-gray-300 text-right">630.000</td>
-                        <td>
-                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto HH</button>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">Pago HH Consultores</td>
-                        <td class="p-2 border border-gray-300 text-left">31/08/2024</td>
-                        <td class="p-2 border border-gray-300 text-left"></td>
-                        <td class="p-2 border border-gray-300 text-right">5101001</td>
-                        <td class="p-2 border border-gray-300 text-left">Honorario Consultor Externo</td>
-                        <td class="p-2 border border-gray-300 text-right">30</td>
-                        <td class="p-2 border border-gray-300 text-right">240.000</td>
-                        <td>
-                            <button class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto HH</button>
-                        </td>
-
-                    </tr>
+                    
                 </tbody>
             </table>
             
@@ -153,7 +137,108 @@
 
     </div>
 
+        <div class="form-group">
 
+            <p class="form-subtitle" style="color:black;">Status Gastos HH Staff</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-blue-100 text-black">
+                            
+                            <th class="p-2 border border-gray-300 text-left">Fecha</th>
+                            <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
+                            <th class="p-2 border border-gray-300 text-left">Total</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.GastosHH != null)
+                        {
+                            @foreach (var gasto in ViewBag.GastosHH)
+                            {
+                                @if (gasto.tiporecurso == "Staff")
+                                {
+                                    <tr>
+                                        
+                                        <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
+                                        <td class="p-2 border border-gray-300 text-left"></td>
+                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
+                                        <td class="p-2 border border-gray-300 text-left">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.totalhh)</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.costorecurso)</td>
+
+
+
+                                    </tr>
+                                }
+
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+      
+
+        <div class="form-group">
+
+            <p class="form-subtitle" style="color:black;">Status Gastos HH Consultores Externos</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-blue-100 text-black">
+
+                            <th class="p-2 border border-gray-300 text-left">Fecha</th>
+                            <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
+                            <th class="p-2 border border-gray-300 text-left">Total</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.GastosHH != null)
+                        {
+                            @foreach (var gasto in ViewBag.GastosHH)
+                            {
+                                @if (gasto.tiporecurso == "Consultor Externo")
+                                {
+                                    <tr>
+
+                                        <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
+                                        <td class="p-2 border border-gray-300 text-left"></td>
+                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
+                                        <td class="p-2 border border-gray-300 text-left">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.totalhh)</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.costoconsultoresexternos)</td>
+
+
+
+                                    </tr>
+                                }
+
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
     @*SERVICIOS*@
 
 

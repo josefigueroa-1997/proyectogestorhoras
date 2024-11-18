@@ -9,5 +9,6 @@ namespace Proyectogestionhoras.Services.Interface
         public Task GestorServiciosReales(int idproyecto,List<ServiciosRealesViewModel> servicio);
         public Task GestorGastosReales(int idproyecto, List<GastosRealesViewModel> gasto);
         public Task<List<GastosRealesDTO>> ObtenerGastosReales(int? idproyecto);
+        public Task<List<GastosHHRecursosDTO>> ObtenerGastosHH(int? idproyecto);
     }
 }
