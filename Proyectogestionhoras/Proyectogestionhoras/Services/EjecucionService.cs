@@ -14,10 +14,12 @@ namespace Proyectogestionhoras.Services
     {
         private readonly PROYECTO_CONTROL_HORASContext context;
         private readonly Conexion conexion;
+        
         public EjecucionService(PROYECTO_CONTROL_HORASContext context, Conexion conexion)
         {
             this.context = context;
             this.conexion = conexion;
+         
         }
 
         public async Task GestorIngresos(int idproyecto, List<IngresoViewModel> ingresos)
@@ -175,6 +177,7 @@ namespace Proyectogestionhoras.Services
             }
             catch(Exception e)
             {
+                
                 Debug.WriteLine($"Error al registrar/actualizar un gastos de ejecución: {e.Message}");
                 if (e.InnerException != null)
                 {
@@ -184,6 +187,54 @@ namespace Proyectogestionhoras.Services
 
 
         }
+
+        public async Task GestorGastosHH(int idproyecto, List<GastosHHViewModel> gastosHH)
+        {
+            try
+            {
+
+                if (gastosHH == null || !gastosHH.Any())
+                {
+                    return;
+                }
+
+                foreach(var gasto in gastosHH)
+                {
+                    var gastohhexistente = await context.Gastoshhhejecucions.FirstOrDefaultAsync(g => g.Id == gasto.IdGastoHH);
+                    if (gastohhexistente != null)
+                    {
+                        gastohhexistente.Fechapago = gasto.Fechapago;
+                    }
+                    else
+                    {
+                        var nuevogastohh = new Gastoshhhejecucion
+                        {
+                            Idproyecto = idproyecto,
+                            Tiporecurso = gasto.Tiporecurso,
+                            Mes = gasto.Mes,
+                            Anio = gasto.Anio,
+                            Fechapago = gasto.Fechapago,
+                            Monto = gasto.Monto,
+                            Hhtotales = gasto.HHtotales,
+                        };
+                        await context.AddRangeAsync(nuevogastohh);
+                    }
+                   
+                }
+                await context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Error al registrar/actualizar un gastos hh de ejecución: {e.Message}");
+                if (e.InnerException != null)
+                {
+                    Debug.WriteLine($"Inner exception: {e.InnerException.Message}");
+                }
+            }
+        }
+
+
+
         public async Task<List<GastosRealesDTO>> ObtenerGastosReales(int? idproyecto)
         {
             try

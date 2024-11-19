@@ -108,25 +108,44 @@
                 <tbody>
                     @if (ViewBag.GastosHH != null)
                     {
-                            @foreach(var gasto in ViewBag.GastosHH)
+
+                            @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
                             {
+                               
+                                var gasto = ViewBag.GastosHH[i];
                                 @if (gasto.tiporecurso == "Socio")
                                 {
-                                    <tr>
-                                       
+                                    
+                               
+                                <tr>
+                                    <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
+                                    <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
+                                    <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
+                                    <input type="hidden" name="gastosHH[@i].Monto" value="@gasto.costorecurso" />
+                                    <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
-                                        <td class="p-2 border border-gray-300 text-left"></td>
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos!=null)
+                                        {
+                                            <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
+                                            <td class="p-2 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            </td>
+                                        }
+                                     
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
-                                        <td class="p-2 border border-gray-300 text-left">@gasto.cuenta</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.totalhh)</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.costorecurso)</td>
-
-
-
-                                    </tr>
+                                    <td class="p-2">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costorecurso)</td>
+                                </tr>
                                 }
-                                
                             }
+                           
                     }
                        
                     
@@ -158,25 +177,43 @@
                     <tbody>
                         @if (ViewBag.GastosHH != null)
                         {
-                            @foreach (var gasto in ViewBag.GastosHH)
+                            @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
                             {
+
+                                var gasto = ViewBag.GastosHH[i];
                                 @if (gasto.tiporecurso == "Staff")
                                 {
+
+
                                     <tr>
-                                        
+                                        <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
+                                        <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
+                                        <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
+                                        <input type="hidden" name="gastosHH[@i].Monto" value="@gasto.costorecurso" />
+                                        <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
-                                        <td class="p-2 border border-gray-300 text-left"></td>
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
+                                            <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
+                                            <td class="p-2 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            </td>
+                                        }
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
-                                        <td class="p-2 border border-gray-300 text-left">@gasto.cuenta</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.totalhh)</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.costorecurso)</td>
-
-
-
+                                        <td class="p-2">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costorecurso)</td>
                                     </tr>
                                 }
-
                             }
+
+
                         }
 
 
@@ -211,25 +248,42 @@
                     <tbody>
                         @if (ViewBag.GastosHH != null)
                         {
-                            @foreach (var gasto in ViewBag.GastosHH)
+                            @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
                             {
+
+                                var gasto = ViewBag.GastosHH[i];
                                 @if (gasto.tiporecurso == "Consultor Externo")
                                 {
+
+
                                     <tr>
-
+                                        <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
+                                        <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
+                                        <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
+                                        <input type="hidden" name="gastosHH[@i].Monto" value="@gasto.costoconsultoresexternos" />
+                                        <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
-                                        <td class="p-2 border border-gray-300 text-left"></td>
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
+                                            <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
+                                            <td class="p-2 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            </td>
+                                        }
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
-                                        <td class="p-2 border border-gray-300 text-left">@gasto.cuenta</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.totalhh)</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.costoconsultoresexternos)</td>
-
-
-
+                                        <td class="p-2">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costoconsultoresexternos)</td>
                                     </tr>
                                 }
-
                             }
+                           
                         }
 
 
@@ -337,7 +391,7 @@
                     
                 </tbody>
             </table>
-            <button id="btnAgregarServicio" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Servicio</button>
+            <button id="btnAgregarServicio" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Servicio</button>
         </div>
 
     </div>
@@ -449,7 +503,7 @@
                 </tbody>
             </table>
                 <td>
-                    <button id="agregarFilaGastos" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar Gasto</button>
+                    <button id="agregarFilaGastos" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Gasto</button>
                 </td>
         </div>
 

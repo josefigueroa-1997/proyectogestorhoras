@@ -81,6 +81,7 @@ namespace Proyectogestionhoras.Controllers
             var proveedoresservicios = await GetProveedoresServicios();
             var proveedoresgastos = await GetProveedoresGastos();
             var gastoshh = await ejecucionService.ObtenerGastosHH(id);
+            var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == id).ToListAsync();
             ViewBag.Proyecto = proyecto;
             ViewBag.ServiciosEjecucion = serviciosejecucion;
             ViewBag.GastosEjecucion = gastosejecucion;
@@ -89,6 +90,7 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Proveedores = proveedoresservicios;
             ViewBag.ProGastos = proveedoresgastos;
             ViewBag.GastosHH = gastoshh;
+            ViewBag.GastosRecursos = datosgastosrecursos;
             return View();
         }
 
@@ -122,8 +124,10 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCostos(int idproyecto)
+        public async Task<IActionResult> RegistrarCostos(int idproyecto, List<GastosHHViewModel> gastosHH)
         {
+                        
+
             /*COSTOS SERVICIOS REALES*/
             List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
             var idsservicios = Request.Form["Idservicio"];
@@ -228,6 +232,7 @@ namespace Proyectogestionhoras.Controllers
 
             await ejecucionService.GestorServiciosReales(idproyecto, servicios);
             await ejecucionService.GestorGastosReales(idproyecto, gastos);
+            await ejecucionService.GestorGastosHH(idproyecto, gastosHH);
             return RedirectToAction("ForecastCostos", "EjecucionProyecto", new {id = idproyecto });
         }
 
