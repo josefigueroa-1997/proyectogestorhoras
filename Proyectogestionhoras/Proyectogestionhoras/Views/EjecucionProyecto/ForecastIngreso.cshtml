@@ -35,14 +35,48 @@
         font-weight: bold;
     }
 
+    .panel-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 0px;
+        width: 100%;
+        margin-top: 0;
+        padding-top: 0;
+    }
 
-   
+    .panel-item {
+        flex-grow: 1;
+        border: 2px solid #444;
+        border-radius: 0;
+        padding: 10px 20px;
+        background-color: #f2f3f4;
+        color: black;
+        text-align: center;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+        
+
+        .panel-item:hover {
+            background-color: #fcaa67;
+            color: #fff;
+        }
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
 }
 <div class="form-container">
-
+    <div class="panel-container flex justify-center mb-5">
+        <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            Forecast Costos del Proyecto
+        </a>
+        <button class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+            Flujo de Caja del Proyecto
+        </button>
+        <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+            Seleccionar otro Proyecto
+        </a>
+    </div>
     <div class="form-group">
 
         @foreach (var proyecto in ViewBag.Proyecto)
@@ -60,6 +94,7 @@
                             <th class="p-2 border border-gray-300 text-left">Cliente</th>
                             <th class="p-2 border border-gray-300 text-left">Departamento</th>
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
+                            <th class="p-2 border border-gray-300 text-left">Moneda</th>
                             
                             <th class="p-2 border border-gray-300 text-left">C.Costo</th>
                             <th class="p-2 border border-gray-300 text-left">Código</th>
@@ -74,6 +109,9 @@
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
                             <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+                            <td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
+                                @proyecto.MONEDA
+                            </td>
                             
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
@@ -393,7 +431,63 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-       
+
+        const moneda = document.querySelector('td[data-moneda]').getAttribute('data-moneda');
+        console.log(moneda);
+        
+        if (moneda === "CLP") {
+           
+            const montoInputs = document.querySelectorAll('input[name*="Montous"], input[name*="Tc"]');
+
+            montoInputs.forEach(input => {
+                
+                input.value = '0';
+
+                
+                input.setAttribute('readonly', true);
+            });
+        }
+        else {
+            
+            const montoClpInputs = document.querySelectorAll('input[name*="Montoclp"]');
+            const montoUsds = document.querySelectorAll('input[name*="Montous"]');
+            const tcInputs = document.querySelectorAll('input[name*="Tc"]');
+
+            montoClpInputs.forEach((inputClp, index) => {
+                const montoUsd = montoUsds[index];
+                const tc = tcInputs[index];
+
+                if (montoUsd && tc) {
+                    
+                    montoUsd.addEventListener('input', function () {
+                        calculateMontoClp(montoUsd, tc, inputClp);
+                    });
+                    tc.addEventListener('input', function () {
+                        calculateMontoClp(montoUsd, tc, inputClp);
+                    });
+
+                    
+                    calculateMontoClp(montoUsd, tc, inputClp);
+                }
+            });
+        }
+
+        function calculateMontoClp(montoUsd, tc, inputClp) {
+            
+            const montoUsdValue = parseFloat(montoUsd.value.replace(/[^\d.-]/g, '').replace('.', '')) || 0;  
+            const tcValue = parseFloat(tc.value.replace(/[^\d.-]/g, '').replace('.', '')) || 0;  
+            const montoClpValue = montoUsdValue * tcValue;
+
+           
+            inputClp.value = formatCurrencyValue(montoClpValue);
+            inputClp.setAttribute('readonly', true);
+        }
+
+        
+        function formatCurrencyValue(value) {
+            return value.toLocaleString('es-CL', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+
         function formatCurrency(event) {
             let value = event.target.value;
 

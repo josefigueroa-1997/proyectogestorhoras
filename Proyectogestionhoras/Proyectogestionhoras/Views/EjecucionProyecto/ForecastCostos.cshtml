@@ -35,12 +35,51 @@
         font-weight: bold;
     }
 
+    .panel-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 0px;
+        width: 100%;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .panel-item {
+        flex-grow: 1;
+        border: 2px solid #444;
+        border-radius: 0;
+        padding: 10px 20px;
+        background-color: #f2f3f4;
+        color: black;
+        text-align: center;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+       
+
+        .panel-item:hover {
+            background-color: #fcaa67;
+            color: #fff;
+        }
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
+    decimal totalsocios = 0;
+    decimal totalstaff = 0;
+    decimal totalconsutlores = 0;
 }
 <div class="form-container">
-
+    <div class="panel-container flex justify-center mb-5">
+        <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            Forecast Ingresos del Proyecto
+        </a>
+        <button class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+            Flujo de Caja del Proyecto
+        </button>
+        <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+            Seleccionar otro Proyecto
+        </a>
+    </div>
     <div class="form-group">
 
         @foreach (var proyecto in ViewBag.Proyecto)
@@ -142,6 +181,9 @@
                                     <td class="p-2">@gasto.cuenta</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costorecurso)</td>
+                                        @{
+                                            totalsocios += Convert.ToDecimal(gasto.costorecurso ?? 0);
+                                        }
                                 </tr>
                                 }
                             }
@@ -209,6 +251,9 @@
                                         <td class="p-2">@gasto.cuenta</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costorecurso)</td>
+                                        @{
+                                            totalstaff += Convert.ToDecimal(gasto.costorecurso ?? 0);
+                                        }
                                     </tr>
                                 }
                             }
@@ -280,6 +325,9 @@
                                         <td class="p-2">@gasto.cuenta</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costoconsultoresexternos)</td>
+                                        @{
+                                            totalconsutlores += Convert.ToDecimal(gasto.costoconsultoresexternos ?? 0);
+                                        }
                                     </tr>
                                 }
                             }
@@ -508,6 +556,49 @@
         </div>
 
     </div>
+        <div class="form-group">
+            <p class="form-subtitle" style="color:black;">Total Costos del proyecto </p>
+            <div class="flex justify-center items-center py-5">
+                <div class="overflow-x-auto w-1/2">
+                    <table id="tablaresumen" class="min-w-full text-xs border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-red-400 text-black">
+                                <th class="p-2 border border-gray-300 text-left">Tipo</th>
+                                <th class="p-2 border border-gray-300 text-center">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-2 border border-gray-300 text-left">HH Socios</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalSocios">@String.Format("{0:N0}", @totalsocios)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-gray-300 text-left">HH Staff</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalStaff">@String.Format("{0:N0}", @totalstaff)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-gray-300 text-left">HH Consultores Externos</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalConsultores">@String.Format("{0:N0}", totalconsutlores)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-gray-300 text-left">Servicios</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalServicios">0</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-gray-300 text-left">Gastos</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalGastos">0</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border border-gray-300 text-left font-bold">Totales</td>
+                                <td class="p-2 border border-gray-300 text-right font-bold" id="totalCostos">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
         <div class="text-center mt-2">
             <button type="submit" class="bg-green-500 text-white p-3 text-xl w-52 h-12  rounded">Guardar Costos</button>
         </div>
@@ -612,6 +703,7 @@
         });
     }
 
+    /*FORMATEAR MONTOS SERVICIOS Y GASTOS*/ 
     document.addEventListener('DOMContentLoaded', function () {
 
         function formatCurrency(event) {
@@ -626,6 +718,7 @@
                 let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 event.target.value = formattedValue;
             }
+            updateTotal();
         }
 
         function removePoints(event) {
@@ -634,6 +727,39 @@
 
             value = value.replace(/\./g, '');
             event.target.value = value;
+        }
+
+        function parseCurrency(value) {
+            return parseInt(value.replace(/\./g, ''), 10) || 0;
+        }
+
+        
+        function updateTotal() {
+            let totalservicio = 0;
+            let totalgasto = 0;
+            let totalCostos = 0;
+            const montogastoInput = document.querySelectorAll('input[name*="montogasto"]');
+            const montoInputs = document.querySelectorAll('input[name*="montoservicio"]');
+            
+            montoInputs.forEach(input => {
+                totalservicio += parseCurrency(input.value);
+            });
+            montogastoInput.forEach(input => {
+                totalgasto += parseCurrency(input.value);
+            });
+            
+            document.getElementById('totalServicios').textContent = totalservicio.toLocaleString('es-CL');
+            document.getElementById('totalGastos').textContent = totalgasto.toLocaleString('es-CL');
+            
+            const totalSocios = parseCurrency(document.getElementById('totalSocios').textContent);
+            const totalStaff = parseCurrency(document.getElementById('totalStaff').textContent);
+            const totalConsultores = parseCurrency(document.getElementById('totalConsultores').textContent);
+
+            
+            totalCostos = totalSocios + totalStaff + totalConsultores + totalservicio + totalgasto;
+
+            
+            document.getElementById('totalCostos').textContent = totalCostos.toLocaleString('es-CL');
         }
 
 
@@ -690,6 +816,7 @@
                 });
             }, 100);
         });
+        updateTotal();
     });
 
 
