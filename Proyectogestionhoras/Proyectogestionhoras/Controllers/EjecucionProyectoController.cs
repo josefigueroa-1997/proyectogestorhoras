@@ -82,6 +82,8 @@ namespace Proyectogestionhoras.Controllers
             var proveedoresgastos = await GetProveedoresGastos();
             var gastoshh = await ejecucionService.ObtenerGastosHH(id);
             var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == id).ToListAsync();
+            var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(id);
+            var gastosproyectados = await proyectoService.ObtenerGastosProyectos(id);
             ViewBag.Proyecto = proyecto;
             ViewBag.ServiciosEjecucion = serviciosejecucion;
             ViewBag.GastosEjecucion = gastosejecucion;
@@ -91,6 +93,8 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.ProGastos = proveedoresgastos;
             ViewBag.GastosHH = gastoshh;
             ViewBag.GastosRecursos = datosgastosrecursos;
+            ViewBag.ServiciosProyectos = serviciosproyectados;
+            ViewBag.GastosProyectos = gastosproyectados;
             return View();
         }
 
