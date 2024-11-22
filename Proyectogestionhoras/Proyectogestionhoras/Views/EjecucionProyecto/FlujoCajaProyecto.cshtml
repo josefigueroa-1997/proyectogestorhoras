@@ -151,7 +151,7 @@
                 </thead>
                 <tbody>
                     
-                    <tr>
+                    <tr >
                         <td class="p-2 border border-gray-300 text-center">Ingresos</td>
                         @foreach (var flujo in ViewBag.Flujo)
                         {
@@ -162,6 +162,77 @@
                            
                             <td class="p-2 border border-gray-300 text-right">
                                 @String.Format("{0:N0}", @flujo.MontoReal)
+                            </td>
+                        }
+                    </tr>
+                    
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-center">HH Socios</td>
+                        @foreach (var flujo in ViewBag.Egresos)
+                        {
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontosSocioProyectado)
+                            </td>
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontoSocioReal)
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-center">HH Staff</td>
+                        @foreach (var flujo in ViewBag.Egresos)
+                        {
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontosStaffProyectado)
+                            </td>
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontoStaffReal)
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-center">HH Consultores</td>
+                        @foreach (var flujo in ViewBag.Egresos)
+                        {
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontosConsultoresProyectado)
+                            </td>
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontoConsultoresReal)
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-center">Servicios</td>
+                        @foreach (var flujo in ViewBag.Egresos)
+                        {
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontosServiciosProyectado)
+                            </td>
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontoSerivicioReal)
+                            </td>
+                        }
+                    </tr>
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-center">Gastos</td>
+                        @foreach (var flujo in ViewBag.Egresos)
+                        {
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontosGastosProyectado)
+                            </td>
+
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontoGastoReal)
                             </td>
                         }
                     </tr>

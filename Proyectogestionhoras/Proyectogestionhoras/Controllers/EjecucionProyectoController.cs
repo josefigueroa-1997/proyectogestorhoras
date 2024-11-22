@@ -265,8 +265,10 @@ namespace Proyectogestionhoras.Controllers
         {
             var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
             var flujocajaingreso = await ejecucionService.ObtenerFlujoCajaProyecto(id);
+            var flujocajaegreso = await ejecucionService.ObtenerEgresoFlujoCajaProyecto(id);
             ViewBag.Proyecto = proyecto;
             ViewBag.Flujo = flujocajaingreso;
+            ViewBag.Egresos = flujocajaegreso;
             return View();
         }
     }
