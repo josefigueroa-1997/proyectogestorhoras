@@ -14,11 +14,13 @@ namespace Proyectogestionhoras.Services
     {
         private readonly PROYECTO_CONTROL_HORASContext context;
         private readonly Conexion conexion;
+        private readonly ILogger<EjecucionService> logger;
         
-        public EjecucionService(PROYECTO_CONTROL_HORASContext context, Conexion conexion)
+        public EjecucionService(PROYECTO_CONTROL_HORASContext context, Conexion conexion,ILogger<EjecucionService> logger)
         {
             this.context = context;
             this.conexion = conexion;
+            this.logger = logger;
          
         }
 
@@ -308,6 +310,50 @@ namespace Proyectogestionhoras.Services
 
                 Debug.WriteLine($"Hubo un error al obtener el gastos hh  de los proyectos:{ex.Message}");
                 return new List<GastosHHRecursosDTO>();
+
+            }
+        }
+        public async Task<List<FlujoCajaDTO>> ObtenerFlujoCajaProyecto(int? idproyecto)
+        {
+            try
+            {
+
+
+                var flujo = new List<FlujoCajaDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "REPORTEFLUJOPROYECTO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            FlujoCajaDTO datos = new()
+                            {
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("Num_Proyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("Num_Proyecto")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nombre")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
+                                MontoProyectado = reader.IsDBNull(reader.GetOrdinal("Monto_Proyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto_Proyectado")),
+                                MontoReal = reader.IsDBNull(reader.GetOrdinal("Monto_Real")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto_Real")),
+                               
+                            };
+                            flujo.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return flujo;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el flujo  del proyecto:{ex.Message}");
+                return new List<FlujoCajaDTO>();
 
             }
         }

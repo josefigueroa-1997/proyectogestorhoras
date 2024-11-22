@@ -9,20 +9,40 @@ using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using System.Diagnostics;
 var builder = WebApplication.CreateBuilder(args);
 
 
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.File(@"C:\Users\pepef\Desktop\proyecto gestion\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\logs\myapp-.txt",
-                   rollingInterval: RollingInterval.Day,
-                   rollOnFileSizeLimit: true) // Permite crear nuevos archivos si el límite de tamaño es alcanzado
-    .CreateLogger();
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration) // Esto lee la configuración de appsettings.json
-    .CreateLogger();
-// Reemplaza el logger predeterminado por Serilog
-builder.Host.UseSerilog();
+
+try
+{
+    
+    var logDirectory = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+
+    
+    if (!Directory.Exists(logDirectory))
+    {
+        Directory.CreateDirectory(logDirectory);
+    }
+
+    var logFilePath = Path.Combine(logDirectory, "stdout-.txt");
+
+    
+    Log.Logger = new LoggerConfiguration()
+        .WriteTo.File(
+            path: logFilePath,
+            rollingInterval: RollingInterval.Day,
+            rollOnFileSizeLimit: true)
+        .CreateLogger();
+
+    builder.Host.UseSerilog();
+}
+catch (Exception ex)
+{
+    
+    Console.WriteLine("Error configurando el logger: " + ex.Message);
+}
 
 
 // Add services to the container.

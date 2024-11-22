@@ -54,19 +54,22 @@
 
 
                 }
-                @if (ViewBag.HorasMaximas != null && ViewBag.HorasProyectos != null)
+                @if (ViewBag.HorasMaximas != null && ViewBag.HorasProyectos != null && ViewBag.HorasProyectos.Count > 0)
                 {
                     <tr>
                         <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Balance</td>
 
                         @for (int i = 0; i < ViewBag.HorasMaximas.Count; i++)
                         {
-                            var diferencia = ViewBag.HorasMaximas[i].Horas - ViewBag.HorasProyectos[i].Horas;
-                            var colorClass = diferencia >= 0 ? "text-green-700" : "text-red-700";
+                            if (i < ViewBag.HorasProyectos.Count && ViewBag.HorasProyectos[i].Horas > 0)
+                            {
+                                var diferencia = ViewBag.HorasMaximas[i].Horas - ViewBag.HorasProyectos[i].Horas;
+                                var colorClass = diferencia >= 0 ? "text-green-700" : "text-red-700";
 
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px] @colorClass">
-                                @String.Format("{0:N0}", Math.Round(diferencia, 0))
-                            </td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px] @colorClass">
+                                    @String.Format("{0:N0}", Math.Round(diferencia, 0))
+                                </td>
+                            }
                         }
                     </tr>
                 }

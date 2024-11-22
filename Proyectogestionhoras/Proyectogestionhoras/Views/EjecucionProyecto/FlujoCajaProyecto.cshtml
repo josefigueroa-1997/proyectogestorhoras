@@ -1,0 +1,174 @@
+﻿@{
+    ViewData["Title"] = "Flujo Caja Proyecto";
+}
+
+<style>
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 60px;
+    }
+
+    .form-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.0rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+
+
+    .highlight {
+        background-color: #f8d7da;
+        font-weight: bold;
+    }
+
+    .panel-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 0px;
+        width: 100%;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .panel-item {
+        flex-grow: 1;
+        border: 2px solid #444;
+        border-radius: 0;
+        padding: 10px 20px;
+        background-color: #f2f3f4;
+        color: black;
+        text-align: center;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+
+
+        .panel-item:hover {
+            background-color: #fcaa67;
+            color: #fff;
+        }
+</style>
+
+
+<div class="form-container">
+
+
+    <div class="panel-container flex justify-center mb-5">
+        <a href="" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            Forecast Ingresos del Proyecto
+        </a>
+        <button class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+            Forecast Costos del Proyecto
+        </button>
+        <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+            Seleccionar otro Proyecto
+        </a>
+    </div>
+    <div class="form-group">
+
+        @foreach (var proyecto in ViewBag.Proyecto)
+        {
+
+            <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
+
+            <input type="hidden" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
+            <input type="hidden" id="centroCosto" value="@proyecto.IDCOSTO" />
+            <input type="hidden" id="codigo" value="@proyecto.Codigo" />
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-green-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Cliente</th>
+                            <th class="p-2 border border-gray-300 text-left">Monto</th>
+                            <th class="p-2 border border-gray-300 text-left">Departamento</th>
+                            <th class="p-2 border border-gray-300 text-left">C.Costo</th>
+                            <th class="p-2 border border-gray-300 text-left">Código</th>
+                            <th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Empresa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Empresa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+           
+        }
+    </div>
+
+    <div class="form-group">
+        <p class="form-subtitle" style="color:black">Flujo de Caja</p>
+        <div class="flex overflow-x-auto">
+            
+            <table class="w-full max-w-3xl border-collapse text-left text-xs">
+                <thead>
+                    <tr class="bg-blue-100 text-black">
+                        
+                        <th class="p-2 border border-gray-300 text-center">Fecha</th>
+
+                        
+                        @foreach (var flujo in ViewBag.Flujo)
+                        {
+                            <th class="p-2 border border-gray-300 text-center" colspan="2">@flujo.Mes/@flujo.Anio</th>
+                        }
+                    </tr>
+                    <tr class="bg-gray-200 text-black">
+                        
+                        <td class="p-2 border border-gray-300 text-center"></td> 
+                        @foreach (var flujo in ViewBag.Flujo)
+                        {
+                            <th class="p-2 border border-gray-300 text-center">Proyectado</th>
+                            <th class="p-2 border border-gray-300 text-center">Real</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-center">Ingresos</td>
+                        @foreach (var flujo in ViewBag.Flujo)
+                        {
+                            
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontoProyectado)
+                            </td>
+                           
+                            <td class="p-2 border border-gray-300 text-right">
+                                @String.Format("{0:N0}", @flujo.MontoReal)
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+

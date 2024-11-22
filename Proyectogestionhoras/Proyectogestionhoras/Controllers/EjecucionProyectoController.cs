@@ -258,5 +258,16 @@ namespace Proyectogestionhoras.Controllers
             .ToListAsync();
             return Json(proveedores);
         }
+
+
+        /*FLUJO CAJA*/
+        public async Task<IActionResult> FlujoCajaProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
+        {
+            var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
+            var flujocajaingreso = await ejecucionService.ObtenerFlujoCajaProyecto(id);
+            ViewBag.Proyecto = proyecto;
+            ViewBag.Flujo = flujocajaingreso;
+            return View();
+        }
     }
 }
