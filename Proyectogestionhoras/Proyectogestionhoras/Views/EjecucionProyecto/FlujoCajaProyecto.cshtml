@@ -62,18 +62,22 @@
             color: #fff;
         }
 </style>
-
+@{
+    int? idproyecto = Context.Session.GetInt32("numproyecto");
+    var flujoList = ((IEnumerable<Proyectogestionhoras.Models.DTO.FlujoCajaDTO>)ViewBag.Flujo).ToList();
+    var egresosList = ((IEnumerable<Proyectogestionhoras.Models.DTO.EgresoFlujoCajaDTO>)ViewBag.Egresos).ToList();
+}
 
 <div class="form-container">
 
 
     <div class="panel-container flex justify-center mb-5">
-        <a href="" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
             Forecast Ingresos del Proyecto
         </a>
-        <button class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+        <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
             Forecast Costos del Proyecto
-        </button>
+        </a>
         <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
             Seleccionar otro Proyecto
         </a>
@@ -108,7 +112,7 @@
                             <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
-                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
@@ -124,7 +128,7 @@
     </div>
 
     <div class="form-group">
-        <p class="form-subtitle" style="color:black">Flujo de Caja</p>
+        <p class="form-subtitle" style="color:black">Flujo de Caja del Proyecto</p>
         <div class="flex overflow-x-auto">
             
             <table class="w-full max-w-3xl border-collapse text-left text-xs">
@@ -151,17 +155,17 @@
                 </thead>
                 <tbody>
                     
-                    <tr >
-                        <td class="p-2 border border-gray-300 text-center">Ingresos</td>
+                    <tr class="font-bold">
+                        <td class="border border-gray-300 text-center">Ingresos</td>
                         @foreach (var flujo in ViewBag.Flujo)
                         {
-                            
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontoProyectado)
+
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontoProyectado))
                             </td>
-                           
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontoReal)
+
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoReal))
                             </td>
                         }
                     </tr>
@@ -170,13 +174,12 @@
                         <td class="p-2 border border-gray-300 text-center">HH Socios</td>
                         @foreach (var flujo in ViewBag.Egresos)
                         {
-
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontosSocioProyectado)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontosSocioProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontosSocioProyectado))
                             </td>
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontoSocioReal)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoSocioReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoSocioReal))
                             </td>
                         }
                     </tr>
@@ -185,12 +188,12 @@
                         @foreach (var flujo in ViewBag.Egresos)
                         {
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontosStaffProyectado)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontosStaffProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontosStaffProyectado))
                             </td>
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontoStaffReal)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoStaffReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoStaffReal))
                             </td>
                         }
                     </tr>
@@ -199,12 +202,12 @@
                         @foreach (var flujo in ViewBag.Egresos)
                         {
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontosConsultoresProyectado)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontosConsultoresProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontosConsultoresProyectado))
                             </td>
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontoConsultoresReal)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoConsultoresReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoConsultoresReal))
                             </td>
                         }
                     </tr>
@@ -213,12 +216,12 @@
                         @foreach (var flujo in ViewBag.Egresos)
                         {
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontosServiciosProyectado)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontosServiciosProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontosServiciosProyectado))
                             </td>
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontoSerivicioReal)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoSerivicioReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoSerivicioReal))
                             </td>
                         }
                     </tr>
@@ -227,12 +230,81 @@
                         @foreach (var flujo in ViewBag.Egresos)
                         {
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontosGastosProyectado)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontosGastosProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontosGastosProyectado))
                             </td>
 
-                            <td class="p-2 border border-gray-300 text-right">
-                                @String.Format("{0:N0}", @flujo.MontoGastoReal)
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoGastoReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoGastoReal))
+                            </td>
+                        }
+                    </tr>
+
+                    <tr class="font-bold">
+                        <td class="p-2 border border-gray-300 text-center">Total Egresos</td>
+                        @for (int i = 0; i < flujoList.Count; i++)
+                        {
+                            var flujoActual = flujoList[i];
+                            var totalProyectado = egresosList
+                            .Where(e => e.Mes == flujoActual.Mes && e.Anio == flujoActual.Anio)
+                            .Sum(e => (e.MontosSocioProyectado ?? 0) +
+                            (e.MontosStaffProyectado ?? 0) +
+                            (e.MontosConsultoresProyectado ?? 0) +
+                            (e.MontosServiciosProyectado ?? 0) +
+                            (e.MontosGastosProyectado ?? 0));
+
+                            var totalReal = egresosList
+                            .Where(e => e.Mes == flujoActual.Mes && e.Anio == flujoActual.Anio)
+                            .Sum(e => (e.MontoSocioReal ?? 0) +
+                            (e.MontoStaffReal ?? 0) +
+                            (e.MontoConsultoresReal ?? 0) +
+                            (e.MontoSerivicioReal ?? 0) +
+                            (e.MontoGastoReal ?? 0));
+
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @String.Format("{0:N0}", totalProyectado)
+                            </td>
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @String.Format("{0:N0}", totalReal)
+                            </td>
+                        }
+                    </tr>
+                    <tr class="bg-gray-300 font-bold">
+                        <td class="p-2 border border-gray-300 text-center">Margen del Proyecto</td>
+                        @for (int i = 0; i < flujoList.Count; i++)
+                        {
+                            var flujoActual = flujoList[i];
+
+                            // Ingresos
+                            var ingresoProyectado = flujoActual.MontoProyectado;
+                            var ingresoReal = flujoActual.MontoReal;
+
+                            // Total Egresos
+                            var totalEgresosProyectado = egresosList
+                            .Where(e => e.Mes == flujoActual.Mes && e.Anio == flujoActual.Anio)
+                            .Sum(e => (e.MontosSocioProyectado ?? 0) +
+                            (e.MontosStaffProyectado ?? 0) +
+                            (e.MontosConsultoresProyectado ?? 0) +
+                            (e.MontosServiciosProyectado ?? 0) +
+                            (e.MontosGastosProyectado ?? 0));
+
+                            var totalEgresosReal = egresosList
+                            .Where(e => e.Mes == flujoActual.Mes && e.Anio == flujoActual.Anio)
+                            .Sum(e => (e.MontoSocioReal ?? 0) +
+                            (e.MontoStaffReal ?? 0) +
+                            (e.MontoConsultoresReal ?? 0) +
+                            (e.MontoSerivicioReal ?? 0) +
+                            (e.MontoGastoReal ?? 0));
+
+                            // Margen
+                            var margenProyectado = ingresoProyectado - totalEgresosProyectado;
+                            var margenReal = ingresoReal - totalEgresosReal;
+
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @String.Format("{0:N0}", margenProyectado)
+                            </td>
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @String.Format("{0:N0}", margenReal)
                             </td>
                         }
                     </tr>

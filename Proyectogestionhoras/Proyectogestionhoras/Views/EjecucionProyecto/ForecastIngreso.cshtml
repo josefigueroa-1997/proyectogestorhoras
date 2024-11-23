@@ -70,9 +70,9 @@
         <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
             Forecast Costos del Proyecto
         </a>
-        <button class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+        <a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
             Flujo de Caja del Proyecto
-        </button>
+        </a>
         <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
             Seleccionar otro Proyecto
         </a>
@@ -108,7 +108,7 @@
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
-                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
                             <td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
                                 @proyecto.MONEDA
                             </td>

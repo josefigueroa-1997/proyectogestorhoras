@@ -47,7 +47,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ForecastIngreso(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            var factura = await facturaService.RecuperarFacturas(id);
+            var factura = await facturaService.RecuperarFacturasPresupuesto(id);
             var cuotas = await context.Ingresosreales.Where(x => x.Idproyecto == id).ToListAsync();
             ViewBag.Cuotas = cuotas;
             ViewBag.Proyecto = proyecto;
