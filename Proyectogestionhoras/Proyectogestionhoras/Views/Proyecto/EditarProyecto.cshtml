@@ -2862,7 +2862,7 @@
                 const selectGastos = e.target;
                 const idUnidadNegocio = $("#unidadNegocio").val();
                 const idCentroCosto = $("#centroCosto").val();
-                const selectedText = selectGastos.options[selectGastos.selectedIndex].text;
+                const selectedText = selectGastos.options[selectGastos.selectedIndex].value;
                 const newRow = selectGastos.closest('tr'); 
 
              
@@ -2980,7 +2980,7 @@
             data: {
                 idcosto: idCentroCosto,
                 unegocio: idUnidadNegocio,
-                nombresegmento: nombreSegmento
+                idgasto: nombreSegmento
             },
             success: function (data) {
                 if (data.length > 0) {

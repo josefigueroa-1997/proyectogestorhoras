@@ -12,6 +12,7 @@ namespace Proyectogestionhoras.Models
 
         public int Id { get; set; }
         public string? Nombre { get; set; }
+        public int? Idcuenta { get; set; }
 
         public virtual ICollection<ProyectoGasto> ProyectoGastos { get; set; }
     }

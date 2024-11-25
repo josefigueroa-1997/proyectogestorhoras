@@ -63,7 +63,14 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-      
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=PROYECTO_CONTROL_HORAS.mssql.somee.com;Database=PROYECTO_CONTROL_HORAS;user=pepelechero_SQLLogin_1;pwd=87zhqvm9wv;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -364,6 +371,8 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Idcuenta).HasColumnName("IDCUENTA");
+
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(200)
                     .IsUnicode(false)
@@ -389,6 +398,11 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Monto)
                     .HasColumnType("decimal(15, 2)")
                     .HasColumnName("MONTO");
+
+                entity.Property(e => e.Observacion)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACION");
 
                 entity.Property(e => e.Segmento).HasColumnName("SEGMENTO");
 
@@ -426,6 +440,11 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Monto)
                     .HasColumnType("decimal(15, 2)")
                     .HasColumnName("MONTO");
+
+                entity.Property(e => e.Observacion)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACION");
 
                 entity.Property(e => e.Tiporecurso)
                     .HasMaxLength(200)
@@ -1130,6 +1149,8 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Idcuenta).HasColumnName("IDCUENTA");
+
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(200)
                     .IsUnicode(false)
@@ -1155,6 +1176,11 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Monto)
                     .HasColumnType("decimal(15, 2)")
                     .HasColumnName("MONTO");
+
+                entity.Property(e => e.Observacion)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACION");
 
                 entity.HasOne(d => d.IdproveedorNavigation)
                     .WithMany(p => p.Serviciosejecucions)

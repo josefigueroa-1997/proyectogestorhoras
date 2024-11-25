@@ -206,6 +206,8 @@ namespace Proyectogestionhoras.Services
                     if (gastohhexistente != null)
                     {
                         gastohhexistente.Fechapago = gasto.Fechapago;
+                        gastohhexistente.Hhtotales = gasto.HHtotales;
+                        gastohhexistente.Monto = gasto.Monto;
                     }
                     else
                     {

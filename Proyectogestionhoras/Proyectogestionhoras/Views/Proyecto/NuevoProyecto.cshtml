@@ -1561,20 +1561,24 @@
 
 
     $(document).on('change', '.gastosSelect', function () {
-        var $row = $(this).closest('tr'); 
-        var idCodigo = $("#codigo").val();
-        var nombreGasto = $(this).find('option:selected').text(); 
-
+        var $row = $(this).closest('tr');
+        const idUnidadNegocio = $("#unidadNegocio").val();
+        const idCentroCosto = $("#centroCosto").val();
+        var nombreGasto = $(this).find('option:selected').val();
+        console.log(idUnidadNegocio);
+        console.log(idCentroCosto);
+        console.log(nombreGasto);
         $.ajax({
-            url: '/Proyecto/ObtenerValoresGastos',
+            url: '/Proyecto/GetValoresGastosEdicion',
             type: 'GET',
             data: {
-                idcodigo: idCodigo,
-                nombresegmento: nombreGasto
+                idcosto: idCentroCosto,
+                unegocio: idUnidadNegocio,
+                idgasto: nombreGasto
             },
             success: function (data) {
                 if (data && data.length > 0) {
-                    
+
                     $row.find('.segmentogastos').val(data[0].nombre);
                     $row.find('.idcuentagastos').val(data[0].idcuenta);
                     $row.find('.cuentagastos').val(data[0].cuenta);

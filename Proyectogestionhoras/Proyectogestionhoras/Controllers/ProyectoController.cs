@@ -680,9 +680,16 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetValoresGastosEdicion(int idcosto, int unegocio, string nombresegmento)
+        public async Task<IActionResult> GetValoresGastosEdicion(int idcosto, int unegocio, int idgasto)
         {
-            var gastos = await proyectoService.ObtenerValoresGastosEdicion(idcosto,unegocio, nombresegmento);
+            var gastos = await proyectoService.ObtenerValoresGastosEdicion(idcosto,unegocio, idgasto);
+            return Json(gastos);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetValoresServiciosEdicion(int idcosto, int unegocio, int idservicio)
+        {
+            var gastos = await proyectoService.ObtenerValoresServiciosEdicion(idcosto, unegocio, idservicio);
             return Json(gastos);
         }
 

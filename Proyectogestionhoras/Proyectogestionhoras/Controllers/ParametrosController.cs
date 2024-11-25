@@ -76,7 +76,18 @@ namespace Proyectogestionhoras.Controllers
         {
 
             var gastos = await context.Gastos.ToListAsync();
-            ViewBag.Gastos = gastos;
+            var cuentas = await context.Cuenta.ToListAsync();
+            var gastosConCuentas = from gasto in gastos
+                                   join cuenta in cuentas on gasto.Idcuenta equals cuenta.Id
+                                   select new
+                                   {
+                                       gasto.Id,
+                                       gasto.Nombre,
+                                       CuentaNombre = cuenta.Cuenta, 
+                                       gasto.Idcuenta
+                                   };
+            ViewBag.Cuentas = cuentas;
+            ViewBag.Gastos = gastosConCuentas;
             return View();
 
         }
@@ -105,6 +116,7 @@ namespace Proyectogestionhoras.Controllers
                 }
 
                 gastoexistente.Nombre = gastos.Nombre;
+                gastoexistente.Idcuenta = gastos.Idcuenta;
                 context.Gastos.Update(gastoexistente);
             }
 
@@ -117,7 +129,18 @@ namespace Proyectogestionhoras.Controllers
         {
 
             var servicios = await context.Servicios.ToListAsync();
-            ViewBag.Servicios = servicios;
+            var cuentas = await context.Cuenta.ToListAsync();
+            var servicioConCuentas = from servicio in servicios
+                                     join cuenta in cuentas on servicio.Idcuenta equals cuenta.Id
+                                   select new
+                                   {
+                                       servicio.Id,
+                                       servicio.Nombre,
+                                       CuentaNombre = cuenta.Cuenta,
+                                       servicio.Idcuenta
+                                   };
+            ViewBag.Servicios = servicioConCuentas;
+            ViewBag.Cuentas = cuentas;
             return View();
 
         }
@@ -145,6 +168,7 @@ namespace Proyectogestionhoras.Controllers
                 }
 
                 servicioexistente.Nombre = servicios.Nombre;
+                servicioexistente.Idcuenta = servicios.Idcuenta;
                 context.Servicios.Update(servicioexistente);
             }
 

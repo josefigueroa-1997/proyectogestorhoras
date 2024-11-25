@@ -144,11 +144,11 @@
                 </table>
             </div>
 
-            totalsociosproyectados = proyecto.HHSOCIOS * @proyecto.COSTO_SOCIO;
-            totalstaffproyectados = proyecto.HHSTAFF * @proyecto.COSTO_STAFF;
-            totalconsutlroaproyectados = proyecto.HH_CONSULTOR_A * @proyecto.COSTO_CONSULTORA;
-            totalconsutlrobproyectados = proyecto.HH_CONSULTOR_B * @proyecto.COSTO_CONSULTORB;
-            totalconsutlrocproyectados = proyecto.HH_CONSULTOR_C * @proyecto.COSTO_CONSULTORC;
+            totalsociosproyectados = proyecto.CostoSocioPresupuesto;
+            totalstaffproyectados = proyecto.CostoStaffPresupuesto;
+            totalconsutlroaproyectados = proyecto.CostoConsultorAPresupuesto;
+            totalconsutlrobproyectados = proyecto.CostoConsultorBPresupuesto;
+            totalconsutlrocproyectados = proyecto.CostoConsultorCPresupuesto;
             totalconsultoresproyectados = totalconsutlroaproyectados + totalconsutlrobproyectados + totalconsutlrocproyectados;
         }
     </div>
@@ -398,7 +398,7 @@
                             {
                                 <tr>
                                     <td class="p-2 border border-gray-300 text-left">
-                                        <select name="Idservicio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                                             <option value="" disabled selected>Seleccione un Servicio</option>
                                             @if (ViewBag.Servicios != null)
                                             {
@@ -418,7 +418,7 @@
 
                                     </td>
                                     <td class="p-2 border border-gray-300 text-left">
-                                        <select name="Idproveedor" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                                             <option value="" disabled selected>Seleccione un Servicio</option>
                                             @if (ViewBag.Proveedores != null)
                                             {
@@ -647,57 +647,89 @@
 
 
 <script>
-    /*CARGA INICIAL PAGINA */
-    document.addEventListener("DOMContentLoaded", function () {
     
-    
-    
-          const filas = document.querySelectorAll('#tablaServicios tbody tr');
-
-            filas.forEach(fila => {
-             obtenerValoresServicioParaFila(fila);
-             });
-    
-    
-    });
 
     /*SERVICIOS */
 
-        function obtenerValoresServicioParaFila(fila) {
-            const idUnidadNegocio = $("#unidadNegocio").val();
-            const idCentroCosto = $("#centroCosto").val();
+    $(document).ready(function () {
 
-            if (idUnidadNegocio && idCentroCosto) {
+        $('.serviciosSelect').each(function () {
+            var $select = $(this);
+            var $row = $select.closest('tr');
+
+
+            var selectedOption = $select.find('option:selected').val();
+            if (selectedOption) {
+
+                const idUnidadNegocio = $("#unidadNegocio").val();
+                const idCentroCosto = $("#centroCosto").val();
+                var nombreservicio = $(this).find('option:selected').val();
+                
+
                 $.ajax({
-                url: '/Proyecto/GetValoresServicios',
-                type: 'GET',
-                data: {
-                    idcosto: idCentroCosto,
-                    idunegocio: idUnidadNegocio
-                },
-                success: function (response) {
-                    if (response && response.length > 0) {
-                        
-                        $(fila).find('.idcuentaservicio').val(response[0].idcuenta);
-                        $(fila).find('.cuentaservicio').val(response[0].cuenta);
-                    } else {
-                       
-                        $(fila).find('.idcuentaservicio').val('');
-                        $(fila).find('.cuentaservicio').val('');
+                    url: '/Proyecto/GetValoresServiciosEdicion',
+                    type: 'GET',
+                    data: {
+                        idcosto: idCentroCosto,
+                        unegocio: idUnidadNegocio,
+                        idservicio: nombreservicio
+                    },
+                    success: function (data) {
+                        if (data && data.length > 0) {
+                            $row.find('.idcuentaservicio').val(data[0].idcuenta);
+                            $row.find('.cuentaservicio').val(data[0].cuenta);
+                        } else {
+                            console.log("No se encontraron valores.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error al obtener el servicio:', error);
-                    $(fila).find('.idcuentaservicio').val('');
-                    $(fila).find('.cuentaservicio').val('');
-                }
                 });
             }
-        }
+        });
+    });
+
+
+    $(document).on('change', '.serviciosSelect', function () {
+        var $row = $(this).closest('tr');
+        const idUnidadNegocio = $("#unidadNegocio").val();
+        const idCentroCosto = $("#centroCosto").val();
+        var nombreservicio = $(this).find('option:selected').val();
+        console.log(idUnidadNegocio);
+        console.log(idCentroCosto);
+        console.log(nombreservicio);
+        $.ajax({
+            url: '/Proyecto/GetValoresServiciosEdicion',
+            type: 'GET',
+            data: {
+                idcosto: idCentroCosto,
+                unegocio: idUnidadNegocio,
+                idservicio: nombreservicio
+            },
+            success: function (data) {
+                if (data && data.length > 0) {
+
+                    
+                    $row.find('.idcuentaservicio').val(data[0].idcuenta);
+                    $row.find('.cuentaservicio').val(data[0].cuenta);
+                    
+                } else {
+                    console.log("No se encontraron valores.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+
+   
 
 
 
       function cargarServicios(selectElement) {
+        var valorSeleccionado = $(selectElement).val();
         $.ajax({
             url: '/Proyecto/ObtenerServicios',
             type: 'GET',
@@ -708,6 +740,9 @@
                 $.each(data, function (index, servicio) {
                     $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
                 });
+                if (valorSeleccionado) {
+                    $(selectElement).val(valorSeleccionado);
+                }
             },
             error: function () {
                 alert('Ocurrió un error al cargar los servicios.');
@@ -726,6 +761,7 @@
     });
 
     function cargarProveedoresServicios(selectElement) {
+        var valorSeleccionado = $(selectElement).val();
         $.ajax({
             url: '/EjecucionProyecto/ObtenerProveedoresServicios',
             type: 'GET',
@@ -736,6 +772,9 @@
                 $.each(data, function (index, proveedor) {
                     $(selectElement).append('<option value="' + proveedor.id + '">' + proveedor.nombre + '</option>');
                 });
+                if (valorSeleccionado) {
+                    $(selectElement).val(valorSeleccionado);
+                }
             },
             error: function () {
                 alert('Ocurrió un error al cargar los proveedor.');
@@ -860,61 +899,54 @@
     });
 
 
-     document.addEventListener('DOMContentLoaded', function () {
-        
+    $(document).ready(function () {
 
-
-        const agregarServicioButtons = document.querySelectorAll('button[id^="btnAgregarServicio"]');
-
-        agregarServicioButtons.forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                
-                const tablaId = button.id.replace('btnAgregarServicio', 'tablaServicios');
-                const tableBody = document.querySelector(`#${tablaId} tbody`);
-
-                if (!tableBody) {
-                    console.error(`No se encontró la tabla con ID ${tablaId}`);
-                    return;
-                }
-
-                
-                const lastRow = tableBody.querySelector('tr:last-child');
-
-                if (!lastRow) {
-                    console.error('No hay filas en la tabla para clonar.');
-                    return;
-                }
-
-                const newRow = lastRow.cloneNode(true);
-
-             
-                newRow.querySelectorAll('input').forEach(input => {
-                    input.value = '';
-                });
-
-                
-                newRow.querySelectorAll('select').forEach(select => {
-                    select.value = '';
-
-                });
-
-                
-                tableBody.appendChild(newRow);
-
-                newRow.querySelectorAll('.serviciosSelect').forEach(select => {
-                    cargarServicios(select);
-                });
-                newRow.querySelectorAll('.proveedorSelect').forEach(select => {
-                    cargarProveedoresServicios(select);
-                });
-
-                
-                obtenerValoresServicioParaFila(newRow);
-            });
+        $('.serviciosSelect').each(function () {
+            cargarServicios(this);
+        });
+        $('.proveedorSelect').each(function () {
+            cargarProveedoresServicios(this);
         });
 
+
+        $('#btnAgregarServicio').on('click', function (e) {
+            e.preventDefault();
+
+
+            var nuevaFila = `
+                       <tr>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                </select>
+                            </td>
+                                <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
+                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
+
+                                <input type="hidden" name="IdServicioReal" value="" />
+
+
+                        </tr>
+                `;
+
+
+            $('#tablaServicios tbody').append(nuevaFila);
+
+
+            $('#tablaServicios tbody tr:last .serviciosSelect').each(function () {
+                cargarServicios(this);
+            });
+            $('#tablaServicios tbody tr:last .proveedorSelect').each(function () {
+                cargarProveedoresServicios(this);
+            });
+        });
     });
 
 
@@ -932,7 +964,7 @@
                
                 const idUnidadNegocio = $("#unidadNegocio").val();
                 const idCentroCosto = $("#centroCosto").val();
-                var nombreGasto = $select.find('option:selected').text();
+                var nombreGasto = $select.find('option:selected').val();
 
                 $.ajax({
                     url: '/Proyecto/GetValoresGastosEdicion',
@@ -940,7 +972,7 @@
                     data: {
                         idcosto: idCentroCosto,
                         unegocio: idUnidadNegocio,
-                        nombresegmento: nombreGasto
+                        idgasto: nombreGasto
                     },
                     success: function (data) {
                         if (data && data.length > 0) {
@@ -964,7 +996,7 @@
         var $row = $(this).closest('tr');
         const idUnidadNegocio = $("#unidadNegocio").val();
         const idCentroCosto = $("#centroCosto").val();
-        var nombreGasto = $(this).find('option:selected').text();
+        var nombreGasto = $(this).find('option:selected').val();
         console.log(idUnidadNegocio);
         console.log(idCentroCosto);
         console.log(nombreGasto);
@@ -974,7 +1006,7 @@
             data: {
                 idcosto: idCentroCosto,
                 unegocio: idUnidadNegocio,
-                nombresegmento: nombreGasto
+                idgasto: nombreGasto
             },
             success: function (data) {
                 if (data && data.length > 0) {

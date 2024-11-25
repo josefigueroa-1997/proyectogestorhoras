@@ -66,6 +66,14 @@
     int? idproyecto = Context.Session.GetInt32("numproyecto");
     var flujoList = ((IEnumerable<Proyectogestionhoras.Models.DTO.FlujoCajaDTO>)ViewBag.Flujo).ToList();
     var egresosList = ((IEnumerable<Proyectogestionhoras.Models.DTO.EgresoFlujoCajaDTO>)ViewBag.Egresos).ToList();
+    decimal totalingresosreal = 0;
+    decimal totalsociosreal = 0;
+    decimal totalstaffreal = 0;
+    decimal totalconsultoresreal = 0;
+    decimal totalserviciosreal = 0;
+    decimal totalgastosreal = 0;
+    decimal totalegresosreal = 0;
+    decimal? totalmargenreal = 0;
 }
 
 <div class="form-container">
@@ -142,6 +150,7 @@
                         {
                             <th class="p-2 border border-gray-300 text-center" colspan="2">@flujo.Mes/@flujo.Anio</th>
                         }
+                        <th class="p-2 border border-gray-300 text-center">Total Real</th>
                     </tr>
                     <tr class="bg-gray-200 text-black">
                         
@@ -151,12 +160,14 @@
                             <th class="p-2 border border-gray-300 text-center">Proyectado</th>
                             <th class="p-2 border border-gray-300 text-center">Real</th>
                         }
+                        <td class="p-2 border border-gray-300 text-center"></td>
                     </tr>
                 </thead>
                 <tbody>
                     
                     <tr class="font-bold">
                         <td class="border border-gray-300 text-center">Ingresos</td>
+                        
                         @foreach (var flujo in ViewBag.Flujo)
                         {
 
@@ -167,7 +178,13 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoReal))
                             </td>
+                            
+                                totalingresosreal += flujo.MontoReal;
+                            
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @String.Format("{0:N0}", totalingresosreal)
+                        </td>
                     </tr>
                     
                     <tr>
@@ -181,7 +198,11 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoSocioReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoSocioReal))
                             </td>
+                            totalsociosreal += flujo.MontoSocioReal;
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @(totalsociosreal == 0 ? "" : String.Format("{0:N0}", totalsociosreal))
+                        </td>
                     </tr>
                     <tr>
                         <td class="p-2 border border-gray-300 text-center">HH Staff</td>
@@ -195,7 +216,11 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoStaffReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoStaffReal))
                             </td>
+                            totalstaffreal += flujo.MontoStaffReal;
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @(totalstaffreal == 0 ? "" : String.Format("{0:N0}", totalstaffreal))
+                        </td>
                     </tr>
                     <tr>
                         <td class="p-2 border border-gray-300 text-center">HH Consultores</td>
@@ -209,7 +234,11 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoConsultoresReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoConsultoresReal))
                             </td>
+                            totalconsultoresreal += flujo.MontoConsultoresReal;
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @(totalconsultoresreal == 0 ? "" : String.Format("{0:N0}", totalconsultoresreal))
+                        </td>
                     </tr>
                     <tr>
                         <td class="p-2 border border-gray-300 text-center">Servicios</td>
@@ -223,7 +252,11 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoSerivicioReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoSerivicioReal))
                             </td>
+                            totalserviciosreal += flujo.MontoSerivicioReal;
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @(totalserviciosreal == 0 ? "" : String.Format("{0:N0}", totalserviciosreal))
+                        </td>
                     </tr>
                     <tr>
                         <td class="p-2 border border-gray-300 text-center">Gastos</td>
@@ -237,7 +270,11 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoGastoReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoGastoReal))
                             </td>
+                            totalgastosreal += flujo.MontoGastoReal;
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @(totalgastosreal == 0 ? "" : String.Format("{0:N0}", totalgastosreal))
+                        </td>
                     </tr>
 
                     <tr class="font-bold">
@@ -267,7 +304,11 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @String.Format("{0:N0}", totalReal)
                             </td>
+                            totalegresosreal += totalReal;
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @(totalegresosreal == 0 ? "" : String.Format("{0:N0}", totalegresosreal))
+                        </td>
                     </tr>
                     <tr class="bg-gray-300 font-bold">
                         <td class="p-2 border border-gray-300 text-center">Margen del Proyecto</td>
@@ -306,7 +347,90 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @String.Format("{0:N0}", margenReal)
                             </td>
+                            totalmargenreal += margenReal;
                         }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @(totalmargenreal == 0 ? "" : String.Format("{0:N0}", totalmargenreal))
+                        </td>
+                    </tr>
+                    <tr class="bg-green-100 font-bold">
+                        <td class="p-2 border border-gray-300 text-center">Margen de Proyecto Real (%)</td>
+                        @for (int i = 0; i < flujoList.Count; i++)
+                        {
+                            var flujoActual = flujoList[i];
+
+                            
+                            var ingresoReal = flujoActual.MontoReal;
+
+                            
+                            var totalEgresosReal = egresosList
+                            .Where(e => e.Mes == flujoActual.Mes && e.Anio == flujoActual.Anio)
+                            .Sum(e => (e.MontoSocioReal ?? 0) +
+                            (e.MontoStaffReal ?? 0) +
+                            (e.MontoConsultoresReal ?? 0) +
+                            (e.MontoSerivicioReal ?? 0) +
+                            (e.MontoGastoReal ?? 0));
+
+                           
+                            var margenReal = ingresoReal - totalEgresosReal;
+
+                           
+                            var porcentajeMargenReal = ingresoReal > 0 && margenReal != null
+                            ? Math.Round(((decimal)margenReal / ingresoReal.Value) * 100, 2)
+                            : 0; 
+
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                               
+                            </td>
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @porcentajeMargenReal.ToString("N0") %
+                            </td>
+                        }
+                        <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                            @{
+                                var porcentajetotalMargenReal = totalingresosreal > 0 && totalmargenreal != null
+                                ? Math.Round(((decimal)totalmargenreal.Value / totalingresosreal) * 100, 2)
+                            : 0;}
+                            @porcentajetotalMargenReal.ToString("N0") %
+                        </td>
+                    </tr>
+                    <tr class="bg-yellow-100 font-bold">
+                        <td class="p-2 border border-gray-300 text-center">Saldo Acumulado</td>
+                        @for (int i = 0; i < flujoList.Count; i++)
+                        {
+                            var flujoActual = flujoList[i];
+
+                            var ingresoReal = flujoActual.MontoReal;
+
+                           
+                            var totalEgresosReal = egresosList
+                            .Where(e => e.Mes == flujoActual.Mes && e.Anio == flujoActual.Anio)
+                            .Sum(e => (e.MontoSocioReal ?? 0) +
+                            (e.MontoStaffReal ?? 0) +
+                            (e.MontoConsultoresReal ?? 0) +
+                            (e.MontoSerivicioReal ?? 0) +
+                            (e.MontoGastoReal ?? 0));
+
+                            var margenReal = ingresoReal - totalEgresosReal;
+
+                            
+                            ViewBag.SaldoAcumulado = (ViewBag.SaldoAcumulado ?? 0) + margenReal;
+
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                
+                            </td>
+                            
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                @String.Format("{0:N0}", ViewBag.SaldoAcumulado)
+                            </td>
+                            
+                        }
+                        <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                            @{
+                                decimal? saldoacumuladototal = totalingresosreal - totalmargenreal;
+                            }
+                            @String.Format("{0:N0}", saldoacumuladototal)
+                        </td>
                     </tr>
                 </tbody>
             </table>

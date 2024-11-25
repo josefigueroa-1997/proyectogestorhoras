@@ -1290,7 +1290,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<GastoDTO>> ObtenerValoresGastosEdicion(int idcosto,int unegocio, string nombresegmento)
+        public async Task<List<GastoDTO>> ObtenerValoresGastosEdicion(int idcosto,int unegocio, int idgasto)
         {
             try
             {
@@ -1298,11 +1298,11 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "FILTRARSEGMENTOGASTOSEDICION";
+                    command.CommandText = "FILTRARCUENTAGASTOS";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDCOSTO", idcosto));
                     command.Parameters.Add(new SqlParameter("@IDUNEGOCIO", unegocio));
-                    command.Parameters.Add(new SqlParameter("@NOMBRESEGMENTO", nombresegmento));
+                    command.Parameters.Add(new SqlParameter("@IDGASTO", idgasto));
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -1330,6 +1330,49 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Hubo un error al obtener los gastos:" + ex.Message);
                 return new List<GastoDTO>();
+            }
+        }
+
+        public async Task<List<ServiciosDTO>> ObtenerValoresServiciosEdicion(int idcosto, int unegocio, int idservicio)
+        {
+            try
+            {
+                var servicios = new List<ServiciosDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "FILTRARCUENTASERVICIOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDCOSTO", idcosto));
+                    command.Parameters.Add(new SqlParameter("@IDUNEGOCIO", unegocio));
+                    command.Parameters.Add(new SqlParameter("@IDSERVICIO", idservicio));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ServiciosDTO servicio = new()
+                            {
+                                NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
+                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
+
+                            };
+                            servicios.Add(servicio);
+
+                        }
+
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return servicios;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener la cuenta de los servicios:" + ex.Message);
+                return new List<ServiciosDTO>();
             }
         }
 
