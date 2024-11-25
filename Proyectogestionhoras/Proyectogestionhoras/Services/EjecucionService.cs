@@ -108,6 +108,7 @@ namespace Proyectogestionhoras.Services
                             servicioexistente.Idproveedor = servicio.Idproveedor;
                             servicioexistente.Fecha = servicio.Fecha;
                             servicioexistente.Monto = servicio.Monto;
+                            servicioexistente.Observacion = servicio.Observacion;
                         }
                     }
                     else
@@ -120,6 +121,7 @@ namespace Proyectogestionhoras.Services
                             Idproveedor = servicio.Idproveedor,
                             Fecha = servicio.Fecha,
                             Monto = servicio.Monto,
+                            Observacion = servicio.Observacion,
                         };
                         await context.AddAsync(nuevoservicio);
                     }
@@ -157,6 +159,7 @@ namespace Proyectogestionhoras.Services
                             gastoexistente.Segmento = gasto.Segmento;
                             gastoexistente.Monto = gasto.Monto;
                             gastoexistente.Fecha = gasto.Fecha;
+                            gastoexistente.Observacion = gasto.Observacion;
                         }
                     }
                     else
@@ -169,6 +172,7 @@ namespace Proyectogestionhoras.Services
                             Segmento = gasto.Segmento,
                             Monto = gasto.Monto,
                             Fecha = gasto.Fecha,
+                            Observacion = gasto.Observacion,
                         };
                         await context.AddRangeAsync(nuevogasto);
 
@@ -208,6 +212,7 @@ namespace Proyectogestionhoras.Services
                         gastohhexistente.Fechapago = gasto.Fechapago;
                         gastohhexistente.Hhtotales = gasto.HHtotales;
                         gastohhexistente.Monto = gasto.Monto;
+                        gastohhexistente.Observacion = gasto.Observacion;
                     }
                     else
                     {
@@ -220,6 +225,7 @@ namespace Proyectogestionhoras.Services
                             Fechapago = gasto.Fechapago,
                             Monto = gasto.Monto,
                             Hhtotales = gasto.HHtotales,
+                            Observacion = gasto.Observacion,
                         };
                         await context.AddRangeAsync(nuevogastohh);
                     }
@@ -258,7 +264,8 @@ namespace Proyectogestionhoras.Services
                                            Cuenta = c.Cuenta,
                                            IdCuenta = c.Idcuenta,
                                            Monto = g.Monto,
-                                           Fecha = g.Fecha
+                                           Fecha = g.Fecha,
+                                           Observacion = g.Observacion,
                                        }).ToListAsync();
 
                 return resultado;

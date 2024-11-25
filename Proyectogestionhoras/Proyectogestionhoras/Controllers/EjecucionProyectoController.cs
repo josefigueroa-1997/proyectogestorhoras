@@ -139,6 +139,7 @@ namespace Proyectogestionhoras.Controllers
             var montoservicioList = Request.Form["montoservicio"];
             var fechaservicio = Request.Form["fechaservicio"];
             var idservicioreal = Request.Form["IdServicioReal"];
+            var observacion = Request.Form["observacionservicio"];
            
             for (int i = 0; i < idsservicios.Count; i++)
             {
@@ -174,6 +175,7 @@ namespace Proyectogestionhoras.Controllers
                     Idproveedor = int.Parse(idproveedores[i]),
                     Monto = montoservicio,
                     Fecha = fechaServicioParsed,
+                    Observacion = observacion[i],
                 };
 
                 servicios.Add(servicioViewModel);
@@ -188,6 +190,7 @@ namespace Proyectogestionhoras.Controllers
             var montogastosList = Request.Form["montogasto"];
             var fechagastos = Request.Form["fechagasto"];
             var idgastoreal = Request.Form["IdGastoReal"];
+            var observaciongasto = Request.Form["observaciongasto"];
             
             
             
@@ -226,6 +229,7 @@ namespace Proyectogestionhoras.Controllers
                     Segmento = int.Parse(idsegmentogastos[i]),
                     Monto = montogasto,
                     Fecha = fechaGastoParsed,
+                    Observacion = observaciongasto[i],
                 };
 
                 gastos.Add(gastoViewModel);

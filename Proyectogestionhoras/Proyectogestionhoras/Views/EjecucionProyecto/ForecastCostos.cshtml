@@ -164,7 +164,7 @@
                     <tr class="bg-blue-100 text-black">
                         
                         <th class="p-2 border border-gray-300 text-left">Fecha</th>
-                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                        <th class="p-1 border border-gray-300 text-left">FechaPago</th>
                         <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                         <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
@@ -195,21 +195,26 @@
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos!=null)
                                         {
                                             <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
-                                            <td class="p-2 border border-gray-300 text-right">
-                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            <td class="p-1 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
                                         }
                                         else
                                         {
-                                            <td class="p-2 border border-gray-300 text-right">
-                                                <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                            <td class="p-1 border border-gray-300 text-right">
+                                                <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
                                         }
                                      
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
-                                    <td class="p-2">@gasto.cuenta</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costorecurso)</td>
+                                        <td class="p-1">@gasto.cuenta</td>
+                                        <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
+                                        <td style="display:none;" class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                        </td>
+                                        
+                                        
                                         @{
                                             totalsocios += Convert.ToDecimal(gasto.costorecurso ?? 0);
                                         }
@@ -278,8 +283,11 @@
                                         }
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
                                         <td class="p-2">@gasto.cuenta</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costorecurso)</td>
+                                        <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
+                                        <td style="display:none;" class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                        </td>
                                         @{
                                             totalstaff += Convert.ToDecimal(gasto.costorecurso ?? 0);
                                         }
@@ -315,6 +323,7 @@
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                             <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
                             <th class="p-2 border border-gray-300 text-left">Total</th>
+                            <th class="p-2 border border-gray-300 text-left">Observación</th>
 
 
                         </tr>
@@ -354,6 +363,20 @@
                                         <td class="p-2">@gasto.cuenta</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costoconsultoresexternos)</td>
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
+                                            </td>
+
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                            </td>
+                                        }
+
                                         @{
                                             totalconsutlores += Convert.ToDecimal(gasto.costoconsultoresexternos ?? 0);
                                         }
@@ -384,6 +407,8 @@
                         <th class="p-2 border border-gray-300 text-left">Proveedor</th>
                         <th class="p-2 border border-gray-300 text-left">Monto</th>
                         <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                        <th class="p-2 border border-gray-300 text-left">Observación</th>
+                        
                         <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                         
@@ -439,6 +464,9 @@
                                     </td>
                                     <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @se.Monto)" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                     <td class="p-2 border border-gray-300 text-left"><input type="date" value="@se.Fecha.ToString("yyyy-MM-dd")" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
+                                    </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                                     <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
                                 </tr>
@@ -458,8 +486,11 @@
                         </td>
                             <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                             <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
-                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
+                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
 
                             <input type="hidden" name="IdServicioReal" value="" />
 
@@ -484,6 +515,7 @@
                         <th class="p-2 border border-gray-300 text-left">Proveedor</th>
                         <th class="p-2 border border-gray-300 text-left">Monto</th>
                         <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">Observación</th>
                         <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
 
@@ -535,6 +567,9 @@
                                     </td>
                                     <td class="p-2 border border-gray-300 text-right"><input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" value="@String.Format("{0:N0}", @ge.Monto)" /></td>
                                     <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" value="@ge.Fecha.ToString("yyyy-MM-dd")" /></td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ge.Observacion</textarea>
+                                    </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly /></td>
                                     <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly /></td>
                                     <td style="display:none">
@@ -563,6 +598,9 @@
 
                             <td class="p-2 border border-gray-300 text-right"><input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                             <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                            </td>
                             <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly /></td>
                             <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly /></td>
                             <td style="display:none">
@@ -927,6 +965,9 @@
                             </td>
                                 <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                 <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                    <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                </td>
                             <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
                             <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
 
@@ -1103,6 +1144,9 @@
                     <td class="p-2 border border-gray-300 text-left">
                         <input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
                     </td>
+                         <td class="p-2 border border-gray-300 text-left">
+                                    <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                </td>
                     <td class="p-2 border border-gray-300 text-right">
                         <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly />
                     </td>
