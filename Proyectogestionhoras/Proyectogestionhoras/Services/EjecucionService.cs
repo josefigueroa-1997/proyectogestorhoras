@@ -347,7 +347,8 @@ namespace Proyectogestionhoras.Services
                                 Anio = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
                                 MontoProyectado = reader.IsDBNull(reader.GetOrdinal("Monto_Proyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto_Proyectado")),
                                 MontoReal = reader.IsDBNull(reader.GetOrdinal("Monto_Real")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto_Real")),
-                               
+                                Idcuenta = reader.IsDBNull(reader.GetOrdinal("Idcuenta")) ? 0 : reader.GetInt32(reader.GetOrdinal("Idcuenta")),
+                                Cuenta = reader.IsDBNull(reader.GetOrdinal("Cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("Cuenta")),
                             };
                             flujo.Add(datos);
 
@@ -396,11 +397,7 @@ namespace Proyectogestionhoras.Services
                                 MontoStaffReal = reader.IsDBNull(reader.GetOrdinal("MontoStaffReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoStaffReal")),
                                 MontosConsultoresProyectado = reader.IsDBNull(reader.GetOrdinal("MontoConsultoresProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoConsultoresProyectado")),
                                 MontoConsultoresReal = reader.IsDBNull(reader.GetOrdinal("MontoConsultoresReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoConsultoresReal")),
-                                MontosServiciosProyectado = reader.IsDBNull(reader.GetOrdinal("MontoServiciosProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoServiciosProyectado")),
-                                MontoSerivicioReal = reader.IsDBNull(reader.GetOrdinal("MontoServiciosReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoServiciosReal")),
-                                MontosGastosProyectado = reader.IsDBNull(reader.GetOrdinal("MontoGastosProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoGastosProyectado")),
-                                MontoGastoReal = reader.IsDBNull(reader.GetOrdinal("MontoGastosReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoGastosReal")),
-
+                                
                             };
                             flujo.Add(datos);
 
@@ -416,6 +413,60 @@ namespace Proyectogestionhoras.Services
 
                 Debug.WriteLine($"Hubo un error al obtener el egreso flujo  del proyecto:{ex.Message}");
                 return new List<EgresoFlujoCajaDTO>();
+
+            }
+        }
+
+        public async Task<List<EgresosServiciosGastosDTO>> ObtenerEgresoServiciosGastosFlujoCajaProyecto(int? idproyecto)
+        {
+            try
+            {
+
+
+                var flujo = new List<EgresosServiciosGastosDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "REPORTEEGRESOFLUJOPROYECTOsERVICIOSGASTOS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            EgresosServiciosGastosDTO datos = new()
+                            {
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("Num_Proyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("Num_Proyecto")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nombre")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
+                                MontosServiciosProyectado = reader.IsDBNull(reader.GetOrdinal("MontoServiciosProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoServiciosProyectado")),
+                                MontoSerivicioReal = reader.IsDBNull(reader.GetOrdinal("MontoServiciosReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoServiciosReal")),
+                                ServicioNombre = reader.IsDBNull(reader.GetOrdinal("ServicioNombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("ServicioNombre")),
+                                MontosGastosProyectado = reader.IsDBNull(reader.GetOrdinal("MontoGastosProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoGastosProyectado")),
+                                MontoGastoReal = reader.IsDBNull(reader.GetOrdinal("MontoGastosReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoGastosReal")),
+                                GastoNombre = reader.IsDBNull(reader.GetOrdinal("GastoNombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("GastoNombre")),
+                                idcuentaservicio = reader.IsDBNull(reader.GetOrdinal("IdcuentaServicio")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdcuentaServicio")),
+                                CuentaServicio = reader.IsDBNull(reader.GetOrdinal("CuentaServicio")) ? string.Empty : reader.GetString(reader.GetOrdinal("CuentaServicio")),
+                                idcuentagasto = reader.IsDBNull(reader.GetOrdinal("IdcuentaGasto")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdcuentaGasto")),
+                                Cuentagasto = reader.IsDBNull(reader.GetOrdinal("CuentaGasto")) ? string.Empty : reader.GetString(reader.GetOrdinal("CuentaGasto")),
+
+
+                            };
+                            flujo.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return flujo;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el egreso flujo  del proyecto:{ex.Message}");
+                return new List<EgresosServiciosGastosDTO>();
 
             }
         }

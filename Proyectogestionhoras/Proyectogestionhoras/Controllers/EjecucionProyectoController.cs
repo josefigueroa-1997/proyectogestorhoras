@@ -95,6 +95,27 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.GastosRecursos = datosgastosrecursos;
             ViewBag.ServiciosProyectos = serviciosproyectados;
             ViewBag.GastosProyectos = gastosproyectados;
+
+            var serviciosTotales = from serejecucucion in serviciosejecucion
+                                   group serejecucucion by serejecucucion.Idservicio into grupo
+                                   select new
+                                   {
+                                       Idservicio = grupo.Key,
+                                       TotalMonto = grupo.Sum(x => x.Monto)
+                                   };
+
+            ViewBag.ServiciosTotales = serviciosTotales.ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+            
+            var gastosTotales = from gasejecucion in gastosejecucion
+                                group gasejecucion by gasejecucion.IdGasto into grupo
+                                select new
+                                {
+                                    Idservicio = grupo.Key,
+                                    TotalMonto = grupo.Sum(x => x.Monto)
+                                };
+
+            ViewBag.GastosTotales = gastosTotales.ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+
             return View();
         }
 
@@ -270,9 +291,76 @@ namespace Proyectogestionhoras.Controllers
             var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
             var flujocajaingreso = await ejecucionService.ObtenerFlujoCajaProyecto(id);
             var flujocajaegreso = await ejecucionService.ObtenerEgresoFlujoCajaProyecto(id);
+            var flujocajaegresosserviciosgastos = await ejecucionService.ObtenerEgresoServiciosGastosFlujoCajaProyecto(id);
+            
+            var groupedServicios = flujocajaegresosserviciosgastos
+                                    .GroupBy(s => s.ServicioNombre)
+                                    .Select(g => new
+                                    {
+                                        ServicioNombre = g.Key,
+                                        Servicios = g.ToList()
+                                    })
+                                    .ToList();
+
+            var groupedgastos = flujocajaegresosserviciosgastos
+                                    .GroupBy(s => s.GastoNombre)
+                                    .Select(g => new
+                                    {
+                                        GastosNombres = g.Key,
+                                        Gastos = g.ToList()
+                                    })
+                                    .ToList();
+
+
+            var querysocio = from p in context.Proyectos
+                        join up in context.UsuarioProyectos on p.Id equals up.IdProyecto
+                        join s in context.Segmentos on up.Idsegmento equals s.Id
+                        join c in context.Cuenta on s.IdCuenta equals c.Id
+                        join u in context.Usuarios on up.IdUsuario equals u.Id
+                        join r in context.Recursos on u.IdRecurso equals r.Id
+                        where p.Id == id && r.NombreRecurso == "Socio"
+                        select new
+                        {
+                            c.Cuenta,
+                            c.Idcuenta
+                        };
+
+            var querystaff = from p in context.Proyectos
+                             join up in context.UsuarioProyectos on p.Id equals up.IdProyecto
+                             join s in context.Segmentos on up.Idsegmento equals s.Id
+                             join c in context.Cuenta on s.IdCuenta equals c.Id
+                             join u in context.Usuarios on up.IdUsuario equals u.Id
+                             join r in context.Recursos on u.IdRecurso equals r.Id
+                             where p.Id == id && r.NombreRecurso == "Staff"
+                             select new
+                             {
+                                 c.Cuenta,
+                                 c.Idcuenta
+                             };
+
+            var querysconsultor = from p in context.Proyectos
+                             join up in context.UsuarioProyectos on p.Id equals up.IdProyecto
+                             join s in context.Segmentos on up.Idsegmento equals s.Id
+                             join c in context.Cuenta on s.IdCuenta equals c.Id
+                             join u in context.Usuarios on up.IdUsuario equals u.Id
+                             join r in context.Recursos on u.IdRecurso equals r.Id
+                             where p.Id == id && r.NombreRecurso == "Consultor Externo"
+                                  select new
+                             {
+                                 c.Cuenta,
+                                 c.Idcuenta
+                             };
+           
+
+
             ViewBag.Proyecto = proyecto;
             ViewBag.Flujo = flujocajaingreso;
             ViewBag.Egresos = flujocajaegreso;
+            ViewBag.Servicios = groupedServicios;
+            ViewBag.Gastos = groupedgastos;
+            ViewBag.CuentaSocio = querysocio;
+            ViewBag.CuentaStaff = querystaff;
+            ViewBag.CuentaConsultor = querysconsultor;
             return View();
         }
     }

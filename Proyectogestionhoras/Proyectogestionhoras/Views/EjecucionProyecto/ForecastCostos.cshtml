@@ -76,6 +76,12 @@
     decimal totalserviciosproyectados = 0;
     decimal totalgastosproyectados = 0;
     decimal totalcostosproyectados = 0;
+    int idcuentasocio = 0;
+    string? cuentasocio = "";
+    int idcuentastaff = 0;
+    string? cuentastaff = "";
+    int idcuentaconsultores = 0;
+    string? cuentaconsultores = "";
 }
 @if (ViewBag.ServiciosProyectos != null)
 {
@@ -208,6 +214,7 @@
                                      
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
                                         <td class="p-1">@gasto.cuenta</td>
+                                        
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N0}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
                                         <td style="display:none;" class="p-2 border border-gray-300 text-left">
@@ -217,6 +224,8 @@
                                         
                                         @{
                                             totalsocios += Convert.ToDecimal(gasto.costorecurso ?? 0);
+                                            cuentasocio = gasto.cuenta;
+                                            idcuentasocio = gasto.idcuenta;
                                         }
                                 </tr>
                                 }
@@ -290,6 +299,8 @@
                                         </td>
                                         @{
                                             totalstaff += Convert.ToDecimal(gasto.costorecurso ?? 0);
+                                            idcuentastaff = gasto.idcuenta;
+                                            cuentastaff = gasto.cuenta;
                                         }
                                     </tr>
                                 }
@@ -379,6 +390,8 @@
 
                                         @{
                                             totalconsutlores += Convert.ToDecimal(gasto.costoconsultoresexternos ?? 0);
+                                            idcuentaconsultores = gasto.idcuenta;
+                                            cuentaconsultores = gasto.cuenta;
                                         }
                                     </tr>
                                 }
@@ -634,6 +647,8 @@
                         <thead>
                             <tr class="bg-red-400 text-black">
                                 <th class="p-2 border border-gray-300 text-left">Tipo</th>
+                                <th class="p-2 border border-gray-300 text-left">IdCuenta</th>
+                                <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                                 <th class="p-2 border border-gray-300 text-center">Total Proyectado</th>
                                 <th class="p-2 border border-gray-300 text-center">Total Real</th>
                             </tr>
@@ -641,31 +656,82 @@
                         <tbody>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Socios</td>
+                                @if (idcuentasocio > 0)
+                                {
+                                    <td class="p-2 border border-gray-300 text-left">@idcuentasocio</td>
+                                }
+                                else
+                                {
+                                    <td class="p-2 border border-gray-300 text-left"></td>
+                                }
+                                
+                                <td class="p-2 border border-gray-300 text-left">@cuentasocio</td>
                                 <td class="p-2 border border-gray-300 text-right" >@String.Format("{0:N0}", totalsociosproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalSocios">@String.Format("{0:N0}", @totalsocios)</td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Staff</td>
+                                @if (idcuentastaff > 0)
+                                {
+                                    <td class="p-2 border border-gray-300 text-left">@idcuentastaff</td>
+                                }
+                                else
+                                {
+                                    <td class="p-2 border border-gray-300 text-left"></td>
+                                }
+
+                                <td class="p-2 border border-gray-300 text-left">@cuentastaff</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalstaffproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalStaff">@String.Format("{0:N0}", @totalstaff)</td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Consultores Externos</td>
+                                @if (idcuentaconsultores > 0)
+                                {
+                                    <td class="p-2 border border-gray-300 text-left">@idcuentaconsultores</td>
+                                }
+                                else
+                                {
+                                    <td class="p-2 border border-gray-300 text-left"></td>
+                                }
+                                
+                                <td class="p-2 border border-gray-300 text-left">@cuentaconsultores</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalConsultores">@String.Format("{0:N0}", totalconsutlores)</td>
                             </tr>
+                            @foreach (var servicio in ViewBag.ServiciosProyectos)
+                            {
+                                decimal totaleservicio = 0;
+                                if (ViewBag.ServiciosTotales.ContainsKey(servicio.IDSERVICIO))
+                                {
+                                    totaleservicio = ViewBag.ServiciosTotales[servicio.IDSERVICIO];
+                                }
+                                <tr data-id="@servicio.IDSERVICIO">
+                                    <td class="p-2 border border-gray-300 text-left">@servicio.NOMBRESERVICIO</td>
+                                    <td class="p-2 border border-gray-300 text-left">@servicio.IDCUENTA</td>
+                                    <td class="p-2 border border-gray-300 text-left">@servicio.CUENTA</td>
+                                    <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @servicio.MONTO)</td>
+                                    <td class="p-2 border border-gray-300 text-right total-row" >@String.Format("{0:N0}", @totaleservicio)</td>
+                                </tr>
+                            }
+                            @foreach (var gasto in ViewBag.GastosProyectos)
+                            {
+                                decimal totalesgasto = 0;
+                                if (ViewBag.GastosTotales.ContainsKey(gasto.IDGASTOS))
+                                {
+                                    totalesgasto = ViewBag.GastosTotales[gasto.IDGASTOS];
+                                }
+                                <tr>
+                                    <td class="p-2 border border-gray-300 text-left">@gasto.NOMBREGASTO</td>
+                                    <td class="p-2 border border-gray-300 text-left">@gasto.IDCUENTA</td>
+                                    <td class="p-2 border border-gray-300 text-left">@gasto.CUENTA</td>
+                                    <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.MONTO)</td>
+                                    <td class="p-2 border border-gray-300 text-right" id="totalGastos_@gasto.IDGASTOS">@String.Format("{0:N0}", @totalesgasto)</td>
+                                </tr>
+                            }
+                            
                             <tr>
-                                <td class="p-2 border border-gray-300 text-left">Servicios</td>
-                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalserviciosproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalServicios">0</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2 border border-gray-300 text-left">Gastos</td>
-                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalgastosproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalGastos">0</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2 border border-gray-300 text-left font-bold">Totales</td>
+                                <td colspan="3" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
                                 
                                 <td class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostosproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right font-bold" id="totalCostos">0</td>
@@ -836,7 +902,10 @@
                 event.target.value = formattedValue;
             }
             updateTotal();
+            
         }
+
+        
 
         function removePoints(event) {
             let value = event.target.value;
@@ -858,6 +927,8 @@
             const montogastoInput = document.querySelectorAll('input[name*="montogasto"]');
             const montoInputs = document.querySelectorAll('input[name*="montoservicio"]');
             
+            
+
             montoInputs.forEach(input => {
                 totalservicio += parseCurrency(input.value);
             });
@@ -865,8 +936,6 @@
                 totalgasto += parseCurrency(input.value);
             });
             
-            document.getElementById('totalServicios').textContent = totalservicio.toLocaleString('es-CL');
-            document.getElementById('totalGastos').textContent = totalgasto.toLocaleString('es-CL');
             
             const totalSocios = parseCurrency(document.getElementById('totalSocios').textContent);
             const totalStaff = parseCurrency(document.getElementById('totalStaff').textContent);

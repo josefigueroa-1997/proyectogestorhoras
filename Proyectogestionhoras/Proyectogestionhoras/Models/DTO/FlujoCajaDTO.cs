@@ -8,7 +8,9 @@
         public int Anio {  get; set; }
         public decimal? MontoProyectado {  get; set; }
         public decimal? MontoReal {  get; set; }
-       
+        public int Idcuenta { get; set; }
+        public string? Cuenta { get; set; }
+
 
     }
 }
