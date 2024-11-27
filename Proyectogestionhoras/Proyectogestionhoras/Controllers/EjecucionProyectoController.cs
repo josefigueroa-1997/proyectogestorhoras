@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Validations;
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services;
+using Proyectogestionhoras.Services.Interface;
 using System.Diagnostics;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -47,27 +48,79 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ForecastIngreso(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            var factura = await facturaService.RecuperarFacturasPresupuesto(id);
-            var cuotas = await context.Ingresosreales.Where(x => x.Idproyecto == id).ToListAsync();
-            ViewBag.Cuotas = cuotas;
+            var flujo = await ejecucionService.ObtenerFlujoCajaProyecto(id);
+            var ingresos = await context.Ingresosreales.Where(x => x.Idproyecto == id).ToListAsync();
+            ViewBag.Ingresos = ingresos;
             ViewBag.Proyecto = proyecto;
-            ViewBag.Factura = factura;
+            ViewBag.Flujo = flujo;
             return View();
         }
 
-      
+
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarIngresos(int idproyecto, List<IngresoViewModel> ingresos)
+        public async Task<IActionResult> RegistrarIngresos(int idproyecto)
         {
-            if (ingresos == null || !ingresos.Any())
+            List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
+
+            var numdocumento = Request.Form["Numdocumento"];
+            var fechapago = Request.Form["FechaPago"];
+            var montousdlist = Request.Form["Montous"];
+            var Tclist = Request.Form["Tc"];
+            var Montoclplist = Request.Form["Montoclp"];
+            var Ivalist = Request.Form["Iva"];
+            var Estado = Request.Form["Estado"];
+            var Idcuenta = Request.Form["Idcuenta"];
+            var Observacion = Request.Form["Observacion"];
+            var idingresoreal = Request.Form["IdIngresoreal"];
+
+            for (int i = 0; i < numdocumento.Count; i++)
             {
-                ModelState.AddModelError("", "Debe ingresar al menos una factura.");
-                return View(); 
+                if (string.IsNullOrWhiteSpace(numdocumento[i]))
+                {
+                    continue; 
+                }
+              
+                string montosusdStr = montousdlist[i]?.ToString().Trim() ?? "0";
+                string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
+                string montosivaStr = Ivalist[i]?.ToString().Trim() ?? "0";
+                string tcStr = Tclist[i]?.ToString().Trim() ?? "0";
+
+                
+                decimal.TryParse(montosusdStr.Replace(".", ""), out decimal montousd);
+                decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
+                decimal.TryParse(montosivaStr.Replace(".", ""), out decimal montoiva);
+                decimal.TryParse(tcStr.Replace(".", ""), out decimal tc);
+
+              
+                int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
+                int.TryParse(Idcuenta[i]?.ToString(), out int idCuentaParsed);
+
+                
+                DateTime fechapagoParsed = DateTime.TryParse(fechapago[i], out DateTime tempDate)
+                    ? tempDate
+                    : DateTime.Today;
+
+               
+                var ingresoViewModel = new IngresoViewModel
+                {
+                    IdIngresoreal = idIngresoRealParsed,
+                    Numdocumento = numdocumento[i],
+                    FechaPago = fechapagoParsed,
+                    Montous = montousd,
+                    Tc = tc,
+                    Montoclp = montoclp,
+                    Iva = montoiva,
+                    Estado = Estado[i],
+                    Idcuenta = idCuentaParsed,
+                    Observacion = Observacion[i],
+                };
+
+                ingresos.Add(ingresoViewModel);
             }
 
             await ejecucionService.GestorIngresos(idproyecto, ingresos);
-            return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new {id = idproyecto}); 
+            return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
         }
 
         /*FORECAST COSTOS*/

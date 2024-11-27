@@ -215,7 +215,7 @@
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
                                         <td class="p-1">@gasto.cuenta</td>
                                         
-                                        <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
                                         <td style="display:none;" class="p-2 border border-gray-300 text-left">
                                             <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
@@ -292,7 +292,7 @@
                                         }
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
                                         <td class="p-2">@gasto.cuenta</td>
-                                        <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
                                         <td style="display:none;" class="p-2 border border-gray-300 text-left">
                                             <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
@@ -372,7 +372,7 @@
                                         }
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
                                         <td class="p-2">@gasto.cuenta</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.totalhh)</td>
+                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costoconsultoresexternos)</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
                                         {

@@ -2,7 +2,7 @@
 {
     public class IngresoViewModel
     {
-        public int Id { get; set; }
+        public int IdIngresoreal { get; set; }
         public int? Cuota { get; set; }
         public int? Idproyecto { get; set; }
         public string? Numdocumento { get; set; }
@@ -15,5 +15,6 @@
         public string? Estado { get; set; }
         public int? Idcuenta { get; set; }
         public DateTime? FechaPago { get; set; }
+        public string? Observacion { get; set; }
     }
 }

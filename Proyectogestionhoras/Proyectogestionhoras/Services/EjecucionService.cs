@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
+using System.Globalization;
 
 namespace Proyectogestionhoras.Services
 {
@@ -35,41 +36,43 @@ namespace Proyectogestionhoras.Services
 
                 foreach (var ingreso in ingresos)
                 {
-
-                    var ingresoExistente = await context.Ingresosreales
-                        .FirstOrDefaultAsync(i => i.Id == ingreso.Id);
-
-                    if (ingresoExistente != null)
+                    if (ingreso.IdIngresoreal > 0)
                     {
+                        var ingresoExistente = await context.Ingresosreales
+                       .FirstOrDefaultAsync(i => i.Id == ingreso.IdIngresoreal);
 
-                        ingresoExistente.Numdocumento = ingreso.Numdocumento;
-                        ingresoExistente.FechaEmision = ingreso.FechaEmision;
-                        ingresoExistente.FechaVencimiento = ingreso.FechaVencimiento;
-                        ingresoExistente.Montous = ingreso.Montous;
-                        ingresoExistente.Tc = ingreso.Tc;
-                        ingresoExistente.Montoclp = ingreso.Montoclp;
-                        ingresoExistente.Iva = ingreso.Iva;
-                        ingresoExistente.Estado = ingreso.Estado;
-                        ingresoExistente.Idcuenta = ingreso.Idcuenta;
-                        ingresoExistente.FechaPago = ingreso.FechaPago;
+                        if (ingresoExistente != null)
+                        {
+
+                            ingresoExistente.Numdocumento = ingreso.Numdocumento;
+
+                            ingresoExistente.Montous = ingreso.Montous;
+                            ingresoExistente.Tc = ingreso.Tc;
+                            ingresoExistente.Montoclp = ingreso.Montoclp;
+                            ingresoExistente.Iva = ingreso.Iva;
+                            ingresoExistente.Estado = ingreso.Estado;
+                            ingresoExistente.Idcuenta = ingreso.Idcuenta;
+                            ingresoExistente.FechaPago = ingreso.FechaPago;
+                        }
                     }
+                   
                     else
                     {
 
                         var nuevoIngreso = new Ingresosreale
                         {
                             Idproyecto = idproyecto,
-                            Cuota = ingreso.Cuota + 1,
+                            
                             Numdocumento = ingreso.Numdocumento,
-                            FechaEmision = ingreso.FechaEmision,
-                            FechaVencimiento = ingreso.FechaVencimiento,
+
                             Montous = ingreso.Montous,
                             Tc = ingreso.Tc,
                             Montoclp = ingreso.Montoclp,
                             Iva = ingreso.Iva,
                             Estado = ingreso.Estado,
                             Idcuenta = ingreso.Idcuenta,
-                            FechaPago = ingreso.FechaPago
+                            FechaPago = ingreso.FechaPago,
+                            Observacion = ingreso.Observacion
                         };
                         await context.AddRangeAsync(nuevoIngreso);
                     }

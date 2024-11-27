@@ -705,6 +705,11 @@ namespace Proyectogestionhoras.Models
                     .IsUnicode(false)
                     .HasColumnName("NUMDOCUMENTO");
 
+                entity.Property(e => e.Observacion)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACION");
+
                 entity.Property(e => e.Tc)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("TC");
