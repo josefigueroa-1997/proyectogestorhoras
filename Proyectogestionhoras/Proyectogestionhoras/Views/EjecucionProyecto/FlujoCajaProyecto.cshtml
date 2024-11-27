@@ -5,81 +5,81 @@
 
 <style>
     .form-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 60px;
     }
 
     .form-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-        margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
     }
 
     .form-subtitle {
-        font-size: 1.0rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 20px;
+    font-size: 1.0rem;
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
     }
 
 
 
     .highlight {
-        background-color: #f8d7da;
-        font-weight: bold;
+    background-color: #f8d7da;
+    font-weight: bold;
     }
 
     .panel-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 0px;
-        width: 100%;
-        margin-top: 0;
-        padding-top: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 0px;
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
     }
 
     .panel-item {
-        flex-grow: 1;
-        border: 2px solid #444;
-        border-radius: 0;
-        padding: 10px 20px;
-        background-color: #f2f3f4;
-        color: black;
-        text-align: center;
-        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    flex-grow: 1;
+    border: 2px solid #444;
+    border-radius: 0;
+    padding: 10px 20px;
+    background-color: #f2f3f4;
+    color: black;
+    text-align: center;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
     }
 
 
 
-        .panel-item:hover {
-            background-color: #fcaa67;
-            color: #fff;
-        }
+    .panel-item:hover {
+    background-color: #fcaa67;
+    color: #fff;
+    }
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
     var flujoList = ((IEnumerable<Proyectogestionhoras.Models.DTO.FlujoCajaDTO>)ViewBag.Flujo).ToList();
     var egresosList = ((IEnumerable<Proyectogestionhoras.Models.DTO.EgresoFlujoCajaDTO>)ViewBag.Egresos).ToList();
-    
+
     decimal totalingresosreal = 0;
     decimal totalsociosreal = 0;
     decimal totalstaffreal = 0;
     decimal totalconsultoresreal = 0;
     decimal totalserviciosreal = 0;
     decimal totalgastosreal = 0;
-   decimal totalegresosreal = 0;
+    decimal totalegresosreal = 0;
     decimal? totalmargenreal = 0;
 }
 
 <div class="form-container">
-
+    
 
     <div class="panel-container flex justify-center mb-5">
         <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -133,23 +133,23 @@
                 </table>
             </div>
 
-           
+
         }
     </div>
 
     <div class="form-group">
         <p class="form-subtitle" style="color:black">Flujo de Caja del Proyecto</p>
         <div class="flex overflow-x-auto">
-            
+
             <table class="w-full max-w-3xl border-collapse text-left text-xs">
                 <thead>
                     <tr class="bg-blue-100 text-black">
-                        
+
                         <th class="p-2 border border-gray-300 text-center">Fecha</th>
                         <th class="p-2 border border-gray-300 text-center">IDCUENTA</th>
                         <th class="p-2 border border-gray-300 min-w-[100px] text-center">Cuenta</th>
 
-                        
+
                         @foreach (var flujo in ViewBag.Flujo)
                         {
                             <th class="p-2 border border-gray-300 text-center" colspan="2">@flujo.Mes/@flujo.Anio</th>
@@ -157,7 +157,7 @@
                         <th class="p-2 border border-gray-300 text-center">Total Real</th>
                     </tr>
                     <tr class="bg-gray-200 text-black">
-                        
+
                         <td class="p-2 border border-gray-300 text-center"></td> 
                         <td class="p-2 border border-gray-300 text-center"></td> 
                         <td class="p-2 border border-gray-300 text-center"></td> 
@@ -170,7 +170,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     <tr >
                         <td class="border font-bold border-gray-300 text-center">Ingresos</td>
                         @foreach (var flujo in ViewBag.Flujo)
@@ -193,15 +193,15 @@
                             <td class="px-4 py-2 font-bold border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoReal))
                             </td>
-                            
-                                totalingresosreal += flujo.MontoReal;
-                            
+
+                            totalingresosreal += flujo.MontoReal;
+
                         }
                         <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
                             @String.Format("{0:N0}", totalingresosreal)
                         </td>
                     </tr>
-                    
+
 
 
                     @*SOCIOS*@
@@ -213,7 +213,7 @@
                             <td class="px-4 py-2 border border-gray-300 text-left min-w-[100px]">@cuenta.Cuenta</td>
                             break;
                         }
-                        
+
                         @foreach (var flujo in ViewBag.Egresos)
                         {
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
@@ -286,77 +286,117 @@
                         </td>
                     </tr>
 
-                   @*SERVICIOS*@
+                    @*SERVICIOS*@
+
+
+
+
                     @foreach (var grupo in ViewBag.Servicios)
                     {
-                        <tr>
-                            <td class="p-2 border border-gray-300 text-center" rowspan="1">@grupo.ServicioNombre</td>
-                            @foreach (var servicio in grupo.Servicios)
-                            {
-                                @if (@servicio.idcuentaservicio > 0)
-                                {
-                                    <td class="px-4 py-2 border border-gray-300 text-center min-w-[50px]">
-                                        @servicio.idcuentaservicio
-                                    </td>
-                                    <td class="px-4 py-2 border border-gray-300 text-left min-w-[100px]">
-                                        @servicio.CuentaServicio
-                                    </td>
-                                }
-                               
-                                break;
+                       
+                        bool hayServiciosConValor = false;
 
-                            }
-                            @foreach (var servicio in grupo.Servicios)
+                        
+                        @foreach (var servicio in grupo.Servicios)
+                        {
+                            if (servicio.MontosServiciosProyectado > 0 || servicio.MontoSerivicioReal > 0)
                             {
-                                <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
-                                    @(servicio.MontosServiciosProyectado == 0 ? "" : String.Format("{0:N0}", servicio.MontosServiciosProyectado))
-                                </td>
-                                <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
-                                    @(servicio.MontoSerivicioReal == 0 ? "" : String.Format("{0:N0}", servicio.MontoSerivicioReal))
-                                </td>
-                                totalserviciosreal += servicio.MontoSerivicioReal;
+                                hayServiciosConValor = true;
+                                break; 
                             }
-                            <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
-                                @(totalserviciosreal == 0 ? "" : String.Format("{0:N0}", totalserviciosreal))
-                            </td>
-                        </tr>
+                        }
+
+                        
+                        if (hayServiciosConValor)
+                        {
+                            <tr>
+                                <td class="p-2 border border-gray-300 text-center" rowspan="1">@grupo.ServicioNombre</td>
+                                @foreach (var servicio in grupo.Servicios)
+                                {
+                                    @if (@servicio.idcuentaservicio > 0)
+                                    {
+                                        <td class="px-4 py-2 border border-gray-300 text-center min-w-[50px]">
+                                            @servicio.idcuentaservicio
+                                        </td>
+                                        <td class="px-4 py-2 border border-gray-300 text-left min-w-[100px]">
+                                            @servicio.CuentaServicio
+                                        </td>
+                                        break;
+                                    }
+                                }
+
+                                @foreach (var servicio in grupo.Servicios)
+                                {
+                                    <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                        @(servicio.MontosServiciosProyectado == 0 ? "" : String.Format("{0:N0}", servicio.MontosServiciosProyectado))
+                                    </td>
+                                    <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                        @(servicio.MontoSerivicioReal == 0 ? "" : String.Format("{0:N0}", servicio.MontoSerivicioReal))
+                                    </td>
+                                    totalserviciosreal += servicio.MontoSerivicioReal;
+                                }
+                                <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                                    @(totalserviciosreal == 0 ? "" : String.Format("{0:N0}", totalserviciosreal))
+                                </td>
+                            </tr>
+                        }
                     }
 
+                    
                     @*GASTOS*@
-                    @foreach (var grupo in ViewBag.Gastos)
+                    @if (ViewBag.Gastos != null && ViewBag.Gastos.Count > 0)
                     {
-                        <tr>
-                            <td class="p-2 border border-gray-300 text-center" rowspan="1">@grupo.GastosNombres</td>
-                            @foreach (var gasto in grupo.Gastos)
-                            {
-                                @if (@gasto.idcuentagasto > 0)
-                                {
-                                    <td class="px-4 py-2 border border-gray-300 text-center min-w-[50px]">
-                                        @gasto.idcuentagasto
-                                    </td>
-                                    <td class="px-4 py-2 border border-gray-300 text-left min-w-[100px]">
-                                        @gasto.Cuentagasto
-                                    </td>
-                                }
-                              
-                                break;
+                        @foreach (var grupo in ViewBag.Gastos)
+                        {
+                            
+                            bool hayGastosConValor = false;
 
-                            }
+                           
                             @foreach (var gasto in grupo.Gastos)
                             {
-                                <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
-                                    @(gasto.MontosGastosProyectado == 0 ? "" : String.Format("{0:N0}", gasto.MontosGastosProyectado))
-                                </td>
-                                <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
-                                    @(gasto.MontoGastoReal == 0 ? "" : String.Format("{0:N0}", gasto.MontoGastoReal))
-                                </td>
-                                totalgastosreal += gasto.MontoGastoReal;
+                                if (gasto.MontosGastosProyectado > 0 || gasto.MontoGastoReal > 0)
+                                {
+                                    hayGastosConValor = true;
+                                    break; 
+                                }
                             }
-                            <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
-                                @(totalgastosreal == 0 ? "" : String.Format("{0:N0}", totalgastosreal))
-                            </td>
-                        </tr>
+
+                            
+                            if (hayGastosConValor)
+                            {
+                                <tr>
+                                    <td class="p-2 border border-gray-300 text-center" rowspan="1">@grupo.GastosNombres</td>
+                                    @foreach (var gasto in grupo.Gastos)
+                                    {
+                                        @if (@gasto.idcuentagasto > 0)
+                                        {
+                                            <td class="px-4 py-2 border border-gray-300 text-center min-w-[50px]">
+                                                @gasto.idcuentagasto
+                                            </td>
+                                            <td class="px-4 py-2 border border-gray-300 text-left min-w-[100px]">
+                                                @gasto.Cuentagasto
+                                            </td>
+                                        }
+                                        break;
+                                    }
+                                    @foreach (var gasto in grupo.Gastos)
+                                    {
+                                        <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                            @(gasto.MontosGastosProyectado == 0 ? "" : String.Format("{0:N0}", gasto.MontosGastosProyectado))
+                                        </td>
+                                        <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                                            @(gasto.MontoGastoReal == 0 ? "" : String.Format("{0:N0}", gasto.MontoGastoReal))
+                                        </td>
+                                        totalgastosreal += gasto.MontoGastoReal;
+                                    }
+                                    <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
+                                        @(totalgastosreal == 0 ? "" : String.Format("{0:N0}", totalgastosreal))
+                                    </td>
+                                </tr>
+                            }
+                        }
                     }
+                   
 
                    
 

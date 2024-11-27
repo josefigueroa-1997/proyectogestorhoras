@@ -292,7 +292,7 @@ namespace Proyectogestionhoras.Controllers
             var flujocajaingreso = await ejecucionService.ObtenerFlujoCajaProyecto(id);
             var flujocajaegreso = await ejecucionService.ObtenerEgresoFlujoCajaProyecto(id);
             var flujocajaegresosserviciosgastos = await ejecucionService.ObtenerEgresoServiciosGastosFlujoCajaProyecto(id);
-            
+            ViewBag.flujocajaprueba = flujocajaegresosserviciosgastos;
             var groupedServicios = flujocajaegresosserviciosgastos
                                     .GroupBy(s => s.ServicioNombre)
                                     .Select(g => new
@@ -361,6 +361,12 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.CuentaSocio = querysocio;
             ViewBag.CuentaStaff = querystaff;
             ViewBag.CuentaConsultor = querysconsultor;
+
+
+
+
+
+
             return View();
         }
     }

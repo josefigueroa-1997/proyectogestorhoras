@@ -421,7 +421,7 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-
+            
 
                 var flujo = new List<EgresosServiciosGastosDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
@@ -454,7 +454,7 @@ namespace Proyectogestionhoras.Services
 
                             };
                             flujo.Add(datos);
-
+                            
                         }
                     }
 
