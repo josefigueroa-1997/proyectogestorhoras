@@ -10,6 +10,7 @@
         public decimal? MontoReal {  get; set; }
         public int Idcuenta { get; set; }
         public string? Cuenta { get; set; }
+        public decimal? MontoPorCobrar { get; set; }
 
 
     }

@@ -164,7 +164,8 @@
       
 
         <form action="@Url.Action("ActualizarProyecto","Proyecto")" method="post">
-            @if(proyecto.STATUSPROYECTO == 2)
+
+            @if (proyecto.STATUSPROYECTO == 2)
             {
                 <h1 class="form-title">Información Proyecto:@proyecto.numproyecto</h1>
                 <input type="hidden" name="idproyecto" value="@proyecto.Id" />
@@ -417,7 +418,7 @@
                     <div class="form-group-radio">
                         <label>¿Afecta el IVA?</label>
                         <label>
-                            <input disabled type="radio"  name="afectaiva" value="si"
+                            <input disabled type="radio" name="afectaiva" value="si"
                                    required onchange="generarFilas()"
                             @(proyecto.AfectaIva == "si" ? "checked" : "")>
                             Sí
@@ -523,7 +524,7 @@
                     </table>
                 </div>
 
-               
+
 
                 <div class="form-group">
                     <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
@@ -552,7 +553,7 @@
                                     {
                                         if (recurso.TipoRecurso == "Socio")
                                         {
-                                            
+
                                             @foreach (var costo in ViewBag.HistorialCosto)
                                             {
                                                 <tr>
@@ -560,7 +561,7 @@
                                                 </tr>
                                             }
 
-                                           
+
 
 
 
@@ -648,7 +649,7 @@
                                     {
                                         if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor A")
                                         {
-                                            @foreach(var costo in ViewBag.HistorialCosto)
+                                            @foreach (var costo in ViewBag.HistorialCosto)
                                             {
                                                 <input type="hidden" id="idconsultora" value="@costo.Costoconsultora" />
                                             }
@@ -656,7 +657,7 @@
                                         }
                                         if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor B")
                                         {
-                                            @foreach(var costo in ViewBag.HistorialCosto)
+                                            @foreach (var costo in ViewBag.HistorialCosto)
                                             {
                                                 <input type="hidden" id="idconsultorb" value="@costo.Costoconsultorb" />
                                             }
@@ -664,11 +665,11 @@
                                         }
                                         if (recurso.NOMBRE_RECURSO_CORRELATIVO == "Consultor C")
                                         {
-                                            @foreach(var costo in ViewBag.HistorialCosto)
+                                            @foreach (var costo in ViewBag.HistorialCosto)
                                             {
                                                 <input type="hidden" id="idconsultorc" value="@costo.Costoconsultorc" />
                                             }
-                                            
+
                                         }
 
                                     }
@@ -731,84 +732,9 @@
                     </table>
                 </div>
 
-               
 
 
-               @* <div style="display:none;" id="tablaintegrantes" class="form-group">
-                    <p class="form-subtitle">Digite las HH/Proyectos para cada Integrante</p>
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                        <thead>
-                            <tr>
-                                @if(ViewBag.Recursos!=null)
-                                {
-                                    @foreach (var recurso in ViewBag.Recursos)
-                                    {
-                                        <th style="background-color: #b2e6a5; color: black;">
-                                            <input type="hidden" name="idusuarios[]" value="@recurso.Id" />
 
-                                            <input type="text" value="@recurso.NOMBRE_RECURSO_CORRELATIVO" readonly />
-                                        </th>
-                                    }
-
-                                }
-                               
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @if(ViewBag.Recursos)
-                                {
-                                    @foreach (var recurso in ViewBag.Recursos)
-                                    {
-
-                                        <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <input readonly type="number" class="horasInput" name="hhasignadas" min="0" placeholder="Horas"
-                                                   data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id" data-costo="@recurso.Costo_Unitario" />
-                                        </td>
-                                    }
-                                }
-                              
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="tablaresumen" style="display:none;" class="form-group">
-                    <p class="form-subtitle">Resumen HH/Proyectos</p>
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                        <thead>
-
-                            <tr>
-                                <th>Total Horas Socios</th>
-                                <th>Total Horas Staff</th>
-                                <th>Total Horas Consultor A</th>
-                                <th>Total Horas Consultor B</th>
-                                <th>Total Horas Consultor C</th>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalSocios">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalStaff">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalConsultorA">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalConsultorB">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalConsultorC">0</span>
-                            </td>
-                        </tr>
-
-
-                    </table>
-                </div>
-
-        *@
 
                 @*COSTOS DIRECTOS*@
 
@@ -898,7 +824,7 @@
                     </div>
                 </div>
 
-               
+
 
                 <div class="form-group">
                     <p class="form-subtitle" style="color:black;">Subcontratación de Servicios</p>
@@ -925,7 +851,7 @@
 
 
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <select class="servicios" name="idservicio" onchange="checkRequired(this)">
+                                            <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
                                                 <option value="" disabled selected>Seleccione un Servicio</option>
                                                 @if (ViewBag.Servicios != null)
                                                 {
@@ -974,41 +900,41 @@
                                 }
                             }
                             @*
-                            <tr>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
-                                        <option value="" disabled selected>Seleccione un Servicio</option>
+                    <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
+                    <option value="" disabled selected>Seleccione un Servicio</option>
 
 
 
-                                    </select>
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio"  type="date"></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
+                    </select>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input name="montoservicio" class="montoservicio" type="text"></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio"  type="date"></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
 
-                                </td>
+                    </td>
 
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
-                                </td>
-                                <td style="display:none;">
-                                    <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
-                                </td>
-                                <td style="display:none;">
-                                    <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
-                                </td>
-                            </tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input type="text" id="cuentaservicio" class="cuentaservicio" name="cuentaservicio" readonly />
+                    </td>
+                    <td style="display:none;">
+                    <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
+                    </td>
+                    <td style="display:none;">
+                    <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                    </td>
+                    </tr>
 
                     *@
 
@@ -1089,38 +1015,38 @@
                                 }
                             }
 
-                          @* <tr>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <select class="gastosSelect" name="idgastos[]">
-                                        <option value="" disabled selected>Seleccione un Gasto</option>
-                                    </select>
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input name="montogasto" class="montogasto" type="text">
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" class="fechagasto"  type="date"></td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="text" class="segmentogastos" name="segmentogastos" readonly />
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input class="idcuentagastos" name="idcuentagasto" readonly />
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input class="cuentagastos" name="cuentagastos" readonly />
-                                </td>
-                                <td style="display:none">
-                                    <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
-                                </td>
-                                <td style="display:none;">
-                                    <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
-                                </td>
-                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
-                                </td>
-                            </tr>
+                            @* <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <select class="gastosSelect" name="idgastos[]">
+                    <option value="" disabled selected>Seleccione un Gasto</option>
+                    </select>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input name="montogasto" class="montogasto" type="text">
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechagasto" class="fechagasto"  type="date"></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input type="text" id="ccostogasto" class="ccostogasto" name="costogastos" readonly />
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input type="text" class="segmentogastos" name="segmentogastos" readonly />
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input class="idcuentagastos" name="idcuentagasto" readonly />
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <input class="cuentagastos" name="cuentagastos" readonly />
+                    </td>
+                    <td style="display:none">
+                    <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                    </td>
+                    <td style="display:none;">
+                    <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
+                    </td>
+                    </tr>
                     *@
                         </tbody>
                     </table>
@@ -1187,11 +1113,12 @@
                     </table>
 
                 </div>
-               @*<div class="button-container">
-                    <button type="submit" class="submit-btn">Guardar Cambios</button>
+                @*<div class="button-container">
+        <button type="submit" class="submit-btn">Guardar Cambios</button>
 
         </div>*@
             }
+
             else{
 
                   <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
@@ -1921,7 +1848,7 @@
 
 
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <select class="servicios" name="idservicio" onchange="checkRequired(this)">
+                                        <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
                                                 <option value="" disabled selected>Seleccione un Servicio</option>
                                                 @if (ViewBag.Servicios != null)
                                                 {
@@ -1964,7 +1891,7 @@
                                             <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <button type="button" class="limpiar-btn" style="background-color:red;color:white;" onclick="limpiarFila(this)">Limpiar</button>
+                                            <button type="button" class="limpiar-btn"  onclick="limpiarFila(this)">Eliminar</button>
                                         </td>
                                     </tr>
                                 }
@@ -2002,7 +1929,7 @@
                                     <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Limpiar</button>
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFila(this)">Eliminar</button>
                                 </td>
                             </tr>
 
@@ -2037,7 +1964,7 @@
                                 {
                                     <tr>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <select class="gastos" name="idgastos[]">
+                                            <select class="gastosSelect" name="idgastos[]">
                                                 <option value="" disabled selected>Seleccione un Gasto</option>
                                                 @if (ViewBag.Gastos != null)
                                                 {
@@ -2078,7 +2005,7 @@
                                             <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
+                                            <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Eliminar</button>
                                         </td>
 
                                     </tr>
@@ -2114,7 +2041,7 @@
                                     <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
+                                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Eliminar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -2248,7 +2175,7 @@
         generarFilas();
         obteneridcuenta();
         actualizarTipologia();
-        obtenerValoresServicio();
+       // obtenerValoresServicio();
         obtenerValoresConsultores();
         obtenerHonorarios();
         obtenerCodigo();
@@ -2279,7 +2206,7 @@
         $("#unidadNegocio, #centroCosto").change(function () {
             obtenerCodigo();
             obteneridcuenta();
-            obtenerValoresServicio();
+           // obtenerValoresServicio();
             obtenerValoresConsultores();
             obtenerHonorarios();
 
@@ -2573,41 +2500,114 @@
 
     /*OBTENERVALORESCUENTA SERVICIOS*/
 
-    function obtenerValoresServicio() {
-        var idUnidadNegocio = $("#unidadNegocio").val();
-        var idCentroCosto = $("#centroCosto").val();
-        if (idUnidadNegocio && idCentroCosto) {
-            $.ajax({
-                url: '/Proyecto/GetValoresServicios',
-                type: 'GET',
-                data: {
-                    idcosto: idCentroCosto,
-                    idunegocio: idUnidadNegocio
-                },
-                success: function (response) {
-                    if (response && response.length > 0) {
+    $(document).ready(function () {
 
-                        $(".nombresegmentoservicio").val(response[0].nombre);
-                        $(".idcuentaservicio").val(response[0].idcuenta);
-                        $(".cuentaservicio").val(response[0].cuenta);
-                        $(".idsegmentoservicio").val(response[0].idsegmento);
+        $('.serviciosSelect').each(function () {
+            var $select = $(this);
+            var $row = $select.closest('tr');
 
-                    } else {
 
-                        $(".nombresegmentoservicio").val('');
-                        $(".idcuentaservicio").val('');
-                        $(".cuentaservicio").val('');
+            var selectedOption = $select.find('option:selected').val();
+            if (selectedOption) {
 
+                const idUnidadNegocio = $("#unidadNegocio").val();
+                const idCentroCosto = $("#centroCosto").val();
+                var nombreservicio = $(this).find('option:selected').val();
+
+
+                $.ajax({
+                    url: '/Proyecto/GetValoresServiciosEdicion',
+                    type: 'GET',
+                    data: {
+                        idcosto: idCentroCosto,
+                        unegocio: idUnidadNegocio,
+                        idservicio: nombreservicio
+                    },
+                    success: function (data) {
+                        if (data && data.length > 0) {
+                            $row.find('.idcuentaservicio').val(data[0].idcuenta);
+                            $row.find('.cuentaservicio').val(data[0].cuenta);
+                            $row.find('.nombresegmentoservicio').val(data[0].nombre);
+                            $row.find('.idsegmentoservicio').val(data[0].idsegmento);
+                        } else {
+                            console.log("No se encontraron valores.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error al obtener el servicio:', error);
-                    $(".nombresegmentoservicio").val('').hide();
+                });
+            }
+        });
+    });
 
+
+    $(document).on('change', '.serviciosSelect', function () {
+        var $row = $(this).closest('tr');
+        const idUnidadNegocio = $("#unidadNegocio").val();
+        const idCentroCosto = $("#centroCosto").val();
+        var nombreservicio = $(this).find('option:selected').val();
+        console.log(idUnidadNegocio);
+        console.log(idCentroCosto);
+        console.log(nombreservicio);
+        $.ajax({
+            url: '/Proyecto/GetValoresServiciosEdicion',
+            type: 'GET',
+            data: {
+                idcosto: idCentroCosto,
+                unegocio: idUnidadNegocio,
+                idservicio: nombreservicio
+            },
+            success: function (data) {
+                if (data && data.length > 0) {
+
+                    $row.find('.idcuentaservicio').val(data[0].idcuenta);
+                    $row.find('.cuentaservicio').val(data[0].cuenta);
+                    $row.find('.nombresegmentoservicio').val(data[0].nombre);
+                    $row.find('.idsegmentoservicio').val(data[0].idsegmento);
+
+                } else {
+                    console.log("No se encontraron valores.");
                 }
-            });
-        }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+
+
+
+
+
+    function cargarServicios(selectElement) {
+        var valorSeleccionado = $(selectElement).val();
+        $.ajax({
+            url: '/Proyecto/ObtenerServicios',
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty();
+                $(selectElement).append('<option value="" disabled selected>Seleccione un Servicio</option>');
+
+                $.each(data, function (index, servicio) {
+                    $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
+                });
+                if (valorSeleccionado) {
+                    $(selectElement).val(valorSeleccionado);
+                }
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los servicios.');
+            }
+        });
     }
+
+
+    $(document).ready(function () {
+        $('.serviciosSelect').each(function () {
+            cargarServicios(this);
+        });
+    });
 
 
     /*FILAS DINAMICAS TABLA SERVICIOS*/
@@ -2631,11 +2631,11 @@
             const newRow = document.createElement('tr');
 
             const costoservicioValue = document.querySelector('#ccostoservicio') ? document.getElementById('ccostoservicio').value : '';
-            const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
+           /* const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
             const idcuentaservicioValue = document.querySelector('#idcuentaservicio') ? document.getElementById('idcuentaservicio').value : '';
             const cuentaservicioValue = document.querySelector('#cuentaservicio') ? document.getElementById('cuentaservicio').value : '';
             const idsegmentoservicioValue = document.querySelector('.idsegmentoservicio') ? document.querySelector('.idsegmentoservicio').value : '';
-
+            */
             newRow.innerHTML = `
                 <td style="padding: 10px; border: 1px solid #ddd;">
                     <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
@@ -2725,30 +2725,8 @@
 
 
 
-    function cargarServicios(selectElement) {
-        $.ajax({
-            url: '/Proyecto/ObtenerServicios',
-            type: 'GET',
-            success: function (data) {
-                $(selectElement).empty();
-                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
+    
 
-                $.each(data, function (index, servicio) {
-                    $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
-                });
-            },
-            error: function () {
-                alert('Ocurrió un error al cargar los servicios.');
-            }
-        });
-    }
-
-
-    $(document).ready(function () {
-        $('.serviciosSelect').each(function () {
-            cargarServicios(this);
-        });
-    });
 
 
 
@@ -2857,7 +2835,7 @@
         document.querySelectorAll('.fechagasto').forEach(function (inputFecha) {
             inputFecha.value = obtenerFechaActualGasto();
         });
-        document.querySelector('#tablagastos tbody').addEventListener('change', function (e) {
+       /* document.querySelector('#tablagastos tbody').addEventListener('change', function (e) {
             if (e.target.classList.contains('gastosSelect')) {
                 const selectGastos = e.target;
                 const idUnidadNegocio = $("#unidadNegocio").val();
@@ -2868,7 +2846,7 @@
              
                 obtenerValoresGastos(idUnidadNegocio, idCentroCosto, selectedText, newRow);
             }
-        });
+        });*/
 
         document.getElementById('agregarFilaGastos').addEventListener('click', function (e) {
             const idUnidadNegocio = $("#unidadNegocio").val();
@@ -2973,6 +2951,82 @@
         });
     });
 
+    /*SELECT OPTION GASTOS*/ 
+    $(document).ready(function () {
+
+        $('.gastosSelect').each(function () {
+            var $select = $(this);
+            var $row = $select.closest('tr');
+
+
+            var selectedOption = $select.find('option:selected').val();
+            if (selectedOption) {
+
+                const idUnidadNegocio = $("#unidadNegocio").val();
+                const idCentroCosto = $("#centroCosto").val();
+                var nombreGasto = $select.find('option:selected').val();
+
+                $.ajax({
+                    url: '/Proyecto/GetValoresGastosEdicion',
+                    type: 'GET',
+                    data: {
+                        idcosto: idCentroCosto,
+                        unegocio: idUnidadNegocio,
+                        idgasto: nombreGasto
+                    },
+                    success: function (data) {
+                        if (data && data.length > 0) {
+                            $row.find('.segmentogastos').val(data[0].nombre);
+                            $row.find('.idcuentagastos').val(data[0].idcuenta);
+                            $row.find('.cuentagastos').val(data[0].cuenta);
+                            $row.find('.idsegmentogasto').val(data[0].idsegmento);
+                        } else {
+                            console.log("No se encontraron valores.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
+                    }
+                });
+            }
+        });
+    });
+
+
+    $(document).on('change', '.gastosSelect', function () {
+        var $row = $(this).closest('tr');
+        const idUnidadNegocio = $("#unidadNegocio").val();
+        const idCentroCosto = $("#centroCosto").val();
+        var nombreGasto = $(this).find('option:selected').val();
+        console.log(idUnidadNegocio);
+        console.log(idCentroCosto);
+        console.log(nombreGasto);
+        $.ajax({
+            url: '/Proyecto/GetValoresGastosEdicion',
+            type: 'GET',
+            data: {
+                idcosto: idCentroCosto,
+                unegocio: idUnidadNegocio,
+                idgasto: nombreGasto
+            },
+            success: function (data) {
+                if (data && data.length > 0) {
+
+                    $row.find('.segmentogastos').val(data[0].nombre);
+                    $row.find('.idcuentagastos').val(data[0].idcuenta);
+                    $row.find('.cuentagastos').val(data[0].cuenta);
+                    $row.find('.idsegmentogasto').val(data[0].idsegmento);
+                } else {
+                    console.log("No se encontraron valores.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+
+
     function obtenerValoresGastos(idUnidadNegocio, idCentroCosto, nombreSegmento, newRow) {
         $.ajax({
             url: '/Proyecto/GetValoresGastosEdicion',
@@ -3002,6 +3056,7 @@
     }
 
     function cargarGastos(selectElement) {
+        var valorSeleccionado = $(selectElement).val();
         $.ajax({
             url: '/Proyecto/ObtenerGastos',
             type: 'GET',
@@ -3013,6 +3068,9 @@
                 $.each(data, function (index, gasto) {
                     $(selectElement).append('<option value="' + gasto.id + '">' + gasto.nombre + '</option>');
                 });
+                if (valorSeleccionado) {
+                    $(selectElement).val(valorSeleccionado);
+                }
             },
             error: function () {
                 alert('Ocurrió un error al cargar los gastos.');

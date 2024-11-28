@@ -927,19 +927,19 @@
             <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
         </td>
         <td style="padding: 10px; border: 1px solid #ddd;">
-            <input class="nombresegmentoservicio" name="nombresegmentoservicio" value="${nombreservicioValue}" readonly/>
+            <input class="nombresegmentoservicio" name="nombresegmentoservicio"  readonly/>
             <select class="segmentoservicio" style="display:none;" name="idsegmentoservicio">
                 <option value="" disabled selected>Seleccione un segmento</option>
             </select>
         </td>
         <td style="padding: 10px; border: 1px solid #ddd;">
-            <input class="idcuentaservicio" name="idcuentaservicio" value="${idcuentaservicioValue}" readonly/>
+            <input class="idcuentaservicio" name="idcuentaservicio"  readonly/>
         </td>
         <td style="padding: 10px; border: 1px solid #ddd;">
-            <input class="cuentaservicio" name="cuentaservicio" value="${cuentaservicioValue}" readonly />
+            <input class="cuentaservicio" name="cuentaservicio"  readonly />
         </td>
         <td style="display:none;">
-            <input class="idsegmentoservicio" name="idsegmentoservicio" value="${idsegmentoservicioValue}" />
+            <input class="idsegmentoservicio" name="idsegmentoservicio"  />
         </td>
         <td style="padding: 10px; border: 1px solid #ddd;">
             <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
@@ -1210,7 +1210,7 @@
         $("#unidadNegocio, #centroCosto").change(function () {
             obtenerCodigo(); 
             obteneridcuenta(); 
-            obtenerValoresServicio();
+            //obtenerValoresServicio();
             obtenerValoresConsultores();
             obtenerHonorarios();
         });
@@ -1294,8 +1294,72 @@
     
     
     /*VALORES CUENTAS SERVICIOS */
+    
 
-    function obtenerValoresServicio() {
+
+    $(document).on('change', '.serviciosSelect', function () {
+        var $row = $(this).closest('tr');
+        const idUnidadNegocio = $("#unidadNegocio").val();
+        const idCentroCosto = $("#centroCosto").val();
+        var nombreservicio = $(this).find('option:selected').val();
+        console.log(idUnidadNegocio);
+        console.log(idCentroCosto);
+        console.log(nombreservicio);
+        $.ajax({
+            url: '/Proyecto/GetValoresServiciosEdicion',
+            type: 'GET',
+            data: {
+                idcosto: idCentroCosto,
+                unegocio: idUnidadNegocio,
+                idservicio: nombreservicio
+            },
+            success: function (data) {
+                if (data && data.length > 0) {
+
+
+                    $row.find('.idcuentaservicio').val(data[0].idcuenta);
+                    $row.find('.cuentaservicio').val(data[0].cuenta);
+                    $row.find('.nombresegmentoservicio').val(data[0].nombre);
+                    $row.find('.idsegmentoservicio').val(data[0].idsegmento);
+
+                } else {
+                    console.log("No se encontraron valores.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+
+    function cargarServicios(selectElement) {
+        $.ajax({
+            url: '/Proyecto/ObtenerServicios',
+            type: 'GET',
+            success: function (data) {
+                $(selectElement).empty();
+                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
+
+                $.each(data, function (index, servicio) {
+                    $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
+                });
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los servicios.');
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        $('.serviciosSelect').each(function () {
+            cargarServicios(this);
+        });
+    });
+
+
+
+    /*function obtenerValoresServicio() {
         var idUnidadNegocio = $("#unidadNegocio").val();
         var idCentroCosto = $("#centroCosto").val();
         if (idUnidadNegocio && idCentroCosto) {
@@ -1329,7 +1393,7 @@
                 }
             });
         } 
-    }
+    }*/
     /*
     function obtenerSegmentosCostos(selectElement) {
         $.ajax({
@@ -1593,30 +1657,7 @@
         });
     });
    
-    function cargarServicios(selectElement) {
-        $.ajax({
-            url: '/Proyecto/ObtenerServicios', 
-            type: 'GET',
-            success: function (data) {
-                $(selectElement).empty(); 
-                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
-
-                $.each(data, function (index, servicio) {
-                    $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
-                });
-            },
-            error: function () {
-                alert('Ocurrió un error al cargar los servicios.');
-            }
-        });
-    }
-
    
-    $(document).ready(function () {
-        $('.serviciosSelect').each(function () {
-            cargarServicios(this);
-        });
-    });
 
    
 

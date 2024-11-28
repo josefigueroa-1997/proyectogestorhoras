@@ -277,36 +277,57 @@ namespace Proyectogestionhoras.Services
             await context.SaveChangesAsync();
         }
 
-        public async Task RestarHHAnaulesSocios(int hhsocios)
+        public async Task RestarHHAnaulesSocios(int hhsocios, int? idproyecto)
         {
             var socio = context.TotalRecursos
-                       .Where(tr => tr.TipoRecurso == "Socio" && tr.Anio == DateTime.Now.Year) 
-                       .FirstOrDefault();                    
+                       .Where(tr => tr.TipoRecurso == "Socio" && tr.Anio == DateTime.Now.Year)
+                       .FirstOrDefault();
 
             if (socio != null)
             {
-                
-                socio.TotalHhAnuales -= hhsocios;
+                // Busca el proyecto específico
+                var hhsociosasignadas = context.HhUsuarioHistorials
+                                              .Where(u => u.IdProyecto == idproyecto)
+                                              .FirstOrDefault();
 
-               
+                decimal horasAsignadasPrevias = hhsociosasignadas?.HhSocios ?? 0;
+
+                // Restar solo la diferencia entre nuevas horas y previas
+                decimal diferenciaHoras = hhsocios - horasAsignadasPrevias;
+
+                Debug.WriteLine($"Horas asignadas previas: {horasAsignadasPrevias}, Nuevas horas: {hhsocios}, Diferencia: {diferenciaHoras}");
+
+                socio.TotalHhAnuales -= diferenciaHoras;
+
                 await context.SaveChangesAsync();
             }
-
         }
 
-        public async Task RestarHHAnaulesStaff(int hhstaff)
+        public async Task RestarHHAnaulesStaff(int hhstaff, int? idproyecto)
         {
+            // Obtiene el recurso del tipo Staff correspondiente al año actual
             var staff = context.TotalRecursos
-                      .Where(tr => tr.TipoRecurso == "Staff" && tr.Anio == DateTime.Now.Year)
-                      .FirstOrDefault();
+                               .Where(tr => tr.TipoRecurso == "Staff" && tr.Anio == DateTime.Now.Year)
+                               .FirstOrDefault();
 
             if (staff != null)
             {
+                
+                var hhstaffasignadas = context.HhUsuarioHistorials
+                                              .Where(u => u.IdProyecto == idproyecto)
+                                              .FirstOrDefault();
 
-                staff.TotalHhAnuales -= hhstaff;
+                decimal horasAsignadasPrevias = hhstaffasignadas?.HhStaff ?? 0;
 
+                decimal diferenciaHoras = hhstaff - horasAsignadasPrevias;
+
+                staff.TotalHhAnuales -= diferenciaHoras;
 
                 await context.SaveChangesAsync();
+            }
+            else
+            {
+                Debug.WriteLine("No se encontró el recurso Staff para el año actual.");
             }
         }
 

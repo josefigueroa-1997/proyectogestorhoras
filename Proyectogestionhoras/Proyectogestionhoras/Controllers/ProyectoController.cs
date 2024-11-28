@@ -344,8 +344,8 @@ namespace Proyectogestionhoras.Controllers
         [HttpPost]
         public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
         {
-            var statusproyecto = await Obtenerstatusproyecto(idproyecto);
-            if (statusproyecto == 2)
+            //var statusproyecto = await Obtenerstatusproyecto(idproyecto);
+            /*if (statusproyecto == 2)
             {
                 List<ServicioViewModel> serviciosejecucion = new List<ServicioViewModel>();
                 var idsserviciosejecucion = Request.Form["idservicio"];
@@ -400,7 +400,7 @@ namespace Proyectogestionhoras.Controllers
                 await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
                 await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
                 return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
-            }
+            }*/
 
             int idcosto = int.Parse(Request.Form["centroCosto"]);
             int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
@@ -490,8 +490,8 @@ namespace Proyectogestionhoras.Controllers
             if (statusedicion == 2)
             {
 
-                await proyectoService.RestarHHAnaulesSocios(hhsocios);
-                await proyectoService.RestarHHAnaulesStaff(hhstaff);
+                await proyectoService.RestarHHAnaulesSocios(hhsocios,idproyecto);
+                await proyectoService.RestarHHAnaulesStaff(hhstaff,idproyecto);
 
             }
 

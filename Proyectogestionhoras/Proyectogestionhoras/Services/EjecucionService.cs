@@ -45,7 +45,7 @@ namespace Proyectogestionhoras.Services
                         {
 
                             ingresoExistente.Numdocumento = ingreso.Numdocumento;
-
+                            ingresoExistente.FechaEmision = ingreso.FechaEmision;
                             ingresoExistente.Montous = ingreso.Montous;
                             ingresoExistente.Tc = ingreso.Tc;
                             ingresoExistente.Montoclp = ingreso.Montoclp;
@@ -53,6 +53,7 @@ namespace Proyectogestionhoras.Services
                             ingresoExistente.Estado = ingreso.Estado;
                             ingresoExistente.Idcuenta = ingreso.Idcuenta;
                             ingresoExistente.FechaPago = ingreso.FechaPago;
+                            ingresoExistente.Observacion = ingreso.Observacion;
                         }
                     }
                    
@@ -64,7 +65,7 @@ namespace Proyectogestionhoras.Services
                             Idproyecto = idproyecto,
                             
                             Numdocumento = ingreso.Numdocumento,
-
+                            FechaEmision = ingreso.FechaEmision,
                             Montous = ingreso.Montous,
                             Tc = ingreso.Tc,
                             Montoclp = ingreso.Montoclp,
@@ -352,6 +353,7 @@ namespace Proyectogestionhoras.Services
                                 MontoReal = reader.IsDBNull(reader.GetOrdinal("Monto_Real")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto_Real")),
                                 Idcuenta = reader.IsDBNull(reader.GetOrdinal("Idcuenta")) ? 0 : reader.GetInt32(reader.GetOrdinal("Idcuenta")),
                                 Cuenta = reader.IsDBNull(reader.GetOrdinal("Cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("Cuenta")),
+                                MontoPorCobrar = reader.IsDBNull(reader.GetOrdinal("MontoporCobrar")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoporCobrar")),
                             };
                             flujo.Add(datos);
 

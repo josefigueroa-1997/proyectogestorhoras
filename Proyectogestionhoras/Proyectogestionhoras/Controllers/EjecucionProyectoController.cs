@@ -65,6 +65,7 @@ namespace Proyectogestionhoras.Controllers
 
             var numdocumento = Request.Form["Numdocumento"];
             var fechapago = Request.Form["FechaPago"];
+            var fechaemision = Request.Form["FechaEmision"];
             var montousdlist = Request.Form["Montous"];
             var Tclist = Request.Form["Tc"];
             var Montoclplist = Request.Form["Montoclp"];
@@ -97,16 +98,17 @@ namespace Proyectogestionhoras.Controllers
                 int.TryParse(Idcuenta[i]?.ToString(), out int idCuentaParsed);
 
                 
-                DateTime fechapagoParsed = DateTime.TryParse(fechapago[i], out DateTime tempDate)
+                DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
                     ? tempDate
                     : DateTime.Today;
-
+                DateTime fechapagoparsed = DateTime.Parse(fechapago[i]);
                
                 var ingresoViewModel = new IngresoViewModel
                 {
                     IdIngresoreal = idIngresoRealParsed,
                     Numdocumento = numdocumento[i],
-                    FechaPago = fechapagoParsed,
+                    FechaEmision = fechaemisionParsed,
+                    FechaPago = fechapagoparsed,
                     Montous = montousd,
                     Tc = tc,
                     Montoclp = montoclp,
