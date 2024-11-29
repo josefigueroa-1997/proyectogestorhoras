@@ -14,6 +14,8 @@ namespace Proyectogestionhoras.Models
         public decimal? Monto { get; set; }
         public decimal? Hhtotales { get; set; }
         public string? Observacion { get; set; }
+        public decimal? Subtotal { get; set; }
+        public decimal? Reajuste { get; set; }
 
         public virtual Proyecto? IdproyectoNavigation { get; set; }
     }

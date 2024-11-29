@@ -10,5 +10,7 @@
         public decimal? Monto { get; set; }
         public decimal? HHtotales { get; set; }
         public string? Observacion { get; set; }
+        public decimal? Subtotal { get; set; }
+        public decimal? Reajuste { get; set; }
     }
 }

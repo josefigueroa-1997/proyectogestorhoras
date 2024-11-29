@@ -83,20 +83,7 @@
     int idcuentaconsultores = 0;
     string? cuentaconsultores = "";
 }
-@if (ViewBag.ServiciosProyectos != null)
-{
-    @foreach (var servicio in ViewBag.ServiciosProyectos)
-    {
-        totalserviciosproyectados += servicio.MONTO;
-    }
-}
-@if (ViewBag.GastosProyectos != null)
-{
-    @foreach(var gasto in ViewBag.GastosProyectos)
-    {
-        totalgastosproyectados += gasto.MONTO;
-    }
-}
+
 <div class="form-container">
     <div class="panel-container flex justify-center mb-5">
         <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -174,7 +161,10 @@
                         <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                         <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
+                        <th class="p-2 border border-gray-300 text-left">SubTotal</th>
+                        <th class="p-2 border border-gray-300 text-left">Reajuste</th>
                         <th class="p-2 border border-gray-300 text-left">Total</th>
+                        <th class="p-2 border border-gray-300 text-left">Observación</th>
                        
                         
                     </tr>
@@ -195,7 +185,7 @@
                                     <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
                                     <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
                                     <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
-                                    <input type="hidden" name="gastosHH[@i].Monto" value="@gasto.costorecurso" />
+                                        <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costorecurso" />
                                     <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos!=null)
@@ -217,9 +207,36 @@
                                         
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
-                                        <td style="display:none;" class="p-2 border border-gray-300 text-left">
-                                            <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                        </td>
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null){
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montosocio" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Monto ?? "")" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montosocio" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        @if (ViewBag.GastosRecursos != null && ViewBag.GastosRecursos.Count > i)
+                                        {
+                                           
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"> @ViewBag.GastosRecursos[i].Observacion</textarea>
+                                            </td>
+                                           
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                            </td>
+                                        }
+                                        
                                         
                                         
                                         @{
@@ -254,7 +271,10 @@
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                             <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
+                            <th class="p-2 border border-gray-300 text-left">SubTotal</th>
+                            <th class="p-2 border border-gray-300 text-left">Reajuste</th>
                             <th class="p-2 border border-gray-300 text-left">Total</th>
+                            <th class="p-2 border border-gray-300 text-left">Observación</th>
 
 
                         </tr>
@@ -274,7 +294,7 @@
                                         <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
                                         <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
                                         <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
-                                        <input type="hidden" name="gastosHH[@i].Monto" value="@gasto.costorecurso" />
+                                        <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costorecurso" />
                                         <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
@@ -294,9 +314,36 @@
                                         <td class="p-2">@gasto.cuenta</td>
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
-                                        <td style="display:none;" class="p-2 border border-gray-300 text-left">
-                                            <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                        </td>
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montostaff" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Monto ?? "")" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montostaff" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        @if (ViewBag.GastosRecursos != null && ViewBag.GastosRecursos.Count > i)
+                                        {
+
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"> @ViewBag.GastosRecursos[i].Observacion</textarea>
+                                            </td>
+
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                            </td>
+                                        }
                                         @{
                                             totalstaff += Convert.ToDecimal(gasto.costorecurso ?? 0);
                                             idcuentastaff = gasto.idcuenta;
@@ -333,6 +380,8 @@
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                             <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
+                            <th class="p-2 border border-gray-300 text-left">SubTotal</th>
+                            <th class="p-2 border border-gray-300 text-left">Reajuste</th>
                             <th class="p-2 border border-gray-300 text-left">Total</th>
                             <th class="p-2 border border-gray-300 text-left">Observación</th>
 
@@ -354,7 +403,7 @@
                                         <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
                                         <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
                                         <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
-                                        <input type="hidden" name="gastosHH[@i].Monto" value="@gasto.costoconsultoresexternos" />
+                                        <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costoconsultoresexternos" />
                                         <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
@@ -376,8 +425,25 @@
                                         <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costoconsultoresexternos)</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
                                         {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoconsultores" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Monto ?? "")" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" readonly id="montoconsultores" name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        @if (ViewBag.GastosRecursos != null && ViewBag.GastosRecursos.Count > i)
+                                        {
+
                                             <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"> @ViewBag.GastosRecursos[i].Observacion</textarea>
                                             </td>
 
                                         }
@@ -667,7 +733,7 @@
                                 
                                 <td class="p-2 border border-gray-300 text-left">@cuentasocio</td>
                                 <td class="p-2 border border-gray-300 text-right" >@String.Format("{0:N0}", totalsociosproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalSocios">@String.Format("{0:N0}", @totalsocios)</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalSocios">0</td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Staff</td>
@@ -682,7 +748,7 @@
 
                                 <td class="p-2 border border-gray-300 text-left">@cuentastaff</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalstaffproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalStaff">@String.Format("{0:N0}", @totalstaff)</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalStaff">0</td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Consultores Externos</td>
@@ -697,7 +763,7 @@
                                 
                                 <td class="p-2 border border-gray-300 text-left">@cuentaconsultores</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalConsultores">@String.Format("{0:N0}", totalconsutlores)</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalConsultores">0</td>
                             </tr>
                             @foreach (var servicio in ViewBag.ServiciosProyectos)
                             {
@@ -892,17 +958,33 @@
         function formatCurrency(event) {
             let value = event.target.value;
 
-
-            value = value.replace(/[^\d]/g, '');
-
-
-            if (value !== '') {
-
-                let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                event.target.value = formattedValue;
-            }
-            updateTotal();
             
+            value = value.replace(/[^\d-]/g, '');
+
+           
+            if (value.includes('-') && value.indexOf('-') > 0) {
+                value = '-' + value.replace(/-/g, '');
+            }
+
+            if (value !== '' && value !== '-') {
+                const isNegative = value.startsWith('-'); 
+                value = value.replace(/-/g, '');
+
+             
+                let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+                
+                if (isNegative) {
+                    formattedValue = '-' + formattedValue;
+                }
+
+                event.target.value = formattedValue; 
+            } else {
+                event.target.value = value; 
+            }
+
+            updateMonto(event.target); 
+            updateTotal(); 
         }
 
         
@@ -915,6 +997,22 @@
             event.target.value = value;
         }
 
+        function updateMonto(reajusteInput) {
+            const row = reajusteInput.closest('tr'); 
+            const reajusteValue = parseCurrency(reajusteInput.value); 
+            const subtotalValue = parseCurrency(row.querySelector('input[name*="Subtotal"]').value); 
+            const montoInput = row.querySelector('input[name*="Monto"]'); 
+
+            const total = reajusteValue + subtotalValue; 
+            montoInput.value = total.toLocaleString('es-CL'); 
+        }
+
+        const reajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
+
+        reajusteInputs.forEach(input => {
+            input.addEventListener('input', formatCurrency); 
+        });
+
         function parseCurrency(value) {
             return parseInt(value.replace(/\./g, ''), 10) || 0;
         }
@@ -923,19 +1021,35 @@
         function updateTotal() {
             let totalservicio = 0;
             let totalgasto = 0;
+            let totalsocio= 0;
+            let totalstaff= 0;
+            let totalconsultores= 0;
             let totalCostos = 0;
             const montogastoInput = document.querySelectorAll('input[name*="montogasto"]');
             const montoInputs = document.querySelectorAll('input[name*="montoservicio"]');
+            const montoSocioInputs = document.querySelectorAll('input[id*="montosocio"]');
+            const montoStaffInputs = document.querySelectorAll('input[id*="montostaff"]');
+            const montoConsultoresInputs = document.querySelectorAll('input[id*="montoconsultores"]');
             
             
-
             montoInputs.forEach(input => {
                 totalservicio += parseCurrency(input.value);
             });
             montogastoInput.forEach(input => {
                 totalgasto += parseCurrency(input.value);
             });
-            
+            montoSocioInputs.forEach(input => {
+                totalsocio += parseCurrency(input.value);
+            });
+            montoStaffInputs.forEach(input => {
+                totalstaff += parseCurrency(input.value);
+            });
+            montoConsultoresInputs.forEach(input => {
+                totalconsultores += parseCurrency(input.value);
+            });
+            document.getElementById('totalSocios').textContent = totalsocio.toLocaleString('es-CL');
+            document.getElementById('totalStaff').textContent = totalstaff.toLocaleString('es-CL');
+            document.getElementById('totalConsultores').textContent = totalconsultores.toLocaleString('es-CL');
             
             const totalSocios = parseCurrency(document.getElementById('totalSocios').textContent);
             const totalStaff = parseCurrency(document.getElementById('totalStaff').textContent);
@@ -951,7 +1065,7 @@
 
         function cleanInputsOnSubmit(event) {
 
-            const inputs = event.target.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"]');
+            const inputs = event.target.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"], input[name*="Reajuste"], input[name*="Monto"]');
 
             inputs.forEach(input => {
 
@@ -961,8 +1075,13 @@
             });
         }
 
+       
 
-        const montoInputs = document.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"]');
+        
+     
+
+
+        const montoInputs = document.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"],input[name*="Reajuste"]');
 
 
         montoInputs.forEach(input => {
@@ -1002,6 +1121,7 @@
                 });
             }, 100);
         });
+        
         updateTotal();
     });
 
@@ -1107,9 +1227,7 @@
         const idUnidadNegocio = $("#unidadNegocio").val();
         const idCentroCosto = $("#centroCosto").val();
         var nombreGasto = $(this).find('option:selected').val();
-        console.log(idUnidadNegocio);
-        console.log(idCentroCosto);
-        console.log(nombreGasto);
+        
         $.ajax({
             url: '/Proyecto/GetValoresGastosEdicion',
             type: 'GET',

@@ -210,6 +210,11 @@ namespace Proyectogestionhoras.Services
 
                 foreach(var gasto in gastosHH)
                 {
+                    
+                    gasto.Reajuste = gasto.Reajuste ?? 0;
+
+                    
+                    gasto.Monto = gasto.Subtotal + gasto.Reajuste;
                     var gastohhexistente = await context.Gastoshhhejecucions.FirstOrDefaultAsync(g => g.Id == gasto.IdGastoHH);
                     if (gastohhexistente != null)
                     {
@@ -217,6 +222,8 @@ namespace Proyectogestionhoras.Services
                         gastohhexistente.Hhtotales = gasto.HHtotales;
                         gastohhexistente.Monto = gasto.Monto;
                         gastohhexistente.Observacion = gasto.Observacion;
+                        gastohhexistente.Subtotal = gasto.Subtotal;
+                        gastohhexistente.Reajuste = gasto.Reajuste;
                     }
                     else
                     {
@@ -230,6 +237,8 @@ namespace Proyectogestionhoras.Services
                             Monto = gasto.Monto,
                             Hhtotales = gasto.HHtotales,
                             Observacion = gasto.Observacion,
+                            Subtotal = gasto.Subtotal,
+                            Reajuste = gasto.Reajuste
                         };
                         await context.AddRangeAsync(nuevogastohh);
                     }

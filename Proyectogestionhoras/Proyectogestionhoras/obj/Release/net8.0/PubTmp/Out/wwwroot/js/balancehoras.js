@@ -16,6 +16,11 @@
             if (!totalGeneralPorAnio[anio]) totalGeneralPorAnio[anio] = 0;
         });
 
+        let sortedHeaders = Object.keys(headers).sort((a, b) => {
+            const [yearA, monthA] = a.split('-').map(Number);
+            const [yearB, monthB] = b.split('-').map(Number);
+            return yearA === yearB ? monthA - monthB : yearA - yearB;
+        });
 
         data.forEach(item => {
             let mesAnio = `${item.mes}-${item.anio}`;
@@ -59,7 +64,7 @@
 
 
         let headerRow = $('#balanceTable thead tr');
-        Object.keys(headers).forEach(key => {
+        sortedHeaders.forEach(key => {
             headerRow.append(`<th class="text-left text-xs font-medium">${key}</th>`);
         });
 
@@ -97,7 +102,7 @@
 
                     let totalHorasPorProyecto = 0;
 
-                    Object.keys(headers).forEach(header => {
+                    sortedHeaders.forEach(header => {
                         let horas = row.horas[header] || 0;
                         totalHorasPorProyecto += horas;
                         totalHorasPorMes[header] += horas;
@@ -123,7 +128,7 @@
                 let totalRow = `<tr class="yellow">
                             <td colspan="2" class="text-left text-xs font-medium ">Total ${tiporecurso}</td>
                         <td colspan="3"></td>`;
-                Object.keys(headers).forEach(header => {
+                sortedHeaders.forEach(header => {
                     totalRow += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${totalHorasPorMes[header] > 0 ? totalHorasPorMes[header] : ''}</td>`;
                 });
                 Object.keys(totalGeneralPorAnio).forEach(anio => {
@@ -138,7 +143,7 @@
         let totalGeneralRow = `<tr class="totales">
                     <td colspan="2"  class="text-left text-xs font-medium ">Total General</td>
                 <td colspan="3"></td>`;
-        Object.keys(headers).forEach(header => {
+        sortedHeaders.forEach(header => {
             totalGeneralRow += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${totalGeneralPorMes[header] > 0 ? totalGeneralPorMes[header] : ''}</td>`;
         });
         Object.keys(totalGeneralPorAnio).forEach(anio => {
