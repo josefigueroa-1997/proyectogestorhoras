@@ -6,6 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\Ingresos.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\Ingresos.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\Ingresos.js" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="EPPlus" Version="7.4.1" />
