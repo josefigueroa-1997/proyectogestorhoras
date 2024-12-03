@@ -72,8 +72,8 @@
     decimal totalsociosreal = 0;
     decimal totalstaffreal = 0;
     decimal totalconsultoresreal = 0;
-    decimal totalserviciosreal = 0;
-    decimal totalgastosreal = 0;
+   
+   
     decimal totalegresosreal = 0;
     decimal? totalmargenreal = 0;
 }
@@ -324,7 +324,7 @@
                                         break;
                                     }
                                 }
-
+                                @{var totalserviciosreales = 0m;}
                                 @foreach (var servicio in grupo.Servicios)
                                 {
                                     <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
@@ -333,10 +333,10 @@
                                     <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                         @(servicio.MontoSerivicioReal == 0 ? "" : String.Format("{0:N0}", servicio.MontoSerivicioReal))
                                     </td>
-                                    totalserviciosreal += servicio.MontoSerivicioReal;
+                                    totalserviciosreales += servicio.MontoSerivicioReal;
                                 }
                                 <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
-                                    @(totalserviciosreal == 0 ? "" : String.Format("{0:N0}", totalserviciosreal))
+                                    @(totalserviciosreales == 0 ? "" : String.Format("{0:N0}", totalserviciosreales))
                                 </td>
                             </tr>
                         }
@@ -379,6 +379,9 @@
                                         }
                                         break;
                                     }
+                                    @{
+                                        var totalgastosreal = 0m;
+                                    }
                                     @foreach (var gasto in grupo.Gastos)
                                     {
                                         <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
@@ -397,7 +400,7 @@
                         }
                     }
                    
-
+                    
                    
 
                    <tr class="font-bold">
@@ -440,7 +443,7 @@
                             decimal totalGastosProyectado = 0;
                             decimal totalGastosReal = 0;
 
-                            foreach (var grupo in ViewBag.Gastos)
+                           foreach (var grupo in ViewBag.Gastos)
                             {
                                 foreach (var gasto in grupo.Gastos)
                                 {
@@ -595,7 +598,7 @@
                                 }
                             }
 
-
+                            
                            
                             var margenReal = ingresoReal - (totalEgresosReal + totalGastosReal + totalServiciosReal);
 

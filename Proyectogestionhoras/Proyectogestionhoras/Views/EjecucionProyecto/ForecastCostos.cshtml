@@ -4,63 +4,63 @@
 
 <style>
     .form-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 60px;
     }
 
     .form-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-        margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
     }
 
     .form-subtitle {
-        font-size: 1.0rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 20px;
+    font-size: 1.0rem;
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
     }
 
 
 
     .highlight {
-        background-color: #f8d7da;
-        font-weight: bold;
+    background-color: #f8d7da;
+    font-weight: bold;
     }
 
     .panel-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 0px;
-        width: 100%;
-        margin-top: 0;
-        padding-top: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 0px;
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
     }
 
     .panel-item {
-        flex-grow: 1;
-        border: 2px solid #444;
-        border-radius: 0;
-        padding: 10px 20px;
-        background-color: #f2f3f4;
-        color: black;
-        text-align: center;
-        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    flex-grow: 1;
+    border: 2px solid #444;
+    border-radius: 0;
+    padding: 10px 20px;
+    background-color: #f2f3f4;
+    color: black;
+    text-align: center;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
     }
 
-       
 
-        .panel-item:hover {
-            background-color: #fcaa67;
-            color: #fff;
-        }
+
+    .panel-item:hover {
+    background-color: #fcaa67;
+    color: #fff;
+    }
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
@@ -147,46 +147,46 @@
     </div>
     <form asp-action="RegistrarCostos" asp-controller="EjecucionProyecto" method="post">
         <input type="hidden" name="idproyecto" value="@idproyecto"/>
-    
-    <div class="form-group">
 
-        <p class="form-subtitle" style="color:black;">Status Gastos HH Socios</p>
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-xs border-collapse">
-                <thead>
-                    <tr class="bg-blue-100 text-black">
-                        
-                        <th class="p-2 border border-gray-300 text-left">Fecha</th>
-                        <th class="p-1 border border-gray-300 text-left">FechaPago</th>
-                        <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
-                        <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-                        <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
-                        <th class="p-2 border border-gray-300 text-left">SubTotal</th>
-                        <th class="p-2 border border-gray-300 text-left">Reajuste</th>
-                        <th class="p-2 border border-gray-300 text-left">Total</th>
-                        <th class="p-2 border border-gray-300 text-left">Observación</th>
-                       
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.GastosHH != null)
-                    {
+        <div class="form-group">
+
+            <p class="form-subtitle" style="color:black;">Status Gastos HH Socios</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-blue-100 text-black">
+
+                            <th class="p-2 border border-gray-300 text-left">Fecha</th>
+                            <th class="p-1 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
+                            <th class="p-2 border border-gray-300 text-left">SubTotal</th>
+                            <th class="p-2 border border-gray-300 text-left">Reajuste</th>
+                            <th class="p-2 border border-gray-300 text-left">Total</th>
+                            <th class="p-2 border border-gray-300 text-left">Observación</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.GastosHH != null)
+                        {
 
                             @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
                             {
-                               
+
                                 var gasto = ViewBag.GastosHH[i];
                                 @if (gasto.tiporecurso == "Socio")
                                 {
-                                    
-                               
-                                <tr>
-                                    <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
-                                    <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
-                                    <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
+
+
+                                    <tr>
+                                        <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
+                                        <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
+                                        <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
                                         <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costorecurso" />
-                                    <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
+                                        <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos!=null)
                                         {
@@ -201,10 +201,10 @@
                                                 <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
                                         }
-                                     
+
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
                                         <td class="p-1">@gasto.cuenta</td>
-                                        
+
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null){
@@ -224,11 +224,11 @@
                                         }
                                         @if (ViewBag.GastosRecursos != null && ViewBag.GastosRecursos.Count > i)
                                         {
-                                           
+
                                             <td class="p-2 border border-gray-300 text-left">
                                                 <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"> @ViewBag.GastosRecursos[i].Observacion</textarea>
                                             </td>
-                                           
+
                                         }
                                         else
                                         {
@@ -236,27 +236,27 @@
                                                 <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                                             </td>
                                         }
-                                        
-                                        
-                                        
+
+
+
                                         @{
                                             totalsocios += Convert.ToDecimal(gasto.costorecurso ?? 0);
                                             cuentasocio = gasto.cuenta;
                                             idcuentasocio = gasto.idcuenta;
                                         }
-                                </tr>
+                                    </tr>
                                 }
                             }
-                           
-                    }
-                       
-                    
-                </tbody>
-            </table>
-            
-        </div>
 
-    </div>
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
 
         <div class="form-group">
 
@@ -265,7 +265,7 @@
                 <table class="min-w-full text-xs border-collapse">
                     <thead>
                         <tr class="bg-blue-100 text-black">
-                            
+
                             <th class="p-2 border border-gray-300 text-left">Fecha</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
@@ -365,7 +365,7 @@
         </div>
 
 
-      
+
 
         <div class="form-group">
 
@@ -462,7 +462,7 @@
                                     </tr>
                                 }
                             }
-                           
+
                         }
 
 
@@ -472,30 +472,30 @@
             </div>
 
         </div>
-    @*SERVICIOS*@
+        @*SERVICIOS*@
 
 
-    <div class="form-group">
+        <div class="form-group">
 
-        <p class="form-subtitle" style="color:black;">Status Servicios </p>
-        <div class="overflow-x-auto">
-            <table id="tablaServicios" class="min-w-full text-xs border-collapse">
-                <thead>
-                    <tr class="bg-red-100 text-black">
-                        <th class="p-2 border border-gray-300 text-left">TipoServicios</th>
-                        <th class="p-2 border border-gray-300 text-left">Proveedor</th>
-                        <th class="p-2 border border-gray-300 text-left">Monto</th>
-                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
-                        <th class="p-2 border border-gray-300 text-left">Observación</th>
-                        
-                        <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
-                        <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-                        
-                        
+            <p class="form-subtitle" style="color:black;">Status Servicios </p>
+            <div class="overflow-x-auto">
+                <table id="tablaServicios" class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-red-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">TipoServicios</th>
+                            <th class="p-2 border border-gray-300 text-left">Proveedor</th>
+                            <th class="p-2 border border-gray-300 text-left">Monto</th>
+                            <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">Observación</th>
 
-                    </tr>
-                </thead>
-                <tbody>
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
                         @if (ViewBag.ServiciosEjecucion != null)
                         {
                             @foreach (var se in ViewBag.ServiciosEjecucion)
@@ -552,17 +552,17 @@
                                 <input type="hidden" name="IdServicioReal" value="@se.Id"/>
                             }
                         }
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">
-                            <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                
-                            </select>
-                        </td>
-                        <td class="p-2 border border-gray-300 text-left">
-                            <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                
-                            </select>
-                        </td>
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                </select>
+                            </td>
                             <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                             <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
                             <td class="p-2 border border-gray-300 text-left">
@@ -574,34 +574,34 @@
                             <input type="hidden" name="IdServicioReal" value="" />
 
 
-                    </tr>
-                    
-                </tbody>
-            </table>
-            <button id="btnAgregarServicio" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Servicio</button>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <button id="btnAgregarServicio" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Servicio</button>
+            </div>
+
         </div>
 
-    </div>
+        <div class="form-group">
 
-    <div class="form-group">
-
-        <p class="form-subtitle" style="color:black;">Status Gastos </p>
-        <div class="overflow-x-auto">
+            <p class="form-subtitle" style="color:black;">Status Gastos </p>
+            <div class="overflow-x-auto">
                 <table id="tablagastos" class="min-w-full text-xs border-collapse">
-                <thead>
-                    <tr class="bg-yellow-100 text-black">
-                        <th class="p-2 border border-gray-300 text-left">TipoGasto</th>
-                        <th class="p-2 border border-gray-300 text-left">Proveedor</th>
-                        <th class="p-2 border border-gray-300 text-left">Monto</th>
-                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                    <thead>
+                        <tr class="bg-yellow-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">TipoGasto</th>
+                            <th class="p-2 border border-gray-300 text-left">Proveedor</th>
+                            <th class="p-2 border border-gray-300 text-left">Monto</th>
+                            <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                             <th class="p-2 border border-gray-300 text-left">Observación</th>
-                        <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
-                        <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
 
 
-                    </tr>
-                </thead>
-                <tbody>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @if (ViewBag.GastosEjecucion != null)
                         {
                             @foreach (var ge in ViewBag.GastosEjecucion)
@@ -609,22 +609,22 @@
                                 <tr>
                                     <td class="p-2 border border-gray-300 text-left">
                                         <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                        @if (ViewBag.Gastos != null)
-                                        {
-                                            @foreach (var gasto in ViewBag.Gastos)
+                                            @if (ViewBag.Gastos != null)
                                             {
-                                                if (gasto.Id == ge.IdGasto)
+                                                @foreach (var gasto in ViewBag.Gastos)
                                                 {
-                                                    <option value="@gasto.Id" selected>@gasto.Nombre</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@gasto.Id">@gasto.Nombre</option>
+                                                    if (gasto.Id == ge.IdGasto)
+                                                    {
+                                                        <option value="@gasto.Id" selected>@gasto.Nombre</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@gasto.Id">@gasto.Nombre</option>
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                    </select>
+                                        </select>
                                     </td>
                                     <td class="p-2 border border-gray-300 text-left">
                                         <select name="idproveedorgastos" class="proveedorGastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -656,20 +656,20 @@
                                     </td>
                                 </tr>
                                 <input type="hidden" name="IdGastoReal" value="@ge.IdGastosReal" />
-                            
-                            
+
+
                             }
 
 
 
 
                         }
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">
-                            <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                
-                            </select>
-                        </td>
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                </select>
+                            </td>
                             <td class="p-2 border border-gray-300 text-left">
                                 <select name="idproveedorgastos" class="proveedorGastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 </select>
@@ -688,24 +688,22 @@
                             <td style="display:none;">
                                 <input type="hidden" name="IdGastoReal" value="" />
                             </td>
-                            
 
 
 
-                    </tr>
-                    
-                </tbody>
-            </table>
+
+                        </tr>
+
+                    </tbody>
+                </table>
                 <td>
                     <button id="agregarFilaGastos" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Gasto</button>
                 </td>
-        </div>
+            </div>
 
-    </div>
+        </div>
         <div class="form-group">
-            @{
-                totalcostosproyectados = totalsociosproyectados + totalstaffproyectados + totalconsultoresproyectados + totalserviciosproyectados + totalgastosproyectados;
-            }
+
             <p class="form-subtitle" style="color:black;">Total Costos del proyecto </p>
             <div class="flex justify-center items-center py-5">
                 <div class="overflow-x-auto w-1/2">
@@ -730,7 +728,7 @@
                                 {
                                     <td class="p-2 border border-gray-300 text-left"></td>
                                 }
-                                
+
                                 <td class="p-2 border border-gray-300 text-left">@cuentasocio</td>
                                 <td class="p-2 border border-gray-300 text-right" >@String.Format("{0:N0}", totalsociosproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalSocios">0</td>
@@ -760,7 +758,7 @@
                                 {
                                     <td class="p-2 border border-gray-300 text-left"></td>
                                 }
-                                
+
                                 <td class="p-2 border border-gray-300 text-left">@cuentaconsultores</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalConsultores">0</td>
@@ -779,6 +777,7 @@
                                     <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @servicio.MONTO)</td>
                                     <td class="p-2 border border-gray-300 text-right total-row" >@String.Format("{0:N0}", @totaleservicio)</td>
                                 </tr>
+                                totalserviciosproyectados += servicio.MONTO;
                             }
                             @foreach (var gasto in ViewBag.GastosProyectos)
                             {
@@ -794,9 +793,13 @@
                                     <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.MONTO)</td>
                                     <td class="p-2 border border-gray-300 text-right" id="totalGastos_@gasto.IDGASTOS">@String.Format("{0:N0}", @totalesgasto)</td>
                                 </tr>
+                                totalgastosproyectados += gasto.MONTO;
                             }
                             
                             <tr>
+                                @{
+                                    totalcostosproyectados = totalsociosproyectados + totalstaffproyectados + totalconsultoresproyectados + totalserviciosproyectados + totalgastosproyectados;
+                                }
                                 <td colspan="3" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
                                 
                                 <td class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostosproyectados)</td>

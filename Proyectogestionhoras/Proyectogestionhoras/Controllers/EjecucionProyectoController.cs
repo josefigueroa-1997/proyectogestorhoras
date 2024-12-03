@@ -346,9 +346,11 @@ namespace Proyectogestionhoras.Controllers
             var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
             var flujocajaingreso = await ejecucionService.ObtenerFlujoCajaProyecto(id);
             var flujocajaegreso = await ejecucionService.ObtenerEgresoFlujoCajaProyecto(id);
-            var flujocajaegresosserviciosgastos = await ejecucionService.ObtenerEgresoServiciosGastosFlujoCajaProyecto(id);
-            ViewBag.flujocajaprueba = flujocajaegresosserviciosgastos;
-            var groupedServicios = flujocajaegresosserviciosgastos
+            var flujocajaegresosservicios = await ejecucionService.ObtenerEgresoServiciosFlujoCajaProyecto(id);
+            var flujocajaegresosgastos = await ejecucionService.ObtenerEgresoGastosFlujoCajaProyecto(id);
+            ViewBag.flujocajaprueba = flujocajaegresosservicios;
+            ViewBag.flujogastos = flujocajaegresosgastos;
+            var groupedServicios = flujocajaegresosservicios
                                     .GroupBy(s => s.ServicioNombre)
                                     .Select(g => new
                                     {
@@ -357,7 +359,7 @@ namespace Proyectogestionhoras.Controllers
                                     })
                                     .ToList();
 
-            var groupedgastos = flujocajaegresosserviciosgastos
+            var groupedgastos = flujocajaegresosgastos
                                     .GroupBy(s => s.GastoNombre)
                                     .Select(g => new
                                     {
@@ -412,7 +414,7 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Flujo = flujocajaingreso;
             ViewBag.Egresos = flujocajaegreso;
             ViewBag.Servicios = groupedServicios;
-            ViewBag.Gastos = groupedgastos;
+           ViewBag.Gastos = groupedgastos;
             ViewBag.CuentaSocio = querysocio;
             ViewBag.CuentaStaff = querystaff;
             ViewBag.CuentaConsultor = querysconsultor;

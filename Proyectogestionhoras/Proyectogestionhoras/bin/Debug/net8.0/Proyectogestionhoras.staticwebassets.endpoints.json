@@ -741,51 +741,6 @@
       ]
     },
     {
-      "Route": "js/balancehoras.6n41945idi.js",
-      "AssetFile": "js/balancehoras.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "11313"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"PildOTtqxHnWUbLoMOKD7U0eyQ+LPDJpwVaPeLWVmZA=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 14 Nov 2024 00:14:58 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "6n41945idi"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-PildOTtqxHnWUbLoMOKD7U0eyQ+LPDJpwVaPeLWVmZA="
-        },
-        {
-          "Name": "label",
-          "Value": "js/balancehoras.js"
-        }
-      ]
-    },
-    {
       "Route": "js/balancehoras.js",
       "AssetFile": "js/balancehoras.js",
       "Selectors": [],
@@ -800,7 +755,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "11313"
+          "Value": "11562"
         },
         {
           "Name": "Content-Type",
@@ -808,17 +763,62 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"PildOTtqxHnWUbLoMOKD7U0eyQ+LPDJpwVaPeLWVmZA=\""
+          "Value": "\"za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 14 Nov 2024 00:14:58 GMT"
+          "Value": "Tue, 03 Dec 2024 01:18:01 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-PildOTtqxHnWUbLoMOKD7U0eyQ+LPDJpwVaPeLWVmZA="
+          "Value": "sha256-za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU="
+        }
+      ]
+    },
+    {
+      "Route": "js/balancehoras.vhn5gfia3t.js",
+      "AssetFile": "js/balancehoras.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11562"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 03 Dec 2024 01:18:01 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vhn5gfia3t"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU="
+        },
+        {
+          "Name": "label",
+          "Value": "js/balancehoras.js"
         }
       ]
     },
