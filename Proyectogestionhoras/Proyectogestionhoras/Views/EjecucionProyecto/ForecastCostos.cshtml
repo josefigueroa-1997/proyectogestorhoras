@@ -486,6 +486,8 @@
                             <th class="p-2 border border-gray-300 text-left">Proveedor</th>
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">Estado</th>
+                            
                             <th class="p-2 border border-gray-300 text-left">Observación</th>
 
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
@@ -544,6 +546,29 @@
                                     <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @se.Monto)" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                     <td class="p-2 border border-gray-300 text-left"><input type="date" value="@se.Fecha.ToString("yyyy-MM-dd")" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
                                     <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+
+
+                                            @if (se.Estado == "Forecast")
+                                            {
+                                                <option value="Forecast" selected>Forecast</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Forecast">Forecast</option>
+                                            }
+
+                                            @if (se.Estado == "Pagada")
+                                            {
+                                                <option value="Pagada" selected>Pagada</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Pagada">Pagada</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-left">
                                         <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
                                     </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
@@ -565,6 +590,12 @@
                             </td>
                             <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                             <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                    <option value="Forecast" selected>Forecast</option>
+                                    <option value="Pagada">Pagada</option>
+                                </select>
+                            </td>
                             <td class="p-2 border border-gray-300 text-left">
                                 <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
@@ -594,6 +625,7 @@
                             <th class="p-2 border border-gray-300 text-left">Proveedor</th>
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">Estado</th>
                             <th class="p-2 border border-gray-300 text-left">Observación</th>
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
@@ -647,6 +679,29 @@
                                     <td class="p-2 border border-gray-300 text-right"><input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" value="@String.Format("{0:N0}", @ge.Monto)" /></td>
                                     <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" value="@ge.Fecha.ToString("yyyy-MM-dd")" /></td>
                                     <td class="p-2 border border-gray-300 text-left">
+                                        <select name="EstadoGasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+
+
+                                            @if (ge.Estado == "Forecast")
+                                            {
+                                                <option value="Forecast" selected>Forecast</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Forecast">Forecast</option>
+                                            }
+
+                                            @if (ge.Estado == "Pagada")
+                                            {
+                                                <option value="Pagada" selected>Pagada</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Pagada">Pagada</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-left">
                                         <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ge.Observacion</textarea>
                                     </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly /></td>
@@ -677,6 +732,12 @@
 
                             <td class="p-2 border border-gray-300 text-right"><input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                             <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="EstadoGasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                    <option value="Forecast" selected>Forecast</option>
+                                    <option value="Pagada">Pagada</option>
+                                </select>
+                            </td>
                             <td class="p-2 border border-gray-300 text-left">
                                 <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
@@ -715,6 +776,7 @@
                                 <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
                                 <th class="p-2 border border-gray-300 text-center">Total Proyectado</th>
                                 <th class="p-2 border border-gray-300 text-center">Total Real</th>
+                                <th class="p-2 border border-gray-300 text-center">Total Forecast</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -732,6 +794,7 @@
                                 <td class="p-2 border border-gray-300 text-left">@cuentasocio</td>
                                 <td class="p-2 border border-gray-300 text-right" >@String.Format("{0:N0}", totalsociosproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalSocios">0</td>
+                                <td class="p-2 border border-gray-300 text-right"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Staff</td>
@@ -747,6 +810,7 @@
                                 <td class="p-2 border border-gray-300 text-left">@cuentastaff</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalstaffproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalStaff">0</td>
+                                <td class="p-2 border border-gray-300 text-right" ></td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Consultores Externos</td>
@@ -762,48 +826,69 @@
                                 <td class="p-2 border border-gray-300 text-left">@cuentaconsultores</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalConsultores">0</td>
+                                <td class="p-2 border border-gray-300 text-right"></td>
                             </tr>
+                            @{
+                                decimal totalforecastservicio = 0;
+                                decimal totalforecastgasto = 0;
+                            }
                             @foreach (var servicio in ViewBag.ServiciosProyectos)
                             {
-                                decimal totaleservicio = 0;
-                                if (ViewBag.ServiciosTotales.ContainsKey(servicio.IDSERVICIO))
+                                decimal totaleservicioPagado = 0;
+                                decimal totaleservicioForecast = 0;
+                                if (ViewBag.ServiciosTotalesPagados.ContainsKey(servicio.IDSERVICIO))
                                 {
-                                    totaleservicio = ViewBag.ServiciosTotales[servicio.IDSERVICIO];
+                                    totaleservicioPagado = ViewBag.ServiciosTotalesPagados[servicio.IDSERVICIO];
+                                }
+                                if (ViewBag.ServiciosTotalesForecast.ContainsKey(servicio.IDSERVICIO))
+                                {
+                                    totaleservicioForecast = ViewBag.ServiciosTotalesForecast[servicio.IDSERVICIO];
                                 }
                                 <tr data-id="@servicio.IDSERVICIO">
                                     <td class="p-2 border border-gray-300 text-left">@servicio.NOMBRESERVICIO</td>
                                     <td class="p-2 border border-gray-300 text-left">@servicio.IDCUENTA</td>
                                     <td class="p-2 border border-gray-300 text-left">@servicio.CUENTA</td>
                                     <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @servicio.MONTO)</td>
-                                    <td class="p-2 border border-gray-300 text-right total-row" >@String.Format("{0:N0}", @totaleservicio)</td>
+                                    <td class="p-2 border border-gray-300 text-right total-row">@String.Format("{0:N0}", @totaleservicioPagado)</td>
+                                    <td class="p-2 border border-gray-300 text-right " >@String.Format("{0:N0}",totaleservicioForecast)</td>
                                 </tr>
                                 totalserviciosproyectados += servicio.MONTO;
+                                totalforecastservicio += totaleservicioForecast;
                             }
                             @foreach (var gasto in ViewBag.GastosProyectos)
                             {
-                                decimal totalesgasto = 0;
-                                if (ViewBag.GastosTotales.ContainsKey(gasto.IDGASTOS))
+                                decimal totalesgastopagados = 0;
+                                decimal totalesgastoforecast = 0;
+                                if (ViewBag.GastosTotalesPagados.ContainsKey(gasto.IDGASTOS))
                                 {
-                                    totalesgasto = ViewBag.GastosTotales[gasto.IDGASTOS];
+                                    totalesgastopagados = ViewBag.GastosTotalesPagados[gasto.IDGASTOS];
+                                }
+                                if (ViewBag.GastosTotalesForecast.ContainsKey(gasto.IDGASTOS))
+                                {
+                                    totalesgastoforecast = ViewBag.GastosTotalesForecast[gasto.IDGASTOS];
                                 }
                                 <tr>
                                     <td class="p-2 border border-gray-300 text-left">@gasto.NOMBREGASTO</td>
                                     <td class="p-2 border border-gray-300 text-left">@gasto.IDCUENTA</td>
                                     <td class="p-2 border border-gray-300 text-left">@gasto.CUENTA</td>
                                     <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @gasto.MONTO)</td>
-                                    <td class="p-2 border border-gray-300 text-right" id="totalGastos_@gasto.IDGASTOS">@String.Format("{0:N0}", @totalesgasto)</td>
+                                    <td class="p-2 border border-gray-300 text-right" id="totalGastos_@gasto.IDGASTOS">@String.Format("{0:N0}", @totalesgastopagados)</td>
+                                    <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @totalesgastoforecast)</td>
                                 </tr>
                                 totalgastosproyectados += gasto.MONTO;
+                                totalforecastgasto += totalesgastoforecast;
                             }
                             
                             <tr>
                                 @{
                                     totalcostosproyectados = totalsociosproyectados + totalstaffproyectados + totalconsultoresproyectados + totalserviciosproyectados + totalgastosproyectados;
+                                    decimal totalcostosforecast = totalforecastgasto + totalforecastservicio;
                                 }
                                 <td colspan="3" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
                                 
                                 <td class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostosproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right font-bold" id="totalCostos">0</td>
+                                <td class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostosforecast)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1028,7 +1113,8 @@
             let totalstaff= 0;
             let totalconsultores= 0;
             let totalCostos = 0;
-            const montogastoInput = document.querySelectorAll('input[name*="montogasto"]');
+            const montogastoRows = document.querySelectorAll('tr');
+            
             const montoInputs = document.querySelectorAll('input[name*="montoservicio"]');
             const montoSocioInputs = document.querySelectorAll('input[id*="montosocio"]');
             const montoStaffInputs = document.querySelectorAll('input[id*="montostaff"]');
@@ -1036,10 +1122,18 @@
             
             
             montoInputs.forEach(input => {
-                totalservicio += parseCurrency(input.value);
+                const estadoSelect = input.closest('tr').querySelector('select[name="Estado"]'); 
+                if (estadoSelect && estadoSelect.value === "Pagada") {
+                    totalservicio += parseCurrency(input.value);
+                }
             });
-            montogastoInput.forEach(input => {
-                totalgasto += parseCurrency(input.value);
+            montogastoRows.forEach(row => {
+                const montoInput = row.querySelector('input[name="montogasto"]');
+                const estadoSelect = row.querySelector('select[name="EstadoGasto"]');
+
+                if (estadoSelect && estadoSelect.value === "Pagada") {
+                    totalgasto += parseCurrency(montoInput.value);
+                }
             });
             montoSocioInputs.forEach(input => {
                 totalsocio += parseCurrency(input.value);
@@ -1157,6 +1251,12 @@
                             </td>
                                 <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                 <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                     <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                        <option value="Forecast" selected>Forecast</option>
+                                        <option value="Pagada">Pagada</option>
+                                    </select>
+                                </td>
                                     <td class="p-2 border border-gray-300 text-left">
                                     <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                                 </td>
@@ -1334,6 +1434,12 @@
                     <td class="p-2 border border-gray-300 text-left">
                         <input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
                     </td>
+                         <td class="p-2 border border-gray-300 text-left">
+                                    <select name="EstadoGasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                        <option value="Forecast" selected>Forecast</option>
+                                        <option value="Pagada">Pagada</option>
+                                    </select>
+                                </td>
                          <td class="p-2 border border-gray-300 text-left">
                                     <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                                 </td>

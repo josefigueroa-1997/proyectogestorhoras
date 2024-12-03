@@ -151,25 +151,40 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.ServiciosProyectos = serviciosproyectados;
             ViewBag.GastosProyectos = gastosproyectados;
 
-            var serviciosTotales = from serejecucucion in serviciosejecucion
-                                   group serejecucucion by serejecucucion.Idservicio into grupo
-                                   select new
-                                   {
-                                       Idservicio = grupo.Key,
-                                       TotalMonto = grupo.Sum(x => x.Monto)
-                                   };
+            var serviciosreales = from serejecucucion in serviciosejecucion
+                                  group serejecucucion by new { serejecucucion.Idservicio, serejecucucion.Estado } into grupo
+                                  select new
+                                  {
+                                      Idservicio = grupo.Key.Idservicio,
+                                      Estado = grupo.Key.Estado,
+                                      TotalMonto = grupo.Sum(x => x.Monto)
+                                  };
 
-            ViewBag.ServiciosTotales = serviciosTotales.ToDictionary(x => x.Idservicio, x => x.TotalMonto);
             
+            ViewBag.ServiciosTotalesPagados = serviciosreales
+                .Where(x => x.Estado == "Pagada")
+                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+
+            ViewBag.ServiciosTotalesForecast = serviciosreales
+                .Where(x => x.Estado == "Forecast")
+                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+
             var gastosTotales = from gasejecucion in gastosejecucion
-                                group gasejecucion by gasejecucion.IdGasto into grupo
+                                group gasejecucion by new { gasejecucion.IdGasto,gasejecucion.Estado} into grupo
                                 select new
                                 {
-                                    Idservicio = grupo.Key,
+                                    IdGasto = grupo.Key.IdGasto,
+                                    Estado = grupo.Key.Estado,
                                     TotalMonto = grupo.Sum(x => x.Monto)
                                 };
 
-            ViewBag.GastosTotales = gastosTotales.ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+            ViewBag.GastosTotalesPagados = gastosTotales
+                .Where(x => x.Estado == "Pagada")
+                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
+
+            ViewBag.GastosTotalesForecast = gastosTotales
+                .Where(x => x.Estado == "Forecast")
+                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
 
             return View();
         }
@@ -216,6 +231,7 @@ namespace Proyectogestionhoras.Controllers
             var fechaservicio = Request.Form["fechaservicio"];
             var idservicioreal = Request.Form["IdServicioReal"];
             var observacion = Request.Form["observacionservicio"];
+            var estadoservicio = Request.Form["Estado"];
            
             for (int i = 0; i < idsservicios.Count; i++)
             {
@@ -252,6 +268,7 @@ namespace Proyectogestionhoras.Controllers
                     Monto = montoservicio,
                     Fecha = fechaServicioParsed,
                     Observacion = observacion[i],
+                    Estado = estadoservicio[i],
                 };
 
                 servicios.Add(servicioViewModel);
@@ -267,7 +284,7 @@ namespace Proyectogestionhoras.Controllers
             var fechagastos = Request.Form["fechagasto"];
             var idgastoreal = Request.Form["IdGastoReal"];
             var observaciongasto = Request.Form["observaciongasto"];
-            
+            var estadogasto = Request.Form["EstadoGasto"];
             
             
             for (int i = 0; i < idsgastos.Count; i++)
@@ -306,6 +323,7 @@ namespace Proyectogestionhoras.Controllers
                     Monto = montogasto,
                     Fecha = fechaGastoParsed,
                     Observacion = observaciongasto[i],
+                    Estado = estadogasto[i],
                 };
 
                 gastos.Add(gastoViewModel);

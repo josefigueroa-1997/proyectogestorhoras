@@ -13,6 +13,7 @@ namespace Proyectogestionhoras.Models
         public decimal? Monto { get; set; }
         public DateTime? Fecha { get; set; }
         public string? Observacion { get; set; }
+        public string? Estado { get; set; }
 
         public virtual Proveedore? IdproveedorNavigation { get; set; }
         public virtual Proyecto? IdproyectoNavigation { get; set; }

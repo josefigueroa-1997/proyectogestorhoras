@@ -113,6 +113,7 @@ namespace Proyectogestionhoras.Services
                             servicioexistente.Fecha = servicio.Fecha;
                             servicioexistente.Monto = servicio.Monto;
                             servicioexistente.Observacion = servicio.Observacion;
+                            servicioexistente.Estado = servicio.Estado;
                         }
                     }
                     else
@@ -126,6 +127,7 @@ namespace Proyectogestionhoras.Services
                             Fecha = servicio.Fecha,
                             Monto = servicio.Monto,
                             Observacion = servicio.Observacion,
+                            Estado = servicio.Estado,
                         };
                         await context.AddAsync(nuevoservicio);
                     }
@@ -164,6 +166,7 @@ namespace Proyectogestionhoras.Services
                             gastoexistente.Monto = gasto.Monto;
                             gastoexistente.Fecha = gasto.Fecha;
                             gastoexistente.Observacion = gasto.Observacion;
+                            gastoexistente.Estado = gasto.Estado;
                         }
                     }
                     else
@@ -177,6 +180,7 @@ namespace Proyectogestionhoras.Services
                             Monto = gasto.Monto,
                             Fecha = gasto.Fecha,
                             Observacion = gasto.Observacion,
+                            Estado = gasto.Estado,
                         };
                         await context.AddRangeAsync(nuevogasto);
 
@@ -279,6 +283,7 @@ namespace Proyectogestionhoras.Services
                                            Monto = g.Monto,
                                            Fecha = g.Fecha,
                                            Observacion = g.Observacion,
+                                           Estado = g.Estado,
                                        }).ToListAsync();
 
                 return resultado;

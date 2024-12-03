@@ -152,10 +152,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td class="p-2 border border-gray-300 text-right"><input type="text" name="Montoclp" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" readonly /></td>
                     <td class="p-2 border border-gray-300 text-right"><input type="text" name="Iva" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                     <td class="p-2 border border-gray-300 text-left">
-                        <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="Por Cobrar" selected>Por Cobrar</option>
-                            <option value="Pagada">Pagada</option>
-                        </select>
+                                <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                    <option value="Forecast" selected>Forecast</option>
+                                    <option value="Pagada">Pagada</option>
+                                </select>
                     </td>
                     <td class="p-2 border border-gray-300 text-right"><input name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
                     <td class="p-2 border border-gray-300 text-left"><textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
