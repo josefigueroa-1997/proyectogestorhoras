@@ -99,40 +99,41 @@ namespace Proyectogestionhoras.Services
                     return;
                 }
 
+                var idsServicios = servicios.Where(s => s.IdServicioReal > 0)
+                                            .Select(s => s.IdServicioReal)
+                                            .ToList();
+
+                var serviciosExistentes = await context.Serviciosejecucions
+                                                      .Where(s => idsServicios.Contains(s.Id))
+                                                      .ToDictionaryAsync(s => s.Id);
+
+                var serviciosNuevos = servicios.Where(s => s.IdServicioReal <= 0).ToList();
+
                 foreach (var servicio in servicios)
                 {
-                    if (servicio.IdServicioReal > 0)
+                    if (servicio.IdServicioReal > 0 && serviciosExistentes.TryGetValue(servicio.IdServicioReal, out var servicioExistente))
                     {
-                        
-                        var servicioexistente = await context.Serviciosejecucions
-                                                             .FirstOrDefaultAsync(s => s.Id == servicio.IdServicioReal);
-                        if (servicioexistente != null)
-                        {
-                            servicioexistente.Idservicio = servicio.Idservicio;
-                            servicioexistente.Idproveedor = servicio.Idproveedor;
-                            servicioexistente.Fecha = servicio.Fecha;
-                            servicioexistente.Monto = servicio.Monto;
-                            servicioexistente.Observacion = servicio.Observacion;
-                            servicioexistente.Estado = servicio.Estado;
-                        }
-                    }
-                    else
-                    {
-                        
-                        var nuevoservicio = new Serviciosejecucion
-                        {
-                            Idproyecto = idproyecto,
-                            Idservicio = servicio.Idservicio,
-                            Idproveedor = servicio.Idproveedor,
-                            Fecha = servicio.Fecha,
-                            Monto = servicio.Monto,
-                            Observacion = servicio.Observacion,
-                            Estado = servicio.Estado,
-                        };
-                        await context.AddAsync(nuevoservicio);
+                        servicioExistente.Idservicio = servicio.Idservicio;
+                        servicioExistente.Idproveedor = servicio.Idproveedor;
+                        servicioExistente.Fecha = servicio.Fecha;
+                        servicioExistente.Monto = servicio.Monto;
+                        servicioExistente.Observacion = servicio.Observacion;
+                        servicioExistente.Estado = servicio.Estado;
                     }
                 }
 
+                var nuevosServicios = serviciosNuevos.Select(servicio => new Serviciosejecucion
+                {
+                    Idproyecto = idproyecto,
+                    Idservicio = servicio.Idservicio,
+                    Idproveedor = servicio.Idproveedor,
+                    Fecha = servicio.Fecha,
+                    Monto = servicio.Monto,
+                    Observacion = servicio.Observacion,
+                    Estado = servicio.Estado,
+                }).ToList();
+
+                await context.Serviciosejecucions.AddRangeAsync(nuevosServicios);
                 await context.SaveChangesAsync();
             }
             catch (Exception e)
@@ -145,7 +146,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task GestorGastosReales(int idproyecto,List<GastosRealesViewModel> gastos)
+        public async Task GestorGastosReales(int idproyecto, List<GastosRealesViewModel> gastos)
         {
             try
             {
@@ -153,53 +154,61 @@ namespace Proyectogestionhoras.Services
                 {
                     return;
                 }
-                foreach(var gasto in gastos)
+
+               
+                var idsGastos = gastos.Where(g => g.IdGastoReal > 0)
+                                      .Select(g => g.IdGastoReal)
+                                      .ToList();
+
+          
+                var gastosExistentes = await context.Gastosejecucions
+                                                    .Where(g => idsGastos.Contains(g.Id))
+                                                    .ToDictionaryAsync(g => g.Id);
+
+              
+                var nuevosGastos = gastos.Where(g => g.IdGastoReal <= 0).ToList();
+
+               
+                foreach (var gasto in gastos.Where(g => g.IdGastoReal > 0))
                 {
-                    if (gasto.IdGastoReal > 0)
+                    if (gastosExistentes.TryGetValue(gasto.IdGastoReal, out var gastoExistente))
                     {
-                        var gastoexistente = await context.Gastosejecucions.FirstOrDefaultAsync(g => g.Id == gasto.IdGastoReal);
-                        if (gastoexistente != null)
-                        {
-                            gastoexistente.Idgasto = gasto.Idgasto;
-                            gastoexistente.Idproveedor = gasto.Idproveedor;
-                            gastoexistente.Segmento = gasto.Segmento;
-                            gastoexistente.Monto = gasto.Monto;
-                            gastoexistente.Fecha = gasto.Fecha;
-                            gastoexistente.Observacion = gasto.Observacion;
-                            gastoexistente.Estado = gasto.Estado;
-                        }
-                    }
-                    else
-                    {
-                        var nuevogasto = new Gastosejecucion
-                        {
-                            Idproyecto = idproyecto,
-                            Idgasto = gasto.Idgasto,
-                            Idproveedor = gasto.Idproveedor,
-                            Segmento = gasto.Segmento,
-                            Monto = gasto.Monto,
-                            Fecha = gasto.Fecha,
-                            Observacion = gasto.Observacion,
-                            Estado = gasto.Estado,
-                        };
-                        await context.AddRangeAsync(nuevogasto);
-
-
+                        gastoExistente.Idgasto = gasto.Idgasto;
+                        gastoExistente.Idproveedor = gasto.Idproveedor;
+                        gastoExistente.Segmento = gasto.Segmento;
+                        gastoExistente.Monto = gasto.Monto;
+                        gastoExistente.Fecha = gasto.Fecha;
+                        gastoExistente.Observacion = gasto.Observacion;
+                        gastoExistente.Estado = gasto.Estado;
                     }
                 }
+
+                
+                var gastosParaInsertar = nuevosGastos.Select(gasto => new Gastosejecucion
+                {
+                    Idproyecto = idproyecto,
+                    Idgasto = gasto.Idgasto,
+                    Idproveedor = gasto.Idproveedor,
+                    Segmento = gasto.Segmento,
+                    Monto = gasto.Monto,
+                    Fecha = gasto.Fecha,
+                    Observacion = gasto.Observacion,
+                    Estado = gasto.Estado,
+                }).ToList();
+
+                await context.Gastosejecucions.AddRangeAsync(gastosParaInsertar);
+
+           
                 await context.SaveChangesAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                
-                Debug.WriteLine($"Error al registrar/actualizar un gastos de ejecución: {e.Message}");
+                Debug.WriteLine($"Error al registrar/actualizar un gasto de ejecución: {e.Message}");
                 if (e.InnerException != null)
                 {
                     Debug.WriteLine($"Inner exception: {e.InnerException.Message}");
                 }
             }
-
-
         }
 
         public async Task GestorGastosHH(int idproyecto, List<GastosHHViewModel> gastosHH)

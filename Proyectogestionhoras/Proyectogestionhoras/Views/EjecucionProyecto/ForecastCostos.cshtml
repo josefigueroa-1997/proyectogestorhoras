@@ -82,6 +82,9 @@
     string? cuentastaff = "";
     int idcuentaconsultores = 0;
     string? cuentaconsultores = "";
+    decimal totalsociosforecast = 0;
+    decimal totalstaffforecast = 0;
+    decimal totalconsultoresforecast = 0;
 }
 
 <div class="form-container">
@@ -194,12 +197,22 @@
                                             <td class="p-1 border border-gray-300 text-right">
                                                 <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
+                                            if (ViewBag.GastosRecursos[i].Fechapago != null)
+                                            {
+                                                totalsocios += ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                            }
+                                            else
+                                            {
+                                                totalsociosforecast += ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                            }
                                         }
                                         else
                                         {
                                             <td class="p-1 border border-gray-300 text-right">
                                                 <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
+                                           
+                                            
                                         }
 
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
@@ -226,7 +239,7 @@
                                         {
 
                                             <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"> @ViewBag.GastosRecursos[i].Observacion</textarea>
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
                                             </td>
 
                                         }
@@ -240,7 +253,7 @@
 
 
                                         @{
-                                            totalsocios += Convert.ToDecimal(gasto.costorecurso ?? 0);
+                                           
                                             cuentasocio = gasto.cuenta;
                                             idcuentasocio = gasto.idcuenta;
                                         }
@@ -303,6 +316,14 @@
                                             <td class="p-2 border border-gray-300 text-right">
                                                 <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
                                             </td>
+                                            if (ViewBag.GastosRecursos[i].Fechapago != null)
+                                            {
+                                                totalstaff += ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                            }
+                                            else
+                                            {
+                                                totalstaffforecast+=ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                            }
                                         }
                                         else
                                         {
@@ -334,7 +355,7 @@
                                         {
 
                                             <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"> @ViewBag.GastosRecursos[i].Observacion</textarea>
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
                                             </td>
 
                                         }
@@ -345,7 +366,7 @@
                                             </td>
                                         }
                                         @{
-                                            totalstaff += Convert.ToDecimal(gasto.costorecurso ?? 0);
+                                            
                                             idcuentastaff = gasto.idcuenta;
                                             cuentastaff = gasto.cuenta;
                                         }
@@ -412,6 +433,14 @@
                                             <td class="p-2 border border-gray-300 text-right">
                                                 <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
                                             </td>
+                                            if (ViewBag.GastosRecursos[i].Fechapago != null)
+                                            {
+                                                totalconsutlores += ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                            }
+                                            else
+                                            {
+                                                totalconsultoresforecast += ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                            }
                                         }
                                         else
                                         {
@@ -443,7 +472,7 @@
                                         {
 
                                             <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"> @ViewBag.GastosRecursos[i].Observacion</textarea>
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
                                             </td>
 
                                         }
@@ -455,7 +484,7 @@
                                         }
 
                                         @{
-                                            totalconsutlores += Convert.ToDecimal(gasto.costoconsultoresexternos ?? 0);
+                                            
                                             idcuentaconsultores = gasto.idcuenta;
                                             cuentaconsultores = gasto.cuenta;
                                         }
@@ -765,18 +794,18 @@
         </div>
         <div class="form-group">
 
-            <p class="form-subtitle" style="color:black;">Total Costos del proyecto </p>
-            <div class="flex justify-center items-center py-5">
-                <div class="overflow-x-auto w-1/2">
+            <p class="form-subtitle" style="color:black;">Resumen Costos del proyecto </p>
+            <div class="flex justify-center py-5">
+                <div class="overflow-x-auto w-full">
                     <table id="tablaresumen" class="min-w-full text-xs border-collapse border border-gray-300">
                         <thead>
                             <tr class="bg-red-400 text-black">
-                                <th class="p-2 border border-gray-300 text-left">Tipo</th>
-                                <th class="p-2 border border-gray-300 text-left">IdCuenta</th>
-                                <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-                                <th class="p-2 border border-gray-300 text-center">Total Proyectado</th>
-                                <th class="p-2 border border-gray-300 text-center">Total Real</th>
-                                <th class="p-2 border border-gray-300 text-center">Total Forecast</th>
+                                <th class="p-2 border border-gray-300 text-left min-w-[150px]">Tipo</th>
+                                <th class="p-2 border border-gray-300 text-left min-w-[100px]">IdCuenta</th>
+                                <th class="p-2 border border-gray-300 text-left min-w-[150px]">Cuenta Contable</th>
+                                <th class="p-2 border border-gray-300 text-center min-w-[150px]">Total Proyectado</th>
+                                <th class="p-2 border border-gray-300 text-center min-w-[150px]">Total Real</th>
+                                <th class="p-2 border border-gray-300 text-center min-w-[150px]">Total Forecast</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -793,8 +822,8 @@
 
                                 <td class="p-2 border border-gray-300 text-left">@cuentasocio</td>
                                 <td class="p-2 border border-gray-300 text-right" >@String.Format("{0:N0}", totalsociosproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalSocios">0</td>
-                                <td class="p-2 border border-gray-300 text-right"></td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalSocios">@String.Format("{0:N0}", totalsocios)</td>
+                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalsociosforecast)</td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Staff</td>
@@ -809,8 +838,8 @@
 
                                 <td class="p-2 border border-gray-300 text-left">@cuentastaff</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalstaffproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalStaff">0</td>
-                                <td class="p-2 border border-gray-300 text-right" ></td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalStaff">@String.Format("{0:N0}",totalstaff)</td>
+                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}",totalstaffforecast)</td>
                             </tr>
                             <tr>
                                 <td class="p-2 border border-gray-300 text-left">HH Consultores Externos</td>
@@ -825,8 +854,8 @@
 
                                 <td class="p-2 border border-gray-300 text-left">@cuentaconsultores</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalConsultores">0</td>
-                                <td class="p-2 border border-gray-300 text-right"></td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalConsultores">@String.Format("{0:N0}", totalconsutlores)</td>
+                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresforecast)</td>
                             </tr>
                             @{
                                 decimal totalforecastservicio = 0;
@@ -882,7 +911,7 @@
                             <tr>
                                 @{
                                     totalcostosproyectados = totalsociosproyectados + totalstaffproyectados + totalconsultoresproyectados + totalserviciosproyectados + totalgastosproyectados;
-                                    decimal totalcostosforecast = totalforecastgasto + totalforecastservicio;
+                                    decimal totalcostosforecast = totalforecastgasto + totalforecastservicio + totalsociosforecast + totalstaffforecast + totalconsultoresforecast;
                                 }
                                 <td colspan="3" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
                                 
@@ -1135,18 +1164,9 @@
                     totalgasto += parseCurrency(montoInput.value);
                 }
             });
-            montoSocioInputs.forEach(input => {
-                totalsocio += parseCurrency(input.value);
-            });
-            montoStaffInputs.forEach(input => {
-                totalstaff += parseCurrency(input.value);
-            });
-            montoConsultoresInputs.forEach(input => {
-                totalconsultores += parseCurrency(input.value);
-            });
-            document.getElementById('totalSocios').textContent = totalsocio.toLocaleString('es-CL');
-            document.getElementById('totalStaff').textContent = totalstaff.toLocaleString('es-CL');
-            document.getElementById('totalConsultores').textContent = totalconsultores.toLocaleString('es-CL');
+            
+            
+            
             
             const totalSocios = parseCurrency(document.getElementById('totalSocios').textContent);
             const totalStaff = parseCurrency(document.getElementById('totalStaff').textContent);
