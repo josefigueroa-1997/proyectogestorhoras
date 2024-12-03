@@ -285,14 +285,14 @@ namespace Proyectogestionhoras.Services
 
             if (socio != null)
             {
-                // Busca el proyecto específico
+              
                 var hhsociosasignadas = context.HhUsuarioHistorials
                                               .Where(u => u.IdProyecto == idproyecto)
                                               .FirstOrDefault();
 
                 decimal horasAsignadasPrevias = hhsociosasignadas?.HhSocios ?? 0;
 
-                // Restar solo la diferencia entre nuevas horas y previas
+                
                 decimal diferenciaHoras = hhsocios - horasAsignadasPrevias;
 
                 Debug.WriteLine($"Horas asignadas previas: {horasAsignadasPrevias}, Nuevas horas: {hhsocios}, Diferencia: {diferenciaHoras}");
@@ -305,7 +305,7 @@ namespace Proyectogestionhoras.Services
 
         public async Task RestarHHAnaulesStaff(int hhstaff, int? idproyecto)
         {
-            // Obtiene el recurso del tipo Staff correspondiente al año actual
+            
             var staff = context.TotalRecursos
                                .Where(tr => tr.TipoRecurso == "Staff" && tr.Anio == DateTime.Now.Year)
                                .FirstOrDefault();
@@ -328,6 +328,39 @@ namespace Proyectogestionhoras.Services
             else
             {
                 Debug.WriteLine("No se encontró el recurso Staff para el año actual.");
+            }
+        }
+
+
+        public async Task ReasignarHHRecursos(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc)
+        {
+
+            DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+            using (DbCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "REASIGNACIONHHRECURSOS";
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+
+                command.Parameters.Add(new SqlParameter("@HHSOCIOS", hhsocios));
+
+                command.Parameters.Add(new SqlParameter("@HHSTAFF", hhstaff));
+
+                command.Parameters.Add(new SqlParameter("@HHCONSULTORA", hhconsultora));
+
+                command.Parameters.Add(new SqlParameter("@HHCONSULTORB", hhconsultorb));
+
+                command.Parameters.Add(new SqlParameter("@HHCONSULTORC", hhconsultorc));
+                command.Parameters.Add(new SqlParameter("@IDSEGMENTOSOCIO", idsegmentosocio));
+                command.Parameters.Add(new SqlParameter("@IDSEGMENTOSTAFF", idsegmentostaff));
+                command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORA", idsegmentoconsultora));
+                command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORB", idsegmentoconsultorb));
+                command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
+                
+
+
+                await command.ExecuteNonQueryAsync();
+                
             }
         }
 
@@ -394,7 +427,7 @@ namespace Proyectogestionhoras.Services
             }
 
             await context.SaveChangesAsync();
-            return 1; // Asignación exitosa
+            return 1; 
         }
 
 

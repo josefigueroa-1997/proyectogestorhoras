@@ -341,11 +341,15 @@ namespace Proyectogestionhoras.Controllers
 
         }
 
+
+       
+
         [HttpPost]
         public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
         {
-            //var statusproyecto = await Obtenerstatusproyecto(idproyecto);
-            /*if (statusproyecto == 2)
+            /*EJECUCION*/
+            var statusproyecto = await Obtenerstatusproyecto(idproyecto);
+            if (statusproyecto == 2)
             {
                 List<ServicioViewModel> serviciosejecucion = new List<ServicioViewModel>();
                 var idsserviciosejecucion = Request.Form["idservicio"];
@@ -354,7 +358,7 @@ namespace Proyectogestionhoras.Controllers
                 var fechaservicioejecucion = Request.Form["fechaservicio"];
                 var esEliminado = Request.Form["esEliminado"];
 
-                // Asegúrate de que todas las listas tengan el mismo tamaño
+                
                 for (int i = 0; i < idsserviciosejecucion.Count; i++)
                 {
                     var servicioViewModel = new ServicioViewModel
@@ -399,9 +403,14 @@ namespace Proyectogestionhoras.Controllers
                 }
                 await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
                 await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
+                await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
+                await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
+                await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
                 return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
-            }*/
+            }
 
+
+            /*OTROS ESTADOS*/
             int idcosto = int.Parse(Request.Form["centroCosto"]);
             int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
             var montopresupuesto = Request.Form["monto"].ToString();
@@ -496,7 +505,7 @@ namespace Proyectogestionhoras.Controllers
             }
 
 
-
+            Debug.WriteLine("ID SEGMENTO FACTURA"+idsegmentofactura);
 
 
             bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, servicios, gastos);

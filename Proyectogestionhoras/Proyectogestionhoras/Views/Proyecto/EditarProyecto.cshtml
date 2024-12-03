@@ -167,7 +167,7 @@
 
             @if (proyecto.STATUSPROYECTO == 2)
             {
-                <h1 class="form-title">Información Proyecto:@proyecto.numproyecto</h1>
+                <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
                 <input type="hidden" name="idproyecto" value="@proyecto.Id" />
                 <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
                 <div class="form-row">
@@ -712,19 +712,19 @@
                             <tr>
                                 <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" readonly class="horas-socios" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
+                                    <input type="number"  class="horas-socios"  min="0" step="0.01" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" readonly class="horas-staff" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
+                                    <input type="number" class="horas-staff" min="0" step="0.01" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" readonly id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
+                                    <input type="number"  id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" readonly id="consultorB" name="hhconsultorb" placeholder="Horas B" value="@proyecto.HH_CONSULTOR_B" required>
+                                    <input type="number"  id="consultorB" name="hhconsultorb" placeholder="Horas B" value="@proyecto.HH_CONSULTOR_B" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" readonly id="consultorC" name="hhconsultorc" placeholder="Horas C" value="@proyecto.HH_CONSULTOR_C" required>
+                                    <input type="number"  id="consultorC" name="hhconsultorc" placeholder="Horas C" value="@proyecto.HH_CONSULTOR_C" required>
                                 </td>
 
                             </tr>
@@ -899,7 +899,7 @@
                                     </tr>
                                 }
                             }
-                            @*
+                            
                     <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;">
                     <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
@@ -936,13 +936,13 @@
                     </td>
                     </tr>
 
-                    *@
+                    
 
 
                         </tbody>
                     </table>
                     <div id="totalMonto" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotal">0</span></div>
-                    @* <button id="agregarFila" class="submit-btn" style="margin-top: 10px;">Agregar Otra Subcontratación de Servicio</button>*@
+                    <button id="agregarFila" class="submit-btn" style="margin-top: 10px;">Agregar Otra Subcontratación de Servicio</button>
                 </div>
                 <div class="form-group">
                     <p class="form-subtitle" style="color:black;">Gastos Operacionales</p>
@@ -967,7 +967,7 @@
                                 {
                                     <tr>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <select class="gastos" name="idgastos[]">
+                                            <select class="gastosSelect" name="idgastos[]">
                                                 <option value="" disabled selected>Seleccione un Gasto</option>
                                                 @if (ViewBag.Gastos != null)
                                                 {
@@ -1015,7 +1015,7 @@
                                 }
                             }
 
-                            @* <tr>
+                            <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;">
                     <select class="gastosSelect" name="idgastos[]">
                     <option value="" disabled selected>Seleccione un Gasto</option>
@@ -1047,11 +1047,11 @@
                     <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
                     </td>
                     </tr>
-                    *@
+                    
                         </tbody>
                     </table>
                     <div id="totalMontoGastos" style="margin-top: 10px; font-weight: bold;">Total: $<span id="montoTotalGastos">0</span></div>
-                    @* <button id="agregarFilaGastos" class="submit-btn" style="margin-top: 10px;">Agregar Otro Gasto Operacional</button>*@
+                    <button id="agregarFilaGastos" class="submit-btn" style="margin-top: 10px;">Agregar Otro Gasto Operacional</button>
                 </div>
                 <div class="form-group">
                     <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
@@ -1113,10 +1113,10 @@
                     </table>
 
                 </div>
-                @*<div class="button-container">
+                <div class="button-container">
         <button type="submit" class="submit-btn">Guardar Cambios</button>
 
-        </div>*@
+        </div>
             }
 
             else{
@@ -1296,7 +1296,7 @@
                         <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" value="@proyecto.Porcentaje_Probabilidad">
                     </div>
                     <div style="display:none" class="form-group" id="fechaPlazoDiv">
-                        <label for="fechaPlazo">Fecha de Plazo de Neogciación</label>
+                        <label for="fechaPlazo">Fecha de Plazo de Negociación</label>
                         @if (proyecto.Fecha_Plazo_Neg != null)
                         {
                             <input type="date" id="fechaPlazo" name="fechaplazoneg" value="@proyecto.Fecha_Plazo_Neg.ToString("yyyy-MM-dd")">
@@ -2150,7 +2150,7 @@
     });
 
 
-    /*MUESTRA O OCULTA PARAMETROS DE ESTADO EN NEGOCIACIÓN y EJECUCIÓN*/
+    /*MUESTRA u OCULTA PARAMETROS DE ESTADO EN NEGOCIACIÓN y EJECUCIÓN*/
     function toggleFields() {
         var estadoSeleccionado = document.getElementById("estadoProyecto").value;
        
@@ -2159,6 +2159,9 @@
             document.getElementById("probabilidadDiv").style.display = "block";
             document.getElementById("nivelProbabilidadDiv").style.display = "block";
             document.getElementById("fechaPlazoDiv").style.display = "block";
+            document.getElementById("probabilidad").required = true;
+            document.getElementById("nivelprobabilidad").required = true;
+            document.getElementById("fechaPlazo").required = true;
         } else {
             document.getElementById("probabilidadDiv").style.display = "none";
             document.getElementById("nivelProbabilidadDiv").style.display = "none";
