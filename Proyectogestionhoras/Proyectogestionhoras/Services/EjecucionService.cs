@@ -243,6 +243,7 @@ namespace Proyectogestionhoras.Services
                         registroExistente.Subtotal = gasto.Subtotal;
                         registroExistente.Reajuste = gasto.Reajuste;
                         registroExistente.Estado = gasto.Estado;
+                        
                     }
                     else
                     {
@@ -259,7 +260,8 @@ namespace Proyectogestionhoras.Services
                             Observacion = gasto.Observacion,
                             Subtotal = gasto.Subtotal,
                             Reajuste = gasto.Reajuste,
-                            Estado = gasto.Estado
+                            Estado = gasto.Estado,
+                            
                         });
                     }
                 }
@@ -433,10 +435,13 @@ namespace Proyectogestionhoras.Services
                                 Anio = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
                                 MontosSocioProyectado = reader.IsDBNull(reader.GetOrdinal("MontoSocioProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoSocioProyectado")),
                                 MontoSocioReal = reader.IsDBNull(reader.GetOrdinal("MontoSocioReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoSocioReal")),
+                                MontoSocioForecast = reader.IsDBNull(reader.GetOrdinal("MontoSociosForecast")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoSociosForecast")),
                                 MontosStaffProyectado = reader.IsDBNull(reader.GetOrdinal("MontoStaffProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoStaffProyectado")),
                                 MontoStaffReal = reader.IsDBNull(reader.GetOrdinal("MontoStaffReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoStaffReal")),
+                                MontoStaffForecast = reader.IsDBNull(reader.GetOrdinal("MontoStaffForecast")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoStaffForecast")),
                                 MontosConsultoresProyectado = reader.IsDBNull(reader.GetOrdinal("MontoConsultoresProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoConsultoresProyectado")),
                                 MontoConsultoresReal = reader.IsDBNull(reader.GetOrdinal("MontoConsultoresReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoConsultoresReal")),
+                                MontoConsultoresForecast = reader.IsDBNull(reader.GetOrdinal("MontoConsultoresForecast")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoConsultoresForecast")),
                                 
                             };
                             flujo.Add(datos);
@@ -485,14 +490,7 @@ namespace Proyectogestionhoras.Services
                                 ServicioNombre = reader.IsDBNull(reader.GetOrdinal("ServicioNombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("ServicioNombre")),
                                 idcuentaservicio = reader.IsDBNull(reader.GetOrdinal("IdcuentaServicio")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdcuentaServicio")),
                                 CuentaServicio = reader.IsDBNull(reader.GetOrdinal("CuentaServicio")) ? string.Empty : reader.GetString(reader.GetOrdinal("CuentaServicio")),
-                                /* MontosGastosProyectado = reader.IsDBNull(reader.GetOrdinal("MontoGastosProyectado")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoGastosProyectado")),
-                                 MontoGastoReal = reader.IsDBNull(reader.GetOrdinal("MontoGastosReal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoGastosReal")),
-                                 GastoNombre = reader.IsDBNull(reader.GetOrdinal("GastoNombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("GastoNombre")),
-                                 idcuentaservicio = reader.IsDBNull(reader.GetOrdinal("IdcuentaServicio")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdcuentaServicio")),
-                                 CuentaServicio = reader.IsDBNull(reader.GetOrdinal("CuentaServicio")) ? string.Empty : reader.GetString(reader.GetOrdinal("CuentaServicio")),
-                                 idcuentagasto = reader.IsDBNull(reader.GetOrdinal("IdcuentaGasto")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdcuentaGasto")),
-                                 Cuentagasto = reader.IsDBNull(reader.GetOrdinal("CuentaGasto")) ? string.Empty : reader.GetString(reader.GetOrdinal("CuentaGasto")),
-                                */
+                                MontosServiciosForecast = reader.IsDBNull(reader.GetOrdinal("MontoSerivicioForecast")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoSerivicioForecast")),
 
                             };
                             flujo.Add(datos);
@@ -543,7 +541,7 @@ namespace Proyectogestionhoras.Services
                                
                                  idcuentagasto = reader.IsDBNull(reader.GetOrdinal("IdcuentaGasto")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdcuentaGasto")),
                                  Cuentagasto = reader.IsDBNull(reader.GetOrdinal("CuentaGasto")) ? string.Empty : reader.GetString(reader.GetOrdinal("CuentaGasto")),
-                                
+                                MontosGastosForecast = reader.IsDBNull(reader.GetOrdinal("MontoGastoForecast")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MontoGastoForecast")),
 
                             };
                             flujo.Add(datos);

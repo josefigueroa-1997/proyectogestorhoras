@@ -430,6 +430,8 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Anio).HasColumnName("ANIO");
 
+                entity.Property(e => e.Anioemision).HasColumnName("ANIOEMISION");
+
                 entity.Property(e => e.Estado).HasColumnName("ESTADO");
 
                 entity.Property(e => e.Fechapago)
@@ -443,6 +445,8 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
 
                 entity.Property(e => e.Mes).HasColumnName("MES");
+
+                entity.Property(e => e.Mesemision).HasColumnName("MESEMISION");
 
                 entity.Property(e => e.Monto)
                     .HasColumnType("decimal(15, 2)")

@@ -13,5 +13,7 @@
         public decimal? Subtotal { get; set; }
         public decimal? Reajuste { get; set; }
         public int? Estado { get; set; }
+        public int? Mesemision { get; set; }
+        public int? Anioemision { get; set; }
     }
 }

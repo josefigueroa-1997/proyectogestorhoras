@@ -16,5 +16,8 @@
         public string? CuentaServicio { get; set; }
         public int idcuentagasto { get; set; }
         public string? Cuentagasto { get; set; }
+        public decimal? MontosGastosForecast { get; set; }
+        public decimal? MontosServiciosForecast { get; set; }
+
     }
 }

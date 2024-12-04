@@ -152,7 +152,7 @@
 
                         @foreach (var flujo in ViewBag.Flujo)
                         {
-                            <th class="p-2 border border-gray-300 text-center" colspan="2">@flujo.Mes/@flujo.Anio</th>
+                            <th class="p-2 border border-gray-300 text-center" colspan="3">@flujo.Mes/@flujo.Anio</th>
                         }
                         <th class="p-2 border border-gray-300 text-center">Total Real</th>
                     </tr>
@@ -165,6 +165,7 @@
                         {
                             <th class="p-2 border border-gray-300 text-center">Proyectado</th>
                             <th class="p-2 border border-gray-300 text-center">Real</th>
+                            <th class="p-2 border border-gray-300 text-center">Forecast</th>
                            
                         }
                         <td class="p-2 border border-gray-300 text-center"></td>
@@ -194,6 +195,11 @@
                             <td class="px-4 py-2 font-bold border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoReal))
                             </td>
+                            <td class="px-4 py-2 font-bold border border-gray-300 text-red-500 text-right min-w-[50px]">
+                                @(flujo.MontoPorCobrar == 0 ? "" : String.Format("{0:N0}", flujo.MontoPorCobrar))
+                            </td>
+
+                            
 
                             totalingresosreal += flujo.MontoReal;
 
@@ -207,7 +213,7 @@
 
                     @*SOCIOS*@
                     <tr>
-                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white">HH Socios</td>
+                        <td class="p-2 border font-bold border-gray-300 text-center sticky left-0 bg-white">HH Socios</td>
                         @foreach (var cuenta in ViewBag.CuentaSocio)
                         {
                             <td class="p-2 border border-gray-300 text-center">@cuenta.Idcuenta</td>
@@ -224,6 +230,10 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoSocioReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoSocioReal))
                             </td>
+                            <td class="px-4 py-2 border text-red-500 font-bold border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoSocioForecast == 0 ? "" : String.Format("{0:N0}", flujo.MontoSocioForecast))
+                            </td>
+                            
                             totalsociosreal += flujo.MontoSocioReal;
                         }
                         <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
@@ -234,7 +244,7 @@
 
                     @*STAFF*@
                     <tr>
-                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white">HH Staff</td>
+                        <td class="p-2 border font-bold border-gray-300 text-center sticky left-0 bg-white">HH Staff</td>
                         @foreach (var cuenta in ViewBag.CuentaStaff)
                         {
                             <td class="p-2 border border-gray-300 text-center">@cuenta.Idcuenta</td>
@@ -251,6 +261,10 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoStaffReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoStaffReal))
                             </td>
+                            <td class="px-4 py-2 border text-red-500 font-bold border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoStaffForecast == 0 ? "" : String.Format("{0:N0}", flujo.MontoStaffForecast))
+                            </td>
+                            
                             totalstaffreal += flujo.MontoStaffReal;
                         }
                         <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
@@ -263,7 +277,7 @@
 
                     @*CONSULTORES*@
                     <tr>
-                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white">HH Consultores</td>
+                        <td class="p-2 border font-bold border-gray-300 text-center sticky left-0 bg-white">HH Consultores</td>
                         @foreach (var cuenta in ViewBag.CuentaConsultor)
                         {
                             <td class="p-2 border border-gray-300 text-center ">@cuenta.Idcuenta</td>
@@ -273,13 +287,17 @@
                         @foreach (var flujo in ViewBag.Egresos)
                         {
 
-                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                            <td class="px-4 py-2  border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontosConsultoresProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontosConsultoresProyectado))
                             </td>
 
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @(flujo.MontoConsultoresReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoConsultoresReal))
                             </td>
+                            <td class="px-4 py-2 border text-red-500 font-bold border-gray-300 text-right min-w-[50px]">
+                                @(flujo.MontoConsultoresForecast == 0 ? "" : String.Format("{0:N0}", flujo.MontoConsultoresForecast))
+                            </td>
+                            
                             totalconsultoresreal += flujo.MontoConsultoresReal;
                         }
                         <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
@@ -311,7 +329,7 @@
                         if (hayServiciosConValor)
                         {
                             <tr>
-                                <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white" rowspan="1">@grupo.ServicioNombre</td>
+                                <td class="p-2 font-bold border border-gray-300 text-center sticky left-0 bg-white" rowspan="1">@grupo.ServicioNombre</td>
                                 @foreach (var servicio in grupo.Servicios)
                                 {
                                     @if (@servicio.idcuentaservicio > 0)
@@ -333,6 +351,9 @@
                                     </td>
                                     <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                         @(servicio.MontoSerivicioReal == 0 ? "" : String.Format("{0:N0}", servicio.MontoSerivicioReal))
+                                    </td>
+                                    <td class="px-4 py-2 font-bold border border-gray-300 text-red-500 text-right min-w-[50px]">
+                                        @(servicio.MontosServiciosForecast == 0 ? "" : String.Format("{0:N0}", servicio.MontosServiciosForecast))
                                     </td>
                                     totalserviciosreales += servicio.MontoSerivicioReal;
                                 }
@@ -366,7 +387,7 @@
                             if (hayGastosConValor)
                             {
                                 <tr>
-                                    <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white" rowspan="1">@grupo.GastosNombres</td>
+                                    <td class="p-2 font-bold border border-gray-300 text-center sticky left-0 bg-white" rowspan="1">@grupo.GastosNombres</td>
                                     @foreach (var gasto in grupo.Gastos)
                                     {
                                         @if (@gasto.idcuentagasto > 0)
@@ -391,6 +412,10 @@
                                         <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                             @(gasto.MontoGastoReal == 0 ? "" : String.Format("{0:N0}", gasto.MontoGastoReal))
                                         </td>
+                                        <td class="px-4 py-2 font-bold border border-gray-300 text-red-500 text-right min-w-[50px]">
+                                            @(gasto.MontosGastosForecast == 0 ? "" : String.Format("{0:N0}", gasto.MontosGastosForecast))
+                                        </td>
+                                        
                                         totalgastosreal += gasto.MontoGastoReal;
                                     }
                                     <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
@@ -425,9 +450,17 @@
                             (e.MontoConsultoresReal ?? 0) 
                             );
 
+                            var totalForecast = egresosList
+                            .Where(e => e.Mes == flujoActual.Mes && e.Anio == flujoActual.Anio)
+                            .Sum(e => (e.MontoSocioForecast ?? 0) +
+                            (e.MontoStaffForecast ?? 0) +
+                            (e.MontoConsultoresForecast ?? 0)
+                            );
+
                             
                             decimal totalServiciosProyectado = 0;
                             decimal totalServiciosReal = 0;
+                            decimal totalServiciosForecast = 0;
 
                             foreach (var grupo in ViewBag.Servicios)
                             {
@@ -437,12 +470,14 @@
                                     {
                                         totalServiciosProyectado += servicio.MontosServiciosProyectado ?? 0;
                                         totalServiciosReal += servicio.MontoSerivicioReal ?? 0;
+                                        totalServiciosForecast += servicio.MontosServiciosForecast ?? 0;
                                     }
                                 }
                             }
 
                             decimal totalGastosProyectado = 0;
                             decimal totalGastosReal = 0;
+                            decimal totalGastosForecast = 0;
 
                            foreach (var grupo in ViewBag.Gastos)
                             {
@@ -452,6 +487,7 @@
                                     {
                                         totalGastosProyectado += gasto.MontosGastosProyectado ?? 0;
                                         totalGastosReal += gasto.MontoGastoReal ?? 0;
+                                        totalGastosForecast += gasto.MontosGastosForecast ?? 0;
                                     }
                                 }
                             }
@@ -461,6 +497,9 @@
                             </td>
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @String.Format("{0:N0}", totalReal + totalServiciosReal + totalGastosReal)
+                            </td>
+                            <td class="px-4 py-2 border border-gray-300 text-red-500 text-right min-w-[50px]">
+                                @String.Format("{0:N0}", totalForecast + totalServiciosForecast + totalGastosForecast)
                             </td>
                             totalegresosreal += totalReal + totalServiciosReal + totalGastosReal;
                         }
@@ -541,6 +580,8 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @String.Format("{0:N0}", margenReal)
                             </td>
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                            </td>
                             totalmargenreal += margenReal;
                         }
                         <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
@@ -614,6 +655,8 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @porcentajeMargenReal.ToString("N0") %
                             </td>
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                            </td>
                         }
                         <td class="px-4 py-2 border border-gray-300 text-right font-bold min-w-[50px]">
                             @{
@@ -684,7 +727,8 @@
                             <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                                 @String.Format("{0:N0}", ViewBag.SaldoAcumulado)
                             </td>
-                            
+                            <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
+                            </td>
                         }
                         <td class="px-4 py-2 border border-gray-300 text-right min-w-[50px]">
                             @{
