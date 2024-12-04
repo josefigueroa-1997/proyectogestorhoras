@@ -206,14 +206,14 @@ namespace Proyectogestionhoras.Controllers
         public async Task<List<Proveedore>> GetProveedoresServicios()
         {
             var proveedores = await context.Proveedores
-            .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%"))
+            .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%")).OrderBy(p => p.Nombre)
             .ToListAsync();
             return proveedores;
         }
         public async Task<List<Proveedore>> GetProveedoresGastos()
         {
             var proveedores = await context.Proveedores
-            .Where(p => EF.Functions.Like(p.Tipo, "%Gasto%"))
+            .Where(p => EF.Functions.Like(p.Tipo, "%Gasto%")).OrderBy(p => p.Nombre)
             .ToListAsync();
             return proveedores;
         }
@@ -343,7 +343,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ObtenerProveedoresServicios()
         {
             var proveedores = await context.Proveedores
-            .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%"))
+            .Where(p => EF.Functions.Like(p.Tipo, "%Servicio%")).OrderBy(p => p.Nombre)
             .ToListAsync();
             return Json(proveedores);
         }
@@ -352,7 +352,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ObtenerProveedoresGastos()
         {
             var proveedores = await context.Proveedores
-            .Where(p => EF.Functions.Like(p.Tipo, "%Gasto%"))
+            .Where(p => EF.Functions.Like(p.Tipo, "%Gasto%")).OrderBy(p => p.Nombre)
             .ToListAsync();
             return Json(proveedores);
         }

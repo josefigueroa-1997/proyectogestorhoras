@@ -37,7 +37,13 @@
                         {
                             decimal horas = socio.HorasPorActividad.ContainsKey(actividad) ? socio.HorasPorActividad[actividad] : 0;
                             totalMesActual += horas;
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
+                            if(horas>0){
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
+                            }
+                            else{
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]"></td>
+                            }
+                            
                         }
                         <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalMesActual</td>
                     </tr>
@@ -52,7 +58,14 @@
                             var socioAnio = horasAnioActual.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
                             decimal horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
                             totalAnio += horas;
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
+                            @if (horas > 0)
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
+                            }
+                            else
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]"></td>
+                            }
                         }
                         <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalAnio</td>
                     </tr>
@@ -67,8 +80,16 @@
                             var socioAnio = horasdocemeses.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
                             decimal horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
                             totalDoceMeses += horas;
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
-                        }
+                            @if (horas > 0)
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
+                            }
+                            else
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]"></td>
+                            }
+
+                    }
                         <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalDoceMeses</td>
                     </tr>
                 </tbody>

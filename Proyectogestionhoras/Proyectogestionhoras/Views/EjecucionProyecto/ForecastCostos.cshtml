@@ -1242,63 +1242,100 @@
         updateTotal();
     });
 
+    /*NUEVAS FILAS TABLA SERVICIO*/ 
+    var servicios = [];
+    var proveedores = [];
+
+    function cargarDatosIniciales() {
+        $.ajax({
+            url: '/Proyecto/ObtenerServicios',
+            type: 'GET',
+            success: function (data) {
+                servicios = data; 
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los servicios.');
+            }
+        });
+
+        $.ajax({
+            url: '/EjecucionProyecto/ObtenerProveedoresServicios',
+            type: 'GET',
+            success: function (data) {
+                proveedores = data; 
+            },
+            error: function () {
+                alert('Ocurrió un error al cargar los proveedores.');
+            }
+        });
+    }
+
+    function rellenarSelectServicios(selectElement) {
+        $(selectElement).empty();
+        $(selectElement).append('<option value="" disabled selected>Seleccione un Servicio</option>');
+        $.each(servicios, function (index, servicio) {
+            $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');
+        });
+    }
+
+    function rellenarSelectProveedores(selectElement) {
+        $(selectElement).empty();
+        $(selectElement).append('<option value="" disabled selected>Seleccione un Proveedor</option>');
+        $.each(proveedores, function (index, proveedor) {
+            $(selectElement).append('<option value="' + proveedor.id + '">' + proveedor.nombre + '</option>');
+        });
+    }
 
     $(document).ready(function () {
+        cargarDatosIniciales();
 
         $('.serviciosSelect').each(function () {
-            cargarServicios(this);
+            rellenarSelectServicios(this);
         });
         $('.proveedorSelect').each(function () {
-            cargarProveedoresServicios(this);
+            rellenarSelectProveedores(this);
         });
-
 
         $('#btnAgregarServicio').on('click', function (e) {
             e.preventDefault();
 
-
             var nuevaFila = `
-                       <tr>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <tr>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-                                </select>
-                            </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                                </select>
-                            </td>
-                                <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                     <td class="p-2 border border-gray-300 text-left">
-                                    <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                        <option value="Forecast" selected>Forecast</option>
-                                        <option value="Pagada">Pagada</option>
                                     </select>
                                 </td>
-                                    <td class="p-2 border border-gray-300 text-left">
-                                    <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                    </select>
                                 </td>
-                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
-                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
+                                    <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                    <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                         <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                            <option value="Forecast" selected>Forecast</option>
+                                            <option value="Pagada">Pagada</option>
+                                        </select>
+                                    </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                        <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                    </td>
+                                <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
+                                <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
 
-                                <input type="hidden" name="IdServicioReal" value="" />
+                                    <input type="hidden" name="IdServicioReal" value="" />
 
 
-                        </tr>
-                `;
-
+                            </tr>
+            `;
 
             $('#tablaServicios tbody').append(nuevaFila);
 
-
-            $('#tablaServicios tbody tr:last .serviciosSelect').each(function () {
-                cargarServicios(this);
-            });
-            $('#tablaServicios tbody tr:last .proveedorSelect').each(function () {
-                cargarProveedoresServicios(this);
-            });
+            var lastRow = $('#tablaServicios tbody tr:last');
+            rellenarSelectServicios(lastRow.find('.serviciosSelect'));
+            rellenarSelectProveedores(lastRow.find('.proveedorSelect'));
         });
     });
 

@@ -430,6 +430,8 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Anio).HasColumnName("ANIO");
 
+                entity.Property(e => e.Estado).HasColumnName("ESTADO");
+
                 entity.Property(e => e.Fechapago)
                     .HasColumnType("date")
                     .HasColumnName("FECHAPAGO");

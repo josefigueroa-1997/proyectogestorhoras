@@ -173,7 +173,7 @@
                 <tbody>
 
                     <tr >
-                        <td class="border font-bold border-gray-300 text-center">Ingresos</td>
+                        <td class="border font-bold border-gray-300 sticky left-0 bg-white text-center">Ingresos</td>
                         @foreach (var flujo in ViewBag.Flujo)
                         {
                             <td class="px-4 py-2 border border-gray-300 text-center min-w-[50px]">
@@ -207,7 +207,7 @@
 
                     @*SOCIOS*@
                     <tr>
-                        <td class="p-2 border border-gray-300 text-center">HH Socios</td>
+                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white">HH Socios</td>
                         @foreach (var cuenta in ViewBag.CuentaSocio)
                         {
                             <td class="p-2 border border-gray-300 text-center">@cuenta.Idcuenta</td>
@@ -234,7 +234,7 @@
 
                     @*STAFF*@
                     <tr>
-                        <td class="p-2 border border-gray-300 text-center">HH Staff</td>
+                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white">HH Staff</td>
                         @foreach (var cuenta in ViewBag.CuentaStaff)
                         {
                             <td class="p-2 border border-gray-300 text-center">@cuenta.Idcuenta</td>
@@ -263,7 +263,7 @@
 
                     @*CONSULTORES*@
                     <tr>
-                        <td class="p-2 border border-gray-300 text-center">HH Consultores</td>
+                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white">HH Consultores</td>
                         @foreach (var cuenta in ViewBag.CuentaConsultor)
                         {
                             <td class="p-2 border border-gray-300 text-center ">@cuenta.Idcuenta</td>
@@ -311,7 +311,7 @@
                         if (hayServiciosConValor)
                         {
                             <tr>
-                                <td class="p-2 border border-gray-300 text-center" rowspan="1">@grupo.ServicioNombre</td>
+                                <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white" rowspan="1">@grupo.ServicioNombre</td>
                                 @foreach (var servicio in grupo.Servicios)
                                 {
                                     @if (@servicio.idcuentaservicio > 0)
@@ -366,7 +366,7 @@
                             if (hayGastosConValor)
                             {
                                 <tr>
-                                    <td class="p-2 border border-gray-300 text-center" rowspan="1">@grupo.GastosNombres</td>
+                                    <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white" rowspan="1">@grupo.GastosNombres</td>
                                     @foreach (var gasto in grupo.Gastos)
                                     {
                                         @if (@gasto.idcuentagasto > 0)
@@ -405,7 +405,7 @@
                    
 
                    <tr class="font-bold">
-                        <td class="p-2 border border-gray-300 text-center">Total Egresos</td>
+                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-white">Total Egresos</td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         @for (int i = 0; i < flujoList.Count; i++)
@@ -477,7 +477,7 @@
 
 
                     <tr class="bg-gray-300 font-bold">
-                        <td class="p-2 border border-gray-300 text-center">Margen del Proyecto</td>
+                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-gray-300">Margen del Proyecto</td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         @for (int i = 0; i < flujoList.Count; i++)
@@ -549,7 +549,7 @@
                     </tr>
                     
                     <tr class="bg-green-100 font-bold">
-                        <td class="p-2 border border-gray-300 text-center">Margen de Proyecto Real (%)</td>
+                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-green-100">Margen de Proyecto Real (%)</td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         @for (int i = 0; i < flujoList.Count; i++)
@@ -625,7 +625,7 @@
                     </tr>
                     
                     <tr class="bg-yellow-100 font-bold">
-                        <td class="p-2 border border-gray-300 text-center">Saldo Acumulado</td>
+                        <td class="p-2 border border-gray-300 text-center sticky left-0 bg-yellow-100">Saldo Acumulado</td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         <td class="p-2 border border-gray-300 text-center"></td>
                         @for (int i = 0; i < flujoList.Count; i++)

@@ -215,32 +215,39 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-
                 if (gastosHH == null || !gastosHH.Any())
-                {
                     return;
-                }
 
-                foreach(var gasto in gastosHH)
+                
+                var idsExistentes = gastosHH.Select(g => g.IdGastoHH).Where(id => id != null).ToList();
+                var registrosExistentes = await context.Gastoshhhejecucions
+                                                       .Where(g => idsExistentes.Contains(g.Id))
+                                                       .ToListAsync();
+
+                var nuevosRegistros = new List<Gastoshhhejecucion>();
+
+                foreach (var gasto in gastosHH)
                 {
-                    
-                    gasto.Reajuste = gasto.Reajuste ?? 0;
+                    gasto.Reajuste ??= 0;
+                    gasto.Estado = gasto.Fechapago != null ? 1 : 0;
+                    gasto.Monto = gasto.Subtotal + gasto.Reajuste;
 
                     
-                    gasto.Monto = gasto.Subtotal + gasto.Reajuste;
-                    var gastohhexistente = await context.Gastoshhhejecucions.FirstOrDefaultAsync(g => g.Id == gasto.IdGastoHH);
-                    if (gastohhexistente != null)
+                    var registroExistente = registrosExistentes.FirstOrDefault(g => g.Id == gasto.IdGastoHH);
+                    if (registroExistente != null)
                     {
-                        gastohhexistente.Fechapago = gasto.Fechapago;
-                        gastohhexistente.Hhtotales = gasto.HHtotales;
-                        gastohhexistente.Monto = gasto.Monto;
-                        gastohhexistente.Observacion = gasto.Observacion;
-                        gastohhexistente.Subtotal = gasto.Subtotal;
-                        gastohhexistente.Reajuste = gasto.Reajuste;
+                        registroExistente.Fechapago = gasto.Fechapago;
+                        registroExistente.Hhtotales = gasto.HHtotales;
+                        registroExistente.Monto = gasto.Monto;
+                        registroExistente.Observacion = gasto.Observacion;
+                        registroExistente.Subtotal = gasto.Subtotal;
+                        registroExistente.Reajuste = gasto.Reajuste;
+                        registroExistente.Estado = gasto.Estado;
                     }
                     else
                     {
-                        var nuevogastohh = new Gastoshhhejecucion
+                        
+                        nuevosRegistros.Add(new Gastoshhhejecucion
                         {
                             Idproyecto = idproyecto,
                             Tiporecurso = gasto.Tiporecurso,
@@ -251,15 +258,20 @@ namespace Proyectogestionhoras.Services
                             Hhtotales = gasto.HHtotales,
                             Observacion = gasto.Observacion,
                             Subtotal = gasto.Subtotal,
-                            Reajuste = gasto.Reajuste
-                        };
-                        await context.AddRangeAsync(nuevogastohh);
+                            Reajuste = gasto.Reajuste,
+                            Estado = gasto.Estado
+                        });
                     }
-                   
                 }
+
+                
+                if (nuevosRegistros.Any())
+                    await context.Gastoshhhejecucions.AddRangeAsync(nuevosRegistros);
+
+                
                 await context.SaveChangesAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Error al registrar/actualizar un gastos hh de ejecución: {e.Message}");
                 if (e.InnerException != null)

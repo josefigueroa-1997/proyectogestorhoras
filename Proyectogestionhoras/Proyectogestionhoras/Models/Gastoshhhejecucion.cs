@@ -16,6 +16,7 @@ namespace Proyectogestionhoras.Models
         public string? Observacion { get; set; }
         public decimal? Subtotal { get; set; }
         public decimal? Reajuste { get; set; }
+        public int? Estado { get; set; }
 
         public virtual Proyecto? IdproyectoNavigation { get; set; }
     }
