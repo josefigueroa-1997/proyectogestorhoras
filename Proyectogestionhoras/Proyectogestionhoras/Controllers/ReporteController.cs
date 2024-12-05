@@ -245,14 +245,21 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
+        public IActionResult ReporteForecastCostos()
+        {
+            return View();
+        }
 
-       
-    
+        public IActionResult ReporteForecastIngresos()
+        {
+            return View();
+        }
 
 
 
-    /*DECARGAR BASE DE DATOS*/
-    public async Task<ActionResult> DescargarBasedeDatos()
+
+        /*DECARGAR BASE DE DATOS*/
+        public async Task<ActionResult> DescargarBasedeDatos()
         {
             
             var proyectos = await _reporteService.ExportarBasedeDatos();

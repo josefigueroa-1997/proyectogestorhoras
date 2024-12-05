@@ -1,0 +1,156 @@
+﻿@{
+    ViewData["Title"] = "Reporte Foreact Ingresos";
+}
+<style>
+    .totales {
+        background-color: #d6eaf8;
+    }
+
+    .yellow {
+        background-color: #fcf3cf;
+    }
+</style>
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Forecast Ingresos</h2>
+@*<button id="exportButton" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</button>*@
+<div style="margin-top: 20px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto relative">
+        <table id="tablaforecastproveedor" class="min-w-full divide-y divide-gray-200">
+            <thead class="totales sticky top-0 bg-white">
+                <tr>
+                    <th class="text-left text-xs font-medium min-w-[150px]">Proveedor</th>
+                    <th class="text-left text-xs font-medium min-w-[150px]">Cuenta</th>
+                    <th class="text-left text-xs font-medium min-w-[150px]">Nombre Proyecto</th>
+                    <th class="text-left text-xs font-medium min-w-[150px]">Centro Costo</th>
+                    <th class="text-left text-xs font-medium min-w-[150px]">fecha</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200"></tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var idproyecto = 0;
+
+
+        $.ajax({
+            url: '/EjecucionProyecto/RecuperarForecastIngresos',
+            type: 'GET',
+            data: { },
+            success: function (data) {
+                renderizarTabla(data);
+            },
+            error: function (err) {
+                console.error('Error al recuperar los datos:', err);
+            }
+        });
+
+        function renderizarTabla(data) {
+            const tabla = $('#tablaforecastproveedor');
+            const tablaBody = tabla.find('tbody');
+            const tablaHead = tabla.find('thead');
+
+
+            tablaBody.empty();
+            tablaHead.empty();
+
+
+            const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))].sort();
+
+
+            let encabezado = `
+                               <tr class="totales text-black">
+                                <th class="text-left text-xs font-medium min-w-[150px]">Proveedor</th>
+                                <th class="text-left text-xs font-medium min-w-[150px]">Cuenta</th>
+                               
+                                <th class="text-left text-xs font-medium min-w-[150px]">Nombre Proyecto</th>
+                                <th class="text-left text-xs font-medium min-w-[150px]">Centro Costo</th>
+
+                                `;
+            mesesUnicos.forEach(mes => {
+                encabezado += `<th class="text-center text-xs font-medium min-w-[150px]">${mes}</th>`;
+            });
+            encabezado += `<th class="text-center text-xs font-medium min-w-[150px]">Total Proveedores</th>`;
+            encabezado += `</tr>`;
+            tablaHead.append(encabezado);
+
+
+            const totalesPorMes = new Array(mesesUnicos.length).fill(0);
+            let totalGeneral = 0;
+
+
+            const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombreproyecto', 'codigo']);
+
+            for (let [key, registros] of Object.entries(agrupados)) {
+                const [proveedor, cuenta, nombreproyecto, codigo] = key.split('|');
+
+
+                let fila = `
+                            <tr>
+                                    <td class="text-left text-xs font-medium ">${proveedor}</td>
+                                    <td class="text-left text-xs font-medium ">${cuenta}</td>
+                                  
+                                    <td class="text-left text-xs font-medium">${nombreproyecto}</td>
+                                    <td class="text-left text-xs font-medium">${codigo}</td>
+
+
+                                `
+
+
+                    ;
+
+
+                let totalFila = 0;
+                mesesUnicos.forEach((mes, index) => {
+                    const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
+                    const monto = registroMes ? registroMes.totalforecastproveedor : null;
+
+                    if (monto === null || monto === 0) {
+                        fila += `<td class="border border-black text-right"></td>`;
+                    } else {
+                        totalFila += monto;
+                        totalesPorMes[index] += monto;
+                        fila += `<td class="text-xs border border-black font-medium text-right">${formatMoneda(monto)}</td>`;
+                    }
+                });
+
+
+                fila += `<td class="text-xs border border-black  text-right font-bold">${formatMoneda(totalFila)}</td>`;
+                fila += `</tr>`;
+                tablaBody.append(fila);
+                totalGeneral += totalFila;
+            }
+
+
+            let filaTotales = `
+                               <tr class="totales">
+                                <td class="text-xs text-left font-bold" colspan="4">Totales</td>`;
+            totalesPorMes.forEach(totalMes => {
+                filaTotales += `<td class="text-xs  text-right font-bold">${formatMoneda(totalMes)}</td>`;
+            });
+            filaTotales += `<td class="text-xs  text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
+            filaTotales += `</tr>`;
+
+
+            tablaBody.append(filaTotales);
+        }
+
+
+        function agruparPor(array, keys) {
+            return array.reduce((result, item) => {
+                const groupKey = keys.map(key => item[key]).join('|');
+                if (!result[groupKey]) {
+                    result[groupKey] = [];
+                }
+                result[groupKey].push(item);
+                return result;
+            }, {});
+        }
+
+
+        function formatMoneda(valor) {
+            return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+    });
+</script>

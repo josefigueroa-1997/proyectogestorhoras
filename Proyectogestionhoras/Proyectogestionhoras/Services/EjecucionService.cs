@@ -561,5 +561,110 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task<List<ProveedorForecastDTO>> ObtenerForecastProveedores(int? idproyecto)
+        {
+            try
+            {
+
+
+                var forecast = new List<ProveedorForecastDTO>();
+#pragma warning disable CS8600
+                object idproyectoparamater = (object)idproyecto ?? DBNull.Value;
+               
+#pragma warning restore CS8600
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "[OBTENERFORECASTPROVEEDORES]";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyectoparamater));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ProveedorForecastDTO datos = new()
+                            {
+                                nombreproveedor = reader.IsDBNull(reader.GetOrdinal("nombreproveedor")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombreproveedor")),
+                                tipoproveedor = reader.IsDBNull(reader.GetOrdinal("tipoproveedor")) ? string.Empty : reader.GetString(reader.GetOrdinal("tipoproveedor")),
+                                cuenta = reader.IsDBNull(reader.GetOrdinal("cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("cuenta")),
+                                nombre = reader.IsDBNull(reader.GetOrdinal("nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombre")),
+                                nombreproyecto = reader.IsDBNull(reader.GetOrdinal("nombreproyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombreproyecto")),
+                                codigo = reader.IsDBNull(reader.GetOrdinal("codigo")) ? string.Empty : reader.GetString(reader.GetOrdinal("codigo")),
+
+                                anio = reader.IsDBNull(reader.GetOrdinal("anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("anio")),
+                                mes = reader.IsDBNull(reader.GetOrdinal("mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("mes")),
+                                totalforecastproveedor = reader.IsDBNull(reader.GetOrdinal("totalforecastproveedor")) ? 0 : reader.GetDecimal(reader.GetOrdinal("totalforecastproveedor")),
+
+                                
+                            };
+                            forecast.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return forecast;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los forecast de los proovedores:{ex.Message}");
+                return new List<ProveedorForecastDTO>();
+
+            }
+        }
+
+        public async Task<List<ProveedorForecastDTO>> ObtenerForecastIngresos()
+        {
+            try
+            {
+
+
+                var forecast = new List<ProveedorForecastDTO>();
+
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "[OBTENERFORECASTINGRESO]";
+                    command.CommandType = CommandType.StoredProcedure;
+            
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ProveedorForecastDTO datos = new()
+                            {
+                                nombreproveedor = reader.IsDBNull(reader.GetOrdinal("nombreproveedor")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombreproveedor")),
+                                
+                                cuenta = reader.IsDBNull(reader.GetOrdinal("cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("cuenta")),
+                               
+                                nombreproyecto = reader.IsDBNull(reader.GetOrdinal("nombreproyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombreproyecto")),
+                                codigo = reader.IsDBNull(reader.GetOrdinal("codigo")) ? string.Empty : reader.GetString(reader.GetOrdinal("codigo")),
+
+                                anio = reader.IsDBNull(reader.GetOrdinal("anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("anio")),
+                                mes = reader.IsDBNull(reader.GetOrdinal("mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("mes")),
+                                totalforecastproveedor = reader.IsDBNull(reader.GetOrdinal("totalforecastproveedor")) ? 0 : reader.GetDecimal(reader.GetOrdinal("totalforecastproveedor")),
+
+
+                            };
+                            forecast.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return forecast;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los forecast de los proovedores:{ex.Message}");
+                return new List<ProveedorForecastDTO>();
+
+            }
+        }
     }
 }

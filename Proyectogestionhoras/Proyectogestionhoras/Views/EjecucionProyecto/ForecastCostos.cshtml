@@ -930,7 +930,34 @@
         <div class="text-center mt-2">
             <button type="submit" class="bg-green-500 text-white p-3 text-xl w-52 h-12  rounded">Guardar Costos</button>
         </div>
+
+        
+
     </form>
+    <div class="form-group">
+
+        <p class="form-subtitle" style="color:black;">Resumen Forecast Proveedores del proyecto </p>
+        <div class="flex justify-center py-5">
+            <div class="overflow-x-auto w-full">
+                <table id="tablaforecastproveedor" class="min-w-full text-xs border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-green-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
+                            <th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
+                            <th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>
+                            <th class="p-2 border border-gray-300 text-center min-w-[150px]">fecha</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
 </div>
 
 
@@ -1528,7 +1555,117 @@
             });
         });
     });
+    $(document).ready(function () {
+      
+        var idproyecto = '@Context.Session.GetInt32("numproyecto")';
 
-   
+        
+        $.ajax({
+            url: '/EjecucionProyecto/RecuperarForecastProveedores',
+            type: 'GET',
+            data: { idproyecto: idproyecto },
+            success: function (data) {
+                renderizarTabla(data);
+            },
+            error: function (err) {
+                console.error('Error al recuperar los datos:', err);
+            }
+        });
+
+        function renderizarTabla(data) {
+            const tabla = $('#tablaforecastproveedor');
+            const tablaBody = tabla.find('tbody');
+            const tablaHead = tabla.find('thead');
+
+         
+            tablaBody.empty();
+            tablaHead.empty();
+
+         
+            const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))].sort();
+
+            
+            let encabezado = `
+                    <tr class="bg-green-100 text-black">
+                    <th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
+                    <th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
+                    <th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
+            mesesUnicos.forEach(mes => {
+                encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
+            });
+            encabezado += `<th class="p-2 border border-gray-300 text-right">Total Proveedores</th>`;
+            encabezado += `</tr>`;
+            tablaHead.append(encabezado);
+
+         
+            const totalesPorMes = new Array(mesesUnicos.length).fill(0);
+            let totalGeneral = 0;
+
+            
+            const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre']);
+
+            for (let [key, registros] of Object.entries(agrupados)) {
+                const [proveedor, cuenta, nombre] = key.split('|');
+
+         
+                let fila = `
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">${proveedor}</td>
+                        <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
+                        <td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
+
+                
+                let totalFila = 0;
+                mesesUnicos.forEach((mes, index) => {
+                    const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
+                    const monto = registroMes ? registroMes.totalforecastproveedor : null;
+           
+                    if (monto === null || monto === 0) {
+                        fila += `<td class="p-2 border border-gray-300 text-right"></td>`;
+                    } else {
+                        totalFila += monto;
+                        totalesPorMes[index] += monto;
+                        fila += `<td class="p-2 border border-gray-300 text-right">${formatMoneda(monto)}</td>`;
+                    }
+                });
+
+           
+                fila += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalFila)}</td>`;
+                fila += `</tr>`;
+                tablaBody.append(fila);
+                totalGeneral += totalFila;
+            }
+
+           
+            let filaTotales = `
+                    <tr class="bg-green-100">
+                    <td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
+            totalesPorMes.forEach(totalMes => {
+                filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
+            });
+            filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
+            filaTotales += `</tr>`;
+
+       
+            tablaBody.append(filaTotales);
+        }
+
+       
+        function agruparPor(array, keys) {
+            return array.reduce((result, item) => {
+                const groupKey = keys.map(key => item[key]).join('|');
+                if (!result[groupKey]) {
+                    result[groupKey] = [];
+                }
+                result[groupKey].push(item);
+                return result;
+            }, {});
+        }
+
+      
+        function formatMoneda(valor) {
+            return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+    });
 
 </script>

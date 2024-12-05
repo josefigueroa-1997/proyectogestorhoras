@@ -563,7 +563,7 @@ namespace Proyectogestionhoras.Services
                                 HHSocios = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
                                 Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
-                                FechaPlazo = reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
+                                FechaPlazo = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
                                 FechaInicio = reader.GetDateTime(reader.GetOrdinal("FECHA_INICIO")),
                                 FechaTermino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")),
                                 Tipologia = reader.IsDBNull(reader.GetOrdinal("TIPO_TIPOLOGIA")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO_TIPOLOGIA")),

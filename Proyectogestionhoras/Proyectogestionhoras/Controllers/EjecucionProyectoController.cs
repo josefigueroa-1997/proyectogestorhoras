@@ -125,6 +125,13 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> RecuperarForecastIngresos()
+        {
+            var resultado = await ejecucionService.ObtenerForecastIngresos();
+            return Json(resultado);
+        }
+
         /*FORECAST COSTOS*/
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
@@ -355,6 +362,14 @@ namespace Proyectogestionhoras.Controllers
             .Where(p => EF.Functions.Like(p.Tipo, "%Gasto%")).OrderBy(p => p.Nombre)
             .ToListAsync();
             return Json(proveedores);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> RecuperarForecastProveedores(int? idproyecto)
+        {
+            var resultado = await ejecucionService.ObtenerForecastProveedores(idproyecto);
+            return Json(resultado);
         }
 
 

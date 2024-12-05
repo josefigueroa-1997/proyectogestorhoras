@@ -44,7 +44,14 @@
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]">@p.Plazo ms</td>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.FechaInicio.ToString("dd/MM/yyyy")</td>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.FechaTermino.ToString("dd/MM/yyyy")</td>
-                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.FechaPlazo.ToString("dd/MM/yyyy")</td>
+                            @if (p.FechaPlazo != null)
+                            {
+                                <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.FechaPlazo.ToString("dd/MM/yyyy")</td>
+                            }
+                            else
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]"></td>
+                            }
                             @if (p.HHSocios == 0)
                             {
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]"></td>
