@@ -662,7 +662,7 @@
                         <td style="display:none;">
                             <input type="text" class="idsegmentoservicio" name="idsegmentoservicio" />
                         </td>
-                       
+                        <input type="hidden" name="IdServicioProyecto" value="" />
                     </tr>
                     
                     
@@ -942,8 +942,9 @@
             <input class="idsegmentoservicio" name="idsegmentoservicio"  />
         </td>
         <td style="padding: 10px; border: 1px solid #ddd;">
-            <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
+            <button  type="button" class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
         </td>
+            <input type="hidden" name="IdServicioProyecto"  value="" />
     `;
 
             document.querySelector('#tablaservicios tbody').appendChild(newRow);
@@ -951,7 +952,7 @@
             // Llama a la función para cargar los segmentos en el nuevo select
            // obtenerSegmentosCostos(newRow.querySelector('.segmentoservicio'));
             cargarServicios(newRow.querySelector('.serviciosSelect'));
-            obtenerValoresServicio();
+            //obtenerValoresServicio();
             const newMontoInput = newRow.querySelector('.montoservicio');
             newMontoInput.addEventListener("input", function (event) {
                 formatInput(event);

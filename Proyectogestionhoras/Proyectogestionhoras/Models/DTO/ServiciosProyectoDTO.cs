@@ -2,6 +2,7 @@
 {
     public class ServiciosProyectoDTO
     {
+        public int Id { get; set; }
         public int IDSERVICIO { get; set; }
         public string? NOMBRESERVICIO { get; set; }
         public string? NOMBRSEGMENTO { get; set; }

@@ -126,9 +126,12 @@ namespace Proyectogestionhoras.Controllers
                 var idsegmentoservicio = Request.Form["idsegmentoservicio"];
                 var montoservicioList = Request.Form["montoservicio"];
                 var fechaservicio = Request.Form["fechaservicio"];
-
+                var IdServicioProyecto = Request.Form["IdServicioProyecto"];
                 for (int i = 0; i < idsservicios.Count; i++)
                 {
+                    int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioProyecto[i])
+                                           ? 0
+                                           : int.Parse(IdServicioProyecto[i]);
                     var montoservicioStr = montoservicioList[i].ToString();
 
                     montoservicioStr = montoservicioStr.Replace(".", "");
@@ -136,6 +139,7 @@ namespace Proyectogestionhoras.Controllers
                     decimal montoservicio = decimal.Parse(montoservicioStr);
                     var servicioViewModel = new ServicioViewModel
                     {
+                        IdServicioProyecto = idServicioRealParsed,
                         Idservicios = int.Parse(idsservicios[i]),
                         IdSegmento = int.Parse(idsegmentoservicio[i]),
                         MontoServicio = montoservicio, 
@@ -357,12 +361,17 @@ namespace Proyectogestionhoras.Controllers
                 var montoservicioListejecucion = Request.Form["montoservicio"];
                 var fechaservicioejecucion = Request.Form["fechaservicio"];
                 var esEliminado = Request.Form["esEliminado"];
+                var IdServicioProyecto = Request.Form["IdServicioProyecto"];
 
-                
+
                 for (int i = 0; i < idsserviciosejecucion.Count; i++)
                 {
+                    int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioProyecto[i])
+                                           ? 0
+                                           : int.Parse(IdServicioProyecto[i]);
                     var servicioViewModel = new ServicioViewModel
                     {
+                        IdServicioProyecto = idServicioRealParsed,
                         Idservicios = int.Parse(idsserviciosejecucion[i]),
                         IdSegmento = int.Parse(idsegmentoservicioejecucion[i]),
                         MontoServicio = decimal.Parse(montoservicioListejecucion[i].Replace(".", "")),
@@ -425,18 +434,16 @@ namespace Proyectogestionhoras.Controllers
             var montoservicioList = Request.Form["montoservicio"];
             var fechaservicio = Request.Form["fechaservicio"];
             var esEliminados = Request.Form["esEliminado"];
-
+            var IdServicioProy = Request.Form["IdServicioProyecto"];
 
             var statusedicion = int.Parse(Request.Form["status"].ToString());
-            List<GastoViewModel> gastos = new List<GastoViewModel>();
-            var idgastos = Request.Form["idgastos[]"];
-            var idsegmentogasto = Request.Form["idsegmentogasto"];
-            var montogastoList = Request.Form["montogasto"];
-            var fechagasto = Request.Form["fechagasto"];
-            var esEliminadogastos = Request.Form["esEliminados"];
+           
             
                 for (int i = 0; i < idsservicios.Count; i++)
                 {
+                    int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioProy[i])
+                                      ? 0
+                                      : int.Parse(IdServicioProy[i]);
                     var montoservicioStr = montoservicioList[i].ToString();
 
                     montoservicioStr = montoservicioStr.Replace(".", "");
@@ -444,6 +451,7 @@ namespace Proyectogestionhoras.Controllers
                     decimal montoservicio = decimal.Parse(montoservicioStr);
                     var servicioViewModel = new ServicioViewModel
                     {
+                        IdServicioProyecto = idServicioRealParsed,
                         Idservicios = int.Parse(idsservicios[i]),
                         IdSegmento = int.Parse(idsegmentoservicio[i]),
                         MontoServicio = montoservicio,
@@ -455,8 +463,13 @@ namespace Proyectogestionhoras.Controllers
                     servicios.Add(servicioViewModel);
                 }
 
-
-                for (int i = 0; i < idgastos.Count; i++)
+            List<GastoViewModel> gastos = new List<GastoViewModel>();
+            var idgastos = Request.Form["idgastos[]"];
+            var idsegmentogasto = Request.Form["idsegmentogasto"];
+            var montogastoList = Request.Form["montogasto"];
+            var fechagasto = Request.Form["fechagasto"];
+            var esEliminadogastos = Request.Form["esEliminados"];
+            for (int i = 0; i < idgastos.Count; i++)
                 {
                     var montogastoStr = montogastoList[i].ToString();
 
