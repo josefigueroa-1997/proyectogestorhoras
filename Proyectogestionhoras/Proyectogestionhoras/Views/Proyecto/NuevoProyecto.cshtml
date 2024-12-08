@@ -717,7 +717,9 @@
                         <td style="display:none">
                             <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
                         </td>
-                       
+                        <td style="display:none;">
+                            <input type="hidden" name="IdGastoProyecto" value="" />
+                        </td>
                     </tr>
                   
 
@@ -1052,6 +1054,14 @@
         montoInput.name = "montogasto";
         montoCell.appendChild(montoInput);
 
+            const IdGastoProyectoCell = document.createElement('td');
+            IdGastoProyectoCell.style.display = 'none';
+            const hiddenIdGastoProyectoInput = document.createElement('input');
+            hiddenIdGastoProyectoInput.type = 'hidden';
+            hiddenIdGastoProyectoInput.name = 'IdGastoProyecto';
+            hiddenIdGastoProyectoInput.value = '';
+            IdGastoProyectoCell.appendChild(hiddenIdGastoProyectoInput);
+
    
         montoInput.addEventListener("input", formatInput);
 
@@ -1105,7 +1115,7 @@
             
         newRow.appendChild(eliminarCell);
         newRow.appendChild(idSegmentoGastoCell);
-
+            newRow.appendChild(IdGastoProyectoCell);
       
         cargarGastos(newRow.querySelector('.gastosSelect'));
 
@@ -1339,7 +1349,7 @@
             type: 'GET',
             success: function (data) {
                 $(selectElement).empty();
-                $(selectElement).append('<option value="" disabled selected>Seleccione un gasto</option>');
+                $(selectElement).append('<option value="" disabled selected>Seleccione un Servicio</option>');
 
                 $.each(data, function (index, servicio) {
                     $(selectElement).append('<option value="' + servicio.id + '">' + servicio.nombre + '</option>');

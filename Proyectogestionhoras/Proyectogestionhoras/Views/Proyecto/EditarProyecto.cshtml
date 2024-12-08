@@ -1010,9 +1010,11 @@
                                             <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
                                         </td>
                                         <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
+                                            <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Eliminar</button>
                                         </td>
-
+                                        <td style="display:none;">
+                                            <input type="hidden" name="IdGastoProyecto" value="@gp.Id" />
+                                        </td>
                                     </tr>
                                 }
                             }
@@ -1046,8 +1048,11 @@
                     <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
                     </td>
                     <td style="padding: 10px; border: 1px solid #ddd;">
-                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Limpiar</button>
+                    <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Eliminar</button>
                     </td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="IdGastoProyecto" value="" />
+                                </td>
                     </tr>
                     
                         </tbody>
@@ -2012,7 +2017,9 @@
                                         <td style="padding: 10px; border: 1px solid #ddd;">
                                             <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Eliminar</button>
                                         </td>
-
+                                        <td style="display:none;">
+                                            <input type="hidden" name="IdGastoProyecto" value="@gp.Id" />
+                                        </td>
                                     </tr>
                                 }
                             }
@@ -2047,6 +2054,9 @@
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <button type="button" class="limpiar-btn" onclick="limpiarFilagasto(this)">Eliminar</button>
+                                </td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="IdGastoProyecto" value="" />
                                 </td>
                             </tr>
                         </tbody>
@@ -2916,6 +2926,14 @@
             hiddenInput.value = 'false';
             hiddenCell.appendChild(hiddenInput);
 
+            const IdGastoProyectoCell = document.createElement('td');
+            IdGastoProyectoCell.style.display = 'none';
+            const hiddenIdGastoProyectoInput = document.createElement('input');
+            hiddenIdGastoProyectoInput.type = 'hidden';
+            hiddenIdGastoProyectoInput.name = 'IdGastoProyecto';
+            hiddenIdGastoProyectoInput.value = '';
+            IdGastoProyectoCell.appendChild(hiddenIdGastoProyectoInput);
+            
 
 
            
@@ -2952,6 +2970,7 @@
             newRow.appendChild(eliminarCell);
             newRow.appendChild(idSegmentoGastoCell);
             newRow.appendChild(hiddenCell);
+            newRow.appendChild(IdGastoProyectoCell);
           
             cargarGastos(newRow.querySelector('.gastosSelect'));
 

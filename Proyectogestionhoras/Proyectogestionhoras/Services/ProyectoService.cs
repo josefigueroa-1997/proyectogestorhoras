@@ -235,35 +235,39 @@ namespace Proyectogestionhoras.Services
                 return;
             }
 
-            var serviciosExistentes = await context.ProyectoGastos
+            var gastoExistentes = await context.ProyectoGastos
                 .Where(ps => ps.IdProyecto == idProyecto)
                 .ToListAsync();
 
             
             foreach (var gasto in gastos.Where(s => s.EsEliminado))
             {
-                var servicioExistente = serviciosExistentes
-                    .FirstOrDefault(se => se.IdGastos == gasto.Idgastos && se.Fecha == gasto.Fecha);
+                var gastoExistente = gastoExistentes
+                    .FirstOrDefault(se => se.Id == gasto.IdGastoProyecto);
 
-                if (servicioExistente != null)
+                if (gastoExistente != null)
                 {
-                    context.ProyectoGastos.Remove(servicioExistente);
+                    context.ProyectoGastos.Remove(gastoExistente);
                 }
             }
 
             
             foreach (var gasto in gastos.Where(s => !s.EsEliminado))
             {
-                var gastoExistente = serviciosExistentes
-                    .FirstOrDefault(se => se.IdGastos == gasto.Idgastos && se.Fecha == gasto.Fecha);
-
-                if (gastoExistente != null)
+                if (gasto.IdGastoProyecto > 0)
                 {
-                    gastoExistente.Idsegmento = gasto.IdSegmento;
-                    gastoExistente.Monto = gasto.MontoGasto;
-                    gastoExistente.IdGastos = gasto.Idgastos;
-                   
+                    var gastoExistente = gastoExistentes
+                   .FirstOrDefault(se => se.Id == gasto.IdGastoProyecto);
+
+                    if (gastoExistente != null)
+                    {
+                        gastoExistente.Idsegmento = gasto.IdSegmento;
+                        gastoExistente.Monto = gasto.MontoGasto;
+                        gastoExistente.IdGastos = gasto.Idgastos;
+
+                    }
                 }
+               
                 else
                 {
                     var nuevoGasto = new ProyectoGasto
@@ -628,6 +632,7 @@ namespace Proyectogestionhoras.Services
                         {
                             GastoProyectoDTO gasto = new()
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 IDGASTOS = reader.GetInt32(reader.GetOrdinal("IDGASTOS")),
                                 NOMBREGASTO = reader.GetString(reader.GetOrdinal("NOMBREGASTO")),
                                 NOMBRSEGMENTO = reader.GetString(reader.GetOrdinal("NOMBRSEGMENTO")),

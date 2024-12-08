@@ -2,6 +2,7 @@
 {
     public class GastoViewModel
     {
+        public int IdGastoProyecto { get; set; }
         public int Idgastos { get; set; }
         public int IdSegmento { get; set; }
         public decimal MontoGasto { get; set; }

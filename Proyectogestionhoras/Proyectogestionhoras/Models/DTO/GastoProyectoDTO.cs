@@ -2,6 +2,7 @@
 {
     public class GastoProyectoDTO
     {
+        public int Id { get; set; }
         public int IDGASTOS { get; set; }
         public string? NOMBREGASTO { get; set; }
         public string? NOMBRSEGMENTO { get; set; }

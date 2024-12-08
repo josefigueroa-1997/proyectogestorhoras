@@ -155,10 +155,15 @@ namespace Proyectogestionhoras.Controllers
                 var idsegmentogasto = Request.Form["idsegmentogasto"];
                 var montogastoList = Request.Form["montogasto"];
                 var fechagasto = Request.Form["fechagasto"];
+                var idgastoproyecto = Request.Form["IdGastoProyecto"];
                 for (int i = 0; i < idgastos.Count; i++)
                 {
+                    int idGastoRealParsed = string.IsNullOrWhiteSpace(idgastoproyecto[i])
+                                           ? 0
+                                           : int.Parse(idgastoproyecto[i]);
                     var gastoviewmodel = new GastoViewModel
                     {
+                        IdGastoProyecto = idGastoRealParsed,
                         Idgastos = int.Parse(idgastos[i]),
                         IdSegmento = int.Parse(idsegmentogasto[i]),
                         MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")) ,
@@ -391,8 +396,12 @@ namespace Proyectogestionhoras.Controllers
                 var montogastoListejecucion = Request.Form["montogasto"];
                 var fechagastoejecucion = Request.Form["fechagasto"];
                 var esEliminadogasto = Request.Form["esEliminados"];
+                var idgastoproyecto = Request.Form["IdGastoProyecto"];
                 for (int i = 0; i < idgastosejecuion.Count; i++)
                 {
+                    int idGastoRealParsed = string.IsNullOrWhiteSpace(idgastoproyecto[i])
+                                           ? 0
+                                           : int.Parse(idgastoproyecto[i]);
                     var montogastoStr = montogastoListejecucion[i].ToString();
 
                     montogastoStr = montogastoStr.Replace(".", "");
@@ -400,6 +409,7 @@ namespace Proyectogestionhoras.Controllers
                     decimal montogasto = decimal.Parse(montogastoStr);
                     var gasto = new GastoViewModel
                     {
+                        IdGastoProyecto = idGastoRealParsed,
                         Idgastos = int.Parse(idgastosejecuion[i]),
                         IdSegmento = int.Parse(idsegmentogastoejecucion[i]),
                         MontoGasto = montogasto,
@@ -469,8 +479,12 @@ namespace Proyectogestionhoras.Controllers
             var montogastoList = Request.Form["montogasto"];
             var fechagasto = Request.Form["fechagasto"];
             var esEliminadogastos = Request.Form["esEliminados"];
+            var idgastoproyectos = Request.Form["IdGastoProyecto"];
             for (int i = 0; i < idgastos.Count; i++)
                 {
+                    int idGastoRealParsed = string.IsNullOrWhiteSpace(idgastoproyectos[i])
+                                           ? 0
+                                           : int.Parse(idgastoproyectos[i]);
                     var montogastoStr = montogastoList[i].ToString();
 
                     montogastoStr = montogastoStr.Replace(".", "");
@@ -478,6 +492,7 @@ namespace Proyectogestionhoras.Controllers
                     decimal montogasto = decimal.Parse(montogastoStr);
                     var gasto = new GastoViewModel
                     {
+                        IdGastoProyecto = idGastoRealParsed,
                         Idgastos = int.Parse(idgastos[i]),
                         IdSegmento = int.Parse(idsegmentogasto[i]),
                         MontoGasto = montogasto,
