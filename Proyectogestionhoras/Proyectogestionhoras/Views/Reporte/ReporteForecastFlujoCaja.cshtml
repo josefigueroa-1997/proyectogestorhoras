@@ -1,0 +1,139 @@
+﻿@using Proyectogestionhoras.Models.DTO
+@model Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>> // Diccionario actualizado
+
+@if (Model != null && Model.Any())
+{
+    <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Flujo de Caja de Proyectos</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Proyecto</th>
+                <th>Tipo</th>
+                <th>Cuenta</th>
+                @* Agrupar por Mes y Año *@
+                @{
+                    // Crear un conjunto para almacenar las tuplas de Mes-Año únicas
+                    var mesesAnios = new HashSet<(int, int)>();
+
+                    // Iterar sobre los proyectos y tipos para obtener las tuplas Mes-Año
+                    foreach (var proyecto in Model)
+                    {
+                        foreach (var tipo in proyecto.Value)
+                        {
+                            foreach (var mesAnio in tipo.Value.Keys)
+                            {
+                                mesesAnios.Add(mesAnio);  // Agregar la tupla Mes-Año al conjunto
+                            }
+                        }
+                    }
+
+                    // Ordenar los meses y años
+                    var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
+
+                    // Mostrar los encabezados de las columnas de mes-año
+                    foreach (var mesAnio in mesesAniosOrdenados)
+                    {
+                        <th colspan="3">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
+                    }
+                }
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                @foreach (var mesAnio in mesesAniosOrdenados)
+                {
+                    <th>Proyectado</th>
+                    <th>Real</th>
+                    <th>Forecast</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var proyecto in Model.OrderBy(p => p.Key))
+            {
+                // Definir los totales para cada mes
+                var totalProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                var totalRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                var totalForecastPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+
+                foreach (var tipo in proyecto.Value)
+                {
+                    <tr>
+                        <td>@proyecto.Key</td>
+                        <td>@tipo.Key</td>
+
+                        @* Obtener la primera cuenta para este tipo *@
+                        @{
+                            var primeraCuenta = tipo.Value.Values
+                            .SelectMany(flujoList => flujoList)
+                            .FirstOrDefault(); // Obtener el primer elemento de la lista de flujos
+
+                            var cuenta = primeraCuenta != null ? primeraCuenta.Cuenta : "No disponible"; // Mostrar la cuenta si existe
+                        }
+
+                        <td>@cuenta</td> <!-- Primera cuenta encontrada -->
+                        @foreach (var mesAnio in mesesAniosOrdenados)
+                        {
+                            // Filtrar los registros que correspondan a este mes-año
+                            var flujo = tipo.Value
+                            .FirstOrDefault(flujoList =>
+                            flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);  // Filtrar por tupla Mes-Año
+
+                            decimal proyectado = 0;
+                            decimal real = 0;
+                            decimal forecast = 0;
+
+                            if (flujo.Key != default) // Verificar que el flujo existe
+                            {
+                                // Filtrar los elementos por Estado y calcular la suma para cada uno
+                                proyectado = flujo.Value
+                                .Where(f => f.Estado == "Proyectado")  // Filtrar por estado 'Proyectado'
+                                .Sum(f => f.Monto);  // Sumar los montos
+
+                                real = flujo.Value
+                                .Where(f => f.Estado == "Real")  // Filtrar por estado 'Real'
+                                .Sum(f => f.Monto);  // Sumar los montos
+
+                                forecast = flujo.Value
+                                .Where(f => f.Estado == "Forecast")  // Filtrar por estado 'Forecast'
+                                .Sum(f => f.Monto);  // Sumar los montos
+                            }
+
+                            <td>@proyectado</td> <!-- Columna Proyectado -->
+                            <td>@real</td> <!-- Columna Real -->
+                            <td>@forecast</td> <!-- Columna Forecast -->
+                            // Solo sumar si es un "Egreso"
+                            if (tipo.Key != "Ingreso")
+                            {
+                                // Acumular los totales por mes
+                                if (!totalProyectadoPorMes.ContainsKey(mesAnio)) totalProyectadoPorMes[mesAnio] = 0;
+                                if (!totalRealPorMes.ContainsKey(mesAnio)) totalRealPorMes[mesAnio] = 0;
+                                if (!totalForecastPorMes.ContainsKey(mesAnio)) totalForecastPorMes[mesAnio] = 0;
+
+                                totalProyectadoPorMes[mesAnio] += proyectado;
+                                totalRealPorMes[mesAnio] += real;
+                                totalForecastPorMes[mesAnio] += forecast;
+                            }
+                        }
+                    </tr>
+                }
+
+                @* Mostrar los totales de Egresos por Proyecto *@
+                <tr style="font-weight: bold;">
+                    <td colspan="3">Total Egresos por Proyecto (@proyecto.Key)</td>
+                    @foreach (var mesAnio in mesesAniosOrdenados)
+                    {
+                        <td>@totalProyectadoPorMes.GetValueOrDefault(mesAnio, 0)</td>
+                        <td>@totalRealPorMes.GetValueOrDefault(mesAnio, 0)</td>
+                        <td>@totalForecastPorMes.GetValueOrDefault(mesAnio, 0)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron datos para mostrar.</p>
+}

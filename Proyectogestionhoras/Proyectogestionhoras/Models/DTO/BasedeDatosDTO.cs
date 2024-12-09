@@ -34,5 +34,6 @@
         public decimal CostoconsultorC { get; set; }
         public decimal TotalServicios { get; set; }
         public decimal TotalGastos { get; set; }
+       
     }
 }
