@@ -10,13 +10,13 @@
 
     textarea {
         width: 100%;
-        padding: 8px; 
+        padding: 8px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        box-sizing: border-box; 
-        resize: vertical; 
-        vertical-align: top; 
-        text-align: left; 
+        box-sizing: border-box;
+        resize: vertical;
+        vertical-align: top;
+        text-align: left;
     }
 
     .form-container {
@@ -92,8 +92,8 @@
         margin-top: 20px;
     }
 
-    .submit-btn,.planilla-btn,.gantt-btn {
-        padding: 8px 20px; 
+    .submit-btn, .planilla-btn, .gantt-btn {
+        padding: 8px 20px;
         font-size: 0.9rem;
         font-weight: 600;
         border: none;
@@ -114,32 +114,32 @@
 
 
     .planilla-btn {
-        color: #fff; 
-        background-color: #333; 
+        color: #fff;
+        background-color: #333;
         border-left: 4px solid #fcaa67;
-        cursor: pointer; 
-        text-decoration: none; 
-        padding: 10px; 
+        cursor: pointer;
+        text-decoration: none;
+        padding: 10px;
         display: inline-block;
     }
 
         .planilla-btn:hover {
-            background-color: #333; 
-            border-color: #fcaa67; 
+            background-color: #333;
+            border-color: #fcaa67;
         }
 
         .planilla-btn:hover {
-            color: #fcaa67; 
+            color: #fcaa67;
         }
 
     .gantt-btn {
         color: #fff;
-        background-color: #4caf50; 
-        border-left: 4px solid #fcaa67; 
+        background-color: #4caf50;
+        border-left: 4px solid #fcaa67;
     }
 
         .gantt-btn:hover {
-            background-color: #388e3c; 
+            background-color: #388e3c;
         }
 
     .horas-disponibles {
@@ -169,28 +169,28 @@
     .pagination {
         margin-top: 20px;
         display: flex;
-        justify-content: center; 
+        justify-content: center;
     }
 
     .page-btn {
         margin: 0 5px;
-        padding: 8px 12px; 
-        background-color: #007bff; 
-        color: white; 
-        border: none; 
-        border-radius: 5px; 
-        cursor: pointer; 
-        transition: background-color 0.3s; 
+        padding: 8px 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
 
         .page-btn:hover {
-            background-color: #0056b3; 
+            background-color: #0056b3;
         }
 
         .page-btn:disabled {
-            background-color: #cccccc; 
-            cursor: not-allowed; 
-            opacity: 0.7; 
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 </style>
 
@@ -200,10 +200,10 @@
         int? idusuario = Context.Session.GetInt32("id");
         string? recurso = Context.Session.GetString("recurso");
     }
-    
+
     <div style="display: flex; justify-content: flex-end; margin-top: 10px; margin-right: 20px;">
         <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=idusuario})" class="planilla-btn">Mis Planillas</a>
-    
+
     </div>
     <h1 class="form-title">Planilla: @nombre</h1>
     <p class="form-subtitle">Rol:@recurso</p>
@@ -215,13 +215,13 @@
                 <tr style="background-color: #d9e2f3; color: black;">
                     <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Actividad</th>
-              
-                    <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
-                    
+                    <th style="padding: 10px; border: 1px solid #ddd;">Item</th>
+                
+
                     <th style="padding: 10px; border: 1px solid #ddd;">Num. Hrs</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
-                    
-                    
+
+
                 </tr>
             </thead>
             <tbody id="tabla-body">
@@ -235,15 +235,16 @@
 
                         </select>
                     </td>
-                  
                     <td style="padding: 10px; border: 1px solid #ddd;">
-                        <select class="proyectosSelect" name="proyecto">
-                            <option value="" disabled selected></option>
 
+                        <select class="subactividadesSelect" name="subactividad">
+                            <option value="" disabled selected></option>
 
                         </select>
                     </td>
-                    
+
+                  
+
                     <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" step="0.5" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
                     <td style="padding: 10px; border: 1px solid #ddd;">
                         <textarea rows="4" name="observaciones" style="width:100%;">
@@ -255,40 +256,18 @@
                     <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
 
                 </tr>
-                
-                @if (ViewBag.Planilla != null)
-                {
-                    @foreach (var planilla in ViewBag.Planilla)
-                    {
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">@planilla.FechaRegistro.ToString("dd/MM/yyyy")</td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-                                @planilla.NombreActividad
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; ">
-                                @planilla.NumProyecto - @planilla.NombreProyecto
-                            </td>
-                            
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-                                @planilla.HHregistradas
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-                                @planilla.Observaciones
-                            </td>
-                        </tr>
-                    }
-                }
-                
-               
+
+
+
+
             </tbody>
         </table>
         <div class="pagination">
-           
         </div>
 
     </div>
     <input type="hidden" class="hhrestantes" name="hhrestanes" />
-    <input type="hidden" class="rolrecurso" name="rolrecurso"/>
+    <input type="hidden" class="rolrecurso" name="rolrecurso" />
     <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" />
     <div class="fixed inset-0 flex items-center justify-center z-50" id="mensajeModal" style="display: none;">
         <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
@@ -314,7 +293,7 @@
         var today = new Date().toISOString().split('T')[0];
         $('.fecharegistro').val(today);
 
-        
+
         $('.fecharegistro').attr('max', today);
 
         window.closeModal = function () {
@@ -323,7 +302,7 @@
 
         var idusuario = @Context.Session.GetInt32("id");
         var recursousuario = '@Context.Session.GetString("recurso")';
-        
+
 
         function cargarProyectos() {
             if (idusuario) {
@@ -336,7 +315,7 @@
                         $('.proyectosSelect').append('<option value="" disabled selected>Seleccione un proyecto</option>');
 
                         if (response.length > 0) {
-                           
+
                             $.each(response, function (index, proyecto) {
                                 $('.proyectosSelect').append(
                                     $('<option>', {
@@ -351,7 +330,7 @@
                                 cargarInformacionUsuario(idproyecto);
                             });
                         } else {
-                           
+
                             $('.proyectosSelect').append('<option value="" disabled>No hay proyectos disponibles</option>');
                         }
                     },
@@ -372,7 +351,7 @@
                         $('.rolrecurso').val(informacionusuario[0].recurso);
                         $('.hhrestantes').val(informacionusuario[0].hhasignadas);
                         $('.idusuarioproyecto').val(informacionusuario[0].idusuarioproyecto);
-                       // cargarActividades(informacionusuario[0].recurso);
+                        // cargarActividades(informacionusuario[0].recurso);
                     } else {
                         $('.rolrecurso').val('Recurso no disponible');
                     }
@@ -386,7 +365,7 @@
 
         function cargarActividades(recurso) {
             $.ajax({
-                url: '@Url.Action("RecuperarActividades", "Usuario")',
+                url: '@Url.Action("RecuperarActividadesEmpresa", "Usuario")',
                 type: 'GET',
                 data: { recurso: recurso },
                 success: function (actividades) {
@@ -410,17 +389,17 @@
         cargarActividades(recursousuario);
         cargarProyectos();
 
-       /* function cargarSubactividades(idActividad) {
+        function cargarSubactividades(idActividad) {
             $.ajax({
-                url: '', 
+                url: '@Url.Action("RecuperarSubActividades", "Usuario")',
                 type: 'GET',
                 data: { idactividad: idActividad },
                 success: function (subactividades) {
-              
-                    $('.subactividadesSelect').empty();
-                    $('.subactividadesSelect').append('<option value="" disabled selected>Seleccione una subactividad</option>');
 
-                   
+                    $('.subactividadesSelect').empty();
+                    $('.subactividadesSelect').append('<option value="" disabled selected>Seleccione una Item</option>');
+
+
                     $.each(subactividades, function (index, subactividad) {
                         $('.subactividadesSelect').append(
                             $('<option>', {
@@ -436,21 +415,22 @@
             });
         }
 
-     
+
         $(document).on('change', '.actividadesSelect', function () {
-            const idActividad = $(this).val(); 
+            const idActividad = $(this).val();
             if (idActividad) {
                 cargarSubactividades(idActividad);
             }
         });
-        */
+
         $(document).on('click', '.submit-btn', function (event) {
             event.preventDefault();
 
             var fecha = $('.fecharegistro').val();
-            var idproyecto = $('.proyectosSelect').val();
-            var Idactividad = $('.actividadesSelect').val();
            
+            var Idactividad = $('.actividadesSelect').val();
+            var Idsubactividad = $('.subactividadesSelect').val();
+
             var horasRegistradas = $('input[name="hhregistradas"]').val();
             var observaciones = $('textarea[name="observaciones"]').val();
             var idusuarioproyecto = $('.idusuarioproyecto').val();
@@ -459,7 +439,7 @@
             var hhingresadas = parseFloat(horasRegistradas);
             var hhpendientes = parseFloat(hhrestantesinput);
 
-            if (!fecha || !idproyecto || !Idactividad || horasRegistradas === 0) {
+            if (!fecha || !idproyecto || !subactividadesSelect || horasRegistradas === 0) {
                 alert("Por favor, completa todos los campos requeridos.");
                 return;
             }
@@ -473,15 +453,15 @@
             $('#modalMensaje').text("Procesando Su Solicitud...");
             $('#mensajeModal').show();
             $.ajax({
-                url: '@Url.Action("RegistrarHoras", "Planilla")',
+                url: '@Url.Action("", "Planilla")',
                 type: 'POST',
                 data: {
                     idusuario: idusuario,
-                    idusuproy: idusuarioproyecto,
+                    
                     horasasignadas: horasRegistradas,
                     Fecharegistro: fecha,
                     observaciones: observaciones,
-                    Idactividad: Idactividad,
+                    Idsubactividad: Idsubactividad,
                 },
                 success: function (response) {
                     if (response.success) {
@@ -494,40 +474,43 @@
 
                         let filaRegistrada = $('#tabla-body tr:first-child');
 
-                       
-                        let actividadSeleccionadaTexto = $('.actividadesSelect option:selected').text();
-                       
 
-                      
+                        let actividadSeleccionadaTexto = $('.actividadesSelect option:selected').text();
+                        let subactividadSeleccionadaTexto = $('.subactividadesSelect option:selected').text();
+
+
+
                         filaRegistrada.find('.actividadesSelect').replaceWith(`<input type="text" value="${actividadSeleccionadaTexto}" readonly />`);
-                       // filaRegistrada.find('.subactividadesSelect').replaceWith(`<input type="text" value="${subactividadSeleccionadaTexto}" readonly />`);
+                         filaRegistrada.find('.subactividadesSelect').replaceWith(`<input type="text" value="${subactividadSeleccionadaTexto}" readonly />`);
 
 
                         let nuevaFila = `
-                                    <tr>
-                                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
-                                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                                <select class="actividadesSelect" name="actividad">
-                                                    <option value="" disabled selected>Seleccione una actividad</option>
-                                                </select>
-                                            </td>
-                                               
-                                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <select class="proyectosSelect" name="proyecto">
-                                                <option value="" disabled selected>Seleccione un proyecto</option>
-                                            </select>
+                                            <tr>
+                                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
+                                                         <td style="padding: 10px; border: 1px solid #ddd;">
+                                                        <select class="actividadesSelect" name="actividad">
+                                                            <option value="" disabled selected>Seleccione una actividad</option>
+                                                        </select>
+                                                    </td>
+                                                         <td style="padding: 10px; border: 1px solid #ddd;">
+
+                                                            <select class="subactividadesSelect" name="subactividad">
+                                                                <option value="" disabled selected></option>
+
+                                                            </select>
+                                                         </td>
+                                                   
+
+                                                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+                                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <textarea rows="4" name="observaciones" style="width:100%;">
+
+                                        </textarea>
+
                                         </td>
-                                       
-                                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
-                                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <textarea rows="4" name="observaciones" style="width:100%;">
 
-                                </textarea>
-
-                                </td>
-
-                                        <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
-                                    </tr>`;
+                                                <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
+                                            </tr>`;
 
                         $('#tabla-body').prepend(nuevaFila);
                         cargarProyectosEnNuevaFila($('#tabla-body tr:first-child'));

@@ -7,6 +7,7 @@ namespace Proyectogestionhoras.Models
     {
         public Actividade()
         {
+            PlanillaUsusarioProyectos = new HashSet<PlanillaUsusarioProyecto>();
             Subactividads = new HashSet<Subactividad>();
         }
 
@@ -15,6 +16,7 @@ namespace Proyectogestionhoras.Models
         public string? TipoAcatividad { get; set; }
         public string? Controlhh { get; set; }
 
+        public virtual ICollection<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; }
         public virtual ICollection<Subactividad> Subactividads { get; set; }
     }
 }

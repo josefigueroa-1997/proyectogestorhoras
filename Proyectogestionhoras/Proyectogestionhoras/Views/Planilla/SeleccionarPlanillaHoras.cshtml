@@ -1,0 +1,40 @@
+﻿@{
+
+    ViewData["Title"] = "Selección control hh";
+
+}
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="dashboard-section projects-section">
+        <h2 class="section-header">Mis Planillas</h2>
+        <div class="section-content">
+
+
+
+
+
+            <a href="@Url.Action("PlanillaRegistro","Planilla")">
+                    <div class="card">
+                        <h3>Control HH Proyectos</h3>
+                        
+
+                    </div>
+
+             </a>
+            <a href="@Url.Action("PlanillaEmpresa","Planilla")">
+                <div class="card">
+                    <h3>Control HH Empresa</h3>
+
+
+                </div>
+
+            </a>
+            
+
+        </div>
+    </div>
+
+</div>
+
+

@@ -11,9 +11,9 @@ namespace Proyectogestionhoras.Models
         public decimal? RegistroHhProyecto { get; set; }
         public string? Observaciones { get; set; }
         public DateTime FechaRegistro { get; set; }
-        public int? Subactividad { get; set; }
+        public int? Idactividad { get; set; }
 
         public virtual Planilla IdPlanillaNavigation { get; set; } = null!;
-        public virtual Subactividad? SubactividadNavigation { get; set; }
+        public virtual Actividade? IdactividadNavigation { get; set; }
     }
 }

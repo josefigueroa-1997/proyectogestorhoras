@@ -48,8 +48,42 @@ namespace Proyectogestionhoras.Controllers
             
         }
 
+        public async Task<IActionResult> SeleccionarPlanillaHoras()
+        {
+            var id = HttpContext.Session.GetInt32("id");
+            if (id.HasValue)
+            {
+
+                
+                return View();
+
+            }
+            else
+            {
+                return View("Login", "Usuario");
+            }
+
+        }
+
+        public async Task<IActionResult> PlanillaEmpresa()
+        {
+            var id = HttpContext.Session.GetInt32("id");
+            if (id.HasValue)
+            {
+
+
+                return View();
+
+            }
+            else
+            {
+                return View("Login", "Usuario");
+            }
+
+        }
+
         [HttpPost]
-        public async Task<IActionResult> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int idsubactividad)
+        public async Task<IActionResult> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int Idactividad)
         {
             bool registroExitoso = false;
             bool yaSeRegistraronHoras = false;
@@ -59,7 +93,7 @@ namespace Proyectogestionhoras.Controllers
             try
             {
 
-                int resultado = await planillaService.RegistrarHoras(idusuario, idusuproy, horasasignadas, Fecharegistro, observaciones, idsubactividad);
+                int resultado = await planillaService.RegistrarHoras(idusuario, idusuproy, horasasignadas, Fecharegistro, observaciones, Idactividad);
 
                 if (resultado == 1)
                 {

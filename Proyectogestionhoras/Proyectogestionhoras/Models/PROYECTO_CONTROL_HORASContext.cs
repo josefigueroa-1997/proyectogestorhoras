@@ -812,6 +812,8 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.IdUsuProy).HasColumnName("ID_USU_PROY");
 
+                entity.Property(e => e.Idactividad).HasColumnName("IDACTIVIDAD");
+
                 entity.Property(e => e.Observaciones)
                     .HasMaxLength(200)
                     .IsUnicode(false)
@@ -821,18 +823,16 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("REGISTRO_HH_PROYECTO");
 
-                entity.Property(e => e.Subactividad).HasColumnName("SUBACTIVIDAD");
-
                 entity.HasOne(d => d.IdPlanillaNavigation)
                     .WithMany(p => p.PlanillaUsusarioProyectos)
                     .HasForeignKey(d => d.IdPlanilla)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_PLANILLA_FK");
 
-                entity.HasOne(d => d.SubactividadNavigation)
+                entity.HasOne(d => d.IdactividadNavigation)
                     .WithMany(p => p.PlanillaUsusarioProyectos)
-                    .HasForeignKey(d => d.Subactividad)
-                    .HasConstraintName("IDSUBACTIVIDADFK");
+                    .HasForeignKey(d => d.Idactividad)
+                    .HasConstraintName("IDACTIVIDADFK");
             });
 
             modelBuilder.Entity<Presupuesto>(entity =>
