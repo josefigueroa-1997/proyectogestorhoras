@@ -1,45 +1,47 @@
 ﻿@{
-    ViewData["Title"] = "Gestor Actividades";
+    ViewData["Title"] = "Gestor SubActividades";
 }
 
 <div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; display: flex; justify-content: space-between;margin-top: 50px;">
     <div style="width: 60%;">
         <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
-            <p class="text-sm text-gray-600">Muestra alternativas de actividades a realizar por socios/staff/consultores con el objeto de definir mejor los tiempos futuros asignados a cada actividad.</p>
+            <p class="text-sm text-gray-600">Muestra alternativas de subactividades a realizar por socios/staff/consultores con el objeto de definir mejor los tiempos futuros asignados a cada actividad.</p>
         </div>
-        <h2 style="text-align: center; color: #333;">Actividades</h2>
+        <h2 style="text-align: center; color: #333;">Sub Actividades</h2>
 
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
             <thead>
                 <tr style="background-color: #d9e2f3; color: black;">
                     <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Seleccionar</th>
                     <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Nombre</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Actividad</th>
                     <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Rol</th>
-                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Tipo</th>
+                    
                 </tr>
             </thead>
             <tbody>
-                @if (ViewBag.Actividades != null)
+                @if (ViewBag.SubActividades != null)
                 {
-                    foreach (var actividad in ViewBag.Actividades)
+                    foreach (var subactividad in ViewBag.SubActividades)
                     {
                         <tr>
                             <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
                                 <button type="button"
-                                        onclick="cargarDatosAlternativa('@actividad.Id', '@Html.Encode(actividad.Nombre)','@Html.Encode(actividad.TipoAcatividad)','@Html.Encode(actividad.Controlhh)')">
+                                        onclick="cargarDatosAlternativa('@subactividad.Id', '@Html.Encode(subactividad.Nombre)','@Html.Encode(subactividad.Idactividad)')">
                                     Seleccionar
                                 </button>
                             </td>
 
                             <td style="padding: 5px; border: 1px solid #ddd;">
-                                @actividad.Nombre
+                                @subactividad.Nombre
                             </td>
                             <td style="padding: 5px; border: 1px solid #ddd;">
-                                @actividad.TipoAcatividad
+                                @subactividad.ActividadNombre
                             </td>
                             <td style="padding: 5px; border: 1px solid #ddd;">
-                                @actividad.Controlhh
+                                @subactividad.RolActividad
                             </td>
+                           
                         </tr>
                     }
                 }
@@ -48,30 +50,24 @@
     </div>
 
     <div style="width: 35%; margin-left: 20px;">
-        <h2 style="text-align: center; color: #333;">Agregar Actividad</h2>
+        <h2 style="text-align: center; color: #333;">Agregar SubActividad</h2>
 
-        <form action="@Url.Action("GuardarActualizarActividades", "Parametros")" method="post">
+        <form action="@Url.Action("GuardarActualizarSubActividades", "Parametros")" method="post">
             <input type="hidden" id="id" name="Id" />
 
-            <label for="idcuenta" style="display: block; margin-bottom: 10px;">Nombre:</label>
+            <label for="nombre" style="display: block; margin-bottom: 10px;">Nombre:</label>
             <input type="text" id="nombre" name="Nombre" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
-            <label for="tipo" style="display: block; margin-bottom: 10px;">Rol de Actividad:</label>
-            <select id="tipo" name="TipoAcatividad" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
-                
-                    <option value="Socio">Socio</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Consultor Externo">Consultor Externo</option>
-                
-               
-            </select>
-            <label for="controlhh" style="display: block; margin-bottom: 10px;">Tipo de Actividad:</label>
-            <select id="controlhh" name="Controlhh" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+            <label for="actividad" style="display: block; margin-bottom: 10px;">Actividad:</label>
+            <select id="actividad" name="Idactividad" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+                <option value="" disabled selected>Seleccione una Actividad</option>
+                @if (ViewBag.Actividades != null)
+                {
+                    @foreach (var actividad in ViewBag.Actividades)
+                    {
+                        <option value="@actividad.Id">@actividad.Nombre - @actividad.TipoAcatividad</option>
+                    }
 
-                <option value="Proyecto">Proyecto</option>
-                <option value="Otro">Otro</option>
-               
-
-
+                }
             </select>
             <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
                 Guardar
@@ -84,16 +80,14 @@
 </div>
 
 <script>
-    function cargarDatosAlternativa(id, nombre, tipo,controlhh) {
+    function cargarDatosAlternativa(id, nombre, actividad) {
         const idInput = document.querySelector('#id');
-        const idcuentaInput = document.querySelector('#nombre');
-        const tipoactividadInput = document.querySelector('#tipo');
-        const controlhhInput = document.querySelector('#controlhh');
+        const nombreInput = document.querySelector('#nombre');
+        const ActividadInput = document.querySelector('#actividad');
 
         idInput.value = id;
-        idcuentaInput.value = nombre;
-        tipoactividadInput.value = tipo;
-        controlhhInput.value = controlhh;
+        nombreInput.value = nombre;
+        ActividadInput.value = actividad;
     }
     function limpiarFormulario() {
         location.reload();

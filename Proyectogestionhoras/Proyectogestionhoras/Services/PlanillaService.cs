@@ -20,45 +20,28 @@ namespace Proyectogestionhoras.Services
             this.conexion = conexion;
         }
 
-
-        public Proyecto ObtenerProyectoPorUsuarioProyectoId(int idUsuarioProyecto)
-        {
-            
-              
-                var usuarioProyecto = context.UsuarioProyectos
-                    .Include(up => up.IdProyectoNavigation) 
-                    .FirstOrDefault(up => up.Id == idUsuarioProyecto);
-
-  
-                return usuarioProyecto?.IdProyectoNavigation;
-            
-        }
-
-
-
-
-
-        public async Task<int> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int idactividad)
+        public async Task<int> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int idsubactividad)
         {
             try
             {
-                bool existereigstro = await context.PlanillaUsusarioProyectos.AnyAsync(p => p.IdUsuProy == idusuproy && p.FechaRegistro.Date == Fecharegistro.Date && p.IdActividad == idactividad);
+                Debug.WriteLine(idsubactividad);
+                bool existereigstro = await context.PlanillaUsusarioProyectos.AnyAsync(p => p.IdUsuProy == idusuproy && p.FechaRegistro.Date == Fecharegistro.Date && p.Subactividad == idsubactividad);
                 if (existereigstro)
                 {
                     return 2;
                 }
-               /* var proyecto = ObtenerProyectoPorUsuarioProyectoId(idusuproy);
-                DateTime fechainicio = proyecto.FechaInicio;
-                DateTime fechatermino = proyecto.FechaTermino;
-                if (Fecharegistro < fechainicio || Fecharegistro > fechatermino)
-                {
-                    return 4;
-                }*/
+                /* var proyecto = ObtenerProyectoPorUsuarioProyectoId(idusuproy);
+                 DateTime fechainicio = proyecto.FechaInicio;
+                 DateTime fechatermino = proyecto.FechaTermino;
+                 if (Fecharegistro < fechainicio || Fecharegistro > fechatermino)
+                 {
+                     return 4;
+                 }*/
                 decimal horasAsignadasDecimal;
                 if (!decimal.TryParse(horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
                 {
-                    
-                    return 0; 
+
+                    return 0;
                 }
                 int mesregistro = Fecharegistro.Month;
                 int anioregistro = Fecharegistro.Year;
@@ -83,7 +66,7 @@ namespace Proyectogestionhoras.Services
                     RegistroHhProyecto = horasAsignadasDecimal,
                     FechaRegistro = Fecharegistro,
                     Observaciones = observaciones,
-                    IdActividad = idactividad,
+                    Subactividad = idsubactividad,
                 };
                 context.PlanillaUsusarioProyectos.Add(registro);
 
@@ -110,14 +93,7 @@ namespace Proyectogestionhoras.Services
                 if (usuarioproyecto != null)
                 {
 
-                    /*if (usuarioproyecto.HhSocios.HasValue)
-                    {
-                        usuarioproyecto.HhSocios -= horasasignadas;
-                    }
-                    else if (usuarioproyecto.HhStaff.HasValue)
-                    {
-                        usuarioproyecto.HhStaff -= horasasignadas;
-                    }*/
+
                     if (usuarioproyecto.HhConsultora.HasValue)
                     {
                         usuarioproyecto.HhConsultora -= horasAsignadasDecimal;
@@ -143,16 +119,16 @@ namespace Proyectogestionhoras.Services
 
                             if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
                             {
-                                
+
                                 if (recurso.NombreRecurso == "Socio")
                                 {
-                                   
+
 
                                     var usuariosRelacionados = await context.UsuarioProyectos
                                     .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
                                     .ToListAsync();
 
-                                    // Resta las horas asignadas a los socios relacionados
+
                                     foreach (var usuarioRelacionado in usuariosRelacionados)
                                     {
                                         usuarioRelacionado.HhSocios -= horasAsignadasDecimal;
@@ -161,7 +137,7 @@ namespace Proyectogestionhoras.Services
                                 // Solo para Staff
                                 else if (recurso.NombreRecurso == "Staff")
                                 {
-                                   
+
 
                                     var usuariosRelacionados = await context.UsuarioProyectos
                                     .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
@@ -175,14 +151,14 @@ namespace Proyectogestionhoras.Services
                                 }
 
 
-                               /* decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
-                                Debug.WriteLine(totalpermitidossemana);
-                                if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
-                                {
-                                    Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
-                                    return 3;
-                                }*/
-                                
+                                /* decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
+                                 Debug.WriteLine(totalpermitidossemana);
+                                 if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
+                                 {
+                                     Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
+                                     return 3;
+                                 }*/
+
 
 
 
@@ -215,6 +191,24 @@ namespace Proyectogestionhoras.Services
                 return 2;
             }
         }
+        public Proyecto ObtenerProyectoPorUsuarioProyectoId(int idUsuarioProyecto)
+        {
+            
+              
+                var usuarioProyecto = context.UsuarioProyectos
+                    .Include(up => up.IdProyectoNavigation) 
+                    .FirstOrDefault(up => up.Id == idUsuarioProyecto);
+
+  
+                return usuarioProyecto?.IdProyectoNavigation;
+            
+        }
+
+
+
+
+
+      
 
         public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaUsuario(int? idusuario, int? idplanilla)
         {

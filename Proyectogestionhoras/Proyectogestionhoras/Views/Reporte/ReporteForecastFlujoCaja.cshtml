@@ -1,137 +1,218 @@
 ﻿@using Proyectogestionhoras.Models.DTO
-@model Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>> // Diccionario actualizado
+@model Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>
+@{
+    ViewData["Title"] = "Flujo de Caja Proyectos";
+}
+<style>
+    .totales {
+        background-color: #d6eaf8;
+    }
 
+    .yellow {
+        background-color: #fcf3cf;
+    }
+</style>
 @if (Model != null && Model.Any())
 {
     <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Flujo de Caja de Proyectos</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Proyecto</th>
-                <th>Tipo</th>
-                <th>Cuenta</th>
-                @* Agrupar por Mes y Año *@
-                @{
-                    // Crear un conjunto para almacenar las tuplas de Mes-Año únicas
-                    var mesesAnios = new HashSet<(int, int)>();
-
-                    // Iterar sobre los proyectos y tipos para obtener las tuplas Mes-Año
-                    foreach (var proyecto in Model)
-                    {
-                        foreach (var tipo in proyecto.Value)
-                        {
-                            foreach (var mesAnio in tipo.Value.Keys)
-                            {
-                                mesesAnios.Add(mesAnio);  // Agregar la tupla Mes-Año al conjunto
-                            }
-                        }
-                    }
-
-                    // Ordenar los meses y años
-                    var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
-
-                    // Mostrar los encabezados de las columnas de mes-año
-                    foreach (var mesAnio in mesesAniosOrdenados)
-                    {
-                        <th colspan="3">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
-                    }
-                }
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                @foreach (var mesAnio in mesesAniosOrdenados)
-                {
-                    <th>Proyectado</th>
-                    <th>Real</th>
-                    <th>Forecast</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var proyecto in Model.OrderBy(p => p.Key))
-            {
-                // Definir los totales para cada mes
-                var totalProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-                var totalRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-                var totalForecastPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-
-                foreach (var tipo in proyecto.Value)
-                {
-                    <tr>
-                        <td>@proyecto.Key</td>
-                        <td>@tipo.Key</td>
-
-                        @* Obtener la primera cuenta para este tipo *@
+    <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+        <p class="text-sm text-gray-600">Muestra el flujo de caja en detalle de los proyectos en ejecución.</p>
+    </div>
+    <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+        <div class="overflow-x-auto relative">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr class="totales">
+                        <th class="text-left text-xs font-medium">Proyecto</th>
+                        <th class="text-left text-xs font-medium">Tipo</th>
+                        <th class="text-left text-xs font-medium">Cuenta</th>
+                        @* Agrupar por Mes y Año *@
                         @{
-                            var primeraCuenta = tipo.Value.Values
-                            .SelectMany(flujoList => flujoList)
-                            .FirstOrDefault(); // Obtener el primer elemento de la lista de flujos
 
-                            var cuenta = primeraCuenta != null ? primeraCuenta.Cuenta : "No disponible"; // Mostrar la cuenta si existe
-                        }
+                            var mesesAnios = new HashSet<(int, int)>();
 
-                        <td>@cuenta</td> <!-- Primera cuenta encontrada -->
-                        @foreach (var mesAnio in mesesAniosOrdenados)
-                        {
-                            // Filtrar los registros que correspondan a este mes-año
-                            var flujo = tipo.Value
-                            .FirstOrDefault(flujoList =>
-                            flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);  // Filtrar por tupla Mes-Año
 
-                            decimal proyectado = 0;
-                            decimal real = 0;
-                            decimal forecast = 0;
-
-                            if (flujo.Key != default) // Verificar que el flujo existe
+                            foreach (var proyecto in Model)
                             {
-                                // Filtrar los elementos por Estado y calcular la suma para cada uno
-                                proyectado = flujo.Value
-                                .Where(f => f.Estado == "Proyectado")  // Filtrar por estado 'Proyectado'
-                                .Sum(f => f.Monto);  // Sumar los montos
-
-                                real = flujo.Value
-                                .Where(f => f.Estado == "Real")  // Filtrar por estado 'Real'
-                                .Sum(f => f.Monto);  // Sumar los montos
-
-                                forecast = flujo.Value
-                                .Where(f => f.Estado == "Forecast")  // Filtrar por estado 'Forecast'
-                                .Sum(f => f.Monto);  // Sumar los montos
+                                foreach (var tipo in proyecto.Value)
+                                {
+                                    foreach (var mesAnio in tipo.Value.Keys)
+                                    {
+                                        mesesAnios.Add(mesAnio);
+                                    }
+                                }
                             }
 
-                            <td>@proyectado</td> <!-- Columna Proyectado -->
-                            <td>@real</td> <!-- Columna Real -->
-                            <td>@forecast</td> <!-- Columna Forecast -->
-                            // Solo sumar si es un "Egreso"
-                            if (tipo.Key != "Ingreso")
-                            {
-                                // Acumular los totales por mes
-                                if (!totalProyectadoPorMes.ContainsKey(mesAnio)) totalProyectadoPorMes[mesAnio] = 0;
-                                if (!totalRealPorMes.ContainsKey(mesAnio)) totalRealPorMes[mesAnio] = 0;
-                                if (!totalForecastPorMes.ContainsKey(mesAnio)) totalForecastPorMes[mesAnio] = 0;
 
-                                totalProyectadoPorMes[mesAnio] += proyectado;
-                                totalRealPorMes[mesAnio] += real;
-                                totalForecastPorMes[mesAnio] += forecast;
+                            var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
+
+
+                            foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                <th class="text-center border border-gray-300 text-xs font-medium" colspan="3">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
                             }
                         }
                     </tr>
-                }
-
-                @* Mostrar los totales de Egresos por Proyecto *@
-                <tr style="font-weight: bold;">
-                    <td colspan="3">Total Egresos por Proyecto (@proyecto.Key)</td>
-                    @foreach (var mesAnio in mesesAniosOrdenados)
+                    <tr class="bg-gray-200 text-black">
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        @foreach (var mesAnio in mesesAniosOrdenados)
+                        {
+                            <th class="p-2 border border-gray-300 text-xs text-center">Proyectado</th>
+                            <th class="p-2 border border-gray-300 text-xs text-center">Real</th>
+                            <th class="p-2 border border-gray-300 text-xs text-center">Forecast</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach (var proyecto in Model.OrderBy(p => p.Key))
                     {
-                        <td>@totalProyectadoPorMes.GetValueOrDefault(mesAnio, 0)</td>
-                        <td>@totalRealPorMes.GetValueOrDefault(mesAnio, 0)</td>
-                        <td>@totalForecastPorMes.GetValueOrDefault(mesAnio, 0)</td>
+
+                        var totalEgresoProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalEgresoRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalEgresoForecastPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalIngresoProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalIngresoRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+
+                        foreach (var tipo in proyecto.Value)
+                        {
+                            <tr>
+                                <td class="text-left text-xs font-medium ">@proyecto.Key</td>
+                                <td class="text-left text-xs font-medium ">@tipo.Key</td>
+
+
+                                @{
+                                    var primeraCuenta = tipo.Value.Values
+                                    .SelectMany(flujoList => flujoList)
+                                    .FirstOrDefault();
+
+                                    var cuenta = primeraCuenta != null ? primeraCuenta.Cuenta : "No disponible"; // Mostrar la cuenta si existe
+                                }
+
+                                <td class="text-left text-xs font-medium ">@cuenta</td>
+                                @foreach (var mesAnio in mesesAniosOrdenados)
+                                {
+
+                                    var flujo = tipo.Value
+                                    .FirstOrDefault(flujoList =>
+                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);  // Filtrar por tupla Mes-Año
+
+                                    decimal proyectado = 0;
+                                    decimal real = 0;
+                                    decimal forecast = 0;
+
+                                    if (flujo.Key != default)
+                                    {
+
+                                        proyectado = flujo.Value
+                                        .Where(f => f.Estado == "Proyectado")
+                                        .Sum(f => f.Monto);
+
+                                        real = flujo.Value
+                                        .Where(f => f.Estado == "Real")
+                                        .Sum(f => f.Monto);
+
+                                        forecast = flujo.Value
+                                        .Where(f => f.Estado == "Forecast")
+                                        .Sum(f => f.Monto);
+                                    }
+
+                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@proyectado</td>
+                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@real</td>
+                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@forecast</td>
+
+                                    if (tipo.Key != "Ingreso")
+                                    {
+
+                                        if (!totalEgresoProyectadoPorMes.ContainsKey(mesAnio)) totalEgresoProyectadoPorMes[mesAnio] = 0;
+                                        if (!totalEgresoRealPorMes.ContainsKey(mesAnio)) totalEgresoRealPorMes[mesAnio] = 0;
+                                        if (!totalEgresoForecastPorMes.ContainsKey(mesAnio)) totalEgresoForecastPorMes[mesAnio] = 0;
+
+                                        totalEgresoProyectadoPorMes[mesAnio] += proyectado;
+                                        totalEgresoRealPorMes[mesAnio] += real;
+                                        totalEgresoForecastPorMes[mesAnio] += forecast;
+                                    }
+                                    if (tipo.Key == "Ingreso")
+                                    {
+                                        if (!totalIngresoProyectadoPorMes.ContainsKey(mesAnio)) totalIngresoProyectadoPorMes[mesAnio] = 0;
+                                        if (!totalIngresoRealPorMes.ContainsKey(mesAnio)) totalIngresoRealPorMes[mesAnio] = 0;
+                                        totalIngresoProyectadoPorMes[mesAnio] += proyectado;
+                                        totalIngresoRealPorMes[mesAnio] += real;
+                                    }
+
+                                }
+                            </tr>
+                        }
+
+                        @*EGRESOS TOTAL*@
+                        <tr style="font-weight: bold;">
+                            <td colspan="3">Total Egresos por Proyecto (@proyecto.Key)</td>
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0)</td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0)</td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@totalEgresoForecastPorMes.GetValueOrDefault(mesAnio, 0)</td>
+                            }
+                        </tr>
+                        @*MARGEN DEL PROYECTO*@
+                        <tr class="bg-gray-300 font-bold">
+                            <td class="text-left text-xs font-medium font-bold" colspan="3">Total Margen por Proyecto (@proyecto.Key)</td>
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                var ingresoproyectado = totalIngresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoproyectado = totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenproyectado = ingresoproyectado - egresoproyectado;
+                                @*Margen real*@
+                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresoreal - egresoreal;
+
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@margenproyectado</td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@margenreal</td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
+
+                            }
+                        </tr>
+                        @*MARGEN DEL PROYECTO %*@
+                        <tr class="bg-green-100 font-bold">
+                            <td class="text-left text-xs font-medium font-bold" colspan="3">Total Margen por Proyecto (%) (@proyecto.Key)</td>
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+
+                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresoreal - egresoreal;
+                                var porcentajeMargenReal = ingresoreal > 0 ? Math.Round((margenreal / ingresoreal) * 100, 2) : 0;
+
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@porcentajeMargenReal</td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
+
+                            }
+                        </tr>
+                        @*SALDO ACUMULADO*@
+                        <tr style="font-weight: bold;">
+                            <td colspan="3">Saldo Acumulado (@proyecto.Key)</td>
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+
+                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresoreal - egresoreal;
+                                ViewBag.SaldoAcumulado = (ViewBag.SaldoAcumulado ?? 0) + margenreal;
+
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@ViewBag.SaldoAcumulado</td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
+
+                            }
+                        </tr>
                     }
-                </tr>
-            }
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 else
 {

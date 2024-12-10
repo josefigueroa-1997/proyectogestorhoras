@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services;
+using Proyectogestionhoras.Services.Interface;
 using System.Diagnostics;
 
 namespace Proyectogestionhoras.Controllers
@@ -211,12 +212,68 @@ namespace Proyectogestionhoras.Controllers
 
                 actividadexistente.Nombre = actividades.Nombre;
                 actividadexistente.TipoAcatividad = actividades.TipoAcatividad;
+                actividadexistente.Controlhh = actividades.Controlhh;
                 context.Actividades.Update(actividadexistente);
             }
 
 
             await context.SaveChangesAsync();
             return RedirectToAction("GestorActividades");
+        }
+
+
+        /*SubActividades*/
+        public async Task<IActionResult> GestorSubActividades()
+        {
+            var subactividades = await context.Subactividads.ToListAsync();
+            var actividades = await context.Actividades.ToListAsync();
+            var subactividadesconactividad = from subactividad in subactividades
+                                     join actividad in actividades on subactividad.Idactividad equals actividad.Id
+                                     select new
+                                     {
+                                         subactividad.Id,
+                                         subactividad.Nombre,
+                                         ActividadNombre = actividad.Nombre,
+                                         subactividad.Idactividad,
+                                         RolActividad = actividad.TipoAcatividad
+                                     };
+            ViewBag.SubActividades = subactividadesconactividad;
+            
+            ViewBag.Actividades = actividades;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarActualizarSubActividades(Subactividad subactividad)
+        {
+            if (subactividad == null)
+            {
+                return BadRequest("La SubActividad es nula.");
+            }
+
+
+            if (subactividad.Id == 0)
+            {
+
+                context.Subactividads.Add(subactividad);
+            }
+            else
+            {
+
+                var subactividadexistente = await context.Subactividads.FindAsync(subactividad.Id);
+                if (subactividadexistente == null)
+                {
+                    return NotFound("Actividad no encontrada.");
+                }
+
+                subactividadexistente.Nombre = subactividad.Nombre;
+                subactividadexistente.Idactividad = subactividad.Idactividad;
+                context.Subactividads.Update(subactividadexistente);
+            }
+
+
+            await context.SaveChangesAsync();
+            return RedirectToAction("GestorSubActividades");
         }
 
         /*Bonos*/

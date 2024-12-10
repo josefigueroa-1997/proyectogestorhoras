@@ -52,6 +52,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Servicio> Servicios { get; set; } = null!;
         public virtual DbSet<Serviciosejecucion> Serviciosejecucions { get; set; } = null!;
         public virtual DbSet<StatusProyecto> StatusProyectos { get; set; } = null!;
+        public virtual DbSet<Subactividad> Subactividads { get; set; } = null!;
         public virtual DbSet<Sucursal> Sucursals { get; set; } = null!;
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
@@ -79,6 +80,11 @@ namespace Proyectogestionhoras.Models
                 entity.ToTable("ACTIVIDADES");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Controlhh)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("controlhh");
 
                 entity.Property(e => e.Nombre)
                     .IsUnicode(false)
@@ -802,8 +808,6 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("date")
                     .HasColumnName("FECHA_REGISTRO");
 
-                entity.Property(e => e.IdActividad).HasColumnName("ID_ACTIVIDAD");
-
                 entity.Property(e => e.IdPlanilla).HasColumnName("ID_PLANILLA");
 
                 entity.Property(e => e.IdUsuProy).HasColumnName("ID_USU_PROY");
@@ -817,16 +821,18 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("REGISTRO_HH_PROYECTO");
 
-                entity.HasOne(d => d.IdActividadNavigation)
-                    .WithMany(p => p.PlanillaUsusarioProyectos)
-                    .HasForeignKey(d => d.IdActividad)
-                    .HasConstraintName("ACTIVIDAD_FK");
+                entity.Property(e => e.Subactividad).HasColumnName("SUBACTIVIDAD");
 
                 entity.HasOne(d => d.IdPlanillaNavigation)
                     .WithMany(p => p.PlanillaUsusarioProyectos)
                     .HasForeignKey(d => d.IdPlanilla)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_PLANILLA_FK");
+
+                entity.HasOne(d => d.SubactividadNavigation)
+                    .WithMany(p => p.PlanillaUsusarioProyectos)
+                    .HasForeignKey(d => d.Subactividad)
+                    .HasConstraintName("IDSUBACTIVIDADFK");
             });
 
             modelBuilder.Entity<Presupuesto>(entity =>
@@ -1232,6 +1238,25 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("TIPO_STATUS");
+            });
+
+            modelBuilder.Entity<Subactividad>(entity =>
+            {
+                entity.ToTable("SUBACTIVIDAD");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Idactividad).HasColumnName("IDACTIVIDAD");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE");
+
+                entity.HasOne(d => d.IdactividadNavigation)
+                    .WithMany(p => p.Subactividads)
+                    .HasForeignKey(d => d.Idactividad)
+                    .HasConstraintName("IDACTIVIDADDK");
             });
 
             modelBuilder.Entity<Sucursal>(entity =>

@@ -93,7 +93,7 @@
     }
 
     .submit-btn,.planilla-btn,.gantt-btn {
-        padding: 8px 20px; /* Disminuir el padding */
+        padding: 8px 20px; 
         font-size: 0.9rem;
         font-weight: 600;
         border: none;
@@ -215,6 +215,7 @@
                 <tr style="background-color: #d9e2f3; color: black;">
                     <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Actividad</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">SubActividad</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
                     
                     <th style="padding: 10px; border: 1px solid #ddd;">Num. Hrs</th>
@@ -230,6 +231,13 @@
                     <td style="padding: 10px; border: 1px solid #ddd;">
 
                         <select class="actividadesSelect" name="actividad">
+                            <option value="" disabled selected></option>
+
+                        </select>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+
+                        <select class="subactividadesSelect" name="subactividad">
                             <option value="" disabled selected></option>
 
                         </select>
@@ -253,6 +261,7 @@
                     <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
 
                 </tr>
+                @*
                 @if (ViewBag.Planilla != null)
                 {
                     @foreach (var planilla in ViewBag.Planilla)
@@ -275,7 +284,7 @@
                         </tr>
                     }
                 }
-               
+                *@
                
             </tbody>
         </table>
@@ -311,7 +320,7 @@
         var today = new Date().toISOString().split('T')[0];
         $('.fecharegistro').val(today);
 
-        // Restringir la selección de fechas futuras
+        
         $('.fecharegistro').attr('max', today);
 
         window.closeModal = function () {
@@ -333,7 +342,7 @@
                         $('.proyectosSelect').append('<option value="" disabled selected>Seleccione un proyecto</option>');
 
                         if (response.length > 0) {
-                            // Si hay proyectos, los agregamos al select
+                           
                             $.each(response, function (index, proyecto) {
                                 $('.proyectosSelect').append(
                                     $('<option>', {
@@ -348,7 +357,7 @@
                                 cargarInformacionUsuario(idproyecto);
                             });
                         } else {
-                            // Si no hay proyectos, mostramos un mensaje
+                           
                             $('.proyectosSelect').append('<option value="" disabled>No hay proyectos disponibles</option>');
                         }
                     },
@@ -407,12 +416,47 @@
         cargarActividades(recursousuario);
         cargarProyectos();
 
+        function cargarSubactividades(idActividad) {
+            $.ajax({
+                url: '@Url.Action("RecuperarSubActividades", "Usuario")', 
+                type: 'GET',
+                data: { idactividad: idActividad },
+                success: function (subactividades) {
+              
+                    $('.subactividadesSelect').empty();
+                    $('.subactividadesSelect').append('<option value="" disabled selected>Seleccione una subactividad</option>');
+
+                   
+                    $.each(subactividades, function (index, subactividad) {
+                        $('.subactividadesSelect').append(
+                            $('<option>', {
+                                value: subactividad.id,
+                                text: subactividad.nombre
+                            })
+                        );
+                    });
+                },
+                error: function (error) {
+                    console.error("Error al obtener las subactividades:", error);
+                }
+            });
+        }
+
+     
+        $(document).on('change', '.actividadesSelect', function () {
+            const idActividad = $(this).val(); 
+            if (idActividad) {
+                cargarSubactividades(idActividad);
+            }
+        });
+
         $(document).on('click', '.submit-btn', function (event) {
             event.preventDefault();
 
             var fecha = $('.fecharegistro').val();
             var idproyecto = $('.proyectosSelect').val();
             var idactividad = $('.actividadesSelect').val();
+            var idsubactividad = $('.subactividadesSelect').val();
             var horasRegistradas = $('input[name="hhregistradas"]').val();
             var observaciones = $('textarea[name="observaciones"]').val();
             var idusuarioproyecto = $('.idusuarioproyecto').val();
@@ -421,7 +465,7 @@
             var hhingresadas = parseFloat(horasRegistradas);
             var hhpendientes = parseFloat(hhrestantesinput);
 
-            if (!fecha || !idproyecto || !idactividad || horasRegistradas === 0) {
+            if (!fecha || !idproyecto || !idsubactividad || horasRegistradas === 0) {
                 alert("Por favor, completa todos los campos requeridos.");
                 return;
             }
@@ -443,7 +487,7 @@
                     horasasignadas: horasRegistradas,
                     Fecharegistro: fecha,
                     observaciones: observaciones,
-                    idactividad: idactividad,
+                    idsubactividad: idsubactividad,
                 },
                 success: function (response) {
                     if (response.success) {
@@ -458,9 +502,11 @@
 
                         // Obtener el texto de la actividad seleccionada
                         let actividadSeleccionadaTexto = $('.actividadesSelect option:selected').text();
+                        let subactividadSeleccionadaTexto = $('.subactividadesSelect option:selected').text();
 
                         // Reemplazar el select de actividades con un input de texto
                         filaRegistrada.find('.actividadesSelect').replaceWith(`<input type="text" value="${actividadSeleccionadaTexto}" readonly />`);
+                        filaRegistrada.find('.subactividadesSelect').replaceWith(`<input type="text" value="${subactividadSeleccionadaTexto}" readonly />`);
 
 
                         let nuevaFila = `
@@ -471,6 +517,13 @@
                                                     <option value="" disabled selected>Seleccione una actividad</option>
                                                 </select>
                                             </td>
+                                                 <td style="padding: 10px; border: 1px solid #ddd;">
+
+                            <select class="subactividadesSelect" name="subactividad">
+                                <option value="" disabled selected></option>
+
+                            </select>
+                        </td>
                                             <td style="padding: 10px; border: 1px solid #ddd;">
                                             <select class="proyectosSelect" name="proyecto">
                                                 <option value="" disabled selected>Seleccione un proyecto</option>
