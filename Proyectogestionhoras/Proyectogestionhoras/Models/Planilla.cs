@@ -7,6 +7,7 @@ namespace Proyectogestionhoras.Models
     {
         public Planilla()
         {
+            PlanillaRegistroEmpresas = new HashSet<PlanillaRegistroEmpresa>();
             PlanillaUsusarioProyectos = new HashSet<PlanillaUsusarioProyecto>();
         }
 
@@ -16,6 +17,7 @@ namespace Proyectogestionhoras.Models
         public int Anio { get; set; }
 
         public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
+        public virtual ICollection<PlanillaRegistroEmpresa> PlanillaRegistroEmpresas { get; set; }
         public virtual ICollection<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; }
     }
 }

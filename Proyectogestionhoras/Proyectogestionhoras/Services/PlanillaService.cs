@@ -69,9 +69,8 @@ namespace Proyectogestionhoras.Services
                     Idactividad = Idactividad,
                 };
                 context.PlanillaUsusarioProyectos.Add(registro);
-                await context.SaveChangesAsync();
-                return 1;
-                /* var inicioSemana = Fecharegistro.AddDays(-(int)Fecharegistro.DayOfWeek + (int)DayOfWeek.Monday);
+                
+                var inicioSemana = Fecharegistro.AddDays(-(int)Fecharegistro.DayOfWeek + (int)DayOfWeek.Monday);
                 var finSemana = inicioSemana.AddDays(6);
                 var horasRegistradasSemana = await context.PlanillaUsusarioProyectos
                     .Join(
@@ -112,70 +111,70 @@ namespace Proyectogestionhoras.Services
                      var usuario = usuarioproyecto.IdUsuarioNavigation;
 
 
-                     if (usuario != null && usuario.IdRecurso != 0)
-                     {
-                         var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
-                         if (recurso != null)
-                         {
+                    if (usuario != null && usuario.IdRecurso != 0)
+                    {
+                        var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                        if (recurso != null)
+                        {
 
-                             if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
-                             {
+                            if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
+                            {
 
-                                 if (recurso.NombreRecurso == "Socio")
-                                 {
-
-
-                                     var usuariosRelacionados = await context.UsuarioProyectos
-                                     .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
-                                     .ToListAsync();
+                                if (recurso.NombreRecurso == "Socio")
+                                {
 
 
-                                     foreach (var usuarioRelacionado in usuariosRelacionados)
-                                     {
-                                         usuarioRelacionado.HhSocios -= horasAsignadasDecimal;
-                                     }
-                                 }
-                                 // Solo para Staff
-                                 else if (recurso.NombreRecurso == "Staff")
-                                 {
+                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
+                                    .ToListAsync();
 
 
-                                     var usuariosRelacionados = await context.UsuarioProyectos
-                                     .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
-                                     .ToListAsync();
-
-                                     // Resta las horas asignadas al staff relacionado
-                                     foreach (var usuarioRelacionado in usuariosRelacionados)
-                                     {
-                                         usuarioRelacionado.HhStaff -= horasAsignadasDecimal;
-                                     }
-                                 }
+                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                    {
+                                        usuarioRelacionado.HhSocios -= horasAsignadasDecimal;
+                                    }
+                                }
+                             
+                                else if (recurso.NombreRecurso == "Staff")
+                                {
 
 
-                                  decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
-                                  Debug.WriteLine(totalpermitidossemana);
-                                  if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
-                                  {
-                                      Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
-                                      return 3;
-                                  }
+                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
+                                    .ToListAsync();
+
+                                    
+                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                    {
+                                        usuarioRelacionado.HhStaff -= horasAsignadasDecimal;
+                                    }
+                                }
+
+
+                               /* decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
+                                Debug.WriteLine(totalpermitidossemana);
+                                if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
+                                {
+                                    Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
+                                    return 3;
+                                }*/
 
 
 
 
-                             }
-                         }
-                         else
-                         {
-                             Debug.WriteLine("Error al obtener el recurso asociado al usuario.");
-                             return 2;
-                         }
-
-                     else
-                 {
-                         Debug.WriteLine("El usuario no es válido o no tiene un recurso asociado.");
-                         return 2;
-                     }
+                            }
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Error al obtener el recurso asociado al usuario.");
+                            return 2;
+                        }
+                    }
+                    else
+                    {
+                        Debug.WriteLine("El usuario no es válido o no tiene un recurso asociado.");
+                        return 2;
+                    }
 
                      await context.SaveChangesAsync();
                      return 1;
@@ -184,7 +183,7 @@ namespace Proyectogestionhoras.Services
                  {
                      Debug.WriteLine("Error: UsuarioProyecto no se encontró.");
                      return 2;
-                 }*/
+                 }
             }
             catch (Exception ex)
             {
@@ -206,10 +205,64 @@ namespace Proyectogestionhoras.Services
         }
 
 
+       public async Task<int> RegistrarHorasEmpresa(int idusuario, string horasasignadas, DateTime Fecharegistro, string? observaciones, int idsubactividad)
+       {
+           
+                try
+                {
+
+                    bool existereigstro = await context.PlanillaRegistroEmpresas.AnyAsync(p => p.Idsubactividad == idsubactividad);
+                    if (existereigstro)
+                    {
+                        return 2;
+                    }
+                    
+                    decimal horasAsignadasDecimal;
+                    if (!decimal.TryParse(horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
+                    {
+
+                        return 0;
+                    }
+                    int mesregistro = Fecharegistro.Month;
+                    int anioregistro = Fecharegistro.Year;
+
+                    var planilla = await context.Planillas.FirstOrDefaultAsync(p => p.IdUsuario == idusuario && p.Mes == mesregistro && p.Anio == anioregistro);
+                    if (planilla == null)
+                    {
+                        planilla = new Planilla
+                        {
+                            IdUsuario = idusuario,
+                            Mes = mesregistro,
+                            Anio = anioregistro,
+                        };
+                        context.Planillas.Add(planilla);
+                        await context.SaveChangesAsync();
+                    }
+
+                    var registro = new PlanillaRegistroEmpresa
+                    {
+                        IdPlanilla = planilla.Id,
+                        
+                        Hhregistradas = horasAsignadasDecimal,
+                        Fecharegistro = Fecharegistro,
+                        Observaciones = observaciones,
+                        Idsubactividad = idsubactividad,
+                    };
+                    context.PlanillaRegistroEmpresas.Add(registro);
+                    await context.SaveChangesAsync();
+                    return 1;
+                    
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Hubo un error al registrar la hora en la planilla: {ex}");
+                    return 2;
+                }
+        }
 
 
 
-      
+
 
         public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaUsuario(int? idusuario, int? idplanilla)
         {
@@ -263,6 +316,67 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+
+        public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaEmpresaUsuario(int? idusuario, int? idplanilla)
+        {
+            try
+            {
+#pragma warning disable CS8600
+                object idusuarioparameter = (object)idusuario ?? DBNull.Value;
+                object idplanillaparameter = (object)idplanilla ?? DBNull.Value;
+
+#pragma warning restore CS8600
+                var planillausuario = new List<PlanillaUsuarioDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "recuperarplanillaempresa";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuarioparameter));
+                    command.Parameters.Add(new SqlParameter("@IDPLANILLA", idplanillaparameter));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            PlanillaUsuarioDTO datos = new()
+                            {
+                                IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IdPlanilla")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanilla")),
+                                FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FechaRegistro")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nombre")),
+                                
+                                
+                                NombreActividad = reader.IsDBNull(reader.GetOrdinal("NombreActividad")) ? null : reader.GetString(reader.GetOrdinal("NombreActividad")),
+
+                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHregistradas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHregistradas")),
+                                Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? null : reader.GetString(reader.GetOrdinal("Observaciones")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                            };
+                            planillausuario.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return planillausuario;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener la planilla del usuario:" + ex.Message);
+                return new List<PlanillaUsuarioDTO>();
+
+            }
+        }
+
+
+
+
+
+
+
         public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaExcel(int idplanilla)
         {
             try
@@ -282,20 +396,18 @@ namespace Proyectogestionhoras.Services
                         {
                             PlanillaUsuarioDTO datos = new()
                             {
-                                IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IDPLANILLA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPLANILLA")),
-                                FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FECHA_REGISTRO")),
-                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
-                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
-                                IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDPROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPROYECTO")),
-                                NombreActividad = reader.IsDBNull(reader.GetOrdinal("NOMBREACTIVIDAD")) ? null : reader.GetString(reader.GetOrdinal("NOMBREACTIVIDAD")),
-                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHREGISTRADAS")),
-                                Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
-                                Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
-                                Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
-                                NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NOMBREUSUARIO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREUSUARIO")),
-                                Rol = reader.IsDBNull(reader.GetOrdinal("ROL")) ? string.Empty : reader.GetString(reader.GetOrdinal("ROL")),
-                                CostoUnitario = reader.IsDBNull(reader.GetOrdinal("COSTOUNITARIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOUNITARIO")),
-                                CostoTotal = reader.IsDBNull(reader.GetOrdinal("COSTOHORASTOTAL")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOHORASTOTAL")),
+                                IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IdPlanilla")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanilla")),
+                                FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FechaRegistro")),
+                                NombreActividad = reader.IsDBNull(reader.GetOrdinal("NombreActividad")) ? null : reader.GetString(reader.GetOrdinal("NombreActividad")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? null : reader.GetString(reader.GetOrdinal("Nombre")),
+                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHregistradas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHregistradas")),
+                                Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? null : reader.GetString(reader.GetOrdinal("Observaciones")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                                NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NombreUsuario")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreUsuario")),
+                                Rol = reader.IsDBNull(reader.GetOrdinal("Rol")) ? string.Empty : reader.GetString(reader.GetOrdinal("Rol")),
+                                CostoUnitario = reader.IsDBNull(reader.GetOrdinal("CostoUnitario")) ? 0 : reader.GetDecimal(reader.GetOrdinal("CostoUnitario")),
+                                CostoTotal = reader.IsDBNull(reader.GetOrdinal("CostoTotal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("CostoTotal")),
                             };
                             planillausuario.Add(datos);
 

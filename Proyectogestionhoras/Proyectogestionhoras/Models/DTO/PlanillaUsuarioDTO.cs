@@ -5,6 +5,7 @@
         public int IdPlanilla { get; set; }
         public DateTime FechaRegistro { get; set; }
         public string? NombreProyecto { get; set; }
+        public string? Nombre { get; set; }
         public string? NumProyecto { get; set; }
         public int IDPROYECTO { get; set; }
         public string? NombreActividad { get; set; }

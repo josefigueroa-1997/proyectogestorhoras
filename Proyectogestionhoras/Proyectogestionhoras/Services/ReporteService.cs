@@ -1004,7 +1004,7 @@ namespace Proyectogestionhoras.Services
             var flujoCaja = await ObtenerFlujoCajaAsync();
 
             var diccionario = flujoCaja
-                .GroupBy(f => f.NumProyecto)
+                .GroupBy(f => f.NombreProyecto)
                 .ToDictionary(
                     proyecto => proyecto.Key,
                     proyecto => proyecto

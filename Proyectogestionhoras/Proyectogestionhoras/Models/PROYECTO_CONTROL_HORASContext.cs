@@ -39,6 +39,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<MetaFacturacionesqx> MetaFacturacionesqxes { get; set; } = null!;
         public virtual DbSet<Metatipologia> Metatipologias { get; set; } = null!;
         public virtual DbSet<Planilla> Planillas { get; set; } = null!;
+        public virtual DbSet<PlanillaRegistroEmpresa> PlanillaRegistroEmpresas { get; set; } = null!;
         public virtual DbSet<PlanillaUsusarioProyecto> PlanillaUsusarioProyectos { get; set; } = null!;
         public virtual DbSet<Presupuesto> Presupuestos { get; set; } = null!;
         public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
@@ -796,6 +797,42 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.IdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_USUARIO_FK");
+            });
+
+            modelBuilder.Entity<PlanillaRegistroEmpresa>(entity =>
+            {
+                entity.ToTable("PLANILLA_REGISTRO_EMPRESA");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Fecharegistro)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHAREGISTRO");
+
+                entity.Property(e => e.Hhregistradas)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("HHREGISTRADAS");
+
+                entity.Property(e => e.IdPlanilla).HasColumnName("ID_PLANILLA");
+
+                entity.Property(e => e.Idsubactividad).HasColumnName("IDSUBACTIVIDAD");
+
+                entity.Property(e => e.Observaciones)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACIONES");
+
+                entity.HasOne(d => d.IdPlanillaNavigation)
+                    .WithMany(p => p.PlanillaRegistroEmpresas)
+                    .HasForeignKey(d => d.IdPlanilla)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("IDPLANILLAFKP");
+
+                entity.HasOne(d => d.IdsubactividadNavigation)
+                    .WithMany(p => p.PlanillaRegistroEmpresas)
+                    .HasForeignKey(d => d.Idsubactividad)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("IDSUBACTIVIDADFK");
             });
 
             modelBuilder.Entity<PlanillaUsusarioProyecto>(entity =>

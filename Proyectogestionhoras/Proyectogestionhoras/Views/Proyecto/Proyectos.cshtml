@@ -22,19 +22,18 @@
     <div class="projects-section" id="presupuestoSection" style="display: none;">
         <div class="section-header">Proyectos En Presupuesto</div>
         <div class="section-content" id="presupuestoProjects">
-            @foreach (var proyecto in ViewBag.Proyectos)
+            @foreach (var proyecto in ViewBag.Presupuesto)
             {
-                @if (proyecto.Tipo_Status == "Presupuesto")
-                {
+                
                     <a href="@Url.Action("ObtenerPresupuestoProyecto","Proyecto",new{id=proyecto.Id})">
                         <div class="card new-cliente">
 
-                            <h3>@proyecto.NombreProyecto</h3>
-                            <p>@proyecto.numproyecto</p>
+                            <h3>@proyecto.Nombre</h3>
+                            <p>@proyecto.NumProyecto</p>
                             <p>@proyecto.NombreCliente</p>
                         </div>
                     </a>
-                }
+                
             }
         </div>
     </div>

@@ -410,40 +410,7 @@
         cargarActividades(recursousuario);
         cargarProyectos();
 
-       /* function cargarSubactividades(idActividad) {
-            $.ajax({
-                url: '', 
-                type: 'GET',
-                data: { idactividad: idActividad },
-                success: function (subactividades) {
-              
-                    $('.subactividadesSelect').empty();
-                    $('.subactividadesSelect').append('<option value="" disabled selected>Seleccione una subactividad</option>');
-
-                   
-                    $.each(subactividades, function (index, subactividad) {
-                        $('.subactividadesSelect').append(
-                            $('<option>', {
-                                value: subactividad.id,
-                                text: subactividad.nombre
-                            })
-                        );
-                    });
-                },
-                error: function (error) {
-                    console.error("Error al obtener las subactividades:", error);
-                }
-            });
-        }
-
-     
-        $(document).on('change', '.actividadesSelect', function () {
-            const idActividad = $(this).val(); 
-            if (idActividad) {
-                cargarSubactividades(idActividad);
-            }
-        });
-        */
+       
         $(document).on('click', '.submit-btn', function (event) {
             event.preventDefault();
 
@@ -517,8 +484,8 @@
                                                 <option value="" disabled selected>Seleccione un proyecto</option>
                                             </select>
                                         </td>
-                                       
-                                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+
+                                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" step="0.5" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
                                             <td style="padding: 10px; border: 1px solid #ddd;">
                                 <textarea rows="4" name="observaciones" style="width:100%;">
 

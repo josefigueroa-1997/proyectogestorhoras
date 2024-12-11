@@ -159,8 +159,8 @@
             <thead>
                 <tr style="background-color: #d9e2f3; color: black;">
                     <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Actividad</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Número Horas</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Costo Total</th>
@@ -179,12 +179,13 @@
                     {
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">@planilla.FechaRegistro.ToString("dd/MM/yyyy")</td>
-                            <td style="padding: 10px; border: 1px solid #ddd; ">
-                                @planilla.NumProyecto - @planilla.NombreProyecto
-                            </td>
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
                                 @planilla.NombreActividad
                             </td>
+                            <td style="padding: 10px; border: 1px solid #ddd; ">
+                                @planilla.Nombre
+                            </td>
+                            
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                                 @planilla.HHregistradas
                             </td>

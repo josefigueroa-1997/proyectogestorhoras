@@ -42,7 +42,9 @@ namespace Proyectogestionhoras.Controllers
                     if (rol == 1 || rol == 3)
                     {
                         var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                        var proyectospresupuesto = await ObtenerPresupuestosProyecto();
                         ViewBag.Proyectos = proyectos;
+                        ViewBag.Presupuesto = proyectospresupuesto;
                         return View("Proyectos");
                     }
                     else
@@ -57,7 +59,21 @@ namespace Proyectogestionhoras.Controllers
             
         }
 
+        public async Task<List<PresupuestoProyectoDTO>> ObtenerPresupuestosProyecto()
+        {
+            var proyectos = await context.Proyectos
+                .Where(p => new[] { 1, 2, 6 }.Contains(p.StatusProyecto))
+                .Select(p => new PresupuestoProyectoDTO
+                {
+                    Id = p.Id,
+                    Nombre = p.Nombre,
+                    NumProyecto = p.NumProyecto,
+                    NombreCliente = p.IdClienteSucursalNavigation.IdClienteNavigation.Nombre
+                })
+                .ToListAsync();
 
+            return proyectos;
+        }
 
         public async Task<IActionResult> NuevoProyecto()
         {
