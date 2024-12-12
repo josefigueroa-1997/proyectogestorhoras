@@ -231,7 +231,7 @@ namespace Proyectogestionhoras.Controllers
                         
 
             /*COSTOS SERVICIOS REALES*/
-            List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
+            /*List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();*/
             var idsservicios = Request.Form["Idservicio"];
             var idproveedores = Request.Form["Idproveedor"];
             var montoservicioList = Request.Form["montoservicio"];
@@ -239,8 +239,9 @@ namespace Proyectogestionhoras.Controllers
             var idservicioreal = Request.Form["IdServicioReal"];
             var observacion = Request.Form["observacionservicio"];
             var estadoservicio = Request.Form["Estado"];
+            var tiposervicio = Request.Form["Tiposervicio"];
            
-            for (int i = 0; i < idsservicios.Count; i++)
+            /*for (int i = 0; i < idsservicios.Count; i++)
             {
                 var montoservicioStr = montoservicioList[i]?.ToString().Trim() ?? ""; 
                 if (string.IsNullOrEmpty(montoservicioStr))
@@ -276,10 +277,124 @@ namespace Proyectogestionhoras.Controllers
                     Fecha = fechaServicioParsed,
                     Observacion = observacion[i],
                     Estado = estadoservicio[i],
+                    Tiposervicio = tiposervicio[i],
                 };
 
                 servicios.Add(servicioViewModel);
-            }
+            }*/
+
+            /*gastos socios*/
+           
+           /* List<ServiciosRealesViewModel> serviciossocios = new List<ServiciosRealesViewModel>();*/
+            var Idserviciosocio = Request.Form["Idserviciosocio"];
+            var Idproveedorsocio = Request.Form["Idproveedorsocio"];
+            var montoserviciosociolist = Request.Form["montoserviciosocio"];
+            var fechaserviciosocio = Request.Form["fechaserviciosocio"];
+            var IdServicioRealsocio = Request.Form["IdServicioRealsocio"];
+            var observacionserviciosocio = Request.Form["observacionserviciosocio"];
+            var Estadosocio = Request.Form["Estadosocio"];
+            var Tiposerviciosocio = Request.Form["Tiposerviciosocio"];
+
+          /*  for (int i = 0; i < Idserviciosocio.Count; i++)
+            {
+                var montoservicioStr = montoserviciosociolist[i]?.ToString().Trim() ?? "";
+                if (string.IsNullOrEmpty(montoservicioStr))
+                {
+                    montoservicioStr = "0";
+                }
+                else
+                {
+                    montoservicioStr = montoservicioStr.Replace(".", "");
+                }
+
+                decimal montoservicio = decimal.Parse(montoservicioStr);
+
+                int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioRealsocio[i])
+                                           ? 0
+                                           : int.Parse(IdServicioRealsocio[i]);
+
+                DateTime fechaServicioParsed;
+                if (string.IsNullOrWhiteSpace(fechaserviciosocio[i]))
+                {
+                    fechaServicioParsed = DateTime.Today;
+                }
+                else
+                {
+                    fechaServicioParsed = DateTime.Parse(fechaserviciosocio[i]);
+                }
+                var serviciosocioViewModel = new ServiciosRealesViewModel
+                {
+                    IdServicioReal = idServicioRealParsed,
+                    Idservicio = int.Parse(Idserviciosocio[i]),
+                    Idproveedor = int.Parse(Idproveedorsocio[i]),
+                    Monto = montoservicio,
+                    Fecha = fechaServicioParsed,
+                    Observacion = observacionserviciosocio[i],
+                    Estado = Estadosocio[i],
+                    Tiposervicio = Tiposerviciosocio[i],
+                };
+
+                serviciossocios.Add(serviciosocioViewModel);
+            }*/
+
+            /*honorarios*/
+
+           /* List<ServiciosRealesViewModel> servicioshonorarios = new List<ServiciosRealesViewModel>();*/
+            var Idserviciohonorario = Request.Form["Idserviciohonorario"];
+            var Idproveedorhonorario = Request.Form["Idproveedorhonorario"];
+            var montoserviciohonorariolist = Request.Form["montoserviciohonorario"];
+            var fechaserviciohonorario = Request.Form["fechaserviciohonorario"];
+            var IdServicioRealhonorario = Request.Form["IdServicioRealhonorario"];
+            var observacionserviciohonorario = Request.Form["observacionserviciohonorario"];
+            var Estadohonorario = Request.Form["Estadohonorario"];
+            var Tiposerviciohonorario = Request.Form["Tiposerviciohonorario"];
+
+           /* for (int i = 0; i < Idserviciohonorario.Count; i++)
+            {
+                var montoservicioStr = montoserviciohonorariolist[i]?.ToString().Trim() ?? "";
+                if (string.IsNullOrEmpty(montoservicioStr))
+                {
+                    montoservicioStr = "0";
+                }
+                else
+                {
+                    montoservicioStr = montoservicioStr.Replace(".", "");
+                }
+
+                decimal montoservicio = decimal.Parse(montoservicioStr);
+
+                int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioRealhonorario[i])
+                                           ? 0
+                                           : int.Parse(IdServicioRealhonorario[i]);
+
+                DateTime fechaServicioParsed;
+                if (string.IsNullOrWhiteSpace(fechaserviciohonorario[i]))
+                {
+                    fechaServicioParsed = DateTime.Today;
+                }
+                else
+                {
+                    fechaServicioParsed = DateTime.Parse(fechaserviciohonorario[i]);
+                }
+                var serviciohonorarioViewModel = new ServiciosRealesViewModel
+                {
+                    IdServicioReal = idServicioRealParsed,
+                    Idservicio = int.Parse(Idserviciohonorario[i]),
+                    Idproveedor = int.Parse(Idproveedorhonorario[i]),
+                    Monto = montoservicio,
+                    Fecha = fechaServicioParsed,
+                    Observacion = observacionserviciohonorario[i],
+                    Estado = Estadohonorario[i],
+                    Tiposervicio = Tiposerviciohonorario[i],
+                };
+
+                servicioshonorarios.Add(serviciohonorarioViewModel);
+            }*/
+            var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(), Request.Form["Tiposervicio"].ToList());
+            var serviciossocios = ProcesarServicios(Request.Form["Idserviciosocio"].ToList(), Request.Form["Idproveedorsocio"].ToList(), Request.Form["montoserviciosocio"].ToList(), Request.Form["fechaserviciosocio"].ToList(), Request.Form["IdServicioRealsocio"].ToList(), Request.Form["observacionserviciosocio"].ToList(), Request.Form["Estadosocio"].ToList(), Request.Form["Tiposerviciosocio"].ToList());
+            var servicioshonorarios = ProcesarServicios(Request.Form["Idserviciohonorario"].ToList(),Request.Form["Idproveedorhonorario"].ToList(),Request.Form["montoserviciohonorario"].ToList(),Request.Form["fechaserviciohonorario"].ToList(),Request.Form["IdServicioRealhonorario"].ToList(),Request.Form["observacionserviciohonorario"].ToList(),Request.Form["Estadohonorario"].ToList(),Request.Form["Tiposerviciohonorario"].ToList()
+);
+
 
 
             /*Gastos*/
@@ -340,9 +455,47 @@ namespace Proyectogestionhoras.Controllers
             
 
             await ejecucionService.GestorServiciosReales(idproyecto, servicios);
+            await ejecucionService.GestorServiciosReales(idproyecto, serviciossocios);
+            await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);
             await ejecucionService.GestorGastosReales(idproyecto, gastos);
             await ejecucionService.GestorGastosHH(idproyecto, gastosHH);
             return RedirectToAction("ForecastCostos", "EjecucionProyecto", new {id = idproyecto });
+        }
+
+        private List<ServiciosRealesViewModel> ProcesarServicios(List<string> ids, List<string> proveedores, List<string> montos, List<string> fechas, List<string> idsReales, List<string> observaciones, List<string> estados, List<string> tipos)
+        {
+            List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
+
+            for (int i = 0; i < ids.Count; i++)
+            {
+           
+                string montoStr = montos[i]?.ToString().Trim() ?? "0";
+                montoStr = string.IsNullOrEmpty(montoStr) ? "0" : montoStr.Replace(".", "");
+                decimal monto = decimal.TryParse(montoStr, out decimal result) ? result : 0;
+
+               
+                int idServicioReal = int.TryParse(idsReales[i], out int parsedIdServicioReal) ? parsedIdServicioReal : 0;
+
+         
+                DateTime fecha = DateTime.TryParse(fechas[i], out DateTime parsedFecha) ? parsedFecha : DateTime.Today;
+
+               
+                var servicioViewModel = new ServiciosRealesViewModel
+                {
+                    IdServicioReal = idServicioReal,
+                    Idservicio = int.Parse(ids[i]),
+                    Idproveedor = int.Parse(proveedores[i]),
+                    Monto = monto,
+                    Fecha = fecha,
+                    Observacion = observaciones[i],
+                    Estado = estados[i],
+                    Tiposervicio = tipos[i],
+                };
+
+                servicios.Add(servicioViewModel);
+            }
+
+            return servicios;
         }
 
 

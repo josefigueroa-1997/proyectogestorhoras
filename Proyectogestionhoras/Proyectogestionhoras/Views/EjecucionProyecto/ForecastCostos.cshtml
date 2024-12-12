@@ -271,7 +271,149 @@
             </div>
 
         </div>
+        <div class="form-group">
 
+            <p class="form-subtitle" style="color:black;">Otros Gastos Socios</p>
+            <div class="overflow-x-auto">
+                <table id="tablaGastosSocios" class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-red-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">TipoServicios</th>
+                            <th class="p-2 border border-gray-300 text-left">Proveedor</th>
+                            <th class="p-2 border border-gray-300 text-left">Monto</th>
+                            <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">Estado</th>
+
+                            <th class="p-2 border border-gray-300 text-left">Observación</th>
+
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.ServiciosEjecucion != null)
+                        {
+                            @foreach (var se in ViewBag.ServiciosEjecucion)
+                            {
+                                if (se.Tiposervicio == "Socios")
+                                {
+                                    <tr>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Servicios != null)
+                                                {
+                                                    @foreach (var servicio in ViewBag.Servicios)
+                                                    {
+                                                        if (servicio.Id == se.Idservicio)
+                                                        {
+                                                            <option value="@servicio.Id" selected>@servicio.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@servicio.Id">@servicio.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Proveedores != null)
+                                                {
+                                                    @foreach (var proveedor in ViewBag.Proveedores)
+                                                    {
+                                                        if (proveedor.Id == se.Idproveedor)
+                                                        {
+                                                            <option value="@proveedor.Id" selected>@proveedor.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@proveedor.Id">@proveedor.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @se.Monto)" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        <td class="p-2 border border-gray-300 text-left"><input type="date" value="@se.Fecha.ToString("yyyy-MM-dd")" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+
+
+                                                @if (se.Estado == "Forecast")
+                                                {
+                                                    <option value="Forecast" selected>Forecast</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="Forecast">Forecast</option>
+                                                }
+
+                                                @if (se.Estado == "Pagada")
+                                                {
+                                                    <option value="Pagada" selected>Pagada</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="Pagada">Pagada</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                    </tr>
+                                    <input type="hidden" name="IdServicioRealsocio" value="@se.Id" />
+                                    <input type="hidden" name="Tiposerviciosocio" value="@se.Tiposervicio" />
+                                }
+
+                            }
+                        }
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                    <option value="Forecast" selected>Forecast</option>
+                                    <option value="Pagada">Pagada</option>
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+
+                            <input type="hidden" name="IdServicioRealsocio" value="" />
+                            <input type="hidden" name="Tiposerviciosocio" value="Socios" />
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <button id="btnAgregarGastoSocio" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Servicio</button>
+
+            </div>
+
+        </div>
+        @*staff*@
         <div class="form-group">
 
             <p class="form-subtitle" style="color:black;">Status Gastos HH Staff</p>
@@ -391,113 +533,142 @@
 
         <div class="form-group">
 
-            <p class="form-subtitle" style="color:black;">Status Gastos HH Consultores Externos</p>
+            <p class="form-subtitle" style="color:black;">Status Honorarios Consultores Externos</p>
             <div class="overflow-x-auto">
-                <table class="min-w-full text-xs border-collapse">
+                <table id="tablaHonorarios" class="min-w-full text-xs border-collapse">
                     <thead>
-                        <tr class="bg-blue-100 text-black">
-
-                            <th class="p-2 border border-gray-300 text-left">Fecha</th>
+                        <tr class="bg-orange-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">TipoServicios</th>
+                            <th class="p-2 border border-gray-300 text-left">Proveedor</th>
+                            <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                            <th class="p-2 border border-gray-300 text-left">Estado</th>
+
+                            <th class="p-2 border border-gray-300 text-left">Observación</th>
+
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-                            <th class="p-2 border border-gray-300 text-left">Horas Efectivas</th>
-                            <th class="p-2 border border-gray-300 text-left">SubTotal</th>
-                            <th class="p-2 border border-gray-300 text-left">Reajuste</th>
-                            <th class="p-2 border border-gray-300 text-left">Total</th>
-                            <th class="p-2 border border-gray-300 text-left">Observación</th>
+
 
 
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.GastosHH != null)
+                        @if (ViewBag.ServiciosEjecucion != null)
                         {
-                            @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
+                            @foreach (var se in ViewBag.ServiciosEjecucion)
                             {
-
-                                var gasto = ViewBag.GastosHH[i];
-                                @if (gasto.tiporecurso == "Consultor Externo")
+                                if (se.Tiposervicio == "Consultores Externos")
                                 {
-
-
                                     <tr>
-                                        <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
-                                        <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
-                                        <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
-                                        <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costoconsultoresexternos" />
-                                        <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
-                                        <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
-                                        {
-                                            <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
-                                            <td class="p-2 border border-gray-300 text-right">
-                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
-                                            </td>
-                                            if (ViewBag.GastosRecursos[i].Fechapago != null)
-                                            {
-                                                totalconsutlores += ViewBag.GastosRecursos[i]?.Monto ?? 0;
-                                            }
-                                            else
-                                            {
-                                                totalconsultoresforecast += ViewBag.GastosRecursos[i]?.Monto ?? 0;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <td class="p-2 border border-gray-300 text-right">
-                                                <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
-                                            </td>
-                                        }
-                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
-                                        <td class="p-2">@gasto.cuenta</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N2}", gasto.totalhh)</td>
-                                        <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", gasto.costoconsultoresexternos)</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
-                                        {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        }
-                                        else
-                                        {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        }
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
-                                        {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoconsultores" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Monto ?? "")" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        }
-                                        else
-                                        {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" readonly id="montoconsultores" name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        }
-                                        @if (ViewBag.GastosRecursos != null && ViewBag.GastosRecursos.Count > i)
-                                        {
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Idserviciohonorario" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Servicios != null)
+                                                {
+                                                    @foreach (var servicio in ViewBag.Servicios)
+                                                    {
+                                                        if (servicio.Id == se.Idservicio)
+                                                        {
+                                                            <option value="@servicio.Id" selected>@servicio.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@servicio.Id">@servicio.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
 
-                                            <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
-                                            </td>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Idproveedorhonorario" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Proveedores != null)
+                                                {
+                                                    @foreach (var proveedor in ViewBag.Proveedores)
+                                                    {
+                                                        if (proveedor.Id == se.Idproveedor)
+                                                        {
+                                                            <option value="@proveedor.Id" selected>@proveedor.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@proveedor.Id">@proveedor.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
 
-                                        }
-                                        else
-                                        {
-                                            <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                            </td>
-                                        }
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @se.Monto)" id="montoservicio" name="montoserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        <td class="p-2 border border-gray-300 text-left"><input type="date" value="@se.Fecha.ToString("yyyy-MM-dd")" name="fechaserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Estadohonorario" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
 
-                                        @{
-                                            
-                                            idcuentaconsultores = gasto.idcuenta;
-                                            cuentaconsultores = gasto.cuenta;
-                                        }
+
+                                                @if (se.Estado == "Forecast")
+                                                {
+                                                    <option value="Forecast" selected>Forecast</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="Forecast">Forecast</option>
+                                                }
+
+                                                @if (se.Estado == "Pagada")
+                                                {
+                                                    <option value="Pagada" selected>Pagada</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="Pagada">Pagada</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
                                     </tr>
+                                    <input type="hidden" name="IdServicioRealhonorario" value="@se.Id" />
+                                    <input type="hidden" name="Tiposerviciohonorario" value="@se.Tiposervicio" />
                                 }
+
                             }
-
                         }
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Idserviciohonorario" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Idproveedorhonorario" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Estadohonorario" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                    <option value="Forecast" selected>Forecast</option>
+                                    <option value="Pagada">Pagada</option>
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
 
+                            <input type="hidden" name="IdServicioRealhonorario" value="" />
+                            <input type="hidden" name="Tiposerviciohonorario" value="Consultores Externos" />
+
+                        </tr>
 
                     </tbody>
                 </table>
+                <button id="btnAgregarHonorario" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Servicio</button>
 
             </div>
 
@@ -532,79 +703,84 @@
                         {
                             @foreach (var se in ViewBag.ServiciosEjecucion)
                             {
-                                <tr>
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <select name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            <option value="" disabled selected>Seleccione un Servicio</option>
-                                            @if (ViewBag.Servicios != null)
-                                            {
-                                                @foreach (var servicio in ViewBag.Servicios)
+                                if(se.Tiposervicio == "Otros")
+                                {
+                                    <tr>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Servicios != null)
                                                 {
-                                                    if (servicio.Id == se.Idservicio)
+                                                    @foreach (var servicio in ViewBag.Servicios)
                                                     {
-                                                        <option value="@servicio.Id" selected>@servicio.Nombre</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@servicio.Id">@servicio.Nombre</option>
+                                                        if (servicio.Id == se.Idservicio)
+                                                        {
+                                                            <option value="@servicio.Id" selected>@servicio.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@servicio.Id">@servicio.Nombre</option>
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        </select>
+                                            </select>
 
-                                    </td>
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <select name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            <option value="" disabled selected>Seleccione un Servicio</option>
-                                            @if (ViewBag.Proveedores != null)
-                                            {
-                                                @foreach (var proveedor in ViewBag.Proveedores)
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                <option value="" disabled selected>Seleccione un Servicio</option>
+                                                @if (ViewBag.Proveedores != null)
                                                 {
-                                                    if (proveedor.Id == se.Idproveedor)
+                                                    @foreach (var proveedor in ViewBag.Proveedores)
                                                     {
-                                                        <option value="@proveedor.Id" selected>@proveedor.Nombre</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@proveedor.Id">@proveedor.Nombre</option>
+                                                        if (proveedor.Id == se.Idproveedor)
+                                                        {
+                                                            <option value="@proveedor.Id" selected>@proveedor.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@proveedor.Id">@proveedor.Nombre</option>
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        </select>
+                                            </select>
 
-                                    </td>
-                                    <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @se.Monto)" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                    <td class="p-2 border border-gray-300 text-left"><input type="date" value="@se.Fecha.ToString("yyyy-MM-dd")" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @se.Monto)" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        <td class="p-2 border border-gray-300 text-left"><input type="date" value="@se.Fecha.ToString("yyyy-MM-dd")" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
 
 
-                                            @if (se.Estado == "Forecast")
-                                            {
-                                                <option value="Forecast" selected>Forecast</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Forecast">Forecast</option>
-                                            }
+                                                @if (se.Estado == "Forecast")
+                                                {
+                                                    <option value="Forecast" selected>Forecast</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="Forecast">Forecast</option>
+                                                }
 
-                                            @if (se.Estado == "Pagada")
-                                            {
-                                                <option value="Pagada" selected>Pagada</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Pagada">Pagada</option>
-                                            }
-                                        </select>
-                                    </td>
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
-                                    </td>
-                                    <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
-                                    <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
-                                </tr>
-                                <input type="hidden" name="IdServicioReal" value="@se.Id"/>
+                                                @if (se.Estado == "Pagada")
+                                                {
+                                                    <option value="Pagada" selected>Pagada</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="Pagada">Pagada</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                    </tr>
+                                    <input type="hidden" name="IdServicioReal" value="@se.Id" />
+                                    <input type="hidden" name="Tiposervicio" value="@se.Tiposervicio" />
+                                }
+                               
                             }
                         }
                         <tr>
@@ -633,7 +809,7 @@
                             <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
 
                             <input type="hidden" name="IdServicioReal" value="" />
-
+                            <input type="hidden" name="Tiposervicio" value="Otros" />
 
                         </tr>
 
@@ -1173,6 +1349,8 @@
             const montogastoRows = document.querySelectorAll('tr');
             
             const montoInputs = document.querySelectorAll('input[name*="montoservicio"]');
+            const montogastosocioInputs = document.querySelectorAll('input[name*="montoserviciosocio"]');
+            const montohonorarioInputs = document.querySelectorAll('input[name*="montoserviciohonorario"]');
             const montoSocioInputs = document.querySelectorAll('input[id*="montosocio"]');
             const montoStaffInputs = document.querySelectorAll('input[id*="montostaff"]');
             const montoConsultoresInputs = document.querySelectorAll('input[id*="montoconsultores"]');
@@ -1180,6 +1358,18 @@
             
             montoInputs.forEach(input => {
                 const estadoSelect = input.closest('tr').querySelector('select[name="Estado"]'); 
+                if (estadoSelect && estadoSelect.value === "Pagada") {
+                    totalservicio += parseCurrency(input.value);
+                }
+            });
+            montogastosocioInputs.forEach(input => {
+                const estadoSelect = input.closest('tr').querySelector('select[name="Estadosocio"]');
+                if (estadoSelect && estadoSelect.value === "Pagada") {
+                    totalservicio += parseCurrency(input.value);
+                }
+            });
+            montohonorarioInputs.forEach(input => {
+                const estadoSelect = input.closest('tr').querySelector('select[name="Estadohonorario"]');
                 if (estadoSelect && estadoSelect.value === "Pagada") {
                     totalservicio += parseCurrency(input.value);
                 }
@@ -1226,7 +1416,7 @@
      
 
 
-        const montoInputs = document.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"],input[name*="Reajuste"]');
+        const montoInputs = document.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"],input[name*="Reajuste"],input[name*="montoserviciosocio"],input[name*="montoserviciohonorario"]');
 
 
         montoInputs.forEach(input => {
@@ -1252,6 +1442,34 @@
                     });
                 }, 100);
           });
+        document.getElementById("btnAgregarGastoSocio").addEventListener("click", function () {
+
+            setTimeout(() => {
+
+                const nuevosMontos = document.querySelectorAll('input[name*="montoserviciosocio"]');
+
+                nuevosMontos.forEach(input => {
+                    if (!input.hasAttribute('data-format-listener')) {
+                        input.addEventListener('input', formatCurrency);
+                        input.setAttribute('data-format-listener', 'true');
+                    }
+                });
+            }, 100);
+        });
+        document.getElementById("btnAgregarHonorario").addEventListener("click", function () {
+
+            setTimeout(() => {
+
+                const nuevosMontos = document.querySelectorAll('input[name*="montoserviciohonorario"]');
+
+                nuevosMontos.forEach(input => {
+                    if (!input.hasAttribute('data-format-listener')) {
+                        input.addEventListener('input', formatCurrency);
+                        input.setAttribute('data-format-listener', 'true');
+                    }
+                });
+            }, 100);
+        });
         document.getElementById("agregarFilaGastos").addEventListener("click", function () {
 
             setTimeout(() => {
@@ -1354,7 +1572,7 @@
                                 <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
 
                                     <input type="hidden" name="IdServicioReal" value="" />
-
+                                        <input type="hidden" name="Tiposervicio" value="Otros" />
 
                             </tr>
             `;
@@ -1367,8 +1585,108 @@
         });
     });
 
+    /*agregar gasto socio*/
+    $(document).ready(function () {
+        cargarDatosIniciales();
 
+        $('.serviciosSelect').each(function () {
+            rellenarSelectServicios(this);
+        });
+        $('.proveedorSelect').each(function () {
+            rellenarSelectProveedores(this);
+        });
 
+        $('#btnAgregarGastoSocio').on('click', function (e) {
+            e.preventDefault();
+
+            var nuevaFila = `
+                           <tr>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                        <option value="Forecast" selected>Forecast</option>
+                                        <option value="Pagada">Pagada</option>
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+
+                                <input type="hidden" name="IdServicioRealsocio" value="" />
+                                <input type="hidden" name="Tiposerviciosocio" value="Socios" />
+
+                            </tr>
+                `;
+
+            $('#tablaGastosSocios tbody').append(nuevaFila);
+
+            var lastRow = $('#tablaGastosSocios tbody tr:last');
+            rellenarSelectServicios(lastRow.find('.serviciosSelect'));
+            rellenarSelectProveedores(lastRow.find('.proveedorSelect'));
+        });
+    });
+    /*honorarios externos */
+    $(document).ready(function () {
+        cargarDatosIniciales();
+
+        $('.serviciosSelect').each(function () {
+            rellenarSelectServicios(this);
+        });
+        $('.proveedorSelect').each(function () {
+            rellenarSelectProveedores(this);
+        });
+
+        $('#btnAgregarHonorario').on('click', function (e) {
+            e.preventDefault();
+
+            var nuevaFila = `
+                               <tr>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Idserviciohonorario" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Idproveedorhonorario" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Estadohonorario" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                        <option value="Forecast" selected>Forecast</option>
+                                        <option value="Pagada">Pagada</option>
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+
+                                <input type="hidden" name="IdServicioRealhonorario" value="" />
+                                <input type="hidden" name="Tiposerviciohonorario" value="Consultores Externos" />
+
+                            </tr>
+                    `;
+
+            $('#tablaHonorarios tbody').append(nuevaFila);
+
+            var lastRow = $('#tablaHonorarios tbody tr:last');
+            rellenarSelectServicios(lastRow.find('.serviciosSelect'));
+            rellenarSelectProveedores(lastRow.find('.proveedorSelect'));
+        });
+    });
     /*GASTOS*/
     $(document).ready(function () {
        

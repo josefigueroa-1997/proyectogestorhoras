@@ -1254,6 +1254,11 @@ namespace Proyectogestionhoras.Models
                     .IsUnicode(false)
                     .HasColumnName("OBSERVACION");
 
+                entity.Property(e => e.Tiposervicio)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("TIPOSERVICIO");
+
                 entity.HasOne(d => d.IdproveedorNavigation)
                     .WithMany(p => p.Serviciosejecucions)
                     .HasForeignKey(d => d.Idproveedor)

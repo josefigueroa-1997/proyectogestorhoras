@@ -128,7 +128,7 @@
                                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
                                         @(real == 0 ? "" : String.Format("{0:N0}", real))
                                     </td>
-                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                    <td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[150px]">
                                         @(forecast == 0 ? "" : String.Format("{0:N0}", forecast))
                                     </td>
 
@@ -216,22 +216,53 @@
                         @*SALDO ACUMULADO*@
                         <tr class="bg-yellow-100 font-bold">
                             <td class="text-left text-xs font-medium font-bold sticky left-0 bg-yellow-100" colspan="3">Saldo Acumulado (@proyecto.Key)</td>
-                            @{decimal saldoAcumulado = 0;}
+                            @{
+                                decimal saldoAcumulado = 0;
+                                bool proyectoComienza = false;
+                                bool detenerAcumulacion = false;
+                            }
                             @foreach (var mesAnio in mesesAniosOrdenados)
                             {
+
 
                                 var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
                                 var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
                                 var margenreal = ingresoreal - egresoreal;
-                                saldoAcumulado += margenreal;
 
+                                
+                                if (!proyectoComienza && (ingresoreal != 0 || egresoreal != 0 || margenreal != 0))
+                                {
+                                    proyectoComienza = true; 
+                                }
+
+                             
+                                if (proyectoComienza)
+                                {
+                                    saldoAcumulado += margenreal;
+
+                                    
+                                    if (ingresoreal == 0 && egresoreal == 0 && margenreal == 0)
+                                    {
+                                        detenerAcumulacion = true; 
+                                    }
+                                }
+
+                                
+                                if (detenerAcumulacion)
+                                {
+                                    break;
+                                }
+
+                                
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
                                     @(saldoAcumulado == 0 ? "" : String.Format("{0:N0}", saldoAcumulado))
                                 </td>
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
-
                             }
+
+                            
+                           
                         </tr>
                     }
                 </tbody>

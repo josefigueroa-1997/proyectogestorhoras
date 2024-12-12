@@ -119,6 +119,7 @@ namespace Proyectogestionhoras.Services
                         servicioExistente.Monto = servicio.Monto;
                         servicioExistente.Observacion = servicio.Observacion;
                         servicioExistente.Estado = servicio.Estado;
+                        servicioExistente.Tiposervicio = servicio.Tiposervicio;
                     }
                 }
 
@@ -131,6 +132,7 @@ namespace Proyectogestionhoras.Services
                     Monto = servicio.Monto,
                     Observacion = servicio.Observacion,
                     Estado = servicio.Estado,
+                    Tiposervicio = servicio.Tiposervicio,
                 }).ToList();
 
                 await context.Serviciosejecucions.AddRangeAsync(nuevosServicios);
