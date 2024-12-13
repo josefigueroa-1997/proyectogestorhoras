@@ -407,10 +407,7 @@
 
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="monto">Monto</label>
-                        <input type="text" id="monto" name="monto" readonly min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " required>
-                    </div>
+                    
 
                 </div>
 
@@ -430,13 +427,9 @@
                             No
                         </label>
                     </div>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
-                        <label for="tipoMoneda">Tipo de moneda</label>
-                        <input type="hidden" name="moneda" value="@proyecto.MONEDA" />
-                        <select id="tipoMoneda" name="moneda" disabled required>
+                        <label for="tipoMoneda">Moneda de Origen</label>
+                        <select id="tipoMoneda" name="moneda" required>
                             <option value="" disabled selected>Seleccione el tipo de Moneda</option>
                             @if (proyecto.MONEDA == "CLP")
                             {
@@ -475,6 +468,18 @@
                             }
                         </select>
                     </div>
+                    <div id="monedaOrigenGroup" style="display:none;" class="form-group">
+                        <label for="montomonedaorigen">Monto Moneda Origen</label>
+                        <input type="text" id="montomonedaorigen" name="montoorigen" value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">MontoCLP</label>
+                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    
                     <div class="form-group">
                         <label for="plazo">Plazo en meses</label>
                         <input type="number" id="plazo" name="plazo" readonly placeholder="Valor de Plazo" value="@proyecto.Plazo" required>
@@ -1363,10 +1368,7 @@
 
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="monto">Monto</label>
-                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " required>
-                    </div>
+                   
 
                 </div>
 
@@ -1386,11 +1388,8 @@
                             No
                         </label>
                     </div>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
-                        <label for="tipoMoneda">Tipo de moneda</label>
+                        <label for="tipoMoneda">Moneda de Origen</label>
                         <select id="tipoMoneda" name="moneda" required>
                             <option value="" disabled selected>Seleccione el tipo de Moneda</option>
                             @if (proyecto.MONEDA == "CLP")
@@ -1430,6 +1429,18 @@
                             }
                         </select>
                     </div>
+                    <div id="monedaOrigenGroup" style="display:none;" class="form-group">
+                        <label for="montomonedaorigen">Monto Moneda Origen</label>
+                        <input type="text" id="montomonedaorigen" name="montoorigen" value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">MontoCLP</label>
+                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    
                     <div class="form-group">
                         <label for="plazo">Plazo en meses</label>
                         <input type="number" id="plazo" name="plazo" placeholder="Valor de Plazo" value="@proyecto.Plazo" required>
@@ -1666,79 +1677,6 @@
                 </div>
 
 
-
-              @*<div style="display:none;" id="tablaintegrantes" class="form-group">
-                    <p class="form-subtitle">Digite las HH/Proyectos para cada Integrante</p>
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                        <thead>
-                            <tr>
-                                @if(ViewBag.Recursos!=null){
-                                    @foreach (var recurso in ViewBag.Recursos)
-                                    {
-                                        <th style="background-color: #b2e6a5; color: black;">
-                                            <input type="hidden" name="idusuarios[]" value="@recurso.Id" />
-
-                                            <input type="text" value="@recurso.NOMBRE_RECURSO_CORRELATIVO" readonly />
-                                        </th>
-                                    }
-                                }
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @if (ViewBag.Recursos != null)
-                                {
-                                    @foreach (var recurso in ViewBag.Recursos)
-                                    {
-
-                                        <td style="padding: 10px; border: 1px solid #ddd;">
-                                            <input type="number"  class="horasInput" name="hhasignadas" min="0" placeholder="Horas"
-                                                   data-tipo="@recurso.NOMBRE_RECURSO_CORRELATIVO" data-id="@recurso.Id" data-costo="@recurso.Costo_Unitario" />
-                                        </td>
-                                    }
-                                }
-                                
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="tablaresumen" style="display:none;background-color: #b2e6a5; color: black;" class="form-group">
-                    <p class="form-subtitle">Resumen HH/Proyectos</p>
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                        <thead>
-
-                            <tr>
-                                <th>Total Horas Socios</th>
-                                <th>Total Horas Staff</th>
-                                <th>Total Horas Consultor A</th>
-                                <th>Total Horas Consultor B</th>
-                                <th>Total Horas Consultor C</th>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalSocios">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalStaff">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalConsultorA">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalConsultorB">0</span>
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                <span id="totalConsultorC">0</span>
-                            </td>
-                        </tr>
-
-
-                    </table>
-                </div>
-        *@
 
 
                 @*COSTOS DIRECTOS*@
@@ -2200,15 +2138,16 @@
         updateTotal();
         updateTotalGasto();
         obtenerMargenEsperado();
+        updateMonedaOrigenVisibility();
         document.getElementById("estadoProyecto").addEventListener("change", function () {
             var estadoSeleccionado = document.getElementById("estadoProyecto");
 
-            // Verificar si el elemento está deshabilitado
+           
             if (estadoSeleccionado.disabled) {
-                return; // Salir de la función si está deshabilitado
+                
             }
 
-            // Solo si está habilitado, podemos verificar su valor
+            
             if (estadoSeleccionado.value === "2") {
                 document.getElementById("tablaintegrantes").style.display = "block";
                 document.getElementById("tablaresumen").style.display = "block";
@@ -2217,6 +2156,30 @@
                 document.getElementById("tablaresumen").style.display = "none";
             }
         });
+    });
+
+    function updateMonedaOrigenVisibility() {
+        const selectedCurrency = document.getElementById('tipoMoneda').value;
+        const montoMonedaOrigenGroup = document.getElementById('monedaOrigenGroup');
+        const montoMonedaOrigenInput = document.getElementById('montomonedaorigen');
+
+        if (selectedCurrency === 'CLP') {
+    
+            montoMonedaOrigenGroup.style.display = 'none';
+            montoMonedaOrigenInput.removeAttribute('required');
+            montoMonedaOrigenInput.value = ''; 
+        } else {
+
+            montoMonedaOrigenGroup.style.display = 'block';
+            montoMonedaOrigenInput.setAttribute('required', 'required');
+        }
+    }
+
+    
+
+   
+    document.getElementById('tipoMoneda').addEventListener('change', function () {
+        updateMonedaOrigenVisibility();
     });
 
     /*TRAE EL CODIGO DEL PROYECTO DE CENTRO DE COSTO*/
@@ -3133,6 +3096,7 @@
 
 
     document.getElementById("monto").addEventListener("input", formatInput);
+    document.getElementById("montomonedaorigen").addEventListener("input", formatInput);
     document.querySelectorAll('.montoservicio').forEach(input => {
         input.addEventListener("input", formatInput);
     });

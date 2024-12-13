@@ -28,7 +28,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura,  decimal montoorigen,List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -73,6 +73,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORB", idsegmentoconsultorb));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
+                    command.Parameters.Add(new SqlParameter("@MONTOMONEDAORIGEN", montoorigen));
                     SqlParameter idProyectoParameter = new SqlParameter("@ID_PROYECTO", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -97,7 +98,7 @@ namespace Proyectogestionhoras.Services
 
       
         /*EDITAR PROYECTO*/
-        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -144,6 +145,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORB", idsegmentoconsultorb));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
+                    command.Parameters.Add(new SqlParameter("@MONTOMONEDAORIGEN", montoorigen));
                     
                     
                     await command.ExecuteNonQueryAsync();
@@ -539,13 +541,15 @@ namespace Proyectogestionhoras.Services
                                 IDCUENTA_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_CONSULTOR_C")),
                                 SEGMENTO_CONSULTOR_C = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_CONSULTOR_C")),
                                 COSTO_CONSULTORC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
-                                /*PRESUPUESTO*/
+                                /*PRESUPUESTO
+                                 */
                                 MontoPresupuesto = reader.IsDBNull(reader.GetOrdinal("MONTOPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOPRESUPUESTO")),
                                 CostoSocioPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOSOCIOPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOSOCIOPRESUPUESTO")),
                                 CostoStaffPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOSTAFFPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOSTAFFPRESUPUESTO")),
                                 CostoConsultorAPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")),
                                 CostoConsultorBPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")),
                                 CostoConsultorCPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")),
+                                MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
                                 idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
 
                                 
@@ -1537,6 +1541,7 @@ namespace Proyectogestionhoras.Services
                                 CostoConsultorAPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")),
                                 CostoConsultorBPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")),
                                 CostoConsultorCPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")),
+                               MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
                                 idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
 
 

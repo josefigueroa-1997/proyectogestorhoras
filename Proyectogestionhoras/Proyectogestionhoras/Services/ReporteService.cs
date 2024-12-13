@@ -883,6 +883,7 @@ namespace Proyectogestionhoras.Services
                                 CostoconsultorC = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORC")) ? 0m : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORC")),
                                 TotalServicios = reader.IsDBNull(reader.GetOrdinal("TOTALSERVICIO")) ? 0m : reader.GetDecimal(reader.GetOrdinal("TOTALSERVICIO")),
                                 TotalGastos = reader.IsDBNull(reader.GetOrdinal("TOTALGASTOS")) ? 0m : reader.GetDecimal(reader.GetOrdinal("TOTALGASTOS")),
+                                MontoMonedaInternacional = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0m : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
                                 
 
 

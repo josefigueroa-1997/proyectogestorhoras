@@ -300,26 +300,27 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Cells[5, 7].Value = "IVA";
                 worksheet.Cells[5, 8].Value = "Tipologia";
                 worksheet.Cells[5, 9].Value = "Empresa";
-                worksheet.Cells[5, 10].Value = "Moneda";
-                worksheet.Cells[5, 11].Value = "Monto";
-                worksheet.Cells[5, 12].Value = "Plazo";
-                worksheet.Cells[5, 13].Value = "Fecha Inicio";
-                worksheet.Cells[5, 14].Value = "Fecha Término";
-                worksheet.Cells[5, 15].Value = "HH_Socios";
-                worksheet.Cells[5, 16].Value = "HH_Staff";
-                worksheet.Cells[5, 17].Value = "HH_ConsultorA";
-                worksheet.Cells[5, 18].Value = "HH_ConsultorB";
-                worksheet.Cells[5, 19].Value = "HH_ConsultorC";
-                worksheet.Cells[5, 20].Value = "CostoSocios";
-                worksheet.Cells[5, 21].Value = "CostoStaff";
-                worksheet.Cells[5, 22].Value = "CostoConsultorA";
-                worksheet.Cells[5, 23].Value = "CostoConsultorB";
-                worksheet.Cells[5, 24].Value = "CostoConsultorC";
-                worksheet.Cells[5, 25].Value = "TotalServicios";
-                worksheet.Cells[5, 26].Value = "TotalGastos";
-                worksheet.Cells[5, 27].Value = "Status";
+                worksheet.Cells[5, 10].Value = "Moneda de Origen";
+                worksheet.Cells[5, 11].Value = "MontoCLP";
+                worksheet.Cells[5, 12].Value = "Monto Moneda Internacional";
+                worksheet.Cells[5, 13].Value = "Plazo";
+                worksheet.Cells[5, 14].Value = "Fecha Inicio";
+                worksheet.Cells[5, 15].Value = "Fecha Término";
+                worksheet.Cells[5, 16].Value = "HH_Socios";
+                worksheet.Cells[5, 17].Value = "HH_Staff";
+                worksheet.Cells[5, 18].Value = "HH_ConsultorA";
+                worksheet.Cells[5, 19].Value = "HH_ConsultorB";
+                worksheet.Cells[5, 20].Value = "HH_ConsultorC";
+                worksheet.Cells[5, 21].Value = "CostoSocios";
+                worksheet.Cells[5, 22].Value = "CostoStaff";
+                worksheet.Cells[5, 23].Value = "CostoConsultorA";
+                worksheet.Cells[5, 24].Value = "CostoConsultorB";
+                worksheet.Cells[5, 25].Value = "CostoConsultorC";
+                worksheet.Cells[5, 26].Value = "TotalServicios";
+                worksheet.Cells[5, 27].Value = "TotalGastos";
+                worksheet.Cells[5, 28].Value = "Status";
 
-                using (var range = worksheet.Cells[5, 1, 5, 27])
+                using (var range = worksheet.Cells[5, 1, 5, 28])
                 {
                     range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightSkyBlue);
@@ -337,9 +338,9 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Column(7).Width = 15;
                 worksheet.Column(8).Width = 15;
                 worksheet.Column(9).Width = 15;
-                worksheet.Column(10).Width = 15;
+                worksheet.Column(10).Width = 22;
                 worksheet.Column(11).Width = 15;
-                worksheet.Column(12).Width = 15;
+                worksheet.Column(12).Width = 20;
                 worksheet.Column(13).Width = 15;
                 worksheet.Column(14).Width = 15;
                 worksheet.Column(15).Width = 15;
@@ -355,6 +356,7 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Column(25).Width = 15;
                 worksheet.Column(26).Width = 15;
                 worksheet.Column(27).Width = 15;
+                worksheet.Column(28).Width = 15;
                 
 
               
@@ -376,37 +378,39 @@ namespace Proyectogestionhoras.Controllers
                     worksheet.Cells[indice, 10].Value = planilla.Moneda;
                     worksheet.Cells[indice, 11].Value = planilla.Monto;
                     worksheet.Cells[indice, 11].Style.Numberformat.Format = "#,##0";
-                    worksheet.Cells[indice, 12].Value = planilla.Plazo;
-                    worksheet.Cells[indice, 13].Style.Numberformat.Format = "dd/MM/yyyy";
-                    worksheet.Cells[indice, 13].Value = planilla.Fechainicio?.ToString("dd/MM/yyyy");
+                    worksheet.Cells[indice, 12].Value = planilla.MontoMonedaInternacional == 0 ? (object)null : planilla.MontoMonedaInternacional;
+                    worksheet.Cells[indice, 12].Style.Numberformat.Format = "#,##0";
+                    worksheet.Cells[indice, 13].Value = planilla.Plazo;
                     worksheet.Cells[indice, 14].Style.Numberformat.Format = "dd/MM/yyyy";
-                    worksheet.Cells[indice, 14].Value = planilla.Fechatermino?.ToString("dd/MM/yyyy");
-                    worksheet.Cells[indice, 15].Value = planilla.HHsocios == 0 ? (object)null : planilla.HHsocios;
-                    worksheet.Cells[indice, 16].Value = planilla.HHstaff == 0 ? (object)null : planilla.HHstaff;
-                    worksheet.Cells[indice, 17].Value = planilla.HHConsultorA == 0 ? (object)null : planilla.HHConsultorA;
-                    worksheet.Cells[indice, 18].Value = planilla.HHConsultorB == 0 ? (object)null : planilla.HHConsultorB;
-                    worksheet.Cells[indice, 19].Value = planilla.HHConsultorC == 0 ? (object)null : planilla.HHConsultorC;
-                    worksheet.Cells[indice, 20].Value = planilla.Costosocios == 0 ? (object)null : planilla.Costosocios;
-                    worksheet.Cells[indice, 20].Style.Numberformat.Format = "#,##0";
-
-                    worksheet.Cells[indice, 21].Value = planilla.Costostaff == 0 ? (object)null : planilla.Costostaff;
+                    worksheet.Cells[indice, 14].Value = planilla.Fechainicio?.ToString("dd/MM/yyyy");
+                    worksheet.Cells[indice, 15].Style.Numberformat.Format = "dd/MM/yyyy";
+                    worksheet.Cells[indice, 15].Value = planilla.Fechatermino?.ToString("dd/MM/yyyy");
+                    worksheet.Cells[indice, 16].Value = planilla.HHsocios == 0 ? (object)null : planilla.HHsocios;
+                    worksheet.Cells[indice, 17].Value = planilla.HHstaff == 0 ? (object)null : planilla.HHstaff;
+                    worksheet.Cells[indice, 18].Value = planilla.HHConsultorA == 0 ? (object)null : planilla.HHConsultorA;
+                    worksheet.Cells[indice, 19].Value = planilla.HHConsultorB == 0 ? (object)null : planilla.HHConsultorB;
+                    worksheet.Cells[indice, 20].Value = planilla.HHConsultorC == 0 ? (object)null : planilla.HHConsultorC;
+                    worksheet.Cells[indice, 21].Value = planilla.Costosocios == 0 ? (object)null : planilla.Costosocios;
                     worksheet.Cells[indice, 21].Style.Numberformat.Format = "#,##0";
 
-                    worksheet.Cells[indice, 22].Value = planilla.CostoconsultorA == 0 ? (object)null : planilla.CostoconsultorA;
+                    worksheet.Cells[indice, 22].Value = planilla.Costostaff == 0 ? (object)null : planilla.Costostaff;
                     worksheet.Cells[indice, 22].Style.Numberformat.Format = "#,##0";
 
-                    worksheet.Cells[indice, 23].Value = planilla.CostoconsultorB == 0 ? (object)null : planilla.CostoconsultorB;
+                    worksheet.Cells[indice, 23].Value = planilla.CostoconsultorA == 0 ? (object)null : planilla.CostoconsultorA;
                     worksheet.Cells[indice, 23].Style.Numberformat.Format = "#,##0";
 
-                    worksheet.Cells[indice, 24].Value = planilla.CostoconsultorC == 0 ? (object)null : planilla.CostoconsultorC;
+                    worksheet.Cells[indice, 24].Value = planilla.CostoconsultorB == 0 ? (object)null : planilla.CostoconsultorB;
                     worksheet.Cells[indice, 24].Style.Numberformat.Format = "#,##0";
 
-                    worksheet.Cells[indice, 25].Value = planilla.TotalServicios == 0 ? (object)null : planilla.TotalServicios;
+                    worksheet.Cells[indice, 25].Value = planilla.CostoconsultorC == 0 ? (object)null : planilla.CostoconsultorC;
                     worksheet.Cells[indice, 25].Style.Numberformat.Format = "#,##0";
 
-                    worksheet.Cells[indice, 26].Value = planilla.TotalGastos == 0 ? (object)null : planilla.TotalGastos;
+                    worksheet.Cells[indice, 26].Value = planilla.TotalServicios == 0 ? (object)null : planilla.TotalServicios;
                     worksheet.Cells[indice, 26].Style.Numberformat.Format = "#,##0";
-                    worksheet.Cells[indice, 27].Value = planilla.Status;
+
+                    worksheet.Cells[indice, 27].Value = planilla.TotalGastos == 0 ? (object)null : planilla.TotalGastos;
+                    worksheet.Cells[indice, 27].Style.Numberformat.Format = "#,##0";
+                    worksheet.Cells[indice, 28].Value = planilla.Status;
                     
                 }
                 worksheet.View.FreezePanes(6, 3);

@@ -247,8 +247,8 @@
             
             <div class="form-group">
                 <label for="tipologia">Tipología</label>
-                <select id="tipologia" name="idtipologia" required>
-                    <option value="" disabled selected>Seleccione una tipología</option>
+                <select id="tipologia" name="idtipologia"  required>
+                    <option value="" disabled selected>Seleccione una Tipología</option>
                     @if(ViewBag.Tipologias!=null){
                         @foreach (var tipologia in ViewBag.Tipologias)
                         {
@@ -260,8 +260,8 @@
             </div>
             <div class="form-group">
                 <label for="tipoEmpresa">Tipo de empresa</label>
-                <select id="tipoEmpresa" name="tipoempresa" required>
-                    <option value="" disabled selected>Seleccione el tipo de empresa</option>
+                <select id="tipoEmpresa" name="tipoempresa"  required>
+                    <option value="" disabled selected>Seleccione un tipo de Empresa</option>
                     @if(ViewBag.Empresas!=null){
                         @foreach (var empresa in ViewBag.Empresas)
                         {
@@ -271,62 +271,74 @@
                     
                 </select>
             </div>
-            <div class="form-group">
-                <label for="monto">Monto</label>
-                <input type="text" id="monto" name="monto"  required>
-            </div>
+            
+            
             
         </div>
-
         <div class="form-row">
             <div class="form-group-radio">
                 <label>¿Afecta el IVA?</label>
                 <label><input type="radio" name="afectaiva" value="si" required onchange="generarFilas()"> Sí</label>
                 <label><input type="radio" name="afectaiva" value="no" required onchange="generarFilas()"> No</label>
             </div>
-        </div>
-
-        <div class="form-row">
             <div class="form-group">
-                <label for="tipoMoneda">Tipo de moneda</label>
-                <select id="tipoMoneda" name="moneda" required>
-                    <option value="" disabled selected>Seleccione el tipo de Moneda</option>
+                <label for="tipoMoneda">Moneda de Origen</label>
+                <select id="tipoMoneda" name="moneda"  required>
+                    <option value="" disabled selected>Seleccione la Moneda</option>
                     <option value="CLP">CLP</option>
                     <option value="US">US</option>
                     <option value="EURO">EURO</option>
                     <option value="UF">UF</option>
                 </select>
             </div>
+            <div id="monedaOrigenGroup" style="display:none;" class="form-group">
+                <label for="montomonedaorigen">Monto Moneda Origen</label>
+                <input type="text" id="montomonedaorigen" name="montoorigen">
+            </div>
+            <div class="form-group">
+                <label for="monto">MontoCLP</label>
+                <input type="text" id="monto"  name="monto" required>
+            </div>
+        </div>
+        <div class="form-row">
             <div class="form-group">
                 <label for="plazo">Plazo en meses</label>
-                <input type="number" id="plazo" name="plazo" placeholder="Valor de Plazo" required>
+                <input type="number" id="plazo" name="plazo" placeholder="Plazo" required>
             </div>
             <div class="form-group">
                 <label for="fechaInicio">Fecha de inicio</label>
-                <input type="date" id="fechaInicio" name="fechainicio" required>
+                <input type="date" id="fechaInicio" name="fechainicio"  required>
             </div>
             <div class="form-group">
                 <label for="fechaFin">Fecha fin</label>
-                <input type="date" id="fechaFin" readonly name="fechatermino" disabled>
+                <input type="date" id="fechaFin" readonly name="fechatermino"  disabled>
             </div>
+           
+        </div>
+        
+
+        <div class="form-row">
+           
             <div class="form-group">
-            
+
                 <input type="hidden" id="idcuentafactura" name="idcuentafactura" readonly>
                 <input type="hidden" id="idsegmentofactura" name="idsegmentofactura" readonly />
                 <input type="hidden" id="cuentafactura" name="cuenta" readonly>
                 <input type="hidden" id="nombresegmentofactura" name="nombresegmentofactura" readonly>
-                <input type="hidden" id="codigo" name="idccosto"/>
+                <input type="hidden" id="codigo" name="idccosto" />
                 <input type="hidden" class="nombresegmentoservicio" />
-                <input type="hidden" class="idcuentaservicio" name="idcuentaservicio"/>
+                <input type="hidden" class="idcuentaservicio" name="idcuentaservicio" />
                 <input type="hidden" class="cuentaservicio" />
                 <input type="hidden" class="ccostoservicio" />
                 <input type="hidden" class="nombresegmentoconsultor" />
-                <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor"/>
+                <input type="hidden" class="idcuentaconsultor" name="idcuentaconsultor" />
                 <input type="hidden" class="cuentaconsultor" />
                 <input type="hidden" class="nombresegmentohonorario" />
                 <input type="hidden" class="idsegmentoservicio" id="idsegmentoservicio" />
             </div>
+           
         </div>
+
         <div class="form-group">
             <p class="form-subtitle">Facturas</p>
             <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
@@ -861,7 +873,9 @@
         const probabilidadInput = document.getElementById('probabilidad').parentElement;
         const nivelProbabilidadInput = document.getElementById('nivelprobabilidad').parentElement;
         const fechaplazoInput = document.getElementById('fechaPlazo').parentElement;
-
+        
+       
+        
         function toggleInputs() {
             const selectedValue = estadoProyecto.value;
 
@@ -884,10 +898,30 @@
             }
         }
 
+        
         estadoProyecto.addEventListener('change', toggleInputs);
         toggleInputs();
     });
     
+    /*tipo de moneda*/
+    document.getElementById('tipoMoneda').addEventListener('change', function () {
+        const selectedCurrency = this.value;
+        const montoMonedaOrigenGroup = document.getElementById('monedaOrigenGroup');
+        const montoMonedaOrigenInput = document.getElementById('montomonedaorigen');
+
+        if (selectedCurrency === 'CLP') {
+  
+            montoMonedaOrigenGroup.style.display = 'none';
+            montoMonedaOrigenInput.removeAttribute('required');
+            montoMonedaOrigenInput.value = ''; 
+        } else {
+            
+            montoMonedaOrigenGroup.style.display = 'block';
+            montoMonedaOrigenInput.setAttribute('required', 'required');
+        }
+    });
+
+   
     const totalMontoElement = document.getElementById('montoTotal');
     $(document).ready(function () {
 
@@ -1370,41 +1404,6 @@
 
 
 
-    /*function obtenerValoresServicio() {
-        var idUnidadNegocio = $("#unidadNegocio").val();
-        var idCentroCosto = $("#centroCosto").val();
-        if (idUnidadNegocio && idCentroCosto) {
-            $.ajax({
-                url: '/Proyecto/GetValoresServicios',
-                type: 'GET',
-                data: {
-                    idcosto: idCentroCosto,
-                    idunegocio: idUnidadNegocio
-                },
-                success: function (response) {
-                    if (response && response.length > 0) {
-          
-                        $(".nombresegmentoservicio").val(response[0].nombre);
-                        $(".idcuentaservicio").val(response[0].idcuenta);
-                        $(".cuentaservicio").val(response[0].cuenta);
-                        $(".idsegmentoservicio").val(response[0].idsegmento);
-                       
-                    } else {
-                    
-                        $(".nombresegmentoservicio").val('');
-                        $(".idcuentaservicio").val('');
-                        $(".cuentaservicio").val('');
-                       
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error al obtener el servicio:', error);
-                    $(".nombresegmentoservicio").val('').hide();
-                   
-                }
-            });
-        } 
-    }*/
     /*
     function obtenerSegmentosCostos(selectElement) {
         $.ajax({
@@ -1572,9 +1571,10 @@
         updateTotalGasto();
         obtenerMargenEsperado();
     }
-
-  
+    /*formateando valores*/ 
+    
     document.getElementById("monto").addEventListener("input", formatInput);
+    document.getElementById("montomonedaorigen").addEventListener("input", formatInput);
     document.querySelectorAll('.montoservicio').forEach(input => {
         input.addEventListener("input", formatInput);
     });

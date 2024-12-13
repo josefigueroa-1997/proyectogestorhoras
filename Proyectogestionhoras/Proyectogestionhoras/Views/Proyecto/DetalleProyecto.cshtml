@@ -222,12 +222,20 @@
                                 <td>@proyecto.Fecha_Termino.ToString("dd/MM/yyyy")</td>
                             </tr>
                             <tr>
-                                <td class="highlight">Monto</td>
-                                <td>@String.Format("{0:N0}", @proyecto.MONTO)</td>
-                            </tr>
-                            <tr>
-                                <td class="highlight">Moneda</td>
+                                <td class="highlight">Moneda de Origen</td>
                                 <td>@proyecto.MONEDA</td>
+                            </tr>
+                            @if (proyecto.MontoOrigenExtranjero > 0)
+                            {
+                                <tr>
+                                    <td class="highlight">Monto Moneda de Origen</td>
+                                    <td>@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <td class="highlight">MontoCLP</td>
+                                <td>@String.Format("{0:N0}", @proyecto.MONTO)</td>
                             </tr>
                         </tbody>
                     </table>

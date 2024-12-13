@@ -122,7 +122,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen)
         {
             try
             {
@@ -210,7 +210,15 @@ namespace Proyectogestionhoras.Controllers
                     hhconsultorc = 0;
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, servicios, gastos);
+                decimal montoorigenextranjera = 0;
+                if (moneda != "CLP")
+                {
+                    var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
+                    montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
+                }
+
+
+                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, servicios, gastos);
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
@@ -518,11 +526,16 @@ namespace Proyectogestionhoras.Controllers
                     };
 
                     gastos.Add(gasto);
-                }
-            
+             }
 
-            
-            
+            decimal montoorigenextranjera = 0;
+            if (moneda != "CLP")
+            {
+                var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
+                montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+
             /*List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
              
                 var idusuarios = Request.Form["idusuarios[]"];
@@ -539,7 +552,7 @@ namespace Proyectogestionhoras.Controllers
              
              
              */
-            
+
             if (statusedicion == 2)
             {
 
@@ -552,7 +565,7 @@ namespace Proyectogestionhoras.Controllers
             Debug.WriteLine("ID SEGMENTO FACTURA"+idsegmentofactura);
 
 
-            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, servicios, gastos);
+            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, montoorigenextranjera, servicios, gastos);
             
            
             if (resultado)

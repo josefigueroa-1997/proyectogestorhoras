@@ -80,7 +80,7 @@
                             <tr>
                                 <td class="text-left text-xs font-medium sticky left-0 bg-white z-10">@proyecto.Key</td>
                                 <td class="text-left text-xs font-medium sticky left-[100px] bg-white z-10">@tipo.Key</td>
-                                
+
 
 
 
@@ -223,46 +223,37 @@
                             }
                             @foreach (var mesAnio in mesesAniosOrdenados)
                             {
-
-
                                 var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
                                 var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
                                 var margenreal = ingresoreal - egresoreal;
 
-                                
                                 if (!proyectoComienza && (ingresoreal != 0 || egresoreal != 0 || margenreal != 0))
                                 {
-                                    proyectoComienza = true; 
+                                    proyectoComienza = true;
                                 }
 
-                             
+
                                 if (proyectoComienza)
                                 {
                                     saldoAcumulado += margenreal;
 
-                                    
                                     if (ingresoreal == 0 && egresoreal == 0 && margenreal == 0)
                                     {
-                                        detenerAcumulacion = true; 
+                                        detenerAcumulacion = true;
                                     }
                                 }
 
-                                
                                 if (detenerAcumulacion)
                                 {
                                     break;
                                 }
 
-                                
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
                                     @(saldoAcumulado == 0 ? "" : String.Format("{0:N0}", saldoAcumulado))
                                 </td>
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
                             }
-
-                            
-                           
                         </tr>
                     }
                 </tbody>
