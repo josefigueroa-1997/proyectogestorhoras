@@ -46,8 +46,8 @@ namespace Proyectogestionhoras.Services
 
                             ingresoExistente.Numdocumento = ingreso.Numdocumento;
                             ingresoExistente.FechaEmision = ingreso.FechaEmision;
-                            ingresoExistente.Montous = ingreso.Montous;
-                            ingresoExistente.Tc = ingreso.Tc;
+                            ingresoExistente.Montous = 0;
+                            ingresoExistente.Tc = 0;
                             ingresoExistente.Montoclp = ingreso.Montoclp;
                             ingresoExistente.Iva = ingreso.Iva;
                             ingresoExistente.Estado = ingreso.Estado;
@@ -66,8 +66,8 @@ namespace Proyectogestionhoras.Services
                             
                             Numdocumento = ingreso.Numdocumento,
                             FechaEmision = ingreso.FechaEmision,
-                            Montous = ingreso.Montous,
-                            Tc = ingreso.Tc,
+                            Montous = 0,
+                            Tc = 0,
                             Montoclp = ingreso.Montoclp,
                             Iva = ingreso.Iva,
                             Estado = ingreso.Estado,

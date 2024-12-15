@@ -4,75 +4,71 @@
 
 <style>
     .form-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 60px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 60px;
     }
 
     .form-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-    text-align: center;
-    margin-bottom: 10px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
     }
 
     .form-subtitle {
-    font-size: 1.0rem;
-    color: #666;
-    text-align: center;
-    margin-bottom: 20px;
+        font-size: 1.0rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
     }
 
 
 
     .highlight {
-    background-color: #f8d7da;
-    font-weight: bold;
+        background-color: #f8d7da;
+        font-weight: bold;
     }
 
     .panel-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 0px;
-    width: 100%;
-    margin-top: 0;
-    padding-top: 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 0px;
+        width: 100%;
+        margin-top: 0;
+        padding-top: 0;
     }
 
     .panel-item {
-    flex-grow: 1;
-    border: 2px solid #444;
-    border-radius: 0;
-    padding: 10px 20px;
-    background-color: #f2f3f4;
-    color: black;
-    text-align: center;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        flex-grow: 1;
+        border: 2px solid #444;
+        border-radius: 0;
+        padding: 10px 20px;
+        background-color: #f2f3f4;
+        color: black;
+        text-align: center;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
     }
 
 
 
-    .panel-item:hover {
-    background-color: #fcaa67;
-    color: #fff;
-    }
+        .panel-item:hover {
+            background-color: #fcaa67;
+            color: #fff;
+        }
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
     decimal totalsocios = 0;
     decimal totalstaff = 0;
-    decimal totalconsutlores = 0;
+
     decimal totalsociosproyectados = 0;
     decimal totalstaffproyectados = 0;
-    decimal totalconsutlroaproyectados = 0;
-    decimal totalconsutlrobproyectados = 0;
-    decimal totalconsutlrocproyectados = 0;
-    decimal totalconsultoresproyectados = 0;
     decimal totalserviciosproyectados = 0;
     decimal totalgastosproyectados = 0;
     decimal totalcostosproyectados = 0;
@@ -80,11 +76,9 @@
     string? cuentasocio = "";
     int idcuentastaff = 0;
     string? cuentastaff = "";
-    int idcuentaconsultores = 0;
-    string? cuentaconsultores = "";
     decimal totalsociosforecast = 0;
     decimal totalstaffforecast = 0;
-    decimal totalconsultoresforecast = 0;
+
 }
 
 <div class="form-container">
@@ -116,11 +110,16 @@
                             <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
                             <th class="p-2 border border-gray-300 text-left">Proyecto</th>
                             <th class="p-2 border border-gray-300 text-left">Cliente</th>
-                            <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">Departamento</th>
+                            <th class="p-2 border border-gray-300 text-left">Moneda</th>
+                            @if (proyecto.MontoOrigenExtranjero > 0)
+                            {
+                                <th class="p-2 border border-gray-300 text-left">Monto Moneda Origen</th>
+                            }
+                            <th class="p-2 border border-gray-300 text-left">MontoCLP</th>
                             <th class="p-2 border border-gray-300 text-left">C.Costo</th>
                             <th class="p-2 border border-gray-300 text-left">Código</th>
-                            <th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Tipología</th>
                             <th class="p-2 border border-gray-300 text-left">Empresa</th>
                         </tr>
                     </thead>
@@ -129,8 +128,16 @@
                             <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
-                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+                            <td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
+
+                                @proyecto.MONEDA
+                            </td>
+                            @if (proyecto.MontoOrigenExtranjero > 0)
+                            {
+                                <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
+                            }
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
@@ -142,14 +149,11 @@
 
             totalsociosproyectados = proyecto.CostoSocioPresupuesto;
             totalstaffproyectados = proyecto.CostoStaffPresupuesto;
-            totalconsutlroaproyectados = proyecto.CostoConsultorAPresupuesto;
-            totalconsutlrobproyectados = proyecto.CostoConsultorBPresupuesto;
-            totalconsutlrocproyectados = proyecto.CostoConsultorCPresupuesto;
-            totalconsultoresproyectados = totalconsutlroaproyectados + totalconsutlrobproyectados + totalconsutlrocproyectados;
+
         }
     </div>
     <form asp-action="RegistrarCostos" asp-controller="EjecucionProyecto" method="post">
-        <input type="hidden" name="idproyecto" value="@idproyecto"/>
+        <input type="hidden" name="idproyecto" value="@idproyecto" />
 
         <div class="form-group">
 
@@ -190,9 +194,9 @@
                                         <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
                                         <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costorecurso" />
                                         <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
-                                        
+
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos!=null)
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
                                         {
                                             <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
                                             <td class="p-1 border border-gray-300 text-right">
@@ -212,8 +216,8 @@
                                             <td class="p-1 border border-gray-300 text-right">
                                                 <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
-                                           
-                                            
+
+
                                         }
 
                                         <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
@@ -221,7 +225,8 @@
 
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null){
+                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        {
                                             <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
                                         else
@@ -254,7 +259,7 @@
 
 
                                         @{
-                                           
+
                                             cuentasocio = gasto.cuenta;
                                             idcuentasocio = gasto.idcuenta;
                                         }
@@ -465,7 +470,7 @@
                                             }
                                             else
                                             {
-                                                totalstaffforecast+=ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                                totalstaffforecast += ViewBag.GastosRecursos[i]?.Monto ?? 0;
                                             }
                                         }
                                         else
@@ -509,7 +514,7 @@
                                             </td>
                                         }
                                         @{
-                                            
+
                                             idcuentastaff = gasto.idcuenta;
                                             cuentastaff = gasto.cuenta;
                                         }
@@ -688,7 +693,7 @@
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                             <th class="p-2 border border-gray-300 text-left">Estado</th>
-                            
+
                             <th class="p-2 border border-gray-300 text-left">Observación</th>
 
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
@@ -703,7 +708,7 @@
                         {
                             @foreach (var se in ViewBag.ServiciosEjecucion)
                             {
-                                if(se.Tiposervicio == "Otros")
+                                if (se.Tiposervicio == "Otros")
                                 {
                                     <tr>
                                         <td class="p-2 border border-gray-300 text-left">
@@ -780,22 +785,20 @@
                                     <input type="hidden" name="IdServicioReal" value="@se.Id" />
                                     <input type="hidden" name="Tiposervicio" value="@se.Tiposervicio" />
                                 }
-                               
+
                             }
                         }
                         <tr>
                             <td class="p-2 border border-gray-300 text-left">
-                                <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-
+                                <select name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 </select>
                             </td>
                             <td class="p-2 border border-gray-300 text-left">
-                                <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-
+                                <select name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 </select>
                             </td>
-                            <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                            <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
                             <td class="p-2 border border-gray-300 text-left">
                                 <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                                     <option value="Forecast" selected>Forecast</option>
@@ -805,8 +808,8 @@
                             <td class="p-2 border border-gray-300 text-left">
                                 <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
-                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
-                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
+                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
 
                             <input type="hidden" name="IdServicioReal" value="" />
                             <input type="hidden" name="Tiposervicio" value="Otros" />
@@ -928,7 +931,6 @@
                         <tr>
                             <td class="p-2 border border-gray-300 text-left">
                                 <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-
                                 </select>
                             </td>
                             <td class="p-2 border border-gray-300 text-left">
@@ -998,7 +1000,7 @@
                                 }
 
                                 <td class="p-2 border border-gray-300 text-left">@cuentasocio</td>
-                                <td class="p-2 border border-gray-300 text-right" >@String.Format("{0:N0}", totalsociosproyectados)</td>
+                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalsociosproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right" id="totalSocios">@String.Format("{0:N0}", totalsocios)</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalsociosforecast)</td>
                             </tr>
@@ -1015,25 +1017,10 @@
 
                                 <td class="p-2 border border-gray-300 text-left">@cuentastaff</td>
                                 <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalstaffproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalStaff">@String.Format("{0:N0}",totalstaff)</td>
-                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}",totalstaffforecast)</td>
+                                <td class="p-2 border border-gray-300 text-right" id="totalStaff">@String.Format("{0:N0}", totalstaff)</td>
+                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalstaffforecast)</td>
                             </tr>
-                            <tr>
-                                <td class="p-2 border border-gray-300 text-left">HH Consultores Externos</td>
-                                @if (idcuentaconsultores > 0)
-                                {
-                                    <td class="p-2 border border-gray-300 text-left">@idcuentaconsultores</td>
-                                }
-                                else
-                                {
-                                    <td class="p-2 border border-gray-300 text-left"></td>
-                                }
 
-                                <td class="p-2 border border-gray-300 text-left">@cuentaconsultores</td>
-                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresproyectados)</td>
-                                <td class="p-2 border border-gray-300 text-right" id="totalConsultores">@String.Format("{0:N0}", totalconsutlores)</td>
-                                <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", totalconsultoresforecast)</td>
-                            </tr>
                             @{
                                 decimal totalforecastservicio = 0;
                                 decimal totalforecastgasto = 0;
@@ -1056,7 +1043,7 @@
                                     <td class="p-2 border border-gray-300 text-left">@servicio.CUENTA</td>
                                     <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @servicio.MONTO)</td>
                                     <td class="p-2 border border-gray-300 text-right total-row">@String.Format("{0:N0}", @totaleservicioPagado)</td>
-                                    <td class="p-2 border border-gray-300 text-right " >@String.Format("{0:N0}",totaleservicioForecast)</td>
+                                    <td class="p-2 border border-gray-300 text-right ">@String.Format("{0:N0}", totaleservicioForecast)</td>
                                 </tr>
                                 totalserviciosproyectados += servicio.MONTO;
                                 totalforecastservicio += totaleservicioForecast;
@@ -1084,14 +1071,14 @@
                                 totalgastosproyectados += gasto.MONTO;
                                 totalforecastgasto += totalesgastoforecast;
                             }
-                            
+
                             <tr>
                                 @{
-                                    totalcostosproyectados = totalsociosproyectados + totalstaffproyectados + totalconsultoresproyectados + totalserviciosproyectados + totalgastosproyectados;
-                                    decimal totalcostosforecast = totalforecastgasto + totalforecastservicio + totalsociosforecast + totalstaffforecast + totalconsultoresforecast;
+                                    totalcostosproyectados = totalsociosproyectados + totalstaffproyectados + totalserviciosproyectados + totalgastosproyectados;
+                                    decimal totalcostosforecast = totalforecastgasto + totalforecastservicio + totalsociosforecast + totalstaffforecast;
                                 }
                                 <td colspan="3" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
-                                
+
                                 <td class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostosproyectados)</td>
                                 <td class="p-2 border border-gray-300 text-right font-bold" id="totalCostos">0</td>
                                 <td class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostosforecast)</td>
@@ -1107,7 +1094,7 @@
             <button type="submit" class="bg-green-500 text-white p-3 text-xl w-52 h-12  rounded">Guardar Costos</button>
         </div>
 
-        
+
 
     </form>
     <div class="form-group">
@@ -1122,11 +1109,10 @@
                             <th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
                             <th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>
                             <th class="p-2 border border-gray-300 text-center min-w-[150px]">fecha</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
-                       
                     </tbody>
                 </table>
             </div>
@@ -1138,7 +1124,7 @@
 
 
 <script>
-    
+
 
     /*SERVICIOS */
 
@@ -1155,7 +1141,7 @@
                 const idUnidadNegocio = $("#unidadNegocio").val();
                 const idCentroCosto = $("#centroCosto").val();
                 var nombreservicio = $(this).find('option:selected').val();
-                
+
 
                 $.ajax({
                     url: '/Proyecto/GetValoresServiciosEdicion',
@@ -1201,10 +1187,10 @@
             success: function (data) {
                 if (data && data.length > 0) {
 
-                    
+
                     $row.find('.idcuentaservicio').val(data[0].idcuenta);
                     $row.find('.cuentaservicio').val(data[0].cuenta);
-                    
+
                 } else {
                     console.log("No se encontraron valores.");
                 }
@@ -1215,11 +1201,11 @@
         });
     });
 
-   
 
 
 
-      function cargarServicios(selectElement) {
+
+    function cargarServicios(selectElement) {
         var valorSeleccionado = $(selectElement).val();
         $.ajax({
             url: '/Proyecto/ObtenerServicios',
@@ -1239,7 +1225,7 @@
                 alert('Ocurrió un error al cargar los servicios.');
             }
         });
-      }
+    }
 
 
     $(document).ready(function () {
@@ -1273,42 +1259,42 @@
         });
     }
 
-    /*FORMATEAR MONTOS SERVICIOS Y GASTOS*/ 
+    /*FORMATEAR MONTOS SERVICIOS Y GASTOS*/
     document.addEventListener('DOMContentLoaded', function () {
 
         function formatCurrency(event) {
             let value = event.target.value;
 
-            
+
             value = value.replace(/[^\d-]/g, '');
 
-           
+
             if (value.includes('-') && value.indexOf('-') > 0) {
                 value = '-' + value.replace(/-/g, '');
             }
 
             if (value !== '' && value !== '-') {
-                const isNegative = value.startsWith('-'); 
+                const isNegative = value.startsWith('-');
                 value = value.replace(/-/g, '');
 
-             
+
                 let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-                
+
                 if (isNegative) {
                     formattedValue = '-' + formattedValue;
                 }
 
-                event.target.value = formattedValue; 
+                event.target.value = formattedValue;
             } else {
-                event.target.value = value; 
+                event.target.value = value;
             }
 
-            updateMonto(event.target); 
-            updateTotal(); 
+            updateMonto(event.target);
+            updateTotal();
         }
 
-        
+
 
         function removePoints(event) {
             let value = event.target.value;
@@ -1319,45 +1305,45 @@
         }
 
         function updateMonto(reajusteInput) {
-            const row = reajusteInput.closest('tr'); 
-            const reajusteValue = parseCurrency(reajusteInput.value); 
-            const subtotalValue = parseCurrency(row.querySelector('input[name*="Subtotal"]').value); 
-            const montoInput = row.querySelector('input[name*="Monto"]'); 
+            const row = reajusteInput.closest('tr');
+            const reajusteValue = parseCurrency(reajusteInput.value);
+            const subtotalValue = parseCurrency(row.querySelector('input[name*="Subtotal"]').value);
+            const montoInput = row.querySelector('input[name*="Monto"]');
 
-            const total = reajusteValue + subtotalValue; 
-            montoInput.value = total.toLocaleString('es-CL'); 
+            const total = reajusteValue + subtotalValue;
+            montoInput.value = total.toLocaleString('es-CL');
         }
 
         const reajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
 
         reajusteInputs.forEach(input => {
-            input.addEventListener('input', formatCurrency); 
+            input.addEventListener('input', formatCurrency);
         });
 
         function parseCurrency(value) {
             return parseInt(value.replace(/\./g, ''), 10) || 0;
         }
 
-        
+
         function updateTotal() {
             let totalservicio = 0;
             let totalgasto = 0;
-            let totalsocio= 0;
-            let totalstaff= 0;
-            let totalconsultores= 0;
+            let totalsocio = 0;
+            let totalstaff = 0;
+
             let totalCostos = 0;
             const montogastoRows = document.querySelectorAll('tr');
-            
+
             const montoInputs = document.querySelectorAll('input[name*="montoservicio"]');
             const montogastosocioInputs = document.querySelectorAll('input[name*="montoserviciosocio"]');
             const montohonorarioInputs = document.querySelectorAll('input[name*="montoserviciohonorario"]');
             const montoSocioInputs = document.querySelectorAll('input[id*="montosocio"]');
             const montoStaffInputs = document.querySelectorAll('input[id*="montostaff"]');
-            const montoConsultoresInputs = document.querySelectorAll('input[id*="montoconsultores"]');
-            
-            
+
+
+
             montoInputs.forEach(input => {
-                const estadoSelect = input.closest('tr').querySelector('select[name="Estado"]'); 
+                const estadoSelect = input.closest('tr').querySelector('select[name="Estado"]');
                 if (estadoSelect && estadoSelect.value === "Pagada") {
                     totalservicio += parseCurrency(input.value);
                 }
@@ -1382,18 +1368,18 @@
                     totalgasto += parseCurrency(montoInput.value);
                 }
             });
-            
-            
-            
-            
+
+
+
+
             const totalSocios = parseCurrency(document.getElementById('totalSocios').textContent);
             const totalStaff = parseCurrency(document.getElementById('totalStaff').textContent);
-            const totalConsultores = parseCurrency(document.getElementById('totalConsultores').textContent);
 
-            
-            totalCostos = totalSocios + totalStaff + totalConsultores + totalservicio + totalgasto;
 
-            
+
+            totalCostos = totalSocios + totalStaff + totalservicio + totalgasto;
+
+
             document.getElementById('totalCostos').textContent = totalCostos.toLocaleString('es-CL');
         }
 
@@ -1410,10 +1396,10 @@
             });
         }
 
-       
 
-        
-     
+
+
+
 
 
         const montoInputs = document.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"],input[name*="Reajuste"],input[name*="montoserviciosocio"],input[name*="montoserviciohonorario"]');
@@ -1428,20 +1414,20 @@
         if (form) {
             form.addEventListener('submit', cleanInputsOnSubmit);
         }
-         document.getElementById("btnAgregarServicio").addEventListener("click", function () {
-        
-                setTimeout(() => {
+        document.getElementById("btnAgregarServicio").addEventListener("click", function () {
+
+            setTimeout(() => {
 
                 const nuevosMontos = document.querySelectorAll('input[name*="montoservicio"]');
 
-                        nuevosMontos.forEach(input => {
-                            if (!input.hasAttribute('data-format-listener')) { 
-                            input.addEventListener('input', formatCurrency);
-                            input.setAttribute('data-format-listener', 'true'); 
-                        }
-                    });
-                }, 100);
-          });
+                nuevosMontos.forEach(input => {
+                    if (!input.hasAttribute('data-format-listener')) {
+                        input.addEventListener('input', formatCurrency);
+                        input.setAttribute('data-format-listener', 'true');
+                    }
+                });
+            }, 100);
+        });
         document.getElementById("btnAgregarGastoSocio").addEventListener("click", function () {
 
             setTimeout(() => {
@@ -1484,11 +1470,11 @@
                 });
             }, 100);
         });
-        
+
         updateTotal();
     });
 
-    /*NUEVAS FILAS TABLA SERVICIO*/ 
+    /*NUEVAS FILAS TABLA SERVICIO*/
     var servicios = [];
     var proveedores = [];
 
@@ -1497,7 +1483,7 @@
             url: '/Proyecto/ObtenerServicios',
             type: 'GET',
             success: function (data) {
-                servicios = data; 
+                servicios = data;
             },
             error: function () {
                 alert('Ocurrió un error al cargar los servicios.');
@@ -1508,7 +1494,7 @@
             url: '/EjecucionProyecto/ObtenerProveedoresServicios',
             type: 'GET',
             success: function (data) {
-                proveedores = data; 
+                proveedores = data;
             },
             error: function () {
                 alert('Ocurrió un error al cargar los proveedores.');
@@ -1546,36 +1532,36 @@
             e.preventDefault();
 
             var nuevaFila = `
-                    <tr>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <tr>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-                                    </select>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                                    </select>
-                                </td>
-                                    <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                    <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                         <td class="p-2 border border-gray-300 text-left">
-                                        <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                            <option value="Forecast" selected>Forecast</option>
-                                            <option value="Pagada">Pagada</option>
                                         </select>
                                     </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                        <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                                        </select>
                                     </td>
-                                <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
-                                <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
+                                        <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                             <td class="p-2 border border-gray-300 text-left">
+                                            <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                                <option value="Forecast" selected>Forecast</option>
+                                                <option value="Pagada">Pagada</option>
+                                            </select>
+                                        </td>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                        </td>
+                                    <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
+                                    <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
 
-                                    <input type="hidden" name="IdServicioReal" value="" />
-                                        <input type="hidden" name="Tiposervicio" value="Otros" />
+                                        <input type="hidden" name="IdServicioReal" value="" />
+                                            <input type="hidden" name="Tiposervicio" value="Otros" />
 
-                            </tr>
-            `;
+                                </tr>
+                `;
 
             $('#tablaServicios tbody').append(nuevaFila);
 
@@ -1600,34 +1586,34 @@
             e.preventDefault();
 
             var nuevaFila = `
-                           <tr>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </select>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </select>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                        <option value="Forecast" selected>Forecast</option>
-                                        <option value="Pagada">Pagada</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
-                                <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                               <tr>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                    <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                            <option value="Forecast" selected>Forecast</option>
+                                            <option value="Pagada">Pagada</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                    <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
 
-                                <input type="hidden" name="IdServicioRealsocio" value="" />
-                                <input type="hidden" name="Tiposerviciosocio" value="Socios" />
+                                    <input type="hidden" name="IdServicioRealsocio" value="" />
+                                    <input type="hidden" name="Tiposerviciosocio" value="Socios" />
 
-                            </tr>
-                `;
+                                </tr>
+                    `;
 
             $('#tablaGastosSocios tbody').append(nuevaFila);
 
@@ -1651,34 +1637,34 @@
             e.preventDefault();
 
             var nuevaFila = `
-                               <tr>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select name="Idserviciohonorario" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </select>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select name="Idproveedorhonorario" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </select>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <select name="Estadohonorario" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                        <option value="Forecast" selected>Forecast</option>
-                                        <option value="Pagada">Pagada</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                </td>
-                                <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
-                                <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                   <tr>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Idserviciohonorario" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Idproveedorhonorario" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                    <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Estadohonorario" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                            <option value="Forecast" selected>Forecast</option>
+                                            <option value="Pagada">Pagada</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                    <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
 
-                                <input type="hidden" name="IdServicioRealhonorario" value="" />
-                                <input type="hidden" name="Tiposerviciohonorario" value="Consultores Externos" />
+                                    <input type="hidden" name="IdServicioRealhonorario" value="" />
+                                    <input type="hidden" name="Tiposerviciohonorario" value="Consultores Externos" />
 
-                            </tr>
-                    `;
+                                </tr>
+                        `;
 
             $('#tablaHonorarios tbody').append(nuevaFila);
 
@@ -1689,15 +1675,15 @@
     });
     /*GASTOS*/
     $(document).ready(function () {
-       
+
         $('.gastosSelect').each(function () {
             var $select = $(this);
             var $row = $select.closest('tr');
 
-         
+
             var selectedOption = $select.find('option:selected').val();
             if (selectedOption) {
-               
+
                 const idUnidadNegocio = $("#unidadNegocio").val();
                 const idCentroCosto = $("#centroCosto").val();
                 var nombreGasto = $select.find('option:selected').val();
@@ -1733,7 +1719,7 @@
         const idUnidadNegocio = $("#unidadNegocio").val();
         const idCentroCosto = $("#centroCosto").val();
         var nombreGasto = $(this).find('option:selected').val();
-        
+
         $.ajax({
             url: '/Proyecto/GetValoresGastosEdicion',
             type: 'GET',
@@ -1806,7 +1792,7 @@
 
 
     $(document).ready(function () {
-        
+
         $('.gastosSelect').each(function () {
             cargarGastos(this);
         });
@@ -1814,57 +1800,57 @@
             cargarProveedoresGastos(this);
         });
 
-        
+
         $('#agregarFilaGastos').on('click', function (e) {
-            e.preventDefault(); 
+            e.preventDefault();
 
-            
+
             var nuevaFila = `
-                <tr>
-                    <td class="p-2 border border-gray-300 text-left">
-                        <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="" disabled selected>Seleccione un gasto</option>
-                        </select>
-                    </td>
-                    <td class="p-2 border border-gray-300 text-left">
-                         <select name="idproveedorgastos" class="proveedorGastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="" disabled selected>Seleccione un proveedor</option>
-                        </select>
-                    </td>
-                    <td class="p-2 border border-gray-300 text-right">
-                        <input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-                    </td>
-                    <td class="p-2 border border-gray-300 text-left">
-                        <input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
-                    </td>
-                         <td class="p-2 border border-gray-300 text-left">
-                                    <select name="EstadoGasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                        <option value="Forecast" selected>Forecast</option>
-                                        <option value="Pagada">Pagada</option>
-                                    </select>
-                                </td>
-                         <td class="p-2 border border-gray-300 text-left">
-                                    <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                </td>
-                    <td class="p-2 border border-gray-300 text-right">
-                        <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly />
-                    </td>
-                    <td class="p-2 border border-gray-300 text-left">
-                        <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly />
-                    </td>
-                    <td style="display:none">
-                        <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
-                    </td>
-                    <td style="display:none;">
-                        <input type="hidden" name="IdGastoReal" value="" />
-                    </td>
-                </tr>
-            `;
+                    <tr>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="" disabled selected>Seleccione un gasto</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-left">
+                             <select name="idproveedorgastos" class="proveedorGastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="" disabled selected>Seleccione un proveedor</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border border-gray-300 text-right">
+                            <input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+                        </td>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                        </td>
+                             <td class="p-2 border border-gray-300 text-left">
+                                        <select name="EstadoGasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                            <option value="Forecast" selected>Forecast</option>
+                                            <option value="Pagada">Pagada</option>
+                                        </select>
+                                    </td>
+                             <td class="p-2 border border-gray-300 text-left">
+                                        <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                    </td>
+                        <td class="p-2 border border-gray-300 text-right">
+                            <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly />
+                        </td>
+                        <td class="p-2 border border-gray-300 text-left">
+                            <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly />
+                        </td>
+                        <td style="display:none">
+                            <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                        </td>
+                        <td style="display:none;">
+                            <input type="hidden" name="IdGastoReal" value="" />
+                        </td>
+                    </tr>
+                `;
 
-            
+
             $('#tablagastos tbody').append(nuevaFila);
 
-            
+
             $('#tablagastos tbody tr:last .gastosSelect').each(function () {
                 cargarGastos(this);
             });
@@ -1874,10 +1860,10 @@
         });
     });
     $(document).ready(function () {
-      
+
         var idproyecto = '@Context.Session.GetInt32("numproyecto")';
 
-        
+
         $.ajax({
             url: '/EjecucionProyecto/RecuperarForecastProveedores',
             type: 'GET',
@@ -1895,19 +1881,19 @@
             const tablaBody = tabla.find('tbody');
             const tablaHead = tabla.find('thead');
 
-         
+
             tablaBody.empty();
             tablaHead.empty();
 
-         
+
             const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))].sort();
 
-            
+
             let encabezado = `
-                    <tr class="bg-green-100 text-black">
-                    <th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
-                    <th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
-                    <th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
+                        <tr class="bg-green-100 text-black">
+                        <th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
+                        <th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
+                        <th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
             mesesUnicos.forEach(mes => {
                 encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
             });
@@ -1915,29 +1901,29 @@
             encabezado += `</tr>`;
             tablaHead.append(encabezado);
 
-         
+
             const totalesPorMes = new Array(mesesUnicos.length).fill(0);
             let totalGeneral = 0;
 
-            
+
             const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre']);
 
             for (let [key, registros] of Object.entries(agrupados)) {
                 const [proveedor, cuenta, nombre] = key.split('|');
 
-         
-                let fila = `
-                    <tr>
-                        <td class="p-2 border border-gray-300 text-left">${proveedor}</td>
-                        <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
-                        <td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
 
-                
+                let fila = `
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">${proveedor}</td>
+                            <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
+                            <td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
+
+
                 let totalFila = 0;
                 mesesUnicos.forEach((mes, index) => {
                     const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
                     const monto = registroMes ? registroMes.totalforecastproveedor : null;
-           
+
                     if (monto === null || monto === 0) {
                         fila += `<td class="p-2 border border-gray-300 text-right"></td>`;
                     } else {
@@ -1947,28 +1933,28 @@
                     }
                 });
 
-           
+
                 fila += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalFila)}</td>`;
                 fila += `</tr>`;
                 tablaBody.append(fila);
                 totalGeneral += totalFila;
             }
 
-           
+
             let filaTotales = `
-                    <tr class="bg-green-100">
-                    <td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
+                        <tr class="bg-green-100">
+                        <td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
             totalesPorMes.forEach(totalMes => {
                 filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
             });
             filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
             filaTotales += `</tr>`;
 
-       
+
             tablaBody.append(filaTotales);
         }
 
-       
+
         function agruparPor(array, keys) {
             return array.reduce((result, item) => {
                 const groupKey = keys.map(key => item[key]).join('|');
@@ -1980,7 +1966,7 @@
             }, {});
         }
 
-      
+
         function formatMoneda(valor) {
             return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
