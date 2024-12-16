@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Proyectogestionhoras.Models;
+using Proyectogestionhoras.Models.DTO;
 using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
+using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
@@ -262,7 +265,411 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
+        /*EXPORTAR FLUJO DE CAJA*/
+        public async Task<IActionResult> ExportarFlujoCaja()
+        {
+            try
+            {
+                var model = await _reporteService.ProcesarFlujoCajaPorMesAsync();  // Recupera los datos del modelo
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
+                // Crea un nuevo paquete de Excel
+                using (var package = new ExcelPackage())
+                {
+                    // Crea una hoja de trabajo
+                    var worksheet = package.Workbook.Worksheets.Add("Flujo de Caja");
+
+                    // Establece las cabeceras de la tabla
+                    worksheet.Cells[1, 1].Value = "Proyecto";
+                    worksheet.Cells[1, 2].Value = "Tipo";
+                    worksheet.Cells[1, 3].Value = "Cuenta";
+
+                    // Aplica el color de fondo LightBlue a las celdas
+                    worksheet.Cells[1, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[1, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+
+                    worksheet.Cells[1, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[1, 2].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+
+                    worksheet.Cells[1, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[1, 3].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+
+                    // Aplica alineación centrada y otras configuraciones comunes si es necesario
+                    worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[1, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[1, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[1, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    worksheet.Cells[1, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[1, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    // Obtener los meses y años
+                    var mesesAnios = new HashSet<(int, int)>();
+                    foreach (var proyecto in model)
+                    {
+                        foreach (var tipo in proyecto.Value)
+                        {
+                            foreach (var mesAnio in tipo.Value.Keys)
+                            {
+                                mesesAnios.Add(mesAnio);
+                            }
+                        }
+                    }
+
+                    // Ordena los meses y años
+                    var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1).ToList();
+                    var columnaPorMesAnio = new Dictionary<(int, int), int>();
+                    // Establecer los encabezados para los meses/años en la primera fila
+                    int columnaInicio = 4;  // Después de "Proyecto", "Tipo", "Cuenta"
+                    foreach (var mesAnio in mesesAniosOrdenados)
+                    {
+                        // Coloca el mes-año en la primera fila
+                        string mesAnioFormateado = $"{mesAnio.Item1:D2}-{mesAnio.Item2:D2}";
+                        worksheet.Cells[1, columnaInicio].Value = mesAnioFormateado;
+                        worksheet.Cells[1, columnaInicio].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[1, columnaInicio].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[1, columnaInicio].Merge = true; // Merge las celdas para cada mes/año
+                        worksheet.Cells[1, columnaInicio].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[1, columnaInicio].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                        // Escribe las tres cabeceras en la segunda fila
+                        worksheet.Cells[2, columnaInicio].Value = "Proyectado";
+                        worksheet.Cells[2, columnaInicio].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 1].Value = "Real";
+                        worksheet.Cells[2, columnaInicio + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 2].Value = "Forecast";
+                        worksheet.Cells[2, columnaInicio + 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        // Aplica el color de fondo Gray a las celdas
+                        worksheet.Cells[2, columnaInicio].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[2, columnaInicio].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+
+                        worksheet.Cells[2, columnaInicio + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[2, columnaInicio + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+
+                        worksheet.Cells[2, columnaInicio + 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[2, columnaInicio + 2].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+
+                        // Aplica alineación centrada y otras configuraciones comunes si es necesario
+                        worksheet.Cells[2, columnaInicio].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[2, columnaInicio + 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        columnaPorMesAnio[mesAnio] = columnaInicio;
+                        columnaInicio += 3;  // Mueve tres columnas para los tres estados
+                    }
+
+                    // Contador de fila para datos
+                    int fila = 3;
+
+                    // Recorre los datos y agrégales a la hoja de trabajo
+                    foreach (var proyecto in model.OrderBy(p => p.Key))
+                    {
+                        /*egresos*/
+                        var totalesProyectado = new Dictionary<(int, int), decimal>();
+                        var totalesReal = new Dictionary<(int, int), decimal>();
+                        var totalesForecast = new Dictionary<(int, int), decimal>();
+                        /*ingresos*/
+                        var totalIngresoProyectadoPorMes = new Dictionary<(int , int), decimal>();
+                        var totalIngresoRealPorMes = new Dictionary<(int , int ), decimal>();
+                        foreach (var tipo in proyecto.Value)
+                        {
+                            // Asigna los valores por proyecto y tipo
+                            int columna = 1;
+                            worksheet.Cells[fila, columna++].Value = proyecto.Key;  // Proyecto
+                            worksheet.Cells[fila, columna++].Value = tipo.Key;       // Tipo
+
+                            var primeraCuenta = tipo.Value.Values
+                                .SelectMany(flujoList => flujoList)
+                                .FirstOrDefault();
+
+                            var cuenta = primeraCuenta != null ? primeraCuenta.Cuenta : "No disponible";
+                            worksheet.Cells[fila, columna++].Value = cuenta;         // Cuenta
+
+                            // Ahora, corregir la asignación de los montos para cada mes/año
+                            foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                var flujo = tipo.Value
+                                    .FirstOrDefault(flujoList =>
+                                        flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+
+                                decimal proyectado = 0;
+                                decimal real = 0;
+                                decimal forecast = 0;
+
+                                if (flujo.Key != default)
+                                {
+                                    proyectado = flujo.Value
+                                        .Where(f => f.Estado == "Proyectado")
+                                        .Sum(f => f.Monto);
+
+                                    real = flujo.Value
+                                        .Where(f => f.Estado == "Real")
+                                        .Sum(f => f.Monto);
+
+                                    forecast = flujo.Value
+                                        .Where(f => f.Estado == "Forecast")
+                                        .Sum(f => f.Monto);
+                                }
+
+                                // Escribe los valores en las celdas correspondientes
+                                var columnaMesAnio = columnaPorMesAnio[mesAnio];
+                                // Establecer el valor y formato para la celda
+                                if (proyectado != 0)
+                                {
+                                    worksheet.Cells[fila, columna++].Value = proyectado;
+                                    worksheet.Cells[fila, columna - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columna - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columna++].Value = "";
+                                }
+
+                                // Hacer lo mismo para 'real'
+                                if (real != 0)
+                                {
+                                    worksheet.Cells[fila, columna++].Value = real;
+                                    worksheet.Cells[fila, columna - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columna - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columna++].Value = "";
+                                }
+
+                                // Hacer lo mismo para 'forecast'
+                                if (forecast != 0)
+                                {
+                                    worksheet.Cells[fila, columna++].Value = forecast;
+                                    worksheet.Cells[fila, columna - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columna - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columna++].Value = "";
+                                }
+                                if (tipo.Key != "Ingreso")
+                                {
+                                    {
+                                        if (!totalesProyectado.ContainsKey(mesAnio)) totalesProyectado[mesAnio] = 0; 
+                                        if (!totalesReal.ContainsKey(mesAnio)) totalesReal[mesAnio] = 0; 
+                                        if (!totalesForecast.ContainsKey(mesAnio)) totalesForecast[mesAnio] = 0; 
+                                        totalesProyectado[mesAnio] += proyectado; 
+                                        totalesReal[mesAnio] += real; 
+                                        totalesForecast[mesAnio] += forecast;
+
+
+                                    }
+
+                                }
+                                if (tipo.Key == "Ingreso")
+                                {
+                                    {
+                                        if (!totalIngresoProyectadoPorMes.ContainsKey(mesAnio)) totalIngresoProyectadoPorMes[mesAnio] = 0;
+                                        if (!totalIngresoRealPorMes.ContainsKey(mesAnio)) totalIngresoRealPorMes[mesAnio] = 0;
+                                       
+                                        totalIngresoProyectadoPorMes[mesAnio] += proyectado;
+                                        totalIngresoRealPorMes[mesAnio] += real;
+                                       
+
+
+                                    }
+
+                                }
+
+                            }
+                            fila++;
+                        }
+                        /*totales egresos*/
+                        worksheet.Cells[fila, 1].Value = $"Total Egreso del Proyecto {proyecto.Key}"; 
+                        worksheet.Cells[fila, 1].Style.Font.Bold = true; worksheet.Cells[fila, 1, fila, 3].Merge = true; 
+                        foreach (var mesAnio in mesesAniosOrdenados) { 
+                            if (columnaPorMesAnio.ContainsKey(mesAnio)) 
+                            { 
+                                var columnaTotales = columnaPorMesAnio[mesAnio];
+                                // Establecer el valor y formato para 'totalesProyectado'
+                                if (totalesProyectado.ContainsKey(mesAnio) && totalesProyectado[mesAnio] != 0)
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = totalesProyectado[mesAnio];
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = "";
+                                }
+
+                                // Establecer el valor y formato para 'totalesReal'
+                                if (totalesReal.ContainsKey(mesAnio) && totalesReal[mesAnio] != 0)
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = totalesReal[mesAnio];
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = "";
+                                }
+
+                                // Establecer el valor y formato para 'totalesForecast'
+                                if (totalesForecast.ContainsKey(mesAnio) && totalesForecast[mesAnio] != 0)
+                                {
+                                    worksheet.Cells[fila, columnaTotales].Value = totalesForecast[mesAnio];
+                                    worksheet.Cells[fila, columnaTotales].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columnaTotales].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columnaTotales].Value = "";
+                                }
+                            } 
+                        }
+                        fila++;
+                        /*margen del proyecto*/
+                        worksheet.Cells[fila, 1].Value = $" Margen del Proyecto {proyecto.Key}";
+                        worksheet.Cells[fila, 1].Style.Font.Bold = true; worksheet.Cells[fila, 1, fila, 3].Merge = true;
+                        foreach (var mesAnio in mesesAniosOrdenados)
+                        {
+                            if (columnaPorMesAnio.ContainsKey(mesAnio))
+                            {
+                                var columnaTotales = columnaPorMesAnio[mesAnio];
+                                /*margen proyectado*/
+                                var egresosproyectados = totalesProyectado.GetValueOrDefault(mesAnio, 0);
+                                var ingresosproyectados = totalIngresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenproyectado = ingresosproyectados - egresosproyectados;
+                                /*margen real*/
+                                var egresosreales = totalesReal.GetValueOrDefault(mesAnio,0) ;
+                                var ingresosreales = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresosreales - egresosreales;
+                                if (margenproyectado != 0)
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = margenproyectado;
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = "";
+                                }
+
+                                // Establecer el valor y formato para 'margenreal'
+                                if (margenreal != 0)
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = margenreal;
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = "";
+                                }
+                                worksheet.Cells[fila, columnaTotales].Value =  "";
+
+                            }
+                        }
+                        fila++;
+                        /*% Margen del proyecto*/
+                        worksheet.Cells[fila, 1].Value = $" Margen del Proyecto % {proyecto.Key}";
+                        worksheet.Cells[fila, 1].Style.Font.Bold = true; worksheet.Cells[fila, 1, fila, 3].Merge = true;
+                        foreach (var mesAnio in mesesAniosOrdenados)
+                        {
+                            if (columnaPorMesAnio.ContainsKey(mesAnio))
+                            {
+                                var columnaTotales = columnaPorMesAnio[mesAnio];
+                               
+                                /*margen real*/
+                                var egresosreales = totalesReal.GetValueOrDefault(mesAnio, 0);
+                                var ingresosreales = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresosreales - egresosreales;
+                                var porcentajeMargenReal = ingresosreales > 0 ? Math.Round((margenreal / ingresosreales) * 100, 2) : 0;
+                                worksheet.Cells[fila, columnaTotales++].Value = "";
+                                // Establecer el valor y formato para 'porcentajeMargenReal'
+                                if (porcentajeMargenReal != 0)
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = porcentajeMargenReal;
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = "";
+                                }
+                                worksheet.Cells[fila, columnaTotales].Value = "";
+
+                            }
+                        }
+                        fila++;
+                        /*Saldo Acumulado*/
+                        worksheet.Cells[fila, 1].Value = $" Saldo Acumulado {proyecto.Key}";
+                        worksheet.Cells[fila, 1].Style.Font.Bold = true; worksheet.Cells[fila, 1, fila, 3].Merge = true;
+                        decimal saldoAcumulado = 0;
+                        bool proyectoComienza = false;
+                        bool detenerAcumulacion = false;
+                        foreach (var mesAnio in mesesAniosOrdenados)
+                        {
+                            if (columnaPorMesAnio.ContainsKey(mesAnio))
+                            {
+                                var columnaTotales = columnaPorMesAnio[mesAnio];
+
+                                /*margen real*/
+                                var egresosreales = totalesReal.GetValueOrDefault(mesAnio, 0);
+                                var ingresosreales = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresosreales - egresosreales;
+                                if (!proyectoComienza && (ingresosreales != 0 || egresosreales != 0 || margenreal != 0))
+                                {
+                                    proyectoComienza = true;
+                                }
+
+
+                                if (proyectoComienza)
+                                {
+                                    saldoAcumulado += margenreal;
+
+                                    if (ingresosreales == 0 && egresosreales == 0 && margenreal == 0)
+                                    {
+                                        detenerAcumulacion = true;
+                                    }
+                                }
+
+                                if (detenerAcumulacion)
+                                {
+                                    break;
+                                }
+                                
+                                worksheet.Cells[fila, columnaTotales++].Value = "";
+                                if (saldoAcumulado != 0)
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = saldoAcumulado;
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.Numberformat.Format = "#,##0";  // Formato con puntos en los miles
+                                    worksheet.Cells[fila, columnaTotales - 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;  // Alineado a la derecha
+                                }
+                                else
+                                {
+                                    worksheet.Cells[fila, columnaTotales++].Value = "";
+                                }
+                                worksheet.Cells[fila, columnaTotales].Value = "";
+
+                            }
+                        }
+                        fila++;
+                    }
+                    // Aplicar formato a las celdas (opcional)
+                    worksheet.Cells.AutoFitColumns();
+
+                    // Devuelve el archivo Excel
+                    var fileBytes = package.GetAsByteArray();
+                    return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "FlujoDeCaja.xlsx");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al generar el excel:{e.Message}");
+                return View();
+            }
+        }
 
         /*DECARGAR BASE DE DATOS*/
         public async Task<ActionResult> DescargarBasedeDatos()
