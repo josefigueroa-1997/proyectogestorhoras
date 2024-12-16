@@ -211,7 +211,7 @@ namespace Proyectogestionhoras.Services
                 try
                 {
 
-                    bool existereigstro = await context.PlanillaRegistroEmpresas.AnyAsync(p => p.Idsubactividad == idsubactividad);
+                    bool existereigstro = await context.PlanillaRegistroEmpresas.AnyAsync(p => p.Idsubactividad == idsubactividad && p.Fecharegistro==Fecharegistro.Date);
                     if (existereigstro)
                     {
                         return 2;
