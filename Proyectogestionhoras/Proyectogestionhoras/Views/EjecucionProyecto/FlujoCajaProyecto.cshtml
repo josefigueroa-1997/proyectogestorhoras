@@ -109,8 +109,13 @@
                             <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
                             <th class="p-2 border border-gray-300 text-left">Proyecto</th>
                             <th class="p-2 border border-gray-300 text-left">Cliente</th>
-                            <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">Departamento</th>
+                            <th class="p-2 border border-gray-300 text-left">Moneda</th>
+                            @if (proyecto.MontoOrigenExtranjero > 0)
+                            {
+                                <th class="p-2 border border-gray-300 text-left">Monto Moneda Origen</th>
+                            }
+                            <th class="p-2 border border-gray-300 text-left">MontoCLP</th>
                             <th class="p-2 border border-gray-300 text-left">C.Costo</th>
                             <th class="p-2 border border-gray-300 text-left">Código</th>
                             <th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
@@ -122,8 +127,15 @@
                             <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
-                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+                            <td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
+                                @proyecto.MONEDA
+                            </td>
+                            @if (proyecto.MontoOrigenExtranjero > 0)
+                            {
+                                <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
+                            }
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
                             <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
