@@ -199,8 +199,8 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> RecuperarActividades(string recurso)
         {
             var actividades = await context.Actividades
-                           .Where(a => a.TipoAcatividad == recurso && a.Controlhh == "Proyecto")
-                           .Select(a => new { a.Id, a.Nombre })
+                           .Where(a => a.TipoAcatividad == recurso)
+                           .Select(a => new { a.Id, a.Nombre,a.Controlhh })
                            .ToListAsync();
             return Json(actividades);
         }

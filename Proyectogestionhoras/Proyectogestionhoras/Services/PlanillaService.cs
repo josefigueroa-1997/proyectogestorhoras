@@ -20,6 +20,28 @@ namespace Proyectogestionhoras.Services
             this.conexion = conexion;
         }
 
+        public async Task<int> RegistrarHorasPlanills(int idusuario, int? idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int Idactividad, int? idsubactividad)
+        {
+            try
+            {
+                int resultado = 0;
+                if (idusuproy.HasValue && idusuproy > 0 && (!idsubactividad.HasValue || idsubactividad == 0))
+                {
+                    resultado = await RegistrarHoras(idusuario, idusuproy.Value, horasasignadas, Fecharegistro, observaciones, Idactividad);
+                }
+                else if (idsubactividad.HasValue && idsubactividad > 0 && (!idusuproy.HasValue || idusuproy == 0))
+                {
+                    resultado = await RegistrarHorasEmpresa(idusuario, horasasignadas, Fecharegistro, observaciones, idsubactividad.Value);
+                }
+                return resultado;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al registrar horas en la planilla:{e.Message}");
+                return 0;
+            }
+        }
+
         public async Task<int> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int Idactividad)
         {
             try
@@ -211,7 +233,7 @@ namespace Proyectogestionhoras.Services
                 try
                 {
 
-                    bool existereigstro = await context.PlanillaRegistroEmpresas.AnyAsync(p => p.Idsubactividad == idsubactividad && p.Fecharegistro==Fecharegistro.Date);
+                    bool existereigstro = await context.PlanillaRegistroEmpresas.AnyAsync(p => p.Idsubactividad == idsubactividad && p.Fecharegistro==Fecharegistro.Date && p.IdPlanillaNavigation.IdUsuarioNavigation.Id == idusuario);
                     if (existereigstro)
                     {
                         return 2;
@@ -287,17 +309,17 @@ namespace Proyectogestionhoras.Services
                         {
                             PlanillaUsuarioDTO datos = new()
                             {
-                                IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IDPLANILLA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPLANILLA")),
-                                FechaRegistro =  reader.GetDateTime(reader.GetOrdinal("FECHA_REGISTRO")),
-                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
-                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? null : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
-                                IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IDPROYECTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPROYECTO")),
-                                NombreActividad = reader.IsDBNull(reader.GetOrdinal("NOMBREACTIVIDAD")) ? null : reader.GetString(reader.GetOrdinal("NOMBREACTIVIDAD")),
-                               
-                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHREGISTRADAS")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHREGISTRADAS")),
-                                Observaciones = reader.IsDBNull(reader.GetOrdinal("OBSERVACIONES")) ? null : reader.GetString(reader.GetOrdinal("OBSERVACIONES")),
-                                Mes = reader.IsDBNull(reader.GetOrdinal("MES")) ? 0 : reader.GetInt32(reader.GetOrdinal("MES")),
-                                Anio = reader.IsDBNull(reader.GetOrdinal("ANIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ANIO")),
+                                IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IdPlanilla")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanilla")),
+                                FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FechaRegistro")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nombre")),
+
+
+                                NombreActividad = reader.IsDBNull(reader.GetOrdinal("NombreActividad")) ? null : reader.GetString(reader.GetOrdinal("NombreActividad")),
+
+                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHregistradas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHregistradas")),
+                                Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? null : reader.GetString(reader.GetOrdinal("Observaciones")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
                             };
                             planillausuario.Add(datos);
 

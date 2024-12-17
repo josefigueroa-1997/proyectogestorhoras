@@ -83,17 +83,18 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarHoras(int idusuario, int idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int Idactividad)
+        public async Task<IActionResult> RegistrarHoras(int idusuario, int? idusuproy, string horasasignadas, DateTime Fecharegistro, string? observaciones, int Idactividad,int? idsubactividad)
         {
             bool registroExitoso = false;
             bool yaSeRegistraronHoras = false;
             bool horasExcedidas = false;
             bool fechafuerarango = false;
+            bool error = false;
 
             try
             {
 
-                int resultado = await planillaService.RegistrarHoras(idusuario, idusuproy, horasasignadas, Fecharegistro, observaciones, Idactividad);
+                int resultado = await planillaService.RegistrarHorasPlanills(idusuario, idusuproy, horasasignadas,  Fecharegistro,  observaciones,  Idactividad,  idsubactividad);
 
                 if (resultado == 1)
                 {
@@ -102,6 +103,10 @@ namespace Proyectogestionhoras.Controllers
                 else if (resultado == 2)
                 {
                     yaSeRegistraronHoras = true;
+                }
+                else if(resultado == 0)
+                {
+                    error = true;
                 }
                 /* else if (resultado == 3)
                  {
@@ -125,6 +130,10 @@ namespace Proyectogestionhoras.Controllers
             else if (yaSeRegistraronHoras)
             {
                 return Json(new { success = false, message = "Ya se han registrado horas para esta actividad en este proyecto durante esta fecha." });
+            }
+            else if (error)
+            {
+                return Json(new { success = false, message = "Ocurrió un error al registrar las horas." });
             }
             /*else if (horasExcedidas)
               {
