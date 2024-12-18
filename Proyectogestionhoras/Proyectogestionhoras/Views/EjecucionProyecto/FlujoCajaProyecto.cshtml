@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Proyectogestionhoras.Models.DTO
+@model Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>
+
+
+@{
     ViewData["Title"] = "Flujo Caja Proyecto";
 }
 
@@ -65,15 +69,7 @@
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
-    var flujoList = ((IEnumerable<Proyectogestionhoras.Models.DTO.FlujoCajaDTO>)ViewBag.Flujo).ToList();
-    var egresosList = ((IEnumerable<Proyectogestionhoras.Models.DTO.EgresoFlujoCajaDTO>)ViewBag.Egresos).ToList();
-
     decimal totalingresosreal = 0;
-    decimal totalsociosreal = 0;
-    decimal totalstaffreal = 0;
-    decimal totalconsultoresreal = 0;
-   
-   
     decimal totalegresosreal = 0;
     decimal? totalmargenreal = 0;
 }
@@ -158,13 +154,34 @@
                     <tr class="bg-blue-100 text-black">
 
                         <th class="p-2 border border-gray-300 text-center">Tipo</th>
-                        <th class="p-2 border border-gray-300 text-center">IDCUENTA</th>
-                        <th class="p-2 border border-gray-300 min-w-[100px] text-center">Cuenta</th>
+                        <th class="p-2 border border-gray-300 text-center">IdCuenta</th>
+                        <th class="p-2 border border-gray-300  text-center">Cuenta</th>
 
 
-                        @foreach (var flujo in ViewBag.Flujo)
-                        {
-                            <th class="p-2 border border-gray-300 text-center" colspan="3">@flujo.Mes/@flujo.Anio</th>
+                        @{
+
+                            var mesesAnios = new HashSet<(int, int)>();
+
+
+                            foreach (var proyecto in Model)
+                            {
+                                foreach (var tipo in proyecto.Value)
+                                {
+                                    foreach (var mesAnio in tipo.Value.Keys)
+                                    {
+                                        mesesAnios.Add(mesAnio);
+                                    }
+                                }
+                            }
+
+
+                            var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
+
+
+                            foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                <th class="p-2 border border-gray-300 text-center" colspan="3">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
+                            }
                         }
                         <th class="p-2 border border-gray-300 text-center">Total Real</th>
                     </tr>
@@ -172,18 +189,222 @@
 
                         <td class="p-2 border border-gray-300 text-center"></td> 
                         <td class="p-2 border border-gray-300 text-center"></td> 
-                        <td class="p-2 border border-gray-300 text-center"></td> 
-                        @foreach (var flujo in ViewBag.Flujo)
+                        <td class="p-2 border border-gray-300 text-center"></td>
+                        @foreach (var mesAnio in mesesAniosOrdenados)
                         {
-                            <th class="p-2 border border-gray-300 text-center">Proyectado</th>
-                            <th class="p-2 border border-gray-300 text-center">Real</th>
-                            <th class="p-2 border border-gray-300 text-center">Forecast</th>
-                           
+                            <th class="p-2 border border-gray-300  text-center">Proyectado</th>
+                            <th class="p-2 border border-gray-300  text-center">Real</th>
+                            <th class="p-2 border border-gray-300  text-center">Forecast</th>
                         }
                         <td class="p-2 border border-gray-300 text-center"></td>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var proyecto in Model.OrderBy(p => p.Key))
+                    {
+
+                        var totalEgresoProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalEgresoRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalEgresoForecastPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalIngresoProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+                        var totalIngresoRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
+
+                        foreach (var tipo in proyecto.Value)
+                        {
+                            <tr>
+
+                                <td class="text-left text-xs font-medium sticky left-0 bg-white">@tipo.Key</td>
+
+                                @{
+                                    var primeraCuenta = tipo.Value.Values
+                                            .SelectMany(flujoList => flujoList)
+                                            .FirstOrDefault();
+
+                                    var cuenta = primeraCuenta != null ? primeraCuenta.Cuenta : "No disponible";
+                                    var idcuenta =  primeraCuenta.IdCuenta ;
+                                }
+                                <td class="text-left text-xs font-medium ">
+                                    @idcuenta
+                                </td>
+                                <td class="text-left text-xs font-medium ">
+                                    @cuenta
+                                </td>
+                                @{
+                                    decimal totalRealPorFila = 0; 
+                                }
+                                @foreach (var mesAnio in mesesAniosOrdenados)
+                                {
+
+                                    var flujo = tipo.Value
+                                    .FirstOrDefault(flujoList =>
+                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);  // Filtrar por tupla Mes-Año
+
+                                    decimal proyectado = 0;
+                                    decimal real = 0;
+                                    decimal forecast = 0;
+
+                                    if (flujo.Key != default)
+                                    {
+
+                                        proyectado = flujo.Value
+                                        .Where(f => f.Estado == "Proyectado")
+                                        .Sum(f => f.Monto);
+
+                                        real = flujo.Value
+                                        .Where(f => f.Estado == "Real")
+                                        .Sum(f => f.Monto);
+
+                                        forecast = flujo.Value
+                                        .Where(f => f.Estado == "Forecast")
+                                        .Sum(f => f.Monto);
+                                    }
+
+                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                        @(proyectado == 0 ? "" : String.Format("{0:N0}", proyectado))
+                                    </td>
+                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                        @(real == 0 ? "" : String.Format("{0:N0}", real))
+                                    </td>
+                                    <td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">
+                                        @(forecast == 0 ? "" : String.Format("{0:N0}", forecast))
+                                    </td>
+                                    totalRealPorFila += real;
+                                    if (tipo.Key != "Ingreso")
+                                    {
+
+                                        if (!totalEgresoProyectadoPorMes.ContainsKey(mesAnio)) totalEgresoProyectadoPorMes[mesAnio] = 0;
+                                        if (!totalEgresoRealPorMes.ContainsKey(mesAnio)) totalEgresoRealPorMes[mesAnio] = 0;
+                                        if (!totalEgresoForecastPorMes.ContainsKey(mesAnio)) totalEgresoForecastPorMes[mesAnio] = 0;
+
+                                        totalEgresoProyectadoPorMes[mesAnio] += proyectado;
+                                        totalEgresoRealPorMes[mesAnio] += real;
+                                        totalEgresoForecastPorMes[mesAnio] += forecast;
+                                    }
+                                    if (tipo.Key == "Ingreso")
+                                    {
+                                        if (!totalIngresoProyectadoPorMes.ContainsKey(mesAnio)) totalIngresoProyectadoPorMes[mesAnio] = 0;
+                                        if (!totalIngresoRealPorMes.ContainsKey(mesAnio)) totalIngresoRealPorMes[mesAnio] = 0;
+                                        totalIngresoProyectadoPorMes[mesAnio] += proyectado;
+                                        totalIngresoRealPorMes[mesAnio] += real;
+                                        
+                                    }
+                                    
+                                }
+                                <td class="text-xs border font-medium text-right  font-bold border-black px-4 py-2">
+                                    @(totalRealPorFila == 0 ? "" : String.Format("{0:N0}", totalRealPorFila))
+                                </td>
+                            </tr>
+                        }
+
+                        @*EGRESOS TOTAL*@
+                        <tr class="bg-red-100">
+                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-red-100" >Total Egresos</td>
+                            <td class="text-left text-xs font-medium font-bold " ></td>
+                            <td class="text-left text-xs font-medium font-bold " ></td>
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                    @(totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0) == 0 ? "" : String.Format("{0:N0}", totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0)))
+                                </td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                    @(totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0) == 0 ? "" : String.Format("{0:N0}", totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0)))
+                                </td>
+                                <td class="text-xs border font-medium text-right  border-black px-4 py-2 min-w-[100px]">
+                                    @(totalEgresoForecastPorMes.GetValueOrDefault(mesAnio, 0) == 0 ? "" : String.Format("{0:N0}", totalEgresoForecastPorMes.GetValueOrDefault(mesAnio, 0)))
+                                </td>
+                                totalegresosreal += totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                            }
+                            <td class="text-xs border font-medium text-right  font-bold border-black px-4 py-2">
+                                @(totalegresosreal == 0 ? "" : String.Format("{0:N0}", totalegresosreal))
+                            </td>
+                        </tr>
+                        @*MARGEN DEL PROYECTO*@
+                        <tr class="bg-gray-300 font-bold">
+                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-gray-300"> Margen del Proyecto</td>
+                            <td class="text-left text-xs font-medium font-bold "> </td>
+                            <td class="text-left text-xs font-medium font-bold "> </td>
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                var ingresoproyectado = totalIngresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoproyectado = totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenproyectado = ingresoproyectado - egresoproyectado;
+                                @*Margen real*@
+                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresoreal - egresoreal;
+
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                    @(margenproyectado == 0 ? "" : String.Format("{0:N0}", margenproyectado))
+                                </td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                    @(margenreal == 0 ? "" : String.Format("{0:N0}", margenreal))
+                                </td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>
+                                totalmargenreal += margenreal;
+                            }
+                            <td class="text-xs border font-medium text-right  font-bold border-black px-4 py-2">
+                                @(totalmargenreal == 0 ? "" : String.Format("{0:N0}", totalmargenreal))
+                            </td>
+                        </tr>
+                        @*MARGEN DEL PROYECTO %*@
+                        <tr class="bg-green-100 font-bold">
+                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-green-100">Margen del Proyecto (%) </td>
+                            <td class="text-left text-xs font-medium font-bold "></td>
+                            <td class="text-left text-xs font-medium font-bold "> </td>
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+
+                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresoreal - egresoreal;
+                                var porcentajeMargenReal = ingresoreal > 0 ? Math.Round((margenreal / ingresoreal) * 100, 2) : 0;
+
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                    @(porcentajeMargenReal == 0 ? "" : String.Format("{0:N0}", porcentajeMargenReal)) %
+                                </td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>
+                                totalingresosreal += ingresoreal;
+                            }
+                            <td class="text-xs border font-medium text-right font-bold border-black px-4 py-2 min-w-[100px]">
+                                @{
+                                    var porcentajetotalMargenReal = totalingresosreal > 0 && totalmargenreal != null
+                                    ? Math.Round(((decimal)totalmargenreal.Value / totalingresosreal) * 100, 2)
+                                    : 0;
+                                }
+                                @porcentajetotalMargenReal.ToString("N0") %
+                            </td>
+                        </tr>
+                        @*SALDO ACUMULADO*@
+                        <tr class="bg-yellow-100 font-bold">
+                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-yellow-100" >Saldo Acumulado</td>
+                            <td class="text-left text-xs font-medium font-bold " ></td>
+                            <td class="text-left text-xs font-medium font-bold " ></td>
+                           
+                            @foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
+                                var margenreal = ingresoreal - egresoreal;
+                                ViewBag.SaldoAcumulado = (ViewBag.SaldoAcumulado ?? 0) + margenreal;
+                               
+
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+                                    @(ViewBag.SaldoAcumulado == 0 ? "" : String.Format("{0:N0}", ViewBag.SaldoAcumulado))
+                                </td>
+                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>
+                            }
+                            <td class="text-xs border font-medium text-right font-bold border-black px-4 py-2 min-w-[100px]">
+                                @{
+                                    decimal? saldoacumuladototal = totalingresosreal - totalmargenreal;
+                                }
+                                @String.Format("{0:N0}", saldoacumuladototal)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+               @* <tbody>
 
                     <tr >
                         <td class="border font-bold border-gray-300 sticky left-0 bg-white text-center">Ingresos</td>
@@ -223,7 +444,7 @@
 
 
 
-                    @*SOCIOS*@
+                    
                     <tr>
                         <td class="p-2 border font-bold border-gray-300 text-center sticky left-0 bg-white">HH Socios</td>
                         @foreach (var cuenta in ViewBag.CuentaSocio)
@@ -254,7 +475,7 @@
                     </tr>
 
 
-                    @*STAFF*@
+                    
                     <tr>
                         <td class="p-2 border font-bold border-gray-300 text-center sticky left-0 bg-white">HH Staff</td>
                         @foreach (var cuenta in ViewBag.CuentaStaff)
@@ -287,7 +508,6 @@
 
 
 
-                    @*CONSULTORES*@
                     <tr>
                         <td class="p-2 border font-bold border-gray-300 text-center sticky left-0 bg-white">HH Consultores</td>
                         @foreach (var cuenta in ViewBag.CuentaConsultor)
@@ -317,7 +537,7 @@
                         </td>
                     </tr>
 
-                    @*SERVICIOS*@
+                    
 
 
 
@@ -377,7 +597,7 @@
                     }
 
                     
-                    @*GASTOS*@
+                 
                     @if (ViewBag.Gastos != null && ViewBag.Gastos.Count > 0)
                     {
                         @foreach (var grupo in ViewBag.Gastos)
@@ -749,7 +969,7 @@
                             @String.Format("{0:N0}", saldoacumuladototal)
                         </td>
                     </tr>
-                </tbody>
+                </tbody>*@
             </table>
         </div>
     </div>

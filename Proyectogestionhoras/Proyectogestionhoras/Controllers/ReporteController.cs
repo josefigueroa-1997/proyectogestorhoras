@@ -258,19 +258,19 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
-        public async Task <IActionResult> ReporteForecastFlujoCaja()
+        public async Task <IActionResult> ReporteForecastFlujoCaja(int? idproyecto)
         {
-            var datos = await _reporteService.ProcesarFlujoCajaPorMesAsync();
+            var datos = await _reporteService.ProcesarFlujoCajaPorMesAsync(idproyecto);
             return View(datos);
         }
 
 
         /*EXPORTAR FLUJO DE CAJA*/
-        public async Task<IActionResult> ExportarFlujoCaja()
+        public async Task<IActionResult> ExportarFlujoCaja(int? idproyecto)
         {
             try
             {
-                var model = await _reporteService.ProcesarFlujoCajaPorMesAsync();  
+                var model = await _reporteService.ProcesarFlujoCajaPorMesAsync(idproyecto);  
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 

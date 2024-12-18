@@ -16,13 +16,15 @@ namespace Proyectogestionhoras.Controllers
         private readonly ProyectoService proyectoService;
         private readonly FacturaService facturaService;
         private readonly EjecucionService ejecucionService;
+        private readonly ReporteService reporteService;
         private readonly PROYECTO_CONTROL_HORASContext context;
-        public EjecucionProyectoController(ProyectoService proyectoService, FacturaService facturaService, EjecucionService ejecucionService, PROYECTO_CONTROL_HORASContext context)
+        public EjecucionProyectoController(ProyectoService proyectoService, FacturaService facturaService, EjecucionService ejecucionService, PROYECTO_CONTROL_HORASContext context, ReporteService reporteService)
         {
             this.proyectoService = proyectoService;
             this.facturaService = facturaService;
             this.ejecucionService = ejecucionService;
             this.context = context;
+            this.reporteService = reporteService;
         }
 
         public async Task<IActionResult> SeleccionarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
@@ -530,87 +532,9 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> FlujoCajaProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
-            var flujocajaingreso = await ejecucionService.ObtenerFlujoCajaProyecto(id);
-            var flujocajaegreso = await ejecucionService.ObtenerEgresoFlujoCajaProyecto(id);
-            var flujocajaegresosservicios = await ejecucionService.ObtenerEgresoServiciosFlujoCajaProyecto(id);
-            var flujocajaegresosgastos = await ejecucionService.ObtenerEgresoGastosFlujoCajaProyecto(id);
-            ViewBag.flujocajaprueba = flujocajaegresosservicios;
-            ViewBag.flujogastos = flujocajaegresosgastos;
-            var groupedServicios = flujocajaegresosservicios
-                                    .GroupBy(s => s.ServicioNombre)
-                                    .Select(g => new
-                                    {
-                                        ServicioNombre = g.Key,
-                                        Servicios = g.ToList()
-                                    })
-                                    .ToList();
-
-            var groupedgastos = flujocajaegresosgastos
-                                    .GroupBy(s => s.GastoNombre)
-                                    .Select(g => new
-                                    {
-                                        GastosNombres = g.Key,
-                                        Gastos = g.ToList()
-                                    })
-                                    .ToList();
-
-
-            var querysocio = from p in context.Proyectos
-                        join up in context.UsuarioProyectos on p.Id equals up.IdProyecto
-                        join s in context.Segmentos on up.Idsegmento equals s.Id
-                        join c in context.Cuenta on s.IdCuenta equals c.Id
-                        join u in context.Usuarios on up.IdUsuario equals u.Id
-                        join r in context.Recursos on u.IdRecurso equals r.Id
-                        where p.Id == id && r.NombreRecurso == "Socio"
-                        select new
-                        {
-                            c.Cuenta,
-                            c.Idcuenta
-                        };
-
-            var querystaff = from p in context.Proyectos
-                             join up in context.UsuarioProyectos on p.Id equals up.IdProyecto
-                             join s in context.Segmentos on up.Idsegmento equals s.Id
-                             join c in context.Cuenta on s.IdCuenta equals c.Id
-                             join u in context.Usuarios on up.IdUsuario equals u.Id
-                             join r in context.Recursos on u.IdRecurso equals r.Id
-                             where p.Id == id && r.NombreRecurso == "Staff"
-                             select new
-                             {
-                                 c.Cuenta,
-                                 c.Idcuenta
-                             };
-
-            var querysconsultor = from p in context.Proyectos
-                             join up in context.UsuarioProyectos on p.Id equals up.IdProyecto
-                             join s in context.Segmentos on up.Idsegmento equals s.Id
-                             join c in context.Cuenta on s.IdCuenta equals c.Id
-                             join u in context.Usuarios on up.IdUsuario equals u.Id
-                             join r in context.Recursos on u.IdRecurso equals r.Id
-                             where p.Id == id && r.NombreRecurso == "Consultor Externo"
-                                  select new
-                             {
-                                 c.Cuenta,
-                                 c.Idcuenta
-                             };
-           
-
-
-            ViewBag.Proyecto = proyecto;
-            ViewBag.Flujo = flujocajaingreso;
-            ViewBag.Egresos = flujocajaegreso;
-            ViewBag.Servicios = groupedServicios;
-           ViewBag.Gastos = groupedgastos;
-            ViewBag.CuentaSocio = querysocio;
-            ViewBag.CuentaStaff = querystaff;
-            ViewBag.CuentaConsultor = querysconsultor;
-
-
-
-
-
-
-            return View();
+            ViewBag.Proyecto = proyecto;          
+            var flujocajaoficial = await reporteService.ProcesarFlujoCajaPorMesAsync(id);
+            return View(flujocajaoficial);
         }
     }
 }

@@ -953,19 +953,20 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<FlujoCajaProyectosDTO>> ObtenerFlujoCajaAsync()
+        public async Task<List<FlujoCajaProyectosDTO>> ObtenerFlujoCajaAsync(int? idproyecto)
         {
             try
             {
-
-
+                #pragma warning disable CS8600
+                object idparameter = (object)idproyecto ?? 0;
+#pragma warning restore CS8600
                 var flujocaja = new List<FlujoCajaProyectosDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "REPORTEFLUJOCAJAPROYECTOS";
                     command.CommandType = CommandType.StoredProcedure;
-
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idparameter));
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -1000,9 +1001,9 @@ namespace Proyectogestionhoras.Services
 
             }
         }
-        public async Task<Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>> ProcesarFlujoCajaPorMesAsync()
+        public async Task<Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>> ProcesarFlujoCajaPorMesAsync(int? idproyecto)
         {
-            var flujoCaja = await ObtenerFlujoCajaAsync();
+            var flujoCaja = await ObtenerFlujoCajaAsync(idproyecto);
 
             var diccionario = flujoCaja
                 .GroupBy(f => f.NombreProyecto)

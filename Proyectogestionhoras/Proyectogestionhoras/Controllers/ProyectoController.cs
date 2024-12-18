@@ -380,99 +380,103 @@ namespace Proyectogestionhoras.Controllers
         [HttpPost]
         public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura)
         {
-            /*EJECUCION*/
-            var statusproyecto = await Obtenerstatusproyecto(idproyecto);
-            if (statusproyecto == 2)
-            {
-                List<ServicioViewModel> serviciosejecucion = new List<ServicioViewModel>();
-                var idsserviciosejecucion = Request.Form["idservicio"];
-                var idsegmentoservicioejecucion = Request.Form["idsegmentoservicio"];
-                var montoservicioListejecucion = Request.Form["montoservicio"];
-                var fechaservicioejecucion = Request.Form["fechaservicio"];
-                var esEliminado = Request.Form["esEliminado"];
-                var IdServicioProyecto = Request.Form["IdServicioProyecto"];
-
-
-                for (int i = 0; i < idsserviciosejecucion.Count; i++)
-                {
-                    int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioProyecto[i])
-                                           ? 0
-                                           : int.Parse(IdServicioProyecto[i]);
-                    var servicioViewModel = new ServicioViewModel
-                    {
-                        IdServicioProyecto = idServicioRealParsed,
-                        Idservicios = int.Parse(idsserviciosejecucion[i]),
-                        IdSegmento = int.Parse(idsegmentoservicioejecucion[i]),
-                        MontoServicio = decimal.Parse(montoservicioListejecucion[i].Replace(".", "")),
-                        Fecha = DateTime.Parse(fechaservicioejecucion[i]),
-                        EsEliminado = esEliminado[i] == "true",
-                        
-                    };
-
-                    serviciosejecucion.Add(servicioViewModel);
-                }
-
-
-
-                List<GastoViewModel> gastosejecucion = new List<GastoViewModel>();
-                var idgastosejecuion = Request.Form["idgastos[]"];
-                var idsegmentogastoejecucion = Request.Form["idsegmentogasto"];
-                var montogastoListejecucion = Request.Form["montogasto"];
-                var fechagastoejecucion = Request.Form["fechagasto"];
-                var esEliminadogasto = Request.Form["esEliminados"];
-                var idgastoproyecto = Request.Form["IdGastoProyecto"];
-                for (int i = 0; i < idgastosejecuion.Count; i++)
-                {
-                    int idGastoRealParsed = string.IsNullOrWhiteSpace(idgastoproyecto[i])
-                                           ? 0
-                                           : int.Parse(idgastoproyecto[i]);
-                    var montogastoStr = montogastoListejecucion[i].ToString();
-
-                    montogastoStr = montogastoStr.Replace(".", "");
-
-                    decimal montogasto = decimal.Parse(montogastoStr);
-                    var gasto = new GastoViewModel
-                    {
-                        IdGastoProyecto = idGastoRealParsed,
-                        Idgastos = int.Parse(idgastosejecuion[i]),
-                        IdSegmento = int.Parse(idsegmentogastoejecucion[i]),
-                        MontoGasto = montogasto,
-                        Fecha = DateTime.Parse(fechagastoejecucion[i]),
-                        EsEliminado = esEliminadogasto[i] == "true",
-                        
-                    };
-
-                    gastosejecucion.Add(gasto);
-                }
-                await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
-                await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
-                await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
-                await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
-                await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
-                return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
-            }
-
-
-            /*OTROS ESTADOS*/
-            int idcosto = int.Parse(Request.Form["centroCosto"]);
-            int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
-            var montopresupuesto = Request.Form["monto"].ToString();
-            var montopresupuestostr = montopresupuesto.Replace(".", "");
-            decimal montofinal = decimal.Parse(montopresupuestostr); 
-            int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
-
-
-            List<ServicioViewModel> servicios = new List<ServicioViewModel>();
-            var idsservicios = Request.Form["idservicio"];
-            var idsegmentoservicio = Request.Form["idsegmentoservicio"];
-            var montoservicioList = Request.Form["montoservicio"];
-            var fechaservicio = Request.Form["fechaservicio"];
-            var esEliminados = Request.Form["esEliminado"];
-            var IdServicioProy = Request.Form["IdServicioProyecto"];
-
-            var statusedicion = int.Parse(Request.Form["status"].ToString());
-           
             
+            var idclientes = Request.Form["idcliente"];
+            try
+            {
+                /*EJECUCION*/
+                var statusproyecto = await Obtenerstatusproyecto(idproyecto);
+                if (statusproyecto == 2)
+                {
+                    List<ServicioViewModel> serviciosejecucion = new List<ServicioViewModel>();
+                    var idsserviciosejecucion = Request.Form["idservicio"];
+                    var idsegmentoservicioejecucion = Request.Form["idsegmentoservicio"];
+                    var montoservicioListejecucion = Request.Form["montoservicio"];
+                    var fechaservicioejecucion = Request.Form["fechaservicio"];
+                    var esEliminado = Request.Form["esEliminado"];
+                    var IdServicioProyecto = Request.Form["IdServicioProyecto"];
+
+
+                    for (int i = 0; i < idsserviciosejecucion.Count; i++)
+                    {
+                        int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioProyecto[i])
+                                               ? 0
+                                               : int.Parse(IdServicioProyecto[i]);
+                        var servicioViewModel = new ServicioViewModel
+                        {
+                            IdServicioProyecto = idServicioRealParsed,
+                            Idservicios = int.Parse(idsserviciosejecucion[i]),
+                            IdSegmento = int.Parse(idsegmentoservicioejecucion[i]),
+                            MontoServicio = decimal.Parse(montoservicioListejecucion[i].Replace(".", "")),
+                            Fecha = DateTime.Parse(fechaservicioejecucion[i]),
+                            EsEliminado = esEliminado[i] == "true",
+
+                        };
+
+                        serviciosejecucion.Add(servicioViewModel);
+                    }
+
+
+
+                    List<GastoViewModel> gastosejecucion = new List<GastoViewModel>();
+                    var idgastosejecuion = Request.Form["idgastos[]"];
+                    var idsegmentogastoejecucion = Request.Form["idsegmentogasto"];
+                    var montogastoListejecucion = Request.Form["montogasto"];
+                    var fechagastoejecucion = Request.Form["fechagasto"];
+                    var esEliminadogasto = Request.Form["esEliminados"];
+                    var idgastoproyecto = Request.Form["IdGastoProyecto"];
+                    for (int i = 0; i < idgastosejecuion.Count; i++)
+                    {
+                        int idGastoRealParsed = string.IsNullOrWhiteSpace(idgastoproyecto[i])
+                                               ? 0
+                                               : int.Parse(idgastoproyecto[i]);
+                        var montogastoStr = montogastoListejecucion[i].ToString();
+
+                        montogastoStr = montogastoStr.Replace(".", "");
+
+                        decimal montogasto = decimal.Parse(montogastoStr);
+                        var gasto = new GastoViewModel
+                        {
+                            IdGastoProyecto = idGastoRealParsed,
+                            Idgastos = int.Parse(idgastosejecuion[i]),
+                            IdSegmento = int.Parse(idsegmentogastoejecucion[i]),
+                            MontoGasto = montogasto,
+                            Fecha = DateTime.Parse(fechagastoejecucion[i]),
+                            EsEliminado = esEliminadogasto[i] == "true",
+
+                        };
+
+                        gastosejecucion.Add(gasto);
+                    }
+                    await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
+                    await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
+                    await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
+                    await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
+                    await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
+                    return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
+                }
+
+
+                /*OTROS ESTADOS*/
+                int idcosto = int.Parse(Request.Form["centroCosto"]);
+                int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
+                var montopresupuesto = Request.Form["monto"].ToString();
+                var montopresupuestostr = montopresupuesto.Replace(".", "");
+                decimal montofinal = decimal.Parse(montopresupuestostr);
+                int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
+
+
+                List<ServicioViewModel> servicios = new List<ServicioViewModel>();
+                var idsservicios = Request.Form["idservicio"];
+                var idsegmentoservicio = Request.Form["idsegmentoservicio"];
+                var montoservicioList = Request.Form["montoservicio"];
+                var fechaservicio = Request.Form["fechaservicio"];
+                var esEliminados = Request.Form["esEliminado"];
+                var IdServicioProy = Request.Form["IdServicioProyecto"];
+
+                var statusedicion = int.Parse(Request.Form["status"].ToString());
+
+
                 for (int i = 0; i < idsservicios.Count; i++)
                 {
                     int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioProy[i])
@@ -491,20 +495,20 @@ namespace Proyectogestionhoras.Controllers
                         MontoServicio = montoservicio,
                         Fecha = DateTime.Parse(fechaservicio[i]),
                         EsEliminado = esEliminados[i] == "true",
-                        
+
                     };
 
                     servicios.Add(servicioViewModel);
                 }
 
-            List<GastoViewModel> gastos = new List<GastoViewModel>();
-            var idgastos = Request.Form["idgastos[]"];
-            var idsegmentogasto = Request.Form["idsegmentogasto"];
-            var montogastoList = Request.Form["montogasto"];
-            var fechagasto = Request.Form["fechagasto"];
-            var esEliminadogastos = Request.Form["esEliminados"];
-            var idgastoproyectos = Request.Form["IdGastoProyecto"];
-            for (int i = 0; i < idgastos.Count; i++)
+                List<GastoViewModel> gastos = new List<GastoViewModel>();
+                var idgastos = Request.Form["idgastos[]"];
+                var idsegmentogasto = Request.Form["idsegmentogasto"];
+                var montogastoList = Request.Form["montogasto"];
+                var fechagasto = Request.Form["fechagasto"];
+                var esEliminadogastos = Request.Form["esEliminados"];
+                var idgastoproyectos = Request.Form["IdGastoProyecto"];
+                for (int i = 0; i < idgastos.Count; i++)
                 {
                     int idGastoRealParsed = string.IsNullOrWhiteSpace(idgastoproyectos[i])
                                            ? 0
@@ -522,69 +526,77 @@ namespace Proyectogestionhoras.Controllers
                         MontoGasto = montogasto,
                         Fecha = DateTime.Parse(fechagasto[i]),
                         EsEliminado = esEliminadogastos[i] == "true",
-                        
+
                     };
 
                     gastos.Add(gasto);
-             }
-
-            decimal montoorigenextranjera = 0;
-            if (moneda != "CLP")
-            {
-                var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
-                montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
-            }
-
-
-            /*List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
-             
-                var idusuarios = Request.Form["idusuarios[]"];
-                var hhasignadas = Request.Form["hhasignadas"];
-                for (int i = 0; i < idusuarios.Count; i++)
-                {
-                    var usuarioh = new UsuarioProyectoViewModel
-                    {
-                        IdUsuario = int.Parse(idusuarios[i]),
-                        HHAsignadas = int.Parse(hhasignadas[i]),
-                    };
-                    usuariohoras.Add(usuarioh);
                 }
-             
-             
-             */
 
-            if (statusedicion == 2)
-            {
-
-                await proyectoService.RestarHHAnaulesSocios(hhsocios,idproyecto);
-                await proyectoService.RestarHHAnaulesStaff(hhstaff,idproyecto);
-
-            }
-
-
-            Debug.WriteLine("ID SEGMENTO FACTURA"+idsegmentofactura);
-
-
-            bool resultado = await proyectoService.EditarProyecto(idproyecto,idpresupuesto,montofinal,moneda,afectaiva,idtipologia,nombre,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto,status,probabilidad,porcentajeprobabilidad,fechaplazoneg,hhsocios,hhstaff,hhconsultora,hhconsultorb,hhconsultorc,idsegmentosocio,idsegmentostaff,idsegmentoconsultora,idsegmentoconsultorb,idsegmentoconsultorc,idsegmentofactura, montoorigenextranjera, servicios, gastos);
-            
-           
-            if (resultado)
-            {
-                if(statusedicion == 6)
+                decimal montoorigenextranjera = 0;
+                if (moneda != "CLP")
                 {
-                    return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyecto });
+                    var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
+                    montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
+                }
+
+
+                /*List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
+
+                    var idusuarios = Request.Form["idusuarios[]"];
+                    var hhasignadas = Request.Form["hhasignadas"];
+                    for (int i = 0; i < idusuarios.Count; i++)
+                    {
+                        var usuarioh = new UsuarioProyectoViewModel
+                        {
+                            IdUsuario = int.Parse(idusuarios[i]),
+                            HHAsignadas = int.Parse(hhasignadas[i]),
+                        };
+                        usuariohoras.Add(usuarioh);
+                    }
+
+
+                 */
+
+                if (statusedicion == 2)
+                {
+
+                    await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
+                    await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
+
+                }
+
+
+                Debug.WriteLine("ID SEGMENTO FACTURA" + idsegmentofactura);
+
+                
+
+                bool resultado = await proyectoService.EditarProyecto(idproyecto, idpresupuesto, montofinal, moneda, afectaiva, idtipologia, nombre, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, status, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, servicios, gastos);
+
+
+                if (resultado)
+                {
+                    if (statusedicion == 6)
+                    {
+                        return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyecto });
+                    }
+                    else
+                    {
+                        return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
+                    }
+
                 }
                 else
                 {
-                    return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
+
+                    return View("EditarProyecto", new { id = idproyecto, idcliente = idclientes });
                 }
-                
             }
-            else
+            catch(Exception e)
             {
-                
-                return View();
+                TempData["ErrorMessage"] = "Hubo un error al Editar el proyecto.";
+                return RedirectToAction("EditarProyecto", new { id = idproyecto, idcliente = idclientes });
             }
+            
 
         }
         [HttpPost]
