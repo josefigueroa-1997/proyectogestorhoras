@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
 using Proyectogestionhoras.Models;
+using Proyectogestionhoras.Models.DTO;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
@@ -135,6 +136,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         /*FORECAST COSTOS*/
+       
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
@@ -242,52 +244,27 @@ namespace Proyectogestionhoras.Controllers
             var observacion = Request.Form["observacionservicio"];
             var estadoservicio = Request.Form["Estado"];
             var tiposervicio = Request.Form["Tiposervicio"];
-           
-            /*for (int i = 0; i < idsservicios.Count; i++)
+            var idsegmentootro = Request.Form["idsegmentoserviciootro"];
+            /*verificar existencia servicio otro*/
+            List<ServicioViewModel> verificarserviciootro  = new List<ServicioViewModel>();
+
+            for (int i = 0; i < idsservicios.Count; i++)
             {
-                var montoservicioStr = montoservicioList[i]?.ToString().Trim() ?? ""; 
-                if (string.IsNullOrEmpty(montoservicioStr))
-                {
-                    montoservicioStr = "0"; 
-                }
-                else
-                {
-                    montoservicioStr = montoservicioStr.Replace(".", ""); 
-                }
 
-                decimal montoservicio = decimal.Parse(montoservicioStr);
+                var servicioViewModel = new ServicioViewModel
+                {
 
-                int idServicioRealParsed = string.IsNullOrWhiteSpace(idservicioreal[i])
-                                           ? 0
-                                           : int.Parse(idservicioreal[i]);
+                    Idservicios = int.Parse(idsservicios[i]),
 
-                DateTime fechaServicioParsed;
-                if (string.IsNullOrWhiteSpace(fechaservicio[i]))
-                {
-                    fechaServicioParsed = DateTime.Today;  
-                }
-                else
-                {
-                    fechaServicioParsed = DateTime.Parse(fechaservicio[i]);  
-                }
-                var servicioViewModel = new ServiciosRealesViewModel
-                {
-                    IdServicioReal = idServicioRealParsed, 
-                    Idservicio = int.Parse(idsservicios[i]),
-                    Idproveedor = int.Parse(idproveedores[i]),
-                    Monto = montoservicio,
-                    Fecha = fechaServicioParsed,
-                    Observacion = observacion[i],
-                    Estado = estadoservicio[i],
-                    Tiposervicio = tiposervicio[i],
+                    IdSegmento = int.Parse(idsegmentootro[i]),
+
+
                 };
 
-                servicios.Add(servicioViewModel);
-            }*/
+                verificarserviciootro.Add(servicioViewModel);
 
-            /*gastos socios*/
-           
-           /* List<ServiciosRealesViewModel> serviciossocios = new List<ServiciosRealesViewModel>();*/
+            }
+
             var Idserviciosocio = Request.Form["Idserviciosocio"];
             var Idproveedorsocio = Request.Form["Idproveedorsocio"];
             var montoserviciosociolist = Request.Form["montoserviciosocio"];
@@ -296,52 +273,29 @@ namespace Proyectogestionhoras.Controllers
             var observacionserviciosocio = Request.Form["observacionserviciosocio"];
             var Estadosocio = Request.Form["Estadosocio"];
             var Tiposerviciosocio = Request.Form["Tiposerviciosocio"];
+            var idsegmentosocio = Request.Form["idsegmentoserviciosocio"];
+            /*verificar existencia servicio socio*/
+            List<ServicioViewModel> verificarserviciosocio = new List<ServicioViewModel>();
 
-          /*  for (int i = 0; i < Idserviciosocio.Count; i++)
+            for (int i = 0; i < Idserviciosocio.Count; i++)
             {
-                var montoservicioStr = montoserviciosociolist[i]?.ToString().Trim() ?? "";
-                if (string.IsNullOrEmpty(montoservicioStr))
-                {
-                    montoservicioStr = "0";
-                }
-                else
-                {
-                    montoservicioStr = montoservicioStr.Replace(".", "");
-                }
 
-                decimal montoservicio = decimal.Parse(montoservicioStr);
+                var servicioViewModel = new ServicioViewModel
+                {
 
-                int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioRealsocio[i])
-                                           ? 0
-                                           : int.Parse(IdServicioRealsocio[i]);
+                    Idservicios = int.Parse(Idserviciosocio[i]),
 
-                DateTime fechaServicioParsed;
-                if (string.IsNullOrWhiteSpace(fechaserviciosocio[i]))
-                {
-                    fechaServicioParsed = DateTime.Today;
-                }
-                else
-                {
-                    fechaServicioParsed = DateTime.Parse(fechaserviciosocio[i]);
-                }
-                var serviciosocioViewModel = new ServiciosRealesViewModel
-                {
-                    IdServicioReal = idServicioRealParsed,
-                    Idservicio = int.Parse(Idserviciosocio[i]),
-                    Idproveedor = int.Parse(Idproveedorsocio[i]),
-                    Monto = montoservicio,
-                    Fecha = fechaServicioParsed,
-                    Observacion = observacionserviciosocio[i],
-                    Estado = Estadosocio[i],
-                    Tiposervicio = Tiposerviciosocio[i],
+                    IdSegmento = int.Parse(idsegmentosocio[i]),
+
+
                 };
 
-                serviciossocios.Add(serviciosocioViewModel);
-            }*/
+                verificarserviciosocio.Add(servicioViewModel);
 
-            /*honorarios*/
+            }
 
-           /* List<ServiciosRealesViewModel> servicioshonorarios = new List<ServiciosRealesViewModel>();*/
+
+
             var Idserviciohonorario = Request.Form["Idserviciohonorario"];
             var Idproveedorhonorario = Request.Form["Idproveedorhonorario"];
             var montoserviciohonorariolist = Request.Form["montoserviciohonorario"];
@@ -350,48 +304,29 @@ namespace Proyectogestionhoras.Controllers
             var observacionserviciohonorario = Request.Form["observacionserviciohonorario"];
             var Estadohonorario = Request.Form["Estadohonorario"];
             var Tiposerviciohonorario = Request.Form["Tiposerviciohonorario"];
+            var idsegmentohonorario = Request.Form["idsegmentoserviciohonorario"];
+            /*verificar existencia servicio honorarios*/
+            List<ServicioViewModel> verificarserviciohonorario = new List<ServicioViewModel>();
 
-           /* for (int i = 0; i < Idserviciohonorario.Count; i++)
+            for (int i = 0; i < Idserviciohonorario.Count; i++)
             {
-                var montoservicioStr = montoserviciohonorariolist[i]?.ToString().Trim() ?? "";
-                if (string.IsNullOrEmpty(montoservicioStr))
-                {
-                    montoservicioStr = "0";
-                }
-                else
-                {
-                    montoservicioStr = montoservicioStr.Replace(".", "");
-                }
 
-                decimal montoservicio = decimal.Parse(montoservicioStr);
+                var servicioViewModel = new ServicioViewModel
+                {
 
-                int idServicioRealParsed = string.IsNullOrWhiteSpace(IdServicioRealhonorario[i])
-                                           ? 0
-                                           : int.Parse(IdServicioRealhonorario[i]);
+                    Idservicios = int.Parse(Idserviciohonorario[i]),
 
-                DateTime fechaServicioParsed;
-                if (string.IsNullOrWhiteSpace(fechaserviciohonorario[i]))
-                {
-                    fechaServicioParsed = DateTime.Today;
-                }
-                else
-                {
-                    fechaServicioParsed = DateTime.Parse(fechaserviciohonorario[i]);
-                }
-                var serviciohonorarioViewModel = new ServiciosRealesViewModel
-                {
-                    IdServicioReal = idServicioRealParsed,
-                    Idservicio = int.Parse(Idserviciohonorario[i]),
-                    Idproveedor = int.Parse(Idproveedorhonorario[i]),
-                    Monto = montoservicio,
-                    Fecha = fechaServicioParsed,
-                    Observacion = observacionserviciohonorario[i],
-                    Estado = Estadohonorario[i],
-                    Tiposervicio = Tiposerviciohonorario[i],
+                    IdSegmento = int.Parse(idsegmentohonorario[i]),
+
+
                 };
 
-                servicioshonorarios.Add(serviciohonorarioViewModel);
-            }*/
+                verificarserviciohonorario.Add(servicioViewModel);
+
+            }
+
+
+
             var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(), Request.Form["Tiposervicio"].ToList());
             var serviciossocios = ProcesarServicios(Request.Form["Idserviciosocio"].ToList(), Request.Form["Idproveedorsocio"].ToList(), Request.Form["montoserviciosocio"].ToList(), Request.Form["fechaserviciosocio"].ToList(), Request.Form["IdServicioRealsocio"].ToList(), Request.Form["observacionserviciosocio"].ToList(), Request.Form["Estadosocio"].ToList(), Request.Form["Tiposerviciosocio"].ToList());
             var servicioshonorarios = ProcesarServicios(Request.Form["Idserviciohonorario"].ToList(),Request.Form["Idproveedorhonorario"].ToList(),Request.Form["montoserviciohonorario"].ToList(),Request.Form["fechaserviciohonorario"].ToList(),Request.Form["IdServicioRealhonorario"].ToList(),Request.Form["observacionserviciohonorario"].ToList(),Request.Form["Estadohonorario"].ToList(),Request.Form["Tiposerviciohonorario"].ToList()
@@ -454,13 +389,37 @@ namespace Proyectogestionhoras.Controllers
 
 
             }
-            
+            /*verificar existencia gasto*/
+            List<GastoViewModel> verificargastos = new List<GastoViewModel>();
+       
+            for (int i = 0; i < idsgastos.Count; i++)
+            {
+              
+                var gastoViewModel = new GastoViewModel
+                {
+
+                    Idgastos = int.Parse(idsgastos[i]),
+                   
+                    IdSegmento = int.Parse(idsegmentogastos[i]),
+                   
+                   
+                };
+
+                verificargastos.Add(gastoViewModel);
+
+            }
+           
+
 
             await ejecucionService.GestorServiciosReales(idproyecto, servicios);
             await ejecucionService.GestorServiciosReales(idproyecto, serviciossocios);
             await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);
             await ejecucionService.GestorGastosReales(idproyecto, gastos);
             await ejecucionService.GestorGastosHH(idproyecto, gastosHH);
+            await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto,verificargastos);
+            await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciootro);
+            await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciosocio);
+            await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciohonorario);
             return RedirectToAction("ForecastCostos", "EjecucionProyecto", new {id = idproyecto });
         }
 

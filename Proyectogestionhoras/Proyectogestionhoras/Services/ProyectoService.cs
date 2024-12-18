@@ -289,6 +289,92 @@ namespace Proyectogestionhoras.Services
             await context.SaveChangesAsync();
         }
 
+
+        public async Task AgregarGastoProyectoeJECUCION(int idProyecto, List<GastoViewModel> gastos)
+        {
+            if (gastos == null || !gastos.Any())
+            {
+                return;
+            }
+
+    
+            var gastosExistentes = await context.ProyectoGastos
+                .Where(pg => pg.IdProyecto == idProyecto)
+                .Select(pg => pg.IdGastos) 
+                .ToListAsync();
+
+       
+            var gastosAGrabar = new HashSet<int>();
+
+            foreach (var gasto in gastos)
+            {
+               
+                if (!gastosExistentes.Contains(gasto.Idgastos) && !gastosAGrabar.Contains(gasto.Idgastos))
+                {
+                    
+                    gastosAGrabar.Add(gasto.Idgastos);
+
+                   
+                    var nuevoGasto = new ProyectoGasto
+                    {
+                        IdProyecto = idProyecto,
+                        IdGastos = gasto.Idgastos,
+                        Idsegmento = gasto.IdSegmento,  
+                        Monto = 0, 
+                        Fecha = DateTime.Now, 
+                    };
+
+                    await context.ProyectoGastos.AddAsync(nuevoGasto);
+                }
+            }
+
+            
+            await context.SaveChangesAsync();
+        }
+
+        public async Task AgregarServicioProyectoeJECUCION(int idProyecto, List<ServicioViewModel> servicios)
+        {
+            if (servicios == null || !servicios.Any())
+            {
+                return;
+            }
+
+
+            var servicioExistentes = await context.ProyectoServicios
+                .Where(pg => pg.IdProyecto == idProyecto)
+                .Select(pg => pg.IdServicio)
+                .ToListAsync();
+
+
+            var serviciosAGrabar = new HashSet<int>();
+
+            foreach (var servicio in servicios)
+            {
+
+                if (!servicioExistentes.Contains(servicio.Idservicios) && !serviciosAGrabar.Contains(servicio.Idservicios))
+                {
+
+                    serviciosAGrabar.Add(servicio.Idservicios);
+
+
+                    var nuevoservicio = new ProyectoServicio
+                    {
+                        IdProyecto = idProyecto,
+                        IdServicio = servicio.Idservicios,
+                        Idsegmento = servicio.IdSegmento,
+                        Monto = 0,
+                        Fecha = DateTime.Now,
+                    };
+
+                    await context.ProyectoServicios.AddAsync(nuevoservicio);
+                }
+            }
+
+            // Guardar los cambios en la base de datos
+            await context.SaveChangesAsync();
+        }
+
+
         public async Task RestarHHAnaulesSocios(int hhsocios, int? idproyecto)
         {
             var socio = context.TotalRecursos

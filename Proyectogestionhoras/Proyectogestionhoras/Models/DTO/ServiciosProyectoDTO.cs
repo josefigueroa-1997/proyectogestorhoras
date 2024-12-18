@@ -11,7 +11,8 @@
         public decimal? MONTO { get; set; }
         public DateTime? FECHA { get; set; }
 
-        public string? Espresupuesto { get; set; }
+        public string? Estado { get; set; }
+        public decimal? MontoProyectado { get; set; }
 
     }
 }
