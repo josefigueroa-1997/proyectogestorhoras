@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Proyectogestionhoras.Models.DTO
+@model Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>
+@{
     ViewData["Title"] = "Forecast Ingreso";
 }
 
@@ -64,9 +66,7 @@
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
-    decimal totalproyectado = 0;
-    decimal totalreal = 0;
-    decimal totalporcobrar = 0;
+
 }
 <div class="form-container">
     <div class="panel-container flex justify-center mb-5">
@@ -139,59 +139,174 @@
         <p class="form-subtitle" style="color:black">Status Ingresos</p>
         <div class="flex justify-center">
             <table class="w-full max-w-3xl border-collapse text-left text-xs">
-               
+
                 <tbody>
                     <tr>
                         <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha</td>
-                        @foreach (var flujo in ViewBag.Flujo)
-                        {
-                            <td class="p-2 bg-blue-100 border border-gray-300 text-right">@flujo.Mes/@flujo.Anio</td>
+                        @{
+
+                            var mesesAnios = new HashSet<(int, int)>();
+
+
+                            foreach (var proyecto in Model)
+                            {
+                                foreach (var tipo in proyecto.Value)
+                                {
+                                    foreach (var mesAnio in tipo.Value.Keys)
+                                    {
+                                        mesesAnios.Add(mesAnio);
+                                    }
+                                }
+                            }
+
+
+                            var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
+
+
+                            foreach (var mesAnio in mesesAniosOrdenados)
+                            {
+                                <th class="p-2 bg-blue-100 border border-gray-300 text-center">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
+                            }
                         }
                         <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Totales</td>
                     </tr>
                     <tr>
                         <td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Proyectado</td>
-                        @foreach (var flujo in ViewBag.Flujo)
+                        @{
+                            decimal totalProyectadoFila = 0;
+                        }
+                        @foreach (var proyecto in Model.OrderBy(p => p.Key))
                         {
-                            <td class="p-2 border border-gray-300 text-right">
-                                @(flujo.MontoProyectado == 0 ? "" : String.Format("{0:N0}", flujo.MontoProyectado))
-                            </td>
-                            totalproyectado += flujo.MontoProyectado;
+                            foreach (var tipo in proyecto.Value)
+                            {
+                                
+                                 
+                                
+                                foreach (var mesAnio in mesesAniosOrdenados)
+                                {
+                                    var flujo = tipo.Value
+                                    .FirstOrDefault(flujoList =>
+                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);  
+
+                                    decimal proyectado = 0;
+
+                                    if (flujo.Key != default)
+                                    {
+                                       
+                                        proyectado = flujo.Value
+                                        .Where(f => f.Estado == "Proyectado")
+                                        .Sum(f => f.Monto);
+                                    }
+
+                                    
+                                    if (tipo.Key == "Ingreso")
+                                    {
+                                        <td class="p-2 border border-gray-300 text-right">
+                                            @(proyectado == 0 ? "" : String.Format("{0:N0}", proyectado))
+                                        </td>
+                                        totalProyectadoFila += proyectado;
+                                    }
+                                }
+                            }
                         }
                         <td class="p-2 border border-gray-300 text-right">
-                            @(totalproyectado == 0 ? "" : String.Format("{0:N0}", totalproyectado))
+                            @(totalProyectadoFila == 0 ? "" : String.Format("{0:N0}", totalProyectadoFila))
                         </td>
                     </tr>
-                    <tr>
+                   <tr>
                         <td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Real</td>
-                        @foreach (var flujo in ViewBag.Flujo)
+                        @{
+                            decimal totalRealFila = 0;
+                        }
+                        @foreach (var proyecto in Model.OrderBy(p => p.Key))
                         {
-                            <td class="p-2 border border-gray-300 text-right"> 
-                                @(flujo.MontoReal == 0 ? "" : String.Format("{0:N0}", flujo.MontoReal))
-                            </td>
-                            totalreal += flujo.MontoReal;
+                            foreach (var tipo in proyecto.Value)
+                            {
+
+
+
+                                foreach (var mesAnio in mesesAniosOrdenados)
+                                {
+                                    var flujo = tipo.Value
+                                    .FirstOrDefault(flujoList =>
+                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+
+                                    decimal real = 0;
+
+                                    if (flujo.Key != default)
+                                    {
+
+                                        real = flujo.Value
+                                        .Where(f => f.Estado == "Real")
+                                        .Sum(f => f.Monto);
+                                    }
+
+
+                                    if (tipo.Key == "Ingreso")
+                                    {
+                                        <td class="p-2 border border-gray-300 text-right">
+                                            @(real == 0 ? "" : String.Format("{0:N0}", real))
+                                        </td>
+                                        totalRealFila += real;
+                                    }
+                                }
+                            }
                         }
                         <td class="p-2 border border-gray-300 text-right">
-                            @(totalreal == 0 ? "" : String.Format("{0:N0}", totalreal))
+                            @(totalRealFila == 0 ? "" : String.Format("{0:N0}", totalRealFila))
                         </td>
-                    </tr>
-                    <tr>
+                   </tr>
+
+
+
+                   <tr>
                         <td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Forecast</td>
-                        @foreach (var flujo in ViewBag.Flujo)
+                        @{
+                            decimal totalForecastFila = 0;
+                        }
+                        @foreach (var proyecto in Model.OrderBy(p => p.Key))
                         {
-                            <td class="p-2 border border-gray-300 text-right">
-                                @(flujo.MontoPorCobrar == 0 ? "" : String.Format("{0:N0}", flujo.MontoPorCobrar))
-                            </td>
-                            totalporcobrar += flujo.MontoPorCobrar;
+                            foreach (var tipo in proyecto.Value)
+                            {
+
+
+
+                                foreach (var mesAnio in mesesAniosOrdenados)
+                                {
+                                    var flujo = tipo.Value
+                                    .FirstOrDefault(flujoList =>
+                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+
+                                    decimal forecast = 0;
+
+                                    if (flujo.Key != default)
+                                    {
+
+                                        forecast = flujo.Value
+                                        .Where(f => f.Estado == "Forecast")
+                                        .Sum(f => f.Monto);
+                                    }
+
+
+                                    if (tipo.Key == "Ingreso")
+                                    {
+                                        <td class="p-2 border border-gray-300 text-right">
+                                            @(forecast == 0 ? "" : String.Format("{0:N0}", forecast))
+                                        </td>
+                                        totalForecastFila += forecast;
+                                    }
+                                }
+                            }
                         }
                         <td class="p-2 border border-gray-300 text-right">
-                            @(totalporcobrar == 0 ? "" : String.Format("{0:N0}", totalporcobrar))
+                            @(totalForecastFila == 0 ? "" : String.Format("{0:N0}", totalForecastFila))
                         </td>
-                    </tr>
+                   </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    
 
    
     <div class="form-group">

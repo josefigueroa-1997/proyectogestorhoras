@@ -51,12 +51,11 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ForecastIngreso(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            var flujo = await ejecucionService.ObtenerFlujoCajaProyecto(id);
             var ingresos = await context.Ingresosreales.Where(x => x.Idproyecto == id).ToListAsync();
+            var flujocaja = await reporteService.ProcesarFlujoCajaPorMesAsync(id);
             ViewBag.Ingresos = ingresos;
             ViewBag.Proyecto = proyecto;
-            ViewBag.Flujo = flujo;
-            return View();
+            return View(flujocaja);
         }
 
 
@@ -232,195 +231,203 @@ namespace Proyectogestionhoras.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistrarCostos(int idproyecto, List<GastosHHViewModel> gastosHH)
         {
-                        
-
-            /*COSTOS SERVICIOS REALES*/
-            /*List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();*/
-            var idsservicios = Request.Form["Idservicio"];
-            var idproveedores = Request.Form["Idproveedor"];
-            var montoservicioList = Request.Form["montoservicio"];
-            var fechaservicio = Request.Form["fechaservicio"];
-            var idservicioreal = Request.Form["IdServicioReal"];
-            var observacion = Request.Form["observacionservicio"];
-            var estadoservicio = Request.Form["Estado"];
-            var tiposervicio = Request.Form["Tiposervicio"];
-            var idsegmentootro = Request.Form["idsegmentoserviciootro"];
-            /*verificar existencia servicio otro*/
-            List<ServicioViewModel> verificarserviciootro  = new List<ServicioViewModel>();
-
-            for (int i = 0; i < idsservicios.Count; i++)
+            try
             {
+                /*COSTOS SERVICIOS REALES*/
 
-                var servicioViewModel = new ServicioViewModel
+                var idsservicios = Request.Form["Idservicio"];
+                var idproveedores = Request.Form["Idproveedor"];
+                var montoservicioList = Request.Form["montoservicio"];
+                var fechaservicio = Request.Form["fechaservicio"];
+                var idservicioreal = Request.Form["IdServicioReal"];
+                var observacion = Request.Form["observacionservicio"];
+                var estadoservicio = Request.Form["Estado"];
+                var tiposervicio = Request.Form["Tiposervicio"];
+                var idsegmentootro = Request.Form["idsegmentoserviciootro"];
+                /*verificar existencia servicio otro*/
+                List<ServicioViewModel> verificarserviciootro = new List<ServicioViewModel>();
+
+                for (int i = 0; i < idsservicios.Count; i++)
                 {
 
-                    Idservicios = int.Parse(idsservicios[i]),
+                    var servicioViewModel = new ServicioViewModel
+                    {
 
-                    IdSegmento = int.Parse(idsegmentootro[i]),
+                        Idservicios = int.Parse(idsservicios[i]),
+
+                        IdSegmento = int.Parse(idsegmentootro[i]),
 
 
-                };
+                    };
 
-                verificarserviciootro.Add(servicioViewModel);
+                    verificarserviciootro.Add(servicioViewModel);
 
-            }
+                }
 
-            var Idserviciosocio = Request.Form["Idserviciosocio"];
-            var Idproveedorsocio = Request.Form["Idproveedorsocio"];
-            var montoserviciosociolist = Request.Form["montoserviciosocio"];
-            var fechaserviciosocio = Request.Form["fechaserviciosocio"];
-            var IdServicioRealsocio = Request.Form["IdServicioRealsocio"];
-            var observacionserviciosocio = Request.Form["observacionserviciosocio"];
-            var Estadosocio = Request.Form["Estadosocio"];
-            var Tiposerviciosocio = Request.Form["Tiposerviciosocio"];
-            var idsegmentosocio = Request.Form["idsegmentoserviciosocio"];
-            /*verificar existencia servicio socio*/
-            List<ServicioViewModel> verificarserviciosocio = new List<ServicioViewModel>();
+                var Idserviciosocio = Request.Form["Idserviciosocio"];
+                var Idproveedorsocio = Request.Form["Idproveedorsocio"];
+                var montoserviciosociolist = Request.Form["montoserviciosocio"];
+                var fechaserviciosocio = Request.Form["fechaserviciosocio"];
+                var IdServicioRealsocio = Request.Form["IdServicioRealsocio"];
+                var observacionserviciosocio = Request.Form["observacionserviciosocio"];
+                var Estadosocio = Request.Form["Estadosocio"];
+                var Tiposerviciosocio = Request.Form["Tiposerviciosocio"];
+                var idsegmentosocio = Request.Form["idsegmentoserviciosocio"];
+                /*verificar existencia servicio socio*/
+                List<ServicioViewModel> verificarserviciosocio = new List<ServicioViewModel>();
 
-            for (int i = 0; i < Idserviciosocio.Count; i++)
-            {
-
-                var servicioViewModel = new ServicioViewModel
+                for (int i = 0; i < Idserviciosocio.Count; i++)
                 {
 
-                    Idservicios = int.Parse(Idserviciosocio[i]),
+                    var servicioViewModel = new ServicioViewModel
+                    {
 
-                    IdSegmento = int.Parse(idsegmentosocio[i]),
+                        Idservicios = int.Parse(Idserviciosocio[i]),
 
-
-                };
-
-                verificarserviciosocio.Add(servicioViewModel);
-
-            }
+                        IdSegmento = int.Parse(idsegmentosocio[i]),
 
 
+                    };
 
-            var Idserviciohonorario = Request.Form["Idserviciohonorario"];
-            var Idproveedorhonorario = Request.Form["Idproveedorhonorario"];
-            var montoserviciohonorariolist = Request.Form["montoserviciohonorario"];
-            var fechaserviciohonorario = Request.Form["fechaserviciohonorario"];
-            var IdServicioRealhonorario = Request.Form["IdServicioRealhonorario"];
-            var observacionserviciohonorario = Request.Form["observacionserviciohonorario"];
-            var Estadohonorario = Request.Form["Estadohonorario"];
-            var Tiposerviciohonorario = Request.Form["Tiposerviciohonorario"];
-            var idsegmentohonorario = Request.Form["idsegmentoserviciohonorario"];
-            /*verificar existencia servicio honorarios*/
-            List<ServicioViewModel> verificarserviciohonorario = new List<ServicioViewModel>();
+                    verificarserviciosocio.Add(servicioViewModel);
 
-            for (int i = 0; i < Idserviciohonorario.Count; i++)
-            {
+                }
 
-                var servicioViewModel = new ServicioViewModel
+
+
+                var Idserviciohonorario = Request.Form["Idserviciohonorario"];
+                var Idproveedorhonorario = Request.Form["Idproveedorhonorario"];
+                var montoserviciohonorariolist = Request.Form["montoserviciohonorario"];
+                var fechaserviciohonorario = Request.Form["fechaserviciohonorario"];
+                var IdServicioRealhonorario = Request.Form["IdServicioRealhonorario"];
+                var observacionserviciohonorario = Request.Form["observacionserviciohonorario"];
+                var Estadohonorario = Request.Form["Estadohonorario"];
+                var Tiposerviciohonorario = Request.Form["Tiposerviciohonorario"];
+                var idsegmentohonorario = Request.Form["idsegmentoserviciohonorario"];
+                /*verificar existencia servicio honorarios*/
+                List<ServicioViewModel> verificarserviciohonorario = new List<ServicioViewModel>();
+
+                for (int i = 0; i < Idserviciohonorario.Count; i++)
                 {
 
-                    Idservicios = int.Parse(Idserviciohonorario[i]),
+                    var servicioViewModel = new ServicioViewModel
+                    {
 
-                    IdSegmento = int.Parse(idsegmentohonorario[i]),
+                        Idservicios = int.Parse(Idserviciohonorario[i]),
+
+                        IdSegmento = int.Parse(idsegmentohonorario[i]),
 
 
-                };
+                    };
 
-                verificarserviciohonorario.Add(servicioViewModel);
+                    verificarserviciohonorario.Add(servicioViewModel);
 
+                }
+
+
+
+                var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(), Request.Form["Tiposervicio"].ToList());
+                var serviciossocios = ProcesarServicios(Request.Form["Idserviciosocio"].ToList(), Request.Form["Idproveedorsocio"].ToList(), Request.Form["montoserviciosocio"].ToList(), Request.Form["fechaserviciosocio"].ToList(), Request.Form["IdServicioRealsocio"].ToList(), Request.Form["observacionserviciosocio"].ToList(), Request.Form["Estadosocio"].ToList(), Request.Form["Tiposerviciosocio"].ToList());
+                var servicioshonorarios = ProcesarServicios(Request.Form["Idserviciohonorario"].ToList(), Request.Form["Idproveedorhonorario"].ToList(), Request.Form["montoserviciohonorario"].ToList(), Request.Form["fechaserviciohonorario"].ToList(), Request.Form["IdServicioRealhonorario"].ToList(), Request.Form["observacionserviciohonorario"].ToList(), Request.Form["Estadohonorario"].ToList(), Request.Form["Tiposerviciohonorario"].ToList()
+    );
+
+
+
+                /*Gastos*/
+                List<GastosRealesViewModel> gastos = new List<GastosRealesViewModel>();
+                var idsgastos = Request.Form["idgastos"];
+                var idproveedoresgastos = Request.Form["idproveedorgastos"];
+                var idsegmentogastos = Request.Form["idsegmentogasto"];
+                var montogastosList = Request.Form["montogasto"];
+                var fechagastos = Request.Form["fechagasto"];
+                var idgastoreal = Request.Form["IdGastoReal"];
+                var observaciongasto = Request.Form["observaciongasto"];
+                var estadogasto = Request.Form["EstadoGasto"];
+
+
+                for (int i = 0; i < idsgastos.Count; i++)
+                {
+                    var montogastoStr = montogastosList[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(montogastoStr))
+                    {
+                        montogastoStr = "0";
+                    }
+                    else
+                    {
+                        montogastoStr = montogastoStr.Replace(".", "");
+                    }
+
+                    decimal montogasto = decimal.Parse(montogastoStr);
+
+                    int idgastoRealParsed = string.IsNullOrWhiteSpace(idgastoreal[i])
+                                               ? 0
+                                               : int.Parse(idgastoreal[i]);
+
+                    DateTime fechaGastoParsed;
+                    if (string.IsNullOrWhiteSpace(fechagastos[i]))
+                    {
+                        fechaGastoParsed = DateTime.Today;
+                    }
+                    else
+                    {
+                        fechaGastoParsed = DateTime.Parse(fechagastos[i]);
+                    }
+                    var gastoViewModel = new GastosRealesViewModel
+                    {
+                        IdGastoReal = idgastoRealParsed,
+                        Idgasto = int.Parse(idsgastos[i]),
+                        Idproveedor = int.Parse(idproveedoresgastos[i]),
+                        Segmento = int.Parse(idsegmentogastos[i]),
+                        Monto = montogasto,
+                        Fecha = fechaGastoParsed,
+                        Observacion = observaciongasto[i],
+                        Estado = estadogasto[i],
+                    };
+
+                    gastos.Add(gastoViewModel);
+
+
+                }
+                /*verificar existencia gasto*/
+                List<GastoViewModel> verificargastos = new List<GastoViewModel>();
+
+                for (int i = 0; i < idsgastos.Count; i++)
+                {
+
+                    var gastoViewModel = new GastoViewModel
+                    {
+
+                        Idgastos = int.Parse(idsgastos[i]),
+
+                        IdSegmento = int.Parse(idsegmentogastos[i]),
+
+
+                    };
+
+                    verificargastos.Add(gastoViewModel);
+
+                }
+
+
+
+                await ejecucionService.GestorServiciosReales(idproyecto, servicios);
+                await ejecucionService.GestorServiciosReales(idproyecto, serviciossocios);
+                await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);
+                await ejecucionService.GestorGastosReales(idproyecto, gastos);
+                await ejecucionService.GestorGastosHH(idproyecto, gastosHH);
+                await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastos);
+                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciootro);
+                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciosocio);
+                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciohonorario);
+                return RedirectToAction("ForecastCostos", "EjecucionProyecto", new { id = idproyecto });
             }
-
-
-
-            var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(), Request.Form["Tiposervicio"].ToList());
-            var serviciossocios = ProcesarServicios(Request.Form["Idserviciosocio"].ToList(), Request.Form["Idproveedorsocio"].ToList(), Request.Form["montoserviciosocio"].ToList(), Request.Form["fechaserviciosocio"].ToList(), Request.Form["IdServicioRealsocio"].ToList(), Request.Form["observacionserviciosocio"].ToList(), Request.Form["Estadosocio"].ToList(), Request.Form["Tiposerviciosocio"].ToList());
-            var servicioshonorarios = ProcesarServicios(Request.Form["Idserviciohonorario"].ToList(),Request.Form["Idproveedorhonorario"].ToList(),Request.Form["montoserviciohonorario"].ToList(),Request.Form["fechaserviciohonorario"].ToList(),Request.Form["IdServicioRealhonorario"].ToList(),Request.Form["observacionserviciohonorario"].ToList(),Request.Form["Estadohonorario"].ToList(),Request.Form["Tiposerviciohonorario"].ToList()
-);
-
-
-
-            /*Gastos*/
-            List<GastosRealesViewModel> gastos = new List<GastosRealesViewModel>();
-            var idsgastos = Request.Form["idgastos"];
-            var idproveedoresgastos = Request.Form["idproveedorgastos"];
-            var idsegmentogastos = Request.Form["idsegmentogasto"];
-            var montogastosList = Request.Form["montogasto"];
-            var fechagastos = Request.Form["fechagasto"];
-            var idgastoreal = Request.Form["IdGastoReal"];
-            var observaciongasto = Request.Form["observaciongasto"];
-            var estadogasto = Request.Form["EstadoGasto"];
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al registrar/editar costos del proyecto:{e.Message}");
+                TempData["ErrorMessage"] = "Hubo un error al Registrar/Editar costos del proyecto.";
+                return RedirectToAction("ForecastCostos", "EjecucionProyecto", new { id = idproyecto });
+            }
             
-            
-            for (int i = 0; i < idsgastos.Count; i++)
-            {
-                var montogastoStr = montogastosList[i]?.ToString().Trim() ?? "";
-                if (string.IsNullOrEmpty(montogastoStr))
-                {
-                    montogastoStr = "0";
-                }
-                else
-                {
-                    montogastoStr = montogastoStr.Replace(".", "");
-                }
-
-                decimal montogasto = decimal.Parse(montogastoStr);
-
-                int idgastoRealParsed = string.IsNullOrWhiteSpace(idgastoreal[i])
-                                           ? 0
-                                           : int.Parse(idgastoreal[i]);
-
-                DateTime fechaGastoParsed;
-                if (string.IsNullOrWhiteSpace(fechagastos[i]))
-                {
-                    fechaGastoParsed = DateTime.Today;
-                }
-                else
-                {
-                    fechaGastoParsed = DateTime.Parse(fechagastos[i]);
-                }
-                var gastoViewModel = new GastosRealesViewModel
-                {
-                    IdGastoReal = idgastoRealParsed,
-                    Idgasto = int.Parse(idsgastos[i]),
-                    Idproveedor = int.Parse(idproveedoresgastos[i]),
-                    Segmento = int.Parse(idsegmentogastos[i]),
-                    Monto = montogasto,
-                    Fecha = fechaGastoParsed,
-                    Observacion = observaciongasto[i],
-                    Estado = estadogasto[i],
-                };
-
-                gastos.Add(gastoViewModel);
-
-
-            }
-            /*verificar existencia gasto*/
-            List<GastoViewModel> verificargastos = new List<GastoViewModel>();
-       
-            for (int i = 0; i < idsgastos.Count; i++)
-            {
-              
-                var gastoViewModel = new GastoViewModel
-                {
-
-                    Idgastos = int.Parse(idsgastos[i]),
-                   
-                    IdSegmento = int.Parse(idsegmentogastos[i]),
-                   
-                   
-                };
-
-                verificargastos.Add(gastoViewModel);
-
-            }
-           
-
-
-            await ejecucionService.GestorServiciosReales(idproyecto, servicios);
-            await ejecucionService.GestorServiciosReales(idproyecto, serviciossocios);
-            await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);
-            await ejecucionService.GestorGastosReales(idproyecto, gastos);
-            await ejecucionService.GestorGastosHH(idproyecto, gastosHH);
-            await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto,verificargastos);
-            await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciootro);
-            await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciosocio);
-            await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciohonorario);
-            return RedirectToAction("ForecastCostos", "EjecucionProyecto", new {id = idproyecto });
         }
 
         private List<ServiciosRealesViewModel> ProcesarServicios(List<string> ids, List<string> proveedores, List<string> montos, List<string> fechas, List<string> idsReales, List<string> observaciones, List<string> estados, List<string> tipos)
@@ -492,8 +499,8 @@ namespace Proyectogestionhoras.Controllers
         {
             var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
             ViewBag.Proyecto = proyecto;          
-            var flujocajaoficial = await reporteService.ProcesarFlujoCajaPorMesAsync(id);
-            return View(flujocajaoficial);
+            var flujocaja = await reporteService.ProcesarFlujoCajaPorMesAsync(id);
+            return View(flujocaja);
         }
     }
 }

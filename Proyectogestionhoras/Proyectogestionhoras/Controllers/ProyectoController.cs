@@ -593,6 +593,7 @@ namespace Proyectogestionhoras.Controllers
             }
             catch(Exception e)
             {
+                Debug.WriteLine($"Hubo un error al editar el proyecto:{e.Message}");
                 TempData["ErrorMessage"] = "Hubo un error al Editar el proyecto.";
                 return RedirectToAction("EditarProyecto", new { id = idproyecto, idcliente = idclientes });
             }
