@@ -152,9 +152,16 @@
                             {
                                 foreach (var tipo in proyecto.Value)
                                 {
-                                    foreach (var mesAnio in tipo.Value.Keys)
+                                    if (tipo.Key == "Ingreso") 
                                     {
-                                        mesesAnios.Add(mesAnio);
+                                        foreach (var flujo in tipo.Value)
+                                        {
+                                            var mesAnio = flujo.Key;
+                                            if (flujo.Value.Any(f => f.Estado == "Real" || f.Estado == "Proyectado" || f.Estado == "Forecast"))
+                                            {
+                                                mesesAnios.Add(mesAnio);
+                                            }
+                                        }
                                     }
                                 }
                             }
