@@ -99,7 +99,19 @@ namespace Proyectogestionhoras.Services
                     return;
                 }
 
-                var idsServicios = servicios.Where(s => s.IdServicioReal > 0)
+                var idsServiciosEliminados = servicios.Where(s => s.EsEliminado).Select(s => s.IdServicioReal)
+                .Where(id => id > 0)
+                .ToList();
+
+                if (idsServiciosEliminados.Any())
+                {
+                    var serviciosParaEliminar = await context.Serviciosejecucions
+                                                          .Where(s => idsServiciosEliminados.Contains(s.Id))
+                                                          .ToListAsync();
+                    context.Serviciosejecucions.RemoveRange(serviciosParaEliminar);
+                }
+
+                var idsServicios = servicios.Where(s => s.IdServicioReal > 0 && s.EsEliminado == false)
                                             .Select(s => s.IdServicioReal)
                                             .ToList();
 
@@ -157,8 +169,20 @@ namespace Proyectogestionhoras.Services
                     return;
                 }
 
-               
-                var idsGastos = gastos.Where(g => g.IdGastoReal > 0)
+                var idsGastosEliminados = gastos.Where(g => g.EsEliminado).Select(g => g.IdGastoReal)
+                .Where(id => id > 0)
+                .ToList();
+
+                if (idsGastosEliminados.Any())
+                {
+                    var gastosParaEliminar = await context.Gastosejecucions
+                                                          .Where(g => idsGastosEliminados.Contains(g.Id))
+                                                          .ToListAsync();
+                    context.Gastosejecucions.RemoveRange(gastosParaEliminar);
+                }
+
+
+                var idsGastos = gastos.Where(g => g.IdGastoReal > 0 && g.EsEliminado == false)
                                       .Select(g => g.IdGastoReal)
                                       .ToList();
 
@@ -170,6 +194,7 @@ namespace Proyectogestionhoras.Services
               
                 var nuevosGastos = gastos.Where(g => g.IdGastoReal <= 0).ToList();
 
+               
                
                 foreach (var gasto in gastos.Where(g => g.IdGastoReal > 0))
                 {

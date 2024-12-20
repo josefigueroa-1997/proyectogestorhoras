@@ -244,6 +244,7 @@ namespace Proyectogestionhoras.Controllers
                 var estadoservicio = Request.Form["Estado"];
                 var tiposervicio = Request.Form["Tiposervicio"];
                 var idsegmentootro = Request.Form["idsegmentoserviciootro"];
+                var eliminarServicioOtro = Request.Form["EliminarServicioOtro"].Select(e => e == "true").ToList();
                 /*verificar existencia servicio otro*/
                 List<ServicioViewModel> verificarserviciootro = new List<ServicioViewModel>();
 
@@ -273,6 +274,8 @@ namespace Proyectogestionhoras.Controllers
                 var Estadosocio = Request.Form["Estadosocio"];
                 var Tiposerviciosocio = Request.Form["Tiposerviciosocio"];
                 var idsegmentosocio = Request.Form["idsegmentoserviciosocio"];
+                var eliminarsocioservicio = Request.Form["EliminarServicioSocio"].Select(e => e == "true").ToList();
+
                 /*verificar existencia servicio socio*/
                 List<ServicioViewModel> verificarserviciosocio = new List<ServicioViewModel>();
 
@@ -304,6 +307,7 @@ namespace Proyectogestionhoras.Controllers
                 var Estadohonorario = Request.Form["Estadohonorario"];
                 var Tiposerviciohonorario = Request.Form["Tiposerviciohonorario"];
                 var idsegmentohonorario = Request.Form["idsegmentoserviciohonorario"];
+                var eliminarserviciohonorario = Request.Form["EliminarServicioHonorario"].Select(e => e == "true").ToList(); ;
                 /*verificar existencia servicio honorarios*/
                 List<ServicioViewModel> verificarserviciohonorario = new List<ServicioViewModel>();
 
@@ -326,10 +330,9 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-                var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(), Request.Form["Tiposervicio"].ToList());
-                var serviciossocios = ProcesarServicios(Request.Form["Idserviciosocio"].ToList(), Request.Form["Idproveedorsocio"].ToList(), Request.Form["montoserviciosocio"].ToList(), Request.Form["fechaserviciosocio"].ToList(), Request.Form["IdServicioRealsocio"].ToList(), Request.Form["observacionserviciosocio"].ToList(), Request.Form["Estadosocio"].ToList(), Request.Form["Tiposerviciosocio"].ToList());
-                var servicioshonorarios = ProcesarServicios(Request.Form["Idserviciohonorario"].ToList(), Request.Form["Idproveedorhonorario"].ToList(), Request.Form["montoserviciohonorario"].ToList(), Request.Form["fechaserviciohonorario"].ToList(), Request.Form["IdServicioRealhonorario"].ToList(), Request.Form["observacionserviciohonorario"].ToList(), Request.Form["Estadohonorario"].ToList(), Request.Form["Tiposerviciohonorario"].ToList()
-    );
+                var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(), Request.Form["Tiposervicio"].ToList(), eliminarServicioOtro);
+                var serviciossocios = ProcesarServicios(Request.Form["Idserviciosocio"].ToList(), Request.Form["Idproveedorsocio"].ToList(), Request.Form["montoserviciosocio"].ToList(), Request.Form["fechaserviciosocio"].ToList(), Request.Form["IdServicioRealsocio"].ToList(), Request.Form["observacionserviciosocio"].ToList(), Request.Form["Estadosocio"].ToList(), Request.Form["Tiposerviciosocio"].ToList(), eliminarsocioservicio);
+                var servicioshonorarios = ProcesarServicios(Request.Form["Idserviciohonorario"].ToList(), Request.Form["Idproveedorhonorario"].ToList(), Request.Form["montoserviciohonorario"].ToList(), Request.Form["fechaserviciohonorario"].ToList(), Request.Form["IdServicioRealhonorario"].ToList(), Request.Form["observacionserviciohonorario"].ToList(), Request.Form["Estadohonorario"].ToList(), Request.Form["Tiposerviciohonorario"].ToList(), eliminarserviciohonorario);
 
 
 
@@ -343,7 +346,7 @@ namespace Proyectogestionhoras.Controllers
                 var idgastoreal = Request.Form["IdGastoReal"];
                 var observaciongasto = Request.Form["observaciongasto"];
                 var estadogasto = Request.Form["EstadoGasto"];
-
+                var eliminargasto = Request.Form["esEliminados"];
 
                 for (int i = 0; i < idsgastos.Count; i++)
                 {
@@ -382,6 +385,7 @@ namespace Proyectogestionhoras.Controllers
                         Fecha = fechaGastoParsed,
                         Observacion = observaciongasto[i],
                         Estado = estadogasto[i],
+                        EsEliminado = eliminargasto[i] == "true",
                     };
 
                     gastos.Add(gastoViewModel);
@@ -430,7 +434,7 @@ namespace Proyectogestionhoras.Controllers
             
         }
 
-        private List<ServiciosRealesViewModel> ProcesarServicios(List<string> ids, List<string> proveedores, List<string> montos, List<string> fechas, List<string> idsReales, List<string> observaciones, List<string> estados, List<string> tipos)
+        private List<ServiciosRealesViewModel> ProcesarServicios(List<string> ids, List<string> proveedores, List<string> montos, List<string> fechas, List<string> idsReales, List<string> observaciones, List<string> estados, List<string> tipos,List<bool> eliminar)
         {
             List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
 
@@ -458,6 +462,7 @@ namespace Proyectogestionhoras.Controllers
                     Observacion = observaciones[i],
                     Estado = estados[i],
                     Tiposervicio = tipos[i],
+                    EsEliminado = eliminar[i],
                 };
 
                 servicios.Add(servicioViewModel);

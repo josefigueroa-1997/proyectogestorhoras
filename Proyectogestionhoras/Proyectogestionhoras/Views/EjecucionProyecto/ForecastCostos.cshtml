@@ -314,6 +314,7 @@
 
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Acción</th>
 
 
 
@@ -397,6 +398,12 @@
                                         </td>
                                         <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                                         <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="EliminarServicioSocio" class="EliminarServicioSocio" value="false" />
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarServicioSocio(this)">Eliminar</button>
+                                        </td>
                                         <td style="display:none">
                                             <input type="text" class="idsegmentoservicio" name="idsegmentoserviciosocio" />
                                         </td>
@@ -429,6 +436,9 @@
                             </td>
                             <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                             <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                            <td style="display:none;">
+                                <input type="hidden" name="EliminarServicioSocio" class="EliminarServicioSocio" value="false" />
+                            </td>
                             <td style="display:none">
                                 <input type="text" class="idsegmentoservicio" name="idsegmentoserviciosocio" />
                             </td>
@@ -579,6 +589,7 @@
 
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Acción</th>
 
 
 
@@ -662,6 +673,12 @@
                                         </td>
                                         <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                                         <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                        <td style="display:none;">
+                                            <input type="hidden" name="EliminarServicioHonorario" class="EliminarServicioHonorario" value="false" />
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarServicioHonorario(this)">Eliminar</button>
+                                        </td>
                                         <td style="display:none">
                                             <input type="text" class="idsegmentoservicio" name="idsegmentoserviciohonorario" />
                                         </td>
@@ -694,6 +711,9 @@
                             </td>
                             <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                             <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                            <td style="display:none;">
+                                <input type="hidden" name="EliminarServicioHonorario" class="EliminarServicioHonorario" value="false" />
+                            </td>
                             <td style="display:none">
                                 <input type="text" class="idsegmentoservicio" name="idsegmentoserviciohonorario" />
                             </td>
@@ -729,6 +749,7 @@
 
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Acción</th>
 
 
 
@@ -813,6 +834,12 @@
                                         <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                                         <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
                                         <td style="display:none;">
+                                            <input type="hidden" name="EliminarServicioOtro" class="EliminarServicioOtro" value="false" />
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarServicioOtro(this)">Eliminar</button>
+                                        </td>
+                                        <td style="display:none;">
                                             <input type="text" class="idsegmentoservicio" name="idsegmentoserviciootro" />
                                         </td>
                                     </tr>
@@ -845,6 +872,9 @@
                             <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                             <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
                             <td style="display:none;">
+                                <input type="hidden" name="EliminarServicioOtro" class="EliminarServicioOtro" value="false" />
+                            </td>
+                            <td style="display:none;">
                                 <input type="text" class="idsegmentoservicio" name="idsegmentoserviciootro" />
                             </td>
                             <input type="hidden" name="IdServicioReal" value="" />
@@ -874,6 +904,7 @@
                             <th class="p-2 border border-gray-300 text-left">Observación</th>
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Acción</th>
 
 
                         </tr>
@@ -951,6 +982,12 @@
                                     </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly /></td>
                                     <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly /></td>
+                                    <td style="display:none;">
+                                        <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                    </td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarFilagasto(this)">Eliminar</button>
+                                    </td>
                                     <td style="display:none">
                                         <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
                                     </td>
@@ -987,6 +1024,9 @@
                             </td>
                             <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly /></td>
                             <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly /></td>
+                            <td style="display:none;">
+                                <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                            </td>
                             <td style="display:none">
                                 <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
                             </td>
@@ -1607,6 +1647,9 @@
                                         </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
                                     <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
+                                         <td style="display:none;">
+                                                <input type="hidden" name="EliminarServicioOtro" class="EliminarServicioOtro" value="false" />
+                                            </td>
                                        <td style="display:none">
                                 <input type="text" class="idsegmentoservicio" name="idsegmentoserviciootro" />
                             </td>
@@ -1661,6 +1704,9 @@
                                     </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                                     <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                        <td style="display:none;">
+                                                <input type="hidden" name="EliminarServicioSocio" class="EliminarServicioSocio" value="false" />
+                                            </td>
                                     <td style="display:none">
                                 <input type="text" class="idsegmentoservicio" name="idsegmentoserviciosocio" />
                             </td>
@@ -1714,6 +1760,9 @@
                                     </td>
                                     <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
                                     <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                        <td style="display:none;">
+                                    <input type="hidden" name="EliminarServicioHonorario" class="EliminarServicioHonorario" value="false" />
+                                </td>
                                       <td style="display:none">
                                 <input type="text" class="idsegmentoservicio" name="idsegmentoserviciohonorario" />
                             </td>
@@ -1909,6 +1958,9 @@
                         <td class="p-2 border border-gray-300 text-left">
                             <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly />
                         </td>
+                            <td style="display:none;">
+                                            <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                        </td>
                         <td style="display:none">
                             <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
                         </td>
@@ -1930,6 +1982,64 @@
             });
         });
     });
+    /*Eliminar Servicio Otro*/
+    function limpiarServicioOtro(button) {
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.EliminarServicioOtro');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+
+        fila.style.display = 'none';
+    }
+    /*Eliminar Servicio Honorario*/
+    function limpiarServicioHonorario(button){
+
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.EliminarServicioHonorario');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+
+        fila.style.display = 'none';
+    
+    
+    }
+    /*Eliminar Servicio Socio*/
+    function limpiarServicioSocio(button) {
+
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.EliminarServicioSocio');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+
+        fila.style.display = 'none';
+
+
+    }
+    /*Eliminar Gasto*/ 
+    function limpiarFilagasto(button) {
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.esEliminados');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+
+        fila.style.display = 'none';
+
+    }
+
+
+    /*forecast proveedores*/ 
     $(document).ready(function () {
 
         var idproyecto = '@Context.Session.GetInt32("numproyecto")';
