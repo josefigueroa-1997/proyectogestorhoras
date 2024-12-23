@@ -1955,31 +1955,18 @@
 
         if (!isNaN(horasSocios) && horasSocios > totalSocios) {
             alert("Las horas de socios no pueden ser mayores que " + totalSocios);
-            this.value = ''; // Resetear el valor del input si es mayor
+            this.value = ''; 
         }
     });
 
     document.getElementById('horasStaff').addEventListener('input', function () {
-    
-        let horasStaff = this.value.replace(/\./g, '').replace(/,/g, '');
-
-  
-        let horasStaffNum = parseFloat(horasStaff);
-
-     
-        let totalStaff = parseFloat(
-            document.getElementById('totalStaff').innerText
-                .replace(/\./g, '')   
-                .replace(/,/g, '.')    
-        );
-
-  
-        if (!isNaN(horasStaffNum) && !isNaN(totalStaff)) {
-        
-            if (horasStaffNum > totalStaff) {
-              
-                alert("Las horas de staff no pueden ser mayores que " + totalStaff.toLocaleString('es-ES'));
-                this.value = ''; 
+        let horasStaff = this.value;
+        let horasStaffNum = parseFloat(horasStaff.replace(',', '.'));
+        let totalStafff = parseFloat(document.getElementById('totalStafff').innerText.replace(/\./g, '').replace(/,/g, '.'));
+        if (!isNaN(horasStaffNum) && !isNaN(totalStafff)) {
+            if (horasStaffNum > totalStafff) {
+                alert("Las horas de staff no pueden ser mayores que " + totalStafff.toLocaleString('es-ES'));
+                this.value = '';
             }
         }
     });

@@ -725,10 +725,10 @@
                             <tr>
                                 <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" class="horas-socios" min="0" step="0.01" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
+                                    <input type="number" class="horas-socios" min="0" step="0.5" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" class="horas-staff" min="0" step="0.01" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
+                                    <input type="number" class="horas-staff" min="0" step="0.5" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
@@ -1683,10 +1683,10 @@
                             <tr>
                                 <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" class="horas-socios" min="0" step="0.01" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
+                                    <input type="number" class="horas-socios" min="0" step="0.5" id="horasSocios" name="hhsocios" placeholder="Horas Socios" value="@proyecto.HHSOCIOS" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <input type="number" class="horas-staff" min="0" step="0.01" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
+                                    <input type="number" class="horas-staff" min="0" step="0.5" id="horasStaff" name="hhstaff" placeholder="Horas Staff" value="@proyecto.HHSTAFF" required>
                                 </td>
                                 <td style="padding: 10px; border: 1px solid #ddd;">
                                     <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" value="@proyecto.HH_CONSULTOR_A" required>
@@ -3505,29 +3505,19 @@
         }
     });
 
-    document.getElementById('horasStaff').addEventListener('input', function () {
-
-        let horasStaff = this.value.replace(/\./g, '').replace(/,/g, '');
-
-
-        let horasStaffNum = parseFloat(horasStaff);
-
-
-        let totalStafff = parseFloat(
-            document.getElementById('totalStafff').innerText
-                .replace(/\./g, '')
-                .replace(/,/g, '.')
-        );
-
-
-        if (!isNaN(horasStaffNum) && !isNaN(totalStafff)) {
-            // Comparar el valor ingresado con el total
-            if (horasStaffNum > totalStafff) {
-
-                alert("Las horas de staff no pueden ser mayores que " + totalStafff.toLocaleString('es-ES'));
-                this.value = '';
-            }
-        }
+    document.getElementById('horasStaff').addEventListener('input', function () { 
+        // Tomar el valor ingresado y convertirlo a número 
+        let horasStaff = this.value; 
+        let horasStaffNum = parseFloat(horasStaff.replace(',', '.')); 
+        // Obtener el total permitido y convertirlo a número 
+        let totalStafff = parseFloat( document.getElementById('totalStafff').innerText .replace(/\./g, '').replace(/,/g, '.') ); 
+        // Verificar si los valores son válidos y comparar 
+        if (!isNaN(horasStaffNum) && !isNaN(totalStafff)) { 
+            if (horasStaffNum > totalStafff) { 
+                alert("Las horas de staff no pueden ser mayores que " + totalStafff.toLocaleString('es-ES')); 
+                this.value = ''; 
+            } 
+        } 
     });
     const currentDate = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

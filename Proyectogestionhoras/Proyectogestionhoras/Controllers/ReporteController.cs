@@ -744,9 +744,9 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Cells[5, 8].Value = "Tipologia";
                 worksheet.Cells[5, 9].Value = "Empresa";
                 worksheet.Cells[5, 10].Value = "Moneda de Origen";
-                worksheet.Cells[5, 11].Value = "MontoCLP";
+                worksheet.Cells[5, 11].Value = "Monto Moneda Origen";
                 worksheet.Cells[5, 12].Value = "Tasa de Cambio";
-                worksheet.Cells[5, 13].Value = "Monto Moneda Origen";
+                worksheet.Cells[5, 13].Value = "MontoCLP";
                 worksheet.Cells[5, 14].Value = "Plazo";
                 worksheet.Cells[5, 15].Value = "Fecha Inicio";
                 worksheet.Cells[5, 16].Value = "Fecha Término";
@@ -782,8 +782,8 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Column(7).Width = 15;
                 worksheet.Column(8).Width = 15;
                 worksheet.Column(9).Width = 15;
-                worksheet.Column(10).Width = 22;
-                worksheet.Column(11).Width = 15;
+                worksheet.Column(10).Width = 15;
+                worksheet.Column(11).Width = 27;
                 worksheet.Column(12).Width = 20;
                 worksheet.Column(13).Width = 15;
                 worksheet.Column(14).Width = 15;
@@ -821,11 +821,11 @@ namespace Proyectogestionhoras.Controllers
                     worksheet.Cells[indice, 8].Value = planilla.Tipologia;
                     worksheet.Cells[indice, 9].Value = planilla.Empresa;
                     worksheet.Cells[indice, 10].Value = planilla.Moneda;
-                    worksheet.Cells[indice, 11].Value = planilla.Monto;
+                    worksheet.Cells[indice, 11].Value = planilla.MontoMonedaInternacional;
                     worksheet.Cells[indice, 11].Style.Numberformat.Format = "#,##0";
                     worksheet.Cells[indice, 12].Value = planilla.TasaCambio;
                     worksheet.Cells[indice, 12].Style.Numberformat.Format = "#,##0";
-                    worksheet.Cells[indice, 13].Value = planilla.MontoMonedaInternacional == 0 ? (object)null : planilla.MontoMonedaInternacional;
+                    worksheet.Cells[indice, 13].Value = planilla.Monto == 0 ? (object)null : planilla.Monto;
                     worksheet.Cells[indice, 13].Style.Numberformat.Format = "#,##0";
                     worksheet.Cells[indice, 14].Value = planilla.Plazo;
                     worksheet.Cells[indice, 15].Style.Numberformat.Format = "dd/MM/yyyy";
