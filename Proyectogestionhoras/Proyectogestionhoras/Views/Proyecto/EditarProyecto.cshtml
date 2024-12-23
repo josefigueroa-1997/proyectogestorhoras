@@ -167,6 +167,9 @@
             @if (proyecto.STATUSPROYECTO == 2)
             {
                 <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
+                <p class="form-subtitle">
+                    Fecha: <span id="current-date"></span>
+                </p>
                 <input type="hidden" name="idproyecto" value="@proyecto.Id" />
                 <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
                 <div class="form-row">
@@ -383,10 +386,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="tipoEmpresa">Tipo de empresa</label>
+                        <label for="tipoEmpresa">Empresa Ejecutora</label>
                         <input type="hidden" name="tipoempresa" value="@proyecto.IDEMPRESA" />
                         <select id="tipoEmpresa" name="tipoempresa" disabled required>
-                            <option value="" disabled selected>Seleccione el tipo de empresa</option>
+                            <option value="" disabled selected>Seleccione empresa que ejecuta</option>
                             @if (ViewBag.Empresas != null)
                             {
                                 @foreach (var empresa in ViewBag.Empresas)
@@ -420,15 +423,18 @@
                             Sí
                         </label>
                         <label>
-                            <input type="radio" disabled name="afectaiva" value="no"
-                                   required onchange="generarFilas()"
+                            <input type="radio"  name="afectaiva" value="no"
+                               disabled    required onchange="generarFilas()"
                             @(proyecto.AfectaIva == "no" ? "checked" : "")>
                             No
                         </label>
                     </div>
+                   
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label for="tipoMoneda">Moneda de Origen</label>
-                        <select id="tipoMoneda" name="moneda" required>
+                        <select disabled id="tipoMoneda" name="moneda" required>
                             <option value="" disabled selected>Seleccione el tipo de Moneda</option>
                             @if (proyecto.MONEDA == "CLP")
                             {
@@ -469,14 +475,17 @@
                     </div>
                     <div id="monedaOrigenGroup" style="display:none;" class="form-group">
                         <label for="montomonedaorigen">Monto Moneda Origen</label>
-                        <input type="text" id="montomonedaorigen" name="montoorigen" value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
+                        <input type="text" id="montomonedaorigen" name="montoorigen" readonly value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
+                    </div>
+                    <div id="tasacambioGroup" style="display:none;" class="form-group">
+                        <label for="tasacambio">Tasa Cambio</label>
+                        <input type="text" id="tasacambio" name="tasacambio" readonly value="@String.Format("{0:N0}", @proyecto.TasaCambio) ">
                     </div>
                     <div class="form-group">
                         <label for="monto">MontoCLP</label>
-                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " required>
+                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " readonly required>
                     </div>
                 </div>
-
                 <div class="form-row">
 
                     <div class="form-group">
@@ -531,7 +540,7 @@
 
 
                 <div class="form-group">
-                    <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
+                    <p class="form-subtitle" style="color:black;display:none;">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
                     <div style="display: flex; justify-content: space-between;">
 
 
@@ -618,7 +627,7 @@
                             {
                                 @if (total.TipoRecurso == "Socio")
                                 {
-                                    <table style="width: 40%; border-collapse: collapse; text-align: left; ">
+                                    <table style="width: 40%; border-collapse: collapse; text-align: left; display:none;">
                                         <thead>
                                             <tr style="background-color: #b2e6a5; color: black;">
                                                 <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios - @DateTime.Now.Year</th>
@@ -631,7 +640,7 @@
                                 }
                                 @if (total.TipoRecurso == "Staff")
                                 {
-                                    <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                                    <table style="width: 40%; border-collapse: collapse; text-align: left;display:none;">
                                         <thead>
                                             <tr style="background-color: #b2e6a5; color: black;">
                                                 <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff - @DateTime.Now.Year</th>
@@ -1071,41 +1080,45 @@
                             <tr style="background-color: #fa8164; color: black; text-align:center">
                                 <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
-
-
-
+                                <th style="padding: 10px; border: 1px solid #ddd;">Porcentaje</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="porcentajeingresos"></span></strong></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosporcentaje"></span></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffporcentaje"></span></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresporcentaje"></span></td>
 
                             </tr>
 
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosporcentaje"></span></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosporcentaje"></span></td>
 
                             </tr>
                             <tr>
@@ -1113,11 +1126,15 @@
                                 <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
                                     <strong><span id="egresosmargen"></span></strong>
                                 </td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                                    <strong><span id="egresosporcentaje"></span></strong>
+                                </td>
 
                             </tr>
                             <tr style="background-color: #fa8164; color: black;">
                                 <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
                                 <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenporcentaje"></span></strong></td>
 
                             </tr>
                         </tbody>
@@ -1135,6 +1152,9 @@
 
                 <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
                 <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
+                <p class="form-subtitle">
+                    Fecha: <span id="current-date"></span>
+                </p>
                 <input type="hidden" name="idproyecto" value="@proyecto.Id" />
                 <input type="hidden" name="idpresupuesto" value="@proyecto.IDPRESUPESTO" />
                 <div class="form-row">
@@ -1346,9 +1366,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="tipoEmpresa">Tipo de empresa</label>
+                        <label for="tipoEmpresa">Empresa Ejecutora</label>
                         <select id="tipoEmpresa" name="tipoempresa" required>
-                            <option value="" disabled selected>Seleccione el tipo de empresa</option>
+                            <option value="" disabled selected>Seleccione empresa que ejecuta</option>
                             @if (ViewBag.Empresas != null)
                             {
                                 @foreach (var empresa in ViewBag.Empresas)
@@ -1376,18 +1396,21 @@
                     <div class="form-group-radio">
                         <label>¿Afecta el IVA?</label>
                         <label>
-                            <input type="radio" name="afectaiva" value="si"
+                            <input  type="radio" name="afectaiva" value="si"
                                    required onchange="generarFilas()"
                             @(proyecto.AfectaIva == "si" ? "checked" : "")>
                             Sí
                         </label>
                         <label>
-                            <input type="radio" name="afectaiva" value="no"
+                            <input type="radio"  name="afectaiva" value="no"
                                    required onchange="generarFilas()"
                             @(proyecto.AfectaIva == "no" ? "checked" : "")>
                             No
                         </label>
                     </div>
+
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label for="tipoMoneda">Moneda de Origen</label>
                         <select id="tipoMoneda" name="moneda" required>
@@ -1429,13 +1452,17 @@
                             }
                         </select>
                     </div>
-                    <div id="monedaOrigenGroup" style="display:none;" class="form-group">
+                    <div id="monedaOrigenGroup"  class="form-group">
                         <label for="montomonedaorigen">Monto Moneda Origen</label>
                         <input type="text" id="montomonedaorigen" name="montoorigen" value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
                     </div>
+                    <div id="tasacambioGroup"  class="form-group">
+                        <label for="tasacambio">Tasa Cambio</label>
+                        <input type="text" id="tasacambio" name="tasacambio" value="@String.Format("{0:N0}", @proyecto.TasaCambio) ">
+                    </div>
                     <div class="form-group">
                         <label for="monto">MontoCLP</label>
-                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " required>
+                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " readonly required>
                     </div>
                 </div>
 
@@ -1491,7 +1518,7 @@
                 </div>
 
                 <div class="form-group">
-                    <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
+                    <p class="form-subtitle" style="color:black;display:none;">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
                     <div style="display: flex; justify-content: space-between;">
 
                         <table style="width: 40%; border-collapse: collapse; text-align: left;display:none;">
@@ -1567,7 +1594,7 @@
                             {
                                 @if (total.TipoRecurso == "Socio")
                                 {
-                                    <table style="width: 40%; border-collapse: collapse; text-align: left; ">
+                                    <table style="width: 40%; border-collapse: collapse; text-align: left; display:none;">
                                         <thead>
                                             <tr style="background-color: #b2e6a5; color: black;">
                                                 <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios - @DateTime.Now.Year</th>
@@ -1580,7 +1607,7 @@
                                 }
                                 @if (total.TipoRecurso == "Staff")
                                 {
-                                    <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                                    <table style="width: 40%; border-collapse: collapse; text-align: left;display:none;">
                                         <thead>
                                             <tr style="background-color: #b2e6a5; color: black;">
                                                 <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff - @DateTime.Now.Year</th>
@@ -2009,41 +2036,45 @@
                             <tr style="background-color: #fa8164; color: black; text-align:center">
                                 <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
-
-
-
+                                <th style="padding: 10px; border: 1px solid #ddd;">Porcentaje</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="porcentajeingresos"></span></strong></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosporcentaje"></span></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffporcentaje"></span></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresporcentaje"></span></td>
 
                             </tr>
 
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosporcentaje"></span></td>
 
                             </tr>
                             <tr>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
                                 <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosporcentaje"></span></td>
 
                             </tr>
                             <tr>
@@ -2051,11 +2082,15 @@
                                 <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
                                     <strong><span id="egresosmargen"></span></strong>
                                 </td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                                    <strong><span id="egresosporcentaje"></span></strong>
+                                </td>
 
                             </tr>
                             <tr style="background-color: #fa8164; color: black;">
                                 <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
                                 <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+                                <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenporcentaje"></span></strong></td>
 
                             </tr>
                         </tbody>
@@ -2162,16 +2197,50 @@
         const selectedCurrency = document.getElementById('tipoMoneda').value;
         const montoMonedaOrigenGroup = document.getElementById('monedaOrigenGroup');
         const montoMonedaOrigenInput = document.getElementById('montomonedaorigen');
-
+        const tasacambioGroup = document.getElementById('tasacambioGroup');
+        const tasacambioInput = document.getElementById('tasacambio');
+        const montoclpInput = document.getElementById('monto');
         if (selectedCurrency === 'CLP') {
+            
+            montoMonedaOrigenGroup.style.display = 'block';
+            montoMonedaOrigenInput.setAttribute('required', 'required');
+            tasacambioGroup.style.display = 'block';
+            tasacambioInput.setAttribute('readonly', 'readonly');
+            montoclpInput.setAttribute('readonly', 'readonly');
+            tasacambioInput.value = 1;
+            montoMonedaOrigenInput.addEventListener('input', calcularMontoCLP);
 
-            montoMonedaOrigenGroup.style.display = 'none';
-            montoMonedaOrigenInput.removeAttribute('required');
-            montoMonedaOrigenInput.value = '';
+            function calcularMontoCLP() {
+                const tasacambio = 1;
+                const montoMonedaOrigen = parseFloat(montoMonedaOrigenInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+                const resultado = tasacambio * montoMonedaOrigen;
+
+                montoclpInput.value = resultado.toLocaleString('de-DE', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
         } else {
 
             montoMonedaOrigenGroup.style.display = 'block';
             montoMonedaOrigenInput.setAttribute('required', 'required');
+            tasacambioGroup.style.display = 'block';
+            tasacambioInput.setAttribute('required', 'required');
+            tasacambioInput.removeAttribute('readonly');
+            montoclpInput.setAttribute('readonly', 'readonly');
+            tasacambioInput.addEventListener('input', calcularMontoCLP);
+            montoMonedaOrigenInput.addEventListener('input', calcularMontoCLP);
+
+            function calcularMontoCLP() {
+                const tasacambio = parseFloat(tasacambioInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+                const montoMonedaOrigen = parseFloat(montoMonedaOrigenInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+                const resultado = tasacambio * montoMonedaOrigen;
+
+                montoclpInput.value = resultado.toLocaleString('de-DE', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
         }
     }
 
@@ -2246,7 +2315,25 @@
     /*TABLA FACTURAS*/
     document.getElementById("plazo").addEventListener("input", generarFilas);
     document.getElementById("fechaInicio").addEventListener("input", generarFilas);
-    document.getElementById("monto").addEventListener("input", generarFilas);
+    document.getElementById("montomonedaorigen").addEventListener("input", actualizarMontoYGenerarFilas);
+    document.getElementById("tasacambio").addEventListener("input", actualizarMontoYGenerarFilas);
+
+    function actualizarMontoYGenerarFilas() {
+        const tasacambioInput = document.getElementById("tasacambio");
+        const montomonedaorigenInput = document.getElementById("montomonedaorigen");
+        const montoInput = document.getElementById("monto");
+
+        const tasacambio = parseFloat(tasacambioInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+        const montoMonedaOrigen = parseFloat(montomonedaorigenInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+        const montoCalculado = tasacambio * montoMonedaOrigen;
+
+        montoInput.value = montoCalculado.toLocaleString('de-DE', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+
+        generarFilas();
+    }
 
     function generarFilas() {
         var plazo = document.getElementById("plazo").value;
@@ -3097,6 +3184,7 @@
 
     document.getElementById("monto").addEventListener("input", formatInput);
     document.getElementById("montomonedaorigen").addEventListener("input", formatInput);
+    document.getElementById("tasacambio").addEventListener("input", formatInput);
     document.querySelectorAll('.montoservicio').forEach(input => {
         input.addEventListener("input", formatInput);
     });
@@ -3203,10 +3291,11 @@
         const horasConsultorc = parseFloat(document.querySelector('#consultorC').value) || 0;
         const totalMonto = updateTotal();
         const totalGastos = updateTotalGasto();
-        // Llama a la función de cálculo y obtiene los márgenes
+
         const margenes = calcularMargen(costoSocio, costoStaff, costoConsultora, costoConsultorb, costoConsultorc, horasSocios, horasStaff, horasConsultora, horasConsultorb, horasConsultorc);
         const netoFacturaElement = document.getElementById('netofactura');
         const ingresos = netoFacturaElement ? parseFloat(netoFacturaElement.value.replace(/\./g, '').replace(',', '.')) || 0 : 0;
+
 
 
 
@@ -3214,42 +3303,60 @@
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
-
+        document.getElementById('porcentajeingresos').textContent = 100 + '%';
 
         document.getElementById('horassociosmargen').textContent = margenes.margenSocios.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
 
+        let margenSocios = margenes.margenSocios;
+        let porcentajeSocios = (margenSocios / ingresos) * 100;
+        document.getElementById('horassociosporcentaje').textContent = porcentajeSocios.toFixed(0) + '%';
+
         document.getElementById('horasstaffmargen').textContent = margenes.margenStaff.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let margenStaff = margenes.margenStaff;
+        let porcentajeStaff = (margenStaff / ingresos) * 100;
+        document.getElementById('horasstaffporcentaje').textContent = porcentajeStaff.toFixed(0) + '%';
 
         document.getElementById('horasconsultoresmargen').textContent = margenes.margenConsultoresExternos.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let margenConsultoresExternos = margenes.margenConsultoresExternos;
+        let porcentajeConsultoresExternos = (margenConsultoresExternos / ingresos) * 100;
+        document.getElementById('horasconsultoresporcentaje').textContent = porcentajeConsultoresExternos.toFixed(0) + '%';
+
         document.getElementById('serviciosmargen').textContent = totalMonto.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let porcentajeServicios = (totalMonto / ingresos) * 100;
+        document.getElementById('serviciosporcentaje').textContent = porcentajeServicios.toFixed(0) + '%';
         document.getElementById('gastosmargen').textContent = totalGastos.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let porcentajeGastos = (totalGastos / ingresos) * 100;
+        document.getElementById('gastosporcentaje').textContent = porcentajeGastos.toFixed(0) + '%';
+
         const totalegresos = parseFloat(document.getElementById('horassociosmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('horasstaffmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('horasconsultoresmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('serviciosmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('gastosmargen').textContent.replace(/\./g, '').replace(',', '.'));
         document.getElementById('egresosmargen').textContent = totalegresos.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let porcentajeegresos = porcentajeGastos + porcentajeServicios + porcentajeConsultoresExternos + porcentajeStaff + porcentajeSocios;
+        document.getElementById('egresosporcentaje').textContent = porcentajeegresos.toFixed(0) + '%';
         const totalmargen = parseFloat(document.getElementById('ingresosvalor').textContent.replace(/\./g, '').replace(',', '.')) - parseFloat(document.getElementById('egresosmargen').textContent.replace(/\./g, '').replace(',', '.'))
         document.getElementById('margenfinal').textContent = totalmargen.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
-
-
+        let porcentajemargen = 100 - porcentajeegresos;
+        document.getElementById('margenporcentaje').textContent = porcentajemargen.toFixed(0) + '%';
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -3422,6 +3529,12 @@
             }
         }
     });
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = currentDate.toLocaleDateString('es-ES', options);
+
+
+    document.getElementById('current-date').textContent = formattedDate;
 </script>
 
 

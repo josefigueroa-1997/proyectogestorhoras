@@ -74,6 +74,7 @@
         public decimal CostoConsultorBPresupuesto { get; set; }
         public decimal CostoConsultorCPresupuesto { get; set; }
         public decimal MontoOrigenExtranjero { get; set; }
+        public decimal TasaCambio { get; set; }
         public int idpresupuesto { get; set; }
     }
 }

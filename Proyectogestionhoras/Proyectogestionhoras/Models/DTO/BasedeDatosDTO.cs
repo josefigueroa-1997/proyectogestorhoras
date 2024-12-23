@@ -14,6 +14,7 @@
         public string? AfectaIva { get; set; }
         public decimal Monto { get; set; }
         public decimal MontoMonedaInternacional { get; set; }
+        public decimal TasaCambio { get; set; }
         public string? Moneda { get; set; }
         public string? Status { get; set; }
         public string? Probabilidad { get; set; }

@@ -145,6 +145,9 @@
     }
     <h1 class="form-title">Crear Nuevo Proyecto</h1>
     <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
+    <p class="form-subtitle">
+        Fecha: <span id="current-date"></span>
+    </p>
 
     <form action="@Url.Action("CrearProyecto","Proyecto")" method="post" onsubmit="return validarFechas()">
         <div class="form-row">
@@ -259,9 +262,9 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="tipoEmpresa">Tipo de empresa</label>
+                <label for="tipoEmpresa">Empresa Ejecutora</label>
                 <select id="tipoEmpresa" name="tipoempresa"  required>
-                    <option value="" disabled selected>Seleccione un tipo de Empresa</option>
+                    <option value="" disabled selected>Seleccione Empresa que Ejecuta</option>
                     @if(ViewBag.Empresas!=null){
                         @foreach (var empresa in ViewBag.Empresas)
                         {
@@ -281,9 +284,12 @@
                 <label><input type="radio" name="afectaiva" value="si" required onchange="generarFilas()"> Sí</label>
                 <label><input type="radio" name="afectaiva" value="no" required onchange="generarFilas()"> No</label>
             </div>
+            
+        </div>
+        <div class="form-row">
             <div class="form-group">
                 <label for="tipoMoneda">Moneda de Origen</label>
-                <select id="tipoMoneda" name="moneda"  required>
+                <select id="tipoMoneda" name="moneda" required>
                     <option value="" disabled selected>Seleccione la Moneda</option>
                     <option value="CLP">CLP</option>
                     <option value="US">US</option>
@@ -295,9 +301,13 @@
                 <label for="montomonedaorigen">Monto Moneda Origen</label>
                 <input type="text" id="montomonedaorigen" name="montoorigen">
             </div>
+            <div id="tasacambioGroup" style="display:none;" class="form-group">
+                <label for="tasacambio">Tasa Cambio</label>
+                <input type="text" id="tasacambio" name="tasacambio">
+            </div>
             <div class="form-group">
                 <label for="monto">MontoCLP</label>
-                <input type="text" id="monto"  name="monto" required>
+                <input type="text" id="monto" name="monto" readonly required>
             </div>
         </div>
         <div class="form-row">
@@ -360,7 +370,7 @@
         </div>
 
         <div class="form-group">
-            <p class="form-subtitle" style="color:black">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
+            <p class="form-subtitle" style="color:black;display:none;">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
             <div style="display: flex; justify-content: space-between;">
 
 
@@ -436,7 +446,7 @@
                     {
                         @if(total.TipoRecurso == "Socio")
                         {
-                            <table style="width: 40%; border-collapse: collapse; text-align: left; ">
+                            <table style="width: 40%; border-collapse: collapse; text-align: left; display:none;">
                                 <thead>
                                     <tr style="background-color: #b2e6a5; color: black;">
                                         <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Socios - @DateTime.Now.Year</th>
@@ -450,7 +460,7 @@
                         @if(total.TipoRecurso == "Staff")
                         {
 
-                            <table style="width: 40%; border-collapse: collapse; text-align: left;">
+                            <table style="width: 40%; border-collapse: collapse; text-align: left; display:none;">
                                 <thead>
                                     <tr style="background-color: #b2e6a5; color: black;">
                                         <th style="padding: 10px; border: 1px solid #ddd;">Totales HH Anuales Staff - @DateTime.Now.Year</th>
@@ -526,10 +536,10 @@
                     <tr>
                         <td id="tipologiaText" style="padding: 10px; border: 1px solid #ddd;"></td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-socios" min="0" step="0.01" id="horasSocios" name="hhsocios" placeholder="Horas Socios" >
+                            <input type="number" class="horas-socios" min="0" step="0.5" id="horasSocios" name="hhsocios" placeholder="Horas Socios" >
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="number" class="horas-staff" min="0" step="0.01" id="horasStaff" name="hhstaff" placeholder="Horas Staff" >
+                            <input type="number" class="horas-staff" min="0" step="0.5" id="horasStaff" name="hhstaff" placeholder="Horas Staff" >
                         </td>
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="number" id="consultorA" name="hhconsultora" placeholder="Horas A" >
@@ -637,7 +647,7 @@
                 <thead>
                     <tr>
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipo Servicio</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
@@ -689,7 +699,7 @@
                 <thead>
                     <tr>
                         <th style="padding: 10px; border: 1px solid #ddd;">Tipo Gasto</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Monto</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>                     
@@ -747,41 +757,45 @@
                     <tr style="background-color: #fa8164; color: black; text-align:center">
                         <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
-                        
-
-
+                        <th style="padding: 10px; border: 1px solid #ddd;">Porcentaje</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="ingresosvalor"></span></strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong><span id="porcentajeingresos"></span></strong></td>
 
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horassociosporcentaje"></span></td>
 
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasstaffporcentaje"></span></td>
 
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="horasconsultoresporcentaje"></span></td>
 
                     </tr>
 
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="serviciosporcentaje"></span></td>
 
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
                         <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosmargen"></span></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><span id="gastosporcentaje"></span></td>
 
                     </tr>
                     <tr>
@@ -789,11 +803,15 @@
                         <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
                             <strong><span id="egresosmargen"></span></strong>
                         </td>
+                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                            <strong><span id="egresosporcentaje"></span></strong>
+                        </td>
 
                     </tr>
                     <tr style="background-color: #fa8164; color: black;">
                         <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
                         <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenfinal"></span></strong></td>
+                        <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong><span id="margenporcentaje"></span></strong></td>
 
                     </tr>
                 </tbody>
@@ -908,16 +926,51 @@
         const selectedCurrency = this.value;
         const montoMonedaOrigenGroup = document.getElementById('monedaOrigenGroup');
         const montoMonedaOrigenInput = document.getElementById('montomonedaorigen');
-
+        const tasacambioGroup = document.getElementById('tasacambioGroup');
+        const tasacambioInput = document.getElementById('tasacambio');
+        const montoclpInput = document.getElementById('monto');
         if (selectedCurrency === 'CLP') {
-  
-            montoMonedaOrigenGroup.style.display = 'none';
-            montoMonedaOrigenInput.removeAttribute('required');
-            montoMonedaOrigenInput.value = ''; 
+            montoclpInput.value = '';
+            montoMonedaOrigenInput.value = '';
+            montoMonedaOrigenGroup.style.display = 'block';
+            montoMonedaOrigenInput.setAttribute('required', 'required');
+            tasacambioGroup.style.display = 'block';
+            tasacambioInput.setAttribute('readonly', 'readonly');
+            montoclpInput.setAttribute('readonly', 'readonly');
+            tasacambioInput.value = 1;
+            montoMonedaOrigenInput.addEventListener('input', calcularMontoCLP);
+
+            function calcularMontoCLP() {
+                const tasacambio = 1;
+                const montoMonedaOrigen = parseFloat(montoMonedaOrigenInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+                const resultado = tasacambio * montoMonedaOrigen;
+
+                montoclpInput.value = resultado.toLocaleString('de-DE', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
         } else {
             
             montoMonedaOrigenGroup.style.display = 'block';
             montoMonedaOrigenInput.setAttribute('required', 'required');
+            tasacambioGroup.style.display = 'block';
+            tasacambioInput.setAttribute('required', 'required');
+            tasacambioInput.removeAttribute('readonly');
+            montoclpInput.setAttribute('readonly', 'readonly');
+            tasacambioInput.addEventListener('input', calcularMontoCLP);
+            montoMonedaOrigenInput.addEventListener('input', calcularMontoCLP);
+
+            function calcularMontoCLP() {
+                const tasacambio = parseFloat(tasacambioInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+                const montoMonedaOrigen = parseFloat(montoMonedaOrigenInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+                const resultado = tasacambio * montoMonedaOrigen;
+
+                montoclpInput.value = resultado.toLocaleString('de-DE', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
         }
     });
 
@@ -1167,7 +1220,26 @@
     /*TABLA FACTURAS */
     document.getElementById("plazo").addEventListener("input", generarFilas);
     document.getElementById("fechaInicio").addEventListener("input", generarFilas);
-    document.getElementById("monto").addEventListener("input", generarFilas);
+    document.getElementById("montomonedaorigen").addEventListener("input", actualizarMontoYGenerarFilas);
+    document.getElementById("tasacambio").addEventListener("input", actualizarMontoYGenerarFilas);
+
+    function actualizarMontoYGenerarFilas() {
+        const tasacambioInput = document.getElementById("tasacambio");
+        const montomonedaorigenInput = document.getElementById("montomonedaorigen");
+        const montoInput = document.getElementById("monto");
+
+        const tasacambio = parseFloat(tasacambioInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+        const montoMonedaOrigen = parseFloat(montomonedaorigenInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+        const montoCalculado = tasacambio * montoMonedaOrigen;
+
+        montoInput.value = montoCalculado.toLocaleString('de-DE', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+
+        generarFilas();
+    }
+
 
     function generarFilas() {
         var plazo = document.getElementById("plazo").value;
@@ -1404,31 +1476,7 @@
 
 
 
-    /*
-    function obtenerSegmentosCostos(selectElement) {
-        $.ajax({
-            url: '/Proyecto/ObtenerSegmentosCostosjson',
-            type: 'GET',
-            success: function (data) {
-
-                $(selectElement).empty();
-                $(selectElement).append('<option value="" disabled selected>Seleccione un segmento</option>');
-
-        
-                $.each(data, function (index, segmento) {
-                    $(selectElement).append(`<option value="${segmento.id}">${segmento.nombre}</option>`);
-                });
-
-      
-                $(selectElement).show();
-            },
-            error: function (xhr, status, error) {
-                console.error('Error al obtener segmentos de costos:', error);
-            }
-        });
-    }
-
-    */
+   
 
    
 
@@ -1485,75 +1533,7 @@
         }
     }
 
-    /*cuenta socio
-    $(document).ready(function () {
-      
-        $('.segmentoSocio').change(function () {
-            var idSegmento = $(this).val(); 
-
-            if (idSegmento) { 
-                $.ajax({
-                    url: '/Proyecto/ObtenerCuentacostos', 
-                    type: 'GET',
-                    data: { idsegmento: idSegmento },
-                    success: function (response) {
-                        if (response && response.length > 0) {
-              
-                            $('.idcuentasocio').val(response[0].idcuenta);
-                            $('.cuentasocio').val(response[0].cuenta);
-                        } else {
-               
-                            $('.idcuentasocio').val('');
-                            $('.cuentasocio').val('');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error al obtener los datos:', error);
-                 
-                        $('.idcuentasocio').val('');
-                        $('.cuentasocio').val('');
-                    }
-                });
-            }
-        });
-    });
-
-     */
-
-        /*consultor interno
-
-    $(document).ready(function () {
- 
-        $('.segmentoConsultor').change(function () {
-            var idSegmento = $(this).val();
-
-            if (idSegmento) {
-                $.ajax({
-                    url: '/Proyecto/ObtenerCuentacostos', 
-                    type: 'GET',
-                    data: { idsegmento: idSegmento },
-                    success: function (response) {
-                        if (response && response.length > 0) {
-                        
-                            $('.idcuentaconsultor').val(response[0].idcuenta);
-                            $('.cuentaconsultor').val(response[0].cuenta);
-                        } else {
-                        
-                            $('.idcuentaconsultor').val('');
-                            $('.cuentaconsultor').val('');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error al obtener los datos:', error);
-                    
-                        $('.idcuentaconsultor').val('');
-                        $('.cuentaconsultor').val('');
-                    }
-                });
-            }
-        });
-    });
-    */
+   
         function formatInput(e) {
         var valor = e.target.value;
 
@@ -1575,6 +1555,7 @@
     
     document.getElementById("monto").addEventListener("input", formatInput);
     document.getElementById("montomonedaorigen").addEventListener("input", formatInput);
+    document.getElementById("tasacambio").addEventListener("input", formatInput);
     document.querySelectorAll('.montoservicio').forEach(input => {
         input.addEventListener("input", formatInput);
     });
@@ -1736,277 +1717,7 @@
 
     }
 
-    /*consultor a*/
-   /* $(document).ready(function () {
-       
-        $('.segmentoConsultorA').change(function () {
-            var idSegmento = $(this).val(); 
-
-            if (idSegmento) { 
-                $.ajax({
-                    url: '/Proyecto/ObtenerCuentacostos', 
-                    type: 'GET',
-                    data: { idsegmento: idSegmento },
-                    success: function (response) {
-                        if (response && response.length > 0) {
-                       
-                            $('.idcuentahonorarioA').val(response[0].idcuenta);
-                            $('.cuentahonorarioA').val(response[0].cuenta);
-                        } else {
-                          
-                            $('.idcuentahonorarioA').val('');
-                            $('.cuentahonorarioA').val('');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error al obtener los datos:', error);
-                        
-                        $('.idcuentahonorarioA').val('');
-                        $('.cuentahonorarioA').val('');
-                    }
-                });
-            }
-        });
-    });*/
-
-    /*consultor B*/
-   /* $(document).ready(function () {
-
-        $('.segmentoConsultorB').change(function () {
-            var idSegmento = $(this).val();
-
-            if (idSegmento) {
-                $.ajax({
-                    url: '/Proyecto/ObtenerCuentacostos',
-                    type: 'GET',
-                    data: { idsegmento: idSegmento },
-                    success: function (response) {
-                        if (response && response.length > 0) {
-
-                            $('.idcuentahonorarioB').val(response[0].idcuenta);
-                            $('.cuentahonorarioB').val(response[0].cuenta);
-                        } else {
-
-                            $('.idcuentahonorarioB').val('');
-                            $('.cuentahonorarioB').val('');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error al obtener los datos:', error);
-
-                        $('.idcuentahonorarioB').val('');
-                        $('.cuentahonorarioB').val('');
-                    }
-                });
-            }
-        });
-    });*/
-
-    /*CONSULTOR C*/
-    /*
-    $(document).ready(function () {
-
-        $('.segmentoConsultorC').change(function () {
-            var idSegmento = $(this).val();
-
-            if (idSegmento) {
-                $.ajax({
-                    url: '/Proyecto/ObtenerCuentacostos',
-                    type: 'GET',
-                    data: { idsegmento: idSegmento },
-                    success: function (response) {
-                        if (response && response.length > 0) {
-
-                            $('.idcuentahonorarioC').val(response[0].idcuenta);
-                            $('.cuentahonorarioC').val(response[0].cuenta);
-                        } else {
-
-                            $('.idcuentahonorarioC').val('');
-                            $('.cuentahonorarioC').val('');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error al obtener los datos:', error);
-
-                        $('.idcuentahonorarioC').val('');
-                        $('.cuentahonorarioC').val('');
-                    }
-                });
-            }
-        });
-    });*/
-/*
-    $(document).on('submit', 'form', function () {
-        
-        if (!$('.segmentoConsultorC').is(':hidden')) {
-            $(".nombresegmentohonorarioC").prop("disabled", true); 
-        }
-        
-        if (!$('.nombresegmentohonorarioC').is(':hidden')) {
-            $(".segmentoConsultorC").prop("disabled", true); 
-    });
-
-    $(document).on('submit', 'form', function () {
-      
-        if (!$('.segmentoConsultorB').is(':hidden')) {
-            $(".nombresegmentohonorarioB").prop("disabled", true); 
-        }
-      
-        if (!$('.nombresegmentohonorarioB').is(':hidden')) {
-            $(".segmentoConsultorB").prop("disabled", true); 
-        }
-    });
-
-    $(document).on('submit', 'form', function () {
-        // Desactivar el input si el select está activo
-        if (!$('.segmentoConsultorA').is(':hidden')) {
-            $(".nombresegmentohonorarioA").prop("disabled", true); // Desactiva el input
-        }
-        // Desactivar el select si el input está visible
-        if (!$('.nombresegmentohonorarioA').is(':hidden')) {
-            $(".segmentoConsultorA").prop("disabled", true); // Desactiva el select
-        }
-    });
-    */
-   /* function validarHoras(input) {
-        const tipoRecurso = input.getAttribute('data-tipo'); 
-        const maxHHMensuales = parseFloat(input.getAttribute('data-hhmensuales')); 
-        const horasIngresadas = parseFloat(input.value); 
-
-        
-        if (tipoRecurso.startsWith("Socio") || tipoRecurso.startsWith("Staff")) {
-            if (horasIngresadas > maxHHMensuales) {
-                alert(`No puedes ingresar más de ${maxHHMensuales} horas mensuales para este socio o staff.`);
-                input.value = ''; 
-            }
-        }
-        
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const inputsHoras = document.querySelectorAll('.horasInput');
-
-        inputsHoras.forEach(input => {
-            input.addEventListener('input', function () {
-                validarHoras(this); 
-            });
-        });
-    });*/
-
-    /*function ObtenerMargen() {
-        var netoFacturaElem = document.getElementById('netofactura');
-        if (!netoFacturaElem) {
-            console.error("El elemento con id 'netofactura' no se encontró en el DOM.");
-            return;
-        }
-
-        var netoFacturaValue = netoFacturaElem.value;
-        var ingresosvalor = parseFloat(netoFacturaValue.replace(/\./g, '').replace(',', '.'));
-
-        if (isNaN(ingresosvalor)) {
-            console.error("El valor de ingresos no es un número válido.");
-            return;
-        }
-
-        document.getElementById('ingresosvalor').innerHTML = ingresosvalor.toLocaleString('de-DE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-        var totalProyectoSociosElem = document.getElementById('total-proyecto-socio');
-        if (!totalProyectoSociosElem) {
-            console.error("El elemento con id 'total-proyecto-socios' no se encontró en el DOM.");
-            return;
-        }
-
-        var totalProyectoSociosValue = totalProyectoSociosElem.innerHTML; // Cambia value a innerHTML
-        var horassociosmargen = parseFloat(totalProyectoSociosValue.replace(/\./g, '').replace(',', '.'));
-
-        if (isNaN(horassociosmargen)) {
-            horassociosmargen = 0; // Valor predeterminado
-            console.warn("El valor de horas socios no es un número válido. Se asigna 0.");
-        }
-
-        document.getElementById('horassociosmargen').innerHTML = horassociosmargen.toLocaleString('de-DE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-
-        var totalProyectoStaffElem = document.getElementById('total-proyecto-staff');
-        if (!totalProyectoStaffElem) {
-            console.error("El elemento con id 'total-proyecto-staff' no se encontró en el DOM.");
-            return;
-        }
-
-        var totalProyectoStaffValue = totalProyectoStaffElem.innerHTML; // Cambia value a innerHTML
-        var horasstaffmargen = parseFloat(totalProyectoStaffValue.replace(/\./g, '').replace(',', '.'));
-
-        if (isNaN(horasstaffmargen)) {
-            horasstaffmargen = 0; // Valor predeterminado
-            console.warn("El valor de horas socios no es un número válido. Se asigna 0.");
-        }
-
-        document.getElementById('horasstaffmargen').innerHTML = horasstaffmargen.toLocaleString('de-DE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-      
-
-
-
-        var totalProyectoConsElem = document.getElementById('totalconsultoresproyectos');
-        if (!totalProyectoConsElem) {
-            console.error("El elemento con id 'totalconsultoresproyectos' no se encontró en el DOM.");
-            return;
-        }
-
-       
-        var totalProyectoConsValue = totalProyectoConsElem.value; 
-        console.log("Valor obtenido:", totalProyectoConsValue);
-
-        var horasconsultoresmargen = parseFloat(totalProyectoConsValue.replace(/\./g, '').replace(',', '.'));
-
-        if (isNaN(horasconsultoresmargen)) {
-            horasconsultoresmargen = 0; // Valor predeterminado
-            console.warn("El valor de horas consultores no es un número válido. Se asigna 0.");
-        }
-
-        document.getElementById('horasconsultoresmargen').innerHTML = horasconsultoresmargen.toLocaleString('de-DE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-     
-
-        const totalMontoElement = document.getElementById('montoTotal'); // Obtiene el elemento del total
-        const total = parseFloat(totalMontoElement.innerText.replace(/\./g, '').replace(',', '.')); // Convierte el texto a número
-        const serviciosmargenSpan = document.getElementById('serviciosmargen'); // Cambiar a 'serviciosmargen' para un span
-        serviciosmargenSpan.innerText = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Mostrar en el span
-
-        const totalGastosElement = document.getElementById('montoTotalGastos'); // Obtiene el elemento del total de gastos
-        const totalg = parseFloat(totalGastosElement.innerText.replace(/\./g, '').replace(',', '.')); // Convierte el texto a número
-        const gastosOperacionalesInput = document.getElementById('gastosmargen'); // Suponiendo que este es el ID donde quieres mostrar el total
-        gastosOperacionalesInput.innerText = totalg.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-       
-        var totalegresos = horassociosmargen + horasstaffmargen + horasconsultoresmargen + total + totalg;
-
-        document.getElementById('egresosmargen').innerText = totalegresos.toLocaleString('de-DE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-
-        var margenfinal = ingresosvalor - totalegresos;
-        document.getElementById('margenfinal').innerText = margenfinal.toLocaleString('de-DE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-      
-    }*/
+    
 
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -2081,7 +1792,7 @@
         };
     }
 
-    // Función para obtener márgenes esperados a partir de los valores del DOM
+  
     function obtenerMargenEsperado() {
         const costoSocio = parseFloat(document.querySelector('[data-costo-unitario]').getAttribute('data-costo-unitario')) || 0;
         const costoStaff = parseFloat(document.querySelector('[data-costo-staff]').getAttribute('data-costo-staff')) || 0;
@@ -2096,55 +1807,75 @@
         const horasConsultorc = parseFloat(document.querySelector('#consultorC').value) || 0;
         const totalMonto = updateTotal();
         const totalGastos = updateTotalGasto();
-        // Llama a la función de cálculo y obtiene los márgenes
+        
         const margenes = calcularMargen(costoSocio, costoStaff, costoConsultora, costoConsultorb, costoConsultorc, horasSocios, horasStaff, horasConsultora, horasConsultorb, horasConsultorc);
         const netoFacturaElement = document.getElementById('netofactura');
         const ingresos = netoFacturaElement ? parseFloat(netoFacturaElement.value.replace(/\./g, '').replace(',', '.')) || 0 : 0;
         
+
         
         
         document.getElementById('ingresosvalor').textContent = ingresos.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
-
+        document.getElementById('porcentajeingresos').textContent = 100 + '%';
 
         document.getElementById('horassociosmargen').textContent = margenes.margenSocios.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
 
+        let margenSocios = margenes.margenSocios;
+        let porcentajeSocios = (margenSocios / ingresos) * 100;
+        document.getElementById('horassociosporcentaje').textContent = porcentajeSocios.toFixed(0) + '%';
+
         document.getElementById('horasstaffmargen').textContent = margenes.margenStaff.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let margenStaff = margenes.margenStaff;
+        let porcentajeStaff = (margenStaff / ingresos) * 100;
+        document.getElementById('horasstaffporcentaje').textContent = porcentajeStaff.toFixed(0) + '%';
 
         document.getElementById('horasconsultoresmargen').textContent = margenes.margenConsultoresExternos.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let margenConsultoresExternos = margenes.margenConsultoresExternos;
+        let porcentajeConsultoresExternos = (margenConsultoresExternos / ingresos) * 100;
+        document.getElementById('horasconsultoresporcentaje').textContent = porcentajeConsultoresExternos.toFixed(0) + '%';
+
         document.getElementById('serviciosmargen').textContent = totalMonto.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let porcentajeServicios = (totalMonto / ingresos) * 100;
+        document.getElementById('serviciosporcentaje').textContent = porcentajeServicios.toFixed(0) + '%';
         document.getElementById('gastosmargen').textContent = totalGastos.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let porcentajeGastos = (totalGastos / ingresos) * 100;
+        document.getElementById('gastosporcentaje').textContent = porcentajeGastos.toFixed(0) + '%';
+        
         const totalegresos = parseFloat(document.getElementById('horassociosmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('horasstaffmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('horasconsultoresmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('serviciosmargen').textContent.replace(/\./g, '').replace(',', '.')) + parseFloat(document.getElementById('gastosmargen').textContent.replace(/\./g, '').replace(',', '.'));
         document.getElementById('egresosmargen').textContent = totalegresos.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let porcentajeegresos = porcentajeGastos + porcentajeServicios + porcentajeConsultoresExternos + porcentajeStaff + porcentajeSocios;
+        document.getElementById('egresosporcentaje').textContent = porcentajeegresos.toFixed(0) + '%';
         const totalmargen = parseFloat(document.getElementById('ingresosvalor').textContent.replace(/\./g, '').replace(',', '.')) - parseFloat(document.getElementById('egresosmargen').textContent.replace(/\./g, '').replace(',', '.'))
         document.getElementById('margenfinal').textContent = totalmargen.toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         });
+        let porcentajemargen = 100 - porcentajeegresos;
+        document.getElementById('margenporcentaje').textContent = porcentajemargen.toFixed(0) + '%';
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Escucha el evento de cambio en cada campo de horas para recalcular el margen esperado
         document.querySelector('#horasSocios').addEventListener('input', obtenerMargenEsperado);
         document.querySelector('#horasStaff').addEventListener('input', obtenerMargenEsperado);
         document.querySelector('#consultorA').addEventListener('input', obtenerMargenEsperado);
@@ -2252,6 +1983,13 @@
             }
         }
     });
+   
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = currentDate.toLocaleDateString('es-ES', options);
+
+   
+    document.getElementById('current-date').textContent = formattedDate;
 </script>
 
 

@@ -20,23 +20,24 @@ namespace Proyectogestionhoras.Services
     {
         private readonly Conexion conexion;
         private readonly PROYECTO_CONTROL_HORASContext context;
-        public ProyectoService(Conexion conexion,PROYECTO_CONTROL_HORASContext context) { 
-            
+        public ProyectoService(Conexion conexion, PROYECTO_CONTROL_HORASContext context)
+        {
+
             this.conexion = conexion;
             this.context = context;
         }
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura,  decimal montoorigen,List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
-                #pragma warning disable CS8600
+#pragma warning disable CS8600
                 object probabilidadparameter = (object)probabilidad ?? DBNull.Value;
                 object porcentajeparametr = (object)porcentajeprobabilidad ?? DBNull.Value;
                 object fechaplazoparameter = (object)fechaplazoneg ?? DBNull.Value;
-                #pragma warning restore CS8600
+#pragma warning restore CS8600
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
@@ -54,18 +55,18 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@TIPO_EMPRESA", tipoempresa));
                     command.Parameters.Add(new SqlParameter("@ID_CCOSTO_UNEGOCIO", codigoccosto));
                     command.Parameters.Add(new SqlParameter("@ID_CLIENTE_SUCURSAL", idclientesucursal));
-                    
+
                     command.Parameters.Add(new SqlParameter("@PROBABILIDAD", probabilidadparameter));
                     command.Parameters.Add(new SqlParameter("@PORCENTAJE_PROBABILIDAD", porcentajeparametr));
                     command.Parameters.Add(new SqlParameter("@FECHA_PLAZO_NEG", fechaplazoparameter));
                     command.Parameters.Add(new SqlParameter("@HHSOCIOS", hhsocios));
-                   
+
                     command.Parameters.Add(new SqlParameter("@HHSTAFF", hhstaff));
-                    
+
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORA", hhconsultora));
-                   
+
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORB", hhconsultorb));
-                 
+
                     command.Parameters.Add(new SqlParameter("@HHCONSULTORC", hhconsultorc));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOSOCIO", idsegmentosocio));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOSTAFF", idsegmentostaff));
@@ -74,12 +75,13 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
                     command.Parameters.Add(new SqlParameter("@MONTOMONEDAORIGEN", montoorigen));
+                    command.Parameters.Add(new SqlParameter("@TASACAMBIO", tasacambio));
                     SqlParameter idProyectoParameter = new SqlParameter("@ID_PROYECTO", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
                     };
                     command.Parameters.Add(idProyectoParameter);
-                    
+
                     await command.ExecuteNonQueryAsync();
                     int idProyectoCreado = (int)idProyectoParameter.Value;
                     await GestorServiciosProyecto(idProyectoCreado, servicios);
@@ -96,9 +98,9 @@ namespace Proyectogestionhoras.Services
         }
 
 
-      
+
         /*EDITAR PROYECTO*/
-        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -119,13 +121,13 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@AFECTAIVA", afectaiva));
                     command.Parameters.Add(new SqlParameter("@ID_TIPOLOGIA", idtipologia));
                     command.Parameters.Add(new SqlParameter("@NOMBRE", nombre));
-                    
+
                     command.Parameters.Add(new SqlParameter("@FECHA_INICIO", fechainicio));
                     command.Parameters.Add(new SqlParameter("@FECHA_TERMINO ", fechatermino));
                     command.Parameters.Add(new SqlParameter("@PLAZO", plazo));
                     command.Parameters.Add(new SqlParameter("@TIPO_EMPRESA", tipoempresa));
                     command.Parameters.Add(new SqlParameter("@ID_CCOSTO_UNEGOCIO", codigoccosto));
-                    
+
                     command.Parameters.Add(new SqlParameter("@STATUS_PROYECTO", status));
                     command.Parameters.Add(new SqlParameter("@PROBABILIDAD", probabilidadparameter));
                     command.Parameters.Add(new SqlParameter("@PORCENTAJE_PROBABILIDAD", porcentajeparametr));
@@ -146,17 +148,18 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
                     command.Parameters.Add(new SqlParameter("@MONTOMONEDAORIGEN", montoorigen));
-                    
-                    
+                    command.Parameters.Add(new SqlParameter("@TASACAMBIO", tasacambio));
+
+
                     await command.ExecuteNonQueryAsync();
                     await GestorServiciosProyecto(idproyecto, servicios);
                     await GestorProyectoGastos(idproyecto, gastos);
-                  /* var resultadoAsignacion = await AsignarHHUsuarios(idproyecto, usuariohoras);
-                    if (resultadoAsignacion == 2)
-                    {
-                        // Si no hay suficientes horas, lanzamos una excepción o manejamos el error de otra forma
-                        throw new Exception("No hay suficientes horas anuales para asignar a uno o más usuarios.");
-                    }*/
+                    /* var resultadoAsignacion = await AsignarHHUsuarios(idproyecto, usuariohoras);
+                      if (resultadoAsignacion == 2)
+                      {
+                          // Si no hay suficientes horas, lanzamos una excepción o manejamos el error de otra forma
+                          throw new Exception("No hay suficientes horas anuales para asignar a uno o más usuarios.");
+                      }*/
 
                     return true;
                 }
@@ -180,7 +183,7 @@ namespace Proyectogestionhoras.Services
                 .Where(ps => ps.IdProyecto == idProyecto)
                 .ToListAsync();
 
-            
+
             foreach (var servicio in servicios.Where(s => s.EsEliminado))
             {
                 var servicioExistente = serviciosExistentes
@@ -192,7 +195,7 @@ namespace Proyectogestionhoras.Services
                 }
             }
 
-            
+
             foreach (var servicio in servicios.Where(s => !s.EsEliminado))
             {
                 if (servicio.IdServicioProyecto > 0)
@@ -208,7 +211,7 @@ namespace Proyectogestionhoras.Services
 
                     }
                 }
-               
+
                 else
                 {
                     var nuevoServicio = new ProyectoServicio
@@ -218,8 +221,8 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = servicio.IdSegmento,
                         Monto = servicio.MontoServicio,
                         Fecha = servicio.Fecha.Date,
-                        
-                        
+
+
                     };
 
                     await context.ProyectoServicios.AddAsync(nuevoServicio);
@@ -241,7 +244,7 @@ namespace Proyectogestionhoras.Services
                 .Where(ps => ps.IdProyecto == idProyecto)
                 .ToListAsync();
 
-            
+
             foreach (var gasto in gastos.Where(s => s.EsEliminado))
             {
                 var gastoExistente = gastoExistentes
@@ -253,7 +256,7 @@ namespace Proyectogestionhoras.Services
                 }
             }
 
-            
+
             foreach (var gasto in gastos.Where(s => !s.EsEliminado))
             {
                 if (gasto.IdGastoProyecto > 0)
@@ -269,7 +272,7 @@ namespace Proyectogestionhoras.Services
 
                     }
                 }
-               
+
                 else
                 {
                     var nuevoGasto = new ProyectoGasto
@@ -279,7 +282,7 @@ namespace Proyectogestionhoras.Services
                         Idsegmento = gasto.IdSegmento,
                         Monto = gasto.MontoGasto,
                         Fecha = gasto.Fecha.Date,
-                        
+
                     };
 
                     await context.ProyectoGastos.AddAsync(nuevoGasto);
@@ -297,38 +300,38 @@ namespace Proyectogestionhoras.Services
                 return;
             }
 
-    
+
             var gastosExistentes = await context.ProyectoGastos
                 .Where(pg => pg.IdProyecto == idProyecto)
-                .Select(pg => pg.IdGastos) 
+                .Select(pg => pg.IdGastos)
                 .ToListAsync();
 
-       
+
             var gastosAGrabar = new HashSet<int>();
 
             foreach (var gasto in gastos)
             {
-               
+
                 if (!gastosExistentes.Contains(gasto.Idgastos) && !gastosAGrabar.Contains(gasto.Idgastos))
                 {
-                    
+
                     gastosAGrabar.Add(gasto.Idgastos);
 
-                   
+
                     var nuevoGasto = new ProyectoGasto
                     {
                         IdProyecto = idProyecto,
                         IdGastos = gasto.Idgastos,
-                        Idsegmento = gasto.IdSegmento,  
-                        Monto = 0, 
-                        Fecha = DateTime.Now, 
+                        Idsegmento = gasto.IdSegmento,
+                        Monto = 0,
+                        Fecha = DateTime.Now,
                     };
 
                     await context.ProyectoGastos.AddAsync(nuevoGasto);
                 }
             }
 
-            
+
             await context.SaveChangesAsync();
         }
 
@@ -383,14 +386,14 @@ namespace Proyectogestionhoras.Services
 
             if (socio != null)
             {
-              
+
                 var hhsociosasignadas = context.HhUsuarioHistorials
                                               .Where(u => u.IdProyecto == idproyecto)
                                               .FirstOrDefault();
 
                 decimal horasAsignadasPrevias = hhsociosasignadas?.HhSocios ?? 0;
 
-                
+
                 decimal diferenciaHoras = hhsocios - horasAsignadasPrevias;
 
                 Debug.WriteLine($"Horas asignadas previas: {horasAsignadasPrevias}, Nuevas horas: {hhsocios}, Diferencia: {diferenciaHoras}");
@@ -403,14 +406,14 @@ namespace Proyectogestionhoras.Services
 
         public async Task RestarHHAnaulesStaff(int hhstaff, int? idproyecto)
         {
-            
+
             var staff = context.TotalRecursos
                                .Where(tr => tr.TipoRecurso == "Staff" && tr.Anio == DateTime.Now.Year)
                                .FirstOrDefault();
 
             if (staff != null)
             {
-                
+
                 var hhstaffasignadas = context.HhUsuarioHistorials
                                               .Where(u => u.IdProyecto == idproyecto)
                                               .FirstOrDefault();
@@ -454,11 +457,11 @@ namespace Proyectogestionhoras.Services
                 command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORA", idsegmentoconsultora));
                 command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORB", idsegmentoconsultorb));
                 command.Parameters.Add(new SqlParameter("@IDSEGMENTOCONSULTORC", idsegmentoconsultorc));
-                
+
 
 
                 await command.ExecuteNonQueryAsync();
-                
+
             }
         }
 
@@ -466,18 +469,18 @@ namespace Proyectogestionhoras.Services
         {
             if (usuariohoras == null || !usuariohoras.Any())
             {
-                return 0; 
+                return 0;
             }
 
             var idsUsuarios = usuariohoras.Select(uh => uh.IdUsuario).ToList();
 
-            
+
             var usuarios = await context.Usuarios
                 .Include(u => u.IdRecursoNavigation)
                 .Where(u => idsUsuarios.Contains(u.Id))
                 .ToListAsync();
 
-            
+
             var proyectosUsuarios = await context.UsuarioProyectos
                 .Where(up => idsUsuarios.Contains(up.IdUsuario) && up.IdProyecto == idproyecto)
                 .ToListAsync();
@@ -492,14 +495,14 @@ namespace Proyectogestionhoras.Services
 
                     if (usuarioProyecto != null)
                     {
-               
+
                         var recurso = usuario.IdRecursoNavigation;
                         if (recurso.HhAnuales.HasValue && recurso.HhAnuales.Value < usuariovm.HHAsignadas)
                         {
-                            return 2; 
+                            return 2;
                         }
 
-                        
+
                         if (tiporecurso == "Socio")
                         {
                             usuarioProyecto.HhSocios = usuariovm.HHAsignadas;
@@ -509,13 +512,13 @@ namespace Proyectogestionhoras.Services
                             usuarioProyecto.HhStaff = usuariovm.HHAsignadas;
                         }
 
-                    
+
                         if (recurso.HhAnuales.HasValue)
                         {
                             recurso.HhAnuales -= usuariovm.HHAsignadas;
                         }
 
-                 
+
                         if (usuariovm.HHAsignadas == 0)
                         {
                             context.UsuarioProyectos.Remove(usuarioProyecto);
@@ -525,7 +528,7 @@ namespace Proyectogestionhoras.Services
             }
 
             await context.SaveChangesAsync();
-            return 1; 
+            return 1;
         }
 
 
@@ -533,7 +536,7 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-                #pragma warning disable CS8600
+#pragma warning disable CS8600
                 object idparameter = (object)id ?? DBNull.Value;
                 object idclienteparameter = (object)idcliente ?? DBNull.Value;
                 object nombreparameter = (object)nombre ?? DBNull.Value;
@@ -547,11 +550,11 @@ namespace Proyectogestionhoras.Services
 #pragma warning restore CS8600
                 var proyectos = new List<ProyectoDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-                using(DbCommand cmd = connection.CreateCommand())
+                using (DbCommand cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = "OBTENERPROYECTOS";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@ID",idparameter));
+                    cmd.Parameters.Add(new SqlParameter("@ID", idparameter));
                     cmd.Parameters.Add(new SqlParameter("@IDCLIENTE", idclienteparameter));
                     cmd.Parameters.Add(new SqlParameter("@NOMBRE", nombreparameter));
                     cmd.Parameters.Add(new SqlParameter("@ID_TIPOEMPRESA", idtipoempresaparameter));
@@ -565,7 +568,8 @@ namespace Proyectogestionhoras.Services
                     {
                         while (await reader.ReadAsync())
                         {
-                            ProyectoDTO proyecto = new() {
+                            ProyectoDTO proyecto = new()
+                            {
 
                                 Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 numproyecto = reader.GetString(reader.GetOrdinal("NUM_PROYECTO")),
@@ -604,7 +608,7 @@ namespace Proyectogestionhoras.Services
                                 COSTO_SOCIO = reader.IsDBNull(reader.GetOrdinal("COSTO_SOCIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_SOCIO")),
 
                                 HHSTAFF = reader.IsDBNull(reader.GetOrdinal("HH_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_STAFF")),
-                                
+
                                 CUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("CUENTA_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA_STAFF")),
                                 IDCUENTA_STAFF = reader.IsDBNull(reader.GetOrdinal("IDCUENTA_STAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA_STAFF")),
                                 SEGMENTO_STAFF = reader.IsDBNull(reader.GetOrdinal("SEGMENTO_STAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("SEGMENTO_STAFF")),
@@ -636,16 +640,17 @@ namespace Proyectogestionhoras.Services
                                 CostoConsultorBPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")),
                                 CostoConsultorCPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")),
                                 MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
+                                TasaCambio = reader.IsDBNull(reader.GetOrdinal("TASACAMBIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TASACAMBIO")),
                                 idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
 
-                                
+
 
 
 
                             };
-                          
+
                             proyectos.Add(proyecto);
-                            
+
                         }
                     }
                     await conexion.CloseDatabaseConnectionAsync();
@@ -686,7 +691,7 @@ namespace Proyectogestionhoras.Services
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
-                                
+
                             };
                             serviciosProyectos.Add(servicio);
 
@@ -731,7 +736,7 @@ namespace Proyectogestionhoras.Services
                                 MONTO = reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO")),
                                 FECHA = reader.GetDateTime(reader.GetOrdinal("FECHA")),
-                                
+
                             };
                             gastosproyectos.Add(gasto);
 
@@ -751,7 +756,7 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public async Task<List<HistorailNegociacionDTO>> RecuperarHistorialNegociacion(int? idproyecto,int? idnegociacion)
+        public async Task<List<HistorailNegociacionDTO>> RecuperarHistorialNegociacion(int? idproyecto, int? idnegociacion)
         {
             try
             {
@@ -842,7 +847,7 @@ namespace Proyectogestionhoras.Services
                                 Neto = reader.GetDecimal(reader.GetOrdinal("Neto")),
                                 Iva = reader.GetDecimal(reader.GetOrdinal("IVA")),
                                 Total = reader.GetDecimal(reader.GetOrdinal("Total")),
-                                
+
                             };
                             factura.Add(datos);
 
@@ -1055,7 +1060,7 @@ namespace Proyectogestionhoras.Services
                 {
                     command.CommandText = "OBTENERSTATUSFICHA";
                     command.CommandType = CommandType.StoredProcedure;
-                    
+
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -1067,9 +1072,9 @@ namespace Proyectogestionhoras.Services
 
                             };
                             status.Add(statu);
-                            Debug.WriteLine($"TIPOSTATUS:"+statu.TipoStatus);
+                            Debug.WriteLine($"TIPOSTATUS:" + statu.TipoStatus);
                         }
-                        
+
                     }
 
                 }
@@ -1107,7 +1112,7 @@ namespace Proyectogestionhoras.Services
                                 IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
                             };
                             facturatablas.Add(factura);
-                           
+
                         }
 
                     }
@@ -1183,7 +1188,7 @@ namespace Proyectogestionhoras.Services
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("ID")),
                                 Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
-                                
+
 
                             };
                             segmentos.Add(segmento);
@@ -1203,46 +1208,46 @@ namespace Proyectogestionhoras.Services
                 return new List<Segmento>();
             }
         }
-      /*  public async Task<List<Cuentum>> GetValoresGastos(int idsegmento)
-        {
-            try
-            {
-                var cuentas = new List<Cuentum>();
-                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-                using (DbCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "OBTENERCUENTAGASTOS";
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@IDSEGMENTO", idsegmento));
+        /*  public async Task<List<Cuentum>> GetValoresGastos(int idsegmento)
+          {
+              try
+              {
+                  var cuentas = new List<Cuentum>();
+                  DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                  using (DbCommand command = connection.CreateCommand())
+                  {
+                      command.CommandText = "OBTENERCUENTAGASTOS";
+                      command.CommandType = CommandType.StoredProcedure;
+                      command.Parameters.Add(new SqlParameter("@IDSEGMENTO", idsegmento));
 
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            Cuentum cuentum = new()
-                            {
-                                Idcuenta = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                Cuenta = reader.GetString(reader.GetOrdinal("CUENTA")),
+                      using (var reader = await command.ExecuteReaderAsync())
+                      {
+                          while (await reader.ReadAsync())
+                          {
+                              Cuentum cuentum = new()
+                              {
+                                  Idcuenta = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
+                                  Cuenta = reader.GetString(reader.GetOrdinal("CUENTA")),
 
 
-                            };
-                            cuentas.Add(cuentum);
+                              };
+                              cuentas.Add(cuentum);
 
-                        }
+                          }
 
-                    }
+                      }
 
-                }
-                await conexion.CloseDatabaseConnectionAsync();
-                return cuentas;
+                  }
+                  await conexion.CloseDatabaseConnectionAsync();
+                  return cuentas;
 
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
-                return new List<Cuentum>();
-            }
-        }*/
+              }
+              catch (Exception ex)
+              {
+                  Debug.WriteLine($"Hubo un error al obtener las tipologias:" + ex.Message);
+                  return new List<Cuentum>();
+              }
+          }*/
         public async Task<List<Gasto>> ObtenerGastos()
         {
             try
@@ -1446,7 +1451,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<List<GastoDTO>> ObtenerValoresGastosEdicion(int idcosto,int unegocio, int idgasto)
+        public async Task<List<GastoDTO>> ObtenerValoresGastosEdicion(int idcosto, int unegocio, int idgasto)
         {
             try
             {
@@ -1533,7 +1538,7 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public async Task<List<ProyectoDTO>> ObtenerPresupuestoProyectos(int? idpresupuesto,int? idproyecto, int? idcliente)
+        public async Task<List<ProyectoDTO>> ObtenerPresupuestoProyectos(int? idpresupuesto, int? idproyecto, int? idcliente)
         {
             try
             {
@@ -1541,7 +1546,7 @@ namespace Proyectogestionhoras.Services
                 object idpresupuestoparameter = (object)idpresupuesto ?? DBNull.Value;
                 object idproyectoapramterer = (object)idproyecto ?? DBNull.Value;
                 object idclientepramemter = (object)idcliente ?? DBNull.Value;
-                
+
 #pragma warning restore CS8600
                 var proyectos = new List<ProyectoDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
@@ -1552,7 +1557,7 @@ namespace Proyectogestionhoras.Services
                     cmd.Parameters.Add(new SqlParameter("@IDPRESUPUESTO", idpresupuestoparameter));
                     cmd.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyectoapramterer));
                     cmd.Parameters.Add(new SqlParameter("@IDCLIENTE", idclientepramemter));
-                    
+
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -1627,7 +1632,8 @@ namespace Proyectogestionhoras.Services
                                 CostoConsultorAPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORAPRESUPUESTO")),
                                 CostoConsultorBPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORBPRESUPUESTO")),
                                 CostoConsultorCPresupuesto = reader.IsDBNull(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTOCONSULTORCPRESUPUESTO")),
-                               MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
+                                MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
+                                TasaCambio = reader.IsDBNull(reader.GetOrdinal("TASACAMBIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TASACAMBIO")),
                                 idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
 
 

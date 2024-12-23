@@ -2067,7 +2067,14 @@
             tablaHead.empty();
 
 
-            const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))].sort();
+            const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))]
+                .sort((a, b) => {
+                    const [mesA, anioA] = a.split('-').map(Number);
+                    const [mesB, anioB] = b.split('-').map(Number);
+                    const fechaA = new Date(anioA, mesA - 1); 
+                    const fechaB = new Date(anioB, mesB - 1);
+                    return fechaA - fechaB; 
+                });
 
 
             let encabezado = `

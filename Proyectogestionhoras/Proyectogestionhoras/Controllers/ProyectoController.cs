@@ -122,7 +122,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen,decimal tasacambio)
         {
             try
             {
@@ -211,14 +211,15 @@ namespace Proyectogestionhoras.Controllers
                 }
 
                 decimal montoorigenextranjera = 0;
-                if (moneda != "CLP")
-                {
-                    var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
-                    montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
-                }
+                decimal tasacambios = 0;
+                var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
+                var tasacambiotr = Request.Form["tasacambio"].ToString().Replace(".", "");
+                montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
+                tasacambios = decimal.Parse(tasacambiotr, System.Globalization.CultureInfo.InvariantCulture);
+                
 
 
-                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, servicios, gastos);
+                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, tasacambios, servicios, gastos);
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
@@ -533,11 +534,12 @@ namespace Proyectogestionhoras.Controllers
                 }
 
                 decimal montoorigenextranjera = 0;
-                if (moneda != "CLP")
-                {
-                    var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
-                    montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
-                }
+                decimal tasacambios = 0;
+                var montomonedaorigentr = Request.Form["montoorigen"].ToString().Replace(".", "");
+                var tasacambiotr = Request.Form["tasacambio"].ToString().Replace(".", "");
+                montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
+                tasacambios = decimal.Parse(tasacambiotr, System.Globalization.CultureInfo.InvariantCulture);
+
 
 
                 /*List<UsuarioProyectoViewModel> usuariohoras = new List<UsuarioProyectoViewModel>();
@@ -570,7 +572,7 @@ namespace Proyectogestionhoras.Controllers
 
                 
 
-                bool resultado = await proyectoService.EditarProyecto(idproyecto, idpresupuesto, montofinal, moneda, afectaiva, idtipologia, nombre, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, status, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, servicios, gastos);
+                bool resultado = await proyectoService.EditarProyecto(idproyecto, idpresupuesto, montofinal, moneda, afectaiva, idtipologia, nombre, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, status, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, tasacambios,servicios, gastos);
 
 
                 if (resultado)
