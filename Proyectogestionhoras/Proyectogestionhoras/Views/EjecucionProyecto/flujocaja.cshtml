@@ -1,21 +1,146 @@
-﻿<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
+﻿
+@{
+    ViewData["Title"] = "Flujo Caja Proyecto";
+}
+
+
+<style>
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 60px;
     }
 
-    th, td {
-        border: 1px solid #000;
-        padding: 8px;
+    .form-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
         text-align: center;
+        margin-bottom: 10px;
     }
 
-    th {
-        background-color: #f2f2f2;
+    .form-subtitle {
+        font-size: 1.0rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
     }
+
+
+
+    .highlight {
+        background-color: #f8d7da;
+        font-weight: bold;
+    }
+
+    .panel-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 0px;
+        width: 100%;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .panel-item {
+        flex-grow: 1;
+        border: 2px solid #444;
+        border-radius: 0;
+        padding: 10px 20px;
+        background-color: #f2f3f4;
+        color: black;
+        text-align: center;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+
+
+        .panel-item:hover {
+            background-color: #fcaa67;
+            color: #fff;
+        }
 </style>
+@{
+    int? idproyecto = Context.Session.GetInt32("numproyecto");
 
-    <div style="margin-top:90px;" id="tablaFlujoCaja"></div>
+}
+
+<div class="form-container">
+
+
+    <div class="panel-container flex justify-center mb-5">
+        <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            Forecast Ingresos del Proyecto
+        </a>
+        <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+            Forecast Costos del Proyecto
+        </a>
+        <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+            Seleccionar otro Proyecto
+        </a>
+    </div>
+    <div class="form-group">
+
+        @foreach (var proyecto in ViewBag.Proyecto)
+        {
+
+            <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
+
+            <input type="hidden" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
+            <input type="hidden" id="centroCosto" value="@proyecto.IDCOSTO" />
+            <input type="hidden" id="codigo" value="@proyecto.Codigo" />
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-green-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Cliente</th>
+                            <th class="p-2 border border-gray-300 text-left">Departamento</th>
+                            <th class="p-2 border border-gray-300 text-left">Moneda</th>
+                            @if (proyecto.MontoOrigenExtranjero > 0)
+                            {
+                                <th class="p-2 border border-gray-300 text-left">Monto Moneda Origen</th>
+                            }
+                            <th class="p-2 border border-gray-300 text-left">MontoCLP</th>
+                            <th class="p-2 border border-gray-300 text-left">C.Costo</th>
+                            <th class="p-2 border border-gray-300 text-left">Código</th>
+                            <th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Empresa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+                            <td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
+                                @proyecto.MONEDA
+                            </td>
+                            @if (proyecto.MontoOrigenExtranjero > 0)
+                            {
+                                <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
+                            }
+                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
+                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Empresa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        }
+    </div>
+</div>
+ <div style="margin-top:90px;" id="tablaFlujoCaja"></div>
 <script>
     async function obtenerFlujoCaja(id) {
         const response = await fetch(`/EjecucionProyecto/ObtenerFlujo/${id}`);
@@ -25,9 +150,10 @@
 
     function formatearMes(mes, anio) {
         const opciones = { month: 'long', year: 'numeric' };
-        const fecha = new Date(anio, mes - 1); // mes - 1 porque los meses en JS son 0-indexed
+        const fecha = new Date(anio, mes - 1);
         return fecha.toLocaleDateString('es-ES', opciones);
     }
+  
 
     function crearTabla(flujoCaja) {
         const tabla = document.createElement('table');
@@ -69,6 +195,9 @@
         // Cuerpo de la tabla
         const tbody = document.createElement('tbody');
 
+        // Inicializar totales de egresos
+        const totalesEgresos = {};
+
         // Agrupar por Tipo y luego por Cuenta
         const gruposPorTipoYCuenta = flujoCaja.reduce((acc, item) => {
             if (!acc[item.tipo]) {
@@ -96,6 +225,16 @@
                             if (item.estado === 'Proyectado') totalesPorMes[mesAnio].proyectado += item.monto;
                             if (item.estado === 'Real') totalesPorMes[mesAnio].real += item.monto;
                             if (item.estado === 'Forecast') totalesPorMes[mesAnio].forecast += item.monto;
+
+                            // Sumar a totalesEgresos si no es ingreso
+                            if (tipo !== "Ingreso") {
+                                if (!totalesEgresos[mesAnio]) {
+                                    totalesEgresos[mesAnio] = { proyectado: 0, real: 0, forecast: 0 };
+                                }
+                                totalesEgresos[mesAnio].proyectado += item.estado === 'Proyectado' ? item.monto : 0;
+                                totalesEgresos[mesAnio].real += item.estado === 'Real' ? item.monto : 0;
+                                totalesEgresos[mesAnio].forecast += item.estado === 'Forecast' ? item.monto : 0;
+                            }
                         }
                     });
                 }
@@ -120,7 +259,7 @@
                             <td>${totalesPorMes[mesAnio].forecast}</td>`;
                     });
                     tbody.appendChild(totalRow);
-                    firstAccountRow = false; // Cambiar a false después de agregar la primera fila
+                    firstAccountRow = false;
                 } else {
                     // Para las demás cuentas, solo mostrar id y cuenta
                     const row = document.createElement('tr');
@@ -140,7 +279,7 @@
 
                 // Filas por glosa específicas para esta cuenta
                 itemsCuenta.forEach(item => {
-                    if (item.glosa) { // Solo si hay glosa
+                    if (item.glosa) {
                         const rowGlosa = document.createElement('tr');
                         rowGlosa.innerHTML = `<td></td><td></td><td></td><td>${item.glosa}</td>`;
 
@@ -161,12 +300,93 @@
             }
         }
 
+        // Agregar fila de Totales Egresos al final del cuerpo de la tabla
+        const totalEgresosRow = document.createElement('tr');
+        totalEgresosRow.innerHTML = '<td>Total Egresos</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
+
+        mesesUnicos.forEach(mesAnio => {
+            totalEgresosRow.innerHTML += `
+                <td>${totalesEgresos[mesAnio]?.proyectado || 0}</td>
+                <td>${totalesEgresos[mesAnio]?.real || 0}</td>
+                <td>${totalesEgresos[mesAnio]?.forecast || 0}</td>`;
+        });
+
+        tbody.appendChild(totalEgresosRow);
+        // Después de calcular "Totales Egresos"
+        const margenContribucionRow = document.createElement('tr');
+        margenContribucionRow.innerHTML = '<td>Margen de Contribución</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
+
+        mesesUnicos.forEach(mesAnio => {
+            // Totales de ingresos para este mes
+            const ingresosProyectado = flujoCaja
+                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Proyectado')
+                .reduce((sum, item) => sum + item.monto, 0);
+
+            const ingresosReal = flujoCaja
+                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+                .reduce((sum, item) => sum + item.monto, 0);
+
+            // Totales de egresos para este mes
+            const egresosProyectado = totalesEgresos[mesAnio]?.proyectado || 0;
+            const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+
+            // Calcular margen de contribución
+            const margenProyectado = ingresosProyectado - egresosProyectado;
+            const margenReal = ingresosReal - egresosReal;
+
+            // Forecast se deja vacío
+            margenContribucionRow.innerHTML += `
+            <td>${margenProyectado.toFixed(2)}</td>
+            <td>${margenReal.toFixed(2)}</td>
+            <td></td>`;
+        });
+
+        // Agregar fila de margen de contribución al cuerpo
+        tbody.appendChild(margenContribucionRow);
+        // Fila de Porcentaje de Margen
+        const porcentajeMargenRow = document.createElement('tr');
+        porcentajeMargenRow.innerHTML = '<td>% de Margen</td><td colspan="3"></td>';
+
+        mesesUnicos.forEach(mesAnio => {
+            const ingresosReal = flujoCaja
+                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+                .reduce((sum, item) => sum + item.monto, 0);
+
+            const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+            const margenReal = ingresosReal - egresosReal;
+            const porcentajeMargen = ingresosReal > 0 ? (margenReal / ingresosReal) * 100 : 0;
+
+            porcentajeMargenRow.innerHTML += `<td></td><td>${porcentajeMargen.toFixed(2)}%</td><td></td>`;
+        });
+
+        tbody.appendChild(porcentajeMargenRow);
+        const saldoAcumuladoRow = document.createElement('tr');
+        saldoAcumuladoRow.innerHTML = '<td>Saldo Acumulado</td><td colspan="3"></td>';
+
+        let saldoAcumulado = 0;
+
+        mesesUnicos.forEach(mesAnio => {
+            const ingresosReal = flujoCaja
+                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+                .reduce((sum, item) => sum + item.monto, 0);
+
+            const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+            const margenReal = ingresosReal - egresosReal;
+
+            saldoAcumulado += margenReal;
+
+            saldoAcumuladoRow.innerHTML += `
+                    <td></td>
+                    <td>${saldoAcumulado.toFixed(2)}</td>
+                    <td></td>`;
+        });
+        tbody.appendChild(saldoAcumuladoRow);
         tabla.appendChild(tbody);
         document.getElementById('tablaFlujoCaja').appendChild(tabla);
     }
 
     async function init() {
-        const idProyecto = 215; // Cambia esto según sea necesario
+        const idProyecto = '@Context.Session.GetInt32("numproyecto")';
         const flujoCajaData = await obtenerFlujoCaja(idProyecto);
 
         if (flujoCajaData.length > 0) {

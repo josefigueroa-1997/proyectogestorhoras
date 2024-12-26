@@ -965,7 +965,7 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "REPORTEFLUJOCAJAPROYECTOSdetallado";
+                    command.CommandText = "[REPORTEFLUJOCAJAPROYECTOS]";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDPROYECTO", idparameter));
                     using (var reader = await command.ExecuteReaderAsync())
@@ -984,7 +984,7 @@ namespace Proyectogestionhoras.Services
                                 Monto = reader.IsDBNull(reader.GetOrdinal("Monto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto")),
                                 Estado = reader.IsDBNull(reader.GetOrdinal("Estado")) ? string.Empty : reader.GetString(reader.GetOrdinal("Estado")),
                                 Orden = reader.IsDBNull(reader.GetOrdinal("ORDEN")) ? 0 : reader.GetInt32(reader.GetOrdinal("ORDEN")),
-                                Glosa = reader.IsDBNull(reader.GetOrdinal("Glosa")) ? string.Empty : reader.GetString(reader.GetOrdinal("Glosa")),
+                                
                             };
                             flujocaja.Add(datos);
 
@@ -1025,6 +1025,55 @@ namespace Proyectogestionhoras.Services
                 );
 
             return diccionario;
+        }
+        public async Task<List<FlujoCajaProyectosDTO>> ObtenerFlujoCajaDetalle(int? idproyecto)
+        {
+            try
+            {
+#pragma warning disable CS8600
+                object idparameter = (object)idproyecto ?? 0;
+#pragma warning restore CS8600
+                var flujocaja = new List<FlujoCajaProyectosDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "REPORTEFLUJOCAJAPROYECTOSdetallado";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idparameter));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            FlujoCajaProyectosDTO datos = new()
+                            {
+                                Tipo = reader.IsDBNull(reader.GetOrdinal("Tipo")) ? string.Empty : reader.GetString(reader.GetOrdinal("Tipo")),
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("Num_Proyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("Num_Proyecto")),
+                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NombreProyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreProyecto")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                                IdCuenta = reader.IsDBNull(reader.GetOrdinal("Idcuenta")) ? 0 : reader.GetInt32(reader.GetOrdinal("Idcuenta")),
+                                Cuenta = reader.IsDBNull(reader.GetOrdinal("Cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("Cuenta")),
+                                Monto = reader.IsDBNull(reader.GetOrdinal("Monto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto")),
+                                Estado = reader.IsDBNull(reader.GetOrdinal("Estado")) ? string.Empty : reader.GetString(reader.GetOrdinal("Estado")),
+                                Orden = reader.IsDBNull(reader.GetOrdinal("ORDEN")) ? 0 : reader.GetInt32(reader.GetOrdinal("ORDEN")),
+                                Glosa = reader.IsDBNull(reader.GetOrdinal("Glosa")) ? string.Empty : reader.GetString(reader.GetOrdinal("Glosa")),
+                            };
+                            flujocaja.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return flujocaja;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el flujo de caja de los proyectos:{ex.Message}");
+                return new List<FlujoCajaProyectosDTO>();
+
+            }
         }
     }
 }

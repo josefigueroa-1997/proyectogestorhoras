@@ -502,16 +502,15 @@ namespace Proyectogestionhoras.Controllers
         /*FLUJO CAJA*/
         public async Task<IActionResult> FlujoCajaProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-           /* var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
+           var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
             ViewBag.Proyecto = proyecto;          
-            var flujocaja = await reporteService.ProcesarFlujoCajaPorMesAsync(id);*/
             return View("flujocaja");
         }
 
         [HttpGet]
         public async Task<IActionResult> ObtenerFlujo(int id)
         {
-            var flujo = await reporteService.ObtenerFlujoCajaAsync(id);
+            var flujo = await reporteService.ObtenerFlujoCajaDetalle(id);
             return Ok(flujo);
         }
     }
