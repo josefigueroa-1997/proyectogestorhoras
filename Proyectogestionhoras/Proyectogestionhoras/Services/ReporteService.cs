@@ -965,7 +965,7 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "REPORTEFLUJOCAJAPROYECTOS";
+                    command.CommandText = "REPORTEFLUJOCAJAPROYECTOSdetallado";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDPROYECTO", idparameter));
                     using (var reader = await command.ExecuteReaderAsync())
@@ -984,6 +984,7 @@ namespace Proyectogestionhoras.Services
                                 Monto = reader.IsDBNull(reader.GetOrdinal("Monto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto")),
                                 Estado = reader.IsDBNull(reader.GetOrdinal("Estado")) ? string.Empty : reader.GetString(reader.GetOrdinal("Estado")),
                                 Orden = reader.IsDBNull(reader.GetOrdinal("ORDEN")) ? 0 : reader.GetInt32(reader.GetOrdinal("ORDEN")),
+                                Glosa = reader.IsDBNull(reader.GetOrdinal("Glosa")) ? string.Empty : reader.GetString(reader.GetOrdinal("Glosa")),
                             };
                             flujocaja.Add(datos);
 
