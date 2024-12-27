@@ -169,15 +169,17 @@
             <th>Glosa</th>
         `;
 
-        // Obtener meses únicos y ordenarlos
-        const mesesUnicos = [...new Set(flujoCaja.map(item => `${item.mes}-${item.anio}`))];
-        mesesUnicos.sort((a, b) => new Date(a.split('-')[1], a.split('-')[0] - 1) - new Date(b.split('-')[1], b.split('-')[0] - 1));
+           // Obtener meses únicos en formato MM-AAAA
+            const mesesUnicos = [...new Set(flujoCaja.map(item => `${item.mes}-${item.anio}`))];
 
-        // Agregar columnas de meses
-        mesesUnicos.forEach(mesAnio => {
-            const [mes, anio] = mesAnio.split('-');
-            cabeceraRow.innerHTML += `<th colspan="3">${formatearMes(mes, anio)}</th>`;
-        });
+            // Ordenar los meses
+            mesesUnicos.sort((a, b) => new Date(a.split('-')[1], a.split('-')[0] - 1) - new Date(b.split('-')[1], b.split('-')[0] - 1));
+
+                // Agregar columnas de meses
+                mesesUnicos.forEach(mesAnio => {
+                 // Usar directamente el formato MM-AAAA
+                 cabeceraRow.innerHTML += `<th colspan="3">${mesAnio}</th>`;
+            });
 
         thead.appendChild(cabeceraRow);
 
@@ -210,6 +212,28 @@
             return acc;
         }, {});
 
+            const agrupadosPorGlosa = {};
+
+             // Agrupar montos por glosa, mes y año
+            for (const tipo in gruposPorTipoYCuenta) {
+                const cuentas = gruposPorTipoYCuenta[tipo];
+
+                mesesUnicos.forEach(mesAnio => {
+                 const [mes, anio] = mesAnio.split('-');
+
+                    for (const idCuenta in cuentas) {
+                        cuentas[idCuenta].forEach(item => {
+                            if (item.mes == mes && item.anio == anio) {
+                             const key = `${item.glosa}-${mesAnio}-${item.estado}`;
+                                if (!agrupadosPorGlosa[key]) {
+                                 agrupadosPorGlosa[key] = { glosa: item.glosa, mes: mes, anio: anio, estado: item.estado, monto: 0 };
+                                }
+                            agrupadosPorGlosa[key].monto += item.monto; // Sumar el monto
+                    }
+                             });
+                     }
+                    });
+            }
         for (const tipo in gruposPorTipoYCuenta) {
             const cuentas = gruposPorTipoYCuenta[tipo];
 
@@ -278,24 +302,29 @@
                 }
 
                 // Filas por glosa específicas para esta cuenta
-                itemsCuenta.forEach(item => {
-                    if (item.glosa) {
+                // Filas por glosa específicas para esta cuenta
+                const glosasContadas = new Set(); // Para evitar duplicados
+
+                    itemsCuenta.forEach(item => {
+                    if (item.glosa && !glosasContadas.has(item.glosa)) {
+                        glosasContadas.add(item.glosa); // Marcar la glosa como contada
+
                         const rowGlosa = document.createElement('tr');
                         rowGlosa.innerHTML = `<td></td><td></td><td></td><td>${item.glosa}</td>`;
 
-                        mesesUnicos.forEach(mesAnio => {
-                            const [mes, anio] = mesAnio.split('-');
+                mesesUnicos.forEach(mesAnio => {
+                    const [mes, anio] = mesAnio.split('-');
 
-                            // Obtener el monto específico para cada estado y mes
-                            const montoProyectadoG = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado' && f.glosa === item.glosa)?.monto || 0;
-                            const montoRealG = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Real' && f.glosa === item.glosa)?.monto || 0;
-                            const montoForecastG = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast' && f.glosa === item.glosa)?.monto || 0;
+                    // Obtener el monto específico para cada estado y mes desde el objeto agrupados
+                    const montoProyectadoG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado' && f.glosa === item.glosa)?.monto || 0;
+                    const montoRealG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Real' && f.glosa === item.glosa)?.monto || 0;
+                    const montoForecastG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast' && f.glosa === item.glosa)?.monto || 0;
 
-                            rowGlosa.innerHTML += `<td>${montoProyectadoG}</td><td>${montoRealG}</td><td>${montoForecastG}</td>`;
-                        });
+                    rowGlosa.innerHTML += `<td>${montoProyectadoG}</td><td>${montoRealG}</td><td>${montoForecastG}</td>`;
+                });
 
-                        tbody.appendChild(rowGlosa);
-                    }
+                tbody.appendChild(rowGlosa);
+                         }
                 });
             }
         }
