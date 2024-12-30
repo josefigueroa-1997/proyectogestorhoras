@@ -5,19 +5,19 @@
 }
 <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
 <style>
-  
+
     .dashboard-container {
-        padding: 0; 
-        background-color: transparent; 
+        padding: 0;
+        background-color: transparent;
         margin-top: 50px;
     }
 
 
     .section-content {
-        background-color: #ffffff; 
-        padding: 20px; 
-        margin-bottom: 20px; 
-        border-radius: 10px; 
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 50px;
     }
@@ -34,7 +34,7 @@
         transition: background-color 0.3s, border-color 0.3s;
         height: 100px;
         margin-right: 1rem;
-        justify-content:center;
+        justify-content: center;
     }
 
         .card.new-cliente {
@@ -46,7 +46,7 @@
 
             .card.new-cliente h3 {
                 color: #fcaa67;
-                font-size:18px;
+                font-size: 18px;
             }
 
             .card.new-cliente:hover {
@@ -62,38 +62,36 @@
                     color: #fff;
                 }
 
-
-      
 </style>
 
 
 <h2 style="margin-top: 50px;" class="section-header">Key Indicators</h2>
-        <div class="section-content">
-            <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
+<div class="section-content">
+    <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
         <div class="card new-cliente">
-                    <h3>Facturación</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteNeogiciacionKey","Reporte")">
-        <div class="card new-cliente">
-                    <h3>Proyectos en Negociación</h3>
-                </div>
-            </a>
-            <a href="@Url.Action("ReportehorasSociosProyectos","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
-        <div class="card new-cliente">
-                    <h3>HH-Socios a Proyectos</h3>
-                </div>
-            </a>
-     
+            <h3>Facturación</h3>
         </div>
+
+    </a>
+    <a href="@Url.Action("ReporteNeogiciacionKey","Reporte")">
+        <div class="card new-cliente">
+            <h3>Proyectos en Negociación</h3>
+        </div>
+    </a>
+    <a href="@Url.Action("ReportehorasSociosProyectos","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
+        <div class="card new-cliente">
+            <h3>HH-Socios a Proyectos</h3>
+        </div>
+    </a>
+
+</div>
 <h2 class="section-header">Forecast</h2>
 <div class="section-content">
     <a href="@Url.Action("ReporteForecastIngresos","Reporte")">
         <div class="card new-cliente">
             <h3>Forecast Ingresos</h3>
         </div>
-       
+
     </a>
     <a href="@Url.Action("ReporteForecastCostos","Reporte")">
         <div class="card new-cliente">
@@ -107,139 +105,145 @@
         </div>
 
     </a>
- 
+
 
 
 
 </div>
-        <h2 class="section-header">Facturaciones</h2>
-        <div class="section-content">
-            <a href="@Url.Action("ReportesFactura","Reporte")">
+<h2 class="section-header">Facturaciones</h2>
+<div class="section-content">
+    <a href="@Url.Action("ReportesFactura","Reporte")">
         <div class="card new-cliente">
-                    <h3>Proyección de Facturación</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteMargenProyectos","Reporte")">
-        <div class="card new-cliente">
-                    <h3>Margen de Contribución de Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteProyectosNegociacion","Reporte")">
-        <div class="card new-cliente">
-                    <h3>Proyectos en Negociación</h3>
-                </div>
-
-            </a>
-           <a href="@Url.Action("ReporteResumenQuarter","Reporte",new{anio = DateTime.Now.Year})">
-        <div class="card new-cliente">
-                    <h3>Resumen por Quarter</h3>
-                </div>
-
-            </a>
-    
-       
-
+            <h3>Proyección de Facturación</h3>
         </div>
-        <h2 class="section-header">Reportes HH Asignadas</h2>
-        <div class="section-content">
-            <a href="@Url.Action("ReporteHHSocios","Reporte",new{recurso = "Socio"})">
+
+    </a>
+    <a href="@Url.Action("ReporteMargenProyectos","Reporte")">
         <div class="card new-cliente">
-                    <h3>HH Socios Asignadas a Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteHHStaff","Reporte",new{recurso = "Staff"})">
-        <div class="card new-cliente">
-                    <h3>HH Staff Asignadas a Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteHHConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
-        <div class="card new-cliente">
-                    <h3>HH Cons. A Asignadas a Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteHHConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
-        <div class="card new-cliente">
-                    <h3>HH Cons. B Asignadas a Proyectos</h3>
-                </div>
-
-            </a>
-
-            <a href="@Url.Action("ReporteHHConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
-        <div class="card new-cliente">
-                    <h3>HH Cons. C Asignadas a Proyectos</h3>
-                </div>
-
-            </a>
-
+            <h3>Margen de Contribución de Proyectos</h3>
         </div>
-        <h2 class="section-header">Reportes Costos Asignadas</h2>
-        <div class="section-content">
 
-            <a href="@Url.Action("ReporteCostosSocios","Reporte",new{recurso = "Socio"})">
+    </a>
+    <a href="@Url.Action("ReporteProyectosNegociacion","Reporte")">
         <div class="card new-cliente">
-                    <h3>Costos HH Socios Asignable a Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteCostosStaff","Reporte",new{recurso = "Staff"})">
-        <div class="card new-cliente">
-                    <h3>Costos HH Staff Asignable a Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteCostosConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
-        <div class="card new-cliente">
-                    <h3>Costos HH Cons. A Asignable a Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteCostosConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
-        <div class="card new-cliente">
-                    <h3>Costos HH Cons. B Asignable a Proyectos</h3>
-                </div>
-
-            </a>
-            <a href="@Url.Action("ReporteCostosConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
-        <div class="card new-cliente">
-                    <h3>Costos HH Cons. C Asignable a Proyectos</h3>
-                </div>
-
-            </a>
-
+            <h3>Proyectos en Negociación</h3>
         </div>
-        <h2 class="section-header">Reporte Control Avance HH</h2>
-        <div class="section-content">
-            <a href="@Url.Action("SeleccionarProyecto","Reporte")">
-        <div class="card new-cliente">
-                    <h3>Control Avances HH</h3>
-                </div>
 
-            </a>
-            <a href="@Url.Action("HHsociosActividad","Reporte",new{mes=DateTime.Now.Month})">
+    </a>
+    <a href="@Url.Action("ReporteResumenQuarter","Reporte",new{anio = DateTime.Now.Year})">
         <div class="card new-cliente">
-                    <h3>Actividades Socios</h3>
-                </div>
+            <h3>Resumen por Quarter</h3>
+        </div>
 
-            </a>
-            <a href="@Url.Action("PersonalChoice","Reporte")">
+    </a>
+    <a href="@Url.Action("ReporteResumenCostosProyecto","Reporte")">
         <div class="card new-cliente">
-                    <h3>Detalle HH Personal</h3>
-                </div>
+            <h3>Resumen Costos Proyecto</h3>
+        </div>
 
-            </a>
+    </a>
+
+
+</div>
+
+<h2 class="section-header">Reportes HH Asignadas</h2>
+<div class="section-content">
+    <a href="@Url.Action("ReporteHHSocios","Reporte",new{recurso = "Socio"})">
+        <div class="card new-cliente">
+            <h3>HH Socios Asignadas a Proyectos</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ReporteHHStaff","Reporte",new{recurso = "Staff"})">
+        <div class="card new-cliente">
+            <h3>HH Staff Asignadas a Proyectos</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ReporteHHConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
+        <div class="card new-cliente">
+            <h3>HH Cons. A Asignadas a Proyectos</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ReporteHHConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
+        <div class="card new-cliente">
+            <h3>HH Cons. B Asignadas a Proyectos</h3>
+        </div>
+
+    </a>
+
+    <a href="@Url.Action("ReporteHHConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
+        <div class="card new-cliente">
+            <h3>HH Cons. C Asignadas a Proyectos</h3>
+        </div>
+
+    </a>
+
+</div>
+<h2 class="section-header">Reportes Costos Asignadas</h2>
+<div class="section-content">
+
+    <a href="@Url.Action("ReporteCostosSocios","Reporte",new{recurso = "Socio"})">
+        <div class="card new-cliente">
+            <h3>Costos HH Socios Asignable a Proyectos</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ReporteCostosStaff","Reporte",new{recurso = "Staff"})">
+        <div class="card new-cliente">
+            <h3>Costos HH Staff Asignable a Proyectos</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ReporteCostosConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
+        <div class="card new-cliente">
+            <h3>Costos HH Cons. A Asignable a Proyectos</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ReporteCostosConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
+        <div class="card new-cliente">
+            <h3>Costos HH Cons. B Asignable a Proyectos</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("ReporteCostosConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
+        <div class="card new-cliente">
+            <h3>Costos HH Cons. C Asignable a Proyectos</h3>
+        </div>
+
+    </a>
+
+</div>
+<h2 class="section-header">Reporte Control Avance HH</h2>
+<div class="section-content">
+    <a href="@Url.Action("SeleccionarProyecto","Reporte")">
+        <div class="card new-cliente">
+            <h3>Control Avances HH</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("HHsociosActividad","Reporte",new{mes=DateTime.Now.Month})">
+        <div class="card new-cliente">
+            <h3>Actividades Socios</h3>
+        </div>
+
+    </a>
+    <a href="@Url.Action("PersonalChoice","Reporte")">
+        <div class="card new-cliente">
+            <h3>Detalle HH Personal</h3>
+        </div>
+
+    </a>
     <a href="@Url.Action("ReporteBalanceHoras","Reporte")">
         <div class="card new-cliente">
             <h3>Balance Horas Efectivas</h3>
         </div>
 
     </a>
-    
-        </div>
+
+</div>
 <h2 class="section-header">Base de Datos</h2>
 <div class="section-content">
     <a href="@Url.Action("DescargarBasedeDatos","Reporte")">
@@ -248,12 +252,11 @@
         </div>
 
     </a>
-   
+
 
 
 </div>
-    
 
 
 
-            
+

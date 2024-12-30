@@ -1005,7 +1005,7 @@ namespace Proyectogestionhoras.Services
         }
         public async Task<Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>> ProcesarFlujoCajaPorMesAsync(int? idproyecto)
         {
-            var flujoCaja = await ObtenerFlujoCajaAsync(idproyecto);
+            var flujoCaja = await ObtenerFlujoCajaDetalle(idproyecto);
 
             var diccionario = flujoCaja
                 .GroupBy(f => f.NombreProyecto)
@@ -1072,6 +1072,47 @@ namespace Proyectogestionhoras.Services
 
                 Debug.WriteLine($"Hubo un error al obtener el flujo de caja de los proyectos:{ex.Message}");
                 return new List<FlujoCajaProyectosDTO>();
+
+            }
+        }
+        public async Task<List<ResumenCostosProyectoDTO>> ObtenerResumenCostosProyecto()
+        {
+            try
+            {
+
+                var resumen = new List<ResumenCostosProyectoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "RESUMENCOSTOSPROYECTO";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ResumenCostosProyectoDTO datos = new()
+                            {
+                               
+                                NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                Moneda = reader.IsDBNull(reader.GetOrdinal("MONEDA")) ? string.Empty : reader.GetString(reader.GetOrdinal("MONEDA")),                           
+                                Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                Estado = reader.IsDBNull(reader.GetOrdinal("ESTADO")) ? string.Empty : reader.GetString(reader.GetOrdinal("ESTADO")),
+        
+                            };
+                            resumen.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return resumen;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el resumen de los costos de los proyectos:{ex.Message}");
+                return new List<ResumenCostosProyectoDTO>();
 
             }
         }

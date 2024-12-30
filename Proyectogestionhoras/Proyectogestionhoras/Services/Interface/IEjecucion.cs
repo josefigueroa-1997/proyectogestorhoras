@@ -11,7 +11,7 @@ namespace Proyectogestionhoras.Services.Interface
         public Task GestorGastosHH(int idproyecto, List<GastosHHViewModel> gastosHH);
         public Task<List<GastosRealesDTO>> ObtenerGastosReales(int? idproyecto);
         public Task<List<GastosHHRecursosDTO>> ObtenerGastosHH(int? idproyecto);
-        public Task<List<FlujoCajaDTO>> ObtenerFlujoCajaProyecto(int? idproyecto);
+      
         public Task<List<ProveedorForecastDTO>> ObtenerForecastProveedores(int? idproyecto);
         public  Task<List<ProveedorForecastDTO>> ObtenerForecastIngresos();
     }

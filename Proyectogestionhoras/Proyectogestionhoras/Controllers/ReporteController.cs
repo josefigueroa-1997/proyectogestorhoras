@@ -264,6 +264,17 @@ namespace Proyectogestionhoras.Controllers
             return View(datos);
         }
 
+        public IActionResult ReporteResumenCostosProyecto()
+        {
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> ObtenerCostosProyecto()
+        {
+            var resumen = await _reporteService.ObtenerResumenCostosProyecto();
+            return Json(resumen);
+        }
+
 
         /*EXPORTAR FLUJO DE CAJA*/
         public async Task<IActionResult> ExportarFlujoCaja(int? idproyecto)

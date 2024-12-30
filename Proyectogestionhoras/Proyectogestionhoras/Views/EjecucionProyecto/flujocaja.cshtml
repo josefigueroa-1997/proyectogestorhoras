@@ -472,7 +472,12 @@
             const margenReal = ingresosReal - egresosReal;
             const porcentajeMargen = ingresosReal > 0 ? (margenReal / ingresosReal) * 100 : 0;
 
-            porcentajeMargenRow.innerHTML += `<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td ><td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${porcentajeMargen !== 0 ? porcentajeMargen.toFixed(2) : ''}% </td><td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+            // Mostrar en la tabla HTML
+            porcentajeMargenRow.innerHTML += `<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+                                          <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">
+                                              ${porcentajeMargen !== 0 ? porcentajeMargen.toFixed(2) : ''}%
+                                          </td>
+                                          <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
         });
         const porcentajetotalmargen = totalRealIngresos > 0 ? (totalmargenreal / totalRealIngresos) * 100 : 0;
         porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${porcentajetotalmargen.toFixed(2)}%</td>`;
@@ -501,7 +506,7 @@
                          <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${saldoAcumulado !== 0 ? formatearMiles(saldoAcumulado) : ''}</td>
                         <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
         });
-        const saldoacumuladototal = totalRealIngresos - totalmargenreal;
+        const saldoacumuladototal = totalmargenreal;
         saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${saldoacumuladototal !== 0 ? formatearMiles(saldoacumuladototal) : '' }</td>`;
         tbody.appendChild(saldoAcumuladoRow);
         tabla.appendChild(tbody);
@@ -568,16 +573,34 @@
             for (let j = 0; j < row.cells.length; j++) {
                 const cell = row.cells[j];
                 const excelCell = excelRow.getCell(colIndex);
-
-                const cellText = cell.innerText.replace(/\./g, '').replace(',', '.');
-                if (!isNaN(cellText) && cellText.trim() !== '') {
-                    excelCell.value = parseFloat(cellText); 
+                const rawHtml = cell.innerHTML.trim();
+                let rawText = rawHtml.replace(/<[^>]*>/g, '').trim()
+                const cleanedText = rawText.replace(/\./g, '').replace(',', '.').replace(/\+/g, '').trim();
+                
+                if (rawText.includes('%')) {
+                    const cleanedTextWithoutPercent = cleanedText.replace('%', '').trim(); 
+                    if (!isNaN(cleanedTextWithoutPercent) && cleanedTextWithoutPercent !== '') {
+                        const porcentajeValue = parseFloat(cleanedTextWithoutPercent); 
+                        excelCell.value = porcentajeValue/10000; 
+                        excelCell.numFmt = '0.00%'; 
+                        excelCell.alignment = { vertical: 'middle', horizontal: 'right' }; 
+                    } else {
+                        excelCell.value = rawText; 
+                        excelCell.alignment = { vertical: 'middle', horizontal: 'right' }; 
+                    }
+                } else if (!isNaN(cleanedText) && cleanedText !== '') {
+                    const cellValue = parseFloat(cleanedText);
+                    excelCell.value = cellValue; 
                     excelCell.numFmt = '#,##0'; 
-                    excelCell.alignment = { vertical: 'middle', horizontal: 'right' };
+                    excelCell.alignment = { vertical: 'middle', horizontal: 'right' }; 
                 } else {
-                    excelCell.value = cell.innerText;
-                    excelCell.alignment = { vertical: 'middle', horizontal: 'center' }; 
+                    if (rawText.includes('+')) {
+                        rawText = '';
+                    }
+                    excelCell.value = rawText; 
+                    excelCell.alignment = { vertical: 'middle', horizontal: 'left' }; 
                 }
+                
 
                 if (cell.colSpan > 1) {
                     worksheet.mergeCells(startRow + i, colIndex, startRow + i, colIndex + cell.colSpan - 1);
