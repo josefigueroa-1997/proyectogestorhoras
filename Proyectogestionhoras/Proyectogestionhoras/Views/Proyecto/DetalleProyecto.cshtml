@@ -123,6 +123,11 @@
                         <button id="finish" class="finish-btn" type="submit">Terminar Proyecto</button>
                     </form>
                 }
+                @if (proyecto.Tipo_Status == "Terminado")
+                {
+                    <a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=proyecto.Id})" class="finish-btn">Visualizar Flujo de Caja</a>
+                    
+                }
                 <a href="@Url.Action("ObtenerhistorialNegociaciones", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Ver Historial de Negociación</a>
                 <a href="@Url.Action("ObtenerPresupuestoProyecto", "Proyecto", new { idpresupuesto = proyecto.idpresupuesto,id=proyecto.Id })" class="presupuesto-btn">Ver Presupuesto Proyecto</a>
             </div>
