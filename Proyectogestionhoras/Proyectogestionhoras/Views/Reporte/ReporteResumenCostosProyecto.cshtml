@@ -1,1 +1,171 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Resumen Costos Proyectos";
+}
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Resumen de Costos de Proyectos</h2>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra el coste general de cada proyecto, de acuerdo a los tipo de monedas de los proyectos, separándolos en proyectos en ejecución, negociación, terminados y rechazados.</p>
+</div>
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+
+    <div class="overflow-x-auto relative">
+
+        <div id="tablaresumencostos" class="min-w-full divide-y divide-gray-200"></div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script>
+
+    async function obtenerDatos() {
+        const response = await fetch('/Reporte/ObtenerCostosProyecto');
+        const datos = await response.json();
+        return datos;
+    }
+    function formatearNumero(num) {
+        num = Math.round(num);
+        return num.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function procesarDatos(datos) {
+        const resumen = {};
+        const totalesPorMoneda = {}; 
+
+        datos.forEach(item => {
+            const { nombreProyecto, moneda, monto, estado } = item;
+
+            if (!resumen[nombreProyecto]) {
+                resumen[nombreProyecto] = { moneda, estados: {} };
+            }
+
+            if (!resumen[nombreProyecto].estados[estado]) {
+                resumen[nombreProyecto].estados[estado] = 0;
+            }
+
+            resumen[nombreProyecto].estados[estado] += monto;
+
+      
+            if (!totalesPorMoneda[moneda]) {
+                totalesPorMoneda[moneda] = {};
+            }
+
+            if (!totalesPorMoneda[moneda][estado]) {
+                totalesPorMoneda[moneda][estado] = 0;
+            }
+
+            totalesPorMoneda[moneda][estado] += monto;
+        });
+
+        return { resumen, totalesPorMoneda };
+    }
+
+    function crearTabla({ resumen, totalesPorMoneda }) {
+        const contenedor = document.getElementById("tablaresumencostos");
+        const tabla = document.createElement('table');
+        const cabecera = document.createElement('thead');
+        const cuerpo = document.createElement('tbody');
+
+        // Crear cabecera
+        const encabezados = ['Moneda', 'Nombre Proyecto'];
+        const estados = Object.keys(resumen).reduce((acc, proyecto) => {
+            const estadosDelProyecto = Object.keys(resumen[proyecto].estados);
+            estadosDelProyecto.forEach(estado => {
+                if (!acc.includes(estado)) acc.push(estado);
+            });
+            return acc;
+        }, []);
+
+        encabezados.push(...estados, 'Total General');
+
+        const filaCabecera = document.createElement('tr');
+        filaCabecera.className = 'bg-blue-100';
+        encabezados.forEach(encabezado => {
+            const th = document.createElement('th');
+            th.className = 'text-left text-xs font-medium';
+            th.textContent = encabezado;
+            filaCabecera.appendChild(th);
+        });
+        cabecera.appendChild(filaCabecera);
+
+        // Crear cuerpo de la tabla
+        let ultimaMonedaProcesada = null; 
+        let filasCuerpo = []; 
+
+        Object.keys(resumen).forEach(proyecto => {
+            const filaCuerpo = document.createElement('tr');
+
+            filaCuerpo.appendChild(crearCelda(resumen[proyecto].moneda, "text-left text-xs font-medium")); 
+            filaCuerpo.appendChild(crearCelda(proyecto, "text-left text-xs font-medium")); 
+
+            let totalGeneral = 0; 
+
+            estados.forEach(estado => {
+                const monto = resumen[proyecto].estados[estado] || 0;
+                filaCuerpo.appendChild(crearCelda(monto === 0 ? "" : formatearNumero(monto), "text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]")); // Añadir monto por estado
+                totalGeneral += monto; 
+            });
+
+            filaCuerpo.appendChild(crearCelda(totalGeneral === 0 ? "" : formatearNumero(totalGeneral), "text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]"));// Añadir el total general a la fila
+            filasCuerpo.push(filaCuerpo); 
+        });
+
+        // Agregar las filas al cuerpo y luego las filas de totales
+        for (let i = 0; i < filasCuerpo.length; i++) {
+            const fila = filasCuerpo[i];
+            const monedaActual = fila.cells[0].textContent; 
+
+            cuerpo.appendChild(fila); 
+
+            
+            if (i === filasCuerpo.length - 1 || (i < filasCuerpo.length - 1 && filasCuerpo[i + 1].cells[0].textContent !== monedaActual)) {
+                agregarFilaTotales(cuerpo, monedaActual, totalesPorMoneda, estados);
+            }
+        }
+
+        tabla.appendChild(cabecera);
+        tabla.appendChild(cuerpo);
+
+        contenedor.appendChild(tabla); 
+    }
+
+    function agregarFilaTotales(cuerpo, moneda, totalesPorMoneda, estados) {
+        const filaTotales = document.createElement('tr');
+        filaTotales.className = "bg-yellow-100";
+        filaTotales.appendChild(crearCelda("Total " + moneda, "text-left text-xs font-bold")); 
+        filaTotales.appendChild(crearCelda("")); 
+
+        let totalGeneralMoneda = 0; 
+
+        // Iterar sobre los estados y agregar los totales correspondientes
+        estados.forEach(estado => {
+            const totalMonto = totalesPorMoneda[moneda][estado] || 0;
+            filaTotales.appendChild(crearCelda(totalMonto === 0 ? "" : formatearNumero(totalMonto), "text-xs font-bold text-right border border-black px-4 py-2 min-w-[150px]")); // Añadir el total en la columna correspondiente
+            totalGeneralMoneda += totalMonto;
+        });
+
+        filaTotales.appendChild(crearCelda(totalGeneralMoneda === 0 ? "" : formatearNumero(totalGeneralMoneda), "text-xs  font-bold text-right border border-black px-4 py-2 min-w-[150px]"));  // Añadir el total general a la fila de totales
+        cuerpo.appendChild(filaTotales); 
+    }
+
+    function crearCelda(contenido, clase = "") {
+        const td = document.createElement('td');
+        td.textContent = contenido;
+        if (clase) {
+            td.className = clase; 
+        }
+        return td;
+    }
+
+    async function init() {
+        const datos = await obtenerDatos();
+        const { resumen, totalesPorMoneda } = procesarDatos(datos); 
+        crearTabla({ resumen, totalesPorMoneda }); 
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+
+</script>

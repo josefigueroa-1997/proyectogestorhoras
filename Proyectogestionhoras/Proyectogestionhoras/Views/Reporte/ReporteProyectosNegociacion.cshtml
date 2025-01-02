@@ -126,7 +126,7 @@
 
                         fechasOrdenadas.forEach(mesAnio => {
                             const totalMes = totalPorMes[mesAnio] || 0;
-                            const td = $('<td class="text-left text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]"></td>').html(`${formatearNumero(totalMes)}`);
+                            const td = $('<td class="text-xs font-medium text-right border border-black px-4 py-2 min-w-[150px]"></td>').html(`${formatearNumero(totalMes)}`);
                             filaTotal.append(td);
                         });
 
