@@ -1,0 +1,567 @@
+2025-01-03 10:33:50.253 -03:00 [INF] User profile is available. Using 'C:\Users\pepef\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 10:33:51.039 -03:00 [INF] Now listening on: https://localhost:7297
+2025-01-03 10:33:51.039 -03:00 [INF] Now listening on: http://localhost:5295
+2025-01-03 10:33:51.041 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 10:33:51.041 -03:00 [INF] Hosting environment: Development
+2025-01-03 10:33:51.042 -03:00 [INF] Content root path: C:\Users\pepef\Desktop\proyecto gestion\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-01-03 10:33:54.071 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:33:54.388 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:33:54.492 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:33:54.808 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-01-03 10:33:54.812 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 315.4732ms
+2025-01-03 10:33:54.812 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:33:54.831 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 772.9006ms
+2025-01-03 10:33:54.865 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-01-03 10:33:54.875 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:33:54.877 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:33:54.898 -03:00 [INF] Executing ViewResult, running view Login.
+2025-01-03 10:33:55.217 -03:00 [INF] Executed ViewResult - view Login executed in 328.3047ms.
+2025-01-03 10:33:55.218 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 340.6635ms
+2025-01-03 10:33:55.218 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:33:55.224 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-01-03 10:33:55.224 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-01-03 10:33:55.226 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 361.2866ms
+2025-01-03 10:33:55.245 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-01-03 10:33:55.268 -03:00 [INF] The file /css/login.css was not modified
+2025-01-03 10:33:55.281 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 304 null text/css 36.6123ms
+2025-01-03 10:34:20.915 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundary447fLLwnvACuy1YO 243
+2025-01-03 10:34:20.923 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:34:20.938 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:34:22.191 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:34:24.652 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-01-03 10:34:24.653 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 3714.1614ms
+2025-01-03 10:34:24.653 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:34:24.657 -03:00 [INF] Session started; Key:de67e438-247f-c26e-54e2-dde59cb097de, Id:6b661658-9d6d-e3ec-0e2f-46ed28e851c1
+2025-01-03 10:34:24.666 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 3751.2401ms
+2025-01-03 10:34:24.667 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:34:24.675 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:34:24.675 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:34:24.690 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:34:24.972 -03:00 [INF] Executing ViewResult, running view Index.
+2025-01-03 10:34:25.118 -03:00 [INF] Executed ViewResult - view Index executed in 147.6249ms.
+2025-01-03 10:34:25.122 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 446.3797ms
+2025-01-03 10:34:25.123 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:34:25.127 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 460.0682ms
+2025-01-03 10:34:25.128 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-01-03 10:34:25.128 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo.PNG - null null
+2025-01-03 10:34:25.129 -03:00 [INF] The file /images/logo.PNG was not modified
+2025-01-03 10:34:25.129 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo.PNG - 304 null image/png 0.951ms
+2025-01-03 10:34:25.130 -03:00 [INF] The file /css/layout.css was not modified
+2025-01-03 10:34:25.130 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 304 null text/css 1.7512ms
+2025-01-03 10:34:25.143 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:34:25.143 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-01-03 10:34:25.144 -03:00 [INF] The file /css/index.css was not modified
+2025-01-03 10:34:25.144 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 304 null text/css 1.0294ms
+2025-01-03 10:34:25.150 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 7.6115ms
+2025-01-03 10:34:25.166 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:34:25.273 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 107.539ms
+2025-01-03 10:34:27.136 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - null null
+2025-01-03 10:34:27.139 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:34:27.145 -03:00 [INF] Route matched with {action = "NuevoProyecto", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] NuevoProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:34:27.233 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:34:27.621 -03:00 [INF] Executed DbCommand (128ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[ANIO], [t].[CANTIDAD], [t].[TIPO_RECURSO], [t].[TOTAL_HH_ANUALES], [t].[TOTALINMODIFICABLE]
+FROM [TOTAL_RECURSOS] AS [t]
+WHERE [t].[ANIO] = DATEPART(year, GETDATE())
+2025-01-03 10:34:28.314 -03:00 [INF] Executed DbCommand (122ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_RECURSO], [c].[VALOR]
+FROM [COSTO_PROMEDIO] AS [c]
+2025-01-03 10:34:28.721 -03:00 [INF] Executed DbCommand (122ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID] AS [Id], [s].[NOMBRE] AS [Nombre], [s].[TIPO_SEGMENTO] AS [TipoSegmento]
+FROM [SEGMENTO] AS [s]
+2025-01-03 10:34:28.852 -03:00 [INF] Executed DbCommand (121ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[CIUDAD], [c].[DIRECCION], [c].[ID_CLIENTE], [c].[INSTAGRAM], [c].[LINKEDIN], [c].[NOMBRE], [c].[PAG_WEB], [c].[PAIS], [c].[TELEFONO], [c].[TIPOCLIENTE]
+FROM [CLIENTE] AS [c]
+2025-01-03 10:34:28.893 -03:00 [INF] Executing ViewResult, running view NuevoProyecto.
+2025-01-03 10:34:29.043 -03:00 [INF] Executed ViewResult - view NuevoProyecto executed in 150.1824ms.
+2025-01-03 10:34:29.044 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras) in 1898.9182ms
+2025-01-03 10:34:29.044 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:34:29.044 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - 200 null text/html; charset=utf-8 1908.5457ms
+2025-01-03 10:34:29.227 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:34:29.227 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:34:29.231 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 2.7081ms
+2025-01-03 10:34:29.306 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - null null
+2025-01-03 10:34:29.306 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - null null
+2025-01-03 10:34:29.306 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - null null
+2025-01-03 10:34:29.308 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 80.7377ms
+2025-01-03 10:34:29.318 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:34:29.318 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:34:29.318 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:34:29.319 -03:00 [INF] Route matched with {action = "ObtenerUltimoNumProyecto", controller = "Proyecto"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ObtenerUltimoNumProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:34:29.321 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:34:29.322 -03:00 [INF] Route matched with {action = "ObtenerGastos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerGastos() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:34:29.324 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:34:29.334 -03:00 [INF] Route matched with {action = "ObtenerServicios", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerServicios() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:34:29.338 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:34:29.470 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:34:29.588 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:34:29.589 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras) in 266.9665ms
+2025-01-03 10:34:29.589 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:34:29.590 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - 200 null application/json; charset=utf-8 283.3289ms
+2025-01-03 10:34:29.591 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras) in 257.0315ms
+2025-01-03 10:34:29.591 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:34:29.591 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - 200 null application/json; charset=utf-8 285.1917ms
+2025-01-03 10:34:30.118 -03:00 [INF] Executed DbCommand (154ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[NUM_PROYECTO]
+FROM [PROYECTO] AS [p]
+ORDER BY [p].[ID] DESC
+2025-01-03 10:34:30.121 -03:00 [INF] Executing JsonResult, writing value of type 'System.String'.
+2025-01-03 10:34:30.124 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras) in 804.464ms
+2025-01-03 10:34:30.124 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:34:30.124 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - 200 null application/json; charset=utf-8 817.767ms
+2025-01-03 10:35:14.697 -03:00 [INF] User profile is available. Using 'C:\Users\pepef\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 10:35:15.102 -03:00 [INF] Now listening on: https://localhost:7297
+2025-01-03 10:35:15.102 -03:00 [INF] Now listening on: http://localhost:5295
+2025-01-03 10:35:15.104 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 10:35:15.104 -03:00 [INF] Hosting environment: Development
+2025-01-03 10:35:15.104 -03:00 [INF] Content root path: C:\Users\pepef\Desktop\proyecto gestion\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-01-03 10:35:15.550 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:35:15.707 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:35:15.748 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:35:15.977 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-01-03 10:35:15.980 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 228.8675ms
+2025-01-03 10:35:15.981 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:35:15.986 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 440.4336ms
+2025-01-03 10:35:15.991 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-01-03 10:35:15.997 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:35:15.999 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:35:16.014 -03:00 [INF] Executing ViewResult, running view Login.
+2025-01-03 10:35:16.136 -03:00 [INF] Executed ViewResult - view Login executed in 127.2281ms.
+2025-01-03 10:35:16.137 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 138.591ms
+2025-01-03 10:35:16.138 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:35:16.141 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-01-03 10:35:16.143 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-01-03 10:35:16.147 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 156.3763ms
+2025-01-03 10:35:36.697 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryQf2kYcPjH4Ps6Tdb 243
+2025-01-03 10:35:36.712 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:35:36.728 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:35:37.885 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:35:39.726 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-01-03 10:35:39.728 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2999.9113ms
+2025-01-03 10:35:39.729 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:35:39.733 -03:00 [INF] Session started; Key:d380a5b7-ae7d-79eb-e11a-88f43f76ed06, Id:b78c768b-24f0-3331-cc31-05e4df29bff5
+2025-01-03 10:35:39.743 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 3045.7371ms
+2025-01-03 10:35:39.744 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:35:39.749 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:35:39.749 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:35:39.767 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:35:40.077 -03:00 [INF] Executing ViewResult, running view Index.
+2025-01-03 10:35:40.120 -03:00 [INF] Executed ViewResult - view Index executed in 44.1687ms.
+2025-01-03 10:35:40.144 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 395.0219ms
+2025-01-03 10:35:40.144 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:35:40.146 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 401.7071ms
+2025-01-03 10:35:40.186 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:35:40.198 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 11.7684ms
+2025-01-03 10:35:40.200 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:35:40.259 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 58.8376ms
+2025-01-03 10:35:41.504 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - null null
+2025-01-03 10:35:41.516 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:35:41.550 -03:00 [INF] Route matched with {action = "NuevoProyecto", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] NuevoProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:35:41.614 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:35:42.108 -03:00 [INF] Executed DbCommand (127ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[ANIO], [t].[CANTIDAD], [t].[TIPO_RECURSO], [t].[TOTAL_HH_ANUALES], [t].[TOTALINMODIFICABLE]
+FROM [TOTAL_RECURSOS] AS [t]
+WHERE [t].[ANIO] = DATEPART(year, GETDATE())
+2025-01-03 10:35:42.799 -03:00 [INF] Executed DbCommand (121ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_RECURSO], [c].[VALOR]
+FROM [COSTO_PROMEDIO] AS [c]
+2025-01-03 10:35:43.198 -03:00 [INF] Executed DbCommand (121ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID] AS [Id], [s].[NOMBRE] AS [Nombre], [s].[TIPO_SEGMENTO] AS [TipoSegmento]
+FROM [SEGMENTO] AS [s]
+2025-01-03 10:35:43.333 -03:00 [INF] Executed DbCommand (121ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[CIUDAD], [c].[DIRECCION], [c].[ID_CLIENTE], [c].[INSTAGRAM], [c].[LINKEDIN], [c].[NOMBRE], [c].[PAG_WEB], [c].[PAIS], [c].[TELEFONO], [c].[TIPOCLIENTE]
+FROM [CLIENTE] AS [c]
+2025-01-03 10:35:43.414 -03:00 [INF] Executing ViewResult, running view NuevoProyecto.
+2025-01-03 10:35:43.617 -03:00 [INF] Executed ViewResult - view NuevoProyecto executed in 203.6694ms.
+2025-01-03 10:35:43.617 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras) in 2067.3685ms
+2025-01-03 10:35:43.617 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:35:43.618 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - 200 null text/html; charset=utf-8 2113.8261ms
+2025-01-03 10:35:43.780 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:35:43.782 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:35:43.786 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 6.3649ms
+2025-01-03 10:35:43.809 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 28.6085ms
+2025-01-03 10:35:43.815 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - null null
+2025-01-03 10:35:43.823 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - null null
+2025-01-03 10:35:43.825 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - null null
+2025-01-03 10:35:43.843 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:35:43.843 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:35:43.843 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:35:43.845 -03:00 [INF] Route matched with {action = "ObtenerUltimoNumProyecto", controller = "Proyecto"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ObtenerUltimoNumProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:35:43.846 -03:00 [INF] Route matched with {action = "ObtenerServicios", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerServicios() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:35:43.846 -03:00 [INF] Route matched with {action = "ObtenerGastos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerGastos() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:35:43.847 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:35:43.849 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:35:43.849 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:35:43.978 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:35:44.066 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras) in 219.7986ms
+2025-01-03 10:35:44.067 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:35:44.067 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - 200 null application/json; charset=utf-8 252.2923ms
+2025-01-03 10:35:44.097 -03:00 [INF] Executed DbCommand (122ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[NUM_PROYECTO]
+FROM [PROYECTO] AS [p]
+ORDER BY [p].[ID] DESC
+2025-01-03 10:35:44.101 -03:00 [INF] Executing JsonResult, writing value of type 'System.String'.
+2025-01-03 10:35:44.103 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras) in 257.9992ms
+2025-01-03 10:35:44.103 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:35:44.103 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - 200 null application/json; charset=utf-8 282.7436ms
+2025-01-03 10:35:44.478 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:35:44.481 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras) in 634.507ms
+2025-01-03 10:35:44.481 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:35:44.481 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - 200 null application/json; charset=utf-8 656.4542ms
+2025-01-03 10:36:17.527 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/Getcodigoccosto?idcosto=2&idunegocio=1 - null null
+2025-01-03 10:36:17.527 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerValoresConsultores?idcosto=2&idunegocio=1 - null null
+2025-01-03 10:36:17.536 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/GetValoresFactura?idcosto=2&idunegocio=1 - null null
+2025-01-03 10:36:17.536 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerValoresHonorarios?idcosto=2&idunegocio=1&idrecurso=94 - null null
+2025-01-03 10:36:17.538 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.Getcodigoccosto (Proyectogestionhoras)'
+2025-01-03 10:36:17.538 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetValoresFactura (Proyectogestionhoras)'
+2025-01-03 10:36:17.538 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresConsultores (Proyectogestionhoras)'
+2025-01-03 10:36:17.540 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresHonorarios (Proyectogestionhoras)'
+2025-01-03 10:36:17.542 -03:00 [INF] Route matched with {action = "Getcodigoccosto", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Getcodigoccosto(Int32, Int32) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:36:17.542 -03:00 [INF] Route matched with {action = "GetValoresFactura", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetValoresFactura(Int32, Int32) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:36:17.542 -03:00 [INF] Route matched with {action = "ObtenerValoresConsultores", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerValoresConsultores(Int32, Int32) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:36:17.544 -03:00 [INF] Route matched with {action = "ObtenerValoresHonorarios", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerValoresHonorarios(Int32, Int32, Int32) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:36:17.547 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:36:17.547 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:36:17.547 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:36:17.548 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:36:17.687 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.FacturaDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:36:17.687 -03:00 [INF] Executing JsonResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.ConsultoresDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:36:17.692 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresConsultores (Proyectogestionhoras) in 149.8368ms
+2025-01-03 10:36:17.692 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresConsultores (Proyectogestionhoras)'
+2025-01-03 10:36:17.692 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerValoresConsultores?idcosto=2&idunegocio=1 - 200 null application/json; charset=utf-8 164.9604ms
+2025-01-03 10:36:17.693 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.GetValoresFactura (Proyectogestionhoras) in 150.937ms
+2025-01-03 10:36:17.693 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetValoresFactura (Proyectogestionhoras)'
+2025-01-03 10:36:17.693 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/GetValoresFactura?idcosto=2&idunegocio=1 - 200 null application/json; charset=utf-8 157.0418ms
+2025-01-03 10:36:18.324 -03:00 [INF] Executing JsonResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.HonorariosDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:36:18.327 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresHonorarios (Proyectogestionhoras) in 783.4937ms
+2025-01-03 10:36:18.328 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresHonorarios (Proyectogestionhoras)'
+2025-01-03 10:36:18.328 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerValoresHonorarios?idcosto=2&idunegocio=1&idrecurso=94 - 200 null application/json; charset=utf-8 791.8026ms
+2025-01-03 10:36:18.342 -03:00 [INF] Executing JsonResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.CcostoUnegocio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:36:18.375 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.Getcodigoccosto (Proyectogestionhoras) in 833.0482ms
+2025-01-03 10:36:18.375 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.Getcodigoccosto (Proyectogestionhoras)'
+2025-01-03 10:36:18.375 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/Getcodigoccosto?idcosto=2&idunegocio=1 - 200 null application/json; charset=utf-8 847.8865ms
+2025-01-03 10:36:18.379 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerValoresHonorarios?idcosto=2&idunegocio=1&idrecurso=94 - null null
+2025-01-03 10:36:18.380 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresHonorarios (Proyectogestionhoras)'
+2025-01-03 10:36:18.380 -03:00 [INF] Route matched with {action = "ObtenerValoresHonorarios", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerValoresHonorarios(Int32, Int32, Int32) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:36:18.381 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:36:18.537 -03:00 [INF] Executing JsonResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.HonorariosDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:36:18.538 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresHonorarios (Proyectogestionhoras) in 157.8407ms
+2025-01-03 10:36:18.538 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerValoresHonorarios (Proyectogestionhoras)'
+2025-01-03 10:36:18.539 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerValoresHonorarios?idcosto=2&idunegocio=1&idrecurso=94 - 200 null application/json; charset=utf-8 159.1602ms
+2025-01-03 10:36:52.698 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/GetValoresGastosEdicion?idcosto=2&unegocio=1&idgasto=12 - null null
+2025-01-03 10:36:52.699 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetValoresGastosEdicion (Proyectogestionhoras)'
+2025-01-03 10:36:52.703 -03:00 [INF] Route matched with {action = "GetValoresGastosEdicion", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetValoresGastosEdicion(Int32, Int32, Int32) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:36:52.707 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:36:52.873 -03:00 [INF] Executing JsonResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.GastoDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:36:52.885 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.GetValoresGastosEdicion (Proyectogestionhoras) in 181.4646ms
+2025-01-03 10:36:52.885 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetValoresGastosEdicion (Proyectogestionhoras)'
+2025-01-03 10:36:52.887 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/GetValoresGastosEdicion?idcosto=2&unegocio=1&idgasto=12 - 200 null application/json; charset=utf-8 187.8519ms
+2025-01-03 10:40:56.040 -03:00 [INF] User profile is available. Using 'C:\Users\pepef\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 10:40:56.447 -03:00 [INF] Now listening on: https://localhost:7297
+2025-01-03 10:40:56.447 -03:00 [INF] Now listening on: http://localhost:5295
+2025-01-03 10:40:56.448 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 10:40:56.449 -03:00 [INF] Hosting environment: Development
+2025-01-03 10:40:56.449 -03:00 [INF] Content root path: C:\Users\pepef\Desktop\proyecto gestion\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-01-03 10:40:56.788 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:40:56.968 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:40:57.002 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:40:57.177 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-01-03 10:40:57.182 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 175.9491ms
+2025-01-03 10:40:57.183 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:40:57.191 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 408.9684ms
+2025-01-03 10:40:57.199 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-01-03 10:40:57.213 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:40:57.215 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:40:57.230 -03:00 [INF] Executing ViewResult, running view Login.
+2025-01-03 10:40:57.347 -03:00 [INF] Executed ViewResult - view Login executed in 122.078ms.
+2025-01-03 10:40:57.347 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 131.4579ms
+2025-01-03 10:40:57.347 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:40:57.349 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-01-03 10:40:57.350 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-01-03 10:40:57.353 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 154.1367ms
+2025-01-03 10:41:06.052 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryBSKdfFuJdMLPuS2W 243
+2025-01-03 10:41:06.061 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:41:06.077 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:41:07.139 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:41:08.899 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-01-03 10:41:08.900 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2822.7505ms
+2025-01-03 10:41:08.900 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:41:08.903 -03:00 [INF] Session started; Key:3040990e-97fe-3498-56e5-ab7d0fdefbf3, Id:1a259e00-9208-918d-057a-ec24303e600c
+2025-01-03 10:41:08.910 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2858.2362ms
+2025-01-03 10:41:08.912 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:41:08.916 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:41:08.916 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:41:08.932 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:41:09.220 -03:00 [INF] Executing ViewResult, running view Index.
+2025-01-03 10:41:09.323 -03:00 [INF] Executed ViewResult - view Index executed in 104.5205ms.
+2025-01-03 10:41:09.325 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 408.8978ms
+2025-01-03 10:41:09.325 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:41:09.327 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 414.9219ms
+2025-01-03 10:41:09.337 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:41:09.354 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 15.8328ms
+2025-01-03 10:41:09.360 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:41:09.404 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 43.6055ms
+2025-01-03 10:41:25.903 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - null null
+2025-01-03 10:41:25.908 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:41:25.912 -03:00 [INF] Route matched with {action = "NuevoProyecto", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] NuevoProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:41:25.986 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:41:26.396 -03:00 [INF] Executed DbCommand (127ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[ANIO], [t].[CANTIDAD], [t].[TIPO_RECURSO], [t].[TOTAL_HH_ANUALES], [t].[TOTALINMODIFICABLE]
+FROM [TOTAL_RECURSOS] AS [t]
+WHERE [t].[ANIO] = DATEPART(year, GETDATE())
+2025-01-03 10:41:27.101 -03:00 [INF] Executed DbCommand (122ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_RECURSO], [c].[VALOR]
+FROM [COSTO_PROMEDIO] AS [c]
+2025-01-03 10:41:27.513 -03:00 [INF] Executed DbCommand (123ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID] AS [Id], [s].[NOMBRE] AS [Nombre], [s].[TIPO_SEGMENTO] AS [TipoSegmento]
+FROM [SEGMENTO] AS [s]
+2025-01-03 10:41:27.646 -03:00 [INF] Executed DbCommand (121ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[CIUDAD], [c].[DIRECCION], [c].[ID_CLIENTE], [c].[INSTAGRAM], [c].[LINKEDIN], [c].[NOMBRE], [c].[PAG_WEB], [c].[PAIS], [c].[TELEFONO], [c].[TIPOCLIENTE]
+FROM [CLIENTE] AS [c]
+2025-01-03 10:41:27.687 -03:00 [INF] Executing ViewResult, running view NuevoProyecto.
+2025-01-03 10:41:27.812 -03:00 [INF] Executed ViewResult - view NuevoProyecto executed in 125.4079ms.
+2025-01-03 10:41:27.813 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras) in 1900.3829ms
+2025-01-03 10:41:27.813 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:41:27.813 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - 200 null text/html; charset=utf-8 1909.8712ms
+2025-01-03 10:41:28.000 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:41:28.000 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:41:28.002 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 2.0381ms
+2025-01-03 10:41:28.056 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - null null
+2025-01-03 10:41:28.060 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - null null
+2025-01-03 10:41:28.065 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - null null
+2025-01-03 10:41:28.069 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 68.679ms
+2025-01-03 10:41:28.069 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:41:28.069 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:41:28.069 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:41:28.070 -03:00 [INF] Route matched with {action = "ObtenerUltimoNumProyecto", controller = "Proyecto"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ObtenerUltimoNumProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:41:28.072 -03:00 [INF] Route matched with {action = "ObtenerServicios", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerServicios() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:41:28.072 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:41:28.074 -03:00 [INF] Route matched with {action = "ObtenerGastos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerGastos() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:41:28.075 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:41:28.079 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:41:28.205 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:41:28.286 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras) in 213.4137ms
+2025-01-03 10:41:28.286 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:41:28.286 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - 200 null application/json; charset=utf-8 230.0089ms
+2025-01-03 10:41:28.324 -03:00 [INF] Executed DbCommand (122ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[NUM_PROYECTO]
+FROM [PROYECTO] AS [p]
+ORDER BY [p].[ID] DESC
+2025-01-03 10:41:28.328 -03:00 [INF] Executing JsonResult, writing value of type 'System.String'.
+2025-01-03 10:41:28.329 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras) in 258.393ms
+2025-01-03 10:41:28.329 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:41:28.329 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - 200 null application/json; charset=utf-8 264.4921ms
+2025-01-03 10:41:28.859 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:41:28.862 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras) in 788.0118ms
+2025-01-03 10:41:28.862 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:41:28.863 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - 200 null application/json; charset=utf-8 802.8326ms
+2025-01-03 10:41:34.895 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-01-03 10:41:34.900 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-01-03 10:41:34.904 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-01-03 10:41:34.906 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-01-03 10:41:34.916 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 11.2743ms.
+2025-01-03 10:41:34.917 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 12.4409ms
+2025-01-03 10:41:34.917 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-01-03 10:41:34.917 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 21.4905ms
+2025-01-03 10:41:34.926 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:41:34.926 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:41:34.927 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 1.3832ms
+2025-01-03 10:41:34.954 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 28.1479ms
+2025-01-03 10:41:51.226 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReportehorasSociosProyectos?mes=1&anio=2025 - null null
+2025-01-03 10:41:51.249 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReportehorasSociosProyectos (Proyectogestionhoras)'
+2025-01-03 10:41:51.253 -03:00 [INF] Route matched with {action = "ReportehorasSociosProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReportehorasSociosProyectos(Int32, Int32) on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-01-03 10:41:51.259 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:41:51.597 -03:00 [INF] Executing ViewResult, running view recuperarhoras.
+2025-01-03 10:41:51.640 -03:00 [INF] Executed ViewResult - view recuperarhoras executed in 44.6489ms.
+2025-01-03 10:41:51.640 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReportehorasSociosProyectos (Proyectogestionhoras) in 387.3273ms
+2025-01-03 10:41:51.641 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReportehorasSociosProyectos (Proyectogestionhoras)'
+2025-01-03 10:41:51.641 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReportehorasSociosProyectos?mes=1&anio=2025 - 200 null text/html; charset=utf-8 414.8666ms
+2025-01-03 10:41:51.651 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:41:51.651 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:41:51.654 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 3.7465ms
+2025-01-03 10:41:51.677 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 26.4243ms
+2025-01-03 10:42:08.643 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:42:08.646 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 3.8648ms
+2025-01-03 10:42:08.751 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:42:08.753 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 1.419ms
+2025-01-03 10:42:08.938 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - null null
+2025-01-03 10:42:08.938 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:42:08.938 -03:00 [INF] Route matched with {action = "ObtenerServicios", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerServicios() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:42:08.941 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - null null
+2025-01-03 10:42:08.941 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - null null
+2025-01-03 10:42:08.941 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:42:08.941 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:42:08.941 -03:00 [INF] Route matched with {action = "ObtenerUltimoNumProyecto", controller = "Proyecto"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ObtenerUltimoNumProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:42:08.945 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:42:08.945 -03:00 [INF] Route matched with {action = "ObtenerGastos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerGastos() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:42:08.956 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:42:08.956 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:42:09.084 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:42:09.084 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras) in 139.1097ms
+2025-01-03 10:42:09.084 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:42:09.085 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - 200 null application/json; charset=utf-8 143.8655ms
+2025-01-03 10:42:09.113 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:42:09.114 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras) in 175.2948ms
+2025-01-03 10:42:09.114 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:42:09.114 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - 200 null application/json; charset=utf-8 176.2052ms
+2025-01-03 10:42:09.731 -03:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[NUM_PROYECTO]
+FROM [PROYECTO] AS [p]
+ORDER BY [p].[ID] DESC
+2025-01-03 10:42:09.732 -03:00 [INF] Executing JsonResult, writing value of type 'System.String'.
+2025-01-03 10:42:09.732 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras) in 790.3461ms
+2025-01-03 10:42:09.732 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:42:09.732 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - 200 null application/json; charset=utf-8 790.9994ms
+2025-01-03 10:42:11.043 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-01-03 10:42:11.046 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-01-03 10:42:11.046 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-01-03 10:42:11.049 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-01-03 10:42:11.051 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 2.8967ms.
+2025-01-03 10:42:11.052 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 5.4648ms
+2025-01-03 10:42:11.052 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-01-03 10:42:11.052 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 9.5194ms
+2025-01-03 10:42:11.062 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:42:11.062 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:42:11.063 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 1.3199ms
+2025-01-03 10:42:11.086 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 24.1239ms
+2025-01-03 10:42:12.403 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/recuperarcuotas?mes=1&anio=2025 - null null
+2025-01-03 10:42:12.406 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.recuperarcuotas (Proyectogestionhoras)'
+2025-01-03 10:42:12.414 -03:00 [INF] Route matched with {action = "recuperarcuotas", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] recuperarcuotas(Int32, Int32) on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-01-03 10:42:12.418 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:42:12.808 -03:00 [INF] Executing ViewResult, running view recuperarcuotas.
+2025-01-03 10:42:12.823 -03:00 [INF] Executed ViewResult - view recuperarcuotas executed in 15.0869ms.
+2025-01-03 10:42:12.823 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.recuperarcuotas (Proyectogestionhoras) in 409.0023ms
+2025-01-03 10:42:12.823 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.recuperarcuotas (Proyectogestionhoras)'
+2025-01-03 10:42:12.823 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/recuperarcuotas?mes=1&anio=2025 - 200 null text/html; charset=utf-8 420.4017ms
+2025-01-03 10:42:12.832 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:42:12.832 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:42:12.845 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 13.1049ms
+2025-01-03 10:42:12.858 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 25.7573ms
+2025-01-03 10:53:17.670 -03:00 [INF] User profile is available. Using 'C:\Users\pepef\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 10:53:18.261 -03:00 [INF] Now listening on: https://localhost:7297
+2025-01-03 10:53:18.261 -03:00 [INF] Now listening on: http://localhost:5295
+2025-01-03 10:53:18.263 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 10:53:18.264 -03:00 [INF] Hosting environment: Development
+2025-01-03 10:53:18.264 -03:00 [INF] Content root path: C:\Users\pepef\Desktop\proyecto gestion\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-01-03 10:53:19.107 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:53:19.406 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:53:19.451 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:53:19.627 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-01-03 10:53:19.630 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 176.1646ms
+2025-01-03 10:53:19.630 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:53:19.635 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 534.3198ms
+2025-01-03 10:53:19.707 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-01-03 10:53:19.716 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:53:19.724 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:53:19.738 -03:00 [INF] Executing ViewResult, running view Login.
+2025-01-03 10:53:19.854 -03:00 [INF] Executed ViewResult - view Login executed in 122.5081ms.
+2025-01-03 10:53:19.855 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 131.1278ms
+2025-01-03 10:53:19.855 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:53:19.857 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-01-03 10:53:19.858 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-01-03 10:53:19.859 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 151.5761ms
+2025-01-03 10:53:24.742 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryZBm5u21e1wP4BAoP 243
+2025-01-03 10:53:24.751 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:53:24.761 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-01-03 10:53:25.736 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:27.686 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-01-03 10:53:27.688 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2926.5058ms
+2025-01-03 10:53:27.689 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-01-03 10:53:27.692 -03:00 [INF] Session started; Key:e3f0da66-b2ef-8517-4cac-b22876e4ecb8, Id:3a7e9977-8bfe-1be3-2972-55b38637155f
+2025-01-03 10:53:27.701 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2959.0263ms
+2025-01-03 10:53:27.702 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:53:27.706 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:53:27.706 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:53:27.728 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:28.086 -03:00 [INF] Executing ViewResult, running view Index.
+2025-01-03 10:53:28.182 -03:00 [INF] Executed ViewResult - view Index executed in 97.1634ms.
+2025-01-03 10:53:28.194 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:53:28.194 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 488.4498ms
+2025-01-03 10:53:28.194 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:53:28.196 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 494.2473ms
+2025-01-03 10:53:28.203 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 9.5841ms
+2025-01-03 10:53:28.257 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:53:28.302 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 44.6768ms
+2025-01-03 10:53:30.856 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/SeleccionarProyecto?statusproyecto=2 - null null
+2025-01-03 10:53:30.867 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras)'
+2025-01-03 10:53:30.872 -03:00 [INF] Route matched with {action = "SeleccionarProyecto", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] SeleccionarProyecto(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-01-03 10:53:30.938 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:31.156 -03:00 [INF] Executing ViewResult, running view SeleccionarProyecto.
+2025-01-03 10:53:31.207 -03:00 [INF] Executed ViewResult - view SeleccionarProyecto executed in 50.8668ms.
+2025-01-03 10:53:31.207 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras) in 334.884ms
+2025-01-03 10:53:31.207 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras)'
+2025-01-03 10:53:31.207 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/SeleccionarProyecto?statusproyecto=2 - 200 null text/html; charset=utf-8 350.9637ms
+2025-01-03 10:53:31.225 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:53:31.225 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:53:31.227 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 2.3853ms
+2025-01-03 10:53:31.228 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/proyecto.css?v=c_1rRzOuSwiUOAtdEWljBiiXGALWRp2DX0YLcLbf-9s - null null
+2025-01-03 10:53:31.247 -03:00 [INF] The file /css/proyecto.css was not modified
+2025-01-03 10:53:31.248 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/proyecto.css?v=c_1rRzOuSwiUOAtdEWljBiiXGALWRp2DX0YLcLbf-9s - 304 null text/css 19.9231ms
+2025-01-03 10:53:31.260 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 35.6551ms
+2025-01-03 10:53:33.811 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-01-03 10:53:33.813 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:53:33.813 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-01-03 10:53:33.816 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:34.129 -03:00 [INF] Executing ViewResult, running view Index.
+2025-01-03 10:53:34.132 -03:00 [INF] Executed ViewResult - view Index executed in 3.2019ms.
+2025-01-03 10:53:34.132 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 318.3051ms
+2025-01-03 10:53:34.132 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-01-03 10:53:34.132 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 321.6307ms
+2025-01-03 10:53:34.142 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:53:34.142 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:53:34.156 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 14.4268ms
+2025-01-03 10:53:34.180 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 37.9452ms
+2025-01-03 10:53:35.184 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - null null
+2025-01-03 10:53:35.188 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:53:35.192 -03:00 [INF] Route matched with {action = "NuevoProyecto", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] NuevoProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:53:35.207 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:35.630 -03:00 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[ANIO], [t].[CANTIDAD], [t].[TIPO_RECURSO], [t].[TOTAL_HH_ANUALES], [t].[TOTALINMODIFICABLE]
+FROM [TOTAL_RECURSOS] AS [t]
+WHERE [t].[ANIO] = DATEPART(year, GETDATE())
+2025-01-03 10:53:36.489 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_RECURSO], [c].[VALOR]
+FROM [COSTO_PROMEDIO] AS [c]
+2025-01-03 10:53:37.098 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID] AS [Id], [s].[NOMBRE] AS [Nombre], [s].[TIPO_SEGMENTO] AS [TipoSegmento]
+FROM [SEGMENTO] AS [s]
+2025-01-03 10:53:37.262 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[CIUDAD], [c].[DIRECCION], [c].[ID_CLIENTE], [c].[INSTAGRAM], [c].[LINKEDIN], [c].[NOMBRE], [c].[PAG_WEB], [c].[PAIS], [c].[TELEFONO], [c].[TIPOCLIENTE]
+FROM [CLIENTE] AS [c]
+2025-01-03 10:53:37.313 -03:00 [INF] Executing ViewResult, running view NuevoProyecto.
+2025-01-03 10:53:37.448 -03:00 [INF] Executed ViewResult - view NuevoProyecto executed in 135.619ms.
+2025-01-03 10:53:37.448 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras) in 2255.7067ms
+2025-01-03 10:53:37.448 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.NuevoProyecto (Proyectogestionhoras)'
+2025-01-03 10:53:37.448 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/NuevoProyecto - 200 null text/html; charset=utf-8 2264.3755ms
+2025-01-03 10:53:37.642 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-01-03 10:53:37.647 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-01-03 10:53:37.652 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13776 application/javascript; charset=utf-8 6.3068ms
+2025-01-03 10:53:37.658 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 16.3811ms
+2025-01-03 10:53:37.729 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - null null
+2025-01-03 10:53:37.730 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - null null
+2025-01-03 10:53:37.732 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - null null
+2025-01-03 10:53:37.745 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:53:37.746 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:53:37.749 -03:00 [INF] Route matched with {action = "ObtenerUltimoNumProyecto", controller = "Proyecto"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult ObtenerUltimoNumProyecto() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:53:37.749 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:53:37.751 -03:00 [INF] Route matched with {action = "ObtenerGastos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerGastos() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:53:37.756 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:37.759 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:37.764 -03:00 [INF] Route matched with {action = "ObtenerServicios", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerServicios() on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-01-03 10:53:37.767 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-01-03 10:53:37.920 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:53:38.026 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras) in 271.1974ms
+2025-01-03 10:53:38.026 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerGastos (Proyectogestionhoras)'
+2025-01-03 10:53:38.026 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerGastos - 200 null application/json; charset=utf-8 296.4298ms
+2025-01-03 10:53:38.070 -03:00 [INF] Executed DbCommand (154ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[NUM_PROYECTO]
+FROM [PROYECTO] AS [p]
+ORDER BY [p].[ID] DESC
+2025-01-03 10:53:38.073 -03:00 [INF] Executing JsonResult, writing value of type 'System.String'.
+2025-01-03 10:53:38.075 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras) in 326.0388ms
+2025-01-03 10:53:38.075 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerUltimoNumProyecto (Proyectogestionhoras)'
+2025-01-03 10:53:38.075 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerUltimoNumProyecto - 200 null application/json; charset=utf-8 343.4867ms
+2025-01-03 10:53:38.497 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-01-03 10:53:38.501 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras) in 737.0046ms
+2025-01-03 10:53:38.502 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerServicios (Proyectogestionhoras)'
+2025-01-03 10:53:38.502 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerServicios - 200 null application/json; charset=utf-8 772.917ms

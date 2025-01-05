@@ -1,4 +1,5 @@
 ﻿using iText.Commons.Actions.Contexts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -139,17 +140,27 @@ namespace Proyectogestionhoras.Controllers
             .Where(p => p.Id == proyecto)
             .Select(p => p.Nombre)
             .FirstOrDefault();
+            var idproyectos = context.Proyectos
+            .Where(p => p.Id == proyecto)
+            .Select(p => p.Id)
+            .FirstOrDefault();
             HttpContext.Session.SetString("numproyecto",numProyecto);
             HttpContext.Session.SetString("nombreproyecto", nombre);
+            HttpContext.Session.SetInt32("IDproyecto", idproyectos);
             return RedirectToAction("ReporteControlAsignacionHH", new { idproyecto = proyecto });
 
 
         }
-        public async Task<IActionResult> ReporteControlAsignacionHH(int idproyecto)
+        public IActionResult ReporteControlAsignacionHH()
         {
-            var controlhh = await _reporteService.ReporteControlHH(idproyecto);
-            ViewBag.Controlhh = controlhh;
+            
             return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> ObtenerControlHH(int idproyecto)
+        {
+            var resultado = await _reporteService.ReporteControlHH(idproyecto);
+            return Json(resultado);
         }
 
         public async Task<IActionResult> HHsociosActividad(int mes)
