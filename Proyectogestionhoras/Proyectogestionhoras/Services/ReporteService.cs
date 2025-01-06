@@ -8,6 +8,7 @@ using System.Diagnostics;
 using iText.Bouncycastle.Crypto;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Org.BouncyCastle.Asn1.Crmf;
 
 namespace Proyectogestionhoras.Services
 {
@@ -333,43 +334,38 @@ namespace Proyectogestionhoras.Services
                 return new List<ReporteControlHHDTO>();
             }
         }
-        public async Task<List<HorasSociosActDTO>> HorasPorSociosMesActual(int mes)
+        public async Task<List<HorasSociosDTO>> ObtenerHorasPorSocio(int mes)
         {
             try
             {
-                var horas = new List<HorasSociosActDTO>();
+                var horas = new List<HorasSociosDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
 
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "sp_HorasSociosPorActividadMESACTUAL";
+                    command.CommandText = "REPORTEHORASOCIOACTIVIDAD";
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@Mes", mes));
+                    command.Parameters.Add(new SqlParameter("@MES", mes));
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
-                        var sociosDict = new Dictionary<string, HorasSociosActDTO>();
+                        
 
                         while (await reader.ReadAsync())
                         {
-                            string nombreSocio = reader["NombreUsuario"] != DBNull.Value ? reader["NombreUsuario"].ToString() : "Sin nombre";
-                            string actividad = reader["Actividad"] != DBNull.Value ? reader["Actividad"].ToString() : "Sin actividad";
-                            decimal horasTotales = reader["HorasTotalesMesActual"] != DBNull.Value ? Convert.ToDecimal(reader["HorasTotalesMesActual"]) : 0;
-
-                            // Si el socio ya está en el diccionario, solo agrega la actividad
-                            if (!sociosDict.ContainsKey(nombreSocio))
+                            HorasSociosDTO datos = new()
                             {
-                                sociosDict[nombreSocio] = new HorasSociosActDTO
-                                {
-                                    NombreSocio = nombreSocio
-                                };
-                            }
+                               
+                                hh = reader.IsDBNull(reader.GetOrdinal("HH")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HH")),
+                                Tipo = reader.IsDBNull(reader.GetOrdinal("Tipo")) ? string.Empty : reader.GetString(reader.GetOrdinal("Tipo")),
+                                NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NombreUsuario")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreUsuario")),
+                                Actividad = reader.IsDBNull(reader.GetOrdinal("Actividad")) ? string.Empty : reader.GetString(reader.GetOrdinal("Actividad")),
+                            };
 
-                            // Agregar actividad y horas a ese socio
-                            sociosDict[nombreSocio].HorasPorActividad[actividad] = horasTotales;
+                            horas.Add(datos);
                         }
 
-                        horas = sociosDict.Values.ToList();
+                       
                     }
                 }
 
@@ -378,8 +374,8 @@ namespace Proyectogestionhoras.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Hubo un error al obtener las horas por socios en el mes de los proyectos: {ex.Message}");
-                return new List<HorasSociosActDTO>();
+                Debug.WriteLine($"Hubo un error al obtener las horas por socios : {ex.Message}");
+                return new List<HorasSociosDTO>();
             }
 
         }

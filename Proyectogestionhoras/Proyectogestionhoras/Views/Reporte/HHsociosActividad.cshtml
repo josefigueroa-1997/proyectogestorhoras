@@ -1,177 +1,218 @@
-﻿@model List<Proyectogestionhoras.Models.DTO.HorasSociosActDTO>
-
-@{
-    ViewData["Title"] = "Actividades Socios";
-    var actividades = Model.SelectMany(m => m.HorasPorActividad.Keys).Distinct().ToList();
-    var horasAnioActual = ViewBag.Anioactual as List<Proyectogestionhoras.Models.DTO.HorasSociosActDTO>;
-    var horasdocemeses = ViewBag.Docemeses as List<Proyectogestionhoras.Models.DTO.HorasSociosActDTO>;
-    var sociosInvertidos = Model.OrderByDescending(s => s.NombreSocio).ToList();
+﻿@{
+    ViewData["Title"] = "Reporte Actividades Socios";
 }
 
+
 <div class="container mx-auto p-4" style="margin-top: 50px;">
-    <h1 class="text-xl font-bold mb-4 text-center">Actividades Socios</h1>
-    <h1 class="text-xl font-bold mb-4 text-center">Mes: @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(@DateTime.Now.Month)</h1>
-    <button onclick="exportToExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
-    @foreach (var socio in sociosInvertidos) 
-    {
-        <h3 class="text-xl font-bold mb-4">Socio: @socio.NombreSocio</h3>
-        <div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6 overflow-x-auto">
-            <table class="min-w-full border-collapse border border-black">
-                <thead class="bg-yellow-200">
-                    <tr>
-                        <th class="text-left text-xs font-medium">Tiempo</th>
-                        @foreach (var actividad in actividades)
-                        {
-                            <th class="text-left text-xs font-medium">@actividad</th>
-                        }
-                        <th class="text-left text-xs font-medium">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-left text-xs font-medium border border-black">Mes Actual</td>
-                        @{
-                            decimal totalMesActual = 0;
-                        }
-                        @foreach (var actividad in actividades)
-                        {
-                            decimal horas = socio.HorasPorActividad.ContainsKey(actividad) ? socio.HorasPorActividad[actividad] : 0;
-                            totalMesActual += horas;
-                            if(horas>0){
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
-                            }
-                            else{
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]"></td>
-                            }
-                            
-                        }
-                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalMesActual</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-left text-xs font-medium border border-black">Acumulado Año</td>
-                        @{
-                            decimal totalAnio = 0;
-                        }
-                        @foreach (var actividad in actividades)
-                        {
-                            var socioAnio = horasAnioActual.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
-                            decimal horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
-                            totalAnio += horas;
-                            @if (horas > 0)
-                            {
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
-                            }
-                            else
-                            {
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]"></td>
-                            }
-                        }
-                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalAnio</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-left text-xs font-medium border border-black">Últimos 12 meses</td>
-                        @{
-                            decimal totalDoceMeses = 0;
-                        }
-                        @foreach (var actividad in actividades)
-                        {
-                            var socioAnio = horasdocemeses.FirstOrDefault(h => h.NombreSocio == socio.NombreSocio);
-                            decimal horas = (socioAnio != null && socioAnio.HorasPorActividad.ContainsKey(actividad)) ? socioAnio.HorasPorActividad[actividad] : 0;
-                            totalDoceMeses += horas;
-                            @if (horas > 0)
-                            {
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@horas</td>
-                            }
-                            else
-                            {
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]"></td>
-                            }
-
-                    }
-                        <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">@totalDoceMeses</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="bg-white border border-black rounded-lg shadow-md p-4 mb-6 overflow-x-auto">
+        <h1 class="text-xl font-bold mb-4 text-center">Actividades Socios</h1>
+        <h1 class="text-xl font-bold mb-4 text-center">Mes: @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(@DateTime.Now.Month)</h1>
+        <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+            <p class="text-sm text-gray-600">Muestra la cantidad de horas que los socios han ejecutado por actividad,en el mes actual,año actual y últimos doce meses, tomando como punto de origen el mes actual.(Solo se muestran las actividades que tengan horas registradas)</p>
         </div>
-    }
+        <button id="download-btn" class="p-2 bg-green-500 text-white rounded">Exportar a Excel</button>
+        <div id="tables-container"></div>
+    </div>
 </div>
-<script>
-    
-    const actividades = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SelectMany(m => m.HorasPorActividad.Keys).Distinct().ToList()));
-    const sociosInvertidos = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.OrderByDescending(s => s.NombreSocio).ToList()));
-    const horasAnioActual = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Anioactual));
-    const horasDocemeses = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Docemeses));
 
-   async function exportToExcel() {
+
+
+<script>
+    async function obtenerHorasSocios(mes) {
+        const response = await fetch(`/Reporte/ObtenerHorasSociosActividad?mes=${mes}`);
+        if (!response.ok) {
+            throw new Error('Error al obtener los datos');
+        }
+        return await response.json();
+    }
+
+    function agruparDatos(datos) {
+        const agrupados = {};
+
+        datos.forEach(item => {
+            const { nombreUsuario, tipo, actividad, hh } = item;
+
+     
+            if (!nombreUsuario) return;
+
+            if (!agrupados[nombreUsuario]) {
+                agrupados[nombreUsuario] = {};
+            }
+
+            if (!agrupados[nombreUsuario][tipo]) {
+                agrupados[nombreUsuario][tipo] = {};
+            }
+
+            if (!agrupados[nombreUsuario][tipo][actividad]) {
+                agrupados[nombreUsuario][tipo][actividad] = 0;
+            }
+
+            agrupados[nombreUsuario][tipo][actividad] += hh; 
+        });
+
+        return agrupados;
+    }
+
+    function crearTabla(agrupados) {
+        const container = document.getElementById('tables-container');
+        container.innerHTML = ''; 
+
+        for (const [nombreUsuario, tipos] of Object.entries(agrupados)) {
+            const table = document.createElement('table');
+            table.className = 'min-w-full border-collapse border border-black';
+     
+            const actividadesSet = new Set();
+            for (const tipo in tipos) {
+                for (const actividad in tipos[tipo]) {
+                    actividadesSet.add(actividad);
+                }
+            }
+
+            const actividadesArray = Array.from(actividadesSet);
+
+            // Crear cabecera
+            const thead = document.createElement('thead');
+            thead.className = 'bg-yellow-200';
+            const headerRow = document.createElement('tr');
+       
+            headerRow.innerHTML = `<th class="text-left text-xs font-medium">Tipo</th>`;
+
+         
+            actividadesArray.forEach(actividad => {
+                headerRow.innerHTML += `<th class="text-center text-xs font-medium">${actividad}</th>`;
+            });
+        
+            headerRow.innerHTML += `<th class="text-center text-xs font-medium">Total</th>`;
+
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+
+            for (const [tipo, actividades] of Object.entries(tipos)) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td class="text-left text-xs font-medium border border-black">${tipo}</td>`; // Tipo como primera columna
+                let totalHoras = 0;
+                // Rellenar horas por actividad
+                actividadesArray.forEach(actividad => {
+                    const horas = actividades[actividad] || 0; 
+                    row.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">${horas !==0 ? horas + ' hrs' : ''}</td>`;
+                    totalHoras += horas;
+                });
+                row.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[50px]">${totalHoras !==0 ? totalHoras + ' hrs' : ''}</td>`;
+                tbody.appendChild(row);
+            }
+
+            table.appendChild(tbody);
+
+            // Título para cada tabla
+            const title = document.createElement('h3');
+            title.className = 'text-xl font-bold mb-4';
+            title.textContent = `Horas de ${nombreUsuario}`;
+
+            container.appendChild(title);
+            container.appendChild(table);
+        }
+    }
+
+    async function generarExcel(agrupados) {
         const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Actividades Socios');
+        workbook.creator = 'Sistema';
+        workbook.created = new Date();
+        const worksheet = workbook.addWorksheet('Horas Socios');
+
+       
         const response = await fetch('/images/unitt.png');
         const imageBlob = await response.blob();
         const arrayBuffer = await imageBlob.arrayBuffer();
         const logoImageId = workbook.addImage({
             buffer: arrayBuffer,
-            extension: 'png'
+            extension: 'png',
         });
-
 
         worksheet.addImage(logoImageId, {
             tl: { col: 0, row: 0 },
-            ext: { width: 150, height: 50 }
+            ext: { width: 150, height: 50 },
         });
 
-        const fechaActual = new Date();
-        const mesActual = fechaActual.toLocaleString('default', { month: 'long' });
-        worksheet.mergeCells('D3:H3');
 
-        const titulo = worksheet.getCell('D3');
-        titulo.value = "Actividades Socios";
-        titulo.font = { size: 16, bold: true };
-        titulo.alignment = { vertical: 'middle', horizontal: 'center' };
+        const mes = new Date().toLocaleString('default', { month: 'long' }); 
+        worksheet.mergeCells('H3:L3'); 
+        worksheet.getCell('H3').value = 'Actividades Socios'; 
+        worksheet.getCell('H3').font = { bold: true, size: 14 };
+        worksheet.getCell('H3').alignment = { horizontal: 'center' };
 
-        const subtitulo = worksheet.getCell('F4'); 
-        subtitulo.value = `Mes: ${mesActual}`;
-        subtitulo.font = { size: 14, italic: true }; 
-        subtitulo.alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.mergeCells('H4:L4'); 
+        worksheet.getCell('H4').value = `Mes: ${mes}`; 
+        worksheet.getCell('H4').font = { bold: true, size: 12 };
+        worksheet.getCell('H4').alignment = { horizontal: 'center' };
+
+        let currentRow = 5; 
+        for (const [nombreUsuario, tipos] of Object.entries(agrupados)) {
+            const actividadesSet = new Set();
+            for (const tipo in tipos) {
+                for (const actividad in tipos[tipo]) {
+                    actividadesSet.add(actividad);
+                }
+            }
+
+            const actividadesArray = Array.from(actividadesSet);
+
+         
+            worksheet.mergeCells(`A${currentRow}:C${currentRow}`);
+            worksheet.getCell(`A${currentRow}`).value = `Horas de ${nombreUsuario}`;
+            worksheet.getCell(`A${currentRow}`).font = { bold: true, size: 14 };
+            currentRow++;
+
+         
+            const headerRow = [`Tipo`, ...actividadesArray, `Total`];
+            worksheet.addRow(headerRow).font = { bold: true };
+            worksheet.getRow(currentRow).alignment = { horizontal: 'center' };
+            currentRow++;
+
+            for (const [tipo, actividades] of Object.entries(tipos)) {
+                const row = [tipo];
+                let totalHoras = 0;
+
+                actividadesArray.forEach(actividad => {
+                    const horas = actividades[actividad] || 0;
+                    row.push(horas);
+                    totalHoras += horas;
+                });
+
+                row.push(totalHoras);
+                worksheet.addRow(row);
+                currentRow++;
+            }
+
+       
+            currentRow += 2;
+        }
+
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Horas_Socios.xlsx';
+        link.click();
+        URL.revokeObjectURL(url);
+    }
 
 
+    async function cargarDatos(mes) {
+        try {
+            const datos = await obtenerHorasSocios(mes);
+            const agrupados = agruparDatos(datos);
+            crearTabla(agrupados);
 
-        worksheet.addRow([]);
-        worksheet.addRow([]);
-        const headers = ['Socio', 'Tiempo', ...actividades, 'Total'];
-        worksheet.addRow(headers);
-        worksheet.columns = headers.map(() => ({ width: 15 }));
-        sociosInvertidos.forEach(socio => {
-            
-            const mesActualHoras = actividades.map(actividad => socio.HorasPorActividad[actividad] || 0);
-            const totalMesActual = mesActualHoras.reduce((a, b) => a + b, 0);
+            document.getElementById('download-btn').onclick = () => generarExcel(agrupados);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
-            const acumuladoAñoHoras = actividades.map(actividad => {
-                const socioAnio = horasAnioActual.find(h => h.NombreSocio === socio.NombreSocio);
-                return (socioAnio && socioAnio.HorasPorActividad[actividad]) || 0;
-            });
-            const totalAnio = acumuladoAñoHoras.reduce((a, b) => a + b, 0);
+    cargarDatos(new Date().getMonth() + 1);
 
-            const últimos12MesesHoras = actividades.map(actividad => {
-                const socio12Meses = horasDocemeses.find(h => h.NombreSocio === socio.NombreSocio);
-                return (socio12Meses && socio12Meses.HorasPorActividad[actividad]) || 0;
-            });
-            const total12Meses = últimos12MesesHoras.reduce((a, b) => a + b, 0);
 
-            
-            worksheet.addRow([socio.NombreSocio, 'Mes Actual', ...mesActualHoras, totalMesActual]);
-            worksheet.addRow([socio.NombreSocio, 'Acumulado Año', ...acumuladoAñoHoras, totalAnio]);
-            worksheet.addRow([socio.NombreSocio, 'Últimos 12 meses', ...últimos12MesesHoras, total12Meses]);
-        });
-
-        
-        workbook.xlsx.writeBuffer().then(function (buffer) {
-            const blob = new Blob([buffer], { type: 'application/octet-stream' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'actividades_socios.xlsx';
-            link.click();
-        });
-   }
 </script>

@@ -11,7 +11,7 @@ namespace Proyectogestionhoras.Services.Interface
         public Task<List<ReportesCostoRecursosDTO>> RecuperarCostosConsultoresProyectos(string tipoconsultor);
         public Task<List<ReporteMargenProyectoDTO>> RecuperarMargenProyectos();
         public Task<List<ReporteControlHHDTO>> ReporteControlHH(int idproyecto);
-        public Task<List<HorasSociosActDTO>> HorasPorSociosMesActual(int mes);
+        public Task<List<HorasSociosDTO>> ObtenerHorasPorSocio(int mes);
         public Task<List<ReporteNegociacionDTO>> ReporteProyectoNegociacion();
         public Task<List<ReportQuarterDTO>> RecuperarQuarter(int anio);
         public Task<List<ReporteNegociacionKeyDTO>> ReporteNegociacionKeys();

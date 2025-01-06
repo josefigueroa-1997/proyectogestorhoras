@@ -163,14 +163,20 @@ namespace Proyectogestionhoras.Controllers
             return Json(resultado);
         }
 
-        public async Task<IActionResult> HHsociosActividad(int mes)
+        public IActionResult HHsociosActividad()
         {
-            var horasmesactual = await _reporteService.HorasPorSociosMesActual(mes);
+            /*var horasmesactual = await _reporteService.HorasPorSociosMesActual(mes);
             var horasanioactual = await _reporteService.HorasPorSociosAnioActual(mes);
             var horasdocemeses = await _reporteService.HorasPorSociosUltimosDoceMeses(mes);
             ViewBag.Anioactual = horasanioactual;
-            ViewBag.Docemeses = horasdocemeses;
-            return View(horasmesactual);
+            ViewBag.Docemeses = horasdocemeses;*/
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> ObtenerHorasSociosActividad(int mes)
+        {
+            var resultado = await _reporteService.ObtenerHorasPorSocio(mes);
+            return Json(resultado);
         }
         public IActionResult ReporteProyectosNegociacion()
         {
