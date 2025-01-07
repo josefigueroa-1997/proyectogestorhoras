@@ -16,5 +16,6 @@
         public int? Idcuenta { get; set; }
         public DateTime? FechaPago { get; set; }
         public string? Observacion { get; set; }
+        public bool EsEliminado { get; set; }
     }
 }

@@ -76,6 +76,7 @@ namespace Proyectogestionhoras.Controllers
             var Idcuenta = Request.Form["Idcuenta"];
             var Observacion = Request.Form["Observacion"];
             var idingresoreal = Request.Form["IdIngresoreal"];
+            var esliminado = Request.Form["esEliminados"];
 
             for (int i = 0; i < numdocumento.Count; i++)
             {
@@ -118,6 +119,7 @@ namespace Proyectogestionhoras.Controllers
                     Estado = Estado[i],
                     Idcuenta = idCuentaParsed,
                     Observacion = Observacion[i],
+                    EsEliminado = esliminado[i] == "true",
                 };
 
                 ingresos.Add(ingresoViewModel);

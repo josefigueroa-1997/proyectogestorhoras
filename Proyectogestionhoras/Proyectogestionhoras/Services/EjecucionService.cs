@@ -34,6 +34,18 @@ namespace Proyectogestionhoras.Services
                     return;
                 }
 
+                var idsIngresosEliminados = ingresos.Where(g => g.EsEliminado).Select(g => g.IdIngresoreal)
+               .Where(id => id > 0)
+               .ToList();
+
+                if (idsIngresosEliminados.Any())
+                {
+                    var IngresosParaEliminar = await context.Ingresosreales
+                                                          .Where(g => idsIngresosEliminados.Contains(g.Id))
+                                                          .ToListAsync();
+                    context.Ingresosreales.RemoveRange(IngresosParaEliminar);
+                }
+
                 foreach (var ingreso in ingresos)
                 {
                     if (ingreso.IdIngresoreal > 0)
