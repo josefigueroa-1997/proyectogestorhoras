@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Resumen Costos Proyectos";
 }
-<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Resumen de Costos de Proyectos</h2>
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Resumen de Costos de Proyectos Por Moneda</h2>
 <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
     <p class="text-sm text-gray-600">Muestra el coste general de cada proyecto, de acuerdo a los tipo de monedas de los proyectos, separándolos en proyectos en ejecución, negociación, terminados y rechazados.</p>
 </div>
@@ -12,8 +12,6 @@
         <div id="tablaresumencostos" class="min-w-full divide-y divide-gray-200"></div>
 
     </div>
-
-
 
 </div>
 
@@ -167,5 +165,95 @@
     }
 
     document.addEventListener('DOMContentLoaded', init);
+
+    async function descargarExcel() {
+        
+        const workbook = new ExcelJS.Workbook();
+        const hoja = workbook.addWorksheet('Resumen de Costos');
+
+        try {
+            const response = await fetch('/images/unitt.png'); 
+            const imageBlob = await response.blob();
+            const arrayBuffer = await imageBlob.arrayBuffer();
+
+            const logoImageId = workbook.addImage({
+                buffer: arrayBuffer,
+                extension: 'png',
+            });
+
+            hoja.addImage(logoImageId, {
+                tl: { col: 0, row: 0 }, 
+                ext: { width: 150, height: 50 }, 
+            });
+        } catch (error) {
+            console.error('Error al cargar el logo:', error);
+        }
+
+     
+        const titulo = hoja.getCell('A3'); 
+        titulo.value = "Resumen de Costos de Proyectos Por Moneda";
+        titulo.font = { bold: true, size: 14 };
+        titulo.alignment = { horizontal: 'center' };
+        hoja.mergeCells('A3:E3'); 
+
+        hoja.getRow(4).height = 15; 
+
+
+        const tabla = document.querySelector('#tablaresumencostos table');
+        if (!tabla) {
+            alert('No se encontró la tabla para exportar.');
+            return;
+        }
+
+        const encabezados = Array.from(tabla.querySelectorAll('thead th')).map(th => th.textContent);
+        const filaEncabezado = hoja.addRow(encabezados);
+        filaEncabezado.font = { bold: true };
+        filaEncabezado.alignment = { horizontal: 'center' };
+
+        const filas = Array.from(tabla.querySelectorAll('tbody tr'));
+        filas.forEach(fila => {
+            const celdas = Array.from(fila.querySelectorAll('td')).map(td => {
+                const valor = td.textContent.trim();
+              
+                const numero = parseFloat(valor.replace(/\./g, '').replace(',', '.'));
+                return isNaN(numero) ? valor : numero; 
+            });
+
+            const filaExcel = hoja.addRow(celdas);
+            filaExcel.eachCell((cell, colNumber) => {
+                const valor = cell.value;
+                if (typeof valor === 'number') {
+                 
+                    cell.alignment = { horizontal: 'right' };
+                    cell.numFmt = '#,##0';
+                } else {
+          
+                    cell.alignment = { horizontal: 'left' };
+                }
+            });
+        });
+
+    
+        hoja.columns.forEach(column => {
+            column.width = 20;
+        });
+
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'ResumenCostosProyectoPorMoneda.xlsx';
+        link.click();
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const contenedor = document.getElementById('tablaresumencostos');
+        const botonDescargar = document.createElement('button');
+        botonDescargar.textContent = 'Exportar a Excel';
+        botonDescargar.className = 'bg-green-500 text-white py-2 px-4 rounded';
+        botonDescargar.addEventListener('click', descargarExcel);
+        contenedor.appendChild(botonDescargar);
+    });
 
 </script>
