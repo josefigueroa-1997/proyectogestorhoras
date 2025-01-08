@@ -14,6 +14,8 @@ namespace Proyectogestionhoras.Models
         public decimal? Costoconsultorb { get; set; }
         public decimal? Costoconsultorc { get; set; }
         public string? Afectaiva { get; set; }
+        public decimal? Montomonedaorigen { get; set; }
+        public decimal? Tasacambio { get; set; }
 
         public virtual Proyecto? IdproyectoNavigation { get; set; }
     }

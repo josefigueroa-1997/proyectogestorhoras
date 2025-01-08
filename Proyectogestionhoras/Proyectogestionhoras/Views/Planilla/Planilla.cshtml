@@ -244,6 +244,9 @@
                             <select class="subactividadesSelect" name="subactividad" style="display: none;">
                                 <option value="" disabled selected>Seleccione una subactividad</option>
                             </select>
+                            <select class="proyectosNegociacionSelect" name="proyectonegociacion" style="display: none;">
+                                <option value="" disabled selected>Seleccione un proyecto</option>
+                            </select>
                         </div>
                     </td>
 
@@ -364,6 +367,42 @@
             }
         }
 
+        function cargarProyectosNegociacion() {
+            if (idusuario) {
+                $.ajax({
+                    url: '@Url.Action("ObtenerProyectoNegociacion", "Usuario")',
+                    type: 'GET',
+                    success: function (response) {
+                        $('.proyectosNegociacionSelect').empty();
+                        $('.proyectosNegociacionSelect').append('<option value="" disabled selected>Seleccione un proyecto</option>');
+
+                        if (response.length > 0) {
+
+                            $.each(response, function (index, proyecto) {
+                                $('.proyectosNegociacionSelect').append(
+                                    $('<option>', {
+                                        value: proyecto.id,
+                                        text: proyecto.numProyecto + ' - ' + proyecto.nombre
+                                    })
+                                );
+                            });
+
+                            $('.proyectosNegociacionSelect').on('change', function () {
+                                var idproyecto = $(this).val();
+                                cargarInformacionUsuario(idproyecto);
+                            });
+                        } else {
+
+                            $('.proyectosNegociacionSelect').append('<option value="" disabled>No hay proyectos disponibles</option>');
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error al obtener los proyectos:", error);
+                    }
+                });
+            }
+        }
+
         function cargarInformacionUsuario(idproyecto) {
             $.ajax({
                 url: '@Url.Action("Recuperarhhusuarios", "Usuario")',
@@ -444,7 +483,7 @@
             const controlhh = $(this).find(':selected').data('controlhh').toLowerCase().trim();
 
             if (idActividad) {
-                if (controlhh === 'proyecto') {
+                if (controlhh === 'proyecto en ejecucion') {
                    
                     $(this)
                         .closest('tr')
@@ -452,7 +491,7 @@
                         .show()
                         .end()
                         .find('.subactividadesSelect')
-                        .hide();
+                        .hide().end().find('.proyectosNegociacionSelect').hide();
 
                    
                     cargarProyectos();
@@ -460,6 +499,10 @@
                         .closest('tr')
                         .find('.subactividadesSelect')
                         .val(0); 
+                    $(this)
+                        .closest('tr')
+                        .find('.proyectosNegociacionSelect')
+                        .val(0);
                 } else if (controlhh === 'empresa') {
                     $('.idusuarioproyecto').val(0);
                    
@@ -469,10 +512,28 @@
                         .show()
                         .end()
                         .find('.proyectosSelect')
-                        .hide();
+                        .hide().end().find('.proyectosNegociacionSelect').hide();
 
                  
                     cargarSubactividades(idActividad);
+                }
+                    else if(controlhh ==="proyecto en negociación"){
+                     $(this)
+                        .closest('tr')
+                        .find('.proyectosNegociacionSelect')
+                        .show()
+                        .end()
+                        .find('.subactividadesSelect')
+                        .hide().end().find('.proyectosSelect').hide();
+                        cargarProyectosNegociacion();
+                         $(this)
+                        .closest('tr')
+                        .find('.subactividadesSelect')
+                        .val(0);
+                    $(this)
+                        .closest('tr')
+                        .find('.proyectosSelect')
+                        .val(0);
                 }
             } else {
                
@@ -488,21 +549,32 @@
             
             var fecha = $('.fecharegistro').val();
             var idproyecto = $('.proyectosSelect').val();
+            var idproyectonegociacion = $('.proyectosNegociacionSelect').val();
             var Idactividad = $('.actividadesSelect').val();
 
             var horasRegistradas = $('input[name="hhregistradas"]').val();
             var observaciones = $('textarea[name="observaciones"]').val();
             idusuarioproyecto = $('.idusuarioproyecto').val();
+            console.log(idusuarioproyecto);
             var hhrestantesinput = $('.hhrestantes').val();
             Idsubactividad = $('.subactividadesSelect').val();
             var hhingresadas = parseFloat(horasRegistradas);
             var hhpendientes = parseFloat(hhrestantesinput);
            
             if (idusuarioproyecto > 0 && idusuarioproyecto != null) {
-                if (!fecha || !idproyecto || !Idactividad || horasRegistradas <= 0) {
+                if(idproyecto>0){
+                    if (!fecha || !idproyecto || !Idactividad || horasRegistradas <= 0) {
                     alert("Por favor, completa todos los campos requeridos.");
                     return;
+                    }
                 }
+                if(idproyectonegociacion>0){
+                    if (!fecha || !idproyectonegociacion || !Idactividad || horasRegistradas <= 0) {
+                    alert("Por favor, completa todos los campos requeridos.");
+                    return;
+                    }
+                }
+                
             } else if (Idsubactividad!=null && Idsubactividad > 0) {
                 if (!fecha || !Idsubactividad || !Idactividad || horasRegistradas <= 0) {
                     alert("Por favor, completa todos los campos requeridos.");
@@ -513,12 +585,12 @@
                 return;
             }
             
-            if (idusuarioproyecto != null && idusuarioproyecto > 0) {
+            /*if (idusuarioproyecto != null && idusuarioproyecto > 0) {
                 if (hhingresadas > hhpendientes) {
                     alert(`Las horas registradas (${hhingresadas}) no pueden ser mayores a las horas restantes del proyecto (${hhpendientes}).`);
                     return;
                 }
-            }
+            }*/
 
 
 
@@ -554,9 +626,19 @@
                         
                         if (idusuarioproyecto > 0) {
                             let proyectoSeleccionadaTexto = $('.proyectosSelect option:selected').text();
-                            if (proyectoSeleccionadaTexto !== "Seleccione un proyecto") {
+                            let proyectonegocicacionSeleccionadaTexto = $('.proyectosNegociacionSelect option:selected').text();
+                            if(idproyecto>0){
+                                if (proyectoSeleccionadaTexto !== "Seleccione un proyecto") {
                                 filaRegistrada.find('.proyectosSelect').replaceWith(`<input type="text" value="${proyectoSeleccionadaTexto}" readonly />`);
+                                }
                             }
+                            
+                            if(idproyectonegociacion>0){
+                                 if (proyectonegocicacionSeleccionadaTexto !== "Seleccione un proyecto") {
+                                filaRegistrada.find('.proyectosNegociacionSelect').replaceWith(`<input type="text" value="${proyectonegocicacionSeleccionadaTexto}" readonly />`);
+                                }   
+                            }
+                           
                         }
 
                         
@@ -588,6 +670,9 @@
                                     <select class="subactividadesSelect" name="subactividad" style="display: none;">
                                         <option value="" disabled selected>Seleccione una subactividad</option>
                                     </select>
+                                    <select class="proyectosNegociacionSelect" name="proyectonegociacion" style="display: none;">
+                                            <option value="" disabled selected>Seleccione un proyecto</option>
+                                            </select>
                                 </div>
                             </td>
 

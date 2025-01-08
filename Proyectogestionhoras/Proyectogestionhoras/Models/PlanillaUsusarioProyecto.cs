@@ -12,6 +12,7 @@ namespace Proyectogestionhoras.Models
         public string? Observaciones { get; set; }
         public DateTime FechaRegistro { get; set; }
         public int? Idactividad { get; set; }
+        public string? Tipo { get; set; }
 
         public virtual Planilla IdPlanillaNavigation { get; set; } = null!;
         public virtual Actividade? IdactividadNavigation { get; set; }

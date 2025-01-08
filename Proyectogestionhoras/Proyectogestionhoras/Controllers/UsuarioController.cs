@@ -222,7 +222,12 @@ namespace Proyectogestionhoras.Controllers
             return Json(subactividades);
         }
 
-
+        [HttpGet]
+        public async Task<ActionResult> ObtenerProyectoNegociacion()
+        {
+            var proyectos = await context.Proyectos.Where(p=>p.StatusProyecto==1).Select(p => new { p.Id, p.Nombre,p.NumProyecto }).ToListAsync();
+            return Json(proyectos);
+        }
     }
 
 }
