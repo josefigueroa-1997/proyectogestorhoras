@@ -63,70 +63,81 @@ namespace Proyectogestionhoras.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistrarIngresos(int idproyecto)
         {
-            List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
-
-            var numdocumento = Request.Form["Numdocumento"];
-            var fechapago = Request.Form["FechaPago"];
-            var fechaemision = Request.Form["FechaEmision"];
-           // var montousdlist = Request.Form["Montous"];
-           // var Tclist = Request.Form["Tc"];
-            var Montoclplist = Request.Form["Montoclp"];
-            var Ivalist = Request.Form["Iva"];
-            var Estado = Request.Form["Estado"];
-            var Idcuenta = Request.Form["Idcuenta"];
-            var Observacion = Request.Form["Observacion"];
-            var idingresoreal = Request.Form["IdIngresoreal"];
-            var esliminado = Request.Form["esEliminados"];
-
-            for (int i = 0; i < numdocumento.Count; i++)
+            try
             {
-                if (string.IsNullOrWhiteSpace(numdocumento[i]))
+                List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
+
+                var numdocumento = Request.Form["Numdocumento"];
+                var fechapago = Request.Form["FechaPago"];
+                var fechaemision = Request.Form["FechaEmision"];
+                // var montousdlist = Request.Form["Montous"];
+                // var Tclist = Request.Form["Tc"];
+                var Montoclplist = Request.Form["Montoclp"];
+                var Ivalist = Request.Form["Iva"];
+                var Estado = Request.Form["Estado"];
+                var Idcuenta = Request.Form["Idcuenta"];
+                var Observacion = Request.Form["Observacion"];
+                var idingresoreal = Request.Form["IdIngresoreal"];
+                var esliminado = Request.Form["esEliminados"];
+
+                for (int i = 0; i < numdocumento.Count; i++)
                 {
-                    continue; 
+                    if (string.IsNullOrWhiteSpace(numdocumento[i]))
+                    {
+                        continue;
+                    }
+
+                    // string montosusdStr = montousdlist[i]?.ToString().Trim() ?? "0";
+                    string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
+                    string montosivaStr = Ivalist[i]?.ToString().Trim() ?? "0";
+                    // string tcStr = Tclist[i]?.ToString().Trim() ?? "0";
+
+
+                    // decimal.TryParse(montosusdStr.Replace(".", ""), out decimal montousd);
+                    decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
+                    decimal.TryParse(montosivaStr.Replace(".", ""), out decimal montoiva);
+                    //  decimal.TryParse(tcStr.Replace(".", ""), out decimal tc);
+
+
+                    int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
+                    int.TryParse(Idcuenta[i]?.ToString(), out int idCuentaParsed);
+
+
+                    DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
+                        ? tempDate
+                        : DateTime.Today;
+                    DateTime fechapagoparsed = DateTime.Parse(fechapago[i]);
+
+                    var ingresoViewModel = new IngresoViewModel
+                    {
+                        IdIngresoreal = idIngresoRealParsed,
+                        Numdocumento = numdocumento[i],
+                        FechaEmision = fechaemisionParsed,
+                        FechaPago = fechapagoparsed,
+                        // Montous = montousd,
+                        // Tc = tc,
+                        Montoclp = montoclp,
+                        Iva = montoiva,
+                        Estado = Estado[i],
+                        Idcuenta = idCuentaParsed,
+                        Observacion = Observacion[i],
+                        EsEliminado = esliminado[i] == "true",
+                    };
+
+                    ingresos.Add(ingresoViewModel);
                 }
-              
-               // string montosusdStr = montousdlist[i]?.ToString().Trim() ?? "0";
-                string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
-                string montosivaStr = Ivalist[i]?.ToString().Trim() ?? "0";
-               // string tcStr = Tclist[i]?.ToString().Trim() ?? "0";
 
-                
-               // decimal.TryParse(montosusdStr.Replace(".", ""), out decimal montousd);
-                decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
-                decimal.TryParse(montosivaStr.Replace(".", ""), out decimal montoiva);
-              //  decimal.TryParse(tcStr.Replace(".", ""), out decimal tc);
-
-              
-                int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
-                int.TryParse(Idcuenta[i]?.ToString(), out int idCuentaParsed);
-
-                
-                DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
-                    ? tempDate
-                    : DateTime.Today;
-                DateTime fechapagoparsed = DateTime.Parse(fechapago[i]);
-               
-                var ingresoViewModel = new IngresoViewModel
-                {
-                    IdIngresoreal = idIngresoRealParsed,
-                    Numdocumento = numdocumento[i],
-                    FechaEmision = fechaemisionParsed,
-                    FechaPago = fechapagoparsed,
-                   // Montous = montousd,
-                   // Tc = tc,
-                    Montoclp = montoclp,
-                    Iva = montoiva,
-                    Estado = Estado[i],
-                    Idcuenta = idCuentaParsed,
-                    Observacion = Observacion[i],
-                    EsEliminado = esliminado[i] == "true",
-                };
-
-                ingresos.Add(ingresoViewModel);
+                await ejecucionService.GestorIngresos(idproyecto, ingresos);
+                TempData["SuccessMessageIngresos"] = "Los ingresos del proyecto se han registrado y actualizado correctamente.";
+                return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
             }
-
-            await ejecucionService.GestorIngresos(idproyecto, ingresos);
-            return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al registrar/editar costos del proyecto:{e.Message}");
+                TempData["ErrorMessageIngresos"] = "Hubo un error al Registrar/Editar ingresos del proyecto.";
+                return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
+            }
+           
         }
 
         [HttpGet]
@@ -425,6 +436,7 @@ namespace Proyectogestionhoras.Controllers
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciootro);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciosocio);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciohonorario);
+                TempData["SuccessMessage"] = "Los costos del proyecto se han registrado y actualizado correctamente.";
                 return RedirectToAction("ForecastCostos", "EjecucionProyecto", new { id = idproyecto });
             }
             catch(Exception e)
