@@ -201,6 +201,9 @@
                             const fechaActuales = new Date();
                             const mesActuales = fechaActuales.getMonth() + 1; 
                             let anios = fechaActuales.getFullYear();
+                            if (mesActuales >= 10) {
+                                anios += 1;
+                            }
                             let meses = [];
 
                 
@@ -312,21 +315,21 @@
 
 
                             meses = [
-                                `10/ ${anios}`,
-                                `11/ ${anios}`,
-                                `12/ ${anios}`,
-                                `01/ ${anios + 1}`,
-                                `02/ ${anios + 1}`,
-                                `03/ ${anios + 1}`,
-                                `04/ ${anios + 1}`,
-                                `05/ ${anios + 1}`,
-                                `06/ ${anios + 1}`,
-                                `07/ ${anios + 1}`,
-                                `08/ ${anios + 1}`,
-                                `09/ ${anios + 1}`,
-                                `10/ ${anios + 1}`,
-                                `11/ ${anios + 1}`,
-                                `12/ ${anios + 1}`
+                                `10/${mesActuales >= 10 ? anios : anios - 1}`,
+                                `11/${mesActuales >= 10 ? anios : anios - 1}`,
+                                `12/${mesActuales >= 10 ? anios : anios - 1}`,
+                                `01/${anios}`,
+                                `02/${anios}`,
+                                `03/${anios}`,
+                                `04/${anios}`,
+                                `05/${anios}`,
+                                `06/${anios}`,
+                                `07/${anios}`,
+                                `08/${anios}`,
+                                `09/${anios}`,
+                                `10/${anios}`,
+                                `11/${anios}`,
+                                `12/${anios}`,
                             ];
 
 
