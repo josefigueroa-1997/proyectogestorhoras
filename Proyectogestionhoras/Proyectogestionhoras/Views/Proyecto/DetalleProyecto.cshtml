@@ -375,13 +375,24 @@
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HHSOCIOS</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_SOCIOS</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_SOCIOS</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                @proyecto.SEGMENTO_SOCIOS
+                            @if (proyecto.HHSOCIOS > 0)
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_SOCIOS</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_SOCIOS</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    @proyecto.SEGMENTO_SOCIOS
 
 
-                            </td>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                </td>
+                            }
+                           
                             @{
                                 totalsocios = proyecto.HHSOCIOS * @proyecto.COSTO_SOCIO;
                             }
@@ -391,12 +402,25 @@
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HHSTAFF</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_STAFF</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_STAFF</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                @proyecto.SEGMENTO_STAFF
+                            @if (proyecto.HHSTAFF > 0)
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_STAFF</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_STAFF</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    @proyecto.SEGMENTO_STAFF
 
-                            </td>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">  </td>
+                            }
+                            
+                               
+
+                          
                             @{
                                 totalstaff = proyecto.HHSTAFF * @proyecto.COSTO_STAFF;
                             }
@@ -407,13 +431,24 @@
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor A</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HH_CONSULTOR_A</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"> @proyecto.IDCUENTA_CONSULTOR_A</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_A</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                @proyecto.SEGMENTO_CONSULTOR_A
+                            @if (proyecto.HH_CONSULTOR_A > 0)
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;"> @proyecto.IDCUENTA_CONSULTOR_A</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_A</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    @proyecto.SEGMENTO_CONSULTOR_A
 
 
-                            </td>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                </td>
+                            }
+                            
                             @{
                                 decimal totalconsultora = proyecto.HH_CONSULTOR_A * @proyecto.COSTO_CONSULTORA;
                             }
@@ -425,12 +460,25 @@
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor B</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HH_CONSULTOR_B</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_B</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_B</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                @proyecto.SEGMENTO_CONSULTOR_B
+                            @if (proyecto.HH_CONSULTOR_B > 0)
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_B</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_B</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    @proyecto.SEGMENTO_CONSULTOR_B
 
-                            </td>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">   </td>
+                            }
+                           
+                                
+
+                         
                             @{
                                 decimal totalconsultorB = proyecto.HH_CONSULTOR_B * @proyecto.COSTO_CONSULTORB;
                             }
@@ -440,12 +488,23 @@
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Consultor C</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.HH_CONSULTOR_C</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_C</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_C</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">
-                                @proyecto.SEGMENTO_CONSULTOR_C
+                            @if (proyecto.HH_CONSULTOR_C > 0)
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_C</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_C</td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                    @proyecto.SEGMENTO_CONSULTOR_C
 
-                            </td>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;"></td>
+                                <td style="padding: 10px; border: 1px solid #ddd;">
+                                </td>
+                            }
+                            
                             @{
                                 decimal totalconsultorC = proyecto.HH_CONSULTOR_C * @proyecto.COSTO_CONSULTORC;
                             }

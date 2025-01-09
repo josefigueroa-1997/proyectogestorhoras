@@ -252,7 +252,7 @@ namespace Proyectogestionhoras.Services
 
             try
             {
-
+                decimal? costoUnitario = await context.Recursos.Where(r => r.Usuarios.Any(u => u.Id == idusuario)).Select(r => r.CostoUnitario).FirstOrDefaultAsync();
                 bool existereigstro = await context.PlanillaRegistroEmpresas.AnyAsync(p => p.Idsubactividad == idsubactividad && p.Fecharegistro == Fecharegistro.Date && p.IdPlanillaNavigation.IdUsuarioNavigation.Id == idusuario);
                 if (existereigstro)
                 {
@@ -284,11 +284,11 @@ namespace Proyectogestionhoras.Services
                 var registro = new PlanillaRegistroEmpresa
                 {
                     IdPlanilla = planilla.Id,
-
                     Hhregistradas = horasAsignadasDecimal,
                     Fecharegistro = Fecharegistro,
                     Observaciones = observaciones,
                     Idsubactividad = idsubactividad,
+                    CostoMonetario = costoUnitario,
                 };
                 context.PlanillaRegistroEmpresas.Add(registro);
                 await context.SaveChangesAsync();

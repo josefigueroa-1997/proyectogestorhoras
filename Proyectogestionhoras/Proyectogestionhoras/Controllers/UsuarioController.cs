@@ -200,7 +200,7 @@ namespace Proyectogestionhoras.Controllers
         {
             var actividades = await context.Actividades
                            .Where(a => a.TipoAcatividad == recurso)
-                           .Select(a => new { a.Id, a.Nombre,a.Controlhh })
+                           .Select(a => new { a.Id, a.Nombre,a.Controlhh }).OrderBy(a=>a.Nombre)
                            .ToListAsync();
             return Json(actividades);
         }
