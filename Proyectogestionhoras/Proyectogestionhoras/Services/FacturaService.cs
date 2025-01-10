@@ -27,7 +27,7 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "GENERARFACTURAPROYECTO";
+                    command.CommandText = "CUOTASFORECASTPROYECTOS";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
                     using (var reader = await command.ExecuteReaderAsync())
@@ -40,9 +40,8 @@ namespace Proyectogestionhoras.Services
                                 Cuenta = reader.GetString(reader.GetOrdinal("Cuenta")),
                                 Segmento = reader.GetString(reader.GetOrdinal("Segmento")),
                                 Fecha_Factura = reader.GetDateTime(reader.GetOrdinal("Fecha_Factura")),
-                                Neto = reader.GetDecimal(reader.GetOrdinal("Neto")),
-                                IVA = reader.GetDecimal(reader.GetOrdinal("IVA")),
-                                Total = reader.GetDecimal(reader.GetOrdinal("Total")),
+                                Neto = reader.GetDecimal(reader.GetOrdinal("Monto")),
+                                
                             };
                             facturas.Add(factura);
 

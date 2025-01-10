@@ -20,16 +20,18 @@ namespace Proyectogestionhoras.Services
     {
         private readonly Conexion conexion;
         private readonly PROYECTO_CONTROL_HORASContext context;
-        public ProyectoService(Conexion conexion, PROYECTO_CONTROL_HORASContext context)
+        private readonly EjecucionService ejecucionService;
+        public ProyectoService(Conexion conexion, PROYECTO_CONTROL_HORASContext context, EjecucionService ejecucionService)
         {
 
             this.conexion = conexion;
             this.context = context;
+            this.ejecucionService = ejecucionService;
         }
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,  int cantidadcuotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<CuotasViewModel> cuotas)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,  int cantidadcuotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<IngresoViewModel> cuotas)
         {
             try
             {
@@ -87,7 +89,7 @@ namespace Proyectogestionhoras.Services
                     int idProyectoCreado = (int)idProyectoParameter.Value;
                     await GestorServiciosProyecto(idProyectoCreado, servicios);
                     await GestorProyectoGastos(idProyectoCreado, gastos);
-                    await GestorCuotas(idProyectoCreado, cuotas);
+                    await ejecucionService.GestorIngresos(idProyectoCreado, cuotas);
                     return true;
                 }
             }

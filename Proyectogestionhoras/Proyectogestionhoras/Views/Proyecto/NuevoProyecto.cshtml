@@ -358,7 +358,7 @@
                 <thead>
                     <tr style="background-color: #d9e2f3; color: black;">
                         <th style="padding: 10px; border: 1px solid #ddd;">Fecha Emision</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Fecha Vencimiento</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">IdCuenta</th>
@@ -2015,7 +2015,7 @@
             maximumFractionDigits: 0,
         });
     }
-
+    let contador = 1;
     cuotasInput.addEventListener('input', () => {
   
         const numCuotas = parseInt(cuotasInput.value);
@@ -2030,13 +2030,13 @@
 
               
                 const fechaEmision = document.createElement('td');
-                fechaEmision.innerHTML = `<input type="date" name="fechaemision" style="width: 100%; padding: 5px;">`;
+                fechaEmision.innerHTML = `<input required type="date" name="fechaemision" style="width: 100%; padding: 5px;">`;
 
                 const fechaVencimiento = document.createElement('td');
-                fechaVencimiento.innerHTML = `<input type="date" name="fechavencimiento" style="width: 100%; padding: 5px;">`;
+                fechaVencimiento.innerHTML = `<input type="date" name="fechapago" style="width: 100%; padding: 5px;">`;
 
                 const monto = document.createElement('td');
-                monto.innerHTML = `<input type="text" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px;" placeholder="MontoCLP">`;
+                monto.innerHTML = `<input required type="text" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px;" placeholder="MontoCLP">`;
 
                 const observacion = document.createElement('td');
                 observacion.innerHTML = `<textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación"></textarea>`;
@@ -2046,7 +2046,12 @@
 
                 const idcuota = document.createElement('td');
                 idcuota.style.display = 'none';
-                idcuota.innerHTML = `<input value="" name="idcuota" readonly type="text" style="width: 100%; padding: 5px;" >`;
+                idcuota.innerHTML = `<input value="" name="IdIngresoreal" readonly type="text" style="width: 100%; padding: 5px;" >`;
+
+                const numdocumento = document.createElement('td');
+                numdocumento.style.display = 'none'; 
+                numdocumento.innerHTML = `<input value="fc${contador}" name="numdocumento" readonly type="text" style="width: 100%; padding: 5px;">`;
+                contador++; 
            
                 fila.appendChild(fechaEmision);
                 fila.appendChild(fechaVencimiento);
@@ -2054,7 +2059,7 @@
                 fila.appendChild(observacion);
                 fila.appendChild(idCuenta);
                 fila.appendChild(idcuota);
-                
+                fila.appendChild(numdocumento);
 
                
                 tablaBody.appendChild(fila);

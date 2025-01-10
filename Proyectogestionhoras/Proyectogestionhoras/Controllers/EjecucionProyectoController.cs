@@ -106,14 +106,14 @@ namespace Proyectogestionhoras.Controllers
                     DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
                         ? tempDate
                         : DateTime.Today;
-                    DateTime fechapagoparsed = DateTime.Parse(fechapago[i]);
+                    
 
                     var ingresoViewModel = new IngresoViewModel
                     {
                         IdIngresoreal = idIngresoRealParsed,
                         Numdocumento = numdocumento[i],
                         FechaEmision = fechaemisionParsed,
-                        FechaPago = fechapagoparsed,
+                        FechaPago = DateTime.TryParse(fechapago[i], out DateTime fecha)? (DateTime?)fecha : null,
                         // Montous = montousd,
                         // Tc = tc,
                         Montoclp = montoclp,
