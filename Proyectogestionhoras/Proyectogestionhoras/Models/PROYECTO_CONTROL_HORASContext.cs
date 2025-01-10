@@ -25,6 +25,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Contacto> Contactos { get; set; } = null!;
         public virtual DbSet<CostoPromedio> CostoPromedios { get; set; } = null!;
         public virtual DbSet<Cuentum> Cuenta { get; set; } = null!;
+        public virtual DbSet<Cuota> Cuotas { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
@@ -319,6 +320,37 @@ namespace Proyectogestionhoras.Models
                     .HasColumnName("CUENTA");
 
                 entity.Property(e => e.Idcuenta).HasColumnName("IDCUENTA");
+            });
+
+            modelBuilder.Entity<Cuota>(entity =>
+            {
+                entity.ToTable("CUOTAS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.FechaEmision)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_EMISION");
+
+                entity.Property(e => e.FechaVencimiento)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_VENCIMIENTO");
+
+                entity.Property(e => e.Idpresupuesto).HasColumnName("IDPRESUPUESTO");
+
+                entity.Property(e => e.Montocuota)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("MONTOCUOTA");
+
+                entity.Property(e => e.Observacion)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("OBSERVACION");
+
+                entity.HasOne(d => d.IdpresupuestoNavigation)
+                    .WithMany(p => p.Cuota)
+                    .HasForeignKey(d => d.Idpresupuesto)
+                    .HasConstraintName("PRESUPUESTOCUOTA_FK");
             });
 
             modelBuilder.Entity<Empresa>(entity =>
@@ -897,6 +929,8 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("AFECTAIVA");
+
+                entity.Property(e => e.Cantidadcuotas).HasColumnName("CANTIDADCUOTAS");
 
                 entity.Property(e => e.Moneda)
                     .HasMaxLength(200)

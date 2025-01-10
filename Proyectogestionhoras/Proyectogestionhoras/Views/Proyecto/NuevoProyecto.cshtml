@@ -316,6 +316,10 @@
                 <input type="number" id="plazo" name="plazo" placeholder="Plazo" required>
             </div>
             <div class="form-group">
+                <label for="cuotas">Número de Cuotas</label>
+                <input type="number" id="cuotas" name="cuotas" placeholder="Cuotas" required>
+            </div>
+            <div class="form-group">
                 <label for="fechaInicio">Fecha de inicio</label>
                 <input type="date" id="fechaInicio" name="fechainicio"  required>
             </div>
@@ -348,8 +352,25 @@
             </div>
            
         </div>
-
         <div class="form-group">
+            <p class="form-subtitle">Facturas</p>
+            <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #d9e2f3; color: black;">
+                        <th style="padding: 10px; border: 1px solid #ddd;">Fecha Emision</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Fecha Vencimiento</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">IdCuenta</th>
+                     
+                    </tr>
+                </thead>
+                <tbody id="tabla-body">
+                </tbody>
+            </table>
+        </div>
+
+       @*<div class="form-group">
             <p class="form-subtitle">Facturas</p>
             <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
@@ -368,7 +389,7 @@
                 </tbody>
             </table>
         </div>
-
+        *@
         <div class="form-group">
             <p class="form-subtitle" style="color:black;display:none;">Stock de Horas Anuales Disponibles de cada Socio y Staff durante la duración del proyecto</p>
             <div style="display: flex; justify-content: space-between;">
@@ -949,6 +970,7 @@
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0
                 });
+                obtenerMargenEsperado();
             }
         } else {
             
@@ -970,6 +992,7 @@
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0
                 });
+                obtenerMargenEsperado();
             }
         }
     });
@@ -1218,7 +1241,7 @@
 
 
     /*TABLA FACTURAS */
-    document.getElementById("plazo").addEventListener("input", generarFilas);
+   /* document.getElementById("plazo").addEventListener("input", generarFilas);
     document.getElementById("fechaInicio").addEventListener("input", generarFilas);
     document.getElementById("montomonedaorigen").addEventListener("input", actualizarMontoYGenerarFilas);
     document.getElementById("tasacambio").addEventListener("input", actualizarMontoYGenerarFilas);
@@ -1320,7 +1343,7 @@
        
     }
 
-
+    */
 
 
     $(document).ready(function () {
@@ -1388,11 +1411,13 @@
                 },
                 success: function (data) {
                     if (data && data.length > 0) {
-                        $("#idcuentafactura").val(data[0].idcuenta);
+                        $(".idcuentafactura").each(function (index, element) {
+                            $(element).val(data[0].idcuenta);
+                        });
                         $("#cuentafactura").val(data[0].cuenta);
                         $("#nombresegmentofactura").val(data[0].nombre);
                         $("#idsegmentofactura").val(data[0].idsegmento);
-                        generarFilas();
+                        //generarFilas();
                     } else {
                         $("#idcuentafactura").val('');
                         $("#nombresegmentofactura").val('');
@@ -1809,7 +1834,7 @@
         const totalGastos = updateTotalGasto();
         
         const margenes = calcularMargen(costoSocio, costoStaff, costoConsultora, costoConsultorb, costoConsultorc, horasSocios, horasStaff, horasConsultora, horasConsultorb, horasConsultorc);
-        const netoFacturaElement = document.getElementById('netofactura');
+        const netoFacturaElement = document.getElementById('monto');
         const ingresos = netoFacturaElement ? parseFloat(netoFacturaElement.value.replace(/\./g, '').replace(',', '.')) || 0 : 0;
         
 
@@ -1980,5 +2005,75 @@
 </script>
 
 
+<script>
+    
+    const cuotasInput = document.getElementById('cuotas');
+    const tablaBody = document.getElementById('tabla-body');
+    function formatearMiles(valor) {
+        return Number(valor.replace(/\D/g, '')).toLocaleString('de-DE', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        });
+    }
 
+    cuotasInput.addEventListener('input', () => {
+  
+        const numCuotas = parseInt(cuotasInput.value);
+
+        tablaBody.innerHTML = '';
+
+   
+        if (numCuotas > 0) {
+    
+            for (let i = 0; i < numCuotas; i++) {
+                const fila = document.createElement('tr');
+
+              
+                const fechaEmision = document.createElement('td');
+                fechaEmision.innerHTML = `<input type="date" name="fechaemision" style="width: 100%; padding: 5px;">`;
+
+                const fechaVencimiento = document.createElement('td');
+                fechaVencimiento.innerHTML = `<input type="date" name="fechavencimiento" style="width: 100%; padding: 5px;">`;
+
+                const monto = document.createElement('td');
+                monto.innerHTML = `<input type="text" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px;" placeholder="MontoCLP">`;
+
+                const observacion = document.createElement('td');
+                observacion.innerHTML = `<textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación"></textarea>`;
+
+                const idCuenta = document.createElement('td');
+                idCuenta.innerHTML = `<input value="41001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta">`;
+
+                const idcuota = document.createElement('td');
+                idcuota.style.display = 'none';
+                idcuota.innerHTML = `<input value="" name="idcuota" readonly type="text" style="width: 100%; padding: 5px;" >`;
+           
+                fila.appendChild(fechaEmision);
+                fila.appendChild(fechaVencimiento);
+                fila.appendChild(monto);
+                fila.appendChild(observacion);
+                fila.appendChild(idCuenta);
+                fila.appendChild(idcuota);
                 
+
+               
+                tablaBody.appendChild(fila);
+            }
+      
+            const montos = document.querySelectorAll('.monto-factura');
+            montos.forEach((input) => {
+                input.addEventListener('input', function () {
+                    const cursorPos = this.selectionStart;
+                    this.value = formatearMiles(this.value);
+                    this.selectionStart = this.selectionEnd = cursorPos;
+                });
+            });
+        }
+    });
+
+
+
+
+
+
+</script>

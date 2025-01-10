@@ -122,7 +122,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen,decimal tasacambio)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen,decimal tasacambio,int cuotas)
         {
             try
             {
@@ -216,10 +216,32 @@ namespace Proyectogestionhoras.Controllers
                 var tasacambiotr = Request.Form["tasacambio"].ToString().Replace(".", "");
                 montoorigenextranjera = decimal.Parse(montomonedaorigentr, System.Globalization.CultureInfo.InvariantCulture);
                 tasacambios = decimal.Parse(tasacambiotr, System.Globalization.CultureInfo.InvariantCulture);
-                
 
 
-                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, tasacambios, servicios, gastos);
+                /*ingresando cuotas*/
+                List<CuotasViewModel> cuotasinformacion = new List<CuotasViewModel>();
+                var fechaemision = Request.Form["fechaemision"];
+                var fechavencimiento = Request.Form["fechavencimiento"];
+                var montocuota = Request.Form["montocuota"];
+                var observacioncuota = Request.Form["observacioncuota"];
+                var idcuota = Request.Form["idcuota"];
+                for(int i = 0; i < fechaemision.Count; i++)
+                {
+                    int idcuotaRealParsed = string.IsNullOrWhiteSpace(idcuota[i])
+                                           ? 0
+                                           : int.Parse(idcuota[i]);
+                    var cuotaviewmodel = new CuotasViewModel
+                    {
+                        IdCuota = idcuotaRealParsed,
+                        FechaEmision = DateTime.Parse(fechaemision[i]),
+                        FechaVencimiento = DateTime.Parse(fechavencimiento[i]),
+                        MontoCuota = decimal.Parse(montocuota[i].ToString().Replace(".", "")),
+                        Observacion = observacioncuota[i],
+                    };
+                    cuotasinformacion.Add(cuotaviewmodel);
+                }
+
+                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, tasacambios, cuotas,servicios, gastos, cuotasinformacion);
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();

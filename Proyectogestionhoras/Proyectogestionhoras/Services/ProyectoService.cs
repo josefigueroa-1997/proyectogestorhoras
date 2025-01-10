@@ -29,7 +29,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,  int cantidadcuotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<CuotasViewModel> cuotas)
         {
             try
             {
@@ -76,6 +76,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
                     command.Parameters.Add(new SqlParameter("@MONTOMONEDAORIGEN", montoorigen));
                     command.Parameters.Add(new SqlParameter("@TASACAMBIO", tasacambio));
+                    command.Parameters.Add(new SqlParameter("@CANTIDADCUOTAS", cantidadcuotas));
                     SqlParameter idProyectoParameter = new SqlParameter("@ID_PROYECTO", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
@@ -86,6 +87,7 @@ namespace Proyectogestionhoras.Services
                     int idProyectoCreado = (int)idProyectoParameter.Value;
                     await GestorServiciosProyecto(idProyectoCreado, servicios);
                     await GestorProyectoGastos(idProyectoCreado, gastos);
+                    await GestorCuotas(idProyectoCreado, cuotas);
                     return true;
                 }
             }
@@ -292,6 +294,59 @@ namespace Proyectogestionhoras.Services
             await context.SaveChangesAsync();
         }
 
+
+        public async Task GestorCuotas(int idpresupuesto,List<CuotasViewModel> cuotas)
+        {
+            try
+            {
+                if (cuotas == null || !cuotas.Any())
+                {
+                    return;
+                }
+
+                var idsCuotas = cuotas.Where(g => g.IdCuota > 0)
+                                     .Select(g => g.IdCuota)
+                                     .ToList();
+
+
+                var CuotasExistentes = await context.Cuotas
+                                                    .Where(g => idsCuotas.Contains(g.Id))
+                                                    .ToDictionaryAsync(g => g.Id);
+
+
+                var nuevasCuotas = cuotas.Where(g => g.IdCuota <= 0).ToList();
+
+                foreach (var cuota in cuotas.Where(g => g.IdCuota > 0))
+                {
+                    if (CuotasExistentes.TryGetValue(cuota.IdCuota, out var cuotaExistente))
+                    {
+                        cuotaExistente.FechaEmision = cuota.FechaEmision;
+                        cuotaExistente.FechaVencimiento = cuota.FechaVencimiento;
+                        cuotaExistente.Montocuota = cuota.MontoCuota;
+                        cuotaExistente.Observacion = cuota.Observacion;
+                    }
+                }
+
+
+                var cuotasParaInsertar = nuevasCuotas.Select(cuota => new Cuota
+                {
+                    Idpresupuesto = idpresupuesto,
+                    FechaEmision = cuota.FechaEmision,
+                    FechaVencimiento = cuota.FechaVencimiento,
+                    Montocuota = cuota.MontoCuota,
+                    Observacion = cuota.Observacion,
+                }).ToList();
+
+                await context.Cuotas.AddRangeAsync(cuotasParaInsertar);
+
+
+                await context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al agregar/actualizar una cuota:{e.Message}");
+            }
+        }
 
         public async Task AgregarGastoProyectoeJECUCION(int idProyecto, List<GastoViewModel> gastos)
         {
