@@ -104,7 +104,7 @@ namespace Proyectogestionhoras.Services
 
 
         /*EDITAR PROYECTO*/
-        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cantidadcauotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -153,6 +153,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@IDSEGMENTOFACTURA", idsegmentofactura));
                     command.Parameters.Add(new SqlParameter("@MONTOMONEDAORIGEN", montoorigen));
                     command.Parameters.Add(new SqlParameter("@TASACAMBIO", tasacambio));
+                    command.Parameters.Add(new SqlParameter("@CANTIDADCUOTAS", cantidadcauotas));
 
 
                     await command.ExecuteNonQueryAsync();
@@ -699,6 +700,7 @@ namespace Proyectogestionhoras.Services
                                 MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
                                 TasaCambio = reader.IsDBNull(reader.GetOrdinal("TASACAMBIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TASACAMBIO")),
                                 idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
+                                CantidadCuotas = reader.IsDBNull(reader.GetOrdinal("CANTIDADCUOTAS")) ? 0 : reader.GetInt32(reader.GetOrdinal("CANTIDADCUOTAS")),
 
 
 

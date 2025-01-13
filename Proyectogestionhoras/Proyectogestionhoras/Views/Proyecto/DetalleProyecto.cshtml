@@ -291,7 +291,9 @@
                 <tbody>
 
                     
-
+                    @{
+                        decimal totalneto = 0;
+                    }
                     @foreach (var factura in ViewBag.Facturas)
                     {
                         <tr>
@@ -301,10 +303,16 @@
                             <td style="padding: 10px; border: 1px solid #ddd;">@factura.Fecha_Factura.ToString("MM/yyyy")</td>
                             <td id="neto" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", factura.Neto)</td>
                            
-                           
+                            @{
+                                totalneto += factura.Neto;
+                            }
                         </tr>
                     }
+                    <tr>
+                        <td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Total</strong></td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N0}", totalneto)</strong> </td>
 
+                    </tr>
                    
                 </tbody>
             </table>

@@ -36,8 +36,15 @@ namespace Proyectogestionhoras.Controllers
             {
               
                 var planilla = await planillaService.ObtenerPlanillaUsuario(id.Value,0);
-                ViewBag.Planilla = planilla;
-      
+                int mesActual = DateTime.Now.Month;
+                int anioActual = DateTime.Now.Year;
+
+                var planillaFiltrada = planilla
+                    .Where(p => p.Mes == mesActual && p.Anio == anioActual)
+                    .ToList();
+
+                ViewBag.Planilla = planillaFiltrada;
+
                 return View("Planilla");
 
             }

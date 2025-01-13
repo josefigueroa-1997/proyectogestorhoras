@@ -76,5 +76,6 @@
         public decimal MontoOrigenExtranjero { get; set; }
         public decimal TasaCambio { get; set; }
         public int idpresupuesto { get; set; }
+        public int CantidadCuotas { get; set; }
     }
 }
