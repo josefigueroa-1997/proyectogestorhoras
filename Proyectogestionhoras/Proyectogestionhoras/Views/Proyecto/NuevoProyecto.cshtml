@@ -353,11 +353,10 @@
            
         </div>
         <div class="form-group">
-            <p class="form-subtitle">Facturas</p>
+            <p class="form-subtitle">Cuotas</p>
             <table id="tablafactura" style="width: 100%; border-collapse: collapse; text-align: left;">
                 <thead>
                     <tr style="background-color: #d9e2f3; color: black;">
-                        <th style="padding: 10px; border: 1px solid #ddd;">Fecha Emisión</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
@@ -2033,6 +2032,7 @@
                 fechaEmision.innerHTML = `<input required type="date" name="fechaemision" style="width: 100%; padding: 5px;">`;
 
                 const fechaVencimiento = document.createElement('td');
+                fechaVencimiento.style.display = 'none';
                 fechaVencimiento.innerHTML = `<input type="date" name="fechapago" style="width: 100%; padding: 5px;">`;
 
                 const monto = document.createElement('td');
@@ -2042,7 +2042,7 @@
                 observacion.innerHTML = `<textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación"></textarea>`;
 
                 const idCuenta = document.createElement('td');
-                idCuenta.innerHTML = `<input value="41001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta">`;
+                idCuenta.innerHTML = `<input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta">`;
 
                 const idcuota = document.createElement('td');
                 idcuota.style.display = 'none';

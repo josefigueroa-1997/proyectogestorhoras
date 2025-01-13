@@ -166,7 +166,7 @@
 
             @if (proyecto.STATUSPROYECTO == 2)
             {
-                <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
+                <h1 class="form-title">Editar Proyecto:@proyecto.NombreProyecto</h1>
                 <p class="form-subtitle">
                     Fecha: <span id="current-date"></span>
                 </p>
@@ -524,12 +524,11 @@
                 </div>
                 <input type="hidden" name="tablaUsada" id="tablaUsada" value="primera">
                <div class="form-group">
-                    <p class="form-subtitle">Facturas</p>
+                    <p class="form-subtitle">Cuotas</p>
                     <table id="tablacuotasexistentes" style="width: 100%; border-collapse: collapse; text-align: left;">
                         <thead>
                             <tr style="background-color: #d9e2f3; color: black;">
-                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Emisión</th>
-                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>                             
                                 <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">IdCuenta</th>
@@ -541,10 +540,9 @@
                                 {
                                     <tr>
                                         <td><input required type="date" name="fechaemision" value="@cuotas.FechaEmision?.ToString("yyyy-MM-dd")" style="width: 100%; padding: 5px;"></td>
-                                        <td><input type="date" name="fechapago" value="@cuotas.FechaPago?.ToString("yyyy-MM-dd")" style="width: 100%; padding: 5px;"></td>
                                         <td><input required type="text" value="@String.Format("{0:N0}", cuotas.Montoclp)" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px; text-align:right;" placeholder="MontoCLP"></td>
                                         <td><textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación">@cuotas.Observacion</textarea></td>
-                                        <td><input value="41001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta"></td>
+                                        <td><input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta"></td>
                                         <td style="display:none;">
                                             <input name="IdIngresoreal" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;" >
                                         </td>
@@ -561,7 +559,6 @@
                     <table id="tabla-body-wrapper" style="width: 100%; border-collapse: collapse; text-align: left;display: none;">
                             <thead>
                                 <tr style="background-color: #d9e2f3; color: black;">
-                                    <th style="padding: 10px; border: 1px solid #ddd;">Fecha Emisión</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                                     <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
@@ -1188,7 +1185,7 @@
             else
             {
 
-                <h1 class="form-title">Editar Proyecto:@proyecto.numproyecto</h1>
+                <h1 class="form-title">Editar Proyecto:@proyecto.NombreProyecto</h1>
                 <p class="form-subtitle">Rellene la siguiente ficha con los datos del proyecto</p>
                 <p class="form-subtitle">
                     Fecha: <span id="current-date"></span>
@@ -1542,11 +1539,10 @@
                 </div>
                 <input type="hidden" name="tablaUsada" id="tablaUsada" value="primera">
                 <div class="form-group">
-                    <p class="form-subtitle">Facturas</p>
+                    <p class="form-subtitle">Cuotas</p>
                     <table id="tablacuotasexistentes" style="width: 100%; border-collapse: collapse; text-align: left;">
                         <thead>
                             <tr style="background-color: #d9e2f3; color: black;">
-                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Emisión</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
@@ -1560,10 +1556,9 @@
                                 {
                                     <tr>
                                         <td><input required type="date" name="fechaemision" value="@cuotas.FechaEmision?.ToString("yyyy-MM-dd")" style="width: 100%; padding: 5px;"></td>
-                                        <td><input type="date" name="fechapago" value="@cuotas.FechaPago?.ToString("yyyy-MM-dd")" style="width: 100%; padding: 5px;"></td>
                                         <td><input required type="text" value="@String.Format("{0:N0}", cuotas.Montoclp)" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px; text-align:right;" placeholder="MontoCLP"></td>
                                         <td><textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación">@cuotas.Observacion</textarea></td>
-                                        <td><input value="41001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta"></td>
+                                        <td><input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta"></td>
                                         <td style="display:none;">
                                             <input name="IdIngresoreal" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;">
                                         </td>
@@ -1580,7 +1575,6 @@
                     <table id="tabla-body-wrapper" style="width: 100%; border-collapse: collapse; text-align: left;display: none;">
                         <thead>
                             <tr style="background-color: #d9e2f3; color: black;">
-                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Emisión</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
@@ -3642,6 +3636,7 @@
                 fechaEmision.innerHTML = `<input required type="date" name="fechaemision" style="width: 100%; padding: 5px;">`;
 
                 const fechaVencimiento = document.createElement('td');
+                fechaVencimiento.style.display = 'none';
                 fechaVencimiento.innerHTML = `<input type="date" name="fechapago" style="width: 100%; padding: 5px;">`;
 
                 const monto = document.createElement('td');
@@ -3651,7 +3646,7 @@
                 observacion.innerHTML = `<textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación"></textarea>`;
 
                 const idCuenta = document.createElement('td');
-                idCuenta.innerHTML = `<input value="41001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta">`;
+                idCuenta.innerHTML = `<input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta">`;
 
                 const idcuota = document.createElement('td');
                 idcuota.style.display = 'none';

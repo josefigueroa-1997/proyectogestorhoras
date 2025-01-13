@@ -275,7 +275,7 @@ namespace Proyectogestionhoras.Controllers
                         Montoclp = montoclp,
                         Iva = 0,
                         Estado = "Forecast",
-                        Idcuenta = 41001,
+                        Idcuenta = 4101001,
                         Observacion = Observacion[i],
                         
                     };
@@ -518,7 +518,7 @@ namespace Proyectogestionhoras.Controllers
 
 
                 var numdocumento = Request.Form["numdocumento"];
-                var fechapago = Request.Form["fechapago"];
+               
                 var fechaemision = Request.Form["fechaemision"];
 
                 var Montoclplist = Request.Form["montocuota"];
@@ -554,12 +554,12 @@ namespace Proyectogestionhoras.Controllers
                         IdIngresoreal = idIngresoRealParsed,
                         Numdocumento = numdocumento[i],
                         FechaEmision = fechaemisionParsed,
-                        FechaPago = string.IsNullOrWhiteSpace(fechapago[i]) ? (DateTime?)null : DateTime.Parse(fechapago[i]),
+                        FechaPago = null,
 
                         Montoclp = montoclp,
                         Iva = 0,
                         Estado = "Forecast",
-                        Idcuenta = 41001,
+                        Idcuenta = 4101001,
                         Observacion = Observacion[i],
 
                     };
@@ -578,7 +578,7 @@ namespace Proyectogestionhoras.Controllers
                 context.SaveChanges();
 
                 var numdocumento = Request.Form["numdocumento"];
-                var fechapago = Request.Form["fechapago"];
+       
                 var fechaemision = Request.Form["fechaemision"];
 
                 var Montoclplist = Request.Form["montocuota"];
@@ -614,12 +614,12 @@ namespace Proyectogestionhoras.Controllers
                         IdIngresoreal = idIngresoRealParsed,
                         Numdocumento = numdocumento[i],
                         FechaEmision = fechaemisionParsed,
-                        FechaPago = string.IsNullOrWhiteSpace(fechapago[i]) ? (DateTime?)null : DateTime.Parse(fechapago[i]),
+                        FechaPago = null,
 
                         Montoclp = montoclp,
                         Iva = 0,
                         Estado = "Forecast",
-                        Idcuenta = 41001,
+                        Idcuenta = 4101001,
                         Observacion = Observacion[i],
 
                     };
@@ -759,7 +759,7 @@ namespace Proyectogestionhoras.Controllers
 
 
                     var numdocumento = Request.Form["numdocumento"];
-                    var fechapago = Request.Form["fechapago"];
+                 
                     var fechaemision = Request.Form["fechaemision"];
 
                     var Montoclplist = Request.Form["montocuota"];
@@ -795,12 +795,12 @@ namespace Proyectogestionhoras.Controllers
                             IdIngresoreal = idIngresoRealParsed,
                             Numdocumento = numdocumento[i],
                             FechaEmision = fechaemisionParsed,
-                            FechaPago = string.IsNullOrWhiteSpace(fechapago[i]) ? (DateTime?)null : DateTime.Parse(fechapago[i]),
+                            FechaPago = null,
 
                             Montoclp = montoclp,
                             Iva = 0,
                             Estado = "Forecast",
-                            Idcuenta = 41001,
+                            Idcuenta = 4101001,
                             Observacion = Observacion[i],
 
                         };
@@ -819,7 +819,6 @@ namespace Proyectogestionhoras.Controllers
                     context.SaveChanges();
 
                     var numdocumento = Request.Form["numdocumento"];
-                    var fechapago = Request.Form["fechapago"];
                     var fechaemision = Request.Form["fechaemision"];
 
                     var Montoclplist = Request.Form["montocuota"];
@@ -855,12 +854,12 @@ namespace Proyectogestionhoras.Controllers
                             IdIngresoreal = idIngresoRealParsed,
                             Numdocumento = numdocumento[i],
                             FechaEmision = fechaemisionParsed,
-                            FechaPago = string.IsNullOrWhiteSpace(fechapago[i]) ? (DateTime?)null : DateTime.Parse(fechapago[i]),
+                            FechaPago = null,
 
                             Montoclp = montoclp,
                             Iva = 0,
                             Estado = "Forecast",
-                            Idcuenta = 41001,
+                            Idcuenta = 4101001,
                             Observacion = Observacion[i],
 
                         };
