@@ -494,7 +494,7 @@
                     </div>
                     <div class="form-group">
                         <label for="cuotas">Número de Cuotas</label>
-                        <input type="number" id="cuotas" name="cuotas" readonly value="@proyecto.CantidadCuotas" required>
+                        <input type="number" id="cuotas" name="cuotas"  value="@proyecto.CantidadCuotas" required>
                     </div>
                     <div class="form-group">
                         <label for="fechaInicio">Fecha de inicio</label>
@@ -524,8 +524,9 @@
                 </div>
                 <input type="hidden" name="tablaUsada" id="tablaUsada" value="primera">
                <div class="form-group">
-                    <p class="form-subtitle">Cuotas</p>
+                    
                     <table id="tablacuotasexistentes" style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <p class="form-subtitle">Cuotas</p>
                         <thead>
                             <tr style="background-color: #d9e2f3; color: black;">
                                 <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>                             
@@ -540,38 +541,40 @@
                                 {
                                     <tr>
                                         <td><input required type="date" name="fechaemision" value="@cuotas.FechaEmision?.ToString("yyyy-MM-dd")" style="width: 100%; padding: 5px;"></td>
-                                        <td><input required type="text" value="@String.Format("{0:N0}", cuotas.Montoclp)" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px; text-align:right;" placeholder="MontoCLP"></td>
+                                        <td><input required type="text" value="@String.Format("{0:N0}", cuotas.Montocuota)" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px; text-align:right;" placeholder="MontoCLP"></td>
                                         <td><textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación">@cuotas.Observacion</textarea></td>
                                         <td><input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta"></td>
                                         <td style="display:none;">
-                                            <input name="IdIngresoreal" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;" >
+                                            <input name="IdCuota" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;" >
                                         </td>
-                                        <td style="display:none;">
-                                            <input name="numdocumento" value="@cuotas.Numdocumento" readonly type="text" style="width: 100%; padding: 5px;">
-                                        </td>
+                                        
                                     </tr>
                                 }
                             }
                             
                         </tbody>
                     </table>
-                    
-                    <table id="tabla-body-wrapper" style="width: 100%; border-collapse: collapse; text-align: left;display: none;">
+               
+
+
+                    <div class="flex justify-center w-full">
+                        <table id="tabla-body-wrapper" class="w-full max-w-4xl border-collapse hidden text-left">
                             <thead>
-                                <tr style="background-color: #d9e2f3; color: black;">
-                                    <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
-                                    <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
-                                    <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
-                                    <th style="padding: 10px; border: 1px solid #ddd;">IdCuenta</th>
+                                <tr class="bg-blue-100 text-black">
+                                    <th class="p-2 border border-gray-300">Fecha Pago</th>
+                                    <th class="p-2 border border-gray-300">MontoCLP</th>
+                                    <th class="p-2 border border-gray-300">Observación</th>
+                                    <th class="p-2 border border-gray-300">IdCuenta</th>
                                 </tr>
                             </thead>
-                        <tbody id="tabla-body">
-
-                        </tbody>
-                    </table>
-                    
+                            <tbody id="tabla-body">
+                               
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-        
+
+
                 @*tabla costos directos*@
 
                 <div class="form-group">
@@ -1556,15 +1559,13 @@
                                 {
                                     <tr>
                                         <td><input required type="date" name="fechaemision" value="@cuotas.FechaEmision?.ToString("yyyy-MM-dd")" style="width: 100%; padding: 5px;"></td>
-                                        <td><input required type="text" value="@String.Format("{0:N0}", cuotas.Montoclp)" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px; text-align:right;" placeholder="MontoCLP"></td>
+                                        <td><input required type="text" value="@String.Format("{0:N0}", cuotas.Montocuota)" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px; text-align:right;" placeholder="MontoCLP"></td>
                                         <td><textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación">@cuotas.Observacion</textarea></td>
                                         <td><input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta"></td>
                                         <td style="display:none;">
-                                            <input name="IdIngresoreal" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;">
+                                            <input name="IdCuota" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;">
                                         </td>
-                                        <td style="display:none;">
-                                            <input name="numdocumento" value="@cuotas.Numdocumento" readonly type="text" style="width: 100%; padding: 5px;">
-                                        </td>
+
                                     </tr>
                                 }
                             }
@@ -1572,18 +1573,20 @@
                         </tbody>
                     </table>
 
-                    <table id="tabla-body-wrapper" style="width: 100%; border-collapse: collapse; text-align: left;display: none;">
-                        <thead>
-                            <tr style="background-color: #d9e2f3; color: black;">
-                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
-                                <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
-                                <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
-                                <th style="padding: 10px; border: 1px solid #ddd;">IdCuenta</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-body">
-                        </tbody>
-                    </table>
+                    <div class="flex justify-center w-full">
+                        <table id="tabla-body-wrapper" class="w-full max-w-4xl border-collapse hidden text-left">
+                            <thead>
+                                <tr class="bg-blue-100 text-black">
+                                    <th class="p-2 border border-gray-300">Fecha Pago</th>
+                                    <th class="p-2 border border-gray-300">MontoCLP</th>
+                                    <th class="p-2 border border-gray-300">Observación</th>
+                                    <th class="p-2 border border-gray-300">IdCuenta</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-body">
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
 
@@ -3650,7 +3653,7 @@
 
                 const idcuota = document.createElement('td');
                 idcuota.style.display = 'none';
-                idcuota.innerHTML = `<input value="" name="IdIngresoreal" readonly type="text" style="width: 100%; padding: 5px;" >`;
+                idcuota.innerHTML = `<input value="" name="IdCuota" readonly type="text" style="width: 100%; padding: 5px;" >`;
 
                 const numdocumento = document.createElement('td');
                 numdocumento.style.display = 'none';

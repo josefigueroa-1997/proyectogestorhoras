@@ -223,13 +223,11 @@ namespace Proyectogestionhoras.Controllers
 
 
                 /*ingresando cuotas*/
-                List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
+                List<CuotasViewModel> cuota = new List<CuotasViewModel>();
 
                 var numdocumento = Request.Form["numdocumento"];
-                var fechapago = Request.Form["fechapago"];
                 var fechaemision = Request.Form["fechaemision"];
-                // var montousdlist = Request.Form["Montous"];
-                // var Tclist = Request.Form["Tc"];
+
                 var Montoclplist = Request.Form["montocuota"];
           
                 var Observacion = Request.Form["observacioncuota"];
@@ -243,17 +241,10 @@ namespace Proyectogestionhoras.Controllers
                         continue;
                     }
 
-                    // string montosusdStr = montousdlist[i]?.ToString().Trim() ?? "0";
                     string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
                     
-                    // string tcStr = Tclist[i]?.ToString().Trim() ?? "0";
 
-
-                    // decimal.TryParse(montosusdStr.Replace(".", ""), out decimal montousd);
                     decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
-               
-                    //  decimal.TryParse(tcStr.Replace(".", ""), out decimal tc);
-
 
                     int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
                     
@@ -264,27 +255,19 @@ namespace Proyectogestionhoras.Controllers
                         : DateTime.Today;
                     
             
-                    var ingresoViewModel = new IngresoViewModel
+                    var cuotaViewModel = new CuotasViewModel
                     {
-                        IdIngresoreal = idIngresoRealParsed,
-                        Numdocumento = numdocumento[i],
+                        IdCuota = idIngresoRealParsed,
                         FechaEmision = fechaemisionParsed,
-                        FechaPago = string.IsNullOrWhiteSpace(fechapago[i])? (DateTime?)null : DateTime.Parse(fechapago[i]),
-                        // Montous = montousd,
-                        // Tc = tc,
-                        Montoclp = montoclp,
-                        Iva = 0,
-                        Estado = "Forecast",
-                        Idcuenta = 4101001,
+                        MontoCuota = montoclp,
                         Observacion = Observacion[i],
                         
                     };
-
-                    ingresos.Add(ingresoViewModel);
+                    cuota.Add(cuotaViewModel);
        
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, tasacambios, cuotas,servicios, gastos, ingresos);
+                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, tasacambios, cuotas,servicios, gastos, cuota);
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
@@ -384,7 +367,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
-                        var cuotasproyecto = await context.Ingresosreales.Where(x => x.Idproyecto == id && x.Estado == "Forecast").ToListAsync();
+                        var cuotasproyecto = await context.Cuotas.Where(x => x.Idpresupuesto == id ).ToListAsync();
                         var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
                         var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         var unegocios = await proyectoService.ObtenerUnegocio();
@@ -448,6 +431,18 @@ namespace Proyectogestionhoras.Controllers
 
        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc)
         {
+
+            var presupuesto = context.Presupuestos.FirstOrDefault(p => p.Id == idproyecto);
+            if (presupuesto != null)
+            {
+               
+                presupuesto.Cantidadcuotas = int.Parse(Request.Form["cuotas"].ToString());
+
+
+                context.SaveChanges();
+            }
+
+
             List<ServicioViewModel> serviciosejecucion = new List<ServicioViewModel>();
             var idsserviciosejecucion = Request.Form["idservicio"];
             var idsegmentoservicioejecucion = Request.Form["idsegmentoservicio"];
@@ -511,25 +506,25 @@ namespace Proyectogestionhoras.Controllers
 
             /*Actualizar Cuotas*/
             var tablaseleccionada = Request.Form["tablaUsada"];
-            List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
+            List<CuotasViewModel> cuota = new List<CuotasViewModel>();
             if (tablaseleccionada == "primera")
             {
                 /*ingresando cuotas*/
 
 
-                var numdocumento = Request.Form["numdocumento"];
+                
                
                 var fechaemision = Request.Form["fechaemision"];
 
                 var Montoclplist = Request.Form["montocuota"];
 
                 var Observacion = Request.Form["observacioncuota"];
-                var idingresoreal = Request.Form["IdIngresoreal"];
+                var idingresoreal = Request.Form["IdCuota"];
 
 
-                for (int i = 0; i < numdocumento.Count; i++)
+                for (int i = 0; i < fechaemision.Count; i++)
                 {
-                    if (string.IsNullOrWhiteSpace(numdocumento[i]))
+                    if (string.IsNullOrWhiteSpace(fechaemision[i]))
                     {
                         continue;
                     }
@@ -549,47 +544,42 @@ namespace Proyectogestionhoras.Controllers
                         : DateTime.Today;
 
 
-                    var ingresoViewModel = new IngresoViewModel
+                    var CuotaViewModel = new CuotasViewModel
                     {
-                        IdIngresoreal = idIngresoRealParsed,
-                        Numdocumento = numdocumento[i],
+                        IdCuota = idIngresoRealParsed,
+  
                         FechaEmision = fechaemisionParsed,
-                        FechaPago = null,
 
-                        Montoclp = montoclp,
-                        Iva = 0,
-                        Estado = "Forecast",
-                        Idcuenta = 4101001,
+                        MontoCuota = montoclp,
+                   
                         Observacion = Observacion[i],
 
                     };
 
-                    ingresos.Add(ingresoViewModel);
+                    cuota.Add(CuotaViewModel);
 
                 }
 
             }
             else if (tablaseleccionada == "segunda")
             {
-                var registrosAEliminar = await context.Ingresosreales
-                .Where(ir => ir.Idproyecto == idproyecto && ir.Estado == "Forecast").ToListAsync();
+                var registrosAEliminar = await context.Cuotas
+                .Where(c=>c.Idpresupuesto == idproyecto ).ToListAsync();
 
-                context.Ingresosreales.RemoveRange(registrosAEliminar);
+                context.Cuotas.RemoveRange(registrosAEliminar);
                 context.SaveChanges();
 
-                var numdocumento = Request.Form["numdocumento"];
-       
                 var fechaemision = Request.Form["fechaemision"];
 
                 var Montoclplist = Request.Form["montocuota"];
 
                 var Observacion = Request.Form["observacioncuota"];
-                var idingresoreal = Request.Form["IdIngresoreal"];
+                var idingresoreal = Request.Form["IdCuota"];
 
 
-                for (int i = 0; i < numdocumento.Count; i++)
+                for (int i = 0; i < fechaemision.Count; i++)
                 {
-                    if (string.IsNullOrWhiteSpace(numdocumento[i]))
+                    if (string.IsNullOrWhiteSpace(fechaemision[i]))
                     {
                         continue;
                     }
@@ -609,26 +599,23 @@ namespace Proyectogestionhoras.Controllers
                         : DateTime.Today;
 
 
-                    var ingresoViewModel = new IngresoViewModel
+                    var CuotaViewModel = new CuotasViewModel
                     {
-                        IdIngresoreal = idIngresoRealParsed,
-                        Numdocumento = numdocumento[i],
-                        FechaEmision = fechaemisionParsed,
-                        FechaPago = null,
+                        IdCuota = idIngresoRealParsed,
 
-                        Montoclp = montoclp,
-                        Iva = 0,
-                        Estado = "Forecast",
-                        Idcuenta = 4101001,
+                        FechaEmision = fechaemisionParsed,
+
+                        MontoCuota = montoclp,
+
                         Observacion = Observacion[i],
 
                     };
 
-                    ingresos.Add(ingresoViewModel);
+                    cuota.Add(CuotaViewModel);
 
                 }
             }
-            await ejecucionService.GestorIngresos(idproyecto, ingresos);
+            await proyectoService.GestorCuotas(idproyecto, cuota);
             await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
             await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
             await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
@@ -752,25 +739,25 @@ namespace Proyectogestionhoras.Controllers
                 bool resultado = await proyectoService.EditarProyecto(idproyecto, idpresupuesto, montofinal, moneda, afectaiva, idtipologia, nombre, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, status, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, tasacambios, cantidadcuotas, servicios, gastos);
                 /*Actualizar Cuotas*/
                 var tablaseleccionada = Request.Form["tablaUsada"];
-                List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
+                List<CuotasViewModel> cuota = new List<CuotasViewModel>();
                 if (tablaseleccionada == "primera")
                 {
                     /*ingresando cuotas*/
 
 
-                    var numdocumento = Request.Form["numdocumento"];
-                 
+
+
                     var fechaemision = Request.Form["fechaemision"];
 
                     var Montoclplist = Request.Form["montocuota"];
 
                     var Observacion = Request.Form["observacioncuota"];
-                    var idingresoreal = Request.Form["IdIngresoreal"];
+                    var idingresoreal = Request.Form["IdCuota"];
 
 
-                    for (int i = 0; i < numdocumento.Count; i++)
+                    for (int i = 0; i < fechaemision.Count; i++)
                     {
-                        if (string.IsNullOrWhiteSpace(numdocumento[i]))
+                        if (string.IsNullOrWhiteSpace(fechaemision[i]))
                         {
                             continue;
                         }
@@ -790,46 +777,42 @@ namespace Proyectogestionhoras.Controllers
                             : DateTime.Today;
 
 
-                        var ingresoViewModel = new IngresoViewModel
+                        var CuotaViewModel = new CuotasViewModel
                         {
-                            IdIngresoreal = idIngresoRealParsed,
-                            Numdocumento = numdocumento[i],
-                            FechaEmision = fechaemisionParsed,
-                            FechaPago = null,
+                            IdCuota = idIngresoRealParsed,
 
-                            Montoclp = montoclp,
-                            Iva = 0,
-                            Estado = "Forecast",
-                            Idcuenta = 4101001,
+                            FechaEmision = fechaemisionParsed,
+
+                            MontoCuota = montoclp,
+
                             Observacion = Observacion[i],
 
                         };
 
-                        ingresos.Add(ingresoViewModel);
+                        cuota.Add(CuotaViewModel);
 
                     }
 
                 }
                 else if (tablaseleccionada == "segunda")
                 {
-                    var registrosAEliminar = await context.Ingresosreales
-                    .Where(ir => ir.Idproyecto == idproyecto && ir.Estado == "Forecast").ToListAsync();
+                    var registrosAEliminar = await context.Cuotas
+                    .Where(c => c.Idpresupuesto == idproyecto).ToListAsync();
 
-                    context.Ingresosreales.RemoveRange(registrosAEliminar);
+                    context.Cuotas.RemoveRange(registrosAEliminar);
                     context.SaveChanges();
 
-                    var numdocumento = Request.Form["numdocumento"];
                     var fechaemision = Request.Form["fechaemision"];
 
                     var Montoclplist = Request.Form["montocuota"];
 
                     var Observacion = Request.Form["observacioncuota"];
-                    var idingresoreal = Request.Form["IdIngresoreal"];
+                    var idingresoreal = Request.Form["IdCuota"];
 
 
-                    for (int i = 0; i < numdocumento.Count; i++)
+                    for (int i = 0; i < fechaemision.Count; i++)
                     {
-                        if (string.IsNullOrWhiteSpace(numdocumento[i]))
+                        if (string.IsNullOrWhiteSpace(fechaemision[i]))
                         {
                             continue;
                         }
@@ -849,26 +832,23 @@ namespace Proyectogestionhoras.Controllers
                             : DateTime.Today;
 
 
-                        var ingresoViewModel = new IngresoViewModel
+                        var CuotaViewModel = new CuotasViewModel
                         {
-                            IdIngresoreal = idIngresoRealParsed,
-                            Numdocumento = numdocumento[i],
-                            FechaEmision = fechaemisionParsed,
-                            FechaPago = null,
+                            IdCuota = idIngresoRealParsed,
 
-                            Montoclp = montoclp,
-                            Iva = 0,
-                            Estado = "Forecast",
-                            Idcuenta = 4101001,
+                            FechaEmision = fechaemisionParsed,
+
+                            MontoCuota = montoclp,
+
                             Observacion = Observacion[i],
 
                         };
 
-                        ingresos.Add(ingresoViewModel);
+                        cuota.Add(CuotaViewModel);
 
                     }
                 }
-                await ejecucionService.GestorIngresos(idproyecto, ingresos);
+                await proyectoService.GestorCuotas(idproyecto, cuota);
 
                 if (resultado)
                 {

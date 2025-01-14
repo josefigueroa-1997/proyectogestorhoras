@@ -31,7 +31,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,  int cantidadcuotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<IngresoViewModel> cuotas)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,  int cantidadcuotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<CuotasViewModel> cuotas)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Proyectogestionhoras.Services
                     int idProyectoCreado = (int)idProyectoParameter.Value;
                     await GestorServiciosProyecto(idProyectoCreado, servicios);
                     await GestorProyectoGastos(idProyectoCreado, gastos);
-                    await ejecucionService.GestorIngresos(idProyectoCreado, cuotas);
+                    await GestorCuotas(idProyectoCreado, cuotas);
                     return true;
                 }
             }
@@ -1694,6 +1694,8 @@ namespace Proyectogestionhoras.Services
                                 MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
                                 TasaCambio = reader.IsDBNull(reader.GetOrdinal("TASACAMBIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TASACAMBIO")),
                                 idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
+                                
+                              
 
 
 

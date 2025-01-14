@@ -100,6 +100,11 @@
     <div class="form-group">
         @{
             decimal Monto = 0;
+            int cantidadcuotas = 0;
+        }
+        @foreach (var factura in ViewBag.Facturas)
+        {
+            cantidadcuotas +=  1;
         }
         @foreach (var proyecto in ViewBag.Presupuesto)
         {
@@ -207,10 +212,14 @@
                                 <td>@String.Format("{0:N0}", @proyecto.MontoPresupuesto)</td>
 
                                 @{
-                                    Monto = proyecto.MONTO;
+                                    Monto = proyecto.MontoPresupuesto;
                                 }
                             </tr>
-                            
+                            <tr>
+                                <td class="highlight">Número de Cuotas</td>
+                                <td>@cantidadcuotas</td>
+
+                            </tr>
                             
                         </tbody>
                     </table>

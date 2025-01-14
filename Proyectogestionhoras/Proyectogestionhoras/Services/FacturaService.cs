@@ -27,7 +27,7 @@ namespace Proyectogestionhoras.Services
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = "CUOTASFORECASTPROYECTOS";
+                    command.CommandText = "CUOTASPROYECTOS";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
                     using (var reader = await command.ExecuteReaderAsync())

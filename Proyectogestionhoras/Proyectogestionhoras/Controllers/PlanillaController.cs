@@ -203,8 +203,23 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> MisPlanillas(int? idusuario)
         {
-            var planillas = await RecuperarMisPlanillas(idusuario);
-            ViewBag.Planillas = planillas;
+            var planillas = await context.Planillas
+                .Where(p => p.IdUsuario == idusuario)
+                .OrderBy(p => p.Anio)
+                .ThenBy(p => p.Mes)
+                .ToListAsync();
+
+                 var planillasAgrupadas = planillas
+                .GroupBy(p => p.Anio)
+                .Select(g => new
+                {
+                    Anio = g.Key,
+                    Meses = g.Select(p => new { p.Id, p.Mes }).ToList()
+                })
+                .ToList();
+
+            ViewBag.PlanillasPorAnio = planillasAgrupadas;
+
             return View("MisPlanillas");
         }
 
@@ -377,7 +392,6 @@ namespace Proyectogestionhoras.Controllers
                     new HtmlHelperOptions()
                 );
 
-                // Esperar el resultado de la renderización
                 await viewResult.View.RenderAsync(viewContext);
                 return writer.ToString();
             }
@@ -385,7 +399,7 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> GenerarPDF()
         {
-            // Esperar a renderizar la vista como cadena
+
             var html = await RenderViewToString("GanttUsuario", null);
 
             using (var memoryStream = new MemoryStream())
@@ -428,21 +442,6 @@ namespace Proyectogestionhoras.Controllers
                 return StatusCode(500, "Ocurrió un error al generar el gráfico de Gantt.");
             }
         }
-
-
-
-        public async Task<List<Planilla>> RecuperarMisPlanillas(int? idusuario)
-        {
-            var planillas = await context.Planillas
-            .Where(p => p.IdUsuario == idusuario)
-             .ToListAsync();
-            return planillas;
-        }
-
-
-
-        
-
 
     }
 }
