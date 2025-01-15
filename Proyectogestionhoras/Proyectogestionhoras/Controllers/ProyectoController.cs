@@ -23,7 +23,7 @@ namespace Proyectogestionhoras.Controllers
         private readonly FacturaService facturaService;
         private readonly ReporteService reporteService;
         private readonly EjecucionService ejecucionService;
-        public ProyectoController(ProyectoService proyectoService,ClienteService clienteService,UsuarioService usuarioService,PROYECTO_CONTROL_HORASContext context,FacturaService facturaService,ReporteService reporteService,EjecucionService ejecucionService)
+        public ProyectoController(ProyectoService proyectoService, ClienteService clienteService, UsuarioService usuarioService, PROYECTO_CONTROL_HORASContext context, FacturaService facturaService, ReporteService reporteService, EjecucionService ejecucionService)
         {
             this.proyectoService = proyectoService;
             this.clienteService = clienteService;
@@ -35,7 +35,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
-        public async Task <IActionResult> GetProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
+        public async Task<IActionResult> GetProyectos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var iduser = HttpContext.Session.GetInt32("id");
             if (iduser.HasValue)
@@ -60,7 +60,7 @@ namespace Proyectogestionhoras.Controllers
 
 
             return RedirectToAction("Login", "Usuario");
-            
+
         }
 
         public async Task<List<PresupuestoProyectoDTO>> ObtenerPresupuestosProyecto()
@@ -121,19 +121,19 @@ namespace Proyectogestionhoras.Controllers
 
             return RedirectToAction("Login", "Usuario");
 
-           
+
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen,decimal tasacambio,int cuotas)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cuotas)
         {
             try
             {
-                
+
                 int idcosto = int.Parse(Request.Form["centroCosto"]);
                 int idunegocio = int.Parse(Request.Form["unidadNegocio"]);
-                
+
                 int idcliente = int.Parse(Request.Form["cliente"]);
                 int idsucursal = int.Parse(Request.Form["sucursal"]);
                 var montopresupuesto = Request.Form["monto"].ToString();
@@ -162,7 +162,7 @@ namespace Proyectogestionhoras.Controllers
                         IdServicioProyecto = idServicioRealParsed,
                         Idservicios = int.Parse(idsservicios[i]),
                         IdSegmento = int.Parse(idsegmentoservicio[i]),
-                        MontoServicio = montoservicio, 
+                        MontoServicio = montoservicio,
                         Fecha = DateTime.Parse(fechaservicio[i]),
                         espresupuesto = "Si",
                     };
@@ -171,7 +171,7 @@ namespace Proyectogestionhoras.Controllers
                 }
 
                 List<GastoViewModel> gastos = new List<GastoViewModel>();
-                var idgastos = Request.Form["idgastos[]"]; 
+                var idgastos = Request.Form["idgastos[]"];
                 var idsegmentogasto = Request.Form["idsegmentogasto"];
                 var montogastoList = Request.Form["montogasto"];
                 var fechagasto = Request.Form["fechagasto"];
@@ -186,7 +186,7 @@ namespace Proyectogestionhoras.Controllers
                         IdGastoProyecto = idGastoRealParsed,
                         Idgastos = int.Parse(idgastos[i]),
                         IdSegmento = int.Parse(idsegmentogasto[i]),
-                        MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")) ,
+                        MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")),
                         Fecha = DateTime.Parse(fechagasto[i]),
                         espresupuesto = "Si",
                     };
@@ -197,7 +197,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     hhsocios = 0;
                 }
-                if(Request.Form["hhstaff"].ToString() == "")
+                if (Request.Form["hhstaff"].ToString() == "")
                 {
                     hhstaff = 0;
                 }
@@ -229,10 +229,10 @@ namespace Proyectogestionhoras.Controllers
                 var fechaemision = Request.Form["fechaemision"];
 
                 var Montoclplist = Request.Form["montocuota"];
-          
+
                 var Observacion = Request.Form["observacioncuota"];
                 var idingresoreal = Request.Form["IdIngresoreal"];
-               
+
 
                 for (int i = 0; i < numdocumento.Count; i++)
                 {
@@ -242,45 +242,46 @@ namespace Proyectogestionhoras.Controllers
                     }
 
                     string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
-                    
+
 
                     decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
 
                     int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
-                    
+
 
 
                     DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
                         ? tempDate
                         : DateTime.Today;
-                    
-            
+
+
                     var cuotaViewModel = new CuotasViewModel
                     {
                         IdCuota = idIngresoRealParsed,
                         FechaEmision = fechaemisionParsed,
                         MontoCuota = montoclp,
                         Observacion = Observacion[i],
-                        
+
                     };
                     cuota.Add(cuotaViewModel);
-       
+
                 }
 
-                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda,afectaiva,idtipologia,nombre,numproyecto,fechainicio,fechatermino,plazo,tipoempresa, idcodigoccosto, idsucursalcliente,probabilidad,porcentajeprobabilidad,fechaplazoneg, hhsocios,hhstaff, hhconsultora, hhconsultorb,hhconsultorc,  idsegmentosocio,  idsegmentostaff,  idsegmentoconsultora,  idsegmentoconsultorb,  idsegmentoconsultorc,  idsegmentofactura, montoorigenextranjera, tasacambios, cuotas,servicios, gastos, cuota);
+                bool resultado = await proyectoService.CrearProyecto(montofinal, moneda, afectaiva, idtipologia, nombre, numproyecto, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, idsucursalcliente, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, tasacambios, cuotas, servicios, gastos, cuota);
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
-                    return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto",new {id= idproyectoultimo });
+                    return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyectoultimo });
                 }
                 else
                 {
                     ViewBag.ErrorMessage = "Hubo un error al registrar el proyecto.";
                     return View("NuevoProyecto");
                 }
-                
+
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Log.Error(ex, "Error al crear el proyecto");
                 ViewBag.ErrorMessage = $"Hubo un error al registrar el proyecto: {ex.Message}";
                 Debug.WriteLine($"Hubo un error al registrar el proyecto:{ex.Message}");
@@ -308,18 +309,18 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1 || rol == 3) 
+                    if (rol == 1 || rol == 3)
                     {
                         int status = await Obtenerstatusproyectos(id);
                         if (status == 6)
                         {
-                            return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new {id=id});
+                            return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = id });
                         }
                         var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         var servicios = await proyectoService.ObtenerServiciosProyecto(id);
                         var gastos = await proyectoService.ObtenerGastosProyectos(id);
                         var facturas = await facturaService.RecuperarFacturas(id);
-                       
+
                         ViewBag.Facturas = facturas;
                         ViewBag.Proyectos = proyectos;
                         ViewBag.Servicios = servicios;
@@ -336,7 +337,7 @@ namespace Proyectogestionhoras.Controllers
 
             return RedirectToAction("Login", "Usuario");
 
-            
+
         }
 
         public int ultimoidproyecto()
@@ -357,7 +358,7 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-        public async Task<IActionResult> EditarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto,int? idusuario)
+        public async Task<IActionResult> EditarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var iduser = HttpContext.Session.GetInt32("id");
             if (iduser.HasValue)
@@ -367,7 +368,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1)
                     {
-                        var cuotasproyecto = await context.Cuotas.Where(x => x.Idpresupuesto == id ).ToListAsync();
+                        var cuotasproyecto = await context.Cuotas.Where(x => x.Idpresupuesto == id).ToListAsync();
                         var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
                         var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                         var unegocios = await proyectoService.ObtenerUnegocio();
@@ -383,7 +384,7 @@ namespace Proyectogestionhoras.Controllers
                         var gastosproyectos = await proyectoService.ObtenerGastosProyectos(id);
                         var servicios = await GetServicios();
                         var gastos = await GetGastos();
-                        var historialcosto = await context.HistorialCostosProyectos.Where(p=>p.Idproyecto == id).ToListAsync();
+                        var historialcosto = await context.HistorialCostosProyectos.Where(p => p.Idproyecto == id).ToListAsync();
                         var costopromedio = await context.CostoPromedios.ToListAsync();
                         ViewBag.Gastos = gastos;
                         ViewBag.GastosProyectos = gastosproyectos;
@@ -414,7 +415,7 @@ namespace Proyectogestionhoras.Controllers
 
 
             return RedirectToAction("Login", "Usuario");
-          
+
         }
 
         public async Task<int> Obtenerstatusproyecto(int idproyecto)
@@ -429,13 +430,13 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
-       public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc)
+        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc)
         {
 
             var presupuesto = context.Presupuestos.FirstOrDefault(p => p.Id == idproyecto);
             if (presupuesto != null)
             {
-               
+
                 presupuesto.Cantidadcuotas = int.Parse(Request.Form["cuotas"].ToString());
 
 
@@ -505,129 +506,86 @@ namespace Proyectogestionhoras.Controllers
             }
 
             /*Actualizar Cuotas*/
-            var tablaseleccionada = Request.Form["tablaUsada"];
+            int cuotaseleccionada = int.Parse(Request.Form["cuotas"].ToString());
             List<CuotasViewModel> cuota = new List<CuotasViewModel>();
-            if (tablaseleccionada == "primera")
+
+            /*ingresando cuotas*/
+            int cantidadcuotas = await context.Cuotas.Where(c => c.Idpresupuesto == idproyecto).CountAsync();
+            if (cuotaseleccionada < cantidadcuotas)
             {
-                /*ingresando cuotas*/
-
-
-                
-               
-                var fechaemision = Request.Form["fechaemision"];
-
-                var Montoclplist = Request.Form["montocuota"];
-
-                var Observacion = Request.Form["observacioncuota"];
-                var idingresoreal = Request.Form["IdCuota"];
-
-
-                for (int i = 0; i < fechaemision.Count; i++)
-                {
-                    if (string.IsNullOrWhiteSpace(fechaemision[i]))
-                    {
-                        continue;
-                    }
-
-
-                    string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
-
-
-                    decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
-
-                    int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
-
-
-
-                    DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
-                        ? tempDate
-                        : DateTime.Today;
-
-
-                    var CuotaViewModel = new CuotasViewModel
-                    {
-                        IdCuota = idIngresoRealParsed,
-  
-                        FechaEmision = fechaemisionParsed,
-
-                        MontoCuota = montoclp,
-                   
-                        Observacion = Observacion[i],
-
-                    };
-
-                    cuota.Add(CuotaViewModel);
-
-                }
-
-            }
-            else if (tablaseleccionada == "segunda")
-            {
+                int cantidadcuotasaeliminar = int.Parse(Request.Form["filasEliminadas"].ToString());
                 var registrosAEliminar = await context.Cuotas
-                .Where(c=>c.Idpresupuesto == idproyecto ).ToListAsync();
+                .Where(c => c.Idpresupuesto == idproyecto)
+                .OrderByDescending(c => c.Id) 
+                .Take(cantidadcuotasaeliminar)      
+                .ToListAsync();
 
                 context.Cuotas.RemoveRange(registrosAEliminar);
                 context.SaveChanges();
-
-                var fechaemision = Request.Form["fechaemision"];
-
-                var Montoclplist = Request.Form["montocuota"];
-
-                var Observacion = Request.Form["observacioncuota"];
-                var idingresoreal = Request.Form["IdCuota"];
-
-
-                for (int i = 0; i < fechaemision.Count; i++)
-                {
-                    if (string.IsNullOrWhiteSpace(fechaemision[i]))
-                    {
-                        continue;
-                    }
-
-
-                    string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
-
-
-                    decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
-
-                    int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
-
-
-
-                    DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
-                        ? tempDate
-                        : DateTime.Today;
-
-
-                    var CuotaViewModel = new CuotasViewModel
-                    {
-                        IdCuota = idIngresoRealParsed,
-
-                        FechaEmision = fechaemisionParsed,
-
-                        MontoCuota = montoclp,
-
-                        Observacion = Observacion[i],
-
-                    };
-
-                    cuota.Add(CuotaViewModel);
-
-                }
             }
+
+
+            var fechaemision = Request.Form["fechaemision"];
+
+            var Montoclplist = Request.Form["montocuota"];
+
+            var Observacion = Request.Form["observacioncuota"];
+            var idingresoreal = Request.Form["IdCuota"];
+
+
+            for (int i = 0; i < fechaemision.Count; i++)
+            {
+                if (string.IsNullOrWhiteSpace(fechaemision[i]))
+                {
+                    continue;
+                }
+
+
+                string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
+
+
+                decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
+
+                int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
+
+
+
+                DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
+                    ? tempDate
+                    : DateTime.Today;
+
+
+                var CuotaViewModel = new CuotasViewModel
+                {
+                    IdCuota = idIngresoRealParsed,
+
+                    FechaEmision = fechaemisionParsed,
+
+                    MontoCuota = montoclp,
+
+                    Observacion = Observacion[i],
+
+                };
+
+                cuota.Add(CuotaViewModel);
+
+            }
+
+
+
             await proyectoService.GestorCuotas(idproyecto, cuota);
             await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
             await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
             await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
             await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
             await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
-            
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura,int cuotas)
+        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, int cuotas)
         {
-            
+
             var idclientes = Request.Form["idcliente"];
             try
             {
@@ -732,122 +690,77 @@ namespace Proyectogestionhoras.Controllers
                 }
 
 
-               
+
 
                 int cantidadcuotas = int.Parse(Request.Form["cuotas"].ToString());
 
                 bool resultado = await proyectoService.EditarProyecto(idproyecto, idpresupuesto, montofinal, moneda, afectaiva, idtipologia, nombre, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, status, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, tasacambios, cantidadcuotas, servicios, gastos);
                 /*Actualizar Cuotas*/
-                var tablaseleccionada = Request.Form["tablaUsada"];
+                int cuotaseleccionada = int.Parse(Request.Form["cuotas"].ToString());
                 List<CuotasViewModel> cuota = new List<CuotasViewModel>();
-                if (tablaseleccionada == "primera")
+
+                /*eliminando cuotas*/
+                int cantidadcuotass = await context.Cuotas.Where(c => c.Idpresupuesto == idproyecto).CountAsync();
+                if (cuotaseleccionada < cantidadcuotass)
                 {
-                    /*ingresando cuotas*/
-
-
-
-
-                    var fechaemision = Request.Form["fechaemision"];
-
-                    var Montoclplist = Request.Form["montocuota"];
-
-                    var Observacion = Request.Form["observacioncuota"];
-                    var idingresoreal = Request.Form["IdCuota"];
-
-
-                    for (int i = 0; i < fechaemision.Count; i++)
-                    {
-                        if (string.IsNullOrWhiteSpace(fechaemision[i]))
-                        {
-                            continue;
-                        }
-
-
-                        string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
-
-
-                        decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
-
-                        int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
-
-
-
-                        DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
-                            ? tempDate
-                            : DateTime.Today;
-
-
-                        var CuotaViewModel = new CuotasViewModel
-                        {
-                            IdCuota = idIngresoRealParsed,
-
-                            FechaEmision = fechaemisionParsed,
-
-                            MontoCuota = montoclp,
-
-                            Observacion = Observacion[i],
-
-                        };
-
-                        cuota.Add(CuotaViewModel);
-
-                    }
-
-                }
-                else if (tablaseleccionada == "segunda")
-                {
+                    int cantidadcuotasaeliminar = int.Parse(Request.Form["filasEliminadas"].ToString());
                     var registrosAEliminar = await context.Cuotas
-                    .Where(c => c.Idpresupuesto == idproyecto).ToListAsync();
+                    .Where(c => c.Idpresupuesto == idproyecto)
+                    .OrderByDescending(c => c.Id)
+                    .Take(cantidadcuotasaeliminar)
+                    .ToListAsync();
 
                     context.Cuotas.RemoveRange(registrosAEliminar);
                     context.SaveChanges();
-
-                    var fechaemision = Request.Form["fechaemision"];
-
-                    var Montoclplist = Request.Form["montocuota"];
-
-                    var Observacion = Request.Form["observacioncuota"];
-                    var idingresoreal = Request.Form["IdCuota"];
-
-
-                    for (int i = 0; i < fechaemision.Count; i++)
-                    {
-                        if (string.IsNullOrWhiteSpace(fechaemision[i]))
-                        {
-                            continue;
-                        }
-
-
-                        string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
-
-
-                        decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
-
-                        int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
-
-
-
-                        DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
-                            ? tempDate
-                            : DateTime.Today;
-
-
-                        var CuotaViewModel = new CuotasViewModel
-                        {
-                            IdCuota = idIngresoRealParsed,
-
-                            FechaEmision = fechaemisionParsed,
-
-                            MontoCuota = montoclp,
-
-                            Observacion = Observacion[i],
-
-                        };
-
-                        cuota.Add(CuotaViewModel);
-
-                    }
                 }
+
+                /*ingresando cuotas*/
+                var fechaemision = Request.Form["fechaemision"];
+
+                var Montoclplist = Request.Form["montocuota"];
+
+                var Observacion = Request.Form["observacioncuota"];
+                var idingresoreal = Request.Form["IdCuota"];
+
+
+                for (int i = 0; i < fechaemision.Count; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(fechaemision[i]))
+                    {
+                        continue;
+                    }
+
+
+                    string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
+
+
+                    decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
+
+                    int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
+
+
+
+                    DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
+                        ? tempDate
+                        : DateTime.Today;
+
+
+                    var CuotaViewModel = new CuotasViewModel
+                    {
+                        IdCuota = idIngresoRealParsed,
+
+                        FechaEmision = fechaemisionParsed,
+
+                        MontoCuota = montoclp,
+
+                        Observacion = Observacion[i],
+
+                    };
+
+                    cuota.Add(CuotaViewModel);
+
+                }
+
                 await proyectoService.GestorCuotas(idproyecto, cuota);
 
                 if (resultado)
@@ -868,31 +781,31 @@ namespace Proyectogestionhoras.Controllers
                     return View("EditarProyecto", new { id = idproyecto, idcliente = idclientes });
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al editar el proyecto:{e.Message}");
                 TempData["ErrorMessage"] = "Hubo un error al Editar el proyecto.";
                 return RedirectToAction("EditarProyecto", new { id = idproyecto, idcliente = idclientes });
             }
-            
+
 
         }
         [HttpPost]
         public async Task<IActionResult> TerminarProyecto(int id)
         {
-        
+
             var proyecto = await context.Proyectos.FindAsync(id);
 
-        
+
             if (proyecto == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
-       
+
             proyecto.StatusProyecto = 4;
 
-       
+
             await context.SaveChangesAsync();
 
 
@@ -901,9 +814,9 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-        public async Task<IActionResult> ObtenerPresupuestoProyecto(int? idpresupuesto,int? id,int? idcliente)
+        public async Task<IActionResult> ObtenerPresupuestoProyecto(int? idpresupuesto, int? id, int? idcliente)
         {
-            var presupuesto = await proyectoService.ObtenerPresupuestoProyectos(idpresupuesto,id,idcliente);
+            var presupuesto = await proyectoService.ObtenerPresupuestoProyectos(idpresupuesto, id, idcliente);
             var facturas = await facturaService.RecuperarFacturas(id);
             var servicios = await proyectoService.ObtenerServiciosProyecto(id);
             var gastos = await proyectoService.ObtenerGastosProyectos(id);
@@ -916,7 +829,7 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-        public async Task<IActionResult> ObtenerhistorialNegociaciones(int? idproyecto,int? idnegociacion)
+        public async Task<IActionResult> ObtenerhistorialNegociaciones(int? idproyecto, int? idnegociacion)
         {
             var iduser = HttpContext.Session.GetInt32("id");
             if (iduser.HasValue)
@@ -939,10 +852,10 @@ namespace Proyectogestionhoras.Controllers
 
 
             return RedirectToAction("Login", "Usuario");
-            
+
         }
 
-        public async Task<IActionResult> DetalleNegociacion(int? idproyecto,int? idnegociación)
+        public async Task<IActionResult> DetalleNegociacion(int? idproyecto, int? idnegociación)
         {
             var iduser = HttpContext.Session.GetInt32("id");
             if (iduser.HasValue)
@@ -967,7 +880,7 @@ namespace Proyectogestionhoras.Controllers
 
 
             return RedirectToAction("Login", "Usuario");
-            
+
         }
 
         public async Task<List<StatusProyecto>> RecuperarEstados()
@@ -991,9 +904,9 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<List<Sucursal>> ObtenerSucursales(int? idcliente)
         {
-            var sucursales = await (from sc in context.SucursalClientes 
-                                    join c in context.Sucursals on sc.IdSucursal equals c.Id 
-                                    where sc.IdCliente == idcliente 
+            var sucursales = await (from sc in context.SucursalClientes
+                                    join c in context.Sucursals on sc.IdSucursal equals c.Id
+                                    where sc.IdCliente == idcliente
                                     select new
                                     {
                                         c.Id,
@@ -1026,9 +939,9 @@ namespace Proyectogestionhoras.Controllers
         public async Task<List<Segmento>> ObtenerSegmentosCostos()
         {
             var segmentosCostos = await context.Segmentos
-                
-                .Select(s => new Segmento { Id = s.Id, Nombre = s.Nombre,TipoSegmento=s.TipoSegmento }) 
-                .ToListAsync(); 
+
+                .Select(s => new Segmento { Id = s.Id, Nombre = s.Nombre, TipoSegmento = s.TipoSegmento })
+                .ToListAsync();
 
             return segmentosCostos;
         }
@@ -1038,7 +951,7 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> GetValoresGastosEdicion(int idcosto, int unegocio, int idgasto)
         {
-            var gastos = await proyectoService.ObtenerValoresGastosEdicion(idcosto,unegocio, idgasto);
+            var gastos = await proyectoService.ObtenerValoresGastosEdicion(idcosto, unegocio, idgasto);
             return Json(gastos);
         }
 
@@ -1054,7 +967,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<ActionResult<List<Segmento>>> ObtenerSegmentosCostosjson()
         {
             var segmentosCostos = await context.Segmentos
-                .Where(s => s.TipoSegmento == "Costos") 
+                .Where(s => s.TipoSegmento == "Costos")
                 .Select(s => new Segmento { Id = s.Id, Nombre = s.Nombre })
                 .ToListAsync();
 
@@ -1064,16 +977,16 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ConsultoresDTO>>> ObtenerCuentacostos(int idsegmento)
         {
-           
+
             var resultados = await (from s in context.Segmentos
                                     join c in context.Cuenta on s.IdCuenta equals c.Id
                                     where s.Id == idsegmento
                                     select new ConsultoresDTO
                                     {
-                                        
+
                                         IDCUENTA = c.Idcuenta,
                                         CUENTA = c.Cuenta,
-                                       
+
                                     }).ToListAsync();
 
             return Ok(resultados);
@@ -1098,7 +1011,7 @@ namespace Proyectogestionhoras.Controllers
                 var partes = ultimoproyecto.Split('/');
                 int anioultimoproyecto = int.Parse(partes[0]);
                 int correlativo = int.Parse(partes[1]);
-                if(anioultimoproyecto == anioactual)
+                if (anioultimoproyecto == anioactual)
                 {
                     correlativo++;
                     nuevonumproyecto = $"{anioactual}/{correlativo:D2}";
@@ -1117,14 +1030,14 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Getcodigoccosto(int idcosto,int idunegocio)
+        public async Task<IActionResult> Getcodigoccosto(int idcosto, int idunegocio)
         {
-            var codigo = await proyectoService.ObtenerCodigoCCosto(idcosto,idunegocio);
+            var codigo = await proyectoService.ObtenerCodigoCCosto(idcosto, idunegocio);
             return Json(codigo);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetValoresFactura(int idcosto,int idunegocio)
+        public async Task<IActionResult> GetValoresFactura(int idcosto, int idunegocio)
         {
             var factura = await proyectoService.ObtenerValoresFactura(idcosto, idunegocio);
             return Ok(factura);
@@ -1132,7 +1045,7 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> GetValoresServicios(int idcosto, int idunegocio)
         {
-            var servicio = await proyectoService.ObtenerValoresServicios(idcosto,idunegocio);
+            var servicio = await proyectoService.ObtenerValoresServicios(idcosto, idunegocio);
             return Ok(servicio);
         }
 
@@ -1144,7 +1057,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ObtenerValoresGastos(int idcodigo,string nombresegmento)
+        public async Task<IActionResult> ObtenerValoresGastos(int idcodigo, string nombresegmento)
         {
             var valoresgastos = await proyectoService.ObtenerValoresGastos(idcodigo, nombresegmento);
             return Json(valoresgastos);
@@ -1166,17 +1079,17 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> ObtenerValoresConsultores(int idcosto, int idunegocio)
         {
-            var consultores = await proyectoService.ObtenerValoresConsultores(idcosto,idunegocio);
+            var consultores = await proyectoService.ObtenerValoresConsultores(idcosto, idunegocio);
             return Json(consultores);
         }
 
         [HttpGet]
         public async Task<IActionResult> ObtenerValoresHonorarios(int idcosto, int idunegocio, int idrecurso)
         {
-            var honorarios = await proyectoService.ObtenerValoresHonorarios(idcosto,idunegocio,idrecurso);
+            var honorarios = await proyectoService.ObtenerValoresHonorarios(idcosto, idunegocio, idrecurso);
             return Json(honorarios);
         }
-        
+
 
         public async Task<IActionResult> GetProyectosCategoria()
         {
@@ -1188,14 +1101,14 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (rol == 1 || rol == 3)
                     {
-                     
+
                         var tipologias = await proyectoService.ObtenerTipoligias();
                         var ccosto = await proyectoService.ObtenerCcosto();
                         var unegocio = await proyectoService.ObtenerUnegocio();
-                        
+
                         var ccostoUnegocios = await context.CcostoUnegocios
-       .Include(c => c.IdCcostoNavigation) 
-       .Include(c => c.IdUnegocioNavigation) 
+       .Include(c => c.IdCcostoNavigation)
+       .Include(c => c.IdUnegocioNavigation)
        .ToListAsync();
                         var viewModel = new ProyectosCategoriaViewModel
                         {
@@ -1215,7 +1128,7 @@ namespace Proyectogestionhoras.Controllers
 
 
             return RedirectToAction("Login", "Usuario");
-            
+
         }
 
         [HttpPost]
@@ -1243,7 +1156,8 @@ namespace Proyectogestionhoras.Controllers
                     .Where(p => p.IdCcostoUnegocioNavigation.IdUnegocio == unegocioId.Value);
             }
             var proyectosList = proyectosFiltrados
-                .Select(p => new {
+                .Select(p => new
+                {
                     p.Id,
                     p.NumProyecto,
                     p.Nombre,

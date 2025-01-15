@@ -418,18 +418,18 @@
                         <label>¿Afecta el IVA?</label>
                         <label>
                             <input disabled type="radio" name="afectaiva" value="si"
-                                   required 
+                                   required
                             @(proyecto.AfectaIva == "si" ? "checked" : "")>
                             Sí
                         </label>
                         <label>
-                            <input type="radio"  name="afectaiva" value="no"
-                               disabled    required 
+                            <input type="radio" name="afectaiva" value="no"
+                                   disabled required
                             @(proyecto.AfectaIva == "no" ? "checked" : "")>
                             No
                         </label>
                     </div>
-                   
+
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -494,7 +494,7 @@
                     </div>
                     <div class="form-group">
                         <label for="cuotas">Número de Cuotas</label>
-                        <input type="number" id="cuotas" name="cuotas"  value="@proyecto.CantidadCuotas" required>
+                        <input type="number" id="cuotas" name="cuotas" value="@proyecto.CantidadCuotas" required>
                     </div>
                     <div class="form-group">
                         <label for="fechaInicio">Fecha de inicio</label>
@@ -523,20 +523,22 @@
                     </div>
                 </div>
                 <input type="hidden" name="tablaUsada" id="tablaUsada" value="primera">
-               <div class="form-group">
-                    
+                <input type="hidden" id="filas-eliminadas" name="filasEliminadas" value="0">
+                <div class="form-group">
+
                     <table id="tablacuotasexistentes" style="width: 100%; border-collapse: collapse; text-align: left;">
                         <p class="form-subtitle">Cuotas</p>
                         <thead>
                             <tr style="background-color: #d9e2f3; color: black;">
-                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>                             
+                                <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">Observación</th>
                                 <th style="padding: 10px; border: 1px solid #ddd;">IdCuenta</th>
                             </tr>
                         </thead>
-                        <tbody >
-                            @if(ViewBag.Cuotas!=null){
+                        <tbody id="tabla-bodycuotas">
+                            @if (ViewBag.Cuotas != null)
+                            {
                                 @foreach (var cuotas in ViewBag.Cuotas)
                                 {
                                     <tr>
@@ -545,33 +547,19 @@
                                         <td><textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación">@cuotas.Observacion</textarea></td>
                                         <td><input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta"></td>
                                         <td style="display:none;">
-                                            <input name="IdCuota" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;" >
+                                            <input name="IdCuota" value="@cuotas.Id" readonly type="text" style="width: 100%; padding: 5px;">
                                         </td>
-                                        
+
                                     </tr>
                                 }
                             }
-                            
+
                         </tbody>
                     </table>
-               
 
 
-                    <div class="flex justify-center w-full">
-                        <table id="tabla-body-wrapper" class="w-full max-w-4xl border-collapse hidden text-left">
-                            <thead>
-                                <tr class="bg-blue-100 text-black">
-                                    <th class="p-2 border border-gray-300">Fecha Pago</th>
-                                    <th class="p-2 border border-gray-300">MontoCLP</th>
-                                    <th class="p-2 border border-gray-300">Observación</th>
-                                    <th class="p-2 border border-gray-300">IdCuenta</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla-body">
-                               
-                            </tbody>
-                        </table>
-                    </div>
+
+
                 </div>
 
 
@@ -1434,14 +1422,14 @@
                     <div class="form-group-radio">
                         <label>¿Afecta el IVA?</label>
                         <label>
-                            <input  type="radio" name="afectaiva" value="si"
-                                   required 
+                            <input type="radio" name="afectaiva" value="si"
+                                   required
                             @(proyecto.AfectaIva == "si" ? "checked" : "")>
                             Sí
                         </label>
                         <label>
-                            <input type="radio"  name="afectaiva" value="no"
-                                   required 
+                            <input type="radio" name="afectaiva" value="no"
+                                   required
                             @(proyecto.AfectaIva == "no" ? "checked" : "")>
                             No
                         </label>
@@ -1490,11 +1478,11 @@
                             }
                         </select>
                     </div>
-                    <div id="monedaOrigenGroup"  class="form-group">
+                    <div id="monedaOrigenGroup" class="form-group">
                         <label for="montomonedaorigen">Monto Moneda Origen</label>
                         <input type="text" id="montomonedaorigen" name="montoorigen" value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
                     </div>
-                    <div id="tasacambioGroup"  class="form-group">
+                    <div id="tasacambioGroup" class="form-group">
                         <label for="tasacambio">Tasa Cambio</label>
                         <input type="text" id="tasacambio" name="tasacambio" value="@String.Format("{0:N0}", @proyecto.TasaCambio) ">
                     </div>
@@ -1541,6 +1529,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="tablaUsada" id="tablaUsada" value="primera">
+                <input type="hidden" id="filas-eliminadas" name="filasEliminadas" value="0">
                 <div class="form-group">
                     <p class="form-subtitle">Cuotas</p>
                     <table id="tablacuotasexistentes" style="width: 100%; border-collapse: collapse; text-align: left;">
@@ -1552,7 +1541,7 @@
                                 <th style="padding: 10px; border: 1px solid #ddd;">IdCuenta</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tabla-bodycuotas">
                             @if (ViewBag.Cuotas != null)
                             {
                                 @foreach (var cuotas in ViewBag.Cuotas)
@@ -1573,20 +1562,7 @@
                         </tbody>
                     </table>
 
-                    <div class="flex justify-center w-full">
-                        <table id="tabla-body-wrapper" class="w-full max-w-4xl border-collapse hidden text-left">
-                            <thead>
-                                <tr class="bg-blue-100 text-black">
-                                    <th class="p-2 border border-gray-300">Fecha Pago</th>
-                                    <th class="p-2 border border-gray-300">MontoCLP</th>
-                                    <th class="p-2 border border-gray-300">Observación</th>
-                                    <th class="p-2 border border-gray-300">IdCuenta</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla-body">
-                            </tbody>
-                        </table>
-                    </div>
+
 
                 </div>
 
@@ -2274,7 +2250,7 @@
         const tasacambioInput = document.getElementById('tasacambio');
         const montoclpInput = document.getElementById('monto');
         if (selectedCurrency === 'CLP') {
-            
+
             montoMonedaOrigenGroup.style.display = 'block';
             montoMonedaOrigenInput.setAttribute('required', 'required');
             tasacambioGroup.style.display = 'block';
@@ -2780,40 +2756,40 @@
              const idsegmentoservicioValue = document.querySelector('.idsegmentoservicio') ? document.querySelector('.idsegmentoservicio').value : '';
              */
             newRow.innerHTML = `
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
-                            <option value="" disabled selected>Seleccione un Servicio</option>
-                        </select>
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <input class="montoservicio" name="montoservicio" type="text">
-                    </td>
-                         <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio" type="date" value="${obtenerFechaActual()}">
-                         </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <input class="nombresegmentoservicio" name="nombresegmentoservicio" readonly/>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <select class="serviciosSelect" name="idservicio" onchange="checkRequired(this)">
+                                <option value="" disabled selected>Seleccione un Servicio</option>
+                            </select>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input class="montoservicio" name="montoservicio" type="text">
+                        </td>
+                             <td style="padding: 10px; border: 1px solid #ddd;"><input name="fechaservicio" class="fechaservicio" type="date" value="${obtenerFechaActual()}">
+                             </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input class="nombresegmentoservicio" name="nombresegmentoservicio" readonly/>
 
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <input class="idcuentaservicio" name="idcuentaservicio" readonly/>
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <input class="cuentaservicio" name="cuentaservicio"  readonly />
-                    </td>
-                    <td style="display:none;">
-                        <input class="idsegmentoservicio" name="idsegmentoservicio"  />
-                    </td>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input class="idcuentaservicio" name="idcuentaservicio" readonly/>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <input class="cuentaservicio" name="cuentaservicio"  readonly />
+                        </td>
                         <td style="display:none;">
-                                            <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
-                                        </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">
-                        <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
-                    </td>
-                         <input type="hidden" name="IdServicioProyecto"  value="" />
-                `;
+                            <input class="idsegmentoservicio" name="idsegmentoservicio"  />
+                        </td>
+                            <td style="display:none;">
+                                                <input type="hidden" name="esEliminado" class="esEliminado" value="false" />
+                                            </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <button class="eliminar-btn" style="color:white;background-color:red">Eliminar</button>
+                        </td>
+                             <input type="hidden" name="IdServicioProyecto"  value="" />
+                    `;
 
             document.querySelector('#tablaservicios tbody').appendChild(newRow);
 
@@ -3580,19 +3556,19 @@
         }
     });
 
-    document.getElementById('horasStaff').addEventListener('input', function () { 
-        // Tomar el valor ingresado y convertirlo a número 
-        let horasStaff = this.value; 
-        let horasStaffNum = parseFloat(horasStaff.replace(',', '.')); 
-        // Obtener el total permitido y convertirlo a número 
-        let totalStafff = parseFloat( document.getElementById('totalStafff').innerText .replace(/\./g, '').replace(/,/g, '.') ); 
-        // Verificar si los valores son válidos y comparar 
-        if (!isNaN(horasStaffNum) && !isNaN(totalStafff)) { 
-            if (horasStaffNum > totalStafff) { 
-                alert("Las horas de staff no pueden ser mayores que " + totalStafff.toLocaleString('es-ES')); 
-                this.value = ''; 
-            } 
-        } 
+    document.getElementById('horasStaff').addEventListener('input', function () {
+        // Tomar el valor ingresado y convertirlo a número
+        let horasStaff = this.value;
+        let horasStaffNum = parseFloat(horasStaff.replace(',', '.'));
+        // Obtener el total permitido y convertirlo a número
+        let totalStafff = parseFloat(document.getElementById('totalStafff').innerText.replace(/\./g, '').replace(/,/g, '.'));
+        // Verificar si los valores son válidos y comparar
+        if (!isNaN(horasStaffNum) && !isNaN(totalStafff)) {
+            if (horasStaffNum > totalStafff) {
+                alert("Las horas de staff no pueden ser mayores que " + totalStafff.toLocaleString('es-ES'));
+                this.value = '';
+            }
+        }
     });
     const currentDate = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -3605,45 +3581,32 @@
 <script>
 
     const cuotasInput = document.getElementById('cuotas');
-    const tablaPrimera = document.getElementById('tablacuotasexistentes');
-    const tablaBody = document.getElementById('tabla-body');
-    const tablaSegundaWrapper = document.getElementById('tabla-body-wrapper');
+    const tablaBody = document.getElementById('tabla-bodycuotas');
+    const filasEliminadasInput = document.getElementById('filas-eliminadas');
     function formatearMiles(valor) {
         return Number(valor.replace(/\D/g, '')).toLocaleString('de-DE', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         });
     }
-    let contador = 1;
+
+    let contador = 1; // Contador para identificar las filas nuevas
+
     cuotasInput.addEventListener('input', () => {
+        const numCuotas = parseInt(cuotasInput.value, 10) || 0;
+        const filasActuales = tablaBody.querySelectorAll('tr').length;
+        let filasEliminadas = 0;
 
-        const numCuotas = parseInt(cuotasInput.value);
-        if (numCuotas > 0) {
-            tablaPrimera.style.display = 'none'; // Ocultar la primera tabla
-            tablaSegundaWrapper.style.display = 'block'; // Mostrar la segunda tabla
-            document.getElementById('tablaUsada').value = 'segunda';
-        } else {
-            tablaPrimera.style.display = 'table'; // Mostrar la primera tabla
-             tablaSegundaWrapper.style.display = 'none'; // Ocultar la segunda tabla
-        }
-        tablaBody.innerHTML = '';
+        if (numCuotas > filasActuales) {
 
-
-        if (numCuotas > 0) {
-
-            for (let i = 0; i < numCuotas; i++) {
+            for (let i = filasActuales; i < numCuotas; i++) {
                 const fila = document.createElement('tr');
-
 
                 const fechaEmision = document.createElement('td');
                 fechaEmision.innerHTML = `<input required type="date" name="fechaemision" style="width: 100%; padding: 5px;">`;
 
-                const fechaVencimiento = document.createElement('td');
-                fechaVencimiento.style.display = 'none';
-                fechaVencimiento.innerHTML = `<input type="date" name="fechapago" style="width: 100%; padding: 5px;">`;
-
                 const monto = document.createElement('td');
-                monto.innerHTML = `<input required type="text" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px;" placeholder="MontoCLP">`;
+                monto.innerHTML = `<input required type="text" name="montocuota" class="monto-factura" style="width: 100%; padding: 5px; text-align:right;" placeholder="MontoCLP">`;
 
                 const observacion = document.createElement('td');
                 observacion.innerHTML = `<textarea name="observacioncuota" style="width: 100%; padding: 5px;" rows="2" placeholder="Observación"></textarea>`;
@@ -3651,37 +3614,38 @@
                 const idCuenta = document.createElement('td');
                 idCuenta.innerHTML = `<input value="4101001" readonly type="text" style="width: 100%; padding: 5px;" placeholder="IdCuenta">`;
 
-                const idcuota = document.createElement('td');
-                idcuota.style.display = 'none';
-                idcuota.innerHTML = `<input value="" name="IdCuota" readonly type="text" style="width: 100%; padding: 5px;" >`;
-
-                const numdocumento = document.createElement('td');
-                numdocumento.style.display = 'none';
-                numdocumento.innerHTML = `<input value="fc${contador}" name="numdocumento" readonly type="text" style="width: 100%; padding: 5px;">`;
-                contador++;
+                const idCuota = document.createElement('td');
+                idCuota.style.display = 'none';
+                idCuota.innerHTML = `<input value="" name="IdCuota" readonly type="text" style="width: 100%; padding: 5px;">`;
 
                 fila.appendChild(fechaEmision);
-                fila.appendChild(fechaVencimiento);
                 fila.appendChild(monto);
                 fila.appendChild(observacion);
                 fila.appendChild(idCuenta);
-                fila.appendChild(idcuota);
-                fila.appendChild(numdocumento);
-
+                fila.appendChild(idCuota);
 
                 tablaBody.appendChild(fila);
             }
-
-            const montos = document.querySelectorAll('.monto-factura');
-            montos.forEach((input) => {
-                input.addEventListener('input', function () {
-                    const cursorPos = this.selectionStart;
-                    this.value = formatearMiles(this.value);
-                    this.selectionStart = this.selectionEnd = cursorPos;
-                });
-            });
+        } else if (numCuotas < filasActuales) {
+            filasEliminadas = filasActuales - numCuotas;
+            while (tablaBody.children.length > numCuotas) {
+                tablaBody.removeChild(tablaBody.lastChild);
+            }
         }
+        filasEliminadasInput.value = filasEliminadas;
+        // Agregar formateo a los nuevos campos de monto
+        const montos = document.querySelectorAll('.monto-factura');
+        montos.forEach((input) => {
+            input.removeEventListener('input', handleMontoInput);
+            input.addEventListener('input', handleMontoInput);
+        });
     });
+
+    function handleMontoInput(event) {
+        const cursorPos = this.selectionStart;
+        this.value = formatearMiles(this.value);
+        this.selectionStart = this.selectionEnd = cursorPos;
+    }
 
 
 

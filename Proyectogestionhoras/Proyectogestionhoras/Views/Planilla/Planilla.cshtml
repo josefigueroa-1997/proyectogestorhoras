@@ -584,16 +584,17 @@
                 alert("Por favor, selecciona al menos un proyecto o subactividad.");
                 return;
             }
-            
-            /*if (idusuarioproyecto != null && idusuarioproyecto > 0) {
-                if (hhingresadas > hhpendientes) {
-                    alert(`Las horas registradas (${hhingresadas}) no pueden ser mayores a las horas restantes del proyecto (${hhpendientes}).`);
-                    return;
+            if (idproyecto != null && idproyecto > 0) {
+                if (idusuarioproyecto != null && idusuarioproyecto > 0) {
+                    if (hhingresadas > hhpendientes) {
+                        alert(`Las horas registradas (${hhingresadas}) no pueden ser mayores a las horas restantes del proyecto (${hhpendientes}).`);
+                        return;
+                    }
+
+
                 }
-            }*/
-
-
-
+            }
+            
 
             $('#modalMensaje').text("Procesando Su Solicitud...");
             $('#mensajeModal').show();
@@ -732,7 +733,6 @@
             });
         }
 
-        // Paginación
         let currentPage = 1;
         let rowsPerPage = 10;
         let totalPages = Math.ceil($('#tabla-body tr').length / rowsPerPage);
@@ -740,7 +740,6 @@
         function updatePagination() {
             $('.pagination').empty();
 
-            // Crear la nueva paginación
             for (let i = 1; i <= totalPages; i++) {
                 const pageButton = $('<button class="page-btn"></button>').text(i);
                 pageButton.on('click', function () {
@@ -766,7 +765,7 @@
 
 </script>
 <script>
-    // Función para filtrar la tabla
+
     document.getElementById('searchInput').addEventListener('keyup', function () {
         let input = this.value.toLowerCase();
         let rows = document.querySelectorAll('#tabla-body tr');
@@ -776,18 +775,18 @@
             let found = false;
 
             for (let i = 0; i < cells.length; i++) {
-                // Comprueba si el contenido de la celda incluye el texto de búsqueda
+            
                 if (cells[i].innerText.toLowerCase().includes(input)) {
                     found = true;
-                    break; // Si se encuentra una coincidencia, no es necesario seguir buscando
+                    break; 
                 }
             }
 
-            // Muestra u oculta la fila según si se encontró una coincidencia
+        
             row.style.display = found ? '' : 'none';
         });
         if (input === '') {
-            // Si la barra de búsqueda está vacía, actualiza la paginación
+     
             updatePagination();
         }
     });
