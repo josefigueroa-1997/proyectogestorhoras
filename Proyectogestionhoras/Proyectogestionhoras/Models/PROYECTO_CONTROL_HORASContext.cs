@@ -1002,6 +1002,10 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("date")
                     .HasColumnName("FECHA_TERMINO");
 
+                entity.Property(e => e.Fecharealtermino)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHAREALTERMINO");
+
                 entity.Property(e => e.IdCcostoUnegocio).HasColumnName("ID_CCOSTO_UNEGOCIO");
 
                 entity.Property(e => e.IdClienteSucursal).HasColumnName("ID_CLIENTE_SUCURSAL");

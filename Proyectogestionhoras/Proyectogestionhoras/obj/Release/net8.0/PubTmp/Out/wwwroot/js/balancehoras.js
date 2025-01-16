@@ -7,12 +7,18 @@
         let totalGeneralHoras = 0;
 
 
+
+
+
         data.forEach(item => {
-            let mesAnio = `${item.mes}-${item.anio}`;
+
+            let mesAnioInterno = `${item.anio}-${String(item.mes).padStart(2, '0')}`;
+
+            let mesAnioExterno = `${item.mes}-${item.anio}`;
             let anio = item.anio;
 
-            if (!headers[mesAnio]) headers[mesAnio] = mesAnio;
-            if (!totalGeneralPorMes[mesAnio]) totalGeneralPorMes[mesAnio] = 0;
+            if (!headers[mesAnioInterno]) headers[mesAnioInterno] = mesAnioExterno;
+            if (!totalGeneralPorMes[mesAnioInterno]) totalGeneralPorMes[mesAnioInterno] = 0;
             if (!totalGeneralPorAnio[anio]) totalGeneralPorAnio[anio] = 0;
         });
 
@@ -21,14 +27,11 @@
             const [yearB, monthB] = b.split('-').map(Number);
             return yearA === yearB ? monthA - monthB : yearA - yearB;
         });
-
         data.forEach(item => {
-            let mesAnio = `${item.mes}-${item.anio}`;
+            let mesAnioInterno = `${item.anio}-${String(item.mes).padStart(2, '0')}`;
             let anio = item.anio;
 
-
             if (!groupedData[item.tiporecurso]) groupedData[item.tiporecurso] = {};
-
 
             if (!groupedData[item.tiporecurso][item.nombreproyecto]) {
                 groupedData[item.tiporecurso][item.nombreproyecto] = {
@@ -41,20 +44,17 @@
                 };
             }
 
-
-            if (!groupedData[item.tiporecurso][item.nombreproyecto].horas[mesAnio]) {
-                groupedData[item.tiporecurso][item.nombreproyecto].horas[mesAnio] = 0;
+            if (!groupedData[item.tiporecurso][item.nombreproyecto].horas[mesAnioInterno]) {
+                groupedData[item.tiporecurso][item.nombreproyecto].horas[mesAnioInterno] = 0;
             }
-            groupedData[item.tiporecurso][item.nombreproyecto].horas[mesAnio] += item.totalhorasporrecurso;
-
+            groupedData[item.tiporecurso][item.nombreproyecto].horas[mesAnioInterno] += item.totalhorasporrecurso;
 
             if (!groupedData[item.tiporecurso][item.nombreproyecto].totalAnual[anio]) {
                 groupedData[item.tiporecurso][item.nombreproyecto].totalAnual[anio] = 0;
             }
             groupedData[item.tiporecurso][item.nombreproyecto].totalAnual[anio] += item.totalhorasporrecurso;
 
-
-            totalGeneralPorMes[mesAnio] += item.totalhorasporrecurso;
+            totalGeneralPorMes[mesAnioInterno] += item.totalhorasporrecurso;
             totalGeneralPorAnio[anio] += item.totalhorasporrecurso;
             totalGeneralHoras += item.totalhorasporrecurso;
         });
@@ -65,7 +65,7 @@
 
         let headerRow = $('#balanceTable thead tr');
         sortedHeaders.forEach(key => {
-            headerRow.append(`<th class="text-left text-xs font-medium">${key}</th>`);
+            headerRow.append(`<th class="text-left text-xs font-medium">${headers[key]}</th>`);
         });
 
 
@@ -94,11 +94,11 @@
 
                 proyectosOrdenados.forEach(row => {
                     let tr = `<tr>
-                                    <td class='text-left text-xs font-medium '>${tiporecurso}</td>
-                                    <td class='text-left text-xs font-medium '>${row.tipologia}</td>
-                                    <td class='text-left text-xs font-medium '>${row.nombreproyecto}</td>
-                                    <td class='text-left text-xs font-medium '>${row.cliente}</td>
-                                    <td class='text-left text-xs font-medium '>${"'" + row.numeroproyecto}</td>`;
+                                        <td class='text-left text-xs font-medium '>${tiporecurso}</td>
+                                        <td class='text-left text-xs font-medium '>${row.tipologia}</td>
+                                        <td class='text-left text-xs font-medium '>${row.nombreproyecto}</td>
+                                        <td class='text-left text-xs font-medium '>${row.cliente}</td>
+                                        <td class='text-left text-xs font-medium '>${"'" + row.numeroproyecto}</td>`;
 
                     let totalHorasPorProyecto = 0;
 
@@ -126,8 +126,8 @@
 
                 // fila de total para el tiporecurso actual
                 let totalRow = `<tr class="yellow">
-                            <td colspan="2" class="text-left text-xs font-medium ">Total ${tiporecurso}</td>
-                        <td colspan="3"></td>`;
+                                <td colspan="2" class="text-left text-xs font-medium ">Total ${tiporecurso}</td>
+                            <td colspan="3"></td>`;
                 sortedHeaders.forEach(header => {
                     totalRow += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${totalHorasPorMes[header] > 0 ? totalHorasPorMes[header] : ''}</td>`;
                 });
@@ -141,8 +141,8 @@
 
         // fila de total general para las horas
         let totalGeneralRow = `<tr class="totales">
-                    <td colspan="2"  class="text-left text-xs font-medium ">Total General</td>
-                <td colspan="3"></td>`;
+                        <td colspan="2"  class="text-left text-xs font-medium ">Total General</td>
+                    <td colspan="3"></td>`;
         sortedHeaders.forEach(header => {
             totalGeneralRow += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${totalGeneralPorMes[header] > 0 ? totalGeneralPorMes[header] : ''}</td>`;
         });

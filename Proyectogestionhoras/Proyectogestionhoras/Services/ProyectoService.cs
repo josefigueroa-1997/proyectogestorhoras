@@ -431,7 +431,6 @@ namespace Proyectogestionhoras.Services
                 }
             }
 
-            // Guardar los cambios en la base de datos
             await context.SaveChangesAsync();
         }
 
