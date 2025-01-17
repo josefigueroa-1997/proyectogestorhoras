@@ -3578,8 +3578,10 @@
     document.getElementById('current-date').textContent = formattedDate;
 </script>
 
-<script>
 
+
+<script>
+    //Tabla Cuotas
     const cuotasInput = document.getElementById('cuotas');
     const tablaBody = document.getElementById('tabla-bodycuotas');
     const filasEliminadasInput = document.getElementById('filas-eliminadas');
@@ -3590,7 +3592,7 @@
         });
     }
 
-    let contador = 1; // Contador para identificar las filas nuevas
+    let contador = 1; 
 
     cuotasInput.addEventListener('input', () => {
         const numCuotas = parseInt(cuotasInput.value, 10) || 0;
@@ -3633,12 +3635,7 @@
             }
         }
         filasEliminadasInput.value = filasEliminadas;
-        // Agregar formateo a los nuevos campos de monto
-        const montos = document.querySelectorAll('.monto-factura');
-        montos.forEach((input) => {
-            input.removeEventListener('input', handleMontoInput);
-            input.addEventListener('input', handleMontoInput);
-        });
+        initializeMontoInputs();
     });
 
     function handleMontoInput(event) {
@@ -3647,9 +3644,16 @@
         this.selectionStart = this.selectionEnd = cursorPos;
     }
 
+    function initializeMontoInputs() {
+        const montos = document.querySelectorAll('.monto-factura');
+        montos.forEach((input) => {
+            input.removeEventListener('input', handleMontoInput);
+            input.addEventListener('input', handleMontoInput);
+        });
+    }
 
 
-
+    initializeMontoInputs();
 
 
 </script>
