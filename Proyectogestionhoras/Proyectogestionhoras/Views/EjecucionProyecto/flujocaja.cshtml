@@ -342,7 +342,7 @@
                         totalProyectado += totalesPorMes[mesAnio].proyectado;
                         totalForecast += totalesPorMes[mesAnio].forecast;
                     });
-                    totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalReal)}</td>`;
+                    totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalReal!==0 ? formatearMiles(totalReal) : '' }</td>`;
                     totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectado !== 0 ? formatearMiles(totalProyectado) : ''}</td>`;
                     totalRow.innerHTML += `<td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecast !== 0 ? formatearMiles(totalForecast) : ''}</td>`;
                     
@@ -450,9 +450,9 @@
                         </td>`;
         });
         
-        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalRealEgresos)}</td>`;
-        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalProyectadoEgresos)}</td>`;
-        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalForecastEgresos)}</td>`;
+        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalRealEgresos !== 0 ? formatearMiles(totalRealEgresos) : ''}</td>`;
+        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectadoEgresos !==0 ? formatearMiles(totalProyectadoEgresos): ''}</td>`;
+        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalForecastEgresos !== 0 ? formatearMiles(totalForecastEgresos): ''}</td>`;
         tbody.appendChild(totalEgresosRow);
     
         const margenContribucionRow = document.createElement('tr');
