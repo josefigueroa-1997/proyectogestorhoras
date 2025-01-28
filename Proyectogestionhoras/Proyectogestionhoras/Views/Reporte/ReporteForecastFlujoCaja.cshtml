@@ -3,266 +3,436 @@
 @{
     ViewData["Title"] = "Flujo de Caja Proyectos";
 }
-<style>
-    .totales {
-        background-color: #d6eaf8;
-    }
 
-    .yellow {
-        background-color: #fcf3cf;
-    }
-</style>
-@if (Model != null && Model.Any())
-{
-    <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Flujo de Caja de Proyectos</h2>
-    <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
-        <p class="text-sm text-gray-600">Muestra el flujo de caja en detalle de los proyectos en ejecución.</p>
-    </div>
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Flujo de Caja de Proyectos</h2>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra el resumen de flujo de caja de los proyectos en ejecución y terminados.</p>
+</div>
     <a href="@Url.Action("ExportarFlujoCaja","Reporte")" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</a>
-    <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
-        <div class="overflow-x-auto relative">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="sticky top-0 bg-white z-10">
-                    <tr class="totales">
-                        <th class="text-center text-xs font-medium">Proyecto</th>
-                        <th class="text-center text-xs  left-[100px] font-medium">Tipo</th>
-                        <th class="text-center text-xs pl-[250px] font-medium">Cuenta</th>
-                        @* Agrupar por Mes y Año *@
-                        @{
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto relative">
+        <div class="w-full max-w-3xl border-collapse text-left text-xs" id="tables-container"></div>
 
-                            var mesesAnios = new HashSet<(int, int)>();
-
-
-                            foreach (var proyecto in Model)
-                            {
-                                foreach (var tipo in proyecto.Value)
-                                {
-                                    foreach (var mesAnio in tipo.Value.Keys)
-                                    {
-                                        mesesAnios.Add(mesAnio);
-                                    }
-                                }
-                            }
-
-
-                            var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
-
-
-                            foreach (var mesAnio in mesesAniosOrdenados)
-                            {
-                                <th class="text-center border border-gray-300 text-xs font-medium" colspan="3">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
-                            }
-                        }
-                    </tr>
-                    <tr class="bg-gray-200 text-black">
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        @foreach (var mesAnio in mesesAniosOrdenados)
-                        {
-                            <th class="p-2 border border-gray-300 text-xs text-center">Proyectado</th>
-                            <th class="p-2 border border-gray-300 text-xs text-center">Real</th>
-                            <th class="p-2 border border-gray-300 text-xs text-center">Forecast</th>
-                        }
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach (var proyecto in Model.OrderBy(p => p.Key))
-                    {
-
-                        var totalEgresoProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-                        var totalEgresoRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-                        var totalEgresoForecastPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-                        var totalIngresoProyectadoPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-                        var totalIngresoRealPorMes = new Dictionary<(int Mes, int Anio), decimal>();
-
-                        foreach (var tipo in proyecto.Value)
-                        {
-                            <tr>
-                                <td class="text-left text-xs font-medium sticky left-0 bg-white z-10">@proyecto.Key</td>
-                                <td class="text-left text-xs font-medium sticky left-[100px] bg-white z-10">@tipo.Key</td>
-
-
-
-
-                                @{
-                                    var primeraCuenta = tipo.Value.Values
-                                    .SelectMany(flujoList => flujoList)
-                                    .FirstOrDefault();
-
-                                    var cuenta = primeraCuenta != null ? primeraCuenta.Cuenta : "No disponible"; // Mostrar la cuenta si existe
-                                }
-
-                                <td class="text-left text-xs font-medium pl-[250px]">
-                                    @cuenta
-                                </td>
-                                @foreach (var mesAnio in mesesAniosOrdenados)
-                                {
-
-                                    var flujo = tipo.Value
-                                    .FirstOrDefault(flujoList =>
-                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);  // Filtrar por tupla Mes-Año
-
-                                    decimal proyectado = 0;
-                                    decimal real = 0;
-                                    decimal forecast = 0;
-
-                                    if (flujo.Key != default)
-                                    {
-
-                                        proyectado = flujo.Value
-                                        .Where(f => f.Estado == "Proyectado")
-                                        .Sum(f => f.Monto);
-
-                                        real = flujo.Value
-                                        .Where(f => f.Estado == "Real")
-                                        .Sum(f => f.Monto);
-
-                                        forecast = flujo.Value
-                                        .Where(f => f.Estado == "Forecast")
-                                        .Sum(f => f.Monto);
-                                    }
-
-                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                        @(proyectado == 0 ? "" : String.Format("{0:N0}", proyectado))
-                                    </td>
-                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                        @(real == 0 ? "" : String.Format("{0:N0}", real))
-                                    </td>
-                                    <td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[150px]">
-                                        @(forecast == 0 ? "" : String.Format("{0:N0}", forecast))
-                                    </td>
-
-                                    if (tipo.Key != "Ingreso")
-                                    {
-
-                                        if (!totalEgresoProyectadoPorMes.ContainsKey(mesAnio)) totalEgresoProyectadoPorMes[mesAnio] = 0;
-                                        if (!totalEgresoRealPorMes.ContainsKey(mesAnio)) totalEgresoRealPorMes[mesAnio] = 0;
-                                        if (!totalEgresoForecastPorMes.ContainsKey(mesAnio)) totalEgresoForecastPorMes[mesAnio] = 0;
-
-                                        totalEgresoProyectadoPorMes[mesAnio] += proyectado;
-                                        totalEgresoRealPorMes[mesAnio] += real;
-                                        totalEgresoForecastPorMes[mesAnio] += forecast;
-                                    }
-                                    if (tipo.Key == "Ingreso")
-                                    {
-                                        if (!totalIngresoProyectadoPorMes.ContainsKey(mesAnio)) totalIngresoProyectadoPorMes[mesAnio] = 0;
-                                        if (!totalIngresoRealPorMes.ContainsKey(mesAnio)) totalIngresoRealPorMes[mesAnio] = 0;
-                                        totalIngresoProyectadoPorMes[mesAnio] += proyectado;
-                                        totalIngresoRealPorMes[mesAnio] += real;
-                                    }
-
-                                }
-                            </tr>
-                        }
-
-                        @*EGRESOS TOTAL*@
-                        <tr class="bg-red-100">
-                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-red-100" colspan="3">Total Egresos por Proyecto (@proyecto.Key)</td>
-                            @foreach (var mesAnio in mesesAniosOrdenados)
-                            {
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                    @(totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0) == 0 ? "" : String.Format("{0:N0}", totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0)))
-                                </td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                    @(totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0) == 0 ? "" : String.Format("{0:N0}", totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0)))
-                                </td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                    @(totalEgresoForecastPorMes.GetValueOrDefault(mesAnio, 0) == 0 ? "" : String.Format("{0:N0}", totalEgresoForecastPorMes.GetValueOrDefault(mesAnio, 0)))
-                                </td>
-                            }
-                        </tr>
-                        @*MARGEN DEL PROYECTO*@
-                        <tr class="bg-gray-300 font-bold">
-                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-gray-300" colspan="3">Total Margen por Proyecto (@proyecto.Key)</td>
-                            @foreach (var mesAnio in mesesAniosOrdenados)
-                            {
-                                var ingresoproyectado = totalIngresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0);
-                                var egresoproyectado = totalEgresoProyectadoPorMes.GetValueOrDefault(mesAnio, 0);
-                                var margenproyectado = ingresoproyectado - egresoproyectado;
-                                @*Margen real*@
-                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
-                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
-                                var margenreal = ingresoreal - egresoreal;
-
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                    @(margenproyectado == 0 ? "" : String.Format("{0:N0}", margenproyectado))
-                                </td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                    @(margenreal == 0 ? "" : String.Format("{0:N0}", margenreal))
-                                </td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
-
-                            }
-                        </tr>
-                        @*MARGEN DEL PROYECTO %*@
-                        <tr class="bg-green-100 font-bold">
-                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-green-100" colspan="3">Total Margen por Proyecto (%) (@proyecto.Key)</td>
-                            @foreach (var mesAnio in mesesAniosOrdenados)
-                            {
-
-                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
-                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
-                                var margenreal = ingresoreal - egresoreal;
-                                var porcentajeMargenReal = ingresoreal > 0 ? Math.Round((margenreal / ingresoreal) * 100, 2) : 0;
-
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                    @(porcentajeMargenReal == 0 ? "" : String.Format("{0:N0}", porcentajeMargenReal)) %
-                                </td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
-
-                            }
-                        </tr>
-                        @*SALDO ACUMULADO*@
-                        <tr class="bg-yellow-100 font-bold">
-                            <td class="text-left text-xs font-medium font-bold sticky left-0 bg-yellow-100" colspan="3">Saldo Acumulado (@proyecto.Key)</td>
-                            @{
-                                decimal saldoAcumulado = 0;
-                                bool proyectoComienza = false;
-                                bool detenerAcumulacion = false;
-                            }
-                            @foreach (var mesAnio in mesesAniosOrdenados)
-                            {
-                                var ingresoreal = totalIngresoRealPorMes.GetValueOrDefault(mesAnio, 0);
-                                var egresoreal = totalEgresoRealPorMes.GetValueOrDefault(mesAnio, 0);
-                                var margenreal = ingresoreal - egresoreal;
-
-                                if (!proyectoComienza && (ingresoreal != 0 || egresoreal != 0 || margenreal != 0))
-                                {
-                                    proyectoComienza = true;
-                                }
-
-
-                                if (proyectoComienza)
-                                {
-                                    saldoAcumulado += margenreal;
-
-                                    if (ingresoreal == 0 && egresoreal == 0 && margenreal == 0)
-                                    {
-                                        detenerAcumulacion = true;
-                                    }
-                                }
-
-                                if (detenerAcumulacion)
-                                {
-                                    break;
-                                }
-
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                    @(saldoAcumulado == 0 ? "" : String.Format("{0:N0}", saldoAcumulado))
-                                </td>
-                                <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
     </div>
-}
-else
-{
-    <p>No se encontraron datos para mostrar.</p>
-}
+
+
+</div>
+
+
+
+
+
+<script>
+    // Consumir el endpoint para obtener los datos
+    async function fetchProjectData(projectId) {
+        try {
+            const response = await fetch(`/EjecucionProyecto/ObtenerFlujo/${projectId}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error al obtener los datos:', error);
+            return [];
+        }
+    }
+
+    function formatearMiles(valor) {
+        return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+    }
+
+
+    // Generar tablas dinámicamente
+    function generateTables(data) {
+        const container = document.getElementById('tables-container');
+        container.innerHTML = ''; // Limpiar contenedor
+
+        // Agrupar datos por proyecto
+        const projects = data.reduce((acc, curr) => {
+            if (!acc[curr.nombreProyecto]) {
+                acc[curr.nombreProyecto] = [];
+            }
+            acc[curr.nombreProyecto].push(curr);
+            return acc;
+        }, {});
+
+        const projectNames = Object.keys(projects).sort();
+        // Crear una tabla por proyecto
+        projectNames.forEach(projectName => {
+            const projectData = projects[projectName];
+            const table = document.createElement('table');
+            const title = document.createElement('div');
+            title.className = 'font-bold text-l';
+            title.textContent = `Proyecto: ${projectName}`;
+            container.appendChild(title);
+
+            // Cabecera principal
+            const headerRow = document.createElement('tr');
+            headerRow.className = 'bg-blue-100 text-black';
+            headerRow.innerHTML = `
+                <th  class="p-2 border border-gray-300 text-center">Tipo</th>
+                <th  class="p-2 border border-gray-300 text-center">ID Cuenta</th>
+                <th  class="p-2 border border-gray-300 text-center">Cuenta</th>
+                ${generateMonthHeaders(projectData)}
+                <th class="p-2 border border-gray-300 text-center">Total Real</th>
+                <th class="p-2 border border-gray-300 text-center">Total Proyectado</th>
+                <th class="p-2 border border-gray-300 text-center">Total Forecast</th>
+            `;
+            table.appendChild(headerRow);
+
+            // Subcabecera (Proyectado, Real, Forecast)
+            const subHeaderRow = document.createElement('tr');
+            subHeaderRow.className = 'bg-gray-200 text-black';
+            subHeaderRow.innerHTML = `
+                <td></td>
+                <td></td>
+                <td></td>
+                ${generateSubHeaders(projectData)}
+                <td></td>
+                <td></td>
+                <td></td>
+            `;
+            table.appendChild(subHeaderRow);
+
+            // Agrupar datos por tipo dentro del proyecto
+            const groupedByType = projectData.reduce((acc, curr) => {
+                if (!acc[curr.tipo]) {
+                    acc[curr.tipo] = [];
+                }
+                acc[curr.tipo].push(curr);
+                return acc;
+            }, {});
+
+            const totalegresos = {};
+            const totalIngresos = {};
+
+            // Agregar filas agrupadas por tipo
+            for (const [tipo, typeData] of Object.entries(groupedByType)) {
+                const uniqueRows = {};
+
+                // Generar una fila base por cada combinación única de ID Cuenta y Cuenta
+                typeData.forEach(row => {
+                    const key = `${row.idCuenta}-${row.cuenta}`;
+                    if (!uniqueRows[key]) {
+                        uniqueRows[key] = {
+                            idCuenta: row.idCuenta,
+                            cuenta: row.cuenta,
+                            data: {}
+                        };
+                    }
+                    uniqueRows[key].data[`${row.mes}/${row.anio}-${row.estado}`] = row.monto;
+                    const monthKey = `${row.mes}/${row.anio}-${row.estado}`;
+                    if (tipo !== 'Ingreso') {
+                        if (!totalegresos[monthKey]) totalegresos[monthKey] = 0;
+                        totalegresos[monthKey] += row.monto || 0;
+                    }
+                    else {
+                        if (!totalIngresos[monthKey]) totalIngresos[monthKey] = 0;
+                        totalIngresos[monthKey] += row.monto || 0;
+                    }
+                });
+
+                // Crear filas de datos
+                for (const row of Object.values(uniqueRows)) {
+                    const dataRow = document.createElement('tr');
+                    dataRow.innerHTML = `
+                        <td class="text-left text-xs font-medium sticky left-0 bg-white min-w-[250px]">${tipo}</td>
+                        <td class="text-left text-xs font-medium ">${row.idCuenta}</td>
+                        <td class="text-left text-xs font-medium min-w-[150px]">${row.cuenta}</td>
+                        ${generateDataCells(row.data, projectData)}
+                        <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${calculateTotalReal(row.data, projectData)}</td>
+                        <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${calculateTotalProyectado(row.data, projectData)}</td>
+                        <td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${calculateTotalForecast(row.data, projectData)}</td>
+                    `;
+                    table.appendChild(dataRow);
+                }
+            }
+            // Agregar fila de Total Egresos
+            const totalegresosRow = document.createElement('tr');
+            totalegresosRow.className = 'bg-red-100';
+            totalegresosRow.innerHTML = `
+                <td class="text-left text-xs font-medium font-bold sticky left-0 bg-red-100">Total Egresos</td>
+                <td></td>
+                <td></td>
+                ${generateTotalCells(totalegresos, projectData)}
+               
+            `;
+            table.appendChild(totalegresosRow);
+
+
+            // Calcular y agregar fila de Margen de Contribución
+            const marginRow = document.createElement('tr');
+            marginRow.className = 'bg-gray-300 font-bold';
+            marginRow.innerHTML = `
+                <td class="text-left text-xs font-medium font-bold sticky left-0 bg-gray-300">Margen de Contribución</td>
+                <td></td>
+                <td></td>
+                ${generateMarginCells(totalIngresos, totalegresos, projectData)}
+            `;
+            table.appendChild(marginRow);
+
+            const porcentajemarginRow = document.createElement('tr');
+            porcentajemarginRow.className = 'bg-green-100 font-bold';
+            porcentajemarginRow.innerHTML = `
+                    <td class="text-left text-xs font-medium sticky left-0 bg-green-100">Margen de Contribución(%)</td>
+                    <td></td>
+                    <td></td>
+                   ${generateporcentajeMarginCells(totalIngresos, totalegresos, projectData)}
+                `;
+            table.appendChild(porcentajemarginRow);
+
+
+            const saldoAcumuladoRow = document.createElement('tr');
+            saldoAcumuladoRow.className = 'bg-yellow-100 font-bold';
+            saldoAcumuladoRow.innerHTML = `
+                <td class="text-left text-xs font-medium  sticky left-0 bg-yellow-100">Saldo Acumulado</td>
+                <td></td>
+                <td></td>
+                ${generateAccumulatedCells(totalIngresos, totalegresos, projectData)}
+            `;
+            table.appendChild(saldoAcumuladoRow);
+
+            container.appendChild(table);
+            const separator = document.createElement('div');
+            separator.style.height = '20px'; // Ajusta la altura según tus necesidades
+            container.appendChild(separator);
+        });
+    }
+
+
+    function calculateTotalReal(rowData, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const totalReal = uniqueMonths.reduce((total, month) => {
+            const realValue = rowData[`${month}-Real`] || 0;
+            return total + realValue;
+        }, 0);
+
+        return formatearMiles(totalReal); 
+    }
+
+    function calculateTotalProyectado(rowData, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const totalProyectado = uniqueMonths.reduce((total, month) => {
+            const proyectadoValue = rowData[`${month}-Proyectado`] || 0;
+            return total + proyectadoValue;
+        }, 0);
+
+        return formatearMiles(totalProyectado); 
+    }
+    function calculateTotalForecast(rowData, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const totalForecast = uniqueMonths.reduce((total, month) => {
+            const forecastValue = rowData[`${month}-Forecast`] || 0;
+            return total + forecastValue;
+        }, 0);
+
+        return formatearMiles(totalForecast); 
+    }
+
+    // Generar las columnas de meses/años dinámicas
+    function generateMonthHeaders(projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const sortedMonths = uniqueMonths.sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB; // Ordenar por año, luego por mes
+        });
+        return sortedMonths.map(month => `<th class="p-2 border border-gray-300 text-center" colspan="3">${month}</th>`).join('');
+    }
+
+    // Generar subcabeceras dinámicas
+    function generateSubHeaders(projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const sortedMonths = uniqueMonths.sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB; // Ordenar por año, luego por mes
+        });
+        return sortedMonths.map(() => `
+                <td class="p-2 border border-gray-300  text-center">Proyectado</td>
+                <td class="p-2 border border-gray-300  text-center">Real</td>
+                <td class="p-2 border border-gray-300  text-center">Forecast</td>
+        `).join('');
+    }
+
+   
+
+    // Generar las celdas de datos dinámicamente
+    function generateDataCells(rowData, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const sortedMonths = uniqueMonths.sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB; // Ordenar por año, luego por mes
+        });
+        return sortedMonths
+            .map(month => `
+                 <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(rowData[`${month}-Proyectado`] || '')}</td>
+                 <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(rowData[`${month}-Real`] || '')}</td>
+                 <td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${formatearMiles(rowData[`${month}-Forecast`] || '')}</td>
+            `)
+            .join('');
+    }
+
+    // Generar las celdas de totales dinámicamente
+    function generateTotalCells(totals, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const sortedMonths = uniqueMonths.sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB; // Ordenar por año, luego por mes
+        });
+
+        let totalProyectado = 0;
+        let totalReal = 0;
+        let totalForecast = 0;
+
+        // Usar un arreglo en lugar de una variable de tipo const
+        const cellsArray = sortedMonths.map(month => {
+            const proyectado = totals[`${month}-Proyectado`] || 0;
+            const real = totals[`${month}-Real`] || 0;
+            const forecast = totals[`${month}-Forecast`] || 0;
+
+            // Acumular los totales
+            totalProyectado += proyectado;
+            totalReal += real;
+            totalForecast += forecast;
+
+            return `
+                <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${proyectado !== 0 ? formatearMiles(proyectado) : ''}</td>
+                <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${real !== 0 ? formatearMiles(real) : ''}</td>
+                <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${forecast !== 0 ? formatearMiles(forecast) : ''}</td>
+            `;
+        });
+
+        // Agregar fila con los totales acumulados
+        cellsArray.push(`
+                 <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]" >${totalReal !== 0 ? formatearMiles(totalReal) : ''}</td>
+                 <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectado !== 0 ? formatearMiles(totalProyectado) : ''}</td>
+                 <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalForecast !== 0 ? formatearMiles(totalForecast) : ''}</td>
+        `);
+
+        // Unir el arreglo de celdas en una cadena de texto
+        return cellsArray.join('');
+    }
+
+
+    // Generar las celdas de margen dinámicamente
+    function generateMarginCells(ingresos, egresos, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const sortedMonths = uniqueMonths.sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB; // Ordenar por año, luego por mes
+        });
+
+        // Inicializar los acumuladores
+        let totalReal = 0;
+        let totalProyectado = 0;
+  
+
+        const cells = sortedMonths
+            .map(month => {
+                // Calcular margen de contribución en %
+                const ingresoReal = ingresos[`${month}-Real`] || 0;
+                const egresoReal = egresos[`${month}-Real`] || 0;
+        
+                const margenrealas = ingresoReal - egresoReal;
+                
+                // Sumar valores a los acumuladores
+                totalReal += ingresoReal - egresoReal;
+                
+                return `
+                    <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${(ingresos[`${month}-Proyectado`] || 0) - (egresos[`${month}-Proyectado`] || 0) === 0 ? '' : formatearMiles((ingresos[`${month}-Proyectado`] || 0) - (egresos[`${month}-Proyectado`] || 0))}</td>
+                    <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenrealas !== 0 ? formatearMiles(margenrealas) : ''}</td>
+                    <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+                    `;
+            })
+            .join('');
+
+        // Al final, agregar los totales en la misma fila
+        return `
+            ${cells}
+            <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${totalReal !== 0 ? formatearMiles(totalReal) : ''}</td>
+            <td></td>
+            <td></td>
+        `;
+    }
+
+    function generateporcentajeMarginCells(ingresos, egresos, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const sortedMonths = uniqueMonths.sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB; // Ordenar por año, luego por mes
+        });
+
+        // Inicializar acumuladores para calcular el porcentaje final
+        let totalIngresoReal = 0;
+        let totalEgresoReal = 0;
+
+        const cells = sortedMonths
+            .map(month => {
+                // Calcular margen de contribución en %
+                const ingresoReal = ingresos[`${month}-Real`] || 0;
+                const egresoReal = egresos[`${month}-Real`] || 0;
+                const margenReal = ingresoReal > 0 ? ((ingresoReal - egresoReal) / ingresoReal) * 100 : 0;
+
+                // Sumar ingresos y egresos reales para calcular el porcentaje final
+                totalIngresoReal += ingresoReal;
+                totalEgresoReal += egresoReal;
+
+                return `
+                        <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+                        <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenReal.toFixed(2)}%</td>
+                        <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+                `;
+            })
+            .join('');
+
+        // Calcular el porcentaje final basado en los totales
+        const porcentajeFinal = totalIngresoReal > 0 ? ((totalIngresoReal - totalEgresoReal) / totalIngresoReal) * 100 : 0;
+
+        // Agregar la fila de totales al final con el porcentaje calculado
+        return `
+            ${cells}
+                <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${porcentajeFinal.toFixed(2)}%</td>
+                <td></td>
+            <td></td> 
+        `;
+    }
+
+    // Función para generar celdas de saldo acumulado
+    function generateAccumulatedCells(ingresos, egresos, projectData) {
+        const uniqueMonths = [...new Set(projectData.map(item => `${item.mes}/${item.anio}`))];
+        const sortedMonths = uniqueMonths.sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB; // Ordenar por año, luego por mes
+        });
+
+        let acumulado = 0;
+        let totalReal = 0;
+
+        const cells = sortedMonths
+            .map(month => {
+                const ingresoReal = ingresos[`${month}-Real`] || 0;
+                const egresoReal = egresos[`${month}-Real`] || 0;
+                const margenReal = ingresoReal - egresoReal;
+                acumulado += margenReal;
+                totalReal += margenReal; // Acumulamos el total real para la última celda
+                return `<td  class="text-xs border text-center border-black px-4 py-2 min-w-[100px]" colspan="3">${acumulado !== 0 ? formatearMiles(acumulado) : ''}</td>`;
+            })
+            .join('');
+
+        // Agregar el saldo acumulado final a la fila de totales
+        return `
+            ${cells}
+            <td  class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${totalReal !== 0 ? formatearMiles(totalReal) : ''}</td>
+        `;
+    }
+
+    // Inicializar tablas (ejemplo con ID de proyecto 0)
+    fetchProjectData(0).then(data => generateTables(data));
+</script>
+
+
