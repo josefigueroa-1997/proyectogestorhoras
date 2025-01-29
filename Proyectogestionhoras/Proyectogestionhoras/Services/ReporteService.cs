@@ -1167,5 +1167,48 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task<List<ReporteMetaFacturacionesDTO>> ObtenerMetasFacutariaciones()
+        {
+            try
+            {
+
+                var resumen = new List<ReporteMetaFacturacionesDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "FACTURACIONESKEY";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ReporteMetaFacturacionesDTO datos = new()
+                            {
+
+                                Tipo = reader.IsDBNull(reader.GetOrdinal("Tipo")) ? string.Empty : reader.GetString(reader.GetOrdinal("Tipo")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nombre")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                                Monto = reader.IsDBNull(reader.GetOrdinal("Monto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto")),
+
+                            };
+                            resumen.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return resumen;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener las metas de las facturaciones de los proyectos:{ex.Message}");
+                return new List<ReporteMetaFacturacionesDTO>();
+
+            }
+        }
     }
 }

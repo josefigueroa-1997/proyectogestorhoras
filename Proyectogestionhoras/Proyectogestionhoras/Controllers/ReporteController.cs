@@ -299,6 +299,13 @@ namespace Proyectogestionhoras.Controllers
             return Json(resumen);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObtenerMetasFacturaciones()
+        {
+            var resultado = await _reporteService.ObtenerMetasFacutariaciones();
+            return Json(resultado);
+        }
+
 
         /*EXPORTAR FLUJO DE CAJA*/
         public async Task<IActionResult> ExportarFlujoCaja(int? idproyecto)

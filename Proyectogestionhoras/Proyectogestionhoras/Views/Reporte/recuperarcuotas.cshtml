@@ -2,60 +2,209 @@
     ViewData["Title"] = "Facturación";
 }
 
-<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Facturación</h2>
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Metas de Facturación</h2>
 
-<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md" style="margin-top: 50px;">
-    <div class="overflow-x-auto">
-        <table id="facturasTable" class="min-w-full border-collapse border border-black">
-            <thead class="bg-blue-100">
-                <tr>
-                    <th class="text-left text-xs font-medium ">Tipo</th>
-                    @if (ViewBag.Cuotas != null)
-                    {
-                        @foreach (var fecha in ViewBag.Cuotas)
-                        {
-                            <th class="text-left text-xs font-medium ">@fecha.Mes/@fecha.Anio</th>
-                        }
-                    }
+<script>
 
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+    function formatearMiles(valor) {
+        return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
-                @if (ViewBag.Montofactura != null)
-                {
-                    <tr>
-                        <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Meta</td>
-                  
-                    @foreach (var f in ViewBag.Montofactura)
-                    {
-                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(@f.Monto))</td>
-                    }
-                    </tr>
+    }
+
+
+    window.onload = function () {
+        fetch('/Reporte/ObtenerMetasFacturaciones')
+            .then(response => response.json())
+            .then(data => {
+                procesarDatos(data);
+            })
+            .catch(error => console.error('Error:', error));
+    };
+
+    function procesarDatos(datos) {
+        const mesesRelevantes = getRelevantMonths();
+        const datosProcesados = {};
+        const datosDetallados = {};
+
+        // Agrupa datos por tipo y calcula suma de montos para cada mes/año
+        datos.forEach(item => {
+            if (!datosProcesados[item.tipo]) {
+                datosProcesados[item.tipo] = {};
+            }
+
+            const mesAnio = `${item.mes}/${item.anio}`;
+            if (mesesRelevantes.includes(mesAnio)) {
+                if (!datosProcesados[item.tipo][mesAnio]) {
+                    datosProcesados[item.tipo][mesAnio] = 0;
                 }
+                datosProcesados[item.tipo][mesAnio] += item.monto;
+            }
 
-                 @if (ViewBag.Cuotas != null)
-                {
-                     
+            // Agrupa datos por tipo y nombre para el detalle
+            if (item.nombre) {
+                if (!datosDetallados[item.tipo]) {
+                    datosDetallados[item.tipo] = {};
+                }
+                if (!datosDetallados[item.tipo][item.nombre]) {
+                    datosDetallados[item.tipo][item.nombre] = {};
+                }
+                if (!datosDetallados[item.tipo][item.nombre][mesAnio]) {
+                    datosDetallados[item.tipo][item.nombre][mesAnio] = 0;
+                }
+                datosDetallados[item.tipo][item.nombre][mesAnio] += item.monto;
+            }
+        });
+
+        // Crea la tabla con los datos procesados
+        crearTabla(datosProcesados, datosDetallados, mesesRelevantes);
+    }
+
+    function getRelevantMonths() {
+        const meses = [];
+        const fechaActual = new Date();
+        const mesActual = fechaActual.getMonth() + 1; // Mes actual (1-12)
+        const anioActual = fechaActual.getFullYear();
+
+        // Calcula los meses relevantes
+        for (let i = -3; i <= 3; i++) {
+            let mes = mesActual + i;
+            let anio = anioActual;
+
+            if (mes < 1) {
+                mes += 12;
+                anio--;
+            } else if (mes > 12) {
+                mes -= 12;
+                anio++;
+            }
+
+            meses.push(`${mes}/${anio}`);
+        }
+
+        return meses;
+    }
+
+    function crearTabla(datosProcesados, datosDetallados, mesesRelevantes) {
+        const tabla = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        // Crea la cabecera
+        const trCabecera = document.createElement('tr');
+        const thTipo = document.createElement('th');
+        thTipo.textContent = 'Tipo';
+        trCabecera.appendChild(thTipo);
+
+        mesesRelevantes.forEach(mes => {
+            const thMes = document.createElement('th');
+            thMes.textContent = mes;
+            trCabecera.appendChild(thMes);
+        });
+
+        thead.appendChild(trCabecera);
+        tabla.appendChild(thead);
+
+        // Crea las filas
+        Object.keys(datosProcesados).sort().forEach(tipo => {
+            const trFila = document.createElement('tr');
+            const tdTipo = document.createElement('td');
+
+            if (datosDetallados[tipo]) {
+                const btnExpandir = document.createElement('button');
+                btnExpandir.id = `btnExpandir-${tipo}`; // Asigna un id único
+                btnExpandir.textContent = '+';
+                btnExpandir.onclick = function () {
+                    mostrarDetalle(tipo, datosDetallados[tipo], mesesRelevantes);
+                };
+                tdTipo.appendChild(btnExpandir);
+                tdTipo.appendChild(document.createTextNode(` ${tipo}`));
+            } else {
+                tdTipo.textContent = tipo;
+            }
+
+            trFila.appendChild(tdTipo);
+
+            mesesRelevantes.forEach(mes => {
+                const tdMonto = document.createElement('td');
+                if (datosProcesados[tipo][mes] || 0 > 0) {
+                    tdMonto.textContent = formatearMiles(datosProcesados[tipo][mes] || 0);
+                }
+                trFila.appendChild(tdMonto);
+            });
+
+            tbody.appendChild(trFila);
+        });
+
+        tabla.appendChild(tbody);
+
+        // Agrega la tabla al documento
+        document.body.appendChild(tabla);
+    }
+
+    function mostrarDetalle(tipo, datosDetallados, mesesRelevantes) {
+        const trFilaDetalle = document.createElement('tr');
+        trFilaDetalle.style.display = 'none'; // Oculto inicialmente
+
+        // Filtra los nombres que tienen algún monto mayor que cero en algún mes
+        const nombresConMonto = Object.keys(datosDetallados).filter(nombre => {
+            return mesesRelevantes.some(mes => datosDetallados[nombre][mes] > 0);
+        }).sort(); // Ordena los nombres alfabéticamente
+
+        // Crea una celda para el nombre
+        const tdNombre = document.createElement('td');
+        tdNombre.colSpan = 1; // Ajusta el span para que ocupe solo una columna
+        tdNombre.style.fontWeight = 'bold'; // Pone el nombre en negrita
+
+        // Agrega los nombres como filas dentro de la celda
+        const divNombres = document.createElement('div');
+        nombresConMonto.forEach(nombre => {
+            const pNombre = document.createElement('p');
+            pNombre.textContent = nombre;
+            divNombres.appendChild(pNombre);
+        });
+        tdNombre.appendChild(divNombres);
+
+        trFilaDetalle.appendChild(tdNombre);
+
+        // Crea celdas para cada mes/año con los montos del detalle
+        mesesRelevantes.forEach(mes => {
+            const tdMontoDetalle = document.createElement('td');
+            tdMontoDetalle.style.verticalAlign = 'top'; // Alinea verticalmente hacia arriba
+
+            // Agrega los montos para cada nombre en el mes/año
+            const divMontos = document.createElement('div');
+            nombresConMonto.forEach(nombre => {
+                const pMonto = document.createElement('p');
                
-                        <tr>
-                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Proyectos</td>
-                        @foreach (var c in ViewBag.Cuotas)
-                        {
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(  @c.Monto))</td>
-                        }
+                    pMonto.textContent = formatearMiles(datosDetallados[nombre][mes] || 0);
+                
+                divMontos.appendChild(pMonto);
+            });
+            tdMontoDetalle.appendChild(divMontos);
 
+            trFilaDetalle.appendChild(tdMontoDetalle);
+        });
 
-                        </tr>
+        // Busca el botón de expansión y agrega el detalle debajo
+        const btnExpandir = document.getElementById(`btnExpandir-${tipo}`);
+        const trFilaOriginal = btnExpandir.parentNode.parentNode;
+        trFilaOriginal.insertAdjacentElement('afterend', trFilaDetalle);
 
+        // Cambia el botón a menos para ocultar el detalle
+        btnExpandir.textContent = '-';
+        btnExpandir.onclick = function () {
+            trFilaDetalle.style.display = 'none';
+            btnExpandir.textContent = '+';
+            btnExpandir.onclick = function () {
+                trFilaDetalle.style.display = 'table-row';
+                btnExpandir.textContent = '-';
+                btnExpandir.onclick = function () {
+                    trFilaDetalle.style.display = 'none';
+                };
+            };
+        };
 
-
-                    
-                }
-
-
-            </tbody>
-        </table>
-       
-    </div>
-</div>
+        // Muestra el detalle inicialmente
+        trFilaDetalle.style.display = 'table-row';
+    }
+</script>
