@@ -123,14 +123,14 @@
     <StaticWebAssetEndpoint Include="_content/Proyectogestionhoras/js/balancehoras.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\balancehoras.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"11562"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU=\u0022"},{"Name":"Last-Modified","Value":"Mon, 13 Jan 2025 20:21:35 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-rlXSfor\u002BmGOpKNbRO9E/yQYLcDOFsCC4P60SNW2hme8="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"11792"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022rlXSfor\u002BmGOpKNbRO9E/yQYLcDOFsCC4P60SNW2hme8=\u0022"},{"Name":"Last-Modified","Value":"Tue, 28 Jan 2025 22:59:09 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/Proyectogestionhoras/js/balancehoras.vhn5gfia3t.js">
+    <StaticWebAssetEndpoint Include="_content/Proyectogestionhoras/js/balancehoras.mzpvpzrd6z.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\balancehoras.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"vhn5gfia3t"},{"Name":"integrity","Value":"sha256-za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU="},{"Name":"label","Value":"_content/Proyectogestionhoras/js/balancehoras.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"11562"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022za19wxJBe8LV9Ov6N4ryN2oDFqVB/gEmfJxbVHS8sCU=\u0022"},{"Name":"Last-Modified","Value":"Mon, 13 Jan 2025 20:21:35 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"mzpvpzrd6z"},{"Name":"integrity","Value":"sha256-rlXSfor\u002BmGOpKNbRO9E/yQYLcDOFsCC4P60SNW2hme8="},{"Name":"label","Value":"_content/Proyectogestionhoras/js/balancehoras.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"11792"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022rlXSfor\u002BmGOpKNbRO9E/yQYLcDOFsCC4P60SNW2hme8=\u0022"},{"Name":"Last-Modified","Value":"Tue, 28 Jan 2025 22:59:09 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Proyectogestionhoras/js/ExportarFlujoCaja.f2e9k316dn.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\ExportarFlujoCaja.js'))</AssetFile>
