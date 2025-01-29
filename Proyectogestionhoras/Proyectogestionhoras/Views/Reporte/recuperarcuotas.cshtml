@@ -1,7 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Facturación";
 }
-
+<style>
+    .monto-oculto {
+        visibility: hidden;
+    }
+</style>
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Metas de Facturación</h2>
 
 <script>
@@ -43,15 +47,15 @@
             // Agrupa datos por tipo y nombre para el detalle
             if (item.nombre) {
                 if (!datosDetallados[item.tipo]) {
-                    datosDetallados[item.tipo] = {};
-                }
-                if (!datosDetallados[item.tipo][item.nombre]) {
-                    datosDetallados[item.tipo][item.nombre] = {};
-                }
-                if (!datosDetallados[item.tipo][item.nombre][mesAnio]) {
-                    datosDetallados[item.tipo][item.nombre][mesAnio] = 0;
-                }
-                datosDetallados[item.tipo][item.nombre][mesAnio] += item.monto;
+                datosDetallados[item.tipo] = {};
+            }
+            if (!datosDetallados[item.tipo][item.nombre]) {
+                datosDetallados[item.tipo][item.nombre] = {};
+            }
+            if (!datosDetallados[item.tipo][item.nombre][mesAnio]) {
+                datosDetallados[item.tipo][item.nombre][mesAnio] = 0;
+            }
+            datosDetallados[item.tipo][item.nombre][mesAnio] += item.monto;
             }
         });
 
@@ -167,23 +171,30 @@
         trFilaDetalle.appendChild(tdNombre);
 
         // Crea celdas para cada mes/año con los montos del detalle
-        mesesRelevantes.forEach(mes => {
-            const tdMontoDetalle = document.createElement('td');
-            tdMontoDetalle.style.verticalAlign = 'top'; // Alinea verticalmente hacia arriba
+            mesesRelevantes.forEach(mes => {
+        const tdMontoDetalle = document.createElement('td');
+        tdMontoDetalle.style.verticalAlign = 'top'; // Alinea verticalmente hacia arriba
 
-            // Agrega los montos para cada nombre en el mes/año
-            const divMontos = document.createElement('div');
-            nombresConMonto.forEach(nombre => {
-                const pMonto = document.createElement('p');
-               
-                    pMonto.textContent = formatearMiles(datosDetallados[nombre][mes] || 0);
-                
-                divMontos.appendChild(pMonto);
-            });
-            tdMontoDetalle.appendChild(divMontos);
+        // Agrega los montos para cada nombre en el mes/año
+        const divMontos = document.createElement('div');
+        nombresConMonto.forEach(nombre => {
+            const pMonto = document.createElement('p');
+            const monto = datosDetallados[nombre][mes] || 0;
 
-            trFilaDetalle.appendChild(tdMontoDetalle);
+            // Asigna el monto formateado al texto del párrafo
+            pMonto.textContent = formatearMiles(monto);
+
+            // Si el monto es 0, oculta el párrafo
+            if (monto === 0) {
+                pMonto.classList.add('monto-oculto');
+            }
+
+            divMontos.appendChild(pMonto);
         });
+        tdMontoDetalle.appendChild(divMontos);
+
+        trFilaDetalle.appendChild(tdMontoDetalle);
+    });
 
         // Busca el botón de expansión y agrega el detalle debajo
         const btnExpandir = document.getElementById(`btnExpandir-${tipo}`);
