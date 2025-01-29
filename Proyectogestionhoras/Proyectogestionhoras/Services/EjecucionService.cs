@@ -482,6 +482,7 @@ namespace Proyectogestionhoras.Services
                                 cuenta = reader.IsDBNull(reader.GetOrdinal("cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("cuenta")),
                                
                                 nombreproyecto = reader.IsDBNull(reader.GetOrdinal("nombreproyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombreproyecto")),
+                                numproyecto = reader.IsDBNull(reader.GetOrdinal("numeroproyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("numeroproyecto")),
                                 codigo = reader.IsDBNull(reader.GetOrdinal("codigo")) ? string.Empty : reader.GetString(reader.GetOrdinal("codigo")),
 
                                 anio = reader.IsDBNull(reader.GetOrdinal("anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("anio")),

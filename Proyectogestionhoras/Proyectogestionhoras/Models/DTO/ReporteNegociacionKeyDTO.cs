@@ -5,6 +5,7 @@
 
         public string? NombreCliente { get; set; }
         public string? NombreProyecto { get; set; }
+        public string? NumProyecto { get; set; }
         public int HHSocios { get; set; }
         public decimal Monto { get; set; }
         public string? Probabilidad { get; set; }

@@ -34,10 +34,10 @@
         const totalesPorMoneda = {}; 
 
         datos.forEach(item => {
-            const { nombreProyecto, moneda, monto, estado } = item;
+            const { nombreProyecto, numProyecto, moneda, monto, estado } = item;
 
             if (!resumen[nombreProyecto]) {
-                resumen[nombreProyecto] = { moneda, estados: {} };
+                resumen[nombreProyecto] = { numProyecto, moneda, estados: {} };
             }
 
             if (!resumen[nombreProyecto].estados[estado]) {
@@ -68,7 +68,7 @@
         const cuerpo = document.createElement('tbody');
 
         // Crear cabecera
-        const encabezados = ['Moneda', 'Nombre Proyecto'];
+        const encabezados = ['Moneda', 'Nombre Proyecto', 'Número Proyecto'];
         const estados = Object.keys(resumen).reduce((acc, proyecto) => {
             const estadosDelProyecto = Object.keys(resumen[proyecto].estados);
             estadosDelProyecto.forEach(estado => {
@@ -97,8 +97,8 @@
             const filaCuerpo = document.createElement('tr');
 
             filaCuerpo.appendChild(crearCelda(resumen[proyecto].moneda, "text-left text-xs font-medium")); 
-            filaCuerpo.appendChild(crearCelda(proyecto, "text-left text-xs font-medium")); 
-
+            filaCuerpo.appendChild(crearCelda(proyecto, "text-left text-xs font-medium"));
+            filaCuerpo.appendChild(crearCelda("'" + resumen[proyecto].numProyecto, "text-left text-xs font-medium"));
             let totalGeneral = 0; 
 
             estados.forEach(estado => {
@@ -135,10 +135,10 @@
         filaTotales.className = "bg-yellow-100";
         filaTotales.appendChild(crearCelda("Total " + moneda, "text-left text-xs font-bold")); 
         filaTotales.appendChild(crearCelda("")); 
+        filaTotales.appendChild(crearCelda("")); 
 
         let totalGeneralMoneda = 0; 
 
-        // Iterar sobre los estados y agregar los totales correspondientes
         estados.forEach(estado => {
             const totalMonto = totalesPorMoneda[moneda][estado] || 0;
             filaTotales.appendChild(crearCelda(totalMonto === 0 ? "" : formatearNumero(totalMonto), "text-xs font-bold text-right border border-black px-4 py-2 min-w-[150px]")); // Añadir el total en la columna correspondiente

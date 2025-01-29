@@ -276,6 +276,7 @@ namespace Proyectogestionhoras.Services
                                 CostoConsultorB = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORB")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORB")),
                                 CostoConsultorC = reader.IsDBNull(reader.GetOrdinal("COSTO_CONSULTORC")) ? 0 : reader.GetDecimal(reader.GetOrdinal("COSTO_CONSULTORC")),
                                 Margen = reader.IsDBNull(reader.GetOrdinal("MARGEN_DE_CONTRIBUCION")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MARGEN_DE_CONTRIBUCION")),
+                                PorcentajeMargen = reader.IsDBNull(reader.GetOrdinal("PORCENTAJE_MARGEN")) ? string.Empty : reader.GetString(reader.GetOrdinal("PORCENTAJE_MARGEN")),
                             };
                             margenes.Add(datos);
 
@@ -549,6 +550,7 @@ namespace Proyectogestionhoras.Services
                             {
                                 NombreCliente = reader.IsDBNull(reader.GetOrdinal("NOMBRECLIENTE")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBRECLIENTE")),
                                 NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
                                 HHSocios = reader.IsDBNull(reader.GetOrdinal("HH_SOCIOS")) ? 0 : reader.GetInt32(reader.GetOrdinal("HH_SOCIOS")),
                                 Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 Probabilidad = reader.IsDBNull(reader.GetOrdinal("PROBABILIDAD")) ? string.Empty : reader.GetString(reader.GetOrdinal("PROBABILIDAD")),
@@ -1064,6 +1066,65 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+
+        public async Task<List<ProveedorForecastDTO>> ObtenerForecastRealesProveedores(int? idproyecto)
+        {
+            try
+            {
+
+
+                var forecast = new List<ProveedorForecastDTO>();
+#pragma warning disable CS8600
+                object idproyectoparamater = (object)idproyecto ?? DBNull.Value;
+
+#pragma warning restore CS8600
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "[REPORTEFORECASTCOSTOSPROVEDORES]";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyectoparamater));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ProveedorForecastDTO datos = new()
+                            {
+                                nombreproveedor = reader.IsDBNull(reader.GetOrdinal("nombreproveedor")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombreproveedor")),
+                                tipoproveedor = reader.IsDBNull(reader.GetOrdinal("tipoproveedor")) ? string.Empty : reader.GetString(reader.GetOrdinal("tipoproveedor")),
+                                cuenta = reader.IsDBNull(reader.GetOrdinal("cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("cuenta")),
+                                nombre = reader.IsDBNull(reader.GetOrdinal("nombre")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombre")),
+                                nombreproyecto = reader.IsDBNull(reader.GetOrdinal("nombreproyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("nombreproyecto")),
+                                numproyecto = reader.IsDBNull(reader.GetOrdinal("numproyecto")) ? string.Empty : reader.GetString(reader.GetOrdinal("numproyecto")),
+                                codigo = reader.IsDBNull(reader.GetOrdinal("codigo")) ? string.Empty : reader.GetString(reader.GetOrdinal("codigo")),
+
+                                anio = reader.IsDBNull(reader.GetOrdinal("anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("anio")),
+                                mes = reader.IsDBNull(reader.GetOrdinal("mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("mes")),
+                                totalforecastproveedor = reader.IsDBNull(reader.GetOrdinal("totalforecastproveedor")) ? 0 : reader.GetDecimal(reader.GetOrdinal("totalforecastproveedor")),
+
+
+                            };
+                            forecast.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return forecast;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener los forecast de los proovedores:{ex.Message}");
+                return new List<ProveedorForecastDTO>();
+
+            }
+        }
+
+
+
         public async Task<List<ResumenCostosProyectoDTO>> ObtenerResumenCostosProyecto()
         {
             try
@@ -1083,6 +1144,7 @@ namespace Proyectogestionhoras.Services
                             {
                                
                                 NombreProyecto = reader.IsDBNull(reader.GetOrdinal("NOMBREPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NOMBREPROYECTO")),
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("NUMPROYECTO")) ? string.Empty : reader.GetString(reader.GetOrdinal("NUMPROYECTO")),
                                 Moneda = reader.IsDBNull(reader.GetOrdinal("MONEDA")) ? string.Empty : reader.GetString(reader.GetOrdinal("MONEDA")),                           
                                 Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
                                 Estado = reader.IsDBNull(reader.GetOrdinal("ESTADO")) ? string.Empty : reader.GetString(reader.GetOrdinal("ESTADO")),

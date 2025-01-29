@@ -11,7 +11,10 @@
     }
 </style>
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Forecast Costos</h2>
-@*<button id="exportButton" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</button>*@
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra los costos y gastos reales de los proyectos junto al proveedor asociado.</p>
+</div>
+<button onclick="exportarExcel()" class="px-4 py-2 bg-green-500 text-white rounded">Exportar a Excel</button>
 <div style="margin-top: 20px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto relative">
         <table id="tablaforecastproveedor" class="min-w-full divide-y divide-gray-200">
@@ -21,6 +24,7 @@
                     <th class="text-left text-xs font-medium min-w-[150px]">Cuenta</th>
                     <th class="text-left text-xs font-medium min-w-[150px]">Nombre</th>
                     <th class="text-left text-xs font-medium min-w-[150px]">Nombre Proyecto</th>
+                    <th class="text-left text-xs font-medium min-w-[150px]">Número Proyecto</th>
                     <th class="text-left text-xs font-medium min-w-[150px]">Centro Costo</th>
                     <th class="text-left text-xs font-medium min-w-[150px]">fecha</th>
                 </tr>
@@ -36,7 +40,7 @@
 
 
         $.ajax({
-            url: '/EjecucionProyecto/RecuperarForecastProveedores',
+            url: '/Reporte/ObtenerCostosProoveddores',
             type: 'GET',
             data: { idproyecto: idproyecto },
             success: function (data) {
@@ -57,7 +61,14 @@
             tablaHead.empty();
 
 
-            const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))].sort();
+            const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))]
+                .sort((a, b) => {
+                    const [mesA, anioA] = a.split('-').map(Number);
+                    const [mesB, anioB] = b.split('-').map(Number);
+                    const fechaA = new Date(anioA, mesA - 1);
+                    const fechaB = new Date(anioB, mesB - 1);
+                    return fechaA - fechaB;
+                });
 
 
             let encabezado = `
@@ -66,6 +77,7 @@
                             <th class="text-left text-xs font-medium min-w-[150px]">Cuenta</th>
                             <th class="text-left text-xs font-medium min-w-[150px]">Nombre</th>
                             <th class="text-left text-xs font-medium min-w-[150px]">Nombre Proyecto</th>
+                            <th class="text-left text-xs font-medium min-w-[150px]">Número Proyecto</th>
                             <th class="text-left text-xs font-medium min-w-[150px]">Centro Costo</th>
                             
                             `;
@@ -81,18 +93,26 @@
             let totalGeneral = 0;
 
 
-            const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre', 'nombreproyecto', 'codigo']);
+            const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre', 'nombreproyecto', 'numproyecto','codigo']);
 
-            for (let [key, registros] of Object.entries(agrupados)) {
-                const [proveedor, cuenta, nombre, nombreproyecto, codigo] = key.split('|');
+            const gruposOrdenados = Object.entries(agrupados).sort((a, b) => {
+                const proveedorA = a[0].split('|')[0].toLowerCase();
+                const proveedorB = b[0].split('|')[0].toLowerCase();
+                return proveedorA.localeCompare(proveedorB);
+            });
+
+
+            for (let [key, registros] of gruposOrdenados) {
+                const [proveedor, cuenta, nombre, nombreproyecto, numproyecto,codigo] = key.split('|');
 
 
                 let fila = `
                         <tr>
-                                <td class="text-left text-xs font-medium ">${proveedor}</td>
+                                <td class="text-left text-xs font-medium sticky left-0 bg-white min-w-[250px]">${proveedor}</td>
                                 <td class="text-left text-xs font-medium ">${cuenta}</td>
                                 <td class="text-xs font-medium text-left">${nombre}</td>
                                 <td class="text-left text-xs font-medium">${nombreproyecto}</td>
+                                <td class="text-left text-xs font-medium">'${numproyecto}</td>
                                 <td class="text-left text-xs font-medium">${codigo}</td>
                             
                             
@@ -126,7 +146,13 @@
 
             let filaTotales = `
                            <tr class="totales">
-                            <td class="text-xs text-left font-bold" colspan="5">Totales</td>`;
+                            <td class="text-xs text-left font-bold">Totales</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>     
+                            `;
             totalesPorMes.forEach(totalMes => {
                 filaTotales += `<td class="text-xs  text-right font-bold">${formatMoneda(totalMes)}</td>`;
             });
@@ -153,5 +179,108 @@
         function formatMoneda(valor) {
             return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
+
+
+        window.exportarExcel = async function () {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Costos Proveedores');
+
+       
+            const response = await fetch('/images/unitt.png');
+            const imageBlob = await response.blob();
+            const arrayBuffer = await imageBlob.arrayBuffer();
+
+            const logoImageId = workbook.addImage({
+                buffer: arrayBuffer,
+                extension: 'png',
+            });
+
+         
+            worksheet.addImage(logoImageId, {
+                tl: { col: 0, row: 0 },
+                ext: { width: 150, height: 50 },
+            });
+
+            worksheet.addRow([]);
+            worksheet.addRow([]);
+
+            worksheet.mergeCells('B3:D3');
+            const titleCell = worksheet.getCell('B3');
+            titleCell.value = `Forecast Costos`;
+            titleCell.font = { bold: true, size: 14 };
+            titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+
+            worksheet.addRow([]);
+            worksheet.addRow([]);
+
+            let columnPositions = [];
+            $('#tablaforecastproveedor thead tr').each(function (rowIndex) {
+                let colIndex = 1;
+                let headerRowData = [];
+
+                $(this).find('th').each(function () {
+                    let texto = $(this).text().trim();
+                    let colspan = $(this).attr('colspan') ? parseInt($(this).attr('colspan')) : 1;
+
+                    headerRowData.push(texto);
+                    columnPositions.push({ start: colIndex, span: colspan });
+
+                    if (colspan > 1) {
+                        worksheet.mergeCells(rowIndex + 2, colIndex, rowIndex + 2, colIndex + colspan - 1);
+                    }
+
+                    colIndex += colspan;
+                });
+
+                let headerRow = worksheet.addRow(headerRowData);
+                headerRow.font = { bold: true };
+                headerRow.eachCell(cell => {
+                    
+                    cell.alignment = { horizontal: 'center' };
+                });
+            });
+
+
+            $('#tablaforecastproveedor tbody tr').each(function () {
+                let colIndex = 1;
+                let rowData = [];
+
+                $(this).find('td').each(function () {
+                    let texto = $(this).text().trim();
+                    let colspan = $(this).attr('colspan') ? parseInt($(this).attr('colspan')) : 1;
+                    let valorNumerico = parseFloat(texto.replace(/\./g, '').replace(',', '.'));
+
+                    rowData.push(!isNaN(valorNumerico) ? valorNumerico : texto);
+
+                    if (colspan > 1) {
+                        worksheet.mergeCells(worksheet.lastRow.number + 1, colIndex, worksheet.lastRow.number + 1, colIndex + colspan - 1);
+                    }
+
+                    colIndex += colspan;
+                });
+
+                let row = worksheet.addRow(rowData);
+
+                row.eachCell((cell, colNumber) => {
+                    if (typeof rowData[colNumber - 1] === 'number') {
+                        cell.numFmt = '#,##0';
+                        cell.alignment = { horizontal: 'right' };
+                    }
+                });
+            });
+
+           
+            worksheet.columns.forEach(column => {
+                column.width = 25;
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'CostosProveedores.xlsx';
+            link.click();
+        };
+
     });
 </script>

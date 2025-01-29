@@ -270,15 +270,22 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObtenerCostosProoveddores(int? idproyecto)
+        {
+            var resultado = await _reporteService.ObtenerForecastRealesProveedores(idproyecto);
+            return Json(resultado);
+        }
+
         public IActionResult ReporteForecastIngresos()
         {
             return View();
         }
 
-        public async Task <IActionResult> ReporteForecastFlujoCaja(int? idproyecto)
+        public IActionResult ReporteForecastFlujoCaja()
         {
-            var datos = await _reporteService.ProcesarFlujoCajaPorMesAsync(idproyecto);
-            return View(datos);
+            
+            return View();
         }
 
         public IActionResult ReporteResumenCostosProyecto()

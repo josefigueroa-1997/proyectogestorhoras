@@ -3,6 +3,9 @@
 }
  
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Margen de Contribución de Proyectos</h2>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra los margenes de contribución de los proyectos.</p>
+</div>
 <button id="exportButton" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</button>
 <div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
@@ -20,6 +23,7 @@
                     <th class="text-left text-xs font-medium ">Total Servicios</th>
                     <th class="text-left text-xs font-medium ">Total Gastos</th>
                     <th class="text-left text-xs font-medium ">Margen Contribución</th>
+                    <th class="text-left text-xs font-medium ">Porcentaje Margen Contribución</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -42,6 +46,8 @@
                     totalGastos = 0;
                     decimal
                     totalMargen = 0;
+                    decimal
+                    porcentajemargentotal = 0;
 
                 }
                 
@@ -51,17 +57,36 @@
                     @foreach (var margen in ViewBag.Margen)
                     {
                         <tr>
-                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@margen.NumProyecto</td>
-                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@margen.NombreProyecto</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( @margen.Monto))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( @margen.CostosSocios))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( @margen.CostosStaff))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( @margen.CostoConsultorA))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( @margen.CostoConsultorB))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( @margen.CostoConsultorC))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( @margen.TotalServicios))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(@margen.TotalGastos))</td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(@margen.Margen))</td>
+                            <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">@margen.NumProyecto</td>
+                            <td class="text-xs border font-medium text-left border-black sticky left-0 bg-white px-4 py-2 min-w-[150px]">@margen.NombreProyecto</td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.Monto == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.Monto)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.CostosSocios == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosSocios)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.CostosStaff == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosStaff)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.CostoConsultorA == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostoConsultorA)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.CostoConsultorB == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostoConsultorB)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.CostoConsultorC == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostoConsultorC)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.TotalServicios == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalServicios)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.TotalGastos == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalGastos)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                                @(margen.Margen == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.Margen)))
+                            </td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@margen.PorcentajeMargen %</td>
                         </tr>
 
                        
@@ -76,9 +101,12 @@
                         totalMargen += margen.Margen;
                     }
                 }
-                
+                @{
+                    porcentajemargentotal = (totalMargen / totalMonto) * 100;
+                }
                 <tr class="font-bold bg-gray-100">
-                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]" colspan="2">Totales</td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Totales</td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalMonto))</td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHSocios))</td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHLeads))</td>
@@ -88,137 +116,87 @@
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalServicios))</td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalGastos))</td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalMargen))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(porcentajemargentotal))%</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-       async function exportToExcel() {
-            const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Reporte Margen de Contribución');
-            const response = await fetch('/images/unitt.png');
-            const imageBlob = await response.blob();
-            const arrayBuffer = await imageBlob.arrayBuffer();
-            const logoImageId = workbook.addImage({
-                buffer: arrayBuffer,
-                extension: 'png'
-            });
-
-            worksheet.addImage(logoImageId, {
-                tl: { col: 0, row: 0 }, 
-                ext: { width: 150, height: 50 } 
-            });
-            worksheet.mergeCells('E3:H3');
-            const titulo = worksheet.getCell('E3');
-            titulo.value = "Margen de Contribución de Proyectos";
-            titulo.font = { size: 16, bold: true };
-            titulo.alignment = { vertical: 'middle', horizontal: 'center' };
-            worksheet.addRow([]);
-            worksheet.addRow([]);
-         
-            const headers = [
-                "Num Proyecto",
-                "Nombre",
-                "Monto",
-                "HHSocios",
-                "HHLeads",
-                "Consultor A",
-                "Consultor B",
-                "Consultor C",
-                "Total Servicios",
-                "Total Gastos",
-                "Margen Contribución"
-            ];
-            worksheet.addRow(headers);
-            worksheet.columns.forEach(column => {
-                column.width = 15;
-            });
-           
+    document.getElementById('exportButton').addEventListener('click', async function () {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Margen');
 
 
-            const table = document.getElementById('facturasTable');
-            const rows = table.querySelectorAll('tbody tr');
+        const table = document.getElementById('facturasTable');
 
-            let totalMonto = 0;
-            let totalHHSocios = 0;
-            let totalHHLeads = 0;
-            let totalConsultorA = 0;
-            let totalConsultorB = 0;
-            let totalConsultorD = 0;
-            let totalServicios = 0;
-            let totalGastos = 0;
-            let totalMargen = 0;
+        const response = await fetch('/images/unitt.png');
+        const imageBlob = await response.blob();
+        const arrayBuffer = await imageBlob.arrayBuffer();
 
-            
-            rows.forEach((row) => {
-                const cols = row.querySelectorAll('td');
-                const rowData = [];
+        const logoImageId = workbook.addImage({
+            buffer: arrayBuffer,
+            extension: 'png',
+        });
 
-                cols.forEach((col, colIndex) => {
-                   
-                    if (!row.classList.contains('font-bold')) {
-                        if (colIndex > 1) { 
-                            const number = parseFloat(col.innerText.replace(/\./g, '').replace(',', '.'));
-                            rowData.push(number);
-                            
-                            if (!isNaN(number)) {
-                                if (colIndex === 2) totalMonto += number; 
-                                if (colIndex === 3) totalHHSocios += number; 
-                                if (colIndex === 4) totalHHLeads += number; 
-                                if (colIndex === 5) totalConsultorA += number; 
-                                if (colIndex === 6) totalConsultorB += number; 
-                                if (colIndex === 7) totalConsultorD += number; 
-                                if (colIndex === 8) totalServicios += number; 
-                                if (colIndex === 9) totalGastos += number; 
-                                if (colIndex === 10) totalMargen += number; 
-                            }
-                        } else {
-                            rowData.push(col.innerText);
-                        }
-                    }
-                });
 
+        worksheet.addImage(logoImageId, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 150, height: 50 },
+        });
+
+        worksheet.addRow([]);
+        worksheet.addRow([]);
+
+        worksheet.mergeCells('D3:G3');
+        const titleCell = worksheet.getCell('D3');
+        titleCell.value = `Margen de Contribución de Proyectos`;
+        titleCell.font = { bold: true, size: 14 };
+        titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+
+        worksheet.addRow([]);
+        worksheet.addRow([]);
+
+ 
+        Array.from(table.rows).forEach((row, rowIndex) => {
+            const rowData = [];
+            Array.from(row.cells).forEach((cell, colIndex) => {
                
-                if (rowData.length) {
-                    worksheet.addRow(rowData);
+                const cellValue = cell.innerText.replace(/\./g, ''); 
+                const isNumeric = !isNaN(cellValue) && !isNaN(parseFloat(cellValue));
+
+                if (isNumeric && cellValue !== "") {
+                    rowData.push(parseFloat(cellValue));
+                } else {
+                    rowData.push(cell.innerText);
                 }
             });
+            worksheet.addRow(rowData);
+        });
 
-            const totalRow = [
-                "Totales", 
-                "", 
-                totalMonto,
-                totalHHSocios,
-                totalHHLeads,
-                totalConsultorA,
-                totalConsultorB,
-                totalConsultorD,
-                totalServicios,
-                totalGastos,
-                totalMargen
-            ];
-            worksheet.addRow(totalRow).getCell(2).style = { font: { bold: true }, alignment: { horizontal: 'left' } }; // Aplicar estilo al nombre
+ 
+        worksheet.eachRow((row, rowNumber) => {
+            row.eachCell((cell, colNumber) => {
+                if (typeof cell.value === 'number') {
 
-            worksheet.columns.forEach((column) => {
-                column.numFmt = '#,##0.00'; 
-                column.alignment = { horizontal: 'right' }; 
+                    cell.numFmt = '#,##0';
+                    cell.alignment = { horizontal: 'right' };
+                } else if (typeof cell.value === 'string' && cell.value.includes('%')) {
+           
+                    cell.alignment = { horizontal: 'right' };
+                }
             });
+        });
 
-            workbook.xlsx.writeBuffer().then(function (buffer) {
-                const blob = new Blob([buffer], { type: 'application/octet-stream' });
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = 'Reporte_Margen_de_Contribucion.xlsx';
-                link.click();
-            });
-        }
+        worksheet.columns.forEach(column => {
+            column.width = 20;
+        });
 
-        
-        const exportButton = document.getElementById('exportButton');
-        exportButton.addEventListener('click', exportToExcel);
+    
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            saveAs(blob, 'MargendeContribucion.xlsx');
+        });
     });
 </script>

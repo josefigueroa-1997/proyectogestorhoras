@@ -13,5 +13,6 @@
         public decimal CostoConsultorB { get; set; }
         public decimal CostoConsultorC { get; set; }
         public decimal Margen { get; set; }
+        public string? PorcentajeMargen { get; set; }
     }
 }

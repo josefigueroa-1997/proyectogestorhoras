@@ -13,6 +13,7 @@
                 <tr>
                     <th class="text-left text-xs font-medium ">Cliente</th>
                     <th class="text-left text-xs font-medium ">Proyecto</th>
+                    <th class="text-left text-xs font-medium ">Número Proyecto</th>
                     <th class="text-left text-xs font-medium ">Tipología</th>
                     <th class="text-left text-xs font-medium ">Código</th>
                     <th class="text-left text-xs font-medium ">Plazo</th>
@@ -38,7 +39,8 @@
                     {
                         <tr>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.NombreCliente</td>
-                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.NombreProyecto</td>
+                            <td class="text-xs border font-medium text-left sticky left-0 bg-white border-black px-4 py-2 min-w-[150px]">@p.NombreProyecto</td>
+                            <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">@p.NumProyecto</td>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[80px]">@p.Tipologia</td>
                             <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[100px]">@p.Codigo</td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]">@p.Plazo ms</td>
@@ -72,7 +74,7 @@
 
                     }
                     <tr>
-                        <td colspan="8" class="bg-blue-100 text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"><strong>Totales</strong></td>
+                        <td colspan="9" class="bg-blue-100 text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"><strong>Totales</strong></td>
                         <td  class="bg-blue-100 text-xs border font-medium text-right border-black px-4 py-2 min-w-[80px]"><strong>@String.Format("{0:N0}", totalhh)</strong></td>
                         <td  class="bg-blue-100 text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"><strong>@String.Format("{0:N0}", totalmonto)</strong></td>
                         
