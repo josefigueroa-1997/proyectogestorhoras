@@ -7,6 +7,15 @@
     }
 </style>
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Metas de Facturación</h2>
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto relative">
+        <div class="w-full max-w-3xl border-collapse text-left text-xs" id="tables-container"></div>
+
+    </div>
+
+
+</div>
+
 
 <script>
 
@@ -46,17 +55,17 @@
 
             // Agrupa datos por tipo y nombre para el detalle
             if (item.nombre) {
-                if (!datosDetallados[item.tipo]) {
-                datosDetallados[item.tipo] = {};
-            }
-            if (!datosDetallados[item.tipo][item.nombre]) {
-                datosDetallados[item.tipo][item.nombre] = {};
-            }
-            if (!datosDetallados[item.tipo][item.nombre][mesAnio]) {
-                datosDetallados[item.tipo][item.nombre][mesAnio] = 0;
-            }
-            datosDetallados[item.tipo][item.nombre][mesAnio] += item.monto;
-            }
+          if (!datosDetallados[item.tipo]) {
+              datosDetallados[item.tipo] = {};
+          }
+          if (!datosDetallados[item.tipo][item.nombre]) {
+              datosDetallados[item.tipo][item.nombre] = {};
+          }
+          if (!datosDetallados[item.tipo][item.nombre][mesAnio]) {
+              datosDetallados[item.tipo][item.nombre][mesAnio] = 0;
+          }
+          datosDetallados[item.tipo][item.nombre][mesAnio] += item.monto;
+      }
         });
 
         // Crea la tabla con los datos procesados
@@ -95,15 +104,23 @@
 
         // Crea la cabecera
         const trCabecera = document.createElement('tr');
+        trCabecera.className = 'bg-blue-100 text-black';
         const thTipo = document.createElement('th');
+        thTipo.className = 'p-2 border border-gray-300 text-center';
         thTipo.textContent = 'Tipo';
         trCabecera.appendChild(thTipo);
 
         mesesRelevantes.forEach(mes => {
             const thMes = document.createElement('th');
+            thMes.className = 'p-2 border border-gray-300 text-center';
             thMes.textContent = mes;
             trCabecera.appendChild(thMes);
         });
+
+             const thTotalGeneral = document.createElement('th');
+            thTotalGeneral.className = 'p-2 border border-gray-300 text-center';
+            thTotalGeneral.textContent = 'Total General';
+            trCabecera.appendChild(thTotalGeneral);
 
         thead.appendChild(trCabecera);
         tabla.appendChild(thead);
@@ -112,7 +129,7 @@
         Object.keys(datosProcesados).sort().forEach(tipo => {
             const trFila = document.createElement('tr');
             const tdTipo = document.createElement('td');
-
+            tdTipo.className = 'text-left text-xs font-bold';
             if (datosDetallados[tipo]) {
                 const btnExpandir = document.createElement('button');
                 btnExpandir.id = `btnExpandir-${tipo}`; // Asigna un id único
@@ -127,14 +144,21 @@
             }
 
             trFila.appendChild(tdTipo);
-
+                let totalGeneral = 0;
             mesesRelevantes.forEach(mes => {
                 const tdMonto = document.createElement('td');
+                tdMonto.className = 'text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]';
                 if (datosProcesados[tipo][mes] || 0 > 0) {
                     tdMonto.textContent = formatearMiles(datosProcesados[tipo][mes] || 0);
+                    totalGeneral += datosProcesados[tipo][mes];
                 }
                 trFila.appendChild(tdMonto);
             });
+
+             const tdTotalGeneral = document.createElement('td');
+             tdTotalGeneral.className = 'text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]';
+                tdTotalGeneral.textContent = formatearMiles(totalGeneral); // Muestra el total general formateado
+                trFila.appendChild(tdTotalGeneral);
 
             tbody.appendChild(trFila);
         });
@@ -142,7 +166,7 @@
         tabla.appendChild(tbody);
 
         // Agrega la tabla al documento
-        document.body.appendChild(tabla);
+        document.getElementById('tables-container').appendChild(tabla);
     }
 
     function mostrarDetalle(tipo, datosDetallados, mesesRelevantes) {
@@ -157,7 +181,7 @@
         // Crea una celda para el nombre
         const tdNombre = document.createElement('td');
         tdNombre.colSpan = 1; // Ajusta el span para que ocupe solo una columna
-        tdNombre.style.fontWeight = 'bold'; // Pone el nombre en negrita
+       tdNombre.className = 'text-left border border-black text-xs font-medium min-w-[300px] px-4 py-2'; // Pone el nombre en negrita
 
         // Agrega los nombres como filas dentro de la celda
         const divNombres = document.createElement('div');
@@ -169,12 +193,12 @@
         tdNombre.appendChild(divNombres);
 
         trFilaDetalle.appendChild(tdNombre);
-
+        let totalGeneralDetalle = 0;
         // Crea celdas para cada mes/año con los montos del detalle
             mesesRelevantes.forEach(mes => {
         const tdMontoDetalle = document.createElement('td');
         tdMontoDetalle.style.verticalAlign = 'top'; // Alinea verticalmente hacia arriba
-
+        tdMontoDetalle.className = 'text-right border border-black text-xs font-medium px-4 py-2';
         // Agrega los montos para cada nombre en el mes/año
         const divMontos = document.createElement('div');
         nombresConMonto.forEach(nombre => {
@@ -183,7 +207,7 @@
 
             // Asigna el monto formateado al texto del párrafo
             pMonto.textContent = formatearMiles(monto);
-
+            totalGeneralDetalle += monto;
             // Si el monto es 0, oculta el párrafo
             if (monto === 0) {
                 pMonto.classList.add('monto-oculto');
@@ -195,6 +219,27 @@
 
         trFilaDetalle.appendChild(tdMontoDetalle);
     });
+         // Agrega la celda del total general por fila (nombre)
+    const tdTotalGeneralDetalle = document.createElement('td');
+    tdTotalGeneralDetalle.className = 'text-right border border-black text-xs font-medium px-4 py-2';
+
+    // Calcula el total general para cada nombre y lo muestra
+    const divTotales = document.createElement('div');
+    nombresConMonto.forEach(nombre => {
+        const pTotal = document.createElement('p');
+        let totalNombre = 0;
+
+        // Suma los montos de todos los meses para este nombre
+        mesesRelevantes.forEach(mes => {
+            totalNombre += datosDetallados[nombre][mes] || 0;
+        });
+
+        pTotal.textContent = formatearMiles(totalNombre); // Muestra el total formateado
+        divTotales.appendChild(pTotal);
+    });
+
+    tdTotalGeneralDetalle.appendChild(divTotales);
+    trFilaDetalle.appendChild(tdTotalGeneralDetalle);
 
         // Busca el botón de expansión y agrega el detalle debajo
         const btnExpandir = document.getElementById(`btnExpandir-${tipo}`);
