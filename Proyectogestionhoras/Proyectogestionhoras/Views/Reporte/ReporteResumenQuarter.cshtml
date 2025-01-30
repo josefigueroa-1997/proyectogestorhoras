@@ -7,8 +7,6 @@
 
 <h1 style="margin-top: 50px;" class="text-xl font-bold mb-4 text-center">Resumen por Quarter</h1>
 <h1 class="text-xl font-bold mb-4 text-center">Año: @DateTime.Now.Year</h1>
-@*<button onclick="exportToExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
-*@
 <div style="margin-top: 50px;" class="bg-white border border-black rounded-lg shadow-md p-4 mb-6">
     <table class="min-w-full border-collapse border border-black">
         <thead class="bg-yellow-200">
@@ -18,29 +16,34 @@
                 <th class="text-left text-xs font-medium">Q2</th>
                 <th class="text-left text-xs font-medium">Q3</th>
                 <th class="text-left text-xs font-medium">Q4</th>
+                <th class="text-left text-xs font-medium">Total</th>
             </tr>
         </thead>
         <tbody>
-          
+
             @foreach (var f in ViewBag.Resumen)
             {
+                var total = f.MontoQ1 + f.MontoQ2 + f.MontoQ3 + f.MontoQ4;
                 <tr>
                     <td class="text-left text-xs font-medium">@f.Tipo</td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                        @String.Format("{0:N0}", Math.Round(f.MontoQ1))
+                        @(f.MontoQ1 == 0 ? "" : String.Format("{0:N0}", Math.Round(f.MontoQ1)))
                     </td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                        @String.Format("{0:N0}", Math.Round(f.MontoQ2))
+                        @(f.MontoQ2 == 0 ? "" : String.Format("{0:N0}", Math.Round(f.MontoQ2)))
                     </td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                        @String.Format("{0:N0}", Math.Round(f.MontoQ3))
+                        @(f.MontoQ3 == 0 ? "" : String.Format("{0:N0}", Math.Round(f.MontoQ3)))
                     </td>
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                        @String.Format("{0:N0}", Math.Round(f.MontoQ4))
+                        @(f.MontoQ4 == 0 ? "" : String.Format("{0:N0}", Math.Round(f.MontoQ4)))
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px] ">
+                        @(total == 0 ? "" : String.Format("{0:N0}", Math.Round(total)))
                     </td>
                 </tr>
             }
-            
+
         </tbody>
     </table>
 
