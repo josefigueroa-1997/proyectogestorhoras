@@ -3,9 +3,15 @@
 
 }
 <h1 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Proyectos en Negociación</h1>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra los proyectos en negociación agrupandolos por probabilidad, centro de costo y tipologías.Además, se enseñan las facturaciones proyectadas</p>
+</div>
 <div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
-    <button id="exportButton" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
-    <div class="overflow-x-auto">
+    <div id="mensajeNoDatos" class="text-center text-gray-500 text-lg font-bold hidden">
+        No hay datos disponibles para mostrar.
+    </div>
+    <div class="overflow-x-auto" id="contenedorTabla">
+        <button id="exportButton" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
         <table class="min-w-full divide-y divide-gray-200" id="tablaReporte">
             <thead class="bg-blue-100">
                 <tr>
@@ -48,6 +54,22 @@
             method: 'GET',
             dataType: 'json',
             success: function (datos) {
+                const contenedorTabla = $('#contenedorTabla');
+                const mensajeNoDatos = $('#mensajeNoDatos');
+                const tablaBody = $('#tablaReporte tbody');
+               
+                tablaBody.empty();
+     
+                if (datos.length === 0) {
+                    contenedorTabla.hide();
+                    mensajeNoDatos.show();
+                    return;
+                } else {
+                    contenedorTabla.show();
+                    mensajeNoDatos.hide();
+                }
+
+
                 const tabla = $('#tablaReporte');
                 const fechasUnicas = new Set();
 
@@ -194,7 +216,12 @@
 
                     fechasOrdenadas.forEach(mesAnio => {
                         const monto = item.montos[mesAnio] || 0;
-                        const td = $('<td class="text-left text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>').text(formatearNumero(Math.round(monto)));
+                        const td = $('<td class="text-left text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]"></td>');
+                        const montoRedondeado = Math.round(monto);
+
+                        if (montoRedondeado !== 0) {
+                            td.text(formatearNumero(montoRedondeado));
+                        }
                         fila.append(td);
 
                         totalFila += monto;
