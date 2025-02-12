@@ -1067,6 +1067,48 @@ namespace Proyectogestionhoras.Services
             }
         }
 
+        public async Task<List<FlujoCajaProyectosDTO>> ObtenerForecastrealProyecto(int? idproyecto)
+        {
+            try
+            {
+
+                var flujocaja = new List<FlujoCajaProyectosDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "FORECASTREALES";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@IDPROYECTO", idproyecto));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            FlujoCajaProyectosDTO datos = new()
+                            {
+                                Tipo = reader.IsDBNull(reader.GetOrdinal("TIPO")) ? string.Empty : reader.GetString(reader.GetOrdinal("TIPO")),
+                               
+                                Monto = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),
+                                Estado = reader.IsDBNull(reader.GetOrdinal("ESTADO")) ? string.Empty : reader.GetString(reader.GetOrdinal("ESTADO")),
+                    
+                            };
+                            flujocaja.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return flujocaja;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el flujo de caja de los proyectos:{ex.Message}");
+                return new List<FlujoCajaProyectosDTO>();
+
+            }
+        }
+
 
         public async Task<List<ProveedorForecastDTO>> ObtenerForecastRealesProveedores(int? idproyecto)
         {

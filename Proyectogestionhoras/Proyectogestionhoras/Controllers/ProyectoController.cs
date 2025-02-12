@@ -320,11 +320,12 @@ namespace Proyectogestionhoras.Controllers
                         var servicios = await proyectoService.ObtenerServiciosProyecto(id);
                         var gastos = await proyectoService.ObtenerGastosProyectos(id);
                         var facturas = await facturaService.RecuperarFacturas(id);
-
+                        var forecastreal = await reporteService.ObtenerForecastrealProyecto(id);
                         ViewBag.Facturas = facturas;
                         ViewBag.Proyectos = proyectos;
                         ViewBag.Servicios = servicios;
                         ViewBag.Gastos = gastos;
+                        ViewBag.ForecastReal = forecastreal;
                         return View("DetalleProyecto");
                     }
                     else

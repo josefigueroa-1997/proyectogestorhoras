@@ -111,6 +111,99 @@
     <div class="form-group">
         @{
             decimal Monto = 0;
+            decimal IngresoForecast = 0;
+            decimal IngresoReal = 0;
+            decimal SocioReal = 0;
+            decimal SocioForecast = 0;
+            decimal StaffForecast = 0;
+            decimal StaffReal = 0;
+            decimal ServiciosReal = 0;
+            decimal ServiciosForecast = 0;
+            decimal GastosForecast = 0;
+            decimal GastosReal = 0;
+            decimal ConsultorReal  = 0;
+            decimal ConsultorForecast  = 0;
+        }
+        @foreach(var datos in ViewBag.ForecastReal)
+        {
+            if(datos.Tipo == "Ingreso")
+            {
+                if (datos.Estado == "Real")
+                {
+                    IngresoReal = datos.Monto;
+                }
+                if(datos.Estado == "Forecast")
+                {
+                    IngresoForecast = datos.Monto;
+                }
+            }
+            if(datos.Tipo == "HHSocios")
+            {
+                if (datos.Estado == "Real")
+                {
+                    SocioReal = datos.Monto;
+                }
+                if (datos.Estado == "Forecast")
+                {
+                    SocioForecast = datos.Monto;
+                }
+            }
+            if (datos.Tipo == "HHStaff")
+            {
+                if (datos.Estado == "Real")
+                {
+                    StaffReal = datos.Monto;
+                }
+                if (datos.Estado == "Forecast")
+                {
+                    StaffForecast = datos.Monto;
+                }
+            }
+            if (datos.Tipo == "Consultor Externo")
+            {
+                if (datos.Estado == "Real")
+                {
+                    ConsultorReal = datos.Monto;
+                }
+                if (datos.Estado == "Forecast")
+                {
+                    ConsultorForecast = datos.Monto;
+                }
+            }
+            if (datos.Tipo == "Gastos")
+            {
+                if (datos.Estado == "Real")
+                {
+                    GastosReal = datos.Monto;
+                }
+                if (datos.Estado == "Forecast")
+                {
+                    GastosForecast = datos.Monto;
+                }
+            }
+            if (datos.Tipo == "Servicios")
+            {
+                if (datos.Estado == "Real")
+                {
+                    ServiciosReal = datos.Monto;
+                }
+                if (datos.Estado == "Forecast")
+                {
+                    ServiciosForecast = datos.Monto;
+                }
+            }
+            if (datos.Tipo == "Gastos")
+            {
+                if (datos.Estado == "Real")
+                {
+                    GastosReal = datos.Monto;
+                }
+                if (datos.Estado == "Forecast")
+                {
+                    GastosForecast = datos.Monto;
+                }
+            }
+
         }
         @foreach (var proyecto in ViewBag.Proyectos)
         {
@@ -637,8 +730,10 @@
             <thead>
                 <tr style="background-color: #fa8164; color: black; text-align:center">
                     <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Porcentaje</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Total Proyectado</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Total Real</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Total Forecast</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Porcentaje Proyectado</th>
 
 
 
@@ -648,12 +743,15 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", Monto)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", IngresoReal)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", IngresoForecast)</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>100%</strong></td>
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalsocios)</td>
-
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", SocioReal)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", SocioForecast)</td>
                     @{
                         decimal porcentajesocio = Math.Round((totalsocios / Monto) * 100, 2);
                     }
@@ -662,6 +760,9 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalstaff)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", StaffReal)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", StaffForecast)</td>
+                    
                     @{
                         decimal porcentajestaff = Math.Round((totalstaff / Monto) * 100, 2);
                     }
@@ -670,6 +771,8 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultores)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ConsultorReal)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ConsultorForecast)</td>
                     @{
                         decimal porcentajeconsultores = Math.Round((totalconsultores / Monto) * 100, 2);
                     }
@@ -679,6 +782,8 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalservicios)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ServiciosReal)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ServiciosForecast)</td>
                     @{
                         decimal porcentajeservicios = Math.Round((totalservicios / Monto) * 100, 2);
                     }
@@ -687,6 +792,8 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalgastos)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", GastosReal)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", GastosForecast)</td>
                     @{
                         decimal porcentajegastos = Math.Round((totalgastos / Monto) * 100, 2);
                     }
@@ -695,6 +802,8 @@
                 </tr>
                 @{
                     decimal totalegresos = totalsocios + totalstaff + totalconsultores + totalgastos + totalservicios;
+                    decimal totalegresosreales = SocioReal + StaffReal + ConsultorReal + ServiciosReal + GastosReal;
+                    decimal totalegresosforecast = SocioForecast + StaffForecast + ConsultorForecast + ServiciosForecast + GastosForecast;
                     decimal porcentaegresos = porcentajegastos + porcentajeservicios + porcentajeconsultores + porcentajestaff + porcentajesocio;
                 }
                 <tr>
@@ -703,16 +812,26 @@
                         <strong>@String.Format("{0:N0}", totalegresos)</strong>
                     </td>
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong>@String.Format("{0:N0}", totalegresosreales)</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong>@String.Format("{0:N0}", totalegresosforecast)</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
                         <strong>@String.Format("{0:N0}", porcentaegresos)%</strong>
                     </td>
                 </tr>
                 @{
                     decimal margen = Monto - totalegresos;
+                    decimal margenreal = IngresoReal - totalegresosreales;
+                    decimal margenforecast = IngresoForecast - totalegresosforecast;
                     decimal porcentajemargen = 100 - porcentaegresos;
                 }
                 <tr style="background-color: #fa8164; color: black;">
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margen)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margenreal)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margenforecast)</strong></td>
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", porcentajemargen)%</strong></td>
                 </tr>
             </tbody>
