@@ -66,7 +66,7 @@
 </style>
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
-
+    int idproyectos = 0;
 }
 
 <div class="form-container">
@@ -77,13 +77,14 @@
 
         @foreach (var proyecto in ViewBag.Proyecto)
         {
+            idproyectos = proyecto.Id;
             @if(proyecto.Tipo_Status == "En Ejecución")
             {
                 <div class="panel-container flex justify-center mb-5">
-                    <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyectos})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                         Forecast Ingresos del Proyecto
                     </a>
-                    <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})" class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+                    <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyectos})" class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
                         Forecast Costos del Proyecto
                     </a>
                     <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
@@ -94,6 +95,9 @@
            
             <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
             <input type="hidden" id="proyectoId" data-idproyecto="@proyecto.Id" />
+            
+              
+            
             <input type="hidden" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
             <input type="hidden" id="centroCosto" value="@proyecto.IDCOSTO" />
             <input type="hidden" id="codigo" value="@proyecto.Codigo" />
@@ -150,6 +154,9 @@
             <button id="btnExportarExcel" class="p-2 bg-green-500 text-white rounded">
                 Exportar Flujo de Caja a Excel
             </button>
+            <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=idproyectos})#sintesis-economica" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block ml-4">
+                Ver Síntesis del Proyecto
+            </a>
         </div>
         <div class="flex overflow-x-auto">
 

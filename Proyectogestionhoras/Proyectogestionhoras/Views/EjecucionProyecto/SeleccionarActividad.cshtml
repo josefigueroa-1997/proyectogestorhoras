@@ -67,22 +67,22 @@
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
 }
-<h2 style="margin-top: 50px;" class="section-header">Seleccione un Forecast</h2>
+<h2 style="margin-top: 50px;" class="section-header">Seleccione una Actividad</h2>
 <div class="section-content">
     <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})">
         <div class="card new-cliente">
-            <h3>Forecast de Ingreso</h3>
+            <h3>Ingresos del Proyecto</h3>
         </div>
 
     </a>
     <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})">
         <div class="card new-cliente">
-            <h3>Forecast Costos</h3>
+            <h3>Costos del Proyecto</h3>
         </div>
     </a>
     <a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=idproyecto})">
         <div class="card new-cliente">
-            <h3>Forecast Flujo Caja</h3>
+            <h3>Flujo de Caja del Proyecto</h3>
         </div>
     </a>
 

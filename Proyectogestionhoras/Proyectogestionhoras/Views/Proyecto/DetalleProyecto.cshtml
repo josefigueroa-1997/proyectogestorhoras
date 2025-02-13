@@ -123,6 +123,8 @@
             decimal GastosReal = 0;
             decimal ConsultorReal  = 0;
             decimal ConsultorForecast  = 0;
+            int idproyecto = 0;
+            int status = 0;
         }
         @foreach(var datos in ViewBag.ForecastReal)
         {
@@ -221,11 +223,7 @@
                         <button id="finish" class="finish-btn" type="submit">Terminar Proyecto</button>
                     </form>
                 }
-                @if (proyecto.Tipo_Status == "Terminado")
-                {
-                    <a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=proyecto.Id})" class="finish-btn">Visualizar Flujo de Caja</a>
-
-                }
+                
                 <a href="@Url.Action("ObtenerhistorialNegociaciones", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Ver Historial de Negociación</a>
                 <a href="@Url.Action("ObtenerPresupuestoProyecto", "Proyecto", new { idpresupuesto = proyecto.idpresupuesto,id=proyecto.Id })" class="presupuesto-btn">Ver Presupuesto Proyecto</a>
             </div>
@@ -237,6 +235,10 @@
                             <tr>
                                 <td class="highlight">Número del Proyecto</td>
                                 <td>@proyecto.numproyecto</td>
+                                @{
+                                    idproyecto = proyecto.Id;
+                                    status = proyecto.STATUSPROYECTO;
+                                }
                             </tr>
                             <tr>
                                 <td class="highlight">Proyecto</td>
@@ -724,8 +726,17 @@
 
         </div>
     </div>
-    <div class="form-group">
-        <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+    <div id="sintesis-economica" class="form-group">
+        <div class="form-group text-center">
+            <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+            @if(status == 2 || status == 4)
+            {
+                <a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=idproyecto})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 inline-block">
+                    Ver Flujo de Caja
+                </a>
+            }
+            
+        </div>
         <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
             <thead>
                 <tr style="background-color: #fa8164; color: black; text-align:center">
@@ -749,10 +760,18 @@
                 }
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", Monto)</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", IngresoReal)</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", IngresoForecast)</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", totalingresosrealforecast)</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        <strong>@(Monto == 0 ? "" : String.Format("{0:N0}", Monto))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        <strong>@(IngresoReal == 0 ? "" : String.Format("{0:N0}", IngresoReal))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        <strong>@(IngresoForecast == 0 ? "" : String.Format("{0:N0}", IngresoForecast))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        <strong>@(totalingresosrealforecast == 0 ? "" : String.Format("{0:N0}", totalingresosrealforecast))</strong>
+                    </td>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>100%</strong></td>
                     @{
                         decimal porcentajeingresorealforecast = Math.Round((totalingresosrealforecast / Monto) * 100, 2);
@@ -761,10 +780,18 @@
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalsocios)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", SocioReal)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", SocioForecast)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalsociosrealforecast)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalsocios == 0 ? "" : String.Format("{0:N0}", totalsocios))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(SocioReal == 0 ? "" : String.Format("{0:N0}", SocioReal))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(SocioForecast == 0 ? "" : String.Format("{0:N0}", SocioForecast))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalsociosrealforecast == 0 ? "" : String.Format("{0:N0}", totalsociosrealforecast))
+                    </td>
                     @{
                         decimal porcentajesocio = Math.Round((totalsocios / Monto) * 100, 2);
                         decimal porcentajesociorealforecast = 0;
@@ -780,11 +807,18 @@
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalstaff)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", StaffReal)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", StaffForecast)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalstaffrealforecast)</td>
-                    
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalstaff == 0 ? "" : String.Format("{0:N0}", totalstaff))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(StaffReal == 0 ? "" : String.Format("{0:N0}", StaffReal))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(StaffForecast == 0 ? "" : String.Format("{0:N0}", StaffForecast))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalstaffrealforecast == 0 ? "" : String.Format("{0:N0}", totalstaffrealforecast))
+                    </td>
                     @{
                         decimal porcentajestaff = Math.Round((totalstaff / Monto) * 100, 2);
                         decimal porcentajestaffrealforecast = 0;
@@ -799,10 +833,18 @@
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultores)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ConsultorReal)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ConsultorForecast)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalconsultorrealforecast)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalconsultores == 0 ? "" : String.Format("{0:N0}", totalconsultores))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(ConsultorReal == 0 ? "" : String.Format("{0:N0}", ConsultorReal))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(ConsultorForecast == 0 ? "" : String.Format("{0:N0}", ConsultorForecast))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalconsultorrealforecast == 0 ? "" : String.Format("{0:N0}", totalconsultorrealforecast))
+                    </td>
                     @{
                         decimal porcentajeconsultores = Math.Round((totalconsultores / Monto) * 100, 2);
                         decimal porcentajeconsultorrealforecast = 0;
@@ -818,11 +860,18 @@
 
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalservicios)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ServiciosReal)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", ServiciosForecast)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalserviciosrealforecast)</td>
-
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalservicios == 0 ? "" : String.Format("{0:N0}", totalservicios))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(ServiciosReal == 0 ? "" : String.Format("{0:N0}", ServiciosReal))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(ServiciosForecast == 0 ? "" : String.Format("{0:N0}", ServiciosForecast))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalserviciosrealforecast == 0 ? "" : String.Format("{0:N0}", totalserviciosrealforecast))
+                    </td>
                     @{
                         decimal porcentajeservicios = Math.Round((totalservicios / Monto) * 100, 2);
                         decimal porcentajeserviciosrealforecast = 0;
@@ -837,10 +886,18 @@
                 </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalgastos)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", GastosReal)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", GastosForecast)</td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", totalgastosrealforecast)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalgastos == 0 ? "" : String.Format("{0:N0}", totalgastos))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(GastosReal == 0 ? "" : String.Format("{0:N0}", GastosReal))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(GastosForecast == 0 ? "" : String.Format("{0:N0}", GastosForecast))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(totalgastosrealforecast == 0 ? "" : String.Format("{0:N0}", totalgastosrealforecast))
+                    </td>
                     @{
                         decimal porcentajegastos = Math.Round((totalgastos / Monto) * 100, 2);
                         decimal porcentajegastosrealforecast = 0;
@@ -867,23 +924,23 @@
                 }
                 <tr>
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N0}", totalegresos)</strong>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(totalegresos == 0 ? "" : String.Format("{0:N0}", totalegresos))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N0}", totalegresosreales)</strong>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(totalegresosreales == 0 ? "" : String.Format("{0:N0}", totalegresosreales))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N0}", totalegresosforecast)</strong>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(totalegresosforecast == 0 ? "" : String.Format("{0:N0}", totalegresosforecast))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N0}", totalegresosrealforecast)</strong>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(totalegresosrealforecast == 0 ? "" : String.Format("{0:N0}", totalegresosrealforecast))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N0}", porcentaegresos)%</strong>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(porcentaegresos == 0 ? "" : String.Format("{0:N0}", porcentaegresos) + "%")</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N2}", porcentaegresosrealforecast)%</strong>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(porcentaegresosrealforecast == 0 ? "" : String.Format("{0:N2}", porcentaegresosrealforecast) + "%")</strong>
                     </td>
                 </tr>
                 @{
@@ -899,13 +956,59 @@
                     }
                 }
                 <tr style="background-color: #fa8164; color: black;">
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margen Esperado</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margen)</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margenreal)</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margenforecast)</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", margenrealforecast)</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N0}", porcentajemargen)%</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"><strong>@String.Format("{0:N2}", porcentajemargenforecastcostos)%</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margenes de Proyecto</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(margen == 0 ? "" : String.Format("{0:N0}", margen))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(margenreal == 0 ? "" : String.Format("{0:N0}", margenreal))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(margenforecast == 0 ? "" : String.Format("{0:N0}", margenforecast))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(margenrealforecast == 0 ? "" : String.Format("{0:N0}", margenrealforecast))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"></td>
+                </tr>
+                @{
+                    decimal porcentajeproyectado = 0;
+                    decimal porcentajereal = 0;
+                    decimal porcentajerealforecast = 0;
+                    if (Monto > 0)
+                    {
+                        porcentajeproyectado = Math.Round((margen / Monto) * 100, 2);
+                    }
+                    if (IngresoReal > 0)
+                    {
+                        porcentajereal = Math.Round((margenreal / IngresoReal) * 100, 2);
+                    }
+                    if (totalingresosrealforecast > 0)
+                    {
+                        porcentajerealforecast = Math.Round((margenrealforecast / totalingresosrealforecast) * 100, 2);
+                    }
+                }
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Porcentaje Totales</strong></td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong>@String.Format("{0:N2}", porcentajeproyectado)%</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong>@String.Format("{0:N2}", porcentajereal)%</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                       
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        <strong>@String.Format("{0:N2}", porcentajerealforecast)%</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
+                        
+                    </td>
                 </tr>
             </tbody>
         </table>
