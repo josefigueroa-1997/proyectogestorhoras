@@ -230,6 +230,47 @@ namespace Proyectogestionhoras.Controllers
             return View("PlanillaMes");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EliminarRegistroPlanilla()
+        {
+            int idregistro = int.Parse(Request.Form["idregistro"].ToString());
+            int planilla = await context.PlanillaRegistroEmpresas.Where(p => p.Id == idregistro).Select(p => p.IdPlanilla).FirstOrDefaultAsync();
+            int planillaproyecto = await context.PlanillaUsusarioProyectos.Where(p => p.Id == idregistro).Select(p => p.IdPlanilla).FirstOrDefaultAsync();
+            int planillaoficial = 0;
+
+            if (planilla > 0)
+            {
+                planillaoficial = planilla;
+            }
+            else if (planillaproyecto > 0)
+            {
+                planillaoficial = planillaproyecto;
+            }
+            try
+            {
+                bool resultado = await planillaService.EliminarRegistro(idregistro);
+                if (resultado)
+                {
+
+                    TempData["SuccessMessageEliminacion"] = "El registro se ha eliminado correctamente.";
+                    return RedirectToAction("PlanillaMes", "Planilla", new { idplanilla = planillaoficial });
+
+
+                }
+                else
+                {
+                    Debug.WriteLine($"error al eliminar");
+                }
+            }
+            catch(Exception e)
+            {
+                TempData["ErrorMessageEliminacion"] = "El registro no se ha podido eliminar.";
+                return RedirectToAction("PlanillaMes", "Planilla", new { idplanilla = planillaoficial });
+            }
+
+
+            return RedirectToAction("PlanillaMes", "Planilla", new { idplanilla = planillaoficial });
+        }
 
         public async Task<ActionResult> ExportarExcel(int idplanilla)
         {

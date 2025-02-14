@@ -3,6 +3,7 @@
     public class PlanillaUsuarioDTO
     {
         public int IdPlanilla { get; set; }
+        public int IdRegistro { get; set; }
         public DateTime FechaRegistro { get; set; }
         public string? NombreProyecto { get; set; }
         public string? Nombre { get; set; }

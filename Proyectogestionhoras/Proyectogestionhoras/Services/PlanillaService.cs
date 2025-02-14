@@ -303,7 +303,112 @@ namespace Proyectogestionhoras.Services
         }
 
 
+        public async Task<bool> EliminarRegistro(int idregistro)
+        {
+            try
+            {
+                bool resultado = false;
+                int idsubActividad = await context.PlanillaRegistroEmpresas
+                .Where(p => p.Id == idregistro)
+                .Select(p => p.Idsubactividad)
+                .FirstOrDefaultAsync();
+                if (idsubActividad > 0)
+                {
+                    var registro = await context.PlanillaRegistroEmpresas.FindAsync(idregistro);
+                    if (registro != null)
+                    {
+                        context.PlanillaRegistroEmpresas.Remove(registro);
+                        await context.SaveChangesAsync();
+                        resultado = true;
+                    }
+                }
+                else
+                {
+                    var registro = await context.PlanillaUsusarioProyectos.FindAsync(idregistro);
+                    decimal? horasAsignadasDecimal = await context.PlanillaUsusarioProyectos.Where(p => p.Id == idregistro).Select(p => p.RegistroHhProyecto).FirstOrDefaultAsync();
+                    int usuproy = await context.PlanillaUsusarioProyectos.Where(p => p.Id == idregistro).Select(p => p.IdUsuProy).FirstOrDefaultAsync();
+                    if (usuproy != 0)
+                    {
 
+                        var statusProyecto = await context.UsuarioProyectos
+                        .Where(up => up.Id == usuproy)
+                         .Join(context.Proyectos,
+                             up => up.IdProyecto,
+                                p => p.Id,
+                            (up, p) => p.StatusProyecto)
+                         .FirstOrDefaultAsync();
+                        if (statusProyecto == 1)
+                        {
+                            context.PlanillaUsusarioProyectos.Remove(registro);
+                            await context.SaveChangesAsync();
+                            resultado = true;
+                        }
+                        else if (statusProyecto == 2 || statusProyecto==4)
+                        {
+                            var usuarioproyecto = await context.UsuarioProyectos
+                            .Include(up => up.IdUsuarioNavigation)
+                            .ThenInclude(u => u.IdRecursoNavigation)
+                            .FirstOrDefaultAsync(up => up.Id == usuproy);
+
+                            var usuario = usuarioproyecto.IdUsuarioNavigation;
+
+                            var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                            if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
+                            {
+                                if (recurso.NombreRecurso == "Socio")
+                                {
+
+
+                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
+                                    .ToListAsync();
+
+
+                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                    {
+                                        usuarioRelacionado.HhSocios += horasAsignadasDecimal;
+                                    }
+                                    context.PlanillaUsusarioProyectos.Remove(registro);
+                                    await context.SaveChangesAsync();
+                                    resultado = true;
+                                }
+                                else if (recurso.NombreRecurso == "Staff")
+                                {
+
+
+                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
+                                    .ToListAsync();
+
+
+                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                    {
+                                        usuarioRelacionado.HhStaff += horasAsignadasDecimal;
+                                    }
+                                    context.PlanillaUsusarioProyectos.Remove(registro);
+                                    await context.SaveChangesAsync();
+                                    resultado = true;
+                                }
+                            }
+                            
+                        }
+                        
+                       
+                    }
+                    else
+                    {
+                        resultado = false;
+                    }
+                }
+                
+                return resultado;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al eliminar el registro:{e.Message}");
+                return false;
+            }
+        }
 
 
         public async Task<List<PlanillaUsuarioDTO>> ObtenerPlanillaUsuario(int? idusuario, int? idplanilla)
@@ -439,6 +544,7 @@ namespace Proyectogestionhoras.Services
                             PlanillaUsuarioDTO datos = new()
                             {
                                 IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IdPlanilla")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanilla")),
+                                IdRegistro = reader.IsDBNull(reader.GetOrdinal("IdRegistro")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdRegistro")),
                                 FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FechaRegistro")),
                                 NombreActividad = reader.IsDBNull(reader.GetOrdinal("NombreActividad")) ? null : reader.GetString(reader.GetOrdinal("NombreActividad")),
                                 Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? null : reader.GetString(reader.GetOrdinal("Nombre")),
