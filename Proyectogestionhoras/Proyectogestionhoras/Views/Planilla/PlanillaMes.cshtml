@@ -2,6 +2,10 @@
     ViewData["Title"] = "Planilla Mes";
 }
 
+@{
+    var proyectosJson = ViewData["Proyectos"];
+}
+
 <style>
     body {
         font-family: 'Montserrat', sans-serif;
@@ -200,7 +204,9 @@
                     <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Costo Total</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Observaciones</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Editar</th>
                     <th style="padding: 10px; border: 1px solid #ddd;">Eliminar</th>
+                    
                 </tr>
             </thead>
             <tbody id="tabla-body">
@@ -214,18 +220,117 @@
                     @foreach (var planilla in ViewBag.Planilla)
                     {
                         <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">@planilla.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                            
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-                                @planilla.NombreActividad
+
+                                @if (planilla.estado == 1 || planilla.estado == 2)
+                                {
+                                    <input type="date" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" />
+                                }
+                                else
+                                {
+                                    @planilla.FechaRegistro.ToString("dd/MM/yyyy")
+                                }
+
+                               
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
+                                @if (planilla.estado == 1 || planilla.estado == 2)
+                                {
+                                    <select class="actividadSelect" data-idactividad="@planilla.IdActividad">
+                                        <option value="">Cargando...</option>
+                                    </select>
+
+                                }
+                                else
+                                {
+                                    @planilla.NombreActividad
+                                }
+
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd; ">
-                                @planilla.Nombre
+                                @if(planilla.estado == 1 || planilla.estado == 2)
+                                {
+                                    <select class="nombreSelect">
+                                        @foreach (var actividad in ViewBag.Actividad)
+                                        {
+                                            if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Ejecucion")
+                                            {
+
+                                                @foreach (var proyecto in ViewBag.Ejecucion)
+                                                {
+                                                    if (proyecto.Nombre == planilla.Nombre)
+                                                    {
+                                                        <option value="@proyecto.Id" selected>@proyecto.Nombre</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@proyecto.Id">@proyecto.Nombre</option>
+                                                    }
+                                                }
+
+
+
+                                            }
+                                            if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Negociación")
+                                            {
+                                                @foreach (var p in ViewBag.Negociacion)
+                                                {
+                                                    if (p.Nombre == planilla.Nombre)
+                                                    {
+                                                        <option value="@p.Id" selected>@p.Nombre</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@p.Id">@p.Nombre</option>
+                                                    }
+                                                }
+                                            }
+                                            @if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Empresa")
+                                            {
+                                                @foreach (var p in ViewBag.Subactividades)
+                                                {
+                                                    // Filtrar solo las subactividades con el mismo Id de actividad
+                                                    if (p.Idactividad == actividad.Id)
+                                                    {
+                                                        if (p.Nombre == planilla.Nombre)
+                                                        {
+                                                            <option value="@p.Id" selected>@p.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@p.Id">@p.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                      
+                                        
+
+                                    </select>
+                                }
+                                else
+                                {
+                                    @planilla.Nombre
+                                }
                             </td>
                             
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
-                                @planilla.HHregistradas
+                                @if (planilla.estado == 1 || planilla.estado == 2)
+                                {
+                                    <input type="number" value="@planilla.HHregistradas.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="0.5" min="0" />
+                                }
+
+                                else
+                                {
+                                    @planilla.HHregistradas
+                                }
+                                
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                               
                                 @String.Format("{0:N0}", @planilla.CostoUnitario)
                             </td>
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
@@ -234,13 +339,26 @@
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
                                 @planilla.Observaciones
                             </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                                <form action="@Url.Action("EliminarRegistroPlanilla", "Planilla")" method="post" onsubmit="return confirmarEliminacion();">
-                                    <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
-                                    <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-                                        Eliminar
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
+                                @if (planilla.estado == 1 || planilla.estado == 2)
+                                {
+                                    <button type="submit" style="background-color: orange; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                                        Editar
                                     </button>
-                                </form>
+                                }
+                                
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                                @if (planilla.estado == 1 || planilla.estado == 2)
+                                {
+                                    <form action="@Url.Action("EliminarRegistroPlanilla", "Planilla")" method="post" onsubmit="return confirmarEliminacion();">
+                                        <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
+                                        <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                }
+                               
                             </td>
                         </tr>
                         totalhoras += planilla.HHregistradas;
@@ -267,6 +385,141 @@
     function confirmarEliminacion() {
         return confirm("¿Estás seguro de que deseas eliminar este registro?");
     }
+
+    var idusuario = @Context.Session.GetInt32("id");
+        document.addEventListener("DOMContentLoaded", function () {
+            let recurso = '@Context.Session.GetString("recurso")'; 
+
+            fetch(`/Usuario/RecuperarActividades?recurso=${recurso}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll(".actividadSelect").forEach(select => {
+                        let actividadSeleccionada = select.getAttribute("data-idactividad"); 
+                        select.innerHTML = ""; 
+                        data.forEach(item => {
+                            let option = document.createElement("option");
+                            option.value = item.id;
+                            option.textContent = item.nombre;
+                            option.setAttribute("data-controlhh", item.controlhh);
+                            if (item.id == actividadSeleccionada) {
+                                option.selected = true;
+                            }
+
+                            select.appendChild(option);
+                        });
+                    });
+                })
+                .catch(error => console.error("Error al cargar actividades:", error));
+        });
+
+    function cargarSubactividades(idActividad, fila) {
+        $.ajax({
+            url: '@Url.Action("RecuperarSubActividades", "Usuario")',
+            type: 'GET',
+            data: { idactividad: idActividad },
+            success: function (subactividades) {
+                const select = fila.find('.nombreSelect'); 
+                select.empty();
+                select.append('<option value="" disabled selected>Seleccione un Item</option>');
+
+                $.each(subactividades, function (index, subactividad) {
+                    select.append($('<option>', {
+                        value: subactividad.id,
+                        text: subactividad.nombre
+                    }));
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener las subactividades:", error);
+            }
+        });
+    }
+
+    function cargarProyectosNegociacion(fila) {
+        if (idusuario) {
+            $.ajax({
+                url: '@Url.Action("ObtenerProyectoNegociacion", "Usuario")',
+                type: 'GET',
+                success: function (response) {
+                    const select = fila.find('.nombreSelect'); 
+                    select.empty();
+                    select.append('<option value="" disabled selected>Seleccione un proyecto</option>');
+
+                    if (response.length > 0) {
+                        $.each(response, function (index, proyecto) {
+                            select.append($('<option>', {
+                                value: proyecto.id,
+                                text: proyecto.numProyecto + ' - ' + proyecto.nombre
+                            }));
+                        });
+
+                        select.on('change', function () {
+                            var idproyecto = $(this).val();
+                            // cargarInformacionUsuario(idproyecto);
+                        });
+                    } else {
+                        select.append('<option value="" disabled>No hay proyectos disponibles</option>');
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al obtener los proyectos:", error);
+                }
+            });
+        }
+    }
+    function cargarProyectos(fila) {
+        if (idusuario) {
+            $.ajax({
+                url: '@Url.Action("ObtenerMisproyectos", "Usuario")',
+                type: 'GET',
+                data: { idusuario: idusuario },
+                success: function (response) {
+                    const select = fila.find('.nombreSelect'); 
+                    select.empty();
+                    select.append('<option value="" disabled selected>Seleccione un proyecto</option>');
+
+                    if (response.length > 0) {
+                        $.each(response, function (index, proyecto) {
+                            select.append($('<option>', {
+                                value: proyecto.id,
+                                text: proyecto.numproyecto + ' - ' + proyecto.nombreproyecto
+                            }));
+                        });
+
+                        select.on('change', function () {
+                            var idproyecto = $(this).val();
+                            // cargarInformacionUsuario(idproyecto);
+                        });
+                    } else {
+                        select.append('<option value="" disabled>No hay proyectos disponibles</option>');
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al obtener los proyectos:", error);
+                }
+            });
+        }
+    }
+
+    $(document).on('change', '.actividadSelect', function () {
+        const idActividad = $(this).val();
+        const controlhh = $(this).find(':selected').data('controlhh').toLowerCase().trim();
+
+        const fila = $(this).closest('tr');
+
+        if (idActividad) {
+            if (controlhh === 'proyecto en ejecucion') {
+                cargarProyectos(fila);
+            } else if (controlhh === 'empresa') {
+                fila.find('.idusuarioproyecto').val(0); 
+                cargarSubactividades(idActividad, fila);
+            } else if (controlhh === "proyecto en negociación") {
+                cargarProyectosNegociacion(fila);
+            }
+        } else {
+            console.log("Error al mostrar datos");
+        }
+    });
 </script>
 
 

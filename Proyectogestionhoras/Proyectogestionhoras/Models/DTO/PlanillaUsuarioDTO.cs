@@ -9,6 +9,8 @@
         public string? Nombre { get; set; }
         public string? NumProyecto { get; set; }
         public int IDPROYECTO { get; set; }
+        public int IdActividad { get; set; }
+        public int estado { get; set; }
         public string? NombreActividad { get; set; }
         public decimal HHregistradas { get; set; }
         public string? Observaciones { get; set; }

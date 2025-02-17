@@ -545,6 +545,9 @@ namespace Proyectogestionhoras.Services
                             {
                                 IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IdPlanilla")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanilla")),
                                 IdRegistro = reader.IsDBNull(reader.GetOrdinal("IdRegistro")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdRegistro")),
+                                IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IdProyecto")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdProyecto")),
+                                IdActividad = reader.IsDBNull(reader.GetOrdinal("IdActividad")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdActividad")),
+                                estado = reader.IsDBNull(reader.GetOrdinal("estado")) ? 0 : reader.GetInt32(reader.GetOrdinal("estado")),
                                 FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FechaRegistro")),
                                 NombreActividad = reader.IsDBNull(reader.GetOrdinal("NombreActividad")) ? null : reader.GetString(reader.GetOrdinal("NombreActividad")),
                                 Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? null : reader.GetString(reader.GetOrdinal("Nombre")),

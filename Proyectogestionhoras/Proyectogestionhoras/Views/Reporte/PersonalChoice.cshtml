@@ -71,7 +71,7 @@
     @if (ViewBag.Usuarios!=null){
         @foreach (var u in ViewBag.Usuarios){
             if (u.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Socio")){
-                <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=u.Id})">
+                <a href="@Url.Action("MiPlanilla","Reporte",new{idusuario=u.Id})">
                     <div class="card new-cliente">
                         <h3>@u.Nombre</h3>
                     </div>
@@ -93,7 +93,7 @@
         {
             if (u.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Staff"))
             {
-                <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=u.Id})">
+                <a href="@Url.Action("MiPlanilla","Reporte",new{idusuario=u.Id})">
                     <div class="card new-cliente">
                         <h3>@u.Nombre</h3>
                     </div>
@@ -114,7 +114,7 @@
         {
             if (u.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Consultor"))
             {
-                <a href="@Url.Action("MisPlanillas","Planilla",new{idusuario=u.Id})">
+                <a href="@Url.Action("MiPlanilla","Reporte",new{idusuario=u.Id})">
                     <div class="card new-cliente">
                         <h3>@u.Nombre</h3>
                     </div>

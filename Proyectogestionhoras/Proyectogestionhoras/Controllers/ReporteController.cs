@@ -21,11 +21,13 @@ namespace Proyectogestionhoras.Controllers
         private readonly ReporteService _reporteService;
         private readonly PROYECTO_CONTROL_HORASContext context;
         private readonly UsuarioService usuarioService;
-        public ReporteController(ReporteService reporteService,PROYECTO_CONTROL_HORASContext context, UsuarioService usuarioService)
+        private readonly PlanillaService planillaService;
+        public ReporteController(ReporteService reporteService,PROYECTO_CONTROL_HORASContext context, UsuarioService usuarioService, PlanillaService planillaService)
         {
             _reporteService = reporteService;
             this.context = context;
             this.usuarioService = usuarioService;
+            this.planillaService = planillaService;
         }
 
         public IActionResult TodosReportes()
@@ -248,6 +250,34 @@ namespace Proyectogestionhoras.Controllers
         {
             var usuarios = await usuarioService.ObtenerUusario(idusuario,nombre,idrecurso);
             ViewBag.Usuarios = usuarios;
+            return View();
+        }
+
+        public async Task<IActionResult> MiPlanilla(int? idusuario)
+        {
+            var planillas = await context.Planillas
+                .Where(p => p.IdUsuario == idusuario)
+                .OrderBy(p => p.Anio)
+                .ThenBy(p => p.Mes)
+                .ToListAsync();
+
+            var planillasAgrupadas = planillas
+           .GroupBy(p => p.Anio)
+           .Select(g => new
+           {
+               Anio = g.Key,
+               Meses = g.Select(p => new { p.Id, p.Mes }).ToList()
+           })
+           .ToList();
+
+            ViewBag.PlanillasPorAnio = planillasAgrupadas;
+            return View();
+        }
+
+        public async Task<IActionResult> PlanillaMesSeleccionado(int idplanilla)
+        {
+            var planillames = await planillaService.ObtenerPlanillaExcel(idplanilla);
+            ViewBag.Planilla = planillames;
             return View();
         }
 

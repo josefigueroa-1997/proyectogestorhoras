@@ -226,9 +226,20 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> PlanillaMes(int idplanilla)
         {
             var planillames = await planillaService.ObtenerPlanillaExcel(idplanilla);
+    
             ViewBag.Planilla = planillames;
+
+            var subactividades = await context.Subactividads.Select(s => new { s.Id,s.Nombre,s.Idactividad }).ToListAsync();
+            var actividad = await context.Actividades.ToListAsync();
+            var ejecucion = await context.Proyectos.Where(p => p.StatusProyecto == 2).Select(p => new { p.Id, p.Nombre }).ToListAsync();
+            var negociacion = await context.Proyectos.Where(p => p.StatusProyecto == 1).Select(p => new { p.Id, p.Nombre }).ToListAsync();
+            ViewBag.Subactividades = subactividades;
+            ViewBag.Negociacion = negociacion;
+            ViewBag.Actividad = actividad;
+            ViewBag.Ejecucion = ejecucion;
             return View("PlanillaMes");
         }
+       
 
         [HttpPost]
         public async Task<IActionResult> EliminarRegistroPlanilla()
