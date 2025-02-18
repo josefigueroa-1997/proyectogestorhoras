@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Models.DTO;
+using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services.Interface;
 using System.Data.Common;
 using System.Data;
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 namespace Proyectogestionhoras.Services
 {
     public class PlanillaService : IPlanilla
@@ -48,14 +50,14 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-                int statusProyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation) .Where(up => up.Id == idusuproy) .Select(up => up.IdProyectoNavigation.StatusProyecto) .FirstOrDefaultAsync();
+                int statusProyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == idusuproy).Select(up => up.IdProyectoNavigation.StatusProyecto).FirstOrDefaultAsync();
                 string tipo = string.Empty;
-                
-                if(statusProyecto == 2)
+
+                if (statusProyecto == 2)
                 {
                     tipo = "En Ejecución";
                 }
-                else if(statusProyecto == 1)
+                else if (statusProyecto == 1)
                 {
                     tipo = "En Negociación";
                 }
@@ -209,14 +211,14 @@ namespace Proyectogestionhoras.Services
                                 }
                             }
                         }
-                        
+
                         else
                         {
                             Debug.WriteLine("Error al obtener el recurso asociado al usuario.");
                             return 2;
                         }
                     }
-                    
+
 
                     await context.SaveChangesAsync();
                     return 1;
@@ -303,6 +305,410 @@ namespace Proyectogestionhoras.Services
         }
 
 
+        public async Task<int> EditarRegistro([FromBody] EditarRegistroViewModel editarregistro)
+        {
+            try
+            {
+                int resultado = 0;
+                int subactividadhistorica = await context.PlanillaRegistroEmpresas.Where(p => p.Id == editarregistro.idregistro).Select(p => p.Idsubactividad).FirstOrDefaultAsync();
+                if (subactividadhistorica > 0)
+                {
+                    if (editarregistro.idsubactividad > 0 && (editarregistro.idusuproy == 0))
+                    {
+                        var registro = await context.PlanillaRegistroEmpresas.FindAsync(editarregistro.idregistro);
+                        if (registro != null)
+                        {
+
+
+
+
+
+
+                            decimal horasAsignadasDecimal;
+                            if (!decimal.TryParse(editarregistro.horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
+                            {
+
+                                return 0;
+                            }
+
+
+                            int mesregistro = editarregistro.Fecharegistro.Month;
+                            int anioregistro = editarregistro.Fecharegistro.Year;
+
+                            var planilla = await context.Planillas.FirstOrDefaultAsync(p => p.IdUsuario == editarregistro.idusuario && p.Mes == mesregistro && p.Anio == anioregistro);
+                            if (planilla == null)
+                            {
+                                planilla = new Planilla
+                                {
+                                    IdUsuario = editarregistro.idusuario,
+                                    Mes = mesregistro,
+                                    Anio = anioregistro,
+                                };
+                                context.Planillas.Add(planilla);
+                                await context.SaveChangesAsync();
+                            }
+
+
+                            registro.IdPlanilla = planilla.Id;
+                            registro.Fecharegistro = editarregistro.Fecharegistro;
+                            registro.Idsubactividad = editarregistro.idsubactividad;
+                            registro.Hhregistradas = horasAsignadasDecimal;
+                            registro.Observaciones = editarregistro.observaciones;
+                            await context.SaveChangesAsync();
+
+                        }
+                        resultado = 1;
+                    }
+
+
+                    /*EDITANDO PROYECTO CUANDO ANTES ERA SUBACTIVIDAD*/
+
+
+                    else if (editarregistro.idsubactividad == 0 && editarregistro.idusuproy > 0)
+                    {
+                        int statusProyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == editarregistro.idusuproy).Select(up => up.IdProyectoNavigation.StatusProyecto).FirstOrDefaultAsync();
+                        string tipo = string.Empty;
+
+                        if (statusProyecto == 2)
+                        {
+                            tipo = "En Ejecución";
+                        }
+                        else if (statusProyecto == 1)
+                        {
+                            tipo = "En Negociación";
+                        }
+                        else
+                        {
+                            return 2;
+                        }
+                        var registro = await context.PlanillaRegistroEmpresas.FindAsync(editarregistro.idregistro);
+                        decimal horasAsignadasDecimal;
+                        if (!decimal.TryParse(editarregistro.horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
+                        {
+
+                            return 0;
+                        }
+
+                        int mesregistro = editarregistro.Fecharegistro.Month;
+                        int anioregistro = editarregistro.Fecharegistro.Year;
+
+                        var planilla = await context.Planillas.FirstOrDefaultAsync(p => p.IdUsuario == editarregistro.idusuario && p.Mes == mesregistro && p.Anio == anioregistro);
+                        if (planilla == null)
+                        {
+                            planilla = new Planilla
+                            {
+                                IdUsuario = editarregistro.idusuario,
+                                Mes = mesregistro,
+                                Anio = anioregistro,
+                            };
+                            context.Planillas.Add(planilla);
+                            await context.SaveChangesAsync();
+                        }
+
+
+                        var nuevoregistro = new PlanillaUsusarioProyecto
+                        {
+                            IdPlanilla = planilla.Id,
+                            IdUsuProy = editarregistro.idusuproy,
+                            RegistroHhProyecto = horasAsignadasDecimal,
+                            FechaRegistro = editarregistro.Fecharegistro,
+                            Observaciones = editarregistro.observaciones,
+                            Idactividad = editarregistro.Idactividad,
+                            Tipo = tipo,
+                        };
+                        context.PlanillaUsusarioProyectos.Add(nuevoregistro);
+                        var usuarioproyecto = await context.UsuarioProyectos
+               .Include(up => up.IdUsuarioNavigation)
+               .ThenInclude(u => u.IdRecursoNavigation)
+               .FirstOrDefaultAsync(up => up.Id == editarregistro.idusuproy);
+                        if (statusProyecto == 1)
+                        {
+                            await context.SaveChangesAsync();
+                        }
+                        if (statusProyecto == 2)
+                        {
+                            if (usuarioproyecto != null)
+                            {
+
+
+                                if (usuarioproyecto.HhConsultora.HasValue)
+                                {
+                                    usuarioproyecto.HhConsultora -= horasAsignadasDecimal;
+                                }
+                                else if (usuarioproyecto.HhConsultorb.HasValue)
+                                {
+                                    usuarioproyecto.HhConsultorb -= horasAsignadasDecimal;
+                                }
+                                else if (usuarioproyecto.HhConsultorc.HasValue)
+                                {
+                                    usuarioproyecto.HhConsultorc -= horasAsignadasDecimal;
+                                }
+
+
+                                var usuario = usuarioproyecto.IdUsuarioNavigation;
+
+
+                                if (usuario != null && usuario.IdRecurso != 0)
+                                {
+                                    var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                                    if (recurso != null)
+                                    {
+
+                                        if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
+                                        {
+
+                                            if (recurso.NombreRecurso == "Socio")
+                                            {
+
+
+                                                var usuariosRelacionados = await context.UsuarioProyectos
+                                                .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
+                                                .ToListAsync();
+
+
+                                                foreach (var usuarioRelacionado in usuariosRelacionados)
+                                                {
+                                                    usuarioRelacionado.HhSocios -= horasAsignadasDecimal;
+                                                }
+                                            }
+
+                                            else if (recurso.NombreRecurso == "Staff")
+                                            {
+
+
+                                                var usuariosRelacionados = await context.UsuarioProyectos
+                                                .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
+                                                .ToListAsync();
+
+
+                                                foreach (var usuarioRelacionado in usuariosRelacionados)
+                                                {
+                                                    usuarioRelacionado.HhStaff -= horasAsignadasDecimal;
+                                                }
+                                            }
+
+
+                                            /* decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
+                                             Debug.WriteLine(totalpermitidossemana);
+                                             if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
+                                             {
+                                                 Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
+                                                 return 3;
+                                             }*/
+
+
+
+
+                                        }
+                                    }
+                                }
+
+                                else
+                                {
+                                    Debug.WriteLine("Error al obtener el recurso asociado al usuario.");
+                                    return 2;
+                                }
+                            }
+
+                        }
+
+                        context.PlanillaRegistroEmpresas.Remove(registro);
+                        await context.SaveChangesAsync();
+                        resultado = 1;
+                    }
+
+                }
+
+                /*SUBACTIVIDAD ES 0*/
+                
+                else
+                {
+                    if(editarregistro.idsubactividad > 0 && (editarregistro.idusuproy == 0))
+                    {
+                        var registro = await context.PlanillaUsusarioProyectos.FindAsync(editarregistro.idregistro);
+                        if (registro != null) {
+                            decimal? costoUnitario = await context.Recursos.Where(r => r.Usuarios.Any(u => u.Id == editarregistro.idusuario)).Select(r => r.CostoUnitario).FirstOrDefaultAsync();
+                            decimal horasAsignadasDecimal;
+                            if (!decimal.TryParse(editarregistro.horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
+                            {
+
+                                return 0;
+                            }
+
+                            int mesregistro = editarregistro.Fecharegistro.Month;
+                            int anioregistro = editarregistro.Fecharegistro.Year;
+
+                            var planilla = await context.Planillas.FirstOrDefaultAsync(p => p.IdUsuario == editarregistro.idusuario && p.Mes == mesregistro && p.Anio == anioregistro);
+                            if (planilla == null)
+                            {
+                                planilla = new Planilla
+                                {
+                                    IdUsuario = editarregistro.idusuario,
+                                    Mes = mesregistro,
+                                    Anio = anioregistro,
+                                };
+                                context.Planillas.Add(planilla);
+                                await context.SaveChangesAsync();
+                            }
+                        
+                            var nuevoregistro = new PlanillaRegistroEmpresa
+                            {
+                                IdPlanilla = planilla.Id,
+                                Hhregistradas = horasAsignadasDecimal,
+                                Fecharegistro = editarregistro.Fecharegistro,
+                                Observaciones = editarregistro.observaciones,
+                                Idsubactividad = editarregistro.idsubactividad,
+                                CostoMonetario = costoUnitario,
+                            };
+                            context.PlanillaRegistroEmpresas.Add(nuevoregistro);
+                            
+                            await context.SaveChangesAsync();
+
+                            
+                            int usuproy = await context.PlanillaUsusarioProyectos.Where(p => p.Id == editarregistro.idregistro).Select(p => p.IdUsuProy).FirstOrDefaultAsync();
+                            if (usuproy != 0)
+                            {
+
+                                var statusProyecto = await context.UsuarioProyectos
+                                .Where(up => up.Id == usuproy)
+                                 .Join(context.Proyectos,
+                                     up => up.IdProyecto,
+                                        p => p.Id,
+                                    (up, p) => p.StatusProyecto)
+                                 .FirstOrDefaultAsync();
+                                if (statusProyecto == 1)
+                                {
+                                    context.PlanillaUsusarioProyectos.Remove(registro);
+                                    await context.SaveChangesAsync();
+                            
+                                }
+                                else if (statusProyecto == 2 || statusProyecto == 4)
+                                {
+                                    var usuarioproyecto = await context.UsuarioProyectos
+                                    .Include(up => up.IdUsuarioNavigation)
+                                    .ThenInclude(u => u.IdRecursoNavigation)
+                                    .FirstOrDefaultAsync(up => up.Id == usuproy);
+
+                                    var usuario = usuarioproyecto.IdUsuarioNavigation;
+
+                                    var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                                    if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
+                                    {
+                                        if (recurso.NombreRecurso == "Socio")
+                                        {
+
+
+                                            var usuariosRelacionados = await context.UsuarioProyectos
+                                            .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
+                                            .ToListAsync();
+
+
+                                            foreach (var usuarioRelacionado in usuariosRelacionados)
+                                            {
+                                                usuarioRelacionado.HhSocios += horasAsignadasDecimal;
+                                            }
+                                            context.PlanillaUsusarioProyectos.Remove(registro);
+                                            await context.SaveChangesAsync();
+                                            
+                                        }
+                                        else if (recurso.NombreRecurso == "Staff")
+                                        {
+
+
+                                            var usuariosRelacionados = await context.UsuarioProyectos
+                                            .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
+                                            .ToListAsync();
+
+
+                                            foreach (var usuarioRelacionado in usuariosRelacionados)
+                                            {
+                                                usuarioRelacionado.HhStaff += horasAsignadasDecimal;
+                                            }
+                                            context.PlanillaUsusarioProyectos.Remove(registro);
+                                            await context.SaveChangesAsync();
+                                          
+                                        }
+                                    }
+
+                                }
+
+
+                            }
+
+                            resultado = 1;
+                        }
+                       
+                    }
+
+                    /*EDITANDO PROYECTO CUANDO ANTES ERA PROYECTO*/
+                    else if (editarregistro.idsubactividad == 0 && (editarregistro.idusuproy > 0))
+                    {
+                        var registro = await context.PlanillaUsusarioProyectos.FindAsync(editarregistro.idregistro);
+                        if (registro != null) {
+                            int statusProyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == editarregistro.idusuproy).Select(up => up.IdProyectoNavigation.StatusProyecto).FirstOrDefaultAsync();
+                            string tipo = string.Empty;
+
+                            if (statusProyecto == 2)
+                            {
+                                tipo = "En Ejecución";
+                            }
+                            else if (statusProyecto == 1)
+                            {
+                                tipo = "En Negociación";
+                            }
+                            else
+                            {
+                                return 2;
+                            }
+                           
+
+                            decimal horasAsignadasDecimal;
+                            if (!decimal.TryParse(editarregistro.horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
+                            {
+
+                                return 0;
+                            }
+
+                            int mesregistro = editarregistro.Fecharegistro.Month;
+                            int anioregistro = editarregistro.Fecharegistro.Year;
+
+                            var planilla = await context.Planillas.FirstOrDefaultAsync(p => p.IdUsuario == editarregistro.idusuario && p.Mes == mesregistro && p.Anio == anioregistro);
+                            if (planilla == null)
+                            {
+                                planilla = new Planilla
+                                {
+                                    IdUsuario = editarregistro.idusuario,
+                                    Mes = mesregistro,
+                                    Anio = anioregistro,
+                                };
+                                context.Planillas.Add(planilla);
+                                await context.SaveChangesAsync();
+                            }
+                            registro.IdPlanilla = planilla.Id;
+                            registro.FechaRegistro = editarregistro.Fecharegistro;
+                            registro.IdUsuProy = editarregistro.idusuproy;
+                            registro.RegistroHhProyecto = horasAsignadasDecimal;
+                            registro.Observaciones = editarregistro.observaciones;
+                            registro.Idactividad = editarregistro.Idactividad;
+                            registro.Tipo = tipo;
+                            await context.SaveChangesAsync();
+
+
+                            resultado = 1;
+                        }
+                       
+                    }
+                }
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al editar un registro:{ex.Message}");
+                return 0;
+            }
+        }
+
         public async Task<bool> EliminarRegistro(int idregistro)
         {
             try
@@ -343,7 +749,7 @@ namespace Proyectogestionhoras.Services
                             await context.SaveChangesAsync();
                             resultado = true;
                         }
-                        else if (statusProyecto == 2 || statusProyecto==4)
+                        else if (statusProyecto == 2 || statusProyecto == 4)
                         {
                             var usuarioproyecto = await context.UsuarioProyectos
                             .Include(up => up.IdUsuarioNavigation)
@@ -390,20 +796,20 @@ namespace Proyectogestionhoras.Services
                                     resultado = true;
                                 }
                             }
-                            
+
                         }
-                        
-                       
+
+
                     }
                     else
                     {
                         resultado = false;
                     }
                 }
-                
+
                 return resultado;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al eliminar el registro:{e.Message}");
                 return false;
@@ -548,6 +954,7 @@ namespace Proyectogestionhoras.Services
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IdProyecto")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdProyecto")),
                                 IdActividad = reader.IsDBNull(reader.GetOrdinal("IdActividad")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdActividad")),
                                 estado = reader.IsDBNull(reader.GetOrdinal("estado")) ? 0 : reader.GetInt32(reader.GetOrdinal("estado")),
+                                idusuproy = reader.IsDBNull(reader.GetOrdinal("idusuproy")) ? 0 : reader.GetInt32(reader.GetOrdinal("idusuproy")),
                                 FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FechaRegistro")),
                                 NombreActividad = reader.IsDBNull(reader.GetOrdinal("NombreActividad")) ? null : reader.GetString(reader.GetOrdinal("NombreActividad")),
                                 Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? null : reader.GetString(reader.GetOrdinal("Nombre")),

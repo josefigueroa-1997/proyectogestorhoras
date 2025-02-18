@@ -225,10 +225,11 @@
 
                                 @if (planilla.estado == 1 || planilla.estado == 2)
                                 {
-                                    <input type="date" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" />
+                                    <input type="date" name="fecharegistro" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                 }
                                 else
                                 {
+                                    <input type="hidden" name="fecharegistro" />
                                     @planilla.FechaRegistro.ToString("dd/MM/yyyy")
                                 }
 
@@ -237,13 +238,15 @@
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
                                 @if (planilla.estado == 1 || planilla.estado == 2)
                                 {
-                                    <select class="actividadSelect" data-idactividad="@planilla.IdActividad">
+                                    <input type="hidden" name="controlhhactividad" class="controlhh-hidden" value="">
+                                    <select name="idactividad" class="actividadSelect" data-idactividad="@planilla.IdActividad">
                                         <option value="">Cargando...</option>
                                     </select>
 
                                 }
                                 else
                                 {
+                                    <input type="hidden" name="idactividad" value="@planilla.IdActividad"/>
                                     @planilla.NombreActividad
                                 }
 
@@ -251,7 +254,8 @@
                             <td style="padding: 10px; border: 1px solid #ddd; ">
                                 @if(planilla.estado == 1 || planilla.estado == 2)
                                 {
-                                    <select class="nombreSelect">
+                                    
+                                    <select name="idproyecto" class="nombreSelect">
                                         @foreach (var actividad in ViewBag.Actividad)
                                         {
                                             if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Ejecucion")
@@ -313,6 +317,7 @@
                                 }
                                 else
                                 {
+                                    <input type="hidden" name="idproyecto" value="@planilla.IdProyecto" />
                                     @planilla.Nombre
                                 }
                             </td>
@@ -320,11 +325,12 @@
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                                 @if (planilla.estado == 1 || planilla.estado == 2)
                                 {
-                                    <input type="number" value="@planilla.HHregistradas.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="0.5" min="0" />
+                                    <input type="number" name="hhregistradas" value="@planilla.HHregistradas.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="0.5" min="0" />
                                 }
 
                                 else
                                 {
+                                    <input type="hidden" name="hhregistradas" value="@planilla.HHregistradas" />
                                     @planilla.HHregistradas
                                 }
                                 
@@ -342,7 +348,15 @@
                             <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
                                 @if (planilla.estado == 1 || planilla.estado == 2)
                                 {
-                                    <button type="submit" style="background-color: orange; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                                    <form>
+
+                                    </form>
+                                    <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" value="@planilla.idusuproy"/>
+                                    <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
+                                    <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
+                                    <button type="button" class="editarBtn" style="background-color: orange; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                                             
+                                              
                                         Editar
                                     </button>
                                 }
@@ -401,11 +415,17 @@
                             option.value = item.id;
                             option.textContent = item.nombre;
                             option.setAttribute("data-controlhh", item.controlhh);
+                            
                             if (item.id == actividadSeleccionada) {
                                 option.selected = true;
                             }
 
                             select.appendChild(option);
+                        if (option.selected) {
+                            // Encontrar el input hidden en la misma fila
+                            const fila = select.closest('tr');
+                            fila.querySelector('.controlhh-hidden').value = item.controlhh.toLowerCase().trim();
+                        }
                         });
                     });
                 })
@@ -455,7 +475,7 @@
 
                         select.on('change', function () {
                             var idproyecto = $(this).val();
-                            // cargarInformacionUsuario(idproyecto);
+                            cargarInformacionUsuario(idproyecto);
                         });
                     } else {
                         select.append('<option value="" disabled>No hay proyectos disponibles</option>');
@@ -474,7 +494,7 @@
                 type: 'GET',
                 data: { idusuario: idusuario },
                 success: function (response) {
-                    const select = fila.find('.nombreSelect'); 
+                    const select = fila.find('.nombreSelect');
                     select.empty();
                     select.append('<option value="" disabled selected>Seleccione un proyecto</option>');
 
@@ -486,9 +506,10 @@
                             }));
                         });
 
+              
                         select.on('change', function () {
                             var idproyecto = $(this).val();
-                            // cargarInformacionUsuario(idproyecto);
+                            cargarInformacionUsuario(idproyecto); 
                         });
                     } else {
                         select.append('<option value="" disabled>No hay proyectos disponibles</option>');
@@ -500,26 +521,114 @@
             });
         }
     }
+    $(document).on('change', '.nombreSelect', function () {
+        var idproyecto = $(this).val();
 
+        cargarInformacionUsuario(idproyecto); 
+    });
+    function cargarInformacionUsuario(idproyecto) {
+    
+        $.ajax({
+            url: '@Url.Action("Recuperarhhusuarios", "Usuario")',
+            type: 'GET',
+            data: { idusuario: idusuario, idproyecto: idproyecto },
+            success: function (informacionusuario) {
+                if (informacionusuario && informacionusuario.length > 0) {
+                    $('.rolrecurso').val(informacionusuario[0].recurso);
+                    $('.hhrestantes').val(informacionusuario[0].hhasignadas);
+                    $('.idusuarioproyecto').val(informacionusuario[0].idusuarioproyecto);
+                } else {
+                    $('.rolrecurso').val('Recurso no disponible');
+                }
+            },
+            error: function (error) {
+                console.error("Error al obtener la información del recurso:", error);
+                $('.rolrecurso').val('Error al obtener recurso');
+            }
+        });
+    }
+
+    var controlvalor = 0;
     $(document).on('change', '.actividadSelect', function () {
         const idActividad = $(this).val();
         const controlhh = $(this).find(':selected').data('controlhh').toLowerCase().trim();
 
         const fila = $(this).closest('tr');
-
+        fila.find('.controlhh-hidden').val(controlhh);
         if (idActividad) {
             if (controlhh === 'proyecto en ejecucion') {
+               
                 cargarProyectos(fila);
+                fila.find('.proyectoid').val(0);
+                controlvalor = 1;
+
             } else if (controlhh === 'empresa') {
                 fila.find('.idusuarioproyecto').val(0); 
                 cargarSubactividades(idActividad, fila);
+                controlvalor = 2;
             } else if (controlhh === "proyecto en negociación") {
+                fila.find('.proyectoid').val(0);
                 cargarProyectosNegociacion(fila);
+                controlvalor = 1;
             }
         } else {
             console.log("Error al mostrar datos");
         }
     });
+
+
+
+    /*editar registro*/
+    $(document).ready(function () {
+        $(".editarBtn").on("click", function (event) {
+            event.preventDefault();
+        
+            let row = $(this).closest("tr");
+            var tipoactividad = row.find("[name='controlhhactividad']").val();
+            let idregistro = row.find("[name='idregistro']").val();
+            let idusuarioeditar = @Context.Session.GetInt32("id");
+            let idusuproy = row.find("[name='idusuarioproyecto']").val();;
+            let horasasignadas = row.find("[name='hhregistradas']").val();
+            let fecharegistro = row.find("[name='fecharegistro']").val();
+            let observaciones = row.find("[name='observaciones']").val() || "";
+            let idactividad = row.find("[name='idactividad']").val();
+            let idsubactividad = row.find("[name='idproyecto']").val();
+            if (tipoactividad === "proyecto en ejecucion" || tipoactividad === "proyecto en negociación") {
+                idsubactividad = 0;
+            }
+            if (tipoactividad === "empresa") {
+                idusuproy = 0;
+            }
+
+            $.ajax({
+                url: "/Planilla/EditarRegistroPlanilla",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    idregistro: parseInt(idregistro),
+                    idusuario: parseInt(idusuarioeditar),
+                    idusuproy: parseInt(idusuproy),
+                    horasasignadas: horasasignadas,
+                    Fecharegistro: fecharegistro,
+                    observaciones: observaciones,
+                    Idactividad: parseInt(idactividad),
+                    idsubactividad: parseInt(idsubactividad)
+                }),
+                success: function (data) {
+                    if (data.success) {
+                        alert("✅ " + data.message);
+                    } else {
+                        alert("⚠️ Error: " + data.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("❌ Error:", error);
+                }
+            });
+        });
+    });
+
+
 </script>
 
 

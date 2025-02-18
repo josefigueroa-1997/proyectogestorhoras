@@ -6,7 +6,7 @@ using Proyectogestionhoras.Services.Interface;
 using OfficeOpenXml;
 using System.IO;
 using System.Diagnostics;
-using Proyectogestionhoras.Models.DTO;
+using Proyectogestionhoras.Models.ViewModel;
 using iText.Html2pdf;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -239,7 +239,55 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Ejecucion = ejecucion;
             return View("PlanillaMes");
         }
-       
+
+        [HttpPost]
+        public async Task<IActionResult> EditarRegistroPlanilla([FromBody] EditarRegistroViewModel editar) {
+
+            bool registroExitoso = false;
+            bool yaSeRegistraronHoras = false;
+            bool error = false;
+            try
+            {
+                int resultado = await planillaService.EditarRegistro(editar);
+                if (resultado == 1)
+                {
+
+                    registroExitoso = true;
+
+                }
+                else if (resultado == 2) {
+
+                    yaSeRegistraronHoras = true;
+                
+                }
+                else if(resultado == 0)
+                {
+                    error = true;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                return Json(new { success = false, message = "Ocurrió un error inesperado: " + ex.Message });
+            }
+
+            if (registroExitoso)
+            {
+                return Json(new { success = true, message = "El registrado se ha editado de manera exitosa." });
+            }
+            else if (yaSeRegistraronHoras)
+            {
+                return Json(new { success = false, message = "Ya se han registrado horas para esta actividad en este proyecto durante esta fecha." });
+            }
+            else if (error)
+            {
+                return Json(new { success = false, message = "Ocurrió un error al editar el registro de las horas." });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Ocurrió un error inesperado." });
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> EliminarRegistroPlanilla()
