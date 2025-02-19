@@ -15,6 +15,8 @@
         public string? NombreActividad { get; set; }
         public decimal HHregistradas { get; set; }
         public string? Observaciones { get; set; }
+        public string? tipo { get; set; }
+        public string? correlativo { get; set; }
         public int Mes { get; set; }
         public int Anio { get; set; }
         public int IDCUENTA { get; set; }

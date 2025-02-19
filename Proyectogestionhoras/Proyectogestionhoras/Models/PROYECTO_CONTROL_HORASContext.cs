@@ -845,6 +845,11 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Correlativo)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("CORRELATIVO");
+
                 entity.Property(e => e.CostoMonetario).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Fecharegistro)

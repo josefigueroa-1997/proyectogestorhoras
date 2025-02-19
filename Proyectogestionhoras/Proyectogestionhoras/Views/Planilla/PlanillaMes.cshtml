@@ -280,9 +280,14 @@
                                             {
                                                 @foreach (var p in ViewBag.Negociacion)
                                                 {
+                                                    
                                                     if (p.Nombre == planilla.Nombre)
                                                     {
-                                                        <option value="@p.Id" selected>@p.Nombre</option>
+
+                                                        
+                                                            <option value="@p.Id" selected>@p.Nombre</option>
+                                                        
+                                                      
                                                     }
                                                     else
                                                     {
@@ -294,7 +299,7 @@
                                             {
                                                 @foreach (var p in ViewBag.Subactividades)
                                                 {
-                                                    // Filtrar solo las subactividades con el mismo Id de actividad
+                                                    
                                                     if (p.Idactividad == actividad.Id)
                                                     {
                                                         if (p.Nombre == planilla.Nombre)
@@ -317,7 +322,7 @@
                                 }
                                 else
                                 {
-                                    <input type="hidden" name="idproyecto" value="@planilla.IdProyecto" />
+                                    <input type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
                                     @planilla.Nombre
                                 }
                             </td>
@@ -353,6 +358,7 @@
                                     </form>
                                     <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" value="@planilla.idusuproy"/>
                                     <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
+                                    <input type="hidden" name="correlativo" value="@planilla.correlativo" />
                                     <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
                                     <button type="button" class="editarBtn" style="background-color: orange; color: white; border: none; padding: 5px 10px; cursor: pointer;">
                                              
@@ -367,6 +373,7 @@
                                 {
                                     <form action="@Url.Action("EliminarRegistroPlanilla", "Planilla")" method="post" onsubmit="return confirmarEliminacion();">
                                         <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
+                                        <input type="hidden" name="correlativo" value="@planilla.correlativo" />
                                         <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
                                             Eliminar
                                         </button>
@@ -390,7 +397,20 @@
 
             </tbody>
         </table>
-
+        <div class="fixed inset-0 flex items-center justify-center z-50" id="edicionModal" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+                <div class="flex justify-between items-center border-b p-4">
+                    <h5 class="text-lg font-semibold">Registro de Horas</h5>
+                    <button type="button" class="text-gray-600 hover:text-gray-900" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="p-4">
+                    <p id="modalMensaje"></p>
+                </div>
+                <div class="flex justify-end border-t p-4">
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeModal()">Cerrar</button>
+                </div>
+            </div>
+        </div>
 
     </div>
    
@@ -422,7 +442,6 @@
 
                             select.appendChild(option);
                         if (option.selected) {
-                            // Encontrar el input hidden en la misma fila
                             const fila = select.closest('tr');
                             fila.querySelector('.controlhh-hidden').value = item.controlhh.toLowerCase().trim();
                         }
@@ -593,13 +612,15 @@
             let observaciones = row.find("[name='observaciones']").val() || "";
             let idactividad = row.find("[name='idactividad']").val();
             let idsubactividad = row.find("[name='idproyecto']").val();
+            let correlativo = row.find("[name='correlativo']").val();
             if (tipoactividad === "proyecto en ejecucion" || tipoactividad === "proyecto en negociación") {
                 idsubactividad = 0;
             }
             if (tipoactividad === "empresa") {
                 idusuproy = 0;
             }
-
+            $('#modalMensaje').text("Procesando Su Solicitud...");
+            $('#edicionModal').show();
             $.ajax({
                 url: "/Planilla/EditarRegistroPlanilla",
                 type: "POST",
@@ -609,6 +630,7 @@
                     idusuario: parseInt(idusuarioeditar),
                     idusuproy: parseInt(idusuproy),
                     horasasignadas: horasasignadas,
+                    correlativo: correlativo,
                     Fecharegistro: fecharegistro,
                     observaciones: observaciones,
                     Idactividad: parseInt(idactividad),
@@ -616,9 +638,11 @@
                 }),
                 success: function (data) {
                     if (data.success) {
-                        alert("✅ " + data.message);
+                        
+                        $('#modalMensaje').text("✅ " + data.message);
                     } else {
-                        alert("⚠️ Error: " + data.message);
+                        $('#modalMensaje').text("⚠️ Error: " + data.message);
+                        
                     }
                 },
                 error: function (xhr, status, error) {
@@ -628,7 +652,9 @@
         });
     });
 
-
+    window.closeModal = function () {
+        $('#edicionModal').hide();
+    };
 </script>
 
 

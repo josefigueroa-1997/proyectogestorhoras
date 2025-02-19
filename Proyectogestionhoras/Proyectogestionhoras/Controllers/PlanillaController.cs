@@ -232,7 +232,7 @@ namespace Proyectogestionhoras.Controllers
             var subactividades = await context.Subactividads.Select(s => new { s.Id,s.Nombre,s.Idactividad }).ToListAsync();
             var actividad = await context.Actividades.ToListAsync();
             var ejecucion = await context.Proyectos.Where(p => p.StatusProyecto == 2).Select(p => new { p.Id, p.Nombre }).ToListAsync();
-            var negociacion = await context.Proyectos.Where(p => p.StatusProyecto == 1).Select(p => new { p.Id, p.Nombre }).ToListAsync();
+            var negociacion = await context.Proyectos.Where(p => p.StatusProyecto == 1).Select(p => new { p.Id, p.Nombre,p.StatusProyecto }).ToListAsync();
             ViewBag.Subactividades = subactividades;
             ViewBag.Negociacion = negociacion;
             ViewBag.Actividad = actividad;
@@ -273,7 +273,7 @@ namespace Proyectogestionhoras.Controllers
 
             if (registroExitoso)
             {
-                return Json(new { success = true, message = "El registrado se ha editado de manera exitosa." });
+                return Json(new { success = true, message = "El registro se ha editado de manera exitosa." });
             }
             else if (yaSeRegistraronHoras)
             {
@@ -293,6 +293,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> EliminarRegistroPlanilla()
         {
             int idregistro = int.Parse(Request.Form["idregistro"].ToString());
+            var correlativo = Request.Form["correlativo"];
             int planilla = await context.PlanillaRegistroEmpresas.Where(p => p.Id == idregistro).Select(p => p.IdPlanilla).FirstOrDefaultAsync();
             int planillaproyecto = await context.PlanillaUsusarioProyectos.Where(p => p.Id == idregistro).Select(p => p.IdPlanilla).FirstOrDefaultAsync();
             int planillaoficial = 0;
@@ -307,7 +308,7 @@ namespace Proyectogestionhoras.Controllers
             }
             try
             {
-                bool resultado = await planillaService.EliminarRegistro(idregistro);
+                bool resultado = await planillaService.EliminarRegistro(idregistro,correlativo);
                 if (resultado)
                 {
 

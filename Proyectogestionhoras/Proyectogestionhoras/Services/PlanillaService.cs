@@ -10,6 +10,7 @@ using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
+using iText.Commons.Actions.Contexts;
 namespace Proyectogestionhoras.Services
 {
     public class PlanillaService : IPlanilla
@@ -291,6 +292,7 @@ namespace Proyectogestionhoras.Services
                     Observaciones = observaciones,
                     Idsubactividad = idsubactividad,
                     CostoMonetario = costoUnitario,
+                    Correlativo = GenerarCorrelativo()
                 };
                 context.PlanillaRegistroEmpresas.Add(registro);
                 await context.SaveChangesAsync();
@@ -303,14 +305,33 @@ namespace Proyectogestionhoras.Services
                 return 2;
             }
         }
+        public string GenerarCorrelativo(string letra = "A")
+        {
 
+            var ultimoRegistro = ObtenerUltimoRegistroCorrelativo(); 
+
+            if (ultimoRegistro == null)
+            {
+                return letra + "1";  
+            }
+
+            var ultimoNumero = int.Parse(ultimoRegistro.Correlativo.Substring(1)); 
+            return letra + (ultimoNumero + 1).ToString();  
+        }
+        public PlanillaRegistroEmpresa ObtenerUltimoRegistroCorrelativo()
+        {
+           
+            return context.PlanillaRegistroEmpresas
+                .OrderByDescending(r => r.Correlativo)  
+                .FirstOrDefault();  
+        }
 
         public async Task<int> EditarRegistro([FromBody] EditarRegistroViewModel editarregistro)
         {
             try
             {
                 int resultado = 0;
-                int subactividadhistorica = await context.PlanillaRegistroEmpresas.Where(p => p.Id == editarregistro.idregistro).Select(p => p.Idsubactividad).FirstOrDefaultAsync();
+                int subactividadhistorica = await context.PlanillaRegistroEmpresas.Where(p => p.Correlativo == editarregistro.correlativo).Select(p => p.Idsubactividad).FirstOrDefaultAsync();
                 if (subactividadhistorica > 0)
                 {
                     if (editarregistro.idsubactividad > 0 && (editarregistro.idusuproy == 0))
@@ -559,6 +580,7 @@ namespace Proyectogestionhoras.Services
                                 Observaciones = editarregistro.observaciones,
                                 Idsubactividad = editarregistro.idsubactividad,
                                 CostoMonetario = costoUnitario,
+                                Correlativo = GenerarCorrelativo(),
                             };
                             context.PlanillaRegistroEmpresas.Add(nuevoregistro);
                             
@@ -660,7 +682,7 @@ namespace Proyectogestionhoras.Services
                             {
                                 return 2;
                             }
-                           
+                            decimal? horasiniciales = await context.PlanillaUsusarioProyectos.Where(r=>r.Id == editarregistro.idregistro).Select(r=>r.RegistroHhProyecto).FirstOrDefaultAsync();
 
                             decimal horasAsignadasDecimal;
                             if (!decimal.TryParse(editarregistro.horasasignadas, NumberStyles.Any, CultureInfo.InvariantCulture, out horasAsignadasDecimal))
@@ -668,6 +690,9 @@ namespace Proyectogestionhoras.Services
 
                                 return 0;
                             }
+
+                            decimal? nuevashoras = horasAsignadasDecimal - horasiniciales;
+
 
                             int mesregistro = editarregistro.Fecharegistro.Month;
                             int anioregistro = editarregistro.Fecharegistro.Year;
@@ -691,7 +716,109 @@ namespace Proyectogestionhoras.Services
                             registro.Observaciones = editarregistro.observaciones;
                             registro.Idactividad = editarregistro.Idactividad;
                             registro.Tipo = tipo;
+
+                            int usuproy = await context.PlanillaUsusarioProyectos.Where(p => p.Id == editarregistro.idregistro).Select(p => p.IdUsuProy).FirstOrDefaultAsync();
+                            if (statusProyecto == 2)
+                            {
+                                var usuarioproyecto = await context.UsuarioProyectos
+                                   .Include(up => up.IdUsuarioNavigation)
+                                   .ThenInclude(u => u.IdRecursoNavigation)
+                                   .FirstOrDefaultAsync(up => up.Id == usuproy);
+                                if (usuarioproyecto != null)
+                                {
+
+
+                                    if (usuarioproyecto.HhConsultora.HasValue)
+                                    {
+                                        usuarioproyecto.HhConsultora -= nuevashoras;
+                                    }
+                                    else if (usuarioproyecto.HhConsultorb.HasValue)
+                                    {
+                                        usuarioproyecto.HhConsultorb -= nuevashoras;
+                                    }
+                                    else if (usuarioproyecto.HhConsultorc.HasValue)
+                                    {
+                                        usuarioproyecto.HhConsultorc -= nuevashoras;
+                                    }
+
+
+                                    var usuario = usuarioproyecto.IdUsuarioNavigation;
+
+
+                                    if (usuario != null && usuario.IdRecurso != 0)
+                                    {
+                                        var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                                        if (recurso != null)
+                                        {
+
+                                            if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
+                                            {
+
+                                                if (recurso.NombreRecurso == "Socio")
+                                                {
+
+
+                                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhSocios.HasValue)
+                                                    .ToListAsync();
+
+
+                                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                                    {
+                                                        usuarioRelacionado.HhSocios -= nuevashoras;
+                                                    }
+                                                }
+
+                                                else if (recurso.NombreRecurso == "Staff")
+                                                {
+
+
+                                                    var usuariosRelacionados = await context.UsuarioProyectos
+                                                    .Where(up => up.IdProyecto == usuarioproyecto.IdProyecto && up.HhStaff.HasValue)
+                                                    .ToListAsync();
+
+
+                                                    foreach (var usuarioRelacionado in usuariosRelacionados)
+                                                    {
+                                                        usuarioRelacionado.HhStaff -= nuevashoras;
+                                                    }
+                                                }
+
+
+                                                /* decimal? totalpermitidossemana = recurso.NumeroHoras * (recurso.ProcentajeProyecto / 100);
+                                                 Debug.WriteLine(totalpermitidossemana);
+                                                 if (horasRegistradasSemana + horasAsignadasDecimal > totalpermitidossemana)
+                                                 {
+                                                     Debug.WriteLine("Error: Se exceden las horas permitidas en la semana.");
+                                                     return 3;
+                                                 }*/
+
+
+
+
+                                            }
+                                        }
+                                    }
+
+                                    else
+                                    {
+                                        Debug.WriteLine("Error al obtener el recurso asociado al usuario.");
+                                        return 2;
+                                    }
+                                }
+
+                            }
+
+
+
+
+
+
+
                             await context.SaveChangesAsync();
+
+
+
 
 
                             resultado = 1;
@@ -709,13 +836,13 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<bool> EliminarRegistro(int idregistro)
+        public async Task<bool> EliminarRegistro(int idregistro,string correlativo)
         {
             try
             {
                 bool resultado = false;
                 int idsubActividad = await context.PlanillaRegistroEmpresas
-                .Where(p => p.Id == idregistro)
+                .Where(p => p.Correlativo == correlativo)
                 .Select(p => p.Idsubactividad)
                 .FirstOrDefaultAsync();
                 if (idsubActividad > 0)
@@ -960,6 +1087,8 @@ namespace Proyectogestionhoras.Services
                                 Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? null : reader.GetString(reader.GetOrdinal("Nombre")),
                                 HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHregistradas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHregistradas")),
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? null : reader.GetString(reader.GetOrdinal("Observaciones")),
+                                tipo = reader.IsDBNull(reader.GetOrdinal("tipo")) ? null : reader.GetString(reader.GetOrdinal("tipo")),
+                                correlativo = reader.IsDBNull(reader.GetOrdinal("correlativo")) ? null : reader.GetString(reader.GetOrdinal("correlativo")),
                                 Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
                                 Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
                                 NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NombreUsuario")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreUsuario")),
