@@ -12,6 +12,7 @@ namespace Proyectogestionhoras.Models.DTO
         public string? Email { get; set; }
 
         public string? NOMBRE_RECURSO_CORRELATIVO { get; set; }
+        public string? RolRecurso { get; set; }
         public int Numero_Horas { get; set; }
         public decimal Costo_Unitario { get; set; }
         public string? Rol { get; set; }

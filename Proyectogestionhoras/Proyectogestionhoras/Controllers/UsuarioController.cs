@@ -104,9 +104,9 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> ActualizarDatos(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino)
+        public async Task <IActionResult> ActualizarDatos(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino, string nombrerecurso)
         {
-            bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino);
+            bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino,nombrerecurso);
             if (resultado)
             {
                 return RedirectToAction("Personal", "Usuario");

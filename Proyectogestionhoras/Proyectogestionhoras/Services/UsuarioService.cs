@@ -73,7 +73,7 @@ namespace Proyectogestionhoras.Services
             }
         }
 
-        public async Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino)
+        public async Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino,string nombrerecurso)
         {
             try
             {
@@ -98,6 +98,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@PORCENTAJEHORAS", porcentajeparameter));
                     command.Parameters.Add(new SqlParameter("@FECHAINICIO", fechainicioparamater));
                     command.Parameters.Add(new SqlParameter("@FECHAFIN", fechafinparamater));
+                    command.Parameters.Add(new SqlParameter("@NOMBRE_RECURSO", nombrerecurso));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
@@ -171,6 +172,7 @@ namespace Proyectogestionhoras.Services
                                 Telefono = reader.GetString(reader.GetOrdinal("TELEFONO")),
                                 Email = reader.GetString(reader.GetOrdinal("EMAIL")),
                                 NOMBRE_RECURSO_CORRELATIVO = reader.GetString(reader.GetOrdinal("NOMBRE_RECURSO_CORRELATIVO")),
+                                RolRecurso = reader.GetString(reader.GetOrdinal("RolRecurso")),
                                 Numero_Horas = reader.GetInt32(reader.GetOrdinal("NUMERO_HORAS")),
                                 Costo_Unitario = reader.GetDecimal(reader.GetOrdinal("COSTO_UNITARIO")) ,
                                 Rol = reader.GetString(reader.GetOrdinal("ROL")),

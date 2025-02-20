@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Editar Usuario";
+    int? idusuario = Context.Session.GetInt32("id");
 }
 <style>
     body {
@@ -123,6 +124,56 @@
                     <span id="emailStatus"></span>
                 </div>
 
+                <!-- Nombre del Recurso -->
+                <div class="form-group">
+                    
+                    @if (idusuario == 88)
+                    {
+                        <label for="nombreRecurso">Tipo de Personal</label>
+                        <select id="tipoPersonal" name="nombrerecurso" required>
+                            <option value="" disabled selected>Seleccione un tipo de recurso</option>
+                            @if (usuario.RolRecurso == "Socio")
+                            {
+                                <option value="Socio" selected>Socio</option>
+                            }
+                            else
+                            {
+                                <option value="Socio">Socio</option>
+                            }
+                            @if (usuario.RolRecurso == "Staff")
+                            {
+                                <option value="Staff" selected>Staff</option>
+                            }
+                            else
+                            {
+                                <option value="Staff">Staff</option>
+                            }
+                            @if (usuario.RolRecurso == "Consultor Externo")
+                            {
+                                <option value="Consultor Externo" selected>Consultor Externo</option>
+                            }
+                            else
+                            {
+                                <option value="Consultor Externo">Consultor Externo</option>
+                            }
+                            @if (usuario.RolRecurso == "Administrador MyCFO")
+                            {
+                                <option value="Administrador MyCFO" selected>Administrador MyCFO</option>
+                            }
+                            else
+                            {
+                                <option value="Administrador MyCFO">Administrador MyCFO</option>
+                            }
+
+             
+                        </select>
+                    }
+                    
+                    else{
+
+                        <input value="@usuario.RolRecurso" name="nombrerecurso" type="hidden"/>
+                    }
+                </div>
 
                 @if (usuario.Numero_Horas > 0)
                 {
