@@ -56,19 +56,7 @@
             margin-bottom: 5px;
         }
 
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .form-group select {
-            cursor: pointer;
-        }
+        
 
     .form-group-radio {
         display: flex;
@@ -194,113 +182,79 @@
     }
     <br />
     <div class="form-group">
-        <table id="planillausuario" style="width: 100%; border-collapse: collapse; text-align: left;">
-            <thead>
-                <tr style="background-color: #d9e2f3; color: black;">
-                    <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Actividad</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Proyecto</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Número Horas</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Unitario</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Costo Total</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Observaciones</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Editar</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Eliminar</th>
-                    
-                </tr>
-            </thead>
-            <tbody id="tabla-body">
-                
-                @if (ViewBag.Planilla != null)
-                {
-                    
+        <div class="w-full overflow-x-auto">
+            <table id="planillausuario" class="w-full border-collapse text-xs">
+                <thead>
+                    <tr class="bg-[#d9e2f3] text-black">
+                        <th class="px-2 py-2 border border-[#ddd]">Fecha</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Actividad</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Proyecto</th>
+                        <th class="px-2 py-2 border border-[#ddd]">CCosto</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Número Horas</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Costo Unitario</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Costo Total</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Observaciones</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Editar</th>
+                        <th class="px-2 py-2 border border-[#ddd]">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-body">
+                    @if (ViewBag.Planilla != null)
+                    {
                         decimal totalhoras = 0;
                         decimal totalcostoshoras = 0;
 
-                    @foreach (var planilla in ViewBag.Planilla)
-                    {
-                        <tr>
-                            
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-
-                                @if (planilla.estado == 1 || planilla.estado == 2)
-                                {
-                                    <input type="date" name="fecharegistro" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                }
-                                else
-                                {
-                                    <input type="hidden" name="fecharegistro" />
-                                    @planilla.FechaRegistro.ToString("dd/MM/yyyy")
-                                }
-
-                               
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-                                @if (planilla.estado == 1 || planilla.estado == 2)
-                                {
-                                    <input type="hidden" name="controlhhactividad" class="controlhh-hidden" value="">
-                                    <select name="idactividad" class="actividadSelect" data-idactividad="@planilla.IdActividad">
-                                        <option value="">Cargando...</option>
-                                    </select>
-
-                                }
-                                else
-                                {
-                                    <input type="hidden" name="idactividad" value="@planilla.IdActividad"/>
-                                    @planilla.NombreActividad
-                                }
-
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; ">
-                                @if(planilla.estado == 1 || planilla.estado == 2)
-                                {
-                                    
-                                    <select name="idproyecto" class="nombreSelect">
-                                        @foreach (var actividad in ViewBag.Actividad)
-                                        {
-                                            if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Ejecucion")
+                        @foreach (var planilla in ViewBag.Planilla)
+                        {
+                            <tr>
+                                <td class="px-2 py-2 border border-[#ddd] text-center">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <input type="date" name="fecharegistro" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="text-xs" />
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="fecharegistro" />
+                                        @planilla.FechaRegistro.ToString("dd/MM/yyyy")
+                                    }
+                                </td>
+                                <td class="px-2 py-2 border border-[#ddd] text-center">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <input type="hidden" name="controlhhactividad" class="controlhh-hidden" value="">
+                                        <select name="idactividad" class="actividadSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" data-idactividad="@planilla.IdActividad">
+                                            <option value="">Cargando...</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="idactividad" value="@planilla.IdActividad" />
+                                        @planilla.NombreActividad
+                                    }
+                                </td>
+                                <td class="px-2 py-2 border border-[#ddd]">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <select name="idproyecto" class="nombreSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            @foreach (var actividad in ViewBag.Actividad)
                                             {
-
-                                                @foreach (var proyecto in ViewBag.Ejecucion)
+                                                if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Ejecucion")
                                                 {
-                                                    if (proyecto.Nombre == planilla.Nombre)
+                                                    @foreach (var proyecto in ViewBag.Ejecucion)
                                                     {
-                                                        <option value="@proyecto.Id" selected>@proyecto.Nombre</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@proyecto.Id">@proyecto.Nombre</option>
+                                                        if (proyecto.Nombre == planilla.Nombre)
+                                                        {
+                                                            <option value="@proyecto.Id" selected>@proyecto.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@proyecto.Id">@proyecto.Nombre</option>
+                                                        }
                                                     }
                                                 }
-
-
-
-                                            }
-                                            if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Negociación")
-                                            {
-                                                @foreach (var p in ViewBag.Negociacion)
+                                                if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Negociación")
                                                 {
-                                                    
-                                                    if (p.Nombre == planilla.Nombre)
-                                                    {
-
-                                                        
-                                                            <option value="@p.Id" selected>@p.Nombre</option>
-                                                        
-                                                      
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@p.Id">@p.Nombre</option>
-                                                    }
-                                                }
-                                            }
-                                            @if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Empresa")
-                                            {
-                                                @foreach (var p in ViewBag.Subactividades)
-                                                {
-                                                    
-                                                    if (p.Idactividad == actividad.Id)
+                                                    @foreach (var p in ViewBag.Negociacion)
                                                     {
                                                         if (p.Nombre == planilla.Nombre)
                                                         {
@@ -312,91 +266,102 @@
                                                         }
                                                     }
                                                 }
+                                                @if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Empresa")
+                                                {
+                                                    @foreach (var p in ViewBag.Subactividades)
+                                                    {
+                                                        if (p.Idactividad == actividad.Id)
+                                                        {
+                                                            if (p.Nombre == planilla.Nombre)
+                                                            {
+                                                                <option value="@p.Id" selected>@p.Nombre</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@p.Id">@p.Nombre</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
+                                        @planilla.Nombre
+                                    }
+                                </td>
 
-                                        }
-                                      
-                                        
+                                <td class="px-2 py-2 min-w-[100px] border border-[#ddd] text-right text-xs">
+                                    @planilla.ccosto
+                                </td>
 
-                                    </select>
-                                }
-                                else
-                                {
-                                    <input type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
-                                    @planilla.Nombre
-                                }
-                            </td>
-                            
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
-                                @if (planilla.estado == 1 || planilla.estado == 2)
-                                {
-                                    <input type="number" name="hhregistradas" value="@planilla.HHregistradas.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="0.5" min="0" />
-                                }
-
-                                else
-                                {
-                                    <input type="hidden" name="hhregistradas" value="@planilla.HHregistradas" />
-                                    @planilla.HHregistradas
-                                }
-                                
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
-                               
-                                @String.Format("{0:N0}", @planilla.CostoUnitario)
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
-                                @String.Format("{0:N0}", @planilla.CostoTotal)
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-                                @planilla.Observaciones
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align:center;">
-                                @if (planilla.estado == 1 || planilla.estado == 2)
-                                {
-                                    <form>
-
-                                    </form>
-                                    <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" value="@planilla.idusuproy"/>
-                                    <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
-                                    <input type="hidden" name="correlativo" value="@planilla.correlativo" />
-                                    <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
-                                    <button type="button" class="editarBtn" style="background-color: orange; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-                                             
-                                              
-                                        Editar
-                                    </button>
-                                }
-                                
-                            </td>
-                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                                @if (planilla.estado == 1 || planilla.estado == 2)
-                                {
-                                    <form action="@Url.Action("EliminarRegistroPlanilla", "Planilla")" method="post" onsubmit="return confirmarEliminacion();">
+                                <td class="px-2 py-2 border border-[#ddd] text-right">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <input type="number" name="hhregistradas" value="@planilla.HHregistradas.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="0.5" min="0" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="hhregistradas" value="@planilla.HHregistradas" />
+                                        @planilla.HHregistradas
+                                    }
+                                </td>
+                                <td class="px-2 py-2 border border-[#ddd] text-right">
+                                    @String.Format("{0:N0}", @planilla.CostoUnitario)
+                                </td>
+                                <td class="px-2 py-2 border border-[#ddd] text-right">
+                                    @String.Format("{0:N0}", @planilla.CostoTotal)
+                                </td>
+                                <td class="px-2 py-2 border border-[#ddd] text-center">
+                                    @planilla.Observaciones
+                                </td>
+                                <td class="px-2 py-2 border border-[#ddd] text-center">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <form>
+                                        </form>
+                                        <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" value="@planilla.idusuproy" />
                                         <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
                                         <input type="hidden" name="correlativo" value="@planilla.correlativo" />
-                                        <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-                                            Eliminar
+                                        <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
+                                        <button type="button" class="editarBtn bg-orange-500 text-white border-none py-1 px-2 cursor-pointer">
+                                            Editar
                                         </button>
-                                    </form>
-                                }
-                               
-                            </td>
+                                    }
+                                </td>
+                                <td class="px-2 py-2 border border-[#ddd] text-center">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <form action="@Url.Action("EliminarRegistroPlanilla", "Planilla")" method="post" onsubmit="return confirmarEliminacion();">
+                                            <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
+                                            <input type="hidden" name="correlativo" value="@planilla.correlativo" />
+                                            <button type="submit" class="bg-red-500 text-white border-none py-1 px-2 cursor-pointer">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                            totalhoras += planilla.HHregistradas;
+                            totalcostoshoras += planilla.CostoTotal;
+                        }
+                        <tr>
+                            <td colspan="4" class="px-2 py-2 border border-[#ddd] bg-[#d9e2f3] text-left"><strong>Totales</strong></td>
+                            <td class="px-2 py-2 border border-[#ddd] text-right bg-[#d9e2f3]"><strong>@totalhoras</strong></td>
+                            <td colspan="2" class="px-2 py-2 border border-[#ddd] text-right bg-[#d9e2f3]"><strong> @String.Format("{0:N0}", totalcostoshoras)</strong></td>
                         </tr>
-                        totalhoras += planilla.HHregistradas;
-                        totalcostoshoras += planilla.CostoTotal;
                     }
-                    <tr>
-                        <td colspan="3"  style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Totales</strong></td>
-                        <td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@totalhoras</strong></td>
-                        <td colspan="2" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong> @String.Format("{0:N0}", totalcostoshoras)</strong></td>
-                        
-                        
-                    </tr>
-                }
+                </tbody>
+            </table>
 
 
-            </tbody>
-        </table>
+
+        </div>
+       
+
+
         <div class="fixed inset-0 flex items-center justify-center z-50" id="edicionModal" style="display: none;">
             <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
                 <div class="flex justify-between items-center border-b p-4">

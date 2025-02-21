@@ -394,16 +394,17 @@ namespace Proyectogestionhoras.Controllers
                 
                 worksheet.Cells[10, 2].Value = "Nombre de la Actividad";
                 worksheet.Cells[10, 3].Value = "Proyecto";
+                worksheet.Cells[10, 4].Value = "CCosto";
                
-                worksheet.Cells[10, 4].Value = "HH Registradas";
-                worksheet.Cells[10, 5].Value = "Costo Unitario";
-                worksheet.Cells[10, 6].Value = "Costo Total";
-                worksheet.Cells[10, 7].Value = "Observaciones";
+                worksheet.Cells[10, 5].Value = "HH Registradas";
+                worksheet.Cells[10, 6].Value = "Costo Unitario";
+                worksheet.Cells[10, 7].Value = "Costo Total";
+                worksheet.Cells[10, 8].Value = "Observaciones";
                
                 
                 /*worksheet.Cells[10, 9].Value = "Segmento";*/
 
-                using (var rango = worksheet.Cells[10, 1, 10, 7])
+                using (var rango = worksheet.Cells[10, 1, 10, 8])
                 {
                     rango.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     rango.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
@@ -415,10 +416,11 @@ namespace Proyectogestionhoras.Controllers
                 worksheet.Column(1).Width = 15;
                 worksheet.Column(2).Width = 30;
                 worksheet.Column(3).Width = 20;
-                worksheet.Column(4).Width = 30;
+                worksheet.Column(4).Width = 20;
                 worksheet.Column(5).Width = 15;
                 worksheet.Column(6).Width = 15;
-                worksheet.Column(7).Width = 40;
+                worksheet.Column(7).Width = 15;
+                worksheet.Column(8).Width = 40;
                 
                 /*worksheet.Column(9).Width = 40;*/
 
@@ -434,12 +436,13 @@ namespace Proyectogestionhoras.Controllers
                     worksheet.Cells[indice, 1].Value = planilla.FechaRegistro.Date.ToString("dd/MM/yyyy");
                     worksheet.Cells[indice, 2].Value = planilla.NombreActividad;
                     worksheet.Cells[indice, 3].Value = planilla.Nombre;
-                    worksheet.Cells[indice, 4].Value = planilla.HHregistradas;
-                    worksheet.Cells[indice, 5].Style.Numberformat.Format = "#,##0";
-                    worksheet.Cells[indice, 5].Value = planilla.CostoUnitario;
+                    worksheet.Cells[indice, 4].Value = planilla.ccosto;
+                    worksheet.Cells[indice, 5].Value = planilla.HHregistradas;
                     worksheet.Cells[indice, 6].Style.Numberformat.Format = "#,##0";
-                    worksheet.Cells[indice, 6].Value = planilla.CostoTotal;
-                    worksheet.Cells[indice, 7].Value = planilla.Observaciones;
+                    worksheet.Cells[indice, 6].Value = planilla.CostoUnitario;
+                    worksheet.Cells[indice, 7].Style.Numberformat.Format = "#,##0";
+                    worksheet.Cells[indice, 7].Value = planilla.CostoTotal;
+                    worksheet.Cells[indice, 8].Value = planilla.Observaciones;
                     /*worksheet.Cells[indice, 9].Value = planilla.NombreSegmento;*/
                     totalhoras += planilla.HHregistradas;
                     totalcosto += planilla.CostoTotal;
@@ -451,10 +454,10 @@ namespace Proyectogestionhoras.Controllers
                 range.Style.Font.Color.SetColor(System.Drawing.Color.Black);
                 range.Style.Font.Bold = true;
 
-                worksheet.Cells[indice + 1, 3].Value = "Totales";
-                worksheet.Cells[indice + 1, 4].Value = totalhoras;
-                worksheet.Cells[indice + 1,6].Style.Numberformat.Format = "#,##0";
-                worksheet.Cells[indice + 1, 6].Value = totalcosto;
+                worksheet.Cells[indice + 1, 4].Value = "Totales";
+                worksheet.Cells[indice + 1, 5].Value = totalhoras;
+                worksheet.Cells[indice + 1,7].Style.Numberformat.Format = "#,##0";
+                worksheet.Cells[indice + 1, 7].Value = totalcosto;
 
                 string nombreArchivo = $"planilla_{nombre}_{mes}_{anio}.xlsx";
                 var stream = new MemoryStream(package.GetAsByteArray());

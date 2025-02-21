@@ -1089,6 +1089,7 @@ namespace Proyectogestionhoras.Services
                                 Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? null : reader.GetString(reader.GetOrdinal("Observaciones")),
                                 tipo = reader.IsDBNull(reader.GetOrdinal("tipo")) ? null : reader.GetString(reader.GetOrdinal("tipo")),
                                 correlativo = reader.IsDBNull(reader.GetOrdinal("correlativo")) ? null : reader.GetString(reader.GetOrdinal("correlativo")),
+                                ccosto = reader.IsDBNull(reader.GetOrdinal("ccosto")) ? null : reader.GetString(reader.GetOrdinal("ccosto")),
                                 Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
                                 Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
                                 NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NombreUsuario")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreUsuario")),
