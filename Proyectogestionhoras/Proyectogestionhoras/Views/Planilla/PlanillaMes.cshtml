@@ -308,11 +308,13 @@
                                         @planilla.HHregistradas
                                     }
                                 </td>
-                                <td class="px-2 py-2 border border-[#ddd] text-right">
-                                    @String.Format("{0:N0}", @planilla.CostoUnitario)
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @(planilla.CostoUnitario == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoUnitario))
+
                                 </td>
-                                <td class="px-2 py-2 border border-[#ddd] text-right">
-                                    @String.Format("{0:N0}", @planilla.CostoTotal)
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @(planilla.CostoTotal == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoTotal))
+
                                 </td>
                                 <td class="px-2 py-2 border border-[#ddd] text-center">
                                     @planilla.Observaciones

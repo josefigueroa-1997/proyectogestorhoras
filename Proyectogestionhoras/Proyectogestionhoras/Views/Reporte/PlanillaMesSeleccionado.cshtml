@@ -197,7 +197,10 @@
                 <tr class="bg-blue-200 text-black">
                     <th class="p-2 border border-gray-300">Fecha</th>
                     <th class="p-2 border border-gray-300">Actividad</th>
+                    <th class="p-2 border border-gray-300">Núm.Proyecto</th>
                     <th class="p-2 border border-gray-300">Proyecto</th>
+                    <th class="p-2 border border-gray-300">Id Cuenta</th>
+                    <th class="p-2 border border-gray-300">Cuenta</th>
                     <th class="p-2 border border-gray-300">Ccosto</th>
                     <th class="p-2 border border-gray-300">Número Horas</th>
                     <th class="p-2 border border-gray-300">Costo Unitario</th>
@@ -215,19 +218,30 @@
                     {
                         <tr>
                             <td class="p-2 border border-gray-300 text-center">@planilla.FechaRegistro.ToString("dd/MM/yyyy")</td>
-                            <td class="p-2 border border-gray-300 text-center">@planilla.NombreActividad</td>
-                            <td class="p-2 border border-gray-300">@planilla.Nombre</td>
-                            <td class="p-2 border border-gray-300">@planilla.ccosto</td>
+                            <td class="p-2 border border-gray-300 text-left">@planilla.NombreActividad</td>
+                            <td class="p-2 border border-gray-300 text-left">@planilla.NumProyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@planilla.Nombre</td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                @(planilla.IDCUENTA == 0 ? "-" : planilla.IDCUENTA.ToString())
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">@planilla.Cuenta</td>
+                            <td class="p-2 border border-gray-300 text-left">@planilla.ccosto</td>
                             <td class="p-2 border border-gray-300 text-right">@planilla.HHregistradas</td>
-                            <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @planilla.CostoUnitario)</td>
-                            <td class="p-2 border border-gray-300 text-right">@String.Format("{0:N0}", @planilla.CostoTotal)</td>
+                            <td class="p-2 border border-gray-300 text-right">
+                                @(planilla.CostoUnitario == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoUnitario))
+                                
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right">
+                                @(planilla.CostoTotal == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoTotal))
+
+                            </td>
                             <td class="p-2 border border-gray-300 text-center">@planilla.Observaciones</td>
                         </tr>
                         totalhoras += planilla.HHregistradas;
                         totalcostoshoras += planilla.CostoTotal;
                     }
                     <tr class="bg-blue-200">
-                        <td colspan="4" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
+                        <td colspan="7" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
                         <td class="p-2 border border-gray-300 text-right font-bold">@totalhoras</td>
                         <td colspan="2" class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostoshoras)</td>
                     </tr>
