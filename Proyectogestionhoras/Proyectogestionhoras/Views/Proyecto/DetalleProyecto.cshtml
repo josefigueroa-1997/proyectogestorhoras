@@ -739,14 +739,12 @@
         </div>
         <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
             <thead>
-                <tr style="background-color: #fa8164; color: black; text-align:center">
-                    <th style="padding: 10px; border: 1px solid #ddd;">Nombre</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Total Proyectado</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Total Real</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Total Forecast</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Total Real + Forecast</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Porcentaje Proyectado</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Porcentaje Real + Forecast</th>
+                <tr style=" color: black; text-align:center">
+                    <th style="padding: 10px; border: 1px solid #ddd;"></th>
+                    <th colspan="2" style="padding: 10px; border: 1px solid #ddd;background-color:#90d0ce">Presupuesto</th>
+                    <th colspan="4" style="padding: 10px; border: 1px solid #ddd;background-color:#f9cfc2;">Real + Forecast</th>
+                    <th  colspan="2" style="padding: 10px; border: 1px solid #ddd; background-color:#fcf5cd;">Diferencia Presupuesto - (Real + Forecast)</th>
+                
                 </tr>
             </thead>
             <tbody>
@@ -759,10 +757,22 @@
                     decimal totalgastosrealforecast = GastosReal + GastosForecast;
                 }
                 <tr>
+                    <td style="background-color:#fa8164;">Nombre</td>
+                    <td style="background-color:#90d0ce">Total Presupuestado</td>
+                    <td style="background-color:#90d0ce">%</td>
+                    <td style="background-color:#f9cfc2;">Total Real</td>
+                    <td style="background-color:#f9cfc2;">Total Forecast</td>
+                    <td style="background-color:#f9cfc2;">Total Real + Forecast</td>
+                    <td style="background-color:#f9cfc2;">%</td>
+                    <td style="background-color:#fcf5cd;">Total Diferencia</td>
+                    <td style="background-color:#fcf5cd;">% Respecto Presupuesto</td>
+                </tr>
+                <tr>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:left;"><strong>Ingresos</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         <strong>@(Monto == 0 ? "" : String.Format("{0:N0}", Monto))</strong>
                     </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>100%</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         <strong>@(IngresoReal == 0 ? "" : String.Format("{0:N0}", IngresoReal))</strong>
                     </td>
@@ -772,17 +782,42 @@
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         <strong>@(totalingresosrealforecast == 0 ? "" : String.Format("{0:N0}", totalingresosrealforecast))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>100%</strong></td>
+                    
                     @{
                         decimal porcentajeingresorealforecast = Math.Round((totalingresosrealforecast / Monto) * 100, 2);
+                        decimal diferenciaingresos = Monto - totalingresosrealforecast;
+                        decimal porcentajediferenciaingreso = Math.Round((diferenciaingresos / Monto) * 100, 2);
                     }
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>@String.Format("{0:N0}", porcentajeingresorealforecast)%</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;"><strong>100%</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        <strong>@(diferenciaingresos == 0 ? "" : String.Format("{0:N0}", diferenciaingresos))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajediferenciaingreso)%</td>
                 </tr>
                 <tr>
+                    @{
+                        decimal porcentajesocio = Math.Round((totalsocios / Monto) * 100, 2);
+                        decimal porcentajesociorealforecast = 0;
+                        decimal diferenciasocios = totalsocios - totalsociosrealforecast;
+                        decimal porcentajediferenciasocios = 0;
+                        if (totalsocios > 0)
+                        {
+                            porcentajediferenciasocios = Math.Round((diferenciasocios / totalsocios) * 100, 2);
+                        }
+                        
+                        if (totalingresosrealforecast > 0)
+                        {
+                            porcentajesociorealforecast = Math.Round((totalsociosrealforecast * 100) / totalingresosrealforecast, 2);
+                            
+                        }
+
+
+                    }
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Socios</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalsocios == 0 ? "" : String.Format("{0:N0}", totalsocios))
                     </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajesocio)%</td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(SocioReal == 0 ? "" : String.Format("{0:N0}", SocioReal))
                     </td>
@@ -792,24 +827,35 @@
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalsociosrealforecast == 0 ? "" : String.Format("{0:N0}", totalsociosrealforecast))
                     </td>
-                    @{
-                        decimal porcentajesocio = Math.Round((totalsocios / Monto) * 100, 2);
-                        decimal porcentajesociorealforecast = 0;
-                        if (totalsocios > 0)
-                        {
-                            porcentajesociorealforecast = Math.Round((totalsociosrealforecast * 100) / totalsocios, 2);
-                        }
-                       
-
-                    }
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajesocio)%</td>
+                    
+                    
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajesociorealforecast)%</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(diferenciasocios == 0 ? "" : String.Format("{0:N0}", diferenciasocios))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajediferenciasocios)%</td>
                 </tr>
                 <tr>
+                    @{
+                        decimal porcentajestaff = Math.Round((totalstaff / Monto) * 100, 2);
+                        decimal porcentajestaffrealforecast = 0;
+                        decimal diferenciastaff = totalstaff - totalstaffrealforecast;
+                        decimal porcentajediferenciastaff = 0;
+                        if (totalstaff > 0)
+                        {
+                            porcentajediferenciastaff = Math.Round((diferenciastaff / totalstaff) * 100, 2);
+                        }
+                        if (totalstaffrealforecast > 0)
+                        {
+                            porcentajestaffrealforecast = Math.Round((totalstaffrealforecast * 100) / totalingresosrealforecast, 2);
+                        }
+
+                    }
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Staff</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalstaff == 0 ? "" : String.Format("{0:N0}", totalstaff))
                     </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajestaff)%</td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(StaffReal == 0 ? "" : String.Format("{0:N0}", StaffReal))
                     </td>
@@ -819,23 +865,35 @@
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalstaffrealforecast == 0 ? "" : String.Format("{0:N0}", totalstaffrealforecast))
                     </td>
-                    @{
-                        decimal porcentajestaff = Math.Round((totalstaff / Monto) * 100, 2);
-                        decimal porcentajestaffrealforecast = 0;
-                        if (totalstaff > 0)
-                        {
-                            porcentajestaffrealforecast = Math.Round((totalstaffrealforecast * 100) / totalstaff, 2);
-                        }
-                        
-                    }
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajestaff)%</td>
+                   
+                    
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajestaffrealforecast)%</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(diferenciastaff == 0 ? "" : String.Format("{0:N0}", diferenciastaff))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajediferenciastaff)%</td>
                 </tr>
                 <tr>
+                    @{
+                        decimal porcentajeconsultores = Math.Round((totalconsultores / Monto) * 100, 2);
+                        decimal porcentajeconsultorrealforecast = 0;
+                        decimal diferenciaconsultores = totalconsultores - totalconsultorrealforecast;
+                        decimal porcentajediferenciaconsultores = 0;
+                        if (totalconsultores > 0)
+                        {
+                            porcentajediferenciaconsultores = Math.Round((diferenciaconsultores / totalconsultores) * 100, 2);
+                        }
+                        if (totalingresosrealforecast > 0)
+                        {
+                            porcentajeconsultorrealforecast = Math.Round((totalconsultorrealforecast * 100) / totalingresosrealforecast, 2);
+                        }
+
+                    }
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Horas Cons.Externos</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalconsultores == 0 ? "" : String.Format("{0:N0}", totalconsultores))
                     </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajeconsultores)%</td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(ConsultorReal == 0 ? "" : String.Format("{0:N0}", ConsultorReal))
                     </td>
@@ -845,24 +903,36 @@
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalconsultorrealforecast == 0 ? "" : String.Format("{0:N0}", totalconsultorrealforecast))
                     </td>
-                    @{
-                        decimal porcentajeconsultores = Math.Round((totalconsultores / Monto) * 100, 2);
-                        decimal porcentajeconsultorrealforecast = 0;
-                        if (totalconsultores > 0)
-                        {
-                             porcentajeconsultorrealforecast = Math.Round((totalconsultorrealforecast * 100) / totalconsultores, 2);
-                        }
-                        
-                    }
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajeconsultores)%</td>
+                   
+    
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajeconsultorrealforecast)%</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(diferenciaconsultores == 0 ? "" : String.Format("{0:N0}", diferenciaconsultores))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajediferenciaconsultores)%</td>
                 </tr>
 
                 <tr>
+                    @{
+                        decimal porcentajeservicios = Math.Round((totalservicios / Monto) * 100, 2);
+                        decimal porcentajeserviciosrealforecast = 0;
+                        decimal diferenciaservicios = totalservicios - totalserviciosrealforecast;
+                        decimal porcentajediferenciaservicio = 0;
+                        if (totalservicios > 0)
+                        {
+                            porcentajediferenciaservicio = Math.Round((diferenciaservicios / totalservicios) * 100, 2);
+                        }
+                        if (totalingresosrealforecast > 0)
+                        {
+                            porcentajeserviciosrealforecast = Math.Round((totalserviciosrealforecast * 100) / totalingresosrealforecast, 2);
+                        }
+
+                    }
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Serv. Contratados</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalservicios == 0 ? "" : String.Format("{0:N0}", totalservicios))
                     </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajeservicios)%</td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(ServiciosReal == 0 ? "" : String.Format("{0:N0}", ServiciosReal))
                     </td>
@@ -872,23 +942,35 @@
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalserviciosrealforecast == 0 ? "" : String.Format("{0:N0}", totalserviciosrealforecast))
                     </td>
-                    @{
-                        decimal porcentajeservicios = Math.Round((totalservicios / Monto) * 100, 2);
-                        decimal porcentajeserviciosrealforecast = 0;
-                        if (totalservicios > 0)
-                        {
-                            porcentajeserviciosrealforecast = Math.Round((totalserviciosrealforecast * 100) / totalservicios, 2);
-                        }
-                        
-                    }
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajeservicios)%</td>
+                    
+                  
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajeserviciosrealforecast)%</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(diferenciaservicios == 0 ? "" : String.Format("{0:N0}", diferenciaservicios))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajediferenciaservicio)%</td>
                 </tr>
                 <tr>
+                    @{
+                        decimal porcentajegastos = Math.Round((totalgastos / Monto) * 100, 2);
+                        decimal porcentajegastosrealforecast = 0;
+                        decimal diferenciagastos = totalgastos - totalgastosrealforecast;
+                       
+                        decimal porcentajediferenciagastos = 0;
+                        if (totalgastos > 0)
+                        {
+                            porcentajediferenciagastos = Math.Round((diferenciagastos / totalgastos) * 100, 2);
+                        }
+                        if (totalingresosrealforecast > 0)
+                        {
+                            porcentajegastosrealforecast = Math.Round((totalgastosrealforecast * 100) / totalingresosrealforecast, 2);
+                        }
+                    }
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:left;"><strong>Gastos Operacionales</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalgastos == 0 ? "" : String.Format("{0:N0}", totalgastos))
                     </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajegastos)%</td>
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(GastosReal == 0 ? "" : String.Format("{0:N0}", GastosReal))
                     </td>
@@ -898,17 +980,13 @@
                     <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
                         @(totalgastosrealforecast == 0 ? "" : String.Format("{0:N0}", totalgastosrealforecast))
                     </td>
-                    @{
-                        decimal porcentajegastos = Math.Round((totalgastos / Monto) * 100, 2);
-                        decimal porcentajegastosrealforecast = 0;
-                        if (totalgastos > 0)
-                        {
-                            porcentajegastosrealforecast = Math.Round((totalgastosrealforecast * 100) / totalgastos, 2);
-                        }
-                    }
-                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", porcentajegastos)%</td>
+                  
+   
                     <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajegastosrealforecast)%</td>
-
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align:right;">
+                        @(diferenciagastos == 0 ? "" : String.Format("{0:N0}", diferenciagastos))
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N2}", porcentajediferenciagastos)%</td>
                 </tr>
                 @{
                     decimal totalegresos = totalsocios + totalstaff + totalconsultores + totalgastos + totalservicios;
@@ -917,15 +995,24 @@
                     decimal totalegresosrealforecast = totalegresosreales + totalegresosforecast;
                     decimal porcentaegresos = porcentajegastos + porcentajeservicios + porcentajeconsultores + porcentajestaff + porcentajesocio;
                     decimal porcentaegresosrealforecast = 0;
-                    if (totalegresosrealforecast > 0)
+                    decimal diferenciaegresos = totalegresos - totalegresosrealforecast;
+                    decimal porcentajediferenciaegresos = 0;
+                    if (totalegresos > 0)
                     {
-                        porcentaegresosrealforecast = Math.Round((totalegresosrealforecast * 100) / totalegresos, 2);
+                        porcentajediferenciaegresos = Math.Round((diferenciaegresos / totalegresos) * 100, 2);
+                    }
+                    if (totalingresosrealforecast > 0)
+                    {
+                        porcentaegresosrealforecast = Math.Round((totalegresosrealforecast * 100) / totalingresosrealforecast, 2);
                     }
                 }
                 <tr>
                     <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Total Egresos</strong></td>
                     <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
                         <strong>@(totalegresos == 0 ? "" : String.Format("{0:N0}", totalegresos))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(porcentaegresos == 0 ? "" : String.Format("{0:N0}", porcentaegresos) + "%")</strong>
                     </td>
                     <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
                         <strong>@(totalegresosreales == 0 ? "" : String.Format("{0:N0}", totalegresosreales))</strong>
@@ -936,11 +1023,15 @@
                     <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
                         <strong>@(totalegresosrealforecast == 0 ? "" : String.Format("{0:N0}", totalegresosrealforecast))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
-                        <strong>@(porcentaegresos == 0 ? "" : String.Format("{0:N0}", porcentaegresos) + "%")</strong>
-                    </td>
+                    
                     <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
                         <strong>@(porcentaegresosrealforecast == 0 ? "" : String.Format("{0:N2}", porcentaegresosrealforecast) + "%")</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(diferenciaegresos == 0 ? "" : String.Format("{0:N0}", diferenciaegresos))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                        <strong>@(porcentajediferenciaegresos == 0 ? "" : String.Format("{0:N0}", porcentajediferenciaegresos) + "%")</strong>
                     </td>
                 </tr>
                 @{
@@ -950,27 +1041,43 @@
                     decimal margenrealforecast = margenreal + margenforecast;
                     decimal porcentajemargen = 100 - porcentaegresos;
                     decimal porcentajemargenforecastcostos = 0;
-                    if (margenrealforecast > 0)
+                    decimal diferenciamargen = margen - margenrealforecast;
+                    decimal porcentajediferenciamargen = 0;
+                    if (margen > 0)
+                    {
+                        porcentajediferenciamargen = Math.Round((diferenciamargen / margen) * 100, 2);
+                    }
+                    if (totalingresosrealforecast > 0)
                     {
                         porcentajemargenforecastcostos = Math.Round((margenrealforecast * 100) / totalingresosrealforecast, 2);
                     }
                 }
-                <tr style="background-color: #fa8164; color: black;">
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Margenes de Proyecto</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                <tr style=" color: black;">
+                    <td style="padding: 10px; border: 1px solid #fa8164;background-color:#fa8164; text-align:left;"><strong>Margenes de Proyecto</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#90d0ce; text-align:right;">
                         <strong>@(margen == 0 ? "" : String.Format("{0:N0}", margen))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#90d0ce; text-align:right;">
+                        <strong>@(porcentajemargen == 0 ? "" : String.Format("{0:N0}", porcentajemargen) + "%")</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#f9cfc2; text-align:right;">
                         <strong>@(margenreal == 0 ? "" : String.Format("{0:N0}", margenreal))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#f9cfc2; text-align:right;">
                         <strong>@(margenforecast == 0 ? "" : String.Format("{0:N0}", margenforecast))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164; text-align:right;">
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#f9cfc2; text-align:right;">
                         <strong>@(margenrealforecast == 0 ? "" : String.Format("{0:N0}", margenrealforecast))</strong>
                     </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;"></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#f9cfc2; text-align:right;">
+                        <strong>@(porcentajemargenforecastcostos == 0 ? "" : String.Format("{0:N2}", porcentajemargenforecastcostos) + "%")</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#fcf5cd; text-align:right;">
+                        <strong>@(diferenciamargen == 0 ? "" : String.Format("{0:N0}", diferenciamargen))</strong>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ddd;background-color:#fcf5cd; text-align:right;">
+                        <strong>@(porcentajediferenciamargen == 0 ? "" : String.Format("{0:N0}", porcentajediferenciamargen) + "%")</strong>
+                    </td>
                 </tr>
                 @{
                     decimal porcentajeproyectado = 0;
@@ -989,27 +1096,7 @@
                         porcentajerealforecast = Math.Round((margenrealforecast / totalingresosrealforecast) * 100, 2);
                     }
                 }
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:left;"><strong>Porcentaje Totales</strong></td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N2}", porcentajeproyectado)%</strong>
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N2}", porcentajereal)%</strong>
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                       
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        <strong>@String.Format("{0:N2}", porcentajerealforecast)%</strong>
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #fa8164;text-align:right;">
-                        
-                    </td>
-                </tr>
+               
             </tbody>
         </table>
 
