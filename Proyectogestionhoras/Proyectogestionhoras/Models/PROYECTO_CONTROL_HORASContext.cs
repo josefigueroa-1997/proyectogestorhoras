@@ -28,6 +28,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Cuota> Cuotas { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
+        public virtual DbSet<Fechamodificacionproyecto> Fechamodificacionproyectos { get; set; } = null!;
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
         public virtual DbSet<Gastosejecucion> Gastosejecucions { get; set; } = null!;
         public virtual DbSet<Gastoshhhejecucion> Gastoshhhejecucions { get; set; } = null!;
@@ -402,6 +403,25 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.Idsegmento)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("IDSEGFAC");
+            });
+
+            modelBuilder.Entity<Fechamodificacionproyecto>(entity =>
+            {
+                entity.ToTable("FECHAMODIFICACIONPROYECTO");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Fechamodificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHAMODIFICACION");
+
+                entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
+
+                entity.HasOne(d => d.IdproyectoNavigation)
+                    .WithMany(p => p.Fechamodificacionproyectos)
+                    .HasForeignKey(d => d.Idproyecto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("IDPROYECTOFECHA");
             });
 
             modelBuilder.Entity<Gasto>(entity =>

@@ -126,7 +126,7 @@ namespace Proyectogestionhoras.Controllers
 
                     ingresos.Add(ingresoViewModel);
                 }
-
+                await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 await ejecucionService.GestorIngresos(idproyecto, ingresos);
                 TempData["SuccessMessageIngresos"] = "Los ingresos del proyecto se han registrado y actualizado correctamente.";
                 return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
@@ -426,7 +426,7 @@ namespace Proyectogestionhoras.Controllers
                 }
 
 
-
+                await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 await ejecucionService.GestorServiciosReales(idproyecto, servicios);
                 await ejecucionService.GestorServiciosReales(idproyecto, serviciossocios);
                 await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);

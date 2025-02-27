@@ -271,6 +271,7 @@ namespace Proyectogestionhoras.Controllers
                 if (resultado)
                 {
                     int idproyectoultimo = ultimoidproyecto();
+                    await proyectoService.GestorFechaModificacionProyecto(idproyectoultimo);
                     return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyectoultimo });
                 }
                 else
@@ -321,11 +322,13 @@ namespace Proyectogestionhoras.Controllers
                         var gastos = await proyectoService.ObtenerGastosProyectos(id);
                         var facturas = await facturaService.RecuperarFacturas(id);
                         var forecastreal = await reporteService.ObtenerForecastrealProyecto(id);
+                        var fechaactualizacionproyecto = await context.Fechamodificacionproyectos.Where(f => f.Idproyecto == id).FirstOrDefaultAsync();
                         ViewBag.Facturas = facturas;
                         ViewBag.Proyectos = proyectos;
                         ViewBag.Servicios = servicios;
                         ViewBag.Gastos = gastos;
                         ViewBag.ForecastReal = forecastreal;
+                        ViewBag.FechaModificacion = fechaactualizacionproyecto?.Fechamodificacion?.ToString("dd/MM/yyyy 'a las' HH:mm") ?? "Sin actualización";
                         return View("DetalleProyecto");
                     }
                     else
@@ -633,6 +636,7 @@ namespace Proyectogestionhoras.Controllers
                 /*Actualizar Cuotas*/
 
                 await ActualizarCuotas(idproyecto, cantidadcuotas);
+                await proyectoService.GestorFechaModificacionProyecto(idproyecto);
 
                 if (resultado)
                 {

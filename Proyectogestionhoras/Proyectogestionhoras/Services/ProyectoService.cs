@@ -1718,5 +1718,37 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task GestorFechaModificacionProyecto(int idproyecto)
+        {
+            try
+            {
+                var fechaModificacion = await context.Fechamodificacionproyectos
+                .FirstOrDefaultAsync(f => f.Idproyecto == idproyecto);
+                TimeZoneInfo zonaChile = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
+                if (fechaModificacion != null)
+                {
+                    
+                    fechaModificacion.Fechamodificacion = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zonaChile);
+                }
+                else
+                {
+                    
+                    fechaModificacion = new Fechamodificacionproyecto
+                    {
+                        Idproyecto = idproyecto,
+                        Fechamodificacion = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zonaChile)
+                    };
+
+                    await context.Fechamodificacionproyectos.AddAsync(fechaModificacion);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al modificar la fecha de proyecto modificacion:{e.Message}");
+            }
+        }
     }
 }
