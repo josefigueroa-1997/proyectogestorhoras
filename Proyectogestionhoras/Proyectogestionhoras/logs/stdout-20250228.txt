@@ -5084,3 +5084,1315 @@ ORDER BY [t].[ID] DESC
 2025-02-28 16:21:08.424 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
 2025-02-28 16:21:08.425 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2965ms
 2025-02-28 16:21:08.442 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 18.3334ms
+2025-02-28 17:47:00.210 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 17:47:00.549 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 17:47:00.595 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 17:47:00.595 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 17:47:00.619 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 17:47:00.619 -03:00 [INF] Hosting environment: Development
+2025-02-28 17:47:00.619 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 17:47:01.189 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:47:01.329 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:47:01.363 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:47:01.516 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 17:47:01.518 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 153.017ms
+2025-02-28 17:47:01.518 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:47:01.521 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 337.1766ms
+2025-02-28 17:47:01.526 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 17:47:01.532 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:47:01.533 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:47:01.542 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 17:47:01.629 -03:00 [INF] Executed ViewResult - view Login executed in 90.4326ms.
+2025-02-28 17:47:01.629 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 96.0919ms
+2025-02-28 17:47:01.629 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:47:01.630 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 17:47:01.630 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 17:47:01.630 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 104.9229ms
+2025-02-28 17:47:01.635 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 17:47:01.645 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 17:47:01.646 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 10.3786ms
+2025-02-28 17:47:01.674 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 17:47:01.676 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.1282ms
+2025-02-28 17:47:01.676 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 17:47:19.133 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 17:47:19.397 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 17:47:19.437 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 17:47:19.437 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 17:47:19.460 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 17:47:19.461 -03:00 [INF] Hosting environment: Development
+2025-02-28 17:47:19.461 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 17:47:20.131 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:47:20.243 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:47:20.267 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:47:20.368 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 17:47:20.370 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 101.3288ms
+2025-02-28 17:47:20.370 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:47:20.374 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 246.6708ms
+2025-02-28 17:47:20.378 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 17:47:20.382 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:47:20.383 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:47:20.393 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 17:47:20.462 -03:00 [INF] Executed ViewResult - view Login executed in 72.339ms.
+2025-02-28 17:47:20.462 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 78.5566ms
+2025-02-28 17:47:20.462 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:47:20.462 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 17:47:20.462 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 17:47:20.463 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 85.5897ms
+2025-02-28 17:47:20.468 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 17:47:20.477 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 17:47:20.478 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 9.8122ms
+2025-02-28 17:47:20.495 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 17:47:20.497 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.571ms
+2025-02-28 17:47:20.498 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 17:47:23.611 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundary52TPyVkyMtwQNDbq 243
+2025-02-28 17:47:23.616 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:47:23.624 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:47:24.268 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:47:26.212 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 17:47:26.213 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2588.3548ms
+2025-02-28 17:47:26.213 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:47:26.214 -03:00 [INF] Session started; Key:d6970176-5464-bd16-a785-6f80edc6939a, Id:5802f3ba-2cff-07ae-9a16-559460062c8a
+2025-02-28 17:47:26.220 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2609.0674ms
+2025-02-28 17:47:26.221 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:47:26.224 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:47:26.224 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:47:26.235 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:47:26.578 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 17:47:26.617 -03:00 [INF] Executed ViewResult - view Index executed in 39.4412ms.
+2025-02-28 17:47:26.618 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 393.7671ms
+2025-02-28 17:47:26.618 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:47:26.619 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 398.534ms
+2025-02-28 17:47:26.623 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 17:47:26.623 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 17:47:26.636 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 17:47:26.636 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 17:47:26.636 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 13.1828ms
+2025-02-28 17:47:26.636 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 13.3992ms
+2025-02-28 17:47:26.639 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 17:47:26.641 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 17:47:26.642 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:47:26.642 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.8755ms
+2025-02-28 17:47:26.646 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 4.4967ms
+2025-02-28 17:47:26.658 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:47:26.701 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 43.1776ms
+2025-02-28 17:47:26.816 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 17:47:26.818 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 17:47:26.818 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.7291ms
+2025-02-28 17:47:27.849 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 17:47:27.851 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:47:27.853 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:47:27.854 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 17:47:27.861 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 6.9159ms.
+2025-02-28 17:47:27.864 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 11.4022ms
+2025-02-28 17:47:27.864 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:47:27.864 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 16.0068ms
+2025-02-28 17:47:27.868 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:47:27.868 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:47:27.869 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.379ms
+2025-02-28 17:47:27.881 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 12.9904ms
+2025-02-28 17:47:29.188 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 17:47:29.196 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:47:29.199 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:47:29.240 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:47:29.810 -03:00 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 17:47:29.994 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 17:47:30.159 -03:00 [INF] Executed DbCommand (154ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 17:47:30.178 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 17:47:30.233 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 54.7876ms.
+2025-02-28 17:47:30.233 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1033.7429ms
+2025-02-28 17:47:30.233 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:47:30.233 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1045.4263ms
+2025-02-28 17:47:30.299 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:47:30.299 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:47:30.300 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1907ms
+2025-02-28 17:47:30.308 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 9.2093ms
+2025-02-28 17:48:16.937 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 17:48:17.160 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 17:48:17.202 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 17:48:17.202 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 17:48:17.230 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 17:48:17.230 -03:00 [INF] Hosting environment: Development
+2025-02-28 17:48:17.230 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 17:48:17.523 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:48:17.620 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:48:17.648 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:48:17.776 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 17:48:17.779 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 128.2018ms
+2025-02-28 17:48:17.780 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:48:17.785 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 265.9381ms
+2025-02-28 17:48:17.790 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 17:48:17.797 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:48:17.799 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:48:17.811 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 17:48:17.906 -03:00 [INF] Executed ViewResult - view Login executed in 100.2394ms.
+2025-02-28 17:48:17.906 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 107.2903ms
+2025-02-28 17:48:17.906 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:48:17.907 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 17:48:17.907 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 17:48:17.908 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 117.4708ms
+2025-02-28 17:48:17.912 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 17:48:17.936 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 17:48:17.938 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 25.5207ms
+2025-02-28 17:48:17.956 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 17:48:17.960 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 4.6547ms
+2025-02-28 17:48:17.961 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 17:48:21.202 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryEiZx9TAEraCO0jP3 243
+2025-02-28 17:48:21.206 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:48:21.213 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:48:21.778 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:48:23.411 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 17:48:23.411 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2197.8309ms
+2025-02-28 17:48:23.411 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:48:23.412 -03:00 [INF] Session started; Key:27edc498-172a-7047-cba8-18268bee4473, Id:9a6bf7a7-4cbc-003a-da51-a5cdbe397f3e
+2025-02-28 17:48:23.416 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2214.0412ms
+2025-02-28 17:48:23.417 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:48:23.421 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:48:23.421 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:48:23.432 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:48:23.768 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 17:48:23.793 -03:00 [INF] Executed ViewResult - view Index executed in 25.9031ms.
+2025-02-28 17:48:23.794 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 372.6057ms
+2025-02-28 17:48:23.794 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:48:23.795 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 377.8424ms
+2025-02-28 17:48:23.798 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 17:48:23.799 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 17:48:23.802 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 17:48:23.803 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 4.7335ms
+2025-02-28 17:48:23.804 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 17:48:23.807 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 8.1031ms
+2025-02-28 17:48:23.816 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:48:23.816 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 17:48:23.818 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 17:48:23.818 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.9875ms
+2025-02-28 17:48:23.821 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 6.193ms
+2025-02-28 17:48:23.827 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:48:23.854 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 28.1723ms
+2025-02-28 17:48:23.980 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 17:48:23.982 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 17:48:23.982 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.4437ms
+2025-02-28 17:48:25.089 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 17:48:25.092 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:48:25.093 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:48:25.095 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 17:48:25.102 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 6.9667ms.
+2025-02-28 17:48:25.105 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 11.5536ms
+2025-02-28 17:48:25.105 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:48:25.105 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 16.4737ms
+2025-02-28 17:48:25.109 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:48:25.110 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:48:25.110 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2298ms
+2025-02-28 17:48:25.124 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 15.0613ms
+2025-02-28 17:48:26.603 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 17:48:26.613 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:48:26.616 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:48:26.655 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:48:27.211 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 17:48:27.399 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 17:48:27.565 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 17:48:27.583 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 17:48:27.639 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 56.3027ms.
+2025-02-28 17:48:27.640 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1023.4288ms
+2025-02-28 17:48:27.640 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:48:27.640 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1036.9167ms
+2025-02-28 17:48:27.708 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:48:27.708 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:48:27.709 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1824ms
+2025-02-28 17:48:27.717 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 8.9462ms
+2025-02-28 17:49:32.948 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 17:49:33.164 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 17:49:33.216 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 17:49:33.216 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 17:49:33.253 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 17:49:33.254 -03:00 [INF] Hosting environment: Development
+2025-02-28 17:49:33.254 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 17:49:33.595 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:49:33.697 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:49:33.722 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:49:33.845 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 17:49:33.849 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 123.4413ms
+2025-02-28 17:49:33.849 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:49:33.854 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 262.5335ms
+2025-02-28 17:49:33.857 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 17:49:33.863 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:49:33.864 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:49:33.876 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 17:49:33.944 -03:00 [INF] Executed ViewResult - view Login executed in 72.7771ms.
+2025-02-28 17:49:33.944 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 79.8152ms
+2025-02-28 17:49:33.944 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:49:33.945 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 17:49:33.945 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 17:49:33.946 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 88.523ms
+2025-02-28 17:49:33.950 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 17:49:33.960 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 17:49:33.960 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 10.2811ms
+2025-02-28 17:49:33.979 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 17:49:33.981 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.4855ms
+2025-02-28 17:49:33.981 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 17:49:37.333 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundary7oz0BYIBOe0kS13y 243
+2025-02-28 17:49:37.337 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:49:37.344 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:49:37.927 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:49:39.606 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 17:49:39.606 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2261.9359ms
+2025-02-28 17:49:39.607 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:49:39.607 -03:00 [INF] Session started; Key:7f884202-3a23-946e-80e7-183a474d12bc, Id:f40a55a3-295c-769e-d4e6-cb737a9a66d1
+2025-02-28 17:49:39.611 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2278.5243ms
+2025-02-28 17:49:39.613 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:49:39.617 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:49:39.617 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:49:39.627 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:49:39.962 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 17:49:39.988 -03:00 [INF] Executed ViewResult - view Index executed in 26.5084ms.
+2025-02-28 17:49:39.989 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 371.6621ms
+2025-02-28 17:49:39.989 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:49:39.990 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 376.645ms
+2025-02-28 17:49:39.993 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 17:49:39.993 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 17:49:40.002 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 17:49:40.002 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 17:49:40.002 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 9.7431ms
+2025-02-28 17:49:40.002 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 9.411ms
+2025-02-28 17:49:40.010 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 17:49:40.011 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:49:40.012 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 17:49:40.013 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.8897ms
+2025-02-28 17:49:40.017 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 6.0455ms
+2025-02-28 17:49:40.020 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:49:40.052 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 32.3947ms
+2025-02-28 17:49:40.187 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 17:49:40.189 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 17:49:40.189 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.4833ms
+2025-02-28 17:49:41.277 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 17:49:41.279 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:49:41.280 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:49:41.282 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 17:49:41.289 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 7.4125ms.
+2025-02-28 17:49:41.292 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 11.7862ms
+2025-02-28 17:49:41.292 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:49:41.293 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 15.718ms
+2025-02-28 17:49:41.296 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:49:41.296 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:49:41.297 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2152ms
+2025-02-28 17:49:41.311 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 15.0042ms
+2025-02-28 17:49:42.405 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 17:49:42.413 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:49:42.415 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:49:42.457 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:49:43.023 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 17:49:43.211 -03:00 [INF] Executed DbCommand (156ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 17:49:43.376 -03:00 [INF] Executed DbCommand (154ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 17:49:43.395 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 17:49:43.449 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 55.2386ms.
+2025-02-28 17:49:43.450 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1034.1636ms
+2025-02-28 17:49:43.450 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:49:43.450 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1045.0312ms
+2025-02-28 17:49:43.517 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:49:43.517 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:49:43.517 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1741ms
+2025-02-28 17:49:43.526 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 9.3101ms
+2025-02-28 17:53:19.147 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 17:53:19.359 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 17:53:19.396 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 17:53:19.396 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 17:53:19.416 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 17:53:19.417 -03:00 [INF] Hosting environment: Development
+2025-02-28 17:53:19.417 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 17:53:20.073 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:53:20.182 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:53:20.210 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:53:20.323 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 17:53:20.325 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 112.9541ms
+2025-02-28 17:53:20.325 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:53:20.328 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 259.7943ms
+2025-02-28 17:53:20.333 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 17:53:20.338 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:53:20.339 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:53:20.348 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 17:53:20.414 -03:00 [INF] Executed ViewResult - view Login executed in 70.1364ms.
+2025-02-28 17:53:20.414 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 74.9767ms
+2025-02-28 17:53:20.414 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:53:20.414 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 17:53:20.414 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 17:53:20.415 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 82.4408ms
+2025-02-28 17:53:20.419 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 17:53:20.429 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 17:53:20.429 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 10.2002ms
+2025-02-28 17:53:20.448 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 17:53:20.451 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.7517ms
+2025-02-28 17:53:20.452 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 17:53:23.457 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryytprJbRn9ky3GE5Q 243
+2025-02-28 17:53:23.461 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:53:23.468 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:53:24.049 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:53:25.701 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 17:53:25.701 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2232.8865ms
+2025-02-28 17:53:25.702 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:53:25.702 -03:00 [INF] Session started; Key:00574713-4dfb-a5df-0ef2-ad66f46a8d18, Id:c9f6d8c9-6e6b-4733-5ff9-259fa35d28c6
+2025-02-28 17:53:25.706 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2249.5118ms
+2025-02-28 17:53:25.708 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:53:25.711 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:53:25.711 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:53:25.720 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:53:26.056 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 17:53:26.083 -03:00 [INF] Executed ViewResult - view Index executed in 27.0185ms.
+2025-02-28 17:53:26.086 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 374.7375ms
+2025-02-28 17:53:26.086 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:53:26.087 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 379.128ms
+2025-02-28 17:53:26.087 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 17:53:26.087 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 17:53:26.101 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 17:53:26.100 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 17:53:26.101 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 13.5311ms
+2025-02-28 17:53:26.101 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 13.7493ms
+2025-02-28 17:53:26.101 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 17:53:26.103 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 17:53:26.104 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.4269ms
+2025-02-28 17:53:26.107 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:53:26.111 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 4.4402ms
+2025-02-28 17:53:26.114 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:53:26.142 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 28.8426ms
+2025-02-28 17:53:26.264 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 17:53:26.265 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 17:53:26.266 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.3985ms
+2025-02-28 17:53:27.081 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 17:53:27.083 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:53:27.084 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:53:27.086 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 17:53:27.093 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 7.3759ms.
+2025-02-28 17:53:27.094 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 9.9114ms
+2025-02-28 17:53:27.094 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:53:27.094 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 13.796ms
+2025-02-28 17:53:27.099 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:53:27.099 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:53:27.100 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2017ms
+2025-02-28 17:53:27.117 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 17.6093ms
+2025-02-28 17:53:28.147 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 17:53:28.157 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:53:28.159 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:53:28.198 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:53:28.749 -03:00 [INF] Executed DbCommand (158ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 17:53:28.938 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 17:53:29.104 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 17:53:29.122 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 17:53:29.179 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 56.7893ms.
+2025-02-28 17:53:29.179 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1019.7926ms
+2025-02-28 17:53:29.179 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:53:29.179 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1032.6865ms
+2025-02-28 17:53:29.249 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:53:29.249 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:53:29.250 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1727ms
+2025-02-28 17:53:29.260 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 10.9897ms
+2025-02-28 17:57:10.370 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 17:57:10.608 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 17:57:10.647 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 17:57:10.647 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 17:57:10.671 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 17:57:10.672 -03:00 [INF] Hosting environment: Development
+2025-02-28 17:57:10.672 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 17:57:11.334 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:57:11.436 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:57:11.463 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:57:11.570 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 17:57:11.573 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 107.0219ms
+2025-02-28 17:57:11.573 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:57:11.576 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 245.7259ms
+2025-02-28 17:57:11.580 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 17:57:11.585 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:57:11.586 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:57:11.596 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 17:57:11.665 -03:00 [INF] Executed ViewResult - view Login executed in 72.6296ms.
+2025-02-28 17:57:11.665 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 78.4459ms
+2025-02-28 17:57:11.665 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:57:11.665 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 17:57:11.665 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 17:57:11.666 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 86.3433ms
+2025-02-28 17:57:11.670 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 17:57:11.679 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 17:57:11.679 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 9.2531ms
+2025-02-28 17:57:11.697 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 17:57:11.700 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 3.0241ms
+2025-02-28 17:57:11.700 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 17:57:14.684 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryMGLpKZTAMdWDYT8B 243
+2025-02-28 17:57:14.689 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:57:14.697 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:57:15.273 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:57:16.944 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 17:57:16.944 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2247.5492ms
+2025-02-28 17:57:16.945 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:57:16.945 -03:00 [INF] Session started; Key:8c98ebc7-e4d3-a157-b3e4-f1afad4bd7f6, Id:91815254-e932-8a42-2217-c8bec4eb8e06
+2025-02-28 17:57:16.950 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2266.2291ms
+2025-02-28 17:57:16.951 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:57:16.954 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:57:16.954 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:57:16.964 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:57:17.305 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 17:57:17.334 -03:00 [INF] Executed ViewResult - view Index executed in 30.1628ms.
+2025-02-28 17:57:17.335 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 381.352ms
+2025-02-28 17:57:17.335 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:57:17.337 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 386.163ms
+2025-02-28 17:57:17.340 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 17:57:17.341 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 17:57:17.342 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 17:57:17.342 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 1.8628ms
+2025-02-28 17:57:17.348 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 17:57:17.348 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 7.9068ms
+2025-02-28 17:57:17.357 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 17:57:17.360 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:57:17.361 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 17:57:17.361 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 4.2095ms
+2025-02-28 17:57:17.365 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 5.1907ms
+2025-02-28 17:57:17.369 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:57:17.395 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 26.9206ms
+2025-02-28 17:57:17.521 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 17:57:17.522 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 17:57:17.523 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.6435ms
+2025-02-28 17:57:18.687 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 17:57:18.689 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:57:18.690 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:57:18.692 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 17:57:18.699 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 7.2087ms.
+2025-02-28 17:57:18.702 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 11.2512ms
+2025-02-28 17:57:18.702 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:57:18.702 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 15.5022ms
+2025-02-28 17:57:18.705 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:57:18.705 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:57:18.706 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2575ms
+2025-02-28 17:57:18.720 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 14.7241ms
+2025-02-28 17:57:19.812 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 17:57:19.821 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:57:19.824 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:57:19.866 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:57:20.421 -03:00 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 17:57:20.608 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 17:57:20.774 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 17:57:20.793 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 17:57:20.848 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 55.7629ms.
+2025-02-28 17:57:20.848 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1024.1979ms
+2025-02-28 17:57:20.848 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:57:20.849 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1037.0361ms
+2025-02-28 17:57:20.916 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:57:20.916 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:57:20.917 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2298ms
+2025-02-28 17:57:20.927 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 11.5032ms
+2025-02-28 17:59:31.523 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 17:59:31.741 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 17:59:31.777 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 17:59:31.777 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 17:59:31.798 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 17:59:31.799 -03:00 [INF] Hosting environment: Development
+2025-02-28 17:59:31.799 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 17:59:32.615 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:59:32.738 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:59:32.763 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:59:32.875 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 17:59:32.877 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 112.3682ms
+2025-02-28 17:59:32.877 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:59:32.880 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 268.9673ms
+2025-02-28 17:59:32.885 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 17:59:32.890 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:59:32.892 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:59:32.900 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 17:59:32.965 -03:00 [INF] Executed ViewResult - view Login executed in 68.241ms.
+2025-02-28 17:59:32.965 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 73.4039ms
+2025-02-28 17:59:32.965 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:59:32.966 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 17:59:32.966 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 17:59:32.967 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 82.5259ms
+2025-02-28 17:59:32.971 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 17:59:32.980 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 17:59:32.981 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 9.3196ms
+2025-02-28 17:59:32.998 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 17:59:33.001 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 3.0344ms
+2025-02-28 17:59:33.001 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 17:59:39.058 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundarycCzfn8e2Bbzo1x2V 243
+2025-02-28 17:59:39.063 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:59:39.069 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 17:59:39.679 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:59:41.331 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 17:59:41.331 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2261.8867ms
+2025-02-28 17:59:41.332 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 17:59:41.332 -03:00 [INF] Session started; Key:850e747c-8576-0a66-5dcb-9420c4f817b0, Id:38f785a1-bdfa-7c98-009c-a04d94cca9d4
+2025-02-28 17:59:41.336 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2278.4264ms
+2025-02-28 17:59:41.338 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 17:59:41.341 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:59:41.341 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 17:59:41.352 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:59:41.693 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 17:59:41.719 -03:00 [INF] Executed ViewResult - view Index executed in 27.0773ms.
+2025-02-28 17:59:41.720 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 378.5492ms
+2025-02-28 17:59:41.720 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 17:59:41.721 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 383.169ms
+2025-02-28 17:59:41.725 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 17:59:41.725 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 17:59:41.738 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 17:59:41.738 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 17:59:41.739 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 14.4289ms
+2025-02-28 17:59:41.739 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 14.4375ms
+2025-02-28 17:59:41.740 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 17:59:41.742 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 17:59:41.743 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.8083ms
+2025-02-28 17:59:41.747 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:59:41.752 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 5.277ms
+2025-02-28 17:59:41.755 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:59:41.785 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 31.1532ms
+2025-02-28 17:59:41.909 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 17:59:41.912 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 17:59:41.913 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 4.2123ms
+2025-02-28 17:59:42.624 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 17:59:42.626 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:59:42.628 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:59:42.629 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 17:59:42.636 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 7.0356ms.
+2025-02-28 17:59:42.639 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 11.35ms
+2025-02-28 17:59:42.639 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 17:59:42.639 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 15.8455ms
+2025-02-28 17:59:42.643 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:59:42.643 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:59:42.644 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.3362ms
+2025-02-28 17:59:42.658 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 15.2446ms
+2025-02-28 17:59:43.477 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 17:59:43.487 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:59:43.490 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 17:59:43.529 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 17:59:44.100 -03:00 [INF] Executed DbCommand (158ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 17:59:44.289 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 17:59:44.453 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 17:59:44.473 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 17:59:44.526 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 53.3601ms.
+2025-02-28 17:59:44.526 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1036.2597ms
+2025-02-28 17:59:44.526 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 17:59:44.526 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1049.2451ms
+2025-02-28 17:59:44.597 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 17:59:44.597 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 17:59:44.597 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1283ms
+2025-02-28 17:59:44.605 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 9.1666ms
+2025-02-28 18:00:17.366 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 18:00:17.624 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 18:00:17.661 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 18:00:17.661 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 18:00:17.686 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 18:00:17.686 -03:00 [INF] Hosting environment: Development
+2025-02-28 18:00:17.686 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 18:00:18.367 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:00:18.479 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:00:18.503 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:00:18.606 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 18:00:18.608 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 102.9212ms
+2025-02-28 18:00:18.608 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:00:18.611 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 249.562ms
+2025-02-28 18:00:18.616 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 18:00:18.620 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:00:18.621 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:00:18.629 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 18:00:18.694 -03:00 [INF] Executed ViewResult - view Login executed in 67.849ms.
+2025-02-28 18:00:18.694 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 72.7141ms
+2025-02-28 18:00:18.694 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:00:18.694 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 18:00:18.694 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 18:00:18.695 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 79.3018ms
+2025-02-28 18:00:18.700 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 18:00:18.709 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 18:00:18.709 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 8.9654ms
+2025-02-28 18:00:18.729 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 18:00:18.731 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.4656ms
+2025-02-28 18:00:18.731 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 18:00:36.543 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 18:00:36.779 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 18:00:36.815 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 18:00:36.815 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 18:00:36.836 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 18:00:36.837 -03:00 [INF] Hosting environment: Development
+2025-02-28 18:00:36.837 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 18:00:37.643 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:00:37.756 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:00:37.788 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:00:37.912 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 18:00:37.914 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 124.276ms
+2025-02-28 18:00:37.915 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:00:37.919 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 279.7276ms
+2025-02-28 18:00:37.923 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 18:00:37.928 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:00:37.929 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:00:37.940 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 18:00:38.009 -03:00 [INF] Executed ViewResult - view Login executed in 73.9721ms.
+2025-02-28 18:00:38.010 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 80.0795ms
+2025-02-28 18:00:38.010 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:00:38.010 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 18:00:38.010 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 18:00:38.011 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 87.4269ms
+2025-02-28 18:00:38.015 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 18:00:38.026 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 18:00:38.027 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 12.0539ms
+2025-02-28 18:00:38.044 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 18:00:38.046 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.6903ms
+2025-02-28 18:00:38.047 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 18:00:40.699 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundary6UV4y4ec5fBh5Ipi 243
+2025-02-28 18:00:40.704 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:00:40.712 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:00:41.294 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:00:42.958 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 18:00:42.959 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2246.4686ms
+2025-02-28 18:00:42.959 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:00:42.960 -03:00 [INF] Session started; Key:1448fe6f-fca5-841b-d269-1c44b62edfba, Id:705d7efd-1c73-cf88-8e4e-af4dddbb2c9c
+2025-02-28 18:00:42.964 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2264.9997ms
+2025-02-28 18:00:42.965 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:00:42.968 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:00:42.968 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:00:42.978 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:00:43.314 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 18:00:43.339 -03:00 [INF] Executed ViewResult - view Index executed in 25.7383ms.
+2025-02-28 18:00:43.340 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 371.2185ms
+2025-02-28 18:00:43.340 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:00:43.341 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 375.7219ms
+2025-02-28 18:00:43.345 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 18:00:43.345 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 18:00:43.360 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 18:00:43.360 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 18:00:43.360 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 18:00:43.360 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 15.6742ms
+2025-02-28 18:00:43.360 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 15.887ms
+2025-02-28 18:00:43.362 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 18:00:43.363 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.4404ms
+2025-02-28 18:00:43.368 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:00:43.372 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 4.9355ms
+2025-02-28 18:00:43.373 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:00:43.397 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 24.1702ms
+2025-02-28 18:00:43.535 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 18:00:43.536 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 18:00:43.537 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.6916ms
+2025-02-28 18:00:44.137 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 18:00:44.139 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:00:44.141 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:00:44.143 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 18:00:44.150 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 7.0838ms.
+2025-02-28 18:00:44.153 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 11.7686ms
+2025-02-28 18:00:44.153 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:00:44.153 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 16.5397ms
+2025-02-28 18:00:44.157 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:00:44.157 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:00:44.158 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2691ms
+2025-02-28 18:00:44.175 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 18.0697ms
+2025-02-28 18:00:45.234 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 18:00:45.243 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:00:45.246 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:00:45.286 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:00:45.845 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 18:00:46.027 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 18:00:46.190 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 18:00:46.208 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 18:00:46.263 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 55.4046ms.
+2025-02-28 18:00:46.263 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1016.7521ms
+2025-02-28 18:00:46.263 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:00:46.263 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1029.4431ms
+2025-02-28 18:00:46.330 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:00:46.330 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:00:46.331 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.3084ms
+2025-02-28 18:00:46.342 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 12.6344ms
+2025-02-28 18:01:04.791 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 18:01:05.000 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 18:01:05.033 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 18:01:05.033 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 18:01:05.059 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 18:01:05.059 -03:00 [INF] Hosting environment: Development
+2025-02-28 18:01:05.059 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 18:01:06.008 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:01:06.126 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:01:06.149 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:01:06.256 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 18:01:06.258 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 106.3135ms
+2025-02-28 18:01:06.258 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:01:06.261 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 258.2733ms
+2025-02-28 18:01:06.266 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 18:01:06.272 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:01:06.273 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:01:06.281 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 18:01:06.347 -03:00 [INF] Executed ViewResult - view Login executed in 68.9222ms.
+2025-02-28 18:01:06.347 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 74.2638ms
+2025-02-28 18:01:06.347 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:01:06.347 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 18:01:06.348 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 18:01:06.349 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 82.6813ms
+2025-02-28 18:01:06.352 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 18:01:06.366 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 18:01:06.367 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 15.1454ms
+2025-02-28 18:01:06.384 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 18:01:06.386 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.8302ms
+2025-02-28 18:01:06.387 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 18:01:09.460 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryG9rgkxXvyNIIm0UN 243
+2025-02-28 18:01:09.465 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:01:09.472 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:01:10.043 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:01:11.737 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 18:01:11.738 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2265.828ms
+2025-02-28 18:01:11.738 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:01:11.739 -03:00 [INF] Session started; Key:47fd9e6b-7ea9-adbf-d762-458982a86997, Id:233b84ee-59af-0abe-0c2a-cbf20f963b75
+2025-02-28 18:01:11.742 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2281.7722ms
+2025-02-28 18:01:11.744 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:01:11.747 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:01:11.747 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:01:11.758 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:01:12.102 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 18:01:12.127 -03:00 [INF] Executed ViewResult - view Index executed in 25.2997ms.
+2025-02-28 18:01:12.128 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 380.5139ms
+2025-02-28 18:01:12.128 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:01:12.129 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 385.7536ms
+2025-02-28 18:01:12.132 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 18:01:12.132 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 18:01:12.136 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 18:01:12.137 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 5.2276ms
+2025-02-28 18:01:12.137 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 18:01:12.140 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 7.5555ms
+2025-02-28 18:01:12.145 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 18:01:12.146 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 18:01:12.147 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.7053ms
+2025-02-28 18:01:12.149 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:01:12.154 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 4.9598ms
+2025-02-28 18:01:12.160 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:01:12.185 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 25.5426ms
+2025-02-28 18:01:12.315 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 18:01:12.318 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 18:01:12.318 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 4.0297ms
+2025-02-28 18:01:12.799 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 18:01:12.802 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:01:12.803 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:01:12.805 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 18:01:12.813 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 9.0491ms.
+2025-02-28 18:01:12.817 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 14.2524ms
+2025-02-28 18:01:12.817 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:01:12.817 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 18.3771ms
+2025-02-28 18:01:12.821 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:01:12.821 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:01:12.822 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.308ms
+2025-02-28 18:01:12.836 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 15.2169ms
+2025-02-28 18:01:13.633 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 18:01:13.641 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:01:13.644 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:01:13.686 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:01:14.240 -03:00 [INF] Executed DbCommand (161ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 18:01:14.425 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 18:01:14.594 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 18:01:14.612 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 18:01:14.666 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 54.0102ms.
+2025-02-28 18:01:14.666 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1021.6717ms
+2025-02-28 18:01:14.666 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:01:14.666 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1033.1304ms
+2025-02-28 18:01:14.732 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:01:14.732 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:01:14.733 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2457ms
+2025-02-28 18:01:14.742 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 9.7997ms
+2025-02-28 18:01:54.117 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 18:01:54.342 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 18:01:54.378 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 18:01:54.378 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 18:01:54.404 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 18:01:54.404 -03:00 [INF] Hosting environment: Development
+2025-02-28 18:01:54.404 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 18:01:55.199 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:01:55.309 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:01:55.338 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:01:55.454 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 18:01:55.456 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 116.0175ms
+2025-02-28 18:01:55.457 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:01:55.460 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 265.7346ms
+2025-02-28 18:01:55.464 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 18:01:55.469 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:01:55.470 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:01:55.478 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 18:01:55.543 -03:00 [INF] Executed ViewResult - view Login executed in 67.9567ms.
+2025-02-28 18:01:55.543 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 72.8999ms
+2025-02-28 18:01:55.543 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:01:55.543 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 18:01:55.544 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 18:01:55.544 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 80.6817ms
+2025-02-28 18:01:55.549 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 18:01:55.561 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 18:01:55.561 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 12.2796ms
+2025-02-28 18:01:55.582 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 18:01:55.584 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.3778ms
+2025-02-28 18:01:55.585 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 18:01:58.961 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundarypNlE6toqClLGlFl2 243
+2025-02-28 18:01:58.966 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:01:58.973 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:01:59.559 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:02:01.213 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 18:02:01.213 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2240.3242ms
+2025-02-28 18:02:01.213 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:02:01.214 -03:00 [INF] Session started; Key:0a9ecca5-2791-ba80-9c7b-bb405488ba78, Id:bd7b69f0-125f-f7d7-d836-c5d903004a59
+2025-02-28 18:02:01.218 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2257.3652ms
+2025-02-28 18:02:01.220 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:02:01.223 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:02:01.223 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:02:01.234 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:02:01.575 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 18:02:01.602 -03:00 [INF] Executed ViewResult - view Index executed in 26.992ms.
+2025-02-28 18:02:01.603 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 379.2682ms
+2025-02-28 18:02:01.603 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:02:01.603 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 384.0583ms
+2025-02-28 18:02:01.606 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 18:02:01.607 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 18:02:01.615 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 18:02:01.615 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 18:02:01.615 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 8.5106ms
+2025-02-28 18:02:01.615 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 8.725ms
+2025-02-28 18:02:01.623 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 18:02:01.625 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 18:02:01.626 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.6376ms
+2025-02-28 18:02:01.626 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:02:01.630 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 4.4479ms
+2025-02-28 18:02:01.634 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:02:01.659 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 24.8655ms
+2025-02-28 18:02:01.792 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 18:02:01.794 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 18:02:01.794 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 3.147ms
+2025-02-28 18:02:03.643 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 18:02:03.646 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:02:03.647 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:02:03.650 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 18:02:03.658 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 9.3288ms.
+2025-02-28 18:02:03.662 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 14.1398ms
+2025-02-28 18:02:03.662 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:02:03.662 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 19.0096ms
+2025-02-28 18:02:03.666 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:02:03.666 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:02:03.666 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1988ms
+2025-02-28 18:02:03.683 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 17.3775ms
+2025-02-28 18:02:04.314 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 18:02:04.324 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:02:04.327 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:02:04.366 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:02:04.919 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 18:02:05.106 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 18:02:05.269 -03:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 18:02:05.287 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 18:02:05.343 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 56.2891ms.
+2025-02-28 18:02:05.343 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1016.1944ms
+2025-02-28 18:02:05.343 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:02:05.343 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1029.4904ms
+2025-02-28 18:02:05.412 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:02:05.412 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:02:05.413 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1991ms
+2025-02-28 18:02:05.423 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 11.5589ms
+2025-02-28 18:03:53.794 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 18:03:53.981 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 18:03:54.019 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 18:03:54.019 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 18:03:54.044 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 18:03:54.044 -03:00 [INF] Hosting environment: Development
+2025-02-28 18:03:54.044 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 18:03:54.893 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:03:55.000 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:03:55.027 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:03:55.134 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 18:03:55.136 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 106.7242ms
+2025-02-28 18:03:55.136 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:03:55.139 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 250.9494ms
+2025-02-28 18:03:55.144 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 18:03:55.149 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:03:55.150 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:03:55.159 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 18:03:55.226 -03:00 [INF] Executed ViewResult - view Login executed in 71.0443ms.
+2025-02-28 18:03:55.226 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 76.1369ms
+2025-02-28 18:03:55.226 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:03:55.226 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 18:03:55.226 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 18:03:55.227 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 83.5663ms
+2025-02-28 18:03:55.231 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 18:03:55.240 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 18:03:55.241 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 9.5534ms
+2025-02-28 18:03:55.261 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 18:03:55.263 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.7083ms
+2025-02-28 18:03:55.264 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 18:03:58.134 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundary7cgmz9ZHqW4B6cJp 243
+2025-02-28 18:03:58.138 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:03:58.145 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:03:58.723 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:04:00.390 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 18:04:00.390 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2245.016ms
+2025-02-28 18:04:00.390 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:04:00.391 -03:00 [INF] Session started; Key:8fe492c7-27ed-5b74-1c19-510f15a2e4b9, Id:dfb4ae4b-522a-2659-bb52-3227ace888a3
+2025-02-28 18:04:00.395 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2262.0252ms
+2025-02-28 18:04:00.397 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:04:00.400 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:04:00.400 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:04:00.410 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:04:00.754 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 18:04:00.779 -03:00 [INF] Executed ViewResult - view Index executed in 25.4302ms.
+2025-02-28 18:04:00.779 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 379.3634ms
+2025-02-28 18:04:00.779 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:04:00.780 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 383.6798ms
+2025-02-28 18:04:00.785 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 18:04:00.785 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 18:04:00.793 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 18:04:00.793 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 18:04:00.793 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 8.7257ms
+2025-02-28 18:04:00.793 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 8.5295ms
+2025-02-28 18:04:00.801 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:04:00.801 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 18:04:00.803 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 18:04:00.804 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 3.1983ms
+2025-02-28 18:04:00.808 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 6.778ms
+2025-02-28 18:04:00.812 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:04:00.841 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 29.7171ms
+2025-02-28 18:04:00.969 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 18:04:00.970 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 18:04:00.971 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.5488ms
+2025-02-28 18:04:01.468 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - null null
+2025-02-28 18:04:01.471 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:04:01.472 -03:00 [INF] Route matched with {action = "TodosReportes", controller = "Reporte"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult TodosReportes() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:04:01.474 -03:00 [INF] Executing ViewResult, running view TodosReportes.
+2025-02-28 18:04:01.480 -03:00 [INF] Executed ViewResult - view TodosReportes executed in 6.8346ms.
+2025-02-28 18:04:01.483 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras) in 11.1421ms
+2025-02-28 18:04:01.483 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.TodosReportes (Proyectogestionhoras)'
+2025-02-28 18:04:01.483 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/TodosReportes - 200 null text/html; charset=utf-8 15.6317ms
+2025-02-28 18:04:01.487 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:04:01.487 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:04:01.488 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2862ms
+2025-02-28 18:04:01.503 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 16.8285ms
+2025-02-28 18:04:02.049 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 18:04:02.056 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:04:02.059 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:04:02.099 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:04:02.664 -03:00 [INF] Executed DbCommand (158ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 18:04:02.852 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 18:04:03.021 -03:00 [INF] Executed DbCommand (158ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 18:04:03.040 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 18:04:03.096 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 57.3606ms.
+2025-02-28 18:04:03.097 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 1037.8117ms
+2025-02-28 18:04:03.097 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:04:03.097 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 1047.865ms
+2025-02-28 18:04:03.161 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:04:03.161 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:04:03.162 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.109ms
+2025-02-28 18:04:03.170 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 8.7905ms
+2025-02-28 18:04:39.048 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - null null
+2025-02-28 18:04:39.055 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:04:39.055 -03:00 [INF] Route matched with {action = "ReporteMargenProyectos", controller = "Reporte"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReporteMargenProyectos() on controller Proyectogestionhoras.Controllers.ReporteController (Proyectogestionhoras).
+2025-02-28 18:04:39.056 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:04:39.384 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[ID], [u].[TIPO_UNEGOCIO]
+FROM [UNEGOCIO] AS [u]
+WHERE [u].[TIPO_UNEGOCIO] <> 'GENERAL'
+2025-02-28 18:04:39.539 -03:00 [INF] Executed DbCommand (154ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[ID], [c].[TIPO_CCOSTO]
+FROM [CCOSTO] AS [c]
+WHERE [c].[TIPO_CCOSTO] <> 'GENERAL'
+2025-02-28 18:04:39.693 -03:00 [INF] Executed DbCommand (154ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[ID], [t].[CONSULTORA], [t].[CONSULTORC], [t].[CONSUTLROB], [t].[DESDE], [t].[HASTA], [t].[HHSOCIOS], [t].[HHSTAFF], [t].[MONTO], [t].[TIPO_TIPOLOGIA]
+FROM [TIPOLOGIA] AS [t]
+ORDER BY [t].[ID] DESC
+2025-02-28 18:04:39.694 -03:00 [INF] Executing ViewResult, running view ReporteMargenProyectos.
+2025-02-28 18:04:39.709 -03:00 [INF] Executed ViewResult - view ReporteMargenProyectos executed in 15.0131ms.
+2025-02-28 18:04:39.709 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras) in 653.9141ms
+2025-02-28 18:04:39.709 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ReporteController.ReporteMargenProyectos (Proyectogestionhoras)'
+2025-02-28 18:04:39.709 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Reporte/ReporteMargenProyectos - 200 null text/html; charset=utf-8 661.4172ms
+2025-02-28 18:04:39.792 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:04:39.794 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:04:39.796 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.8514ms
+2025-02-28 18:04:39.805 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 12.9442ms
+2025-02-28 18:04:39.817 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 18:04:39.819 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 18:04:39.820 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.8116ms
+2025-02-28 18:05:17.807 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 18:05:18.044 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 18:05:18.089 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 18:05:18.089 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 18:05:18.114 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 18:05:18.114 -03:00 [INF] Hosting environment: Development
+2025-02-28 18:05:18.114 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 18:05:18.686 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:05:18.785 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:05:18.806 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:05:18.909 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 18:05:18.911 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 103.1023ms
+2025-02-28 18:05:18.911 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:05:18.914 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 235.3325ms
+2025-02-28 18:05:18.918 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 18:05:18.922 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:05:18.923 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:05:18.933 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 18:05:18.995 -03:00 [INF] Executed ViewResult - view Login executed in 65.5775ms.
+2025-02-28 18:05:18.995 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 71.6917ms
+2025-02-28 18:05:18.995 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:05:18.995 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 18:05:18.996 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 18:05:18.996 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 78.0853ms
+2025-02-28 18:05:19.000 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 18:05:19.010 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 18:05:19.010 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 10.0756ms
+2025-02-28 18:05:19.027 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 18:05:19.029 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.8077ms
+2025-02-28 18:05:19.030 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 18:05:22.027 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundaryd4zoKkDu3Kdc5jBe 243
+2025-02-28 18:05:22.031 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:05:22.038 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:05:22.615 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:05:24.290 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 18:05:24.291 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2252.7427ms
+2025-02-28 18:05:24.291 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:05:24.292 -03:00 [INF] Session started; Key:b2ca38b1-6a38-c3d0-641c-c41ddd07b63f, Id:ac41010b-bb67-00de-a7e2-f7166203e22e
+2025-02-28 18:05:24.296 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2269.6352ms
+2025-02-28 18:05:24.298 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:05:24.301 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:05:24.301 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:05:24.310 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:05:24.650 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 18:05:24.679 -03:00 [INF] Executed ViewResult - view Index executed in 30.0255ms.
+2025-02-28 18:05:24.680 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 378.8198ms
+2025-02-28 18:05:24.680 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:05:24.681 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 383.6014ms
+2025-02-28 18:05:24.684 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 18:05:24.684 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 18:05:24.698 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 18:05:24.698 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 18:05:24.698 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 14.495ms
+2025-02-28 18:05:24.699 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 14.7517ms
+2025-02-28 18:05:24.699 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 18:05:24.701 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 18:05:24.701 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.3965ms
+2025-02-28 18:05:24.707 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:05:24.711 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 4.6074ms
+2025-02-28 18:05:24.714 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:05:24.741 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 27.5494ms
+2025-02-28 18:05:24.876 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 18:05:24.877 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 18:05:24.878 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 2.7363ms
+2025-02-28 18:05:25.584 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/GetProyectos - null null
+2025-02-28 18:05:25.587 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetProyectos (Proyectogestionhoras)'
+2025-02-28 18:05:25.590 -03:00 [INF] Route matched with {action = "GetProyectos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetProyectos(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-02-28 18:05:25.627 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:05:26.361 -03:00 [INF] Executed DbCommand (162ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID] AS [Id], [p].[NOMBRE] AS [Nombre], [p].[NUM_PROYECTO] AS [NumProyecto], [c].[NOMBRE] AS [NombreCliente]
+FROM [PROYECTO] AS [p]
+INNER JOIN [SUCURSAL_CLIENTE] AS [s] ON [p].[ID_CLIENTE_SUCURSAL] = [s].[ID]
+INNER JOIN [CLIENTE] AS [c] ON [s].[ID_CLIENTE] = [c].[ID]
+WHERE [p].[STATUS_PROYECTO] IN (1, 2, 6)
+2025-02-28 18:05:26.370 -03:00 [INF] Executing ViewResult, running view Proyectos.
+2025-02-28 18:05:26.418 -03:00 [INF] Executed ViewResult - view Proyectos executed in 48.2344ms.
+2025-02-28 18:05:26.420 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.GetProyectos (Proyectogestionhoras) in 829.7416ms
+2025-02-28 18:05:26.420 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetProyectos (Proyectogestionhoras)'
+2025-02-28 18:05:26.421 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/GetProyectos - 200 null text/html; charset=utf-8 837.1033ms
+2025-02-28 18:05:26.423 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/proyecto.css?v=c_1rRzOuSwiUOAtdEWljBiiXGALWRp2DX0YLcLbf-9s - null null
+2025-02-28 18:05:26.423 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:05:26.423 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:05:26.424 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.1738ms
+2025-02-28 18:05:26.424 -03:00 [INF] Sending file. Request path: '/css/proyecto.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\proyecto.css'
+2025-02-28 18:05:26.425 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/proyecto.css?v=c_1rRzOuSwiUOAtdEWljBiiXGALWRp2DX0YLcLbf-9s - 200 1614 text/css 2.1439ms
+2025-02-28 18:05:26.440 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 17.2644ms
+2025-02-28 18:05:28.382 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerProyectos/215 - null null
+2025-02-28 18:05:28.389 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerProyectos (Proyectogestionhoras)'
+2025-02-28 18:05:28.392 -03:00 [INF] Route matched with {action = "ObtenerProyectos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectos(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-02-28 18:05:28.397 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:05:28.565 -03:00 [INF] Executed DbCommand (157ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[STATUS_PROYECTO]
+FROM [PROYECTO] AS [p]
+WHERE [p].[ID] = @__idproyecto_0
+2025-02-28 18:05:29.584 -03:00 [INF] Executed DbCommand (154ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [f].[id], [f].[FECHAMODIFICACION], [f].[IDPROYECTO]
+FROM [FECHAMODIFICACIONPROYECTO] AS [f]
+WHERE [f].[IDPROYECTO] = @__id_0
+2025-02-28 18:05:29.615 -03:00 [INF] Executing ViewResult, running view DetalleProyecto.
+2025-02-28 18:05:29.700 -03:00 [INF] Executed ViewResult - view DetalleProyecto executed in 85.2225ms.
+2025-02-28 18:05:29.700 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerProyectos (Proyectogestionhoras) in 1307.5411ms
+2025-02-28 18:05:29.700 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerProyectos (Proyectogestionhoras)'
+2025-02-28 18:05:29.700 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerProyectos/215 - 200 null text/html; charset=utf-8 1318.9467ms
+2025-02-28 18:05:29.704 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:05:29.704 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:05:29.705 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.2044ms
+2025-02-28 18:05:29.714 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 9.48ms
+2025-02-28 18:07:14.596 -03:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-02-28 18:07:14.826 -03:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-02-28 18:07:14.868 -03:00 [INF] Now listening on: https://localhost:7297
+2025-02-28 18:07:14.868 -03:00 [INF] Now listening on: http://localhost:5295
+2025-02-28 18:07:14.894 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-02-28 18:07:14.894 -03:00 [INF] Hosting environment: Development
+2025-02-28 18:07:14.894 -03:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-02-28 18:07:15.592 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:07:15.690 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:07:15.713 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:07:15.818 -03:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-02-28 18:07:15.820 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 105.1475ms
+2025-02-28 18:07:15.821 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:07:15.824 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 235.189ms
+2025-02-28 18:07:15.827 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-02-28 18:07:15.832 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:07:15.834 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:07:15.842 -03:00 [INF] Executing ViewResult, running view Login.
+2025-02-28 18:07:15.906 -03:00 [INF] Executed ViewResult - view Login executed in 67.1102ms.
+2025-02-28 18:07:15.906 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 72.3546ms
+2025-02-28 18:07:15.906 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:07:15.906 -03:00 [WRN] Unable to configure Browser Link script injection on the response. 
+2025-02-28 18:07:15.907 -03:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2025-02-28 18:07:15.907 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 79.9548ms
+2025-02-28 18:07:15.912 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - null null
+2025-02-28 18:07:15.923 -03:00 [INF] Sending file. Request path: '/css/login.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\login.css'
+2025-02-28 18:07:15.923 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/login.css?v=XsyJn06_W_NmMOK933Alxz7baIVJa99KQGgonyFGPHg - 200 1986 text/css 11.2882ms
+2025-02-28 18:07:15.942 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/favicon-unit.png type= - null null
+2025-02-28 18:07:15.945 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/favicon-unit.png type= - 404 0 null 2.755ms
+2025-02-28 18:07:15.945 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/favicon-unit.png%20type=, Response status code: 404
+2025-02-28 18:07:18.819 -03:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - multipart/form-data; boundary=----WebKitFormBoundary6YApDAfG2dOCeg3W 243
+2025-02-28 18:07:18.824 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:07:18.831 -03:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-02-28 18:07:19.409 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:07:21.082 -03:00 [INF] Executing RedirectResult, redirecting to /.
+2025-02-28 18:07:21.083 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2251.8192ms
+2025-02-28 18:07:21.083 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-02-28 18:07:21.084 -03:00 [INF] Session started; Key:deda37ce-8833-e0d4-02a1-65f5d500e4be, Id:8f54edfc-6c44-9f26-a089-2ca31f5f09a6
+2025-02-28 18:07:21.088 -03:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2269.1016ms
+2025-02-28 18:07:21.090 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-02-28 18:07:21.093 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:07:21.093 -03:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-02-28 18:07:21.103 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:07:21.441 -03:00 [INF] Executing ViewResult, running view Index.
+2025-02-28 18:07:21.468 -03:00 [INF] Executed ViewResult - view Index executed in 27.7584ms.
+2025-02-28 18:07:21.469 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 376.0152ms
+2025-02-28 18:07:21.469 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-02-28 18:07:21.471 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 381.0782ms
+2025-02-28 18:07:21.474 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - null null
+2025-02-28 18:07:21.474 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-02-28 18:07:21.488 -03:00 [INF] Sending file. Request path: '/css/layout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\layout.css'
+2025-02-28 18:07:21.488 -03:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-02-28 18:07:21.489 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - null null
+2025-02-28 18:07:21.489 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/layout.css?v=3StspB6MZ2hobs9KqRsQfKJXx8vn9YpuDcjE6TEiNpw - 200 2368 text/css 14.9228ms
+2025-02-28 18:07:21.489 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 14.7397ms
+2025-02-28 18:07:21.490 -03:00 [INF] Sending file. Request path: '/css/index.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\index.css'
+2025-02-28 18:07:21.491 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/index.css?v=H9x14QfHrUkJJviwFjj43p_ZplvGrSGJZXz2G15nfu8 - 200 3481 text/css 2.5664ms
+2025-02-28 18:07:21.497 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:07:21.501 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 4.9359ms
+2025-02-28 18:07:21.501 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:07:21.527 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 25.9254ms
+2025-02-28 18:07:21.670 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/unit-ico.png - null null
+2025-02-28 18:07:21.674 -03:00 [INF] Sending file. Request path: '/unit-ico.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\unit-ico.png'
+2025-02-28 18:07:21.674 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/unit-ico.png - 200 670 image/png 4.4747ms
+2025-02-28 18:07:22.564 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/GetProyectos - null null
+2025-02-28 18:07:22.566 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetProyectos (Proyectogestionhoras)'
+2025-02-28 18:07:22.570 -03:00 [INF] Route matched with {action = "GetProyectos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetProyectos(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-02-28 18:07:22.611 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:07:23.308 -03:00 [INF] Executed DbCommand (158ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID] AS [Id], [p].[NOMBRE] AS [Nombre], [p].[NUM_PROYECTO] AS [NumProyecto], [c].[NOMBRE] AS [NombreCliente]
+FROM [PROYECTO] AS [p]
+INNER JOIN [SUCURSAL_CLIENTE] AS [s] ON [p].[ID_CLIENTE_SUCURSAL] = [s].[ID]
+INNER JOIN [CLIENTE] AS [c] ON [s].[ID_CLIENTE] = [c].[ID]
+WHERE [p].[STATUS_PROYECTO] IN (1, 2, 6)
+2025-02-28 18:07:23.316 -03:00 [INF] Executing ViewResult, running view Proyectos.
+2025-02-28 18:07:23.354 -03:00 [INF] Executed ViewResult - view Proyectos executed in 38.2383ms.
+2025-02-28 18:07:23.356 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.GetProyectos (Proyectogestionhoras) in 785.8339ms
+2025-02-28 18:07:23.356 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.GetProyectos (Proyectogestionhoras)'
+2025-02-28 18:07:23.356 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/GetProyectos - 200 null text/html; charset=utf-8 792.5685ms
+2025-02-28 18:07:23.358 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:07:23.358 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:07:23.358 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/proyecto.css?v=c_1rRzOuSwiUOAtdEWljBiiXGALWRp2DX0YLcLbf-9s - null null
+2025-02-28 18:07:23.359 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.6824ms
+2025-02-28 18:07:23.364 -03:00 [INF] Sending file. Request path: '/css/proyecto.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\proyecto.css'
+2025-02-28 18:07:23.369 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/proyecto.css?v=c_1rRzOuSwiUOAtdEWljBiiXGALWRp2DX0YLcLbf-9s - 200 1614 text/css 11.0321ms
+2025-02-28 18:07:23.382 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 24.251ms
+2025-02-28 18:07:24.926 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Proyecto/ObtenerProyectos/215 - null null
+2025-02-28 18:07:24.936 -03:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerProyectos (Proyectogestionhoras)'
+2025-02-28 18:07:24.939 -03:00 [INF] Route matched with {action = "ObtenerProyectos", controller = "Proyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectos(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.ProyectoController (Proyectogestionhoras).
+2025-02-28 18:07:24.944 -03:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-02-28 18:07:25.110 -03:00 [INF] Executed DbCommand (155ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[STATUS_PROYECTO]
+FROM [PROYECTO] AS [p]
+WHERE [p].[ID] = @__idproyecto_0
+2025-02-28 18:07:26.121 -03:00 [INF] Executed DbCommand (153ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [f].[id], [f].[FECHAMODIFICACION], [f].[IDPROYECTO]
+FROM [FECHAMODIFICACIONPROYECTO] AS [f]
+WHERE [f].[IDPROYECTO] = @__id_0
+2025-02-28 18:07:26.152 -03:00 [INF] Executing ViewResult, running view DetalleProyecto.
+2025-02-28 18:07:26.241 -03:00 [INF] Executed ViewResult - view DetalleProyecto executed in 88.7047ms.
+2025-02-28 18:07:26.241 -03:00 [INF] Executed action Proyectogestionhoras.Controllers.ProyectoController.ObtenerProyectos (Proyectogestionhoras) in 1301.4516ms
+2025-02-28 18:07:26.241 -03:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.ProyectoController.ObtenerProyectos (Proyectogestionhoras)'
+2025-02-28 18:07:26.241 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Proyecto/ObtenerProyectos/215 - 200 null text/html; charset=utf-8 1315.4047ms
+2025-02-28 18:07:26.245 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-02-28 18:07:26.245 -03:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-02-28 18:07:26.246 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 13792 application/javascript; charset=utf-8 1.204ms
+2025-02-28 18:07:26.258 -03:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 12.8965ms

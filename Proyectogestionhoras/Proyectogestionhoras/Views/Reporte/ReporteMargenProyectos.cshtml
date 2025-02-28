@@ -152,7 +152,7 @@
                         }
                         if (margenpresupuesto > 0)
                         {
-                            porcentajediferencia = Math.Round((totaldiferenciamargenes / margenpresupuesto) * 100, 2);
+                            porcentajediferencia = Math.Round((margenrealforecast / margenpresupuesto) * 100, 2);
                         }
                         <tr>
                             <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">@margen.NumProyecto</td>
@@ -225,7 +225,7 @@
                     diferenciatotalmargen = totalMargenpresupuesto - totalmargenrealforecast;
                     if (totalMargenpresupuesto > 0)
                     {
-                        porcentajediferenciamargen = Math.Round((diferenciatotalmargen / totalMargenpresupuesto) * 100, 2);
+                        porcentajediferenciamargen = Math.Round((totalIngresosRealForecast / totalMargenpresupuesto) * 100, 2);
                     }
                     promediomontopresupuesto = Math.Round(totalMontoPresupuesto/contador, 2);
                     promediocostospresupuesto = Math.Round(totalcostospresupuesto / contador, 2);
@@ -244,7 +244,7 @@
                     }
                     if (promediomargenpresupuesto > 0)
                     {
-                        porcentajediferenciamargenpromedio = Math.Round((diferenciamargenpromedio / promediomargenpresupuesto) * 100, 2);
+                        porcentajediferenciamargenpromedio = Math.Round((promediomontorealforecast / promediomargenpresupuesto) * 100, 2);
                     }
                 }
                 <tr class="font-bold bg-gray-100">
@@ -446,9 +446,7 @@
                 const costosRealForecast = parseFloat(row.getElementsByTagName('td')[10].innerText.replace(/\./g, '')) || 0;
                 const margenRealForecast = parseFloat(row.getElementsByTagName('td')[11].innerText.replace(/\./g, '')) || 0;
 
-                // Calcular diferencias para esta fila
-                const diferenciaMargen = margenPresupuesto - margenRealForecast;
-                const porcentajeDiferencia = margenPresupuesto !== 0 ? (diferenciaMargen / margenPresupuesto) * 100 : 0;
+                
 
                 totalMontoPresupuesto += montoPresupuesto;
                 totalCostosPresupuesto += costosPresupuesto;
@@ -456,9 +454,13 @@
                 totalIngresosRealForecast += ingresosRealForecast;
                 totalCostosRealForecast += costosRealForecast;
                 totalMargenRealForecast += margenRealForecast;
-                totalDiferenciaMargen += diferenciaMargen; 
-                totalPorcentajeDiferencia += porcentajeDiferencia; 
+               
                 contador++;
+                // Calcular diferencias para esta fila
+                const diferenciaMargen = margenPresupuesto - margenRealForecast;
+                const porcentajeDiferencia = totalMargenPresupuesto !== 0 ? (totalMargenRealForecast / totalMargenPresupuesto) * 100 : 0;
+                 totalDiferenciaMargen += diferenciaMargen;
+                totalPorcentajeDiferencia = porcentajeDiferencia;
             } else {
                 row.style.display = 'none';
             }
@@ -511,7 +513,7 @@
         const promedioCostosRealForecast = contador > 0 ? totalCostosRealForecast / contador : 0;
         const promedioMargenRealForecast = contador > 0 ? totalMargenRealForecast / contador : 0;
         const promedioDiferenciaMargen = contador > 0 ? totalDiferenciaMargen / contador : 0;
-        const promedioPorcentajeDiferencia = contador > 0 ? totalPorcentajeDiferencia / contador : 0;
+        const promedioPorcentajeDiferencia = totalMargenPresupuesto > 0 ? (totalMargenRealForecast / totalMargenPresupuesto) * 100 : 0;
 
         // Actualizar promedios
         promedioRow.getElementsByTagName('td')[5].innerText = formatNumber(promedioMontoPresupuesto);
