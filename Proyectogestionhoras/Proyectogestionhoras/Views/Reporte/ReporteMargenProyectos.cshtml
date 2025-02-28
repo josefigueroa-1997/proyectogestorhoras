@@ -61,16 +61,22 @@
 <div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table id="facturasTable" class="min-w-full border-collapse border border-black">
-            <thead class="bg-blue-100">
+            <thead >
                 <tr>
                     <th class="text-left text-xs font-medium "></th>
                     <th class="text-left text-xs font-medium "></th>
                     <th class="text-left text-xs font-medium "></th>
                     <th class="text-left text-xs font-medium "></th>
                     <th class="text-left text-xs font-medium border border-black "></th>
-                    <th colspan="4" class="text-left text-xs border border-black font-medium ">Presupuesto</th>
-                    <th colspan="4" class="text-left text-xs border border-black font-medium ">Real + Forecast</th>
-                    <th colspan="2" class="text-left text-xs border border-black font-medium ">Diferencia Margen Presupuesto - (Real + Forecast)</th>
+                    <th class="text-left text-xs font-medium  bg-blue-100"></th>
+                    <th class="text-left text-xs font-medium bg-blue-100">Presupuesto</th>
+                    <th  class="text-center text-xs bg-blue-100  font-medium "></th>
+                    <th  class="text-center text-xs bg-blue-100  font-medium "></th>
+                    <th class="text-center text-xs bg-red-100 font-medium "></th>
+                    <th class="text-center text-xs bg-red-100  font-medium ">Real + Forecast</th>
+                    <th class="text-center text-xs bg-red-100 font-medium "></th>
+                    <th class="text-center text-xs bg-red-100  font-medium "></th>
+                    <th colspan="2" class="text-center text-xs border border-black bg-yellow-100 font-medium ">Diferencia Margen Presupuesto - (Real + Forecast)</th>
                   
                 </tr>
             </thead>
@@ -111,22 +117,22 @@
 
                 @if (ViewBag.Margen != null)
                 {
-                    <tr>
+                    <tr class="header-row">
                         <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">NumProyecto</td>
                         <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Nombre</td>
                         <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">U.Negocio</td>
                         <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">C.Costo</td>
                         <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Tipología</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Ingresos</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Costos</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Margen</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">% Margen</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Ingresos</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Costos</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Margen</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">% Margen</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total</td>
-                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">% Respecto Presupuesto</td>
+                        <td class="text-xs border font-medium text-left border-black bg-blue-100  px-4 py-2 min-w-[150px]">Total Ingresos</td>
+                        <td class="text-xs border font-medium text-left border-black bg-blue-100  px-4 py-2 min-w-[150px]">Total Costos</td>
+                        <td class="text-xs border font-medium text-left border-black bg-blue-100  px-4 py-2 min-w-[150px]">Margen</td>
+                        <td class="text-xs border font-medium text-left border-black bg-blue-100  px-4 py-2 min-w-[150px]">% Margen</td>
+                        <td class="text-xs border font-medium text-left border-black bg-red-100  px-4 py-2 min-w-[150px]">Total Ingresos</td>
+                        <td class="text-xs border font-medium text-left border-black bg-red-100  px-4 py-2 min-w-[150px]">Total Costos</td>
+                        <td class="text-xs border font-medium text-left border-black bg-red-100  px-4 py-2 min-w-[150px]">Margen</td>
+                        <td class="text-xs border font-medium text-left border-black bg-red-100  px-4 py-2 min-w-[150px]">% Margen</td>
+                        <td class="text-xs border font-medium text-left border-black bg-yellow-100  px-4 py-2 min-w-[150px]">Total</td>
+                        <td class="text-xs border font-medium text-left border-black bg-yellow-100  px-4 py-2 min-w-[150px]">% Respecto Presupuesto</td>
                     </tr>
                     @foreach (var margen in ViewBag.Margen)
                     {
@@ -293,10 +299,9 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
-    document.getElementById('exportButton').addEventListener('click', async function () {
+            document.getElementById('exportButton').addEventListener('click', async function () {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Margen');
-
 
         const table = document.getElementById('facturasTable');
 
@@ -308,7 +313,6 @@
             buffer: arrayBuffer,
             extension: 'png',
         });
-
 
         worksheet.addImage(logoImageId, {
             tl: { col: 0, row: 0 },
@@ -327,12 +331,20 @@
         worksheet.addRow([]);
         worksheet.addRow([]);
 
- 
+        
         Array.from(table.rows).forEach((row, rowIndex) => {
             const rowData = [];
+            let colOffset = 0; 
+
             Array.from(row.cells).forEach((cell, colIndex) => {
-               
-                const cellValue = cell.innerText.replace(/\./g, ''); 
+     
+                if (colOffset > 0) {
+                    colOffset--;
+                    rowData.push(""); 
+                    return;
+                }
+
+                const cellValue = cell.innerText.replace(/\./g, '');
                 const isNumeric = !isNaN(cellValue) && !isNaN(parseFloat(cellValue));
 
                 if (isNumeric && cellValue !== "") {
@@ -340,19 +352,28 @@
                 } else {
                     rowData.push(cell.innerText);
                 }
+
+          
+                if (cell.hasAttribute('colspan')) {
+                    const colspan = parseInt(cell.getAttribute('colspan'));
+                    if (colspan > 1) {
+               
+                        worksheet.mergeCells(rowIndex + 6, colIndex + 1, rowIndex + 6, colIndex + colspan);
+                        colOffset = colspan - 1; 
+                    }
+                }
             });
+
             worksheet.addRow(rowData);
         });
 
- 
+
         worksheet.eachRow((row, rowNumber) => {
             row.eachCell((cell, colNumber) => {
                 if (typeof cell.value === 'number') {
-
                     cell.numFmt = '#,##0';
                     cell.alignment = { horizontal: 'right' };
                 } else if (typeof cell.value === 'string' && cell.value.includes('%')) {
-           
                     cell.alignment = { horizontal: 'right' };
                 }
             });
@@ -362,7 +383,7 @@
             column.width = 20;
         });
 
-    
+ 
         workbook.xlsx.writeBuffer().then(function (buffer) {
             const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             saveAs(blob, 'MargendeContribucion.xlsx');
@@ -399,12 +420,13 @@
 
         for (let i = 0; i < rows.length; i++) {
             const row = rows[i];
+            const isHeaderRow = row.classList.contains('header-row');
             const isTotalRow = row.classList.contains('font-bold');
 
-            if (isTotalRow) {
-                row.style.display = '';
-                continue;
-            }
+           if (isHeaderRow || isTotalRow) {
+            row.style.display = '';
+            continue;
+           }
 
             const unegocioCell = row.getElementsByTagName('td')[2].innerText;
             const ccostoCell = row.getElementsByTagName('td')[3].innerText;
