@@ -121,7 +121,13 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ReporteMargenProyectos()
         {
             var margen = await _reporteService.RecuperarMargenProyectos();
+            var unegocios = await context.Unegocios.ToListAsync();
+            var ccostos = await context.Ccostos.ToListAsync();
+            var tipologias = await context.Tipologia.ToListAsync();
             ViewBag.Margen = margen;
+            ViewBag.Unegocios = unegocios;
+            ViewBag.Ccostos = ccostos;
+            ViewBag.Tipologias = tipologias;
             return View();
         }
         public IActionResult SeleccionarProyecto()

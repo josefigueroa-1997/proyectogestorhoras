@@ -4,263 +4,288 @@
  
 <h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Margen de Contribución de Proyectos</h2>
 <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
-    <p class="text-sm text-gray-600">Muestra los margenes de contribución de los proyectos.</p>
+    <p class="text-sm text-gray-600">Muestra los margenes de contribución de los proyectos en Ejecución y Terminados.</p>
 </div>
 <button id="exportButton" class="mt-4 bg-green-500 text-white p-2 rounded">Exportar a Excel</button>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600 mb-2">Filtros</p>
+
+    <div class="flex space-x-4">
+        <div class="flex-1">
+            <label for="unegocio" class="block text-sm font-medium text-gray-700">Unidad de Negocio</label>
+            <select id="unegocio" name="unegocio" class="unegociosselect w-full px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                @if (ViewBag.Unegocios != null)
+                {
+                    <option value="" disabled selected>Seleccione una Unidad de Negocio</option>
+                    @foreach (var unegocio in ViewBag.Unegocios)
+                    {
+                        <option value="@unegocio.TipoUnegocio">@unegocio.TipoUnegocio</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="flex-1">
+            <label for="ccosto" class="block text-sm font-medium text-gray-700">Centro de Costo</label>
+            <select id="ccosto" name="ccosto" class="ccosto w-full px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                @if (ViewBag.Ccostos != null)
+                {
+                    <option value="" disabled selected>Seleccione un Centro de Costo</option>
+                    @foreach (var ccosto in ViewBag.Ccostos)
+                    {
+                        <option value="@ccosto.TipoCcosto">@ccosto.TipoCcosto</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="flex-1">
+            <label for="tipologia" class="block text-sm font-medium text-gray-700">Tipología</label>
+            <select id="tipologia" name="tipologia" class="tipologia w-full px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                @if (ViewBag.Tipologias != null)
+                {
+                    <option value="" disabled selected>Seleccione una Tipología</option>
+                    @foreach (var tipologia in ViewBag.Tipologias)
+                    {
+                        <option value="@tipologia.TipoTipologia">@tipologia.TipoTipologia</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="flex-1">
+            <button id="clearFilters" class="bg-blue-500 text-white px-4 py-2 rounded">Limpiar Filtros</button>
+        </div>
+    </div>
+</div>
+
 <div style="margin-top: 50px;" class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
     <div class="overflow-x-auto">
         <table id="facturasTable" class="min-w-full border-collapse border border-black">
             <thead class="bg-blue-100">
                 <tr>
-                    <th class="text-left text-xs font-medium ">Num Proyecto</th>
-                    <th class="text-left text-xs font-medium ">Nombre</th>
-                    <th class="text-left text-xs font-medium ">Monto Proyectado</th>
-                    <th class="text-left text-xs font-medium ">Total Ingresos Reales</th>
-                    <th class="text-left text-xs font-medium ">Total Ingresos Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total Ingresos Reales + Forecast</th>
-                    <th class="text-left text-xs font-medium ">HHSocios Proyectado</th>
-                    <th class="text-left text-xs font-medium ">HHSocios Reales</th>
-                    <th class="text-left text-xs font-medium ">HHSocios Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total HHSocios Real + Forecast</th>
-                    <th class="text-left text-xs font-medium ">HHStaff Proyectado</th>
-                    <th class="text-left text-xs font-medium ">HHStaff Reales</th>
-                    <th class="text-left text-xs font-medium ">HHStaff Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total HHStaff Real + Forecast</th>
-                    <th class="text-left text-xs font-medium ">Consultores Externos Proyectado</th>
-                    <th class="text-left text-xs font-medium ">Consultores Externos Real</th>
-                    <th class="text-left text-xs font-medium ">Consultores Externos Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total Consultores Externos Real + Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total Servicios Proyectado</th>
-                    <th class="text-left text-xs font-medium ">Total Servicios Reales</th>
-                    <th class="text-left text-xs font-medium ">Total Servicios Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total Servicios  Real + Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total Gastos Proyectado</th>
-                    <th class="text-left text-xs font-medium ">Total Gastos Reales</th>
-                    <th class="text-left text-xs font-medium ">Total Gastos Forecast</th>
-                    <th class="text-left text-xs font-medium ">Total Gastos Reales + Forecast</th>
-                    <th class="text-left text-xs font-medium ">Margen Contribución Proyectado</th>
-                    <th class="text-left text-xs font-medium ">Margen Contribución Real + Forecast</th>
-                    <th class="text-left text-xs font-medium ">Porcentaje Margen Contribución Proyectado</th>
+                    <th class="text-left text-xs font-medium "></th>
+                    <th class="text-left text-xs font-medium "></th>
+                    <th class="text-left text-xs font-medium "></th>
+                    <th class="text-left text-xs font-medium "></th>
+                    <th class="text-left text-xs font-medium border border-black "></th>
+                    <th colspan="4" class="text-left text-xs border border-black font-medium ">Presupuesto</th>
+                    <th colspan="4" class="text-left text-xs border border-black font-medium ">Real + Forecast</th>
+                    <th colspan="2" class="text-left text-xs border border-black font-medium ">Diferencia Margen Presupuesto - (Real + Forecast)</th>
+                  
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @{
                     decimal
-                    totalMonto = 0;
+                    totalMontoPresupuesto = 0;
                     decimal
-                    totalMontoReal = 0;
+                    totalcostospresupuesto = 0;
                     decimal
-                    totalMontoForecast = 0;
+                    totalMargenpresupuesto = 0;
                     decimal
-                    totalMontoRealForecast = 0;
+                    totalIngresosRealForecast = 0;
                     decimal
-                    totalHHSocios = 0;
+                    totalcostosrealforecast = 0;
                     decimal
-                    totalHHSociosReal = 0;
+                    totalmargenrealforecast = 0;
                     decimal
-                    totalHHSociosForecast = 0;
+                    diferenciatotalmargen = 0;
                     decimal
-                    totalHHSociosRealForecast = 0;
+                    promediomontopresupuesto = 0;
                     decimal
-                    totalHHLeads = 0;
+                    promediocostospresupuesto = 0;
                     decimal
-                    totalHHStaffReal = 0;
+                    promediomargenpresupuesto = 0;
                     decimal
-                    totalHHStaffForecast = 0;
+                    promediomontorealforecast = 0;
                     decimal
-                    totalHHStaffRealForecast = 0;
+                    promediocostorealforecast = 0;
                     decimal
-                    totalConsultorA = 0;
+                    promediomargenforecastreal = 0;
                     decimal
-                    totalConsultorB = 0;
-                    decimal
-                    totalConsultorD = 0;
-                    decimal
-                    totalConsultorRealForecast = 0;
-                    decimal
-                    totalServicios = 0;
-                    decimal
-                    totalServiciosReal = 0;
-                    decimal
-                    totalServiciosForecast = 0;
-                    decimal
-                    totalServiciosRealForecast = 0;
-                    decimal
-                    totalGastos = 0;
-                        decimal
-                    totalGastosReal = 0;
-                    decimal
-                    totalGastosForecast = 0;
-                    decimal
-                    totalGastosRealForecast = 0;
-                    decimal
-                    totalMargen = 0;
-                    decimal
-                    totalMargenRealForecast = 0;
-                    decimal
-                    porcentajemargentotal = 0;
-
+                    diferenciamargenpromedio = 0;
+                   
+                    int contador = 0;
                 }
                 
 
                 @if (ViewBag.Margen != null)
                 {
+                    <tr>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">NumProyecto</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Nombre</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">U.Negocio</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">C.Costo</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Tipología</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Ingresos</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Costos</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Margen</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">% Margen</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Ingresos</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total Costos</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Margen</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">% Margen</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">Total</td>
+                        <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">% Respecto Presupuesto</td>
+                    </tr>
                     @foreach (var margen in ViewBag.Margen)
                     {
-                        decimal montorealforecast = margen.MontoReal + margen.MontoForecast;
-                        decimal sociorealforecast = margen.CostosSociosReales + margen.CostosSociosForecast;
-                        decimal staffrealforecast = margen.CostosStaffReales + margen.CostosStaffForecast;
-                        decimal consultorrealforecast = margen.CostoConsultorReal + margen.CostoConsultorForecast;
-                        decimal serviciorealforecast = margen.TotalServiciosReales + margen.TotalServiciosForecast;
-                        decimal gastosrealforecast = margen.TotalGastosReales + margen.TotalGastosForecast;
-                        decimal amrgenrealforecast = montorealforecast - (sociorealforecast + staffrealforecast + serviciorealforecast + gastosrealforecast);
+                        decimal margenpresupuesto = margen.Monto - margen.totalcostospresupuesto;
+                        decimal margenrealforecast = margen.totalingresorealesforecast - margen.totalcostorealforecast;
+                        decimal porcentajeproyectado = 0;
+                        decimal porcentajerealforecast = 0;
+                        decimal porcentajediferencia = 0;
+                        decimal totaldiferenciamargenes = margenpresupuesto - margenrealforecast;
+                        if (margen.Monto > 0)
+                        {
+                            porcentajeproyectado = Math.Round((margenpresupuesto / margen.Monto) * 100, 2);
+                        }
+                        if (margen.totalingresorealesforecast > 0)
+                        {
+                            porcentajerealforecast = Math.Round((margenrealforecast / margen.totalingresorealesforecast) * 100, 2);
+                        }
+                        if (margenpresupuesto > 0)
+                        {
+                            porcentajediferencia = Math.Round((totaldiferenciamargenes / margenpresupuesto) * 100, 2);
+                        }
                         <tr>
                             <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">@margen.NumProyecto</td>
                             <td class="text-xs border font-medium text-left border-black sticky left-0 bg-white px-4 py-2 min-w-[150px]">@margen.NombreProyecto</td>
+                            <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">@margen.Unegocios</td>
+                            <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">@margen.ccosto</td>
+                            <td class="text-xs border font-medium text-left border-black  px-4 py-2 min-w-[150px]">@margen.tipologia</td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
                                 @(margen.Monto == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.Monto)))
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.MontoReal == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.MontoReal)))
+                                @(margen.totalcostospresupuesto == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.totalcostospresupuesto)))
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.MontoForecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.MontoForecast)))
+                                @(margenpresupuesto == 0 ? "" : String.Format("{0:N0}", Math.Round(margenpresupuesto)))
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(montorealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(montorealforecast)))
+                                <strong>@(porcentajeproyectado == 0 ? "" : String.Format("{0:N0}", porcentajeproyectado) + "%")</strong>
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostosSocios == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosSocios)))
+                                @(margen.totalingresorealesforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.totalingresorealesforecast)))
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostosSociosReales == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosSociosReales)))
+                                @(margen.totalcostorealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.totalcostorealforecast)))
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostosSociosForecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosSociosForecast)))
+                                @(margenrealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margenrealforecast)))
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(sociorealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(sociorealforecast)))
+                                <strong>@(porcentajerealforecast == 0 ? "" : String.Format("{0:N0}", porcentajerealforecast) + "%")</strong>
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostosStaff == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosStaff)))
+                                @(totaldiferenciamargenes == 0 ? "" : String.Format("{0:N0}", Math.Round(totaldiferenciamargenes)))
                             </td>
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostosStaffReales == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosStaffReales)))
+                                <strong>@(porcentajediferencia == 0 ? "" : String.Format("{0:N0}", porcentajediferencia) + "%")</strong>
                             </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostosStaffForecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostosStaffForecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(staffrealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(staffrealforecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostoConsultorA == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostoConsultorA)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostoConsultorReal == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostoConsultorReal)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.CostoConsultorForecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.CostoConsultorForecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(consultorrealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(consultorrealforecast)))
-                            </td>
-                            
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.TotalServicios == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalServicios)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.TotalServiciosReales == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalServiciosReales)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.TotalServiciosForecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalServiciosForecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(serviciorealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(serviciorealforecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.TotalGastos == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalGastos)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.TotalGastosReales == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalGastosReales)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.TotalGastosForecast == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.TotalGastosForecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(gastosrealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(gastosrealforecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(margen.Margen == 0 ? "" : String.Format("{0:N0}", Math.Round(margen.Margen)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(amrgenrealforecast == 0 ? "" : String.Format("{0:N0}", Math.Round(amrgenrealforecast)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@margen.PorcentajeMargen %</td>
+                            @{
+                                totalMontoPresupuesto += margen.Monto;
+                                totalcostospresupuesto += margen.totalcostospresupuesto;
+                                totalMargenpresupuesto += margenpresupuesto;
+                                totalIngresosRealForecast += margen.totalingresorealesforecast;
+                                totalcostosrealforecast += margen.totalcostorealforecast;
+                                totalmargenrealforecast += margenrealforecast;
+                                contador++;
+                            }
+                           
                         </tr>
 
 
-                        totalMonto += margen.Monto;
-                        totalMontoReal += margen.MontoReal;
-                        totalMontoForecast += margen.MontoForecast;
-                        totalMontoRealForecast += montorealforecast;
-                        totalHHSocios += margen.CostosSocios;
-                        totalHHSociosReal += margen.CostosSociosReales;
-                        totalHHSociosForecast += margen.CostosSociosForecast;
-                        totalHHSociosRealForecast += sociorealforecast;
-                        totalHHLeads += margen.CostosStaff;
-                        totalHHStaffReal += margen.CostosStaffReales;
-                        totalHHStaffForecast += margen.CostosStaffForecast;
-                        totalHHStaffRealForecast += staffrealforecast;
-                        totalConsultorA += margen.CostoConsultorA;
-                        totalConsultorB += margen.CostoConsultorReal;
-                        totalConsultorD += margen.CostoConsultorForecast;
-                        totalConsultorRealForecast += consultorrealforecast;
-                        totalServicios += margen.TotalServicios;
-                        totalServiciosReal += margen.TotalServiciosReales;
-                        totalServiciosForecast += margen.TotalServiciosForecast;
-                        totalServiciosRealForecast += serviciorealforecast;
-                        totalGastos += margen.TotalGastos;
-                        totalGastosReal += margen.TotalGastosReales;
-                        totalGastosForecast += margen.TotalGastosForecast;
-                        totalGastosRealForecast += gastosrealforecast;
-                        totalMargen += margen.Margen;
-                        totalMargenRealForecast += amrgenrealforecast;
+                       
                     }
                 }
                 @{
-                    porcentajemargentotal = 0;
+                    decimal porcentajemargenpresupuesto = 0;
+                    decimal porcentajemargenrealforecast = 0;
+                    decimal porcentajediferenciamargen = 0;
+                    decimal porcentajemargenpresupuestopromedio = 0;
+                    decimal porcentajemargenrealforecastpromedio = 0;
+                    decimal porcentajediferenciamargenpromedio = 0;
+                    if (totalMontoPresupuesto > 0)
+                    {
+                        porcentajemargenpresupuesto = Math.Round((totalMargenpresupuesto / totalMontoPresupuesto) * 100, 2);
+                    }
+                    if (totalIngresosRealForecast > 0)
+                    {
+                        porcentajemargenrealforecast = Math.Round((totalmargenrealforecast / totalIngresosRealForecast) * 100, 2);
+                    }
+
+                    diferenciatotalmargen = totalMargenpresupuesto - totalmargenrealforecast;
+                    if (totalMargenpresupuesto > 0)
+                    {
+                        porcentajediferenciamargen = Math.Round((diferenciatotalmargen / totalMargenpresupuesto) * 100, 2);
+                    }
+                    promediomontopresupuesto = Math.Round(totalMontoPresupuesto/contador, 2);
+                    promediocostospresupuesto = Math.Round(totalcostospresupuesto / contador, 2);
+                    promediomargenpresupuesto = Math.Round(totalMargenpresupuesto / contador, 2);
+                    promediomontorealforecast = Math.Round(totalIngresosRealForecast / contador, 2);
+                    promediocostorealforecast = Math.Round(totalcostosrealforecast / contador, 2);
+                    promediomargenforecastreal = Math.Round(totalmargenrealforecast / contador, 2);
+                    diferenciamargenpromedio = Math.Round(diferenciatotalmargen / contador, 2);
+                    if (promediomontopresupuesto > 0)
+                    {
+                        porcentajemargenpresupuestopromedio = Math.Round((promediomargenpresupuesto / promediomontopresupuesto) * 100, 2);
+                    }
+                    if (promediomontorealforecast > 0)
+                    {
+                        porcentajemargenrealforecastpromedio = Math.Round((promediomargenforecastreal / promediomontorealforecast) * 100, 2);
+                    }
+                    if (promediomargenpresupuesto > 0)
+                    {
+                        porcentajediferenciamargenpromedio = Math.Round((diferenciamargenpromedio / promediomargenpresupuesto) * 100, 2);
+                    }
                 }
                 <tr class="font-bold bg-gray-100">
-                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Totales</td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Total (SUMATORIA)</td>
                     <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalMonto))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalMontoReal))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalMontoForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalMontoRealForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHSocios))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHSociosReal))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHSociosForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHSociosRealForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHLeads))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHStaffReal))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalHHStaffForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalHHStaffRealForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalConsultorA))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalConsultorB))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalConsultorD))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalConsultorRealForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalServicios))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalServiciosReal))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalServiciosForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalServiciosRealForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round( totalGastos))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalGastosReal))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalGastosForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalGastosRealForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalMargen))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalMargenRealForecast))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", Math.Round(porcentajemargentotal))%</td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalMontoPresupuesto))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalcostospresupuesto))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalMargenpresupuesto))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        <strong>@(porcentajemargenpresupuesto == 0 ? "" : String.Format("{0:N0}", porcentajemargenpresupuesto) + "%")</strong>
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalIngresosRealForecast))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalcostosrealforecast))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(totalmargenrealforecast))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        <strong>@(porcentajemargenrealforecast == 0 ? "" : String.Format("{0:N0}", porcentajemargenrealforecast) + "%")</strong>
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(diferenciatotalmargen))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        <strong>@(porcentajediferenciamargen == 0 ? "" : String.Format("{0:N0}", porcentajediferenciamargen) + "%")</strong>
+                    </td>
+                </tr>
+                <tr class="font-bold bg-green-100">
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Total (PROMEDIO)</td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
+                    <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]"></td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(promediomontopresupuesto))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(promediocostospresupuesto))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(promediomargenpresupuesto))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        <strong>@(porcentajemargenpresupuestopromedio == 0 ? "" : String.Format("{0:N0}", porcentajemargenpresupuestopromedio) + "%")</strong>
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(promediomontorealforecast))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(promediocostorealforecast))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(promediomargenforecastreal))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        <strong>@(porcentajemargenrealforecastpromedio == 0 ? "" : String.Format("{0:N0}", porcentajemargenrealforecastpromedio) + "%")</strong>
+                    </td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(diferenciamargenpromedio))</td>
+                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
+                        <strong>@(porcentajediferenciamargenpromedio == 0 ? "" : String.Format("{0:N0}", porcentajediferenciamargenpromedio) + "%")</strong>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -342,5 +367,144 @@
             const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             saveAs(blob, 'MargendeContribucion.xlsx');
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const unegocioSelect = document.getElementById('unegocio');
+        const ccostoSelect = document.getElementById('ccosto');
+        const tipologiaSelect = document.getElementById('tipologia');
+
+        unegocioSelect.addEventListener('change', filterTable);
+        ccostoSelect.addEventListener('change', filterTable);
+        tipologiaSelect.addEventListener('change', filterTable);
+    });
+
+    function filterTable() {
+        const unegocioValue = document.getElementById('unegocio').value;
+        const ccostoValue = document.getElementById('ccosto').value;
+        const tipologiaValue = document.getElementById('tipologia').value;
+
+        const table = document.getElementById('facturasTable');
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        let totalMontoPresupuesto = 0;
+        let totalCostosPresupuesto = 0;
+        let totalMargenPresupuesto = 0;
+        let totalIngresosRealForecast = 0;
+        let totalCostosRealForecast = 0;
+        let totalMargenRealForecast = 0;
+        let totalDiferenciaMargen = 0; 
+        let totalPorcentajeDiferencia = 0; 
+        let contador = 0;
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const isTotalRow = row.classList.contains('font-bold');
+
+            if (isTotalRow) {
+                row.style.display = '';
+                continue;
+            }
+
+            const unegocioCell = row.getElementsByTagName('td')[2].innerText;
+            const ccostoCell = row.getElementsByTagName('td')[3].innerText;
+            const tipologiaCell = row.getElementsByTagName('td')[4].innerText;
+
+            const unegocioMatch = unegocioValue === "" || unegocioCell === unegocioValue;
+            const ccostoMatch = ccostoValue === "" || ccostoCell === ccostoValue;
+            const tipologiaMatch = tipologiaValue === "" || tipologiaCell === tipologiaValue;
+
+            if (unegocioMatch && ccostoMatch && tipologiaMatch) {
+                row.style.display = '';
+
+                const montoPresupuesto = parseFloat(row.getElementsByTagName('td')[5].innerText.replace(/\./g, '')) || 0;
+                const costosPresupuesto = parseFloat(row.getElementsByTagName('td')[6].innerText.replace(/\./g, '')) || 0;
+                const margenPresupuesto = parseFloat(row.getElementsByTagName('td')[7].innerText.replace(/\./g, '')) || 0;
+                const ingresosRealForecast = parseFloat(row.getElementsByTagName('td')[9].innerText.replace(/\./g, '')) || 0;
+                const costosRealForecast = parseFloat(row.getElementsByTagName('td')[10].innerText.replace(/\./g, '')) || 0;
+                const margenRealForecast = parseFloat(row.getElementsByTagName('td')[11].innerText.replace(/\./g, '')) || 0;
+
+                // Calcular diferencias para esta fila
+                const diferenciaMargen = margenPresupuesto - margenRealForecast;
+                const porcentajeDiferencia = margenPresupuesto !== 0 ? (diferenciaMargen / margenPresupuesto) * 100 : 0;
+
+                totalMontoPresupuesto += montoPresupuesto;
+                totalCostosPresupuesto += costosPresupuesto;
+                totalMargenPresupuesto += margenPresupuesto;
+                totalIngresosRealForecast += ingresosRealForecast;
+                totalCostosRealForecast += costosRealForecast;
+                totalMargenRealForecast += margenRealForecast;
+                totalDiferenciaMargen += diferenciaMargen; 
+                totalPorcentajeDiferencia += porcentajeDiferencia; 
+                contador++;
+            } else {
+                row.style.display = 'none';
+            }
+        }
+
+        // Llamar a updateTotals con los nuevos valores
+        updateTotals(
+            totalMontoPresupuesto,
+            totalCostosPresupuesto,
+            totalMargenPresupuesto,
+            totalIngresosRealForecast,
+            totalCostosRealForecast,
+            totalMargenRealForecast,
+            totalDiferenciaMargen,
+            totalPorcentajeDiferencia,
+            contador
+        );
+    }
+
+    function updateTotals(
+        totalMontoPresupuesto,
+        totalCostosPresupuesto,
+        totalMargenPresupuesto,
+        totalIngresosRealForecast,
+        totalCostosRealForecast,
+        totalMargenRealForecast,
+        totalDiferenciaMargen,
+        totalPorcentajeDiferencia,
+        contador
+    ) {
+        const table = document.getElementById('facturasTable');
+        const totalRow = table.querySelector('.bg-gray-100'); 
+        const promedioRow = table.querySelector('.bg-green-100'); 
+
+        // Actualizar totales
+        totalRow.getElementsByTagName('td')[5].innerText = formatNumber(totalMontoPresupuesto);
+        totalRow.getElementsByTagName('td')[6].innerText = formatNumber(totalCostosPresupuesto);
+        totalRow.getElementsByTagName('td')[7].innerText = formatNumber(totalMargenPresupuesto);
+        totalRow.getElementsByTagName('td')[9].innerText = formatNumber(totalIngresosRealForecast);
+        totalRow.getElementsByTagName('td')[10].innerText = formatNumber(totalCostosRealForecast);
+        totalRow.getElementsByTagName('td')[11].innerText = formatNumber(totalMargenRealForecast);
+        totalRow.getElementsByTagName('td')[13].innerText = formatNumber(totalDiferenciaMargen); 
+        totalRow.getElementsByTagName('td')[14].innerText = formatNumber(totalPorcentajeDiferencia) + "%"; 
+
+        // Calcular promedios
+        const promedioMontoPresupuesto = contador > 0 ? totalMontoPresupuesto / contador : 0;
+        const promedioCostosPresupuesto = contador > 0 ? totalCostosPresupuesto / contador : 0;
+        const promedioMargenPresupuesto = contador > 0 ? totalMargenPresupuesto / contador : 0;
+        const promedioIngresosRealForecast = contador > 0 ? totalIngresosRealForecast / contador : 0;
+        const promedioCostosRealForecast = contador > 0 ? totalCostosRealForecast / contador : 0;
+        const promedioMargenRealForecast = contador > 0 ? totalMargenRealForecast / contador : 0;
+        const promedioDiferenciaMargen = contador > 0 ? totalDiferenciaMargen / contador : 0;
+        const promedioPorcentajeDiferencia = contador > 0 ? totalPorcentajeDiferencia / contador : 0;
+
+        // Actualizar promedios
+        promedioRow.getElementsByTagName('td')[5].innerText = formatNumber(promedioMontoPresupuesto);
+        promedioRow.getElementsByTagName('td')[6].innerText = formatNumber(promedioCostosPresupuesto);
+        promedioRow.getElementsByTagName('td')[7].innerText = formatNumber(promedioMargenPresupuesto);
+        promedioRow.getElementsByTagName('td')[9].innerText = formatNumber(promedioIngresosRealForecast);
+        promedioRow.getElementsByTagName('td')[10].innerText = formatNumber(promedioCostosRealForecast);
+        promedioRow.getElementsByTagName('td')[11].innerText = formatNumber(promedioMargenRealForecast);
+        promedioRow.getElementsByTagName('td')[13].innerText = formatNumber(promedioDiferenciaMargen); 
+        promedioRow.getElementsByTagName('td')[14].innerText = formatNumber(promedioPorcentajeDiferencia) + "%"; 
+    }
+    function formatNumber(number) {
+        return number.toLocaleString('de-DE', { maximumFractionDigits: 0 });
+    }
+    document.getElementById('clearFilters').addEventListener('click', function () {
+        location.reload();
     });
 </script>
