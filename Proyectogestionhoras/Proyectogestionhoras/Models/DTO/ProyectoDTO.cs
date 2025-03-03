@@ -26,6 +26,8 @@
         public DateTime Fecha_Inicio { get; set; }
         public DateTime Fecha_Termino { get; set;}
         public DateTime? Fecha_Plazo_Neg { get; set;}
+        public DateTime? FechaQuarterInicio { get; set;}
+        public DateTime? FechaQuarterFin { get; set;}
 
         public string? NOMBREDEPARTAMENTO { get; set; }
         public int IDDEPARTAMENTO { get; set; }

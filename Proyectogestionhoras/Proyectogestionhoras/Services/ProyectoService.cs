@@ -104,7 +104,7 @@ namespace Proyectogestionhoras.Services
 
 
         /*EDITAR PROYECTO*/
-        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cantidadcauotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cantidadcauotas, DateTime fechaquarterinicio, DateTime fechaquarterfin, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -112,6 +112,8 @@ namespace Proyectogestionhoras.Services
                 object probabilidadparameter = (object)probabilidad ?? DBNull.Value;
                 object porcentajeparametr = (object)porcentajeprobabilidad ?? DBNull.Value;
                 object fechaplazoparameter = (object)fechaplazoneg ?? DBNull.Value;
+                object fechaquarterinicioparameter = (object)fechaquarterinicio ?? DBNull.Value;
+                object fechaquarterfinparamater = (object)fechaquarterfin ?? DBNull.Value;
 #pragma warning restore CS8600
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
@@ -154,6 +156,8 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@MONTOMONEDAORIGEN", montoorigen));
                     command.Parameters.Add(new SqlParameter("@TASACAMBIO", tasacambio));
                     command.Parameters.Add(new SqlParameter("@CANTIDADCUOTAS", cantidadcauotas));
+                    command.Parameters.Add(new SqlParameter("@FECHAQUARTERINICIO", fechaquarterinicioparameter));
+                    command.Parameters.Add(new SqlParameter("@FECHAQUARTERFIN", fechaquarterfinparamater));
 
 
                     await command.ExecuteNonQueryAsync();
@@ -653,6 +657,8 @@ namespace Proyectogestionhoras.Services
                                 Fecha_Termino = reader.GetDateTime(reader.GetOrdinal("FECHA_TERMINO")).Date,
 
                                 Fecha_Plazo_Neg = reader.IsDBNull(reader.GetOrdinal("FECHA_PLAZO_NEG")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHA_PLAZO_NEG")),
+                                FechaQuarterInicio = reader.IsDBNull(reader.GetOrdinal("FECHAQUARTERINICIO")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHAQUARTERINICIO")),
+                                FechaQuarterFin = reader.IsDBNull(reader.GetOrdinal("FECHAQUARTERFIN")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FECHAQUARTERFIN")),
                                 NOMBREDEPARTAMENTO = reader.GetString(reader.GetOrdinal("NOMBREDEPARTAMENTO")),
                                 IDDEPARTAMENTO = reader.GetInt32(reader.GetOrdinal("IDDEPARTAMENTO")),
                                 MONTO = reader.IsDBNull(reader.GetOrdinal("MONTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTO")),

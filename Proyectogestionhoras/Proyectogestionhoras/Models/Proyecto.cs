@@ -39,6 +39,8 @@ namespace Proyectogestionhoras.Models
         public decimal? PorcentajeProbabilidad { get; set; }
         public DateTime? FechaPlazoNeg { get; set; }
         public DateTime? Fecharealtermino { get; set; }
+        public DateTime? Fechaquarterinicio { get; set; }
+        public DateTime? Fechaquarterfin { get; set; }
 
         public virtual CcostoUnegocio? IdCcostoUnegocioNavigation { get; set; }
         public virtual SucursalCliente IdClienteSucursalNavigation { get; set; } = null!;

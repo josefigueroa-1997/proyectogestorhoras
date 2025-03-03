@@ -1027,6 +1027,14 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("date")
                     .HasColumnName("FECHA_TERMINO");
 
+                entity.Property(e => e.Fechaquarterfin)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHAQUARTERFIN");
+
+                entity.Property(e => e.Fechaquarterinicio)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHAQUARTERINICIO");
+
                 entity.Property(e => e.Fecharealtermino)
                     .HasColumnType("date")
                     .HasColumnName("FECHAREALTERMINO");

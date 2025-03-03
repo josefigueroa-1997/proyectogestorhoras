@@ -1249,5 +1249,49 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+
+        public async Task<List<PlandeVentaDTO>> ObtenerPlandeVentas()
+        {
+            try
+            {
+
+                var resumen = new List<PlandeVentaDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "REPORTEPLANVENTAS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            PlandeVentaDTO datos = new()
+                            {
+
+                                Tipo = reader.IsDBNull(reader.GetOrdinal("Tipo")) ? string.Empty : reader.GetString(reader.GetOrdinal("Tipo")),
+                                Trimestre = reader.IsDBNull(reader.GetOrdinal("Trimestre")) ? string.Empty : reader.GetString(reader.GetOrdinal("Trimestre")),
+                                
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                                Monto = reader.IsDBNull(reader.GetOrdinal("Monto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Monto")),
+
+                            };
+                            resumen.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return resumen;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el plan de venta de los proyectos:{ex.Message}");
+                return new List<PlandeVentaDTO>();
+
+            }
+        }
     }
 }

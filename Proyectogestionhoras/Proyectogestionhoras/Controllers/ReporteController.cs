@@ -342,6 +342,17 @@ namespace Proyectogestionhoras.Controllers
             return Json(resultado);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObtenerPlandeVentas()
+        {
+            var resultado = await _reporteService.ObtenerPlandeVentas();
+            return Json(resultado);
+        }
+
+        public IActionResult ReportePlandeVentas()
+        {
+            return View();
+        }
 
         /*EXPORTAR FLUJO DE CAJA*/
         public async Task<IActionResult> ExportarFlujoCaja(int? idproyecto)

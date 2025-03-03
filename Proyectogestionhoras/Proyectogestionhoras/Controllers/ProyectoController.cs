@@ -521,7 +521,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, int cuotas)
+        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, int cuotas,DateTime fechaquarterinicio,DateTime fechaquarterfin)
         {
 
             var idclientes = Request.Form["idcliente"];
@@ -632,7 +632,7 @@ namespace Proyectogestionhoras.Controllers
 
                 int cantidadcuotas = int.Parse(Request.Form["cuotas"].ToString());
 
-                bool resultado = await proyectoService.EditarProyecto(idproyecto, idpresupuesto, montofinal, moneda, afectaiva, idtipologia, nombre, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, status, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, tasacambios, cantidadcuotas, servicios, gastos);
+                bool resultado = await proyectoService.EditarProyecto(idproyecto, idpresupuesto, montofinal, moneda, afectaiva, idtipologia, nombre, fechainicio, fechatermino, plazo, tipoempresa, idcodigoccosto, status, probabilidad, porcentajeprobabilidad, fechaplazoneg, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc, idsegmentofactura, montoorigenextranjera, tasacambios, cantidadcuotas, fechaquarterinicio,fechaquarterfin,servicios, gastos);
                 /*Actualizar Cuotas*/
 
                 await ActualizarCuotas(idproyecto, cantidadcuotas);
