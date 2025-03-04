@@ -104,7 +104,7 @@ namespace Proyectogestionhoras.Services
 
 
         /*EDITAR PROYECTO*/
-        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cantidadcauotas, DateTime fechaquarterinicio, DateTime fechaquarterfin, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
+        public async Task<bool> EditarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cantidadcauotas, DateTime? fechaquarterinicio, DateTime? fechaquarterfin, List<ServicioViewModel> servicios, List<GastoViewModel> gastos)
         {
             try
             {
@@ -438,6 +438,32 @@ namespace Proyectogestionhoras.Services
             await context.SaveChangesAsync();
         }
 
+
+        public async Task RestarHHAnualesCambioEstadoSocios(int hhsocios)
+        {
+            var socio = context.TotalRecursos
+                       .Where(tr => tr.TipoRecurso == "Socio" && tr.Anio == DateTime.Now.Year)
+                       .FirstOrDefault();
+
+            if (socio != null)
+            {
+                socio.TotalHhAnuales -= hhsocios;
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RestarHHAnualesCambioEstadoStaff(int hhstaff)
+        {
+            var staff = context.TotalRecursos
+                      .Where(tr => tr.TipoRecurso == "Staff" && tr.Anio == DateTime.Now.Year)
+                      .FirstOrDefault();
+
+            if (staff != null)
+            {
+                staff.TotalHhAnuales -= hhstaff;
+                await context.SaveChangesAsync();
+            }
+        }
 
         public async Task RestarHHAnaulesSocios(int hhsocios, int? idproyecto)
         {

@@ -367,6 +367,8 @@
                     </div>
                 </div>
 
+               
+
                 <div class="form-row">
 
                     <div class="form-group">
@@ -527,6 +529,41 @@
                         <input type="hidden" class="cuentaconsultor" />
                         <input type="hidden" class="nombresegmentohonorario" />
                         <input type="hidden" class="idsegmentoservicio" id="idsegmentoservicio" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="display:none;" id="fechaquarterinicioDiv">
+                        <label for="fechaquarterinicio">Fecha Quarter Inicio Negociación</label>
+                        <div class="input-container">
+                            @if (proyecto.FechaQuarterInicio != null)
+                            {
+                                <input type="date" id="fechaquarterinicio" name="fechaquarterinicio" value="@proyecto.FechaQuarterInicio.ToString("yyyy-MM-dd")">
+                                <input style="width: 100px;text-align: center;" type="text" id="quarterInicio" readonly>
+                            }
+                            else
+                            {
+                                <input type="date" id="fechaquarterinicio" name="fechaquarterinicio">
+                                <input style="width: 100px;text-align: center;" type="text" id="quarterInicio" readonly>
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display:none;" id="fechaquarterfinDiv">
+                        <label for="fechaquarterfin">Fecha Quarter Cierre Negociación</label>
+                        <div class="input-container">
+                            @if (proyecto.FechaQuarterFin != null)
+                            {
+                                <input type="date" id="fechaquarterfin" name="fechaquarterfin" value="@proyecto.FechaQuarterFin.ToString("yyyy-MM-dd")">
+                                <input style="width: 100px;text-align: center;" type="text" id="quarterFin" readonly>
+                            }
+                            else
+                            {
+                                <input type="date" id="fechaquarterfin" name="fechaquarterfin">
+                                <input style="width: 100px;text-align: center;" type="text" id="quarterFin" readonly>
+                            }
+
+                        </div>
                     </div>
                 </div>
                 <input type="hidden" name="tablaUsada" id="tablaUsada" value="primera">
@@ -2246,7 +2283,16 @@
             document.getElementById("fechaPlazo").required = true;
             document.getElementById("fechaquarterinicio").required = true;
             document.getElementById("fechaquarterfin").required = true;
-        } else {
+        } 
+        else if (estadoSeleccionado === "2") {
+            document.getElementById("fechaquarterinicioDiv").style.display = "block";
+            document.getElementById("fechaquarterfinDiv").style.display = "block";
+            document.getElementById("fechaquarterinicio").required = true;
+            document.getElementById("fechaquarterfin").required = true;
+        }
+        
+        
+        else {
             document.getElementById("probabilidadDiv").style.display = "none";
             document.getElementById("nivelProbabilidadDiv").style.display = "none";
             document.getElementById("fechaPlazoDiv").style.display = "none";
@@ -2260,10 +2306,10 @@
     document.addEventListener("DOMContentLoaded", function () {
         function getQuarter(date) {
             if (!date) return "";
-            const d = new Date(date);
-            const year = d.getFullYear();
-            const month = d.getMonth() + 1;
+
+            const [year, month] = date.split("-").map(Number);
             let quarter = month <= 3 ? "Q1" : month <= 6 ? "Q2" : month <= 9 ? "Q3" : "Q4";
+
             return `${quarter} ${year}`;
         }
 

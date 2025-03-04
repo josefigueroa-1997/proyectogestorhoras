@@ -434,7 +434,22 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
-        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc)
+        public async Task ActualizarFechaQuarterNegociacion(int idproyecto,DateTime? fechainicioquarter,DateTime? fechafinquarter)
+        {
+            var proyecto = context.Proyectos.Find(idproyecto);
+            if (proyecto != null) { 
+            
+                proyecto.Fechaquarterinicio = fechainicioquarter;
+                proyecto.Fechaquarterfin = fechafinquarter;
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                return ;
+            }
+        }
+
+        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc,DateTime? fechaquarterinicio, DateTime? fechaquarterfin)
         {
 
             var presupuesto = context.Presupuestos.FirstOrDefault(p => p.Id == idproyecto);
@@ -512,16 +527,17 @@ namespace Proyectogestionhoras.Controllers
             /*Actualizar Cuotas*/
             int cantidadcuotas = int.Parse(Request.Form["cuotas"].ToString());
             await ActualizarCuotas(idproyecto, cantidadcuotas);
+            await ActualizarFechaQuarterNegociacion(idproyecto,fechaquarterinicio,fechaquarterfin);
             await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
             await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
             await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
             await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
             await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
-
+            await proyectoService.GestorFechaModificacionProyecto(idproyecto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, int cuotas,DateTime fechaquarterinicio,DateTime fechaquarterfin)
+        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, int cuotas,DateTime? fechaquarterinicio,DateTime? fechaquarterfin)
         {
 
             var idclientes = Request.Form["idcliente"];
@@ -531,7 +547,8 @@ namespace Proyectogestionhoras.Controllers
                 var statusproyecto = await Obtenerstatusproyecto(idproyecto);
                 if (statusproyecto == 2)
                 {
-                    await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
+                    await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc,fechaquarterinicio,fechaquarterfin);
+                 
                     return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
                 }
 
@@ -622,8 +639,8 @@ namespace Proyectogestionhoras.Controllers
                 if (statusedicion == 2)
                 {
 
-                    await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
-                    await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
+                    await proyectoService.RestarHHAnualesCambioEstadoSocios(hhsocios);
+                    await proyectoService.RestarHHAnualesCambioEstadoStaff(hhstaff);
 
                 }
 

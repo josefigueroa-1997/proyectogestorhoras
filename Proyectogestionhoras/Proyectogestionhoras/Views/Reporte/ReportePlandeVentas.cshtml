@@ -46,7 +46,7 @@
             datos.forEach(item => {
           
                 if (item.anio === 0 || !item.anio || !item.trimestre) {
-                    return; // Saltar este registro
+                    return; 
                 }
 
                 if (!organizado[item.tipo]) {
@@ -56,23 +56,22 @@
                     organizado[item.tipo][item.anio] = {};
                 }
                 if (!organizado[item.tipo][item.anio][item.trimestre]) {
-                    organizado[item.tipo][item.anio][item.trimestre] = 0; // Inicializar en 0 si no existe
+                    organizado[item.tipo][item.anio][item.trimestre] = 0; 
                 }
-                // Sumar el monto al valor existente
+            
                 organizado[item.tipo][item.anio][item.trimestre] += item.monto;
             });
 
-            // Obtener todos los años únicos (excluyendo el año 0)
+           
             const años = [...new Set(datos.filter(item => item.anio !== 0).map(item => item.anio))].sort();
 
-            // Obtener todos los trimestres únicos y ordenarlos (excluyendo trimestres vacíos)
             const trimestres = [...new Set(datos.filter(item => item.trimestre).map(item => item.trimestre))].sort();
 
-            // Crear la tabla
+          
             const table = document.createElement('table');
             table.border = '1';
 
-            // Crear la primera fila (encabezados)
+       
             const headerRow = document.createElement('tr');
             headerRow.className = 'bg-blue-100 text-black';
             const headerTipo = document.createElement('th');
@@ -82,28 +81,28 @@
             años.forEach(anio => {
                 const headerAnio = document.createElement('th');
                 headerAnio.className = 'p-2 border border-gray-300 text-center';
-                headerAnio.colSpan = trimestres.length; // Ajustar el colspan según la cantidad de trimestres
+                headerAnio.colSpan = trimestres.length; 
                 headerAnio.textContent = anio;
                 headerRow.appendChild(headerAnio);
             });
             table.appendChild(headerRow);
 
-            // Crear la segunda fila (trimestres)
+           
             const trimestreRow = document.createElement('tr');
             trimestreRow.className = 'bg-yellow-100 text-black';
-            trimestreRow.appendChild(document.createElement('th')); // Celda vacía para el tipo
+            trimestreRow.appendChild(document.createElement('th')); 
 
             años.forEach(anio => {
                 trimestres.forEach(trimestre => {
                     const trimestreHeader = document.createElement('th');
                     trimestreHeader.className = 'text-center border border-black px-4 py-2 min-w-[100px]';
-                    trimestreHeader.textContent = trimestre; // Usar el valor de trimestre (Q1, Q2, etc.)
+                    trimestreHeader.textContent = trimestre; 
                     trimestreRow.appendChild(trimestreHeader);
                 });
             });
             table.appendChild(trimestreRow);
 
-            // Crear las filas de datos
+    
             Object.keys(organizado).forEach(tipo => {
                 const dataRow = document.createElement('tr');
                 const tipoCell = document.createElement('td');
@@ -116,18 +115,18 @@
                         const montoCell = document.createElement('td');
                         montoCell.className = 'text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]';
                         const monto = organizado[tipo][anio] ? organizado[tipo][anio][trimestre] || 0 : 0;
-                        // Verificar si el monto es 0
+                   
                         if (monto === 0) {
-                            montoCell.textContent = ''; // No mostrar nada si el valor es 0
+                            montoCell.textContent = ''; 
                         } else {
-                            montoCell.textContent = formatearMiles(monto); // Formatear el valor si no es 0
+                            montoCell.textContent = formatearMiles(monto); 
                         }
                         dataRow.appendChild(montoCell);
                     });
                 });
                 table.appendChild(dataRow);
 
-                // Agregar la fila "Indicador de Éxito" debajo de "Aprobado"
+           
                 if (tipo === "Aprobado") {
                     const indicadorRow = document.createElement('tr');
                     indicadorRow.className = 'bg-green-100';
@@ -143,7 +142,7 @@
                             const montoAprobado = organizado["Aprobado"][anio] ? organizado["Aprobado"][anio][trimestre] || 0 : 0;
                             const montoMeta = organizado["Meta"][anio] ? organizado["Meta"][anio][trimestre] || 0 : 0;
 
-                            // Calcular el indicador de éxito
+                         
                             const indicador = montoMeta !== 0 ? ((montoAprobado / montoMeta) * 100).toFixed(2) + "%" : "0%";
                             indicadorMontoCell.textContent = indicador;
                             indicadorRow.appendChild(indicadorMontoCell);
@@ -156,7 +155,7 @@
             const tablesContainer = document.getElementById('tables-container');
             tablesContainer.appendChild(table);
         }
-        // Llamar a las funciones
+
         obtenerDatos().then(datos => {
             crearTabla(datos);
         });
