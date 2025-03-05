@@ -124,6 +124,10 @@ namespace Proyectogestionhoras.Controllers
             var unegocios = await context.Unegocios.Where(u=>u.TipoUnegocio!="GENERAL").ToListAsync();
             var ccostos = await context.Ccostos.Where(c=>c.TipoCcosto!="GENERAL").ToListAsync();
             var tipologias = await context.Tipologia.OrderByDescending(t=>t.Id).ToListAsync();
+            var fechaActualizacionProyecto = await context.Fechamodificacionproyectos.MaxAsync(f => (DateTime?)f.Fechamodificacion); 
+
+            ViewBag.FechaModificacion = fechaActualizacionProyecto?.ToString("dd/MM/yyyy 'a las' HH:mm") ?? "Sin actualización";
+
             ViewBag.Margen = margen;
             ViewBag.Unegocios = unegocios;
             ViewBag.Ccostos = ccostos;

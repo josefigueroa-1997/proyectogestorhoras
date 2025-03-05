@@ -775,6 +775,18 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = proyecto.Id });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RetornarEjecucion(int id)
+        {
+            var proyecto = await context.Proyectos.FindAsync(id);
+            if(proyecto == null)
+            {
+                return NotFound();
+            }
+            proyecto.StatusProyecto = 2;
+            await context.SaveChangesAsync();
+            return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = proyecto.Id });
+        }
 
 
         public async Task<IActionResult> ObtenerPresupuestoProyecto(int? idpresupuesto, int? id, int? idcliente)

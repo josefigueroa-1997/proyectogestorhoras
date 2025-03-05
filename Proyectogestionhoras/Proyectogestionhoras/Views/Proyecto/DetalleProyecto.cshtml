@@ -125,6 +125,7 @@
             decimal ConsultorForecast  = 0;
             int idproyecto = 0;
             int status = 0;
+            int? idusuario = Context.Session.GetInt32("id");
         }
         @foreach(var datos in ViewBag.ForecastReal)
         {
@@ -213,6 +214,12 @@
             <p class="form-subtitle" style="color:black;">Detalles del Proyecto</p>
             <div style="display: flex; gap: 10px;">
 
+                @if (proyecto.Tipo_Status == "Terminado" && idusuario==88)
+                {
+                    <form method="post" action="@Url.Action("RetornarEjecucion", "Proyecto", new { id = proyecto.Id })">
+                        <button class="finish-btn" type="submit">Volver a Ejecución</button>
+                    </form>
+                }
                 @if (proyecto.Tipo_Status != "Rechazado" && proyecto.Tipo_Status != "Terminado")
                 {
                     <a href="@Url.Action("EditarProyecto", "Proyecto", new { id = proyecto.Id, idcliente = proyecto.IDCLIENTE })" class="update-btn">Editar Proyecto</a>
