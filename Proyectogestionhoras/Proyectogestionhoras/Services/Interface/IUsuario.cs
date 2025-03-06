@@ -6,7 +6,7 @@ namespace Proyectogestionhoras.Services.Interface
     {
         public Task<bool> RegistrarUsuario(string nombre, string rut, string telefono, string email, int idrol, string nombrerecurso, int? numhoras, decimal costounitario, float? porcentajehoras, DateTime? fechainicio, DateTime? fechafin);
         public Task<List<Rol>> ObtenerRoles();
-        public Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino,string nombrerecurso);
+        public Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino,string nombrerecurso,string estado);
         public Task<List<UsuarioDTO>> ObtenerUusario(int? id,string? nombre,int? id_recurso);
         public Task<bool> Login(string rut, string contrasena);
         public Task<Login> ObtenerCredenciales(string rut);

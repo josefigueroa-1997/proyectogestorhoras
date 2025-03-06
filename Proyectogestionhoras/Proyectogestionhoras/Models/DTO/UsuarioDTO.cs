@@ -10,6 +10,7 @@ namespace Proyectogestionhoras.Models.DTO
         public string? Telefono { get; set; }
 
         public string? Email { get; set; }
+        public string? Estado { get; set; }
 
         public string? NOMBRE_RECURSO_CORRELATIVO { get; set; }
         public string? RolRecurso { get; set; }

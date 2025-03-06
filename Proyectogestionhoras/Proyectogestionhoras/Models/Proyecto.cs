@@ -41,6 +41,7 @@ namespace Proyectogestionhoras.Models
         public DateTime? Fecharealtermino { get; set; }
         public DateTime? Fechaquarterinicio { get; set; }
         public DateTime? Fechaquarterfin { get; set; }
+        public DateTime? Fechaejecucion { get; set; }
 
         public virtual CcostoUnegocio? IdCcostoUnegocioNavigation { get; set; }
         public virtual SucursalCliente IdClienteSucursalNavigation { get; set; } = null!;

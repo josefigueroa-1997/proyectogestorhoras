@@ -103,7 +103,7 @@
         </div>
         <div class="flex justify-between mt-8">
             <!-- Tabla de Socios -->
-            <table class="w-1/2 border-collapse text-left mr-8">
+            <table class="w-1/2 text-sm border-collapse text-left mr-8">
                 <thead>
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Socio</th>
@@ -111,6 +111,8 @@
                         <th class="p-4 border">HH/Anuales</th>
                         <th class="p-4 border">Hrs. a Proyectos</th>
                         <th class="p-4 border">Costo Unitario</th>
+                        <th class="p-4 border">Estado</th>
+                        
                         <th class="p-4 border">Editar</th> 
                     </tr>
                 </thead>
@@ -127,6 +129,7 @@
                                     <td class="p-4 border">@String.Format("{0:N2}",@recurso.HH_ANUALES)</td>
                                     <td class="p-4 border">@String.Format("{0:N0}",@recurso.PROCENTAJE_PROYECTO) %</td>
                                     <td class="p-4 border">$@String.Format("{0:N0}",@recurso.Costo_Unitario)</td>
+                                    <td class="p-4 border">@recurso.Estado</td>
                                     <td class="p-4 border">
                                         <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
                                     </td> 
@@ -141,7 +144,7 @@
             </table>
 
            
-            <table class="w-1/2 border-collapse text-left">
+            <table class="w-1/2 border-collapse text-sm text-left">
                 <thead>
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Staff</th>
@@ -149,6 +152,7 @@
                         <th class="p-4 border">HH/Anuales Disponibles</th>
                         <th class="p-4 border">Hrs. a Proyectos</th>
                         <th class="p-4 border">Costo Unitario</th>
+                        <th class="p-4 border">Estado</th>
                         <th class="p-4 border">Editar</th> 
                     </tr>
                 </thead>
@@ -165,6 +169,7 @@
                                     <td class="p-4 border">@String.Format("{0:N2}",@recurso.HH_ANUALES)</td>
                                     <td class="p-4 border">@String.Format("{0:N0}",@recurso.PROCENTAJE_PROYECTO) %</td>
                                     <td class="p-4 border">$@String.Format("{0:N0}",@recurso.Costo_Unitario)</td>
+                                    <td class="p-4 border">@recurso.Estado</td>
                                     <td class="p-4 border">
                                         <a href="@Url.Action("EditarDatosUsuario", "Usuario", new { idusuario = recurso.Id })" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
                                     </td> 
@@ -184,7 +189,7 @@
         
         <div class="form-group w-1/2">
          
-            <table class="w-full border-collapse text-left">
+            <table class="w-full text-sm border-collapse text-left">
                 
                 <thead>
                     <tr class="bg-green-200 text-black">
@@ -209,7 +214,7 @@
 
         <div class="form-group w-1/2">
             
-            <table class="w-full border-collapse text-left">
+            <table class="w-full text-sm border-collapse text-left">
                 
                 <thead>
                     <tr class="bg-green-200 text-black">
@@ -237,7 +242,7 @@
 
     <div class="form-group">
         
-        <table class="w-1/2 mx-auto border-collapse text-left">
+        <table class="w-1/2 text-sm mx-auto border-collapse text-left">
             <thead>
                 <tr class="bg-green-200 text-black">
                     <th class="p-4 border">Consultores Externos</th>
@@ -275,7 +280,7 @@
 
         <div class="flex justify-between mt-8">
             <!-- Tabla de admin mcyfo -->
-            <table class="w-1/2 border-collapse text-left mr-8">
+            <table class="w-1/2 text-sm border-collapse text-left mr-8">
                 <thead>
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Admin. Mcyfo</th>
@@ -307,7 +312,7 @@
             </table>
 
 
-            <table class="w-1/2 border-collapse text-left">
+            <table class="w-1/2 text-sm border-collapse text-left">
                 <thead>
                     <tr class="bg-green-200 text-black">
                         <th class="p-4 border">Admin. Sistema</th>

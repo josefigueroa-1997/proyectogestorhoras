@@ -21,33 +21,34 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> Index()
         {
-             var id = HttpContext.Session.GetInt32("id");
-             if (id.HasValue)
-             {
-                 var rol = HttpContext.Session.GetInt32("idrol");
-                 if (rol.HasValue)
-                 {
-                     if (rol == 1 || rol==3)
-                     {
-                         var clientes = await cliente.ObtenerClientesIndex(0);
-                         var usuariosproyectos = await usuario.ObtenerUsuariosProyecto(id.Value);
+            var id = HttpContext.Session.GetInt32("id");
+            if (id.HasValue)
+            {
+                var rol = HttpContext.Session.GetInt32("idrol");
+                if (rol.HasValue)
+                {
+                    if (rol == 1 || rol == 3)
+                    {
+                        var clientes = await cliente.ObtenerClientesIndex(0);
+                        var usuariosproyectos = await usuario.ObtenerUsuariosProyecto(id.Value);
+                        await usuario.GestorHHSocios();
+                        await usuario.GestorHHStaff();
+                        ViewBag.clientes = clientes;
+                        ViewBag.Proyectos = usuariosproyectos;
+                        return View();
+                    }
+                    else
+                    {
+                        var planillas = await planilla.ObtenerPlanillaUsuario(id.Value, 0);
+                        ViewBag.Planilla = planillas;
+                        return RedirectToAction("PlanillaRegistro", "Planilla");
+                    }
+                }
+            }
 
-                         ViewBag.clientes = clientes;
-                         ViewBag.Proyectos = usuariosproyectos;
-                         return View();
-                     }
-                     else
-                     {
-                         var planillas = await planilla.ObtenerPlanillaUsuario(id.Value, 0);
-                         ViewBag.Planilla = planillas;
-                         return RedirectToAction("PlanillaRegistro","Planilla");
-                     }
-                 }
-             }
 
+            return RedirectToAction("Login", "Usuario");
 
-             return RedirectToAction("Login", "Usuario");
-            
 
         }
 

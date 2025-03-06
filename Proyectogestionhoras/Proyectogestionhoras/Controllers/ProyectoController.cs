@@ -638,7 +638,12 @@ namespace Proyectogestionhoras.Controllers
 
                 if (statusedicion == 2)
                 {
-
+                    var proyecto = await context.Proyectos.FindAsync(idproyecto);
+                    if (proyecto != null)
+                    {
+                        proyecto.Fechaejecucion = DateTime.Now;
+                    }
+                  
                     await proyectoService.RestarHHAnualesCambioEstadoSocios(hhsocios);
                     await proyectoService.RestarHHAnualesCambioEstadoStaff(hhstaff);
 

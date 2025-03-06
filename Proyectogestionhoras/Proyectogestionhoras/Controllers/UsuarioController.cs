@@ -9,6 +9,7 @@ using System.Data;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore;
+using Proyectogestionhoras.Services.Interface;
 namespace Proyectogestionhoras.Controllers
 {
     public class UsuarioController : Controller
@@ -27,6 +28,8 @@ namespace Proyectogestionhoras.Controllers
             var usuarios = await _usuarioService.ObtenerUusario(id,nombre, id_recurso);
             var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
             var costopromedio = await context.CostoPromedios.ToListAsync();
+            await _usuarioService.GestorHHSocios();
+            await _usuarioService.GestorHHStaff();
             ViewBag.TotalAnuales = totalhhanuales;
             ViewBag.Costos = costopromedio;
             ViewBag.Usuarios = usuarios;
@@ -104,9 +107,9 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> ActualizarDatos(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino, string nombrerecurso)
+        public async Task <IActionResult> ActualizarDatos(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino, string nombrerecurso,string estado)
         {
-            bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino,nombrerecurso);
+            bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino,nombrerecurso,estado);
             if (resultado)
             {
                 return RedirectToAction("Personal", "Usuario");
@@ -150,7 +153,24 @@ namespace Proyectogestionhoras.Controllers
                
                 if (resultado)
                 {
+                    
                     HttpContext.Session.SetInt32("id", login.Id);
+                    int? idusuario = HttpContext.Session.GetInt32("id");
+                    if (idusuario.HasValue)
+                    {
+                       string estado = await EstadoPersonal(idusuario.Value);
+                        if (estado.Length > 0) {
+
+                            if (estado == "Inactivo")
+                            {
+                                ViewBag.Warning = "Lo sentimos, pero ya no tiene acceso a esta plataforma. Si cree que esto es un error, por favor contacte con el soporte.";
+                                return View();
+                            }
+                            
+                        
+                        }
+                    }
+                    
                     HttpContext.Session.SetString("nombre", login.Nombre);
                     HttpContext.Session.SetInt32("idrol", login.Rol);
                     HttpContext.Session.SetString("recurso", login.Recurso);
@@ -168,6 +188,24 @@ namespace Proyectogestionhoras.Controllers
             {
                 Debug.WriteLine($"hubo un error al iniciar sesión" + e.Message);
                 return View();
+            }
+        }
+
+       public async Task<string> EstadoPersonal(int id)
+        {
+            try
+            {
+                var estado = await context.Usuarios.Where(u => u.Id == id).Join(context.Recursos,
+                            u => u.IdRecurso,  
+                            r => r.Id,         
+                            (u, r) => r.Estado) 
+                            .FirstOrDefaultAsync();
+                return estado;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al recuperar el estado del usuario:{e.Message}");
+                return null;
             }
         }
         public IActionResult Logout()

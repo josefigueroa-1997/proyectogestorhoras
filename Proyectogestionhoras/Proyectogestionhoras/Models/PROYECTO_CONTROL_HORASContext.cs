@@ -67,14 +67,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=PROYECTO_CONTROL_HORAS.mssql.somee.com;Database=PROYECTO_CONTROL_HORAS;user=pepelechero_SQLLogin_1;pwd=87zhqvm9wv;TrustServerCertificate=True;");
-            }
-        }
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -1027,6 +1020,10 @@ namespace Proyectogestionhoras.Models
                     .HasColumnType("date")
                     .HasColumnName("FECHA_TERMINO");
 
+                entity.Property(e => e.Fechaejecucion)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHAEJECUCION");
+
                 entity.Property(e => e.Fechaquarterfin)
                     .HasColumnType("date")
                     .HasColumnName("FECHAQUARTERFIN");
@@ -1207,6 +1204,11 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Desde)
                     .HasColumnType("date")
                     .HasColumnName("DESDE");
+
+                entity.Property(e => e.Estado)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("ESTADO");
 
                 entity.Property(e => e.Hasta)
                     .HasColumnType("date")

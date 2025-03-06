@@ -19,6 +19,12 @@
             @ViewBag.Error
         </div>
     }
+    @if (!string.IsNullOrEmpty(ViewBag.Warning))
+    {
+        <div class="alert alert-warning">
+            @ViewBag.Warning
+        </div>
+    }
     <form action="@Url.Action("Login", "Usuario")" method="post" enctype="multipart/form-data">
         
         <div class="form-group">

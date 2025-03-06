@@ -35,15 +35,15 @@ namespace Proyectogestionhoras.Services
             try
             {
                 string primerosCuatroDigitosRut = rut.Length >= 4 ? rut.Substring(0, 4) : rut;
-                #pragma warning disable CS8600
+#pragma warning disable CS8600
                 object numhorasparameter = (object)numhoras ?? 0;
                 object porcentajeparameter = (object)porcentajehoras ?? DBNull.Value;
                 object fechainicioparamater = (object)fechainicio ?? DBNull.Value;
                 object fechafinparamater = (object)fechafin ?? DBNull.Value;
-                #pragma warning restore CS8600
+#pragma warning restore CS8600
                 string passencrypted = EncriptarContrasena(primerosCuatroDigitosRut);
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
-                using(DbCommand command = connection.CreateCommand())
+                using (DbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "INGRESAR_USUARIO";
                     command.CommandType = CommandType.StoredProcedure;
@@ -65,19 +65,20 @@ namespace Proyectogestionhoras.Services
                 //EnviarCorreo(email);
                 return true;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
-                Debug.WriteLine($"Hubo un error al registrar el usuario"+ex.Message);
+                Debug.WriteLine($"Hubo un error al registrar el usuario" + ex.Message);
                 return false;
-            
+
             }
         }
 
-        public async Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino,string nombrerecurso)
+        public async Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino, string nombrerecurso, string estado)
         {
             try
             {
-            #pragma warning disable CS8600
+#pragma warning disable CS8600
                 object numhorasparameter = (object)hhsemanales ?? 0;
                 object porcentajeparameter = (object)porcentaje ?? DBNull.Value;
                 object fechainicioparamater = (object)fechainicio ?? DBNull.Value;
@@ -99,6 +100,7 @@ namespace Proyectogestionhoras.Services
                     command.Parameters.Add(new SqlParameter("@FECHAINICIO", fechainicioparamater));
                     command.Parameters.Add(new SqlParameter("@FECHAFIN", fechafinparamater));
                     command.Parameters.Add(new SqlParameter("@NOMBRE_RECURSO", nombrerecurso));
+                    command.Parameters.Add(new SqlParameter("@ESTADO", estado));
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
@@ -109,7 +111,7 @@ namespace Proyectogestionhoras.Services
                 Debug.WriteLine($"Hubo un error al editar el usuario:{e.Message}");
                 return false;
             }
-            
+
         }
 
 
@@ -117,7 +119,7 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-                if(usuario == null)
+                if (usuario == null)
                 {
                     return false;
                 }
@@ -125,7 +127,7 @@ namespace Proyectogestionhoras.Services
                 var user = await context.Usuarios.FindAsync(usuario.Id);
                 if (user == null)
                 {
-                    return false; 
+                    return false;
                 }
                 string contraencriptada = EncriptarContrasena(usuario.Contrasena);
                 user.Contrasena = contraencriptada;
@@ -134,7 +136,7 @@ namespace Proyectogestionhoras.Services
                 return true;
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al cambiar la contraseña:{e.Message}");
                 return false;
@@ -146,11 +148,11 @@ namespace Proyectogestionhoras.Services
         {
             try
             {
-                #pragma warning disable CS8600
+#pragma warning disable CS8600
                 object idparameter = (object)id ?? DBNull.Value;
                 object nombreparameter = (object)nombre ?? DBNull.Value;
                 object idrecursoparameter = (object)id_recurso ?? DBNull.Value;
-                #pragma warning restore CS8600
+#pragma warning restore CS8600
                 var usuarios = new List<UsuarioDTO>();
                 DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
                 using (DbCommand command = connection.CreateCommand())
@@ -171,10 +173,11 @@ namespace Proyectogestionhoras.Services
                                 Nombre_Usuario = reader.GetString(reader.GetOrdinal("NOMBRE_USUARIO")),
                                 Telefono = reader.GetString(reader.GetOrdinal("TELEFONO")),
                                 Email = reader.GetString(reader.GetOrdinal("EMAIL")),
+                                Estado = reader.GetString(reader.GetOrdinal("ESTADO")),
                                 NOMBRE_RECURSO_CORRELATIVO = reader.GetString(reader.GetOrdinal("NOMBRE_RECURSO_CORRELATIVO")),
                                 RolRecurso = reader.GetString(reader.GetOrdinal("RolRecurso")),
                                 Numero_Horas = reader.GetInt32(reader.GetOrdinal("NUMERO_HORAS")),
-                                Costo_Unitario = reader.GetDecimal(reader.GetOrdinal("COSTO_UNITARIO")) ,
+                                Costo_Unitario = reader.GetDecimal(reader.GetOrdinal("COSTO_UNITARIO")),
                                 Rol = reader.GetString(reader.GetOrdinal("ROL")),
                                 HH_MENSUALES = reader.IsDBNull(reader.GetOrdinal("HH_MENSUALES")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HH_MENSUALES")),
                                 ID_RECURSO = reader.GetInt32(reader.GetOrdinal("ID_RECURSO")),
@@ -182,10 +185,10 @@ namespace Proyectogestionhoras.Services
                                 PROCENTAJE_PROYECTO = reader.IsDBNull(reader.GetOrdinal("PROCENTAJE_PROYECTO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("PROCENTAJE_PROYECTO")),
                                 Desde = reader.IsDBNull(reader.GetOrdinal("DESDE"))
                                 ? (DateTime?)null
-    :                            reader.GetDateTime(reader.GetOrdinal("DESDE")),
+    : reader.GetDateTime(reader.GetOrdinal("DESDE")),
                                 Hasta = reader.IsDBNull(reader.GetOrdinal("HASTA"))
                                 ? (DateTime?)null
-    :                           reader.GetDateTime(reader.GetOrdinal("HASTA")),
+    : reader.GetDateTime(reader.GetOrdinal("HASTA")),
                                 Tipo_Consultor = reader.IsDBNull(reader.GetOrdinal("TIPO_CONSULTOR")) ? null : reader.GetString(reader.GetOrdinal("TIPO_CONSULTOR")),
                             };
                             usuarios.Add(usuario);
@@ -226,7 +229,7 @@ namespace Proyectogestionhoras.Services
                             {
                                 return true;
                             }
-                        }                
+                        }
                     }
                     else
                     {
@@ -278,7 +281,7 @@ namespace Proyectogestionhoras.Services
                 }
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return new Login();
@@ -312,12 +315,12 @@ namespace Proyectogestionhoras.Services
                     {
                         while (await reader.ReadAsync())
                         {
-                                Rol rol = new()
-                                {
-                                    Id = reader.GetInt32(reader.GetOrdinal("ID")),
-                                    Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
-                                
-                                 };
+                            Rol rol = new()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                                Nombre = reader.GetString(reader.GetOrdinal("NOMBRE")),
+
+                            };
                             roles.Add(rol);
                             Debug.WriteLine(rol.Nombre);
                         }
@@ -335,7 +338,7 @@ namespace Proyectogestionhoras.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Hubo un error al obtener los roles:"+ex.Message);
+                Debug.WriteLine($"Hubo un error al obtener los roles:" + ex.Message);
                 return new List<Rol>();
             }
         }
@@ -393,7 +396,7 @@ namespace Proyectogestionhoras.Services
 
         public async Task<int> VerificarCorreo(string email)
         {
-            int resultado = 2;  
+            int resultado = 2;
             DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
 
             if (connection == null)
@@ -458,7 +461,7 @@ namespace Proyectogestionhoras.Services
                     command.CommandText = "ObtenerProyectosPorUsuario  ";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
-               
+
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -553,7 +556,7 @@ namespace Proyectogestionhoras.Services
                     command.CommandText = "CONSULTA_HH_USUARIOS";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@IDUSUARIO", idusuario));
-                    
+
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -583,6 +586,101 @@ namespace Proyectogestionhoras.Services
             }
         }
 
+        public async Task GestorHHSocios()
+        {
+            var hhsocios = await context.Recursos.Where(r => r.Estado == "Activo" && r.NombreRecurso == "Socio" && r.Desde <= DateTime.Now && r.Hasta >= DateTime.Now).SumAsync(r => r.HhAnuales.GetValueOrDefault());
+           
+            var socios = await context.TotalRecursos.Where(s => s.Anio == DateTime.Now.Year && s.TipoRecurso == "Socio").FirstOrDefaultAsync();
+           
+            if (socios == null)
+            {
+                socios = new TotalRecurso
+                {
+                    Anio = DateTime.Now.Year,
+                    TipoRecurso = "Socio",
+                    Totalinmodificable = context.TotalRecursos
+                        .Where(t => t.Anio == DateTime.Now.Year - 1 && t.TipoRecurso == "Socio")
+                        .Select(t => t.Totalinmodificable)
+                        .FirstOrDefault() ?? 3000,
+
+                    TotalHhAnuales = context.TotalRecursos
+                        .Where(t => t.Anio == DateTime.Now.Year - 1 && t.TipoRecurso == "Socio")
+                        .Select(t => (decimal)t.Totalinmodificable)
+                        .FirstOrDefault()
+                };
+
+
+                context.TotalRecursos.Add(socios);
+                await context.SaveChangesAsync();
+            }
+
+
+            var hhsociosocupadas = await (
+                from p in context.Proyectos
+                join h in context.HhUsuarioHistorials on p.Id equals h.IdProyecto
+                where p.Fechaejecucion.HasValue && p.Fechaejecucion.Value.Year == DateTime.Now.Year
+                select h.HhSocios
+                ).SumAsync();
+
+
+            socios.Totalinmodificable = hhsocios;
+
+            socios.TotalHhAnuales = ((decimal)hhsocios - (decimal)hhsociosocupadas);
+            if (socios.TotalHhAnuales < 0)
+            {
+                socios.TotalHhAnuales = 0;
+            }
+            await context.SaveChangesAsync();
+
+        }
+
+        public async Task GestorHHStaff()
+        {
+            var hhstaff = await context.Recursos.Where(r => r.Estado == "Activo" && r.NombreRecurso == "Staff" && r.Desde <= DateTime.Now && r.Hasta >= DateTime.Now).SumAsync(r => r.HhAnuales.GetValueOrDefault());
+
+            var staff = await context.TotalRecursos.Where(s => s.Anio == DateTime.Now.Year && s.TipoRecurso == "Staff").FirstOrDefaultAsync();
+            if (staff == null)
+            {
+                staff = new TotalRecurso
+                {
+                    Anio = DateTime.Now.Year,
+                    TipoRecurso = "Staff",
+                    Totalinmodificable = context.TotalRecursos
+                        .Where(t => t.Anio == DateTime.Now.Year - 1 && t.TipoRecurso == "Staff")
+                        .Select(t => t.Totalinmodificable)
+                        .FirstOrDefault() ?? 3000,
+
+                    TotalHhAnuales = context.TotalRecursos
+                        .Where(t => t.Anio == DateTime.Now.Year - 1 && t.TipoRecurso == "Staff")
+                        .Select(t => (decimal)t.Totalinmodificable)
+                        .FirstOrDefault()
+                };
+
+
+                context.TotalRecursos.Add(staff);
+                await context.SaveChangesAsync();
+            }
+
+
+            var hhstaffocupadas = await (
+                from p in context.Proyectos
+                join h in context.HhUsuarioHistorials on p.Id equals h.IdProyecto
+                where p.Fechaejecucion.HasValue && p.Fechaejecucion.Value.Year == DateTime.Now.Year
+                select h.HhStaff
+                ).SumAsync();
+
+
+            staff.Totalinmodificable = hhstaff;
+
+            staff.TotalHhAnuales = ((decimal)hhstaff - (decimal)hhstaffocupadas);
+            if (staff.TotalHhAnuales < 0)
+            {
+                staff.TotalHhAnuales = 0;
+            }
+            await context.SaveChangesAsync();
+
+        }
+
 
         private void EnviarCorreo(string email)
         {
@@ -591,7 +689,7 @@ namespace Proyectogestionhoras.Services
                 mensaje.From = new MailAddress("plataformaproyectosunit@gmail.com");
                 mensaje.To.Add(email);
                 mensaje.Subject = "Credenciales de Ingreso a la Plataforma de UNIT Proyectos";
-                mensaje.IsBodyHtml = true; 
+                mensaje.IsBodyHtml = true;
 
                 // Cuerpo del correo con la imagen
                 string imagenUrl = "wwwroot/images/logo.PNG"; // Cambia por la URL correcta de la imagen
@@ -623,7 +721,7 @@ namespace Proyectogestionhoras.Services
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e.Message); 
+                        Debug.WriteLine(e.Message);
                     }
                 }
             }

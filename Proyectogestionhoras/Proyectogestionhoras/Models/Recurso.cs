@@ -23,6 +23,7 @@ namespace Proyectogestionhoras.Models
         public string? TipoConsultor { get; set; }
         public decimal? TotalSocios { get; set; }
         public decimal? TotalStaff { get; set; }
+        public string? Estado { get; set; }
 
         public virtual ICollection<Bonosocio> Bonosocios { get; set; }
         public virtual ICollection<Usuario> Usuarios { get; set; }
