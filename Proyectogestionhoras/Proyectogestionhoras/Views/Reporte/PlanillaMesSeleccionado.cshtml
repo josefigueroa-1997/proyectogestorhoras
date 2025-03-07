@@ -164,18 +164,7 @@
         int? idusuario = Context.Session.GetInt32("id");
         string? recurso = Context.Session.GetString("recurso");
     }
-    @if (TempData["ErrorMessageEliminacion"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["ErrorMessageEliminacion"]
-        </div>
-    }
-    @if (TempData["SuccessMessageEliminacion"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            @TempData["SuccessMessageEliminacion"]
-        </div>
-    }
+   
     @if (ViewBag.Planilla != null)
     {
         @foreach (var planilla in ViewBag.Planilla)
@@ -254,11 +243,6 @@
     </div>
 
 </div>
-<script>
-    function confirmarEliminacion() {
-        return confirm("¿Estás seguro de que deseas eliminar este registro?");
-    }
-</script>
 
 
 

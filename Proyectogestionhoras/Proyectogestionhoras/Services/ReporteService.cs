@@ -1293,5 +1293,68 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task<List<PlanillaUsuarioDTO>> ReporteHHGeneral(int? mes,int? anio)
+        {
+            try
+            {
+
+                var planillausuario = new List<PlanillaUsuarioDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+#pragma warning disable CS8600
+                object mesparameter = (object)mes ?? 0;
+                object anioparameter = (object)anio ?? 0;
+
+#pragma warning restore CS8600
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "REPORTEHHGENERAL";
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.Add(new SqlParameter("@MES", mesparameter));
+                    command.Parameters.Add(new SqlParameter("@ANIO", anioparameter));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            PlanillaUsuarioDTO datos = new()
+                            {
+                
+                               
+        
+                             
+                                IDCUENTA = reader.IsDBNull(reader.GetOrdinal("idcuenta")) ? 0 : reader.GetInt32(reader.GetOrdinal("idcuenta")),
+                                FechaRegistro = reader.GetDateTime(reader.GetOrdinal("FechaRegistro")),
+                                NombreActividad = reader.IsDBNull(reader.GetOrdinal("NombreActividad")) ? null : reader.GetString(reader.GetOrdinal("NombreActividad")),
+                                Nombre = reader.IsDBNull(reader.GetOrdinal("Nombre")) ? null : reader.GetString(reader.GetOrdinal("Nombre")),
+                                NumProyecto = reader.IsDBNull(reader.GetOrdinal("numproyecto")) ? null : reader.GetString(reader.GetOrdinal("numproyecto")),
+                                Cuenta = reader.IsDBNull(reader.GetOrdinal("cuenta")) ? null : reader.GetString(reader.GetOrdinal("cuenta")),
+                                HHregistradas = reader.IsDBNull(reader.GetOrdinal("HHregistradas")) ? 0 : reader.GetDecimal(reader.GetOrdinal("HHregistradas")),
+                                Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? null : reader.GetString(reader.GetOrdinal("Observaciones")),
+                               
+                                ccosto = reader.IsDBNull(reader.GetOrdinal("ccosto")) ? null : reader.GetString(reader.GetOrdinal("ccosto")),
+                                Mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
+                                Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
+                                NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NombreUsuario")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreUsuario")),
+                                Rol = reader.IsDBNull(reader.GetOrdinal("Rol")) ? string.Empty : reader.GetString(reader.GetOrdinal("Rol")),
+                                CostoUnitario = reader.IsDBNull(reader.GetOrdinal("CostoUnitario")) ? 0 : reader.GetDecimal(reader.GetOrdinal("CostoUnitario")),
+                                CostoTotal = reader.IsDBNull(reader.GetOrdinal("CostoTotal")) ? 0 : reader.GetDecimal(reader.GetOrdinal("CostoTotal")),
+                            };
+                            planillausuario.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return planillausuario;
+
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine($"Hubo un error al obtener las hh general de los usuarios:{ex.Message}");
+                return new List<PlanillaUsuarioDTO>();
+            }
+        }
     }
 }

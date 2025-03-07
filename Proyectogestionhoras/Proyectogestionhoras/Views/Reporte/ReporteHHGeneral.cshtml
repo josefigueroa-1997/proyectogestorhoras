@@ -1,0 +1,249 @@
+﻿@{
+    ViewData["Title"] = "Planilla Mes";
+    int? mes = ViewBag.MesSeleccionado;
+    int? anio = ViewBag.AnioSeleccionado;
+    string nombreMes = mes.HasValue
+        ? System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(mes.Value)
+        : "Mes no seleccionado";
+}
+
+
+
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+    .form-group-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .form-group-radio label {
+            margin-bottom: 0;
+        }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .submit-btn, .planilla-btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-left: 10px;
+    }
+
+    .submit-btn {
+        color: #fff;
+        background-color: #fcaa67;
+    }
+
+        .submit-btn:hover {
+            background-color: #e39450;
+        }
+
+
+    .planilla-btn {
+        color: #fff;
+        background-color: royalblue;
+    }
+
+
+    .horas-disponibles {
+        display: block;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .eliminar-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: red;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .tabla-margen td {
+        text-align: right;
+    }
+
+    .alert {
+        padding: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        text-align: center;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+    }
+</style>
+
+<h2 style="margin-top: 50px;" class="text-2xl text-center font-bold mb-4">
+    Planilla HH General - @nombreMes @anio
+</h2>
+<div class="text-center mb-4">
+    <a href="@Url.Action("ExportarPlanillaExcel","Reporte", new { mes = mes, anio = anio })"
+       class="planilla-btn px-4 py-2 rounded"
+       style="background-color: #28a745; color: white;">
+        Descargar Planilla
+    </a>
+</div>
+
+
+
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">
+        Muestra el registro de HH de todos los usuarios en el año y mes seleccionado.
+
+    </p>
+</div>
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <table id="planillausuario" class="w-full border-collapse text-left text-xs min-w-[1200px]">
+            <thead>
+                <tr class="bg-blue-200 text-black">
+                    <th class="p-2 border border-gray-300">Fecha</th>
+                    <th class="p-2 border border-gray-300">Nombre Usuario</th>
+                    <th class="p-2 border border-gray-300">Actividad</th>
+                    <th class="p-2 border border-gray-300">Núm.Proyecto</th>
+                    <th class="p-2 border border-gray-300">Proyecto</th>
+                    <th class="p-2 border border-gray-300">Id Cuenta</th>
+                    <th class="p-2 border border-gray-300">Cuenta</th>
+                    <th class="p-2 border border-gray-300">Ccosto</th>
+                    <th class="p-2 border border-gray-300">Número Horas</th>
+                    <th class="p-2 border border-gray-300">Costo Unitario</th>
+                    <th class="p-2 border border-gray-300">Costo Total</th>
+                    <th class="p-2 border border-gray-300">Observaciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body">
+                @if (ViewBag.Registros != null)
+                {
+                    decimal totalhoras = 0;
+                    decimal totalcostoshoras = 0;
+
+                    @foreach (var planilla in ViewBag.Registros)
+                    {
+                        <tr>
+                            <td class="p-2 border min-w-[100px] border-gray-300 text-center">@planilla.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                            <td class="p-2 min-w-[100px] border sticky left-0 bg-white border-gray-300 text-left">@planilla.NombreUsuario</td>
+                            <td class="p-2 border min-w-[200px] border-gray-300 text-left">@planilla.NombreActividad</td>
+                            <td class="p-2 border border-gray-300 text-left">@planilla.NumProyecto</td>
+                            <td class="p-2 border min-w-[200px] border-gray-300 text-left">@planilla.Nombre</td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                @(planilla.IDCUENTA == 0 ? "-" : planilla.IDCUENTA.ToString())
+                            </td>
+                            <td class="p-2 border min-w-[100px] border-gray-300 text-left">@planilla.Cuenta</td>
+                            <td class="p-2 border min-w-[100px] border-gray-300 text-left">@planilla.ccosto</td>
+                            <td class="p-2 border border-gray-300 text-right">@planilla.HHregistradas</td>
+                            <td class="p-2 border border-gray-300 text-right">
+                                @(planilla.CostoUnitario == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoUnitario))
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right">
+                                @(planilla.CostoTotal == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoTotal))
+                            </td>
+                            <td class="p-2 border border-gray-300 text-center">@planilla.Observaciones</td>
+                        </tr>
+                        totalhoras += planilla.HHregistradas;
+                        totalcostoshoras += planilla.CostoTotal;
+                    }
+                    <tr class="bg-blue-200">
+                        <td colspan="8" class="p-2 border border-gray-300 text-left font-bold">Totales</td>
+                        <td class="p-2 border border-gray-300 text-right font-bold">@totalhoras</td>
+                        <td colspan="2" class="p-2 border border-gray-300 text-right font-bold">@String.Format("{0:N0}", totalcostoshoras)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+

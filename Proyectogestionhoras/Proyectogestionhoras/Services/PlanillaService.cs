@@ -11,6 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using iText.Commons.Actions.Contexts;
+using iText.Layout.Element;
 namespace Proyectogestionhoras.Services
 {
     public class PlanillaService : IPlanilla
@@ -1142,6 +1143,8 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        
 
         public async Task<List<ProyectoGantt>> ObtenerDatosGantt(int idusuario)
         {
