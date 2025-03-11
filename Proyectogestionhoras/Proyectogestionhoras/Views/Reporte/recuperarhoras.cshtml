@@ -38,32 +38,24 @@
 
                 @if (ViewBag.HorasProyectos != null)
                 {
-
-
                     <tr>
                         <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Efectivo</td>
-                        @foreach (var h in ViewBag.HorasProyectos)
+                        @foreach (var h in ((IEnumerable<dynamic>)ViewBag.HorasProyectos).Reverse())
                         {
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", @h.Horas)</td>
+                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N2}", h.Horas)</td>
                         }
-
-
                     </tr>
-
-
-
-
                 }
                 @if (ViewBag.HorasMaximas != null && ViewBag.HorasProyectos != null && ViewBag.HorasProyectos.Count > 0)
                 {
                     <tr>
                         <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Balance</td>
 
-                        @for (int i = 0; i < ViewBag.HorasMaximas.Count; i++)
+                        @for (int i = ViewBag.HorasMaximas.Count - 1, j = ViewBag.HorasProyectos.Count - 1; i >= 0 && j >= 0; i--, j--)
                         {
-                            if (i < ViewBag.HorasProyectos.Count && ViewBag.HorasProyectos[i].Horas > 0)
+                            if (j < ViewBag.HorasProyectos.Count && ViewBag.HorasProyectos[j].Horas > 0)
                             {
-                                var diferencia = ViewBag.HorasMaximas[i].Horas - ViewBag.HorasProyectos[i].Horas;
+                                var diferencia = ViewBag.HorasMaximas[i].Horas - ViewBag.HorasProyectos[j].Horas;
                                 var colorClass = diferencia >= 0 ? "text-green-700" : "text-red-700";
 
                                 <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px] @colorClass">
@@ -73,6 +65,7 @@
                         }
                     </tr>
                 }
+
                 
             </tbody>
         </table>
