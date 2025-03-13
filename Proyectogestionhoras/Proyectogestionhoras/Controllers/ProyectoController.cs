@@ -690,71 +690,80 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task ActualizarCuotas(int idproyecto, int cantidadcuotas)
         {
-            List<CuotasViewModel> cuota = new List<CuotasViewModel>();
-
-            /*eliminando cuotas*/
-            int cantidadcuotass = await context.Cuotas.Where(c => c.Idpresupuesto == idproyecto).CountAsync();
-            if (cantidadcuotas < cantidadcuotass)
+            try
             {
-                int cantidadcuotasaeliminar = int.Parse(Request.Form["filasEliminadas"].ToString());
-                var registrosAEliminar = await context.Cuotas
-                .Where(c => c.Idpresupuesto == idproyecto)
-                .OrderByDescending(c => c.Id)
-                .Take(cantidadcuotasaeliminar)
-                .ToListAsync();
+                List<CuotasViewModel> cuota = new List<CuotasViewModel>();
 
-                context.Cuotas.RemoveRange(registrosAEliminar);
-                context.SaveChanges();
-            }
-
-            /*ingresando cuotas*/
-            var fechaemision = Request.Form["fechaemision"];
-
-            var Montoclplist = Request.Form["montocuota"];
-
-            var Observacion = Request.Form["observacioncuota"];
-            var idingresoreal = Request.Form["IdCuota"];
-
-
-            for (int i = 0; i < fechaemision.Count; i++)
-            {
-                if (string.IsNullOrWhiteSpace(fechaemision[i]))
+                /*eliminando cuotas*/
+                int cantidadcuotass = await context.Cuotas.Where(c => c.Idpresupuesto == idproyecto).CountAsync();
+                if (cantidadcuotas < cantidadcuotass)
                 {
-                    continue;
+                    int cantidadcuotasaeliminar = int.Parse(Request.Form["filasEliminadas"].ToString());
+                    var registrosAEliminar = await context.Cuotas
+                    .Where(c => c.Idpresupuesto == idproyecto)
+                    .OrderByDescending(c => c.Id)
+                    .Take(cantidadcuotasaeliminar)
+                    .ToListAsync();
+
+                    context.Cuotas.RemoveRange(registrosAEliminar);
+                    context.SaveChanges();
                 }
 
+                /*ingresando cuotas*/
+                var fechaemision = Request.Form["fechaemision"];
 
-                string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
+                var Montoclplist = Request.Form["montocuota"];
 
-
-                decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
-
-                int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
-
-
-
-                DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
-                    ? tempDate
-                    : DateTime.Today;
+                var Observacion = Request.Form["observacioncuota"];
+                var idingresoreal = Request.Form["IdCuota"];
 
 
-                var CuotaViewModel = new CuotasViewModel
+                for (int i = 0; i < fechaemision.Count; i++)
                 {
-                    IdCuota = idIngresoRealParsed,
+                    if (string.IsNullOrWhiteSpace(fechaemision[i]))
+                    {
+                        continue;
+                    }
 
-                    FechaEmision = fechaemisionParsed,
 
-                    MontoCuota = montoclp,
+                    string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
 
-                    Observacion = Observacion[i],
 
-                };
+                    decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
 
-                cuota.Add(CuotaViewModel);
+                    int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
+
+
+
+                    DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
+                        ? tempDate
+                        : DateTime.Today;
+
+
+                    var CuotaViewModel = new CuotasViewModel
+                    {
+                        IdCuota = idIngresoRealParsed,
+
+                        FechaEmision = fechaemisionParsed,
+
+                        MontoCuota = montoclp,
+
+                        Observacion = Observacion[i],
+
+                    };
+
+                    cuota.Add(CuotaViewModel);
+
+                }
+
+                await proyectoService.GestorCuotas(idproyecto, cuota);
 
             }
-
-            await proyectoService.GestorCuotas(idproyecto, cuota);
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al ingresar/editar cuotas:{e.Message}");
+            }
+           
         }
 
 

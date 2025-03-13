@@ -8,7 +8,7 @@ namespace Proyectogestionhoras.Models
         public int Id { get; set; }
         public int IdProyecto { get; set; }
         public int IdServicio { get; set; }
-        public decimal Monto { get; set; }
+        public decimal? Monto { get; set; }
         public int? Idsegmento { get; set; }
         public DateTime? Fecha { get; set; }
         public string? Espresupuesto { get; set; }

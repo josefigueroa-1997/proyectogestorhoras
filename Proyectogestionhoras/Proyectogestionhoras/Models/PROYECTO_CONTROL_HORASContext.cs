@@ -67,7 +67,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-      
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -1127,7 +1127,7 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Idsegmento).HasColumnName("IDSEGMENTO");
 
                 entity.Property(e => e.Monto)
-                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnType("decimal(18, 2)")
                     .HasColumnName("MONTO");
 
                 entity.HasOne(d => d.IdGastosNavigation)
@@ -1170,7 +1170,7 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Idsegmento).HasColumnName("IDSEGMENTO");
 
                 entity.Property(e => e.Monto)
-                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnType("decimal(18, 2)")
                     .HasColumnName("MONTO");
 
                 entity.HasOne(d => d.IdProyectoNavigation)
@@ -1208,7 +1208,8 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Estado)
                     .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("ESTADO");
+                    .HasColumnName("ESTADO")
+                    .HasDefaultValueSql("('Activo')");
 
                 entity.Property(e => e.Hasta)
                     .HasColumnType("date")
