@@ -376,8 +376,10 @@ namespace Proyectogestionhoras.Services
                         {
                             GastosHHRecursosDTO datos = new()
                             {
-                                idcuenta = reader.IsDBNull(reader.GetOrdinal("IDCUENTA")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
-                                cuenta = reader.IsDBNull(reader.GetOrdinal("CUENTA")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTA")),
+                                idcuentasocio = reader.IsDBNull(reader.GetOrdinal("IDCUENTASOCIO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTASOCIO")),
+                                idcuentastaff = reader.IsDBNull(reader.GetOrdinal("IDCUENTASTAFF")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDCUENTASTAFF")),
+                                cuentasocio = reader.IsDBNull(reader.GetOrdinal("CUENTASOCIO")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTASOCIO")),
+                                cuentastaff = reader.IsDBNull(reader.GetOrdinal("CUENTASTAFF")) ? string.Empty : reader.GetString(reader.GetOrdinal("CUENTASTAFF")),
                                 anio = reader.IsDBNull(reader.GetOrdinal("Año")) ? 0 : reader.GetInt32(reader.GetOrdinal("Año")),
                                 mes = reader.IsDBNull(reader.GetOrdinal("Mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("Mes")),
                                 tiporecurso = reader.IsDBNull(reader.GetOrdinal("TipoRecurso")) ? string.Empty : reader.GetString(reader.GetOrdinal("TipoRecurso")),

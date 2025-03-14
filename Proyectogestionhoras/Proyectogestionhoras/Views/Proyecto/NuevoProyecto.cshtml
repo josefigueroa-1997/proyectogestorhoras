@@ -598,7 +598,7 @@
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Horas Socios</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentasocio" name="idcuentasocio" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentasocio" name="cuentasocio" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentosocio" readonly/>
                               
 
@@ -609,7 +609,7 @@
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cons.Internos</strong></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="idcuentaconsultor" name="idcuentastaff" readonly /></td>
-                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" readonly/></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="cuentaconsultor" name="cuentastaff" readonly /></td>
                             <td style="padding: 10px; border: 1px solid #ddd;"><input type="text" class="nombresegmentoconsultor" readonly/>
                               
                             </td>
@@ -1351,6 +1351,7 @@
             obteneridcuenta(); 
             //obtenerValoresServicio();
             obtenerValoresConsultores();
+            obtenerValoresStaff();
             obtenerHonorarios();
         });
     });
@@ -1443,9 +1444,7 @@
         const idUnidadNegocio = $("#unidadNegocio").val();
         const idCentroCosto = $("#centroCosto").val();
         var nombreservicio = $(this).find('option:selected').val();
-        console.log(idUnidadNegocio);
-        console.log(idCentroCosto);
-        console.log(nombreservicio);
+        
         $.ajax({
             url: '/Proyecto/GetValoresServiciosEdicion',
             type: 'GET',
@@ -1520,33 +1519,32 @@
                     idunegocio: idUnidadNegocio
                 },
                 success: function (response) {
+                    const $button = $('.submit-btn');
                     if (response && response.length > 0) {
                    
-                        $(".idcuentaconsultor").val(response[0].idcuenta);
-                        $(".cuentaconsultor").val(response[0].cuenta);
-                        $(".idsegmentoconsultor").val(response[0].idsegmento);
+                       
                         $(".cuentasocio").val(response[0].cuenta);
                         $(".idsegmentosocio").val(response[0].idsegmento);
                         $(".idcuentasocio").val(response[0].idcuenta);
 
                       
-                        $(".nombresegmentoconsultor").val(response[0].nombre);
+                       
                         $(".nombresegmentosocio").val(response[0].nombre);
-
+                        $button.prop('disabled', false);
 
                     } else {
                     
-                        $(".idcuentaconsultor").val('');
-                        $(".cuentaconsultor").val('');
+                        alert("No existe una cuenta o segmento enlazado a este socio.");
                         $(".idcuentasocio").val('');
                         $(".cuentasocio").val('');
 
 
                        
-                        $(".nombresegmentoconsultor").val('');
+                       
                         $(".nombresegmentosocio").val('');
-                        $(".idsegmentoconsultor").val('');
+                        
                         $(".idsegmentosocio").val('');
+                          $button.prop('disabled', true);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -1556,6 +1554,55 @@
             });
         }
     }
+
+    function obtenerValoresStaff() {
+        var idUnidadNegocio = $("#unidadNegocio").val();
+        var idCentroCosto = $("#centroCosto").val();
+
+        if (idUnidadNegocio && idCentroCosto) {
+            $.ajax({
+                url: '/Proyecto/ObtenerValoresStaff',
+                type: 'GET',
+                data: {
+                    idCCosto: idCentroCosto,
+                    idUNegocio: idUnidadNegocio
+                },
+                success: function (response) {
+                    const $button = $('.submit-btn');
+                    if (response && response.length > 0) {
+
+                        $(".idcuentaconsultor").val(response[0].idcuenta);
+                        $(".cuentaconsultor").val(response[0].cuenta);
+                        $(".idsegmentoconsultor").val(response[0].idsegmento);
+                       
+
+
+                        $(".nombresegmentoconsultor").val(response[0].nombre);
+                 
+                        $button.prop('disabled', false);
+
+                    } else {
+                        alert("No existe una cuenta o segmento enlazado a este staff.");
+                        $(".idcuentaconsultor").val('');
+                        $(".cuentaconsultor").val('');
+                      
+
+
+
+                        $(".nombresegmentoconsultor").val('');
+                       
+                        $(".idsegmentoconsultor").val('');
+                        $button.prop('disabled', true);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al obtener el servicio:', error);
+                    $(".nombresegmentoservicio").val('');
+                }
+            });
+        }
+    }
+
 
    
         function formatInput(e) {

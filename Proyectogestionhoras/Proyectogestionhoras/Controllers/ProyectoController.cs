@@ -126,7 +126,7 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cuotas)
+        public async Task<IActionResult> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cuotas,int idcuentasocio,int idcuentastaff,string cuentasocio,string cuentastaff)
         {
             try
             {
@@ -272,6 +272,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     int idproyectoultimo = ultimoidproyecto();
                     await proyectoService.GestorFechaModificacionProyecto(idproyectoultimo);
+                    await proyectoService.GuardarActualizarHistorialCuenta(idproyectoultimo, idcuentasocio, idcuentastaff,cuentasocio,cuentastaff);
                     return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyectoultimo });
                 }
                 else
@@ -449,7 +450,7 @@ namespace Proyectogestionhoras.Controllers
             }
         }
 
-        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc,DateTime? fechaquarterinicio, DateTime? fechaquarterfin)
+        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc,DateTime? fechaquarterinicio, DateTime? fechaquarterfin,int plazo,DateTime fechatermino)
         {
 
             var presupuesto = context.Presupuestos.FirstOrDefault(p => p.Id == idproyecto);
@@ -534,10 +535,11 @@ namespace Proyectogestionhoras.Controllers
             await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
             await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
             await proyectoService.GestorFechaModificacionProyecto(idproyecto);
+            await EditarPlazoProyecto(idproyecto,plazo,fechatermino);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, int cuotas,DateTime? fechaquarterinicio,DateTime? fechaquarterfin)
+        public async Task<IActionResult> ActualizarProyecto(int idproyecto, int idpresupuesto, decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int status, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, int cuotas,DateTime? fechaquarterinicio,DateTime? fechaquarterfin,int idcuentasocio,int idcuentastaff,string cuentasocio,string cuentastaff)
         {
 
             var idclientes = Request.Form["idcliente"];
@@ -547,8 +549,8 @@ namespace Proyectogestionhoras.Controllers
                 var statusproyecto = await Obtenerstatusproyecto(idproyecto);
                 if (statusproyecto == 2)
                 {
-                    await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc,fechaquarterinicio,fechaquarterfin);
-                 
+                    await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc,fechaquarterinicio,fechaquarterfin,plazo,fechatermino);
+                    await proyectoService.GuardarActualizarHistorialCuenta(idproyecto, idcuentasocio, idcuentastaff, cuentasocio, cuentastaff);
                     return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
                 }
 
@@ -659,7 +661,7 @@ namespace Proyectogestionhoras.Controllers
 
                 await ActualizarCuotas(idproyecto, cantidadcuotas);
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
-
+                await proyectoService.GuardarActualizarHistorialCuenta(idproyecto,idcuentasocio,idcuentastaff,cuentasocio,cuentastaff);
                 if (resultado)
                 {
                     if (statusedicion == 6)
@@ -787,6 +789,18 @@ namespace Proyectogestionhoras.Controllers
 
 
             return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = proyecto.Id });
+        }
+
+        public async Task  EditarPlazoProyecto(int id,int plazo,DateTime fechafin)
+        {
+            var proyecto = await context.Proyectos.FindAsync(id);
+            if (proyecto == null)
+            {
+                return ;
+            }
+            proyecto.Plazo = plazo;
+            proyecto.FechaTermino = fechafin;
+            await context.SaveChangesAsync();
         }
 
         [HttpPost]
@@ -1071,6 +1085,33 @@ namespace Proyectogestionhoras.Controllers
             var consultores = await proyectoService.ObtenerValoresConsultores(idcosto, idunegocio);
             return Json(consultores);
         }
+
+        public async Task<List<ConsultoresDTO>> ObtenerSegmentosStaff(int idCCosto, int idUNegocio)
+        {
+            return await (from cu in context.CcostoUnegocios
+                          join sc in context.SegmentoCcostos on cu.Id equals sc.IdCcosto
+                          join s in context.Segmentos on sc.IdSegmento equals s.Id
+                          join c in context.Cuenta on s.IdCuenta equals c.Id
+                          where cu.IdCcosto == idCCosto
+                                && cu.IdUnegocio == idUNegocio
+                                && s.TipoSegmento == "Costos"
+                                && s.Nombre.Contains("Staff")
+                          select new ConsultoresDTO
+                          {
+                              NOMBRE = s.Nombre,
+                              CUENTA = c.Cuenta,
+                              IDCUENTA = c.Idcuenta,
+                              IDSEGMENTO = s.Id
+                          }).ToListAsync();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerValoresStaff(int idCCosto, int idUNegocio)
+        {
+            var resultado = await ObtenerSegmentosStaff(idCCosto, idUNegocio);
+            return Ok(resultado);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> ObtenerValoresHonorarios(int idcosto, int idunegocio, int idrecurso)

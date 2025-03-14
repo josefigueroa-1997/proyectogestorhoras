@@ -2,8 +2,10 @@
 {
     public class GastosHHRecursosDTO
     {
-        public int idcuenta { get; set; }
-        public string? cuenta { get; set; }
+        public int idcuentasocio { get; set; }
+        public int idcuentastaff { get; set; }
+        public string? cuentasocio { get; set; }
+        public string? cuentastaff { get; set; }
         public int anio { get; set; }
         public int mes { get; set; }
         public string? tiporecurso { get; set; }

@@ -36,6 +36,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
         public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
         public virtual DbSet<HistorialNegociacion> HistorialNegociacions { get; set; } = null!;
+        public virtual DbSet<Historialcuentasproyecto> Historialcuentasproyectos { get; set; } = null!;
         public virtual DbSet<Historialpresupuesto> Historialpresupuestos { get; set; } = null!;
         public virtual DbSet<Ingresosreale> Ingresosreales { get; set; } = null!;
         public virtual DbSet<MetaFacturacionesqx> MetaFacturacionesqxes { get; set; } = null!;
@@ -67,7 +68,14 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
         public virtual DbSet<UsuarioProyecto> UsuarioProyectos { get; set; } = null!;
 
-       
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=PROYECTO_CONTROL_HORAS.mssql.somee.com;Database=PROYECTO_CONTROL_HORAS;user=pepelechero_SQLLogin_1;pwd=87zhqvm9wv;TrustServerCertificate=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -685,6 +693,34 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.HistorialNegociacions)
                     .HasForeignKey(d => d.IdProyecto)
                     .HasConstraintName("IDPROYECTONEG");
+            });
+
+            modelBuilder.Entity<Historialcuentasproyecto>(entity =>
+            {
+                entity.ToTable("HISTORIALCUENTASPROYECTO");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Cuentasocio)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("CUENTASOCIO");
+
+                entity.Property(e => e.Cuentastaff)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("CUENTASTAFF");
+
+                entity.Property(e => e.Idcuentasocio).HasColumnName("IDCUENTASOCIO");
+
+                entity.Property(e => e.Idcuentastaff).HasColumnName("IDCUENTASTAFF");
+
+                entity.Property(e => e.Idproyecto).HasColumnName("IDPROYECTO");
+
+                entity.HasOne(d => d.IdproyectoNavigation)
+                    .WithMany(p => p.Historialcuentasproyectos)
+                    .HasForeignKey(d => d.Idproyecto)
+                    .HasConstraintName("IDPROYECTOCUENTA");
             });
 
             modelBuilder.Entity<Historialpresupuesto>(entity =>

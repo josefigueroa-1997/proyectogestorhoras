@@ -258,8 +258,8 @@
 
                                         }
 
-                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
-                                        <td class="p-1">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuentasocio</td>
+                                        <td class="p-1">@gasto.cuentasocio</td>
 
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
@@ -298,8 +298,8 @@
 
                                         @{
 
-                                            cuentasocio = gasto.cuenta;
-                                            idcuentasocio = gasto.idcuenta;
+                                            cuentasocio = gasto.cuentasocio;
+                                            idcuentasocio = gasto.idcuentasocio;
                                         }
                                     </tr>
                                 }
@@ -532,8 +532,8 @@
                                                 <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
                                             </td>
                                         }
-                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuenta</td>
-                                        <td class="p-2">@gasto.cuenta</td>
+                                        <td class="p-2 border border-gray-300 text-right">@gasto.idcuentastaff</td>
+                                        <td class="p-2">@gasto.cuentastaff</td>
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
                                         @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
@@ -568,8 +568,8 @@
                                         }
                                         @{
 
-                                            idcuentastaff = gasto.idcuenta;
-                                            cuentastaff = gasto.cuenta;
+                                            idcuentastaff = gasto.idcuentastaff;
+                                            cuentastaff = gasto.cuentastaff;
                                         }
                                     </tr>
                                 }

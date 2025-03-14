@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Mvc;
 namespace Proyectogestionhoras.Services
 {
     public class ProyectoService : IProyecto
@@ -551,6 +552,38 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+        public async Task GuardarActualizarHistorialCuenta(int idproyecto, int idcuentasocio, int idcuentastaff, string cuentasocio, string cuentastaff)
+        {
+            var historialcuenta = await context.Historialcuentasproyectos.Where(p=>p.Idproyecto==idproyecto).FirstOrDefaultAsync();
+
+            if (historialcuenta == null)
+            {
+                var nuevohistorial = new Historialcuentasproyecto
+                {
+                    Idproyecto = idproyecto,
+                    Idcuentasocio = idcuentasocio,
+                    Idcuentastaff = idcuentastaff,
+                    Cuentasocio = cuentasocio,
+                    Cuentastaff = cuentastaff
+                };
+
+        
+                context.Historialcuentasproyectos.Add(nuevohistorial);
+            }
+            else
+            {
+                historialcuenta.Cuentasocio = cuentasocio;
+                historialcuenta.Cuentastaff = cuentastaff;
+                historialcuenta.Idcuentasocio = idcuentasocio;
+                historialcuenta.Idcuentastaff = idcuentastaff;
+
+                
+            }
+
+            await context.SaveChangesAsync();
+        }
+
 
         public async Task<int> AsignarHHUsuarios(int idproyecto, List<UsuarioProyectoViewModel> usuariohoras)
         {
