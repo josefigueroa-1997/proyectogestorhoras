@@ -13,8 +13,10 @@ namespace Proyectogestionhoras.Models
         public int Id { get; set; }
         public string? Nombre { get; set; }
         public int? Idactividad { get; set; }
+        public int? Idcuenta { get; set; }
 
         public virtual Actividade? IdactividadNavigation { get; set; }
+        public virtual Cuentum? IdcuentaNavigation { get; set; }
         public virtual ICollection<PlanillaRegistroEmpresa> PlanillaRegistroEmpresas { get; set; }
     }
 }

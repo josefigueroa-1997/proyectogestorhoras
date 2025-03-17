@@ -8,6 +8,7 @@ namespace Proyectogestionhoras.Models
         public Cuentum()
         {
             Segmentos = new HashSet<Segmento>();
+            Subactividads = new HashSet<Subactividad>();
         }
 
         public int Id { get; set; }
@@ -15,5 +16,6 @@ namespace Proyectogestionhoras.Models
         public string Cuenta { get; set; } = null!;
 
         public virtual ICollection<Segmento> Segmentos { get; set; }
+        public virtual ICollection<Subactividad> Subactividads { get; set; }
     }
 }

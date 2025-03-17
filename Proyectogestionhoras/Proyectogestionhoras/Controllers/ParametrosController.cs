@@ -227,18 +227,23 @@ namespace Proyectogestionhoras.Controllers
         {
             var subactividades = await context.Subactividads.ToListAsync();
             var actividades = await context.Actividades.ToListAsync();
+            var cuentas = await context.Cuenta.ToListAsync();
             var subactividadesconactividad = from subactividad in subactividades
                                      join actividad in actividades on subactividad.Idactividad equals actividad.Id
+                                     join cuenta in cuentas on subactividad.Idcuenta equals cuenta.Id into cuentaJoin
+                                     from cuenta in cuentaJoin.DefaultIfEmpty()
                                      select new
                                      {
                                          subactividad.Id,
                                          subactividad.Nombre,
                                          ActividadNombre = actividad.Nombre,
                                          subactividad.Idactividad,
-                                         RolActividad = actividad.TipoAcatividad
+                                         RolActividad = actividad.TipoAcatividad,
+                                         subactividad.Idcuenta,
+                                         Cuenta = cuenta != null ? cuenta.Cuenta : null
                                      };
             ViewBag.SubActividades = subactividadesconactividad;
-            
+            ViewBag.Cuentas = cuentas;
             ViewBag.Actividades = actividades;
             return View();
         }
@@ -268,6 +273,7 @@ namespace Proyectogestionhoras.Controllers
 
                 subactividadexistente.Nombre = subactividad.Nombre;
                 subactividadexistente.Idactividad = subactividad.Idactividad;
+                subactividadexistente.Idcuenta = subactividad.Idcuenta;
                 context.Subactividads.Update(subactividadexistente);
             }
 

@@ -1423,6 +1423,8 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Idactividad).HasColumnName("IDACTIVIDAD");
 
+                entity.Property(e => e.Idcuenta).HasColumnName("IDCUENTA");
+
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(300)
                     .IsUnicode(false)
@@ -1432,6 +1434,11 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.Subactividads)
                     .HasForeignKey(d => d.Idactividad)
                     .HasConstraintName("IDACTIVIDADDK");
+
+                entity.HasOne(d => d.IdcuentaNavigation)
+                    .WithMany(p => p.Subactividads)
+                    .HasForeignKey(d => d.Idcuenta)
+                    .HasConstraintName("IDCUENTASUB");
             });
 
             modelBuilder.Entity<Sucursal>(entity =>

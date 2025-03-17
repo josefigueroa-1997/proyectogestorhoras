@@ -16,6 +16,7 @@
                     <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Nombre</th>
                     <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Actividad</th>
                     <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Rol</th>
+                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Cuenta</th>
                     
                 </tr>
             </thead>
@@ -27,7 +28,7 @@
                         <tr>
                             <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
                                 <button type="button"
-                                        onclick="cargarDatosAlternativa('@subactividad.Id', '@Html.Encode(subactividad.Nombre)','@Html.Encode(subactividad.Idactividad)')">
+                                        onclick="cargarDatosAlternativa('@subactividad.Id', '@Html.Encode(subactividad.Nombre)','@Html.Encode(subactividad.Idactividad)','@Html.Encode(subactividad.Idcuenta)')">
                                     Seleccionar
                                 </button>
                             </td>
@@ -41,7 +42,19 @@
                             <td style="padding: 5px; border: 1px solid #ddd;">
                                 @subactividad.RolActividad
                             </td>
-                           
+                            @if (subactividad.Cuenta != null)
+                            {
+                                <td style="padding: 5px; border: 1px solid #ddd;">
+                                    @subactividad.Cuenta
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="padding: 5px; border: 1px solid #ddd;">
+                              
+                                </td>
+                            }
+
                         </tr>
                     }
                 }
@@ -69,6 +82,18 @@
 
                 }
             </select>
+            <label for="cuenta" style="display: block; margin-bottom: 10px;">Cuenta:</label>
+            <select id="cuenta" name="Idcuenta" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+                <option value="" disabled selected>Seleccione una Cuenta</option>
+                @if (ViewBag.Cuentas != null)
+                {
+                    @foreach (var cuenta in ViewBag.Cuentas)
+                    {
+                        <option value="@cuenta.Id">@cuenta.Cuenta</option>
+                    }
+
+                }
+            </select>
             <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
                 Guardar
             </button>
@@ -80,14 +105,15 @@
 </div>
 
 <script>
-    function cargarDatosAlternativa(id, nombre, actividad) {
+    function cargarDatosAlternativa(id, nombre, actividad,cuenta) {
         const idInput = document.querySelector('#id');
         const nombreInput = document.querySelector('#nombre');
         const ActividadInput = document.querySelector('#actividad');
-
+        const CuentaInput = document.querySelector('#cuenta');
         idInput.value = id;
         nombreInput.value = nombre;
         ActividadInput.value = actividad;
+        CuentaInput.value = cuenta;
     }
     function limpiarFormulario() {
         location.reload();
