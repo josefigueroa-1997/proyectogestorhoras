@@ -257,7 +257,7 @@ namespace Proyectogestionhoras.Services
             try
             {
                 decimal? costoUnitario = 0;
-                if (idsubactividad != 12 && idsubactividad !=13)
+                if (idsubactividad != 12 && idsubactividad !=13 & idsubactividad != 17 && idsubactividad != 18)
                 {
                     costoUnitario = await context.Recursos.Where(r => r.Usuarios.Any(u => u.Id == idusuario)).Select(r => r.CostoUnitario).FirstOrDefaultAsync();
                 }
@@ -346,7 +346,7 @@ namespace Proyectogestionhoras.Services
                         {
 
                             decimal? costoUnitario = 0;
-                            if (editarregistro.idsubactividad != 12 && editarregistro.idsubactividad != 13)
+                            if (editarregistro.idsubactividad != 12 && editarregistro.idsubactividad != 13  & editarregistro.idsubactividad != 17 && editarregistro.idsubactividad != 18)
                             {
                                 costoUnitario = await context.Recursos.Where(r => r.Usuarios.Any(u => u.Id == editarregistro.idusuario)).Select(r => r.CostoUnitario).FirstOrDefaultAsync();
                             }
