@@ -19,7 +19,7 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top:50px;
+        margin-top: 50px;
     }
 
     .form-title {
@@ -56,7 +56,7 @@
             margin-bottom: 5px;
         }
 
-        
+
 
     .form-group-radio {
         display: flex;
@@ -172,7 +172,7 @@
         {
             <h1 class="form-title">Planilla: @planilla.NombreUsuario</h1>
             <p class="form-subtitle">Rol:@planilla.Rol</p>
-    
+
             <p class="form-subtitle">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(planilla.Mes) - @planilla.Anio</p>
             <div class="button-container">
                 <a href="@Url.Action("ExportarExcel", new { idplanilla = planilla.IdPlanilla })" class="planilla-btn" style="background-color: #28a745; color: white;">Descargar Planilla</a>
@@ -292,7 +292,7 @@
                                     }
                                 </td>
 
-                               
+
 
                                 <td class="px-2 py-2 border border-[#ddd] text-right">
                                     @if (planilla.estado == 1 || planilla.estado == 2)
@@ -347,9 +347,9 @@
                             totalcostoshoras += planilla.CostoTotal;
                         }
                         <tr>
-                            <td colspan="4" class="px-2 py-2 border border-[#ddd] bg-[#d9e2f3] text-left"><strong>Totales</strong></td>
+                            <td colspan="3" class="px-2 py-2 border border-[#ddd] bg-[#d9e2f3] text-left"><strong>Totales</strong></td>
                             <td class="px-2 py-2 border border-[#ddd] text-right bg-[#d9e2f3]"><strong>@totalhoras</strong></td>
-                            <td  class="px-2 py-2 border border-[#ddd] text-right bg-[#d9e2f3]"><strong> @String.Format("{0:N0}", totalcostoshoras)</strong></td>
+                            <td colspan="2" class="px-2 py-2 border border-[#ddd] text-right bg-[#d9e2f3]"><strong> @String.Format("{0:N0}", totalcostoshoras)</strong></td>
                         </tr>
                     }
                 </tbody>
@@ -358,7 +358,7 @@
 
 
         </div>
-       
+
 
 
         <div class="fixed inset-0 flex items-center justify-center z-50" id="edicionModal" style="display: none;">
@@ -377,7 +377,7 @@
         </div>
 
     </div>
-   
+
 </div>
 <script>
     function confirmarEliminacion() {
@@ -385,35 +385,35 @@
     }
 
     var idusuario = @Context.Session.GetInt32("id");
-        document.addEventListener("DOMContentLoaded", function () {
-            let recurso = '@Context.Session.GetString("recurso")'; 
+    document.addEventListener("DOMContentLoaded", function () {
+        let recurso = '@Context.Session.GetString("recurso")';
 
-            fetch(`/Usuario/RecuperarActividades?recurso=${recurso}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelectorAll(".actividadSelect").forEach(select => {
-                        let actividadSeleccionada = select.getAttribute("data-idactividad"); 
-                        select.innerHTML = ""; 
-                        data.forEach(item => {
-                            let option = document.createElement("option");
-                            option.value = item.id;
-                            option.textContent = item.nombre;
-                            option.setAttribute("data-controlhh", item.controlhh);
-                            
-                            if (item.id == actividadSeleccionada) {
-                                option.selected = true;
-                            }
+        fetch(`/Usuario/RecuperarActividades?recurso=${recurso}`)
+            .then(response => response.json())
+            .then(data => {
+                document.querySelectorAll(".actividadSelect").forEach(select => {
+                    let actividadSeleccionada = select.getAttribute("data-idactividad");
+                    select.innerHTML = "";
+                    data.forEach(item => {
+                        let option = document.createElement("option");
+                        option.value = item.id;
+                        option.textContent = item.nombre;
+                        option.setAttribute("data-controlhh", item.controlhh);
 
-                            select.appendChild(option);
+                        if (item.id == actividadSeleccionada) {
+                            option.selected = true;
+                        }
+
+                        select.appendChild(option);
                         if (option.selected) {
                             const fila = select.closest('tr');
                             fila.querySelector('.controlhh-hidden').value = item.controlhh.toLowerCase().trim();
                         }
-                        });
                     });
-                })
-                .catch(error => console.error("Error al cargar actividades:", error));
-        });
+                });
+            })
+            .catch(error => console.error("Error al cargar actividades:", error));
+    });
 
     function cargarSubactividades(idActividad, fila) {
         $.ajax({
@@ -421,7 +421,7 @@
             type: 'GET',
             data: { idactividad: idActividad },
             success: function (subactividades) {
-                const select = fila.find('.nombreSelect'); 
+                const select = fila.find('.nombreSelect');
                 select.empty();
                 select.append('<option value="" disabled selected>Seleccione un Item</option>');
 
@@ -444,7 +444,7 @@
                 url: '@Url.Action("ObtenerProyectoNegociacion", "Usuario")',
                 type: 'GET',
                 success: function (response) {
-                    const select = fila.find('.nombreSelect'); 
+                    const select = fila.find('.nombreSelect');
                     select.empty();
                     select.append('<option value="" disabled selected>Seleccione un proyecto</option>');
 
@@ -489,10 +489,10 @@
                             }));
                         });
 
-              
+
                         select.on('change', function () {
                             var idproyecto = $(this).val();
-                            cargarInformacionUsuario(idproyecto); 
+                            cargarInformacionUsuario(idproyecto);
                         });
                     } else {
                         select.append('<option value="" disabled>No hay proyectos disponibles</option>');
@@ -507,10 +507,10 @@
     $(document).on('change', '.nombreSelect', function () {
         var idproyecto = $(this).val();
 
-        cargarInformacionUsuario(idproyecto); 
+        cargarInformacionUsuario(idproyecto);
     });
     function cargarInformacionUsuario(idproyecto) {
-    
+
         $.ajax({
             url: '@Url.Action("Recuperarhhusuarios", "Usuario")',
             type: 'GET',
@@ -540,13 +540,13 @@
         fila.find('.controlhh-hidden').val(controlhh);
         if (idActividad) {
             if (controlhh === 'proyecto en ejecucion') {
-               
+
                 cargarProyectos(fila);
                 fila.find('.proyectoid').val(0);
                 controlvalor = 1;
 
             } else if (controlhh === 'empresa') {
-                fila.find('.idusuarioproyecto').val(0); 
+                fila.find('.idusuarioproyecto').val(0);
                 cargarSubactividades(idActividad, fila);
                 controlvalor = 2;
             } else if (controlhh === "proyecto en negociación") {
@@ -565,7 +565,7 @@
     $(document).ready(function () {
         $(".editarBtn").on("click", function (event) {
             event.preventDefault();
-        
+
             let row = $(this).closest("tr");
             var tipoactividad = row.find("[name='controlhhactividad']").val();
             let idregistro = row.find("[name='idregistro']").val();
@@ -602,11 +602,11 @@
                 }),
                 success: function (data) {
                     if (data.success) {
-                        
+
                         $('#modalMensaje').text("✅ " + data.message);
                     } else {
                         $('#modalMensaje').text("⚠️ Error: " + data.message);
-                        
+
                     }
                 },
                 error: function (xhr, status, error) {

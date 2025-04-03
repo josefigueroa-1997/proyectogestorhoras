@@ -484,7 +484,7 @@
 
             if (idActividad) {
                 if (controlhh === 'proyecto en ejecucion') {
-                   
+
                     $(this)
                         .closest('tr')
                         .find('.proyectosSelect')
@@ -493,19 +493,19 @@
                         .find('.subactividadesSelect')
                         .hide().end().find('.proyectosNegociacionSelect').hide();
 
-                   
+
                     cargarProyectos();
                     $(this)
                         .closest('tr')
                         .find('.subactividadesSelect')
-                        .val(0); 
+                        .val(0);
                     $(this)
                         .closest('tr')
                         .find('.proyectosNegociacionSelect')
                         .val(0);
                 } else if (controlhh === 'empresa') {
                     $('.idusuarioproyecto').val(0);
-                   
+
                     $(this)
                         .closest('tr')
                         .find('.subactividadesSelect')
@@ -514,19 +514,19 @@
                         .find('.proyectosSelect')
                         .hide().end().find('.proyectosNegociacionSelect').hide();
 
-                 
+
                     cargarSubactividades(idActividad);
                 }
-                    else if(controlhh ==="proyecto en negociación"){
-                     $(this)
+                else if (controlhh === "proyecto en negociación") {
+                    $(this)
                         .closest('tr')
                         .find('.proyectosNegociacionSelect')
                         .show()
                         .end()
                         .find('.subactividadesSelect')
                         .hide().end().find('.proyectosSelect').hide();
-                        cargarProyectosNegociacion();
-                         $(this)
+                    cargarProyectosNegociacion();
+                    $(this)
                         .closest('tr')
                         .find('.subactividadesSelect')
                         .val(0);
@@ -536,7 +536,7 @@
                         .val(0);
                 }
             } else {
-               
+
                 console.log("error al miostrar datos");
             }
         });
@@ -546,7 +546,7 @@
             event.preventDefault();
             var idusuarioproyecto = 0;
             var Idsubactividad = 0;
-            
+
             var fecha = $('.fecharegistro').val();
             var idproyecto = $('.proyectosSelect').val();
             var idproyectonegociacion = $('.proyectosNegociacionSelect').val();
@@ -560,22 +560,22 @@
             Idsubactividad = $('.subactividadesSelect').val();
             var hhingresadas = parseFloat(horasRegistradas);
             var hhpendientes = parseFloat(hhrestantesinput);
-           
+
             if (idusuarioproyecto > 0 && idusuarioproyecto != null) {
-                if(idproyecto>0){
+                if (idproyecto > 0) {
                     if (!fecha || !idproyecto || !Idactividad || horasRegistradas <= 0) {
-                    alert("Por favor, completa todos los campos requeridos.");
-                    return;
+                        alert("Por favor, completa todos los campos requeridos.");
+                        return;
                     }
                 }
-                if(idproyectonegociacion>0){
+                if (idproyectonegociacion > 0) {
                     if (!fecha || !idproyectonegociacion || !Idactividad || horasRegistradas <= 0) {
-                    alert("Por favor, completa todos los campos requeridos.");
-                    return;
+                        alert("Por favor, completa todos los campos requeridos.");
+                        return;
                     }
                 }
-                
-            } else if (Idsubactividad!=null && Idsubactividad > 0) {
+
+            } else if (Idsubactividad != null && Idsubactividad > 0) {
                 if (!fecha || !Idsubactividad || !Idactividad || horasRegistradas <= 0) {
                     alert("Por favor, completa todos los campos requeridos.");
                     return;
@@ -584,7 +584,7 @@
                 alert("Por favor, selecciona al menos un proyecto o subactividad.");
                 return;
             }
-            if (idproyecto != null && idproyecto > 0) {
+            /*if (idproyecto != null && idproyecto > 0) {
                 if (idusuarioproyecto != null && idusuarioproyecto > 0) {
                     if (hhingresadas > hhpendientes) {
                         alert(`Las horas registradas (${hhingresadas}) no pueden ser mayores a las horas restantes del proyecto (${hhpendientes}).`);
@@ -593,8 +593,8 @@
 
 
                 }
-            }
-            
+            }*/
+
 
             $('#modalMensaje').text("Procesando Su Solicitud...");
             $('#mensajeModal').show();
@@ -624,25 +624,25 @@
 
                         let actividadSeleccionadaTexto = $('.actividadesSelect option:selected').text();
 
-                        
+
                         if (idusuarioproyecto > 0) {
                             let proyectoSeleccionadaTexto = $('.proyectosSelect option:selected').text();
                             let proyectonegocicacionSeleccionadaTexto = $('.proyectosNegociacionSelect option:selected').text();
-                            if(idproyecto>0){
+                            if (idproyecto > 0) {
                                 if (proyectoSeleccionadaTexto !== "Seleccione un proyecto") {
-                                filaRegistrada.find('.proyectosSelect').replaceWith(`<input type="text" value="${proyectoSeleccionadaTexto}" readonly />`);
+                                    filaRegistrada.find('.proyectosSelect').replaceWith(`<input type="text" value="${proyectoSeleccionadaTexto}" readonly />`);
                                 }
                             }
-                            
-                            if(idproyectonegociacion>0){
-                                 if (proyectonegocicacionSeleccionadaTexto !== "Seleccione un proyecto") {
-                                filaRegistrada.find('.proyectosNegociacionSelect').replaceWith(`<input type="text" value="${proyectonegocicacionSeleccionadaTexto}" readonly />`);
-                                }   
+
+                            if (idproyectonegociacion > 0) {
+                                if (proyectonegocicacionSeleccionadaTexto !== "Seleccione un proyecto") {
+                                    filaRegistrada.find('.proyectosNegociacionSelect').replaceWith(`<input type="text" value="${proyectonegocicacionSeleccionadaTexto}" readonly />`);
+                                }
                             }
-                           
+
                         }
 
-                        
+
                         if (Idsubactividad > 0) {
                             let subactividadSeleccionadaTexto = $('.subactividadesSelect option:selected').text();
                             if (subactividadSeleccionadaTexto !== "Seleccione una subactividad") {
@@ -651,42 +651,42 @@
                         }
 
                         filaRegistrada.find('.actividadesSelect').replaceWith(`<input type="text" value="${actividadSeleccionadaTexto}" readonly />`);
-                       
+
 
 
                         let nuevaFila = `
-                                        <tr>
-                                                <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
-                                                     <td style="padding: 10px; border: 1px solid #ddd;">
-                                                    <select class="actividadesSelect" name="actividad">
-                                                        <option value="" disabled selected>Seleccione una actividad</option>
-                                                    </select>
-                                                </td>
+                                            <tr>
+                                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
+                                                         <td style="padding: 10px; border: 1px solid #ddd;">
+                                                        <select class="actividadesSelect" name="actividad">
+                                                            <option value="" disabled selected>Seleccione una actividad</option>
+                                                        </select>
+                                                    </td>
 
-                                                   <td style="padding: 10px; border: 1px solid #ddd;">
-                                <div class="select-container">
-                                    <select class="proyectosSelect" name="proyecto" style="display: none;">
-                                        <option value="" disabled selected>Seleccione un proyecto</option>
-                                    </select>
-                                    <select class="subactividadesSelect" name="subactividad" style="display: none;">
-                                        <option value="" disabled selected>Seleccione una subactividad</option>
-                                    </select>
-                                    <select class="proyectosNegociacionSelect" name="proyectonegociacion" style="display: none;">
+                                                       <td style="padding: 10px; border: 1px solid #ddd;">
+                                    <div class="select-container">
+                                        <select class="proyectosSelect" name="proyecto" style="display: none;">
                                             <option value="" disabled selected>Seleccione un proyecto</option>
-                                            </select>
-                                </div>
-                            </td>
+                                        </select>
+                                        <select class="subactividadesSelect" name="subactividad" style="display: none;">
+                                            <option value="" disabled selected>Seleccione una subactividad</option>
+                                        </select>
+                                        <select class="proyectosNegociacionSelect" name="proyectonegociacion" style="display: none;">
+                                                <option value="" disabled selected>Seleccione un proyecto</option>
+                                                </select>
+                                    </div>
+                                </td>
 
-                                                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" step="0.5" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
-                                                <td style="padding: 10px; border: 1px solid #ddd;">
-                                    <textarea rows="4" name="observaciones" style="width:100%;">
+                                                            <td style="padding: 10px; border: 1px solid #ddd;"><input type="number" min="0" step="0.5" name="hhregistradas" style="text-align:center;width: 60px;" /></td>
+                                                    <td style="padding: 10px; border: 1px solid #ddd;">
+                                        <textarea rows="4" name="observaciones" style="width:100%;">
 
-                                    </textarea>
+                                        </textarea>
 
-                                    </td>
+                                        </td>
 
-                                            <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
-                                        </tr>`;
+                                                <td style="padding: 10px; border: 1px solid #ddd;"><button type="submit" class="submit-btn registrar-horas">Registrar Hora</button></td>
+                                            </tr>`;
 
                         $('#tabla-body').prepend(nuevaFila);
                         // cargarProyectosEnNuevaFila($('#tabla-body tr:first-child'));
@@ -775,18 +775,18 @@
             let found = false;
 
             for (let i = 0; i < cells.length; i++) {
-            
+
                 if (cells[i].innerText.toLowerCase().includes(input)) {
                     found = true;
-                    break; 
+                    break;
                 }
             }
 
-        
+
             row.style.display = found ? '' : 'none';
         });
         if (input === '') {
-     
+
             updatePagination();
         }
     });
