@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using System.Net.Mail;
 using System.Net;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using iText.Commons.Actions.Contexts;
 
 namespace Proyectogestionhoras.Services
 {
@@ -62,6 +63,8 @@ namespace Proyectogestionhoras.Services
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
+                int idusuario = ultimoidusuario();
+                await AgregarProyectosUsuario(idusuario);
                 //EnviarCorreo(email);
                 return true;
             }
@@ -72,6 +75,22 @@ namespace Proyectogestionhoras.Services
                 return false;
 
             }
+        }
+
+        public int ultimoidusuario()
+        {
+            var ultimousuario = context.Usuarios
+                                         .OrderByDescending(p => p.Id)
+                                         .FirstOrDefault();
+
+
+            if (ultimousuario != null)
+            {
+                return ultimousuario.Id;
+            }
+
+
+            return 0;
         }
 
         public async Task<bool> EditarUsuario(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino, string nombrerecurso, string estado)
@@ -104,6 +123,7 @@ namespace Proyectogestionhoras.Services
                     await command.ExecuteNonQueryAsync();
                     await conexion.CloseDatabaseConnectionAsync();
                 }
+                await AgregarProyectosUsuario(idusuario);
                 return true;
             }
             catch (Exception e)
@@ -679,6 +699,66 @@ namespace Proyectogestionhoras.Services
             }
             await context.SaveChangesAsync();
 
+        }
+
+        public async Task AgregarProyectosUsuario(int idusuario)
+        {
+            try
+            {
+                int hhsocios = 0;
+                int hhstaff = 0;
+
+                var nombreRecurso = await context.Usuarios
+                    .Where(u => u.Id == idusuario)
+                    .Select(u => u.IdRecursoNavigation.NombreRecurso)
+                    .FirstOrDefaultAsync();
+
+                if (nombreRecurso == "Socio")
+                {
+                    hhsocios = 5;
+                }
+                else if (nombreRecurso == "Staff")
+                {
+                    hhstaff = 5;
+                }
+
+                var proyectos = await context.Proyectos
+                    .Where(p => p.StatusProyecto == 1 || p.StatusProyecto == 2)
+                    .ToListAsync();
+
+                foreach (var proyecto in proyectos)
+                {
+                    var relacionExistente = await context.UsuarioProyectos
+                        .FirstOrDefaultAsync(up => up.IdProyecto == proyecto.Id && up.IdUsuario == idusuario);
+
+                    if (relacionExistente != null)
+                    {
+                        
+                        relacionExistente.HhSocios = hhsocios;
+                        relacionExistente.HhStaff = hhstaff;
+                        context.UsuarioProyectos.Update(relacionExistente);
+                    }
+                    else
+                    {
+                      
+                        var nuevaRelacion = new UsuarioProyecto
+                        {
+                            IdProyecto = proyecto.Id,
+                            IdUsuario = idusuario,
+                            HhSocios = hhsocios,
+                            HhStaff = hhstaff
+                        };
+
+                        await context.UsuarioProyectos.AddAsync(nuevaRelacion);
+                    }
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al agregar o editar proyectos para el usuario: {e.Message}");
+            }
         }
 
 
