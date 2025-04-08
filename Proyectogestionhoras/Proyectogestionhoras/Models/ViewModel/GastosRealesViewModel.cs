@@ -11,6 +11,7 @@
         public DateTime? Fecha { get; set; }
         public string? Observacion { get; set; }
         public string? Estado { get; set; }
+        public string? Venta { get; set; }
         public bool EsEliminado { get; set; }
     }
 }

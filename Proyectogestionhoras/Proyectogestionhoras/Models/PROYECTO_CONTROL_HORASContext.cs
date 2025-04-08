@@ -471,6 +471,11 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Segmento).HasColumnName("SEGMENTO");
 
+                entity.Property(e => e.Venta)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("VENTA");
+
                 entity.HasOne(d => d.IdproveedorNavigation)
                     .WithMany(p => p.Gastosejecucions)
                     .HasForeignKey(d => d.Idproveedor)
@@ -828,6 +833,11 @@ namespace Proyectogestionhoras.Models
                 entity.Property(e => e.Tc)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("TC");
+
+                entity.Property(e => e.Venta)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("VENTA");
 
                 entity.HasOne(d => d.IdproyectoNavigation)
                     .WithMany(p => p.Ingresosreales)
@@ -1391,6 +1401,11 @@ namespace Proyectogestionhoras.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("TIPOSERVICIO");
+
+                entity.Property(e => e.Venta)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("VENTA");
 
                 entity.HasOne(d => d.IdproveedorNavigation)
                     .WithMany(p => p.Serviciosejecucions)

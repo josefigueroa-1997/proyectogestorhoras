@@ -368,6 +368,7 @@
                             <th class="p-2 border border-gray-300 text-left">Monto CLP</th>
                             <th class="p-2 border border-gray-300 text-left">IVA</th>
                             <th class="p-2 border border-gray-300 text-left">Estado</th>
+                            <th class="p-2 border border-gray-300 text-left">Estado de Venta</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Asociada</th>
 
                             <th class="p-2 border border-gray-300 text-left">Glosa</th>
@@ -435,6 +436,30 @@
                                             }
                                         </select>
                                     </td>
+                                    <!-- Venta -->
+                                    <td class="p-2 border border-gray-300 text-left">
+                                        <select name="Venta" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+
+
+                                            @if (ingreso.Venta == "No Vendido")
+                                            {
+                                                <option value="No Vendido" selected>No Vendido</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="No Vendido">No Vendido</option>
+                                            }
+
+                                            @if (ingreso.Venta == "Vendido")
+                                            {
+                                                <option value="Vendido" selected>Vendido</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Vendido">Vendido</option>
+                                            }
+                                        </select>
+                                    </td>
                                     <!-- Idcuenta -->
                                     <td class="p-2 border border-gray-300 text-right">
                                         <input value="@ingreso.Idcuenta" name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" />
@@ -472,6 +497,12 @@
                                 <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                                     <option value="Forecast" selected>Forecast</option>
                                     <option value="Pagada">Pagada</option>
+                                </select>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-left">
+                                <select name="Venta" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                    <option value="No Vendido" selected>No Vendido</option>
+                                    <option value="Vendido">Vendido</option>
                                 </select>
                             </td>
                             <td class="p-2 border border-gray-300 text-right "><input name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 " /></td>
@@ -622,6 +653,12 @@
                                                 <option value="Forecast" selected>Forecast</option>
                                                 <option value="Pagada">Pagada</option>
                                             </select>
+                                </td>
+                                    <td class="p-2 border border-gray-300 text-left">
+                                    <select name="Venta" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                        <option value="No Vendido" selected>No Vendido</option>
+                                        <option value="Vendido">Vendido</option>
+                                    </select>
                                 </td>
                                 <td class="p-2 border border-gray-300 text-right"><input name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
                                 <td class="p-2 border border-gray-300 text-left"><textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>

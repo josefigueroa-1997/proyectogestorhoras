@@ -19,6 +19,7 @@ namespace Proyectogestionhoras.Models
         public int? Idcuenta { get; set; }
         public DateTime? FechaPago { get; set; }
         public string? Observacion { get; set; }
+        public string? Venta { get; set; }
 
         public virtual Proyecto? IdproyectoNavigation { get; set; }
     }

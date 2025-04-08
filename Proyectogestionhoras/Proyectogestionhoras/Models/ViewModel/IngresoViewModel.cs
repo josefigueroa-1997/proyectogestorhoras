@@ -13,6 +13,7 @@
         public decimal? Montoclp { get; set; }
         public decimal? Iva { get; set; }
         public string? Estado { get; set; }
+        public string? Venta { get; set; }
         public int? Idcuenta { get; set; }
         public DateTime? FechaPago { get; set; }
         public string? Observacion { get; set; }
