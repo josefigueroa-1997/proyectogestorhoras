@@ -1,0 +1,750 @@
+﻿@{
+    ViewData["Title"] = "Forecast Consolidado";
+}
+
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Forecast Consolidado</h2>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">
+        Muestra el forecast consolidado de los proyectos, agrupandolos por ingresos y gastos, tanto en vendido como en no vendido.
+        (Pulse en el signo "+" para ver el detalle de cada ingreso y/o gasto).
+    </p>
+</div>
+<div class="flex justify-center">
+    <div class="w-40">
+        <label for="estado" class="block text-sm font-medium text-gray-700 text-center">Filtro</label>
+        <select id="estado" name="estado" class="estadoselect w-full px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="Vendido" selected>Vendido</option>
+            <option value="No Vendido">No Vendido</option>
+        </select>
+    </div>
+</div>
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto relative">
+        <div class="w-full max-w-3xl border-collapse text-left text-sm justify-center" id="tabla-forecast"></div>
+
+    </div>
+</div>
+
+
+<script>
+    async function cargarDatosYGenerarTabla() {
+        try {
+            const estadoSeleccionado = document.getElementById('estado').value;
+            const response = await fetch('/Reporte/ObtenerForecastConsolidado');
+            const datos = await response.json();
+
+            if (!datos || datos.length === 0) {
+                console.log('No hay datos para mostrar');
+                return;
+            }
+
+            let datosFiltrados;
+            if (estadoSeleccionado === "Vendido") {
+                datosFiltrados = datos.filter(item => item.estado === "Vendido");
+            } else {
+                datosFiltrados = datos;
+            }
+
+            const proyectos = {};
+            const periodosUnicos = new Set();
+           
+            const totalesPorTipo = {};
+
+            datosFiltrados.forEach(item => {
+                const periodo = `${item.mes}/${item.anio}`;
+                periodosUnicos.add(periodo);
+
+                const tipoKey = item.tipo || 'Sin tipo';
+                if (!totalesPorTipo[tipoKey]) {
+                    totalesPorTipo[tipoKey] = {
+                        montosPorPeriodo: {}
+                    };
+                }
+
+                if (!totalesPorTipo[tipoKey].montosPorPeriodo[periodo]) {
+                    totalesPorTipo[tipoKey].montosPorPeriodo[periodo] = 0;
+                }
+                totalesPorTipo[tipoKey].montosPorPeriodo[periodo] += item.monto;
+            });
+
+            const periodosOrdenados = Array.from(periodosUnicos).sort((a, b) => {
+                const [mesA, anioA] = a.split('/').map(Number);
+                const [mesB, anioB] = b.split('/').map(Number);
+                return anioA - anioB || mesA - mesB;
+            });
+
+            datosFiltrados.forEach(item => {
+                if (!proyectos[item.numProyecto]) {
+                    proyectos[item.numProyecto] = {
+                        nombre: item.nombreProyecto,
+                        tipos: {}
+                    };
+                }
+
+                const proyecto = proyectos[item.numProyecto];
+                const tipoKey = item.tipo || 'Sin tipo';
+                const glosaKey = item.glosa || 'Sin glosa';
+
+                if (!proyecto.tipos[tipoKey]) {
+                    proyecto.tipos[tipoKey] = {
+                        glosas: {},
+                        montosPorPeriodo: {}
+                    };
+                }
+
+                const tipoData = proyecto.tipos[tipoKey];
+                const periodoKey = `${item.mes}/${item.anio}`;
+
+                if (!tipoData.glosas[glosaKey]) {
+                    tipoData.glosas[glosaKey] = {
+                        montosPorPeriodo: {}
+                    };
+                }
+
+                if (!tipoData.glosas[glosaKey].montosPorPeriodo[periodoKey]) {
+                    tipoData.glosas[glosaKey].montosPorPeriodo[periodoKey] = 0;
+                }
+                tipoData.glosas[glosaKey].montosPorPeriodo[periodoKey] += item.monto;
+
+                if (!tipoData.montosPorPeriodo[periodoKey]) {
+                    tipoData.montosPorPeriodo[periodoKey] = 0;
+                }
+                tipoData.montosPorPeriodo[periodoKey] += item.monto;
+            });
+
+            const tabla = document.createElement('table');
+           
+            tabla.id = 'tabla-forecast-detalle';
+
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            headerRow.className = 'bg-blue-100 text-black';
+
+            ['Proyecto', 'Tipo', 'Glosa', ...periodosOrdenados].forEach(texto => {
+                const th = document.createElement('th');
+                th.className = 'text-center  px-4 py-2 min-w-[100px]';
+                th.textContent = texto;
+                headerRow.appendChild(th);
+            });
+
+            thead.appendChild(headerRow);
+            tabla.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+
+            Object.keys(proyectos).forEach(numProyecto => {
+                const proyecto = proyectos[numProyecto];
+
+                const proyectoRow = document.createElement('tr');
+                proyectoRow.className = 'proyecto-header';
+
+                const proyectoCell = document.createElement('td');
+                proyectoCell.textContent = proyecto.nombre;
+                proyectoCell.colSpan = 3 + periodosOrdenados.length;
+                proyectoCell.style.fontWeight = 'bold';
+                proyectoCell.style.backgroundColor = '#e6f7ff';
+
+                proyectoRow.appendChild(proyectoCell);
+                tbody.appendChild(proyectoRow);
+
+                const tiposOrdenados = Object.keys(proyecto.tipos);
+
+                tiposOrdenados.forEach(tipo => {
+                    const tipoData = proyecto.tipos[tipo];
+
+                    const tipoRow = document.createElement('tr');
+                    tipoRow.className = 'tipo-row text-center  px-4 py-2 min-w-[250px]';
+             
+                    tipoRow.dataset.tipo = tipo;
+                    tipoRow.dataset.proyecto = numProyecto;
+
+                    const proyectoCell = document.createElement('td');
+                    proyectoCell.textContent = '';
+                    tipoRow.appendChild(proyectoCell);
+
+                    const tipoCell = document.createElement('td');
+                    tipoCell.textContent = tipo;
+                    tipoCell.className = 'text-left  px-4 py-2 min-w-[250px]';
+                    tipoRow.appendChild(tipoCell);
+
+                    const glosaCell = document.createElement('td');
+                    const expandBtn = document.createElement('button');
+                    expandBtn.className = 'btn btn-sm btn-outline-primary expand-btn';
+                    expandBtn.innerHTML = '<i class="fas fa-plus"></i>';
+                    expandBtn.onclick = function () {
+                        toggleGlosas(numProyecto, tipo);
+                    };
+                    glosaCell.appendChild(expandBtn);
+                    tipoRow.appendChild(glosaCell);
+
+                    periodosOrdenados.forEach(periodo => {
+                        const montoCell = document.createElement('td');
+                        montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                        const monto = tipoData.montosPorPeriodo[periodo] || 0;
+                        montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }) : '';
+                        if (monto < 0) {
+                            montoCell.classList.add('text-red-600');
+                        }
+                        montoCell.style.fontWeight = 'bold';
+                        tipoRow.appendChild(montoCell);
+                    });
+
+                    tbody.appendChild(tipoRow);
+
+                    Object.keys(tipoData.glosas).forEach(glosa => {
+                        const glosaData = tipoData.glosas[glosa];
+                        const glosaRow = document.createElement('tr');
+                        glosaRow.className = 'glosa-row hidden';
+                        glosaRow.dataset.tipo = tipo;
+                        glosaRow.dataset.proyecto = numProyecto;
+
+                        const proyectoCell = document.createElement('td');
+                        proyectoCell.textContent = '';
+                        glosaRow.appendChild(proyectoCell);
+
+                        const tipoCell = document.createElement('td');
+                        tipoCell.textContent = '';
+                        glosaRow.appendChild(tipoCell);
+
+                        const glosaCell = document.createElement('td');
+                        glosaCell.textContent = glosa;
+                        glosaRow.appendChild(glosaCell);
+
+                        periodosOrdenados.forEach(periodo => {
+                            const montoCell = document.createElement('td');
+                            montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                            const monto = glosaData.montosPorPeriodo[periodo] || 0;
+                            montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }) : '';
+                            if (monto < 0) {
+                                montoCell.classList.add('text-red-600');
+                            }
+                            glosaRow.appendChild(montoCell);
+                        });
+
+                        tbody.appendChild(glosaRow);
+                    });
+                });
+
+                // Fila de Saldo Acumulado por proyecto
+                const saldoRow = document.createElement('tr');
+                saldoRow.className = 'saldo-row';
+                const emptyCell1 = document.createElement('td');
+                const emptyCell2 = document.createElement('td');
+                const saldoLabel = document.createElement('td');
+                saldoLabel.textContent = 'Saldo Acumulado';
+                saldoLabel.style.fontWeight = 'bold';
+                saldoLabel.style.backgroundColor = '#dff0d8';
+
+                saldoRow.appendChild(emptyCell1);
+                saldoRow.appendChild(emptyCell2);
+                saldoRow.appendChild(saldoLabel);
+
+                let saldoAnterior = 0;
+
+                periodosOrdenados.forEach(periodo => {
+                    let saldoActual = 0;
+
+                    if (tiposOrdenados.length === 1) {
+                        
+                        const unicoTipo = tiposOrdenados[0];
+                        const monto = proyecto.tipos[unicoTipo]?.montosPorPeriodo[periodo] || 0;
+                        saldoActual = saldoAnterior + monto;
+                    } else {
+                       
+                        const primerTipo = proyecto.tipos[tiposOrdenados[0]]?.montosPorPeriodo[periodo] || 0;
+                        const ultimoTipo = proyecto.tipos[tiposOrdenados[tiposOrdenados.length - 1]]?.montosPorPeriodo[periodo] || 0;
+                        const diferencia = primerTipo - ultimoTipo;
+                        saldoActual = saldoAnterior + diferencia;
+                    }
+
+                    const saldoCell = document.createElement('td');
+                    saldoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                    saldoCell.textContent = saldoActual !== 0 ? saldoActual.toLocaleString('es-CL', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }) : '';
+                    saldoCell.style.fontWeight = 'bold';
+                    saldoCell.style.backgroundColor = '#dff0d8';
+                    if (saldoActual < 0) {
+                        saldoCell.classList.add('text-red-600');
+                    }
+                    saldoRow.appendChild(saldoCell);
+                    saldoAnterior = saldoActual;
+                });
+
+                tbody.appendChild(saldoRow);
+            });
+
+            // fila de Resumen
+            const resumenRow = document.createElement('tr');
+            resumenRow.className = 'resumen-header';
+
+            const resumenCell = document.createElement('td');
+            resumenCell.textContent = 'Resumen';
+            resumenCell.colSpan = 3;
+            resumenCell.style.fontWeight = 'bold';
+            resumenCell.style.backgroundColor = '#f8d7da';
+
+            resumenRow.appendChild(resumenCell);
+
+            periodosOrdenados.forEach(periodo => {
+                const totalCell = document.createElement('td');
+                totalCell.textContent = '';
+                totalCell.style.fontWeight = 'bold';
+                totalCell.style.backgroundColor = '#f8d7da';
+                resumenRow.appendChild(totalCell);
+            });
+
+            tbody.appendChild(resumenRow);
+
+            //  filas de totales por tipo
+            const tiposResumen = Object.keys(totalesPorTipo);
+            tiposResumen.forEach(tipo => {
+                const tipoRow = document.createElement('tr');
+                tipoRow.className = 'total-tipo-row';
+
+                const emptyCell1 = document.createElement('td');
+                const tipoCell = document.createElement('td');
+                tipoCell.textContent = tipo;
+                tipoCell.style.fontWeight = 'bold';
+                tipoCell.colSpan = 2;
+
+                tipoRow.appendChild(emptyCell1);
+                tipoRow.appendChild(tipoCell);
+
+                periodosOrdenados.forEach(periodo => {
+                    const montoCell = document.createElement('td');
+                    montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                    const monto = totalesPorTipo[tipo].montosPorPeriodo[periodo] || 0;
+                    montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }) : '-';
+                    if (monto < 0) {
+                        montoCell.classList.add('text-red-600');
+                    }
+                    montoCell.style.fontWeight = 'bold';
+                    tipoRow.appendChild(montoCell);
+                });
+
+                tbody.appendChild(tipoRow);
+            });
+
+            // fila de Saldo Acumulado para el RESUMEN
+            const saldoResumenRow = document.createElement('tr');
+            saldoResumenRow.className = 'saldo-resumen-row';
+            const emptyCellResumen1 = document.createElement('td');
+            const emptyCellResumen2 = document.createElement('td');
+            const saldoResumenLabel = document.createElement('td');
+            saldoResumenLabel.textContent = 'Saldo Acumulado';
+            saldoResumenLabel.style.fontWeight = 'bold';
+            saldoResumenLabel.style.backgroundColor = '#dff0d8';
+
+            saldoResumenRow.appendChild(emptyCellResumen1);
+            saldoResumenRow.appendChild(emptyCellResumen2);
+            saldoResumenRow.appendChild(saldoResumenLabel);
+
+            let saldoResumenAnterior = 0;
+
+            periodosOrdenados.forEach(periodo => {
+                let saldoResumenActual = 0;
+
+                if (tiposResumen.length === 1) {
+               
+                    const unicoTipo = tiposResumen[0];
+                    const monto = totalesPorTipo[unicoTipo]?.montosPorPeriodo[periodo] || 0;
+                    saldoResumenActual = saldoResumenAnterior + monto;
+                } else {
+                
+                    const primerTipo = totalesPorTipo[tiposResumen[0]]?.montosPorPeriodo[periodo] || 0;
+                    let sumaOtrosTipos = 0;
+
+                    
+                    for (let i = 1; i < tiposResumen.length; i++) {
+                        sumaOtrosTipos += totalesPorTipo[tiposResumen[i]]?.montosPorPeriodo[periodo] || 0;
+                    }
+
+                    const diferencia = primerTipo - sumaOtrosTipos;
+                    saldoResumenActual = saldoResumenAnterior + diferencia;
+                }
+
+                const saldoResumenCell = document.createElement('td');
+                saldoResumenCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                saldoResumenCell.textContent = saldoResumenActual !== 0 ? saldoResumenActual.toLocaleString('es-CL', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }) : '';
+                if (saldoResumenActual < 0) {
+                    saldoResumenCell.classList.add('text-red-600');
+                }
+                saldoResumenCell.style.fontWeight = 'bold';
+                saldoResumenCell.style.backgroundColor = '#dff0d8';
+
+                saldoResumenRow.appendChild(saldoResumenCell);
+                saldoResumenAnterior = saldoResumenActual;
+            });
+
+            tbody.appendChild(saldoResumenRow);
+            const mostrarNoVendido = estadoSeleccionado !== "Vendido";
+            // Filas de Detalles Ingreso
+            const detallesIngresoRow = document.createElement('tr');
+            detallesIngresoRow.className = 'detalles-ingreso-header';
+
+            const detallesIngresoCell = document.createElement('td');
+            detallesIngresoCell.textContent = 'Detalles Ingreso';
+            detallesIngresoCell.colSpan = 3;
+            detallesIngresoCell.style.fontWeight = 'bold';
+            detallesIngresoCell.style.backgroundColor = '#e2e3e5';
+
+            detallesIngresoRow.appendChild(detallesIngresoCell);
+
+            periodosOrdenados.forEach(periodo => {
+                const emptyCell = document.createElement('td');
+                emptyCell.style.backgroundColor = '#e2e3e5';
+                detallesIngresoRow.appendChild(emptyCell);
+            });
+
+            tbody.appendChild(detallesIngresoRow);
+
+           
+            const ingresosVendido = {};
+            const ingresosNoVendido = {};
+
+           
+            periodosOrdenados.forEach(periodo => {
+                ingresosVendido[periodo] = 0;
+                ingresosNoVendido[periodo] = 0;
+            });
+
+
+            datos.forEach(item => {
+                if (item.tipo === "Ingresos") {
+                    const periodo = `${item.mes}/${item.anio}`;
+                    if (item.estado === "Vendido") {
+                        ingresosVendido[periodo] += item.monto;
+                    } else {
+                        ingresosNoVendido[periodo] += item.monto;
+                    }
+                }
+            });
+
+            // Fila para Vendido
+            const vendidoRow = document.createElement('tr');
+            vendidoRow.className = 'vendido-row';
+
+            const emptyVendidoCell1 = document.createElement('td');
+            const vendidoLabelCell = document.createElement('td');
+            vendidoLabelCell.textContent = 'Vendido';
+            vendidoLabelCell.colSpan = 2;
+            vendidoLabelCell.style.fontWeight = 'bold';
+            vendidoLabelCell.style.backgroundColor = '#c3e6cb';
+
+            vendidoRow.appendChild(emptyVendidoCell1);
+            vendidoRow.appendChild(vendidoLabelCell);
+
+            periodosOrdenados.forEach(periodo => {
+                const montoCell = document.createElement('td');
+                montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                const monto = ingresosVendido[periodo] || 0;
+                montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }) : '';
+                if (monto < 0) {
+                    montoCell.classList.add('text-red-600');
+                }
+                montoCell.style.fontWeight = 'bold';
+                montoCell.style.backgroundColor = '#c3e6cb';
+                vendidoRow.appendChild(montoCell);
+            });
+
+            tbody.appendChild(vendidoRow);
+
+            // Fila para No Vendido
+            if (mostrarNoVendido) {
+                const noVendidoRow = document.createElement('tr');
+                noVendidoRow.className = 'no-vendido-row';
+
+                const emptyNoVendidoCell1 = document.createElement('td');
+                const noVendidoLabelCell = document.createElement('td');
+                noVendidoLabelCell.textContent = 'No Vendido';
+                noVendidoLabelCell.colSpan = 2;
+                noVendidoLabelCell.style.fontWeight = 'bold';
+                noVendidoLabelCell.style.backgroundColor = '#f5c6cb';
+
+                noVendidoRow.appendChild(emptyNoVendidoCell1);
+                noVendidoRow.appendChild(noVendidoLabelCell);
+
+                periodosOrdenados.forEach(periodo => {
+                    const montoCell = document.createElement('td');
+                    montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                    const monto = ingresosNoVendido[periodo] || 0;
+                    montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }) : '';
+                    if (monto < 0) {
+                        montoCell.classList.add('text-red-600');
+                    }
+                    montoCell.style.fontWeight = 'bold';
+                    montoCell.style.backgroundColor = '#f5c6cb';
+                    noVendidoRow.appendChild(montoCell);
+                });
+
+                tbody.appendChild(noVendidoRow);
+            }
+           
+
+            // Fila para Forecast Ingreso (suma de Vendido + No Vendido)
+            const forecastIngresoRow = document.createElement('tr');
+            forecastIngresoRow.className = 'forecast-ingreso-row';
+
+            const emptyForecastCell1 = document.createElement('td');
+            const forecastLabelCell = document.createElement('td');
+            forecastLabelCell.textContent = 'Forecast Ingreso';
+            forecastLabelCell.colSpan = 2;
+            forecastLabelCell.style.fontWeight = 'bold';
+            forecastLabelCell.style.backgroundColor = '#bee5eb';
+
+            forecastIngresoRow.appendChild(emptyForecastCell1);
+            forecastIngresoRow.appendChild(forecastLabelCell);
+
+            periodosOrdenados.forEach(periodo => {
+                const montoCellIngreso = document.createElement('td');
+                montoCellIngreso.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                const montoVendidoIngreso = ingresosVendido[periodo] || 0;
+                const montoNoVendidoIngreso = mostrarNoVendido ? (ingresosNoVendido[periodo] || 0) : 0;
+                const totalIngreso = montoVendidoIngreso + montoNoVendidoIngreso;
+
+                montoCellIngreso.textContent = totalIngreso !== 0 ? totalIngreso.toLocaleString('es-CL', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }) : '';
+                if (totalIngreso < 0) {
+                    montoCellIngreso.classList.add('text-red-600');
+                }
+                montoCellIngreso.style.fontWeight = 'bold';
+                montoCellIngreso.style.backgroundColor = '#bee5eb';
+                forecastIngresoRow.appendChild(montoCellIngreso);
+            });
+
+            tbody.appendChild(forecastIngresoRow);
+
+
+            // Filas de Detalles Egreso
+            const detallesEgresoRow = document.createElement('tr');
+            detallesEgresoRow.className = 'detalles-egreso-header';
+
+            const detallesEgresoCell = document.createElement('td');
+            detallesEgresoCell.textContent = 'Detalles Egreso';
+            detallesEgresoCell.colSpan = 3;
+            detallesEgresoCell.style.fontWeight = 'bold';
+            detallesEgresoCell.style.backgroundColor = '#e2e3e5';
+
+            detallesEgresoRow.appendChild(detallesEgresoCell);
+
+            periodosOrdenados.forEach(periodo => {
+                const emptyCell = document.createElement('td');
+                emptyCell.style.backgroundColor = '#e2e3e5';
+                detallesEgresoRow.appendChild(emptyCell);
+            });
+
+            tbody.appendChild(detallesEgresoRow);
+
+
+            const egresosVendido = {};
+            const egresosNoVendido = {};
+
+
+            periodosOrdenados.forEach(periodo => {
+                egresosVendido[periodo] = 0;
+                egresosNoVendido[periodo] = 0;
+            });
+
+            datos.forEach(item => {
+                if (item.tipo === "Gastos") {
+                    const periodo = `${item.mes}/${item.anio}`;
+                    if (item.estado === "Vendido") {
+                        egresosVendido[periodo] += item.monto;
+                    } else {
+                        egresosNoVendido[periodo] += item.monto;
+                    }
+                }
+            });
+
+            // Fila para Egresos Vendido
+            const egresoVendidoRow = document.createElement('tr');
+            egresoVendidoRow.className = 'egreso-vendido-row';
+
+            const emptyEgresoVendidoCell1 = document.createElement('td');
+            const egresoVendidoLabelCell = document.createElement('td');
+            egresoVendidoLabelCell.textContent = 'Vendido';
+            egresoVendidoLabelCell.colSpan = 2;
+            egresoVendidoLabelCell.style.fontWeight = 'bold';
+            egresoVendidoLabelCell.style.backgroundColor = '#c3e6cb';
+
+            egresoVendidoRow.appendChild(emptyEgresoVendidoCell1);
+            egresoVendidoRow.appendChild(egresoVendidoLabelCell);
+
+            periodosOrdenados.forEach(periodo => {
+                const montoCell = document.createElement('td');
+                montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                const monto = egresosVendido[periodo] || 0;
+                montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }) : '';
+                if (monto < 0) {
+                    montoCell.classList.add('text-red-600');
+                }
+                montoCell.style.fontWeight = 'bold';
+                montoCell.style.backgroundColor = '#c3e6cb';
+                egresoVendidoRow.appendChild(montoCell);
+            });
+
+            tbody.appendChild(egresoVendidoRow);
+
+            // Fila para Egresos No Vendido
+            if (mostrarNoVendido){
+                const egresoNoVendidoRow = document.createElement('tr');
+                egresoNoVendidoRow.className = 'egreso-no-vendido-row';
+
+                const emptyEgresoNoVendidoCell1 = document.createElement('td');
+                const egresoNoVendidoLabelCell = document.createElement('td');
+                egresoNoVendidoLabelCell.textContent = 'No Vendido';
+                egresoNoVendidoLabelCell.colSpan = 2;
+                egresoNoVendidoLabelCell.style.fontWeight = 'bold';
+                egresoNoVendidoLabelCell.style.backgroundColor = '#f5c6cb';
+
+                egresoNoVendidoRow.appendChild(emptyEgresoNoVendidoCell1);
+                egresoNoVendidoRow.appendChild(egresoNoVendidoLabelCell);
+
+                periodosOrdenados.forEach(periodo => {
+                    const montoCell = document.createElement('td');
+                    montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                    const monto = egresosNoVendido[periodo] || 0;
+                    montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }) : '';
+                    if (monto < 0) {
+                        montoCell.classList.add('text-red-600');
+                    }
+                    montoCell.style.fontWeight = 'bold';
+                    montoCell.style.backgroundColor = '#f5c6cb';
+                    egresoNoVendidoRow.appendChild(montoCell);
+                });
+
+                tbody.appendChild(egresoNoVendidoRow);
+            }
+           
+
+            // Fila para Forecast Egreso (suma de Vendido + No Vendido)
+            const forecastEgresoRow = document.createElement('tr');
+            forecastEgresoRow.className = 'forecast-egreso-row';
+
+            const emptyForecastEgresoCell1 = document.createElement('td');
+            const forecastEgresoLabelCell = document.createElement('td');
+            forecastEgresoLabelCell.textContent = 'Forecast Egreso';
+            forecastEgresoLabelCell.colSpan = 2;
+            forecastEgresoLabelCell.style.fontWeight = 'bold';
+            forecastEgresoLabelCell.style.backgroundColor = '#bee5eb';
+
+            forecastEgresoRow.appendChild(emptyForecastEgresoCell1);
+            forecastEgresoRow.appendChild(forecastEgresoLabelCell);
+
+            periodosOrdenados.forEach(periodo => {
+                const montoCellEgreso = document.createElement('td');
+                montoCellEgreso.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                const montoVendidoEgreso = egresosVendido[periodo] || 0;
+                const montoNoVendidoEgreso = mostrarNoVendido ? (egresosNoVendido[periodo] || 0) : 0;
+                const totalEgreso = montoVendidoEgreso + montoNoVendidoEgreso;
+
+                montoCellEgreso.textContent = totalEgreso !== 0 ? totalEgreso.toLocaleString('es-CL', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }) : '';
+                if (totalEgreso < 0) {
+                    montoCellEgreso.classList.add('text-red-600');
+                }
+                montoCellEgreso.style.fontWeight = 'bold';
+                montoCellEgreso.style.backgroundColor = '#bee5eb';
+                forecastEgresoRow.appendChild(montoCellEgreso);
+            });
+
+            tbody.appendChild(forecastEgresoRow);
+
+            tabla.appendChild(tbody);
+
+            const contenedor = document.getElementById('tabla-forecast');
+            if (!contenedor) {
+                throw new Error('No se encontró el contenedor con ID "tabla-forecast"');
+            }
+
+            contenedor.innerHTML = '';
+            contenedor.appendChild(tabla);
+
+            const style = document.createElement('style');
+            style.textContent = `
+                .hidden { display: none; }
+                .expand-btn { padding: 0.15rem 0.3rem; font-size: 0.8rem; }
+                .tipo-row { cursor: pointer; background-color: #f8f9fa !important; }
+                .glosa-row { background-color: #fefefe; }
+                .saldo-row { background-color: #dff0d8 !important; }
+                .resumen-header { background-color: #f8d7da !important; }
+                .total-tipo-row { background-color: #fff3cd !important; }
+                .detalles-ingreso-header { background-color: #e2e3e5 !important; }
+                .vendido-row { background-color: #c3e6cb !important; }
+                .no-vendido-row { background-color: #f5c6cb !important; }
+                .forecast-ingreso-row { background-color: #bee5eb !important; }
+                    .detalles-egreso-header { background-color: #e2e3e5 !important; }
+        .egreso-vendido-row { background-color: #c3e6cb !important; }
+        .egreso-no-vendido-row { background-color: #f5c6cb !important; }
+        .forecast-egreso-row { background-color: #bee5eb !important; }
+            `;
+            document.head.appendChild(style);
+
+        } catch (error) {
+            console.error('Error al cargar los datos:', error);
+            const contenedor = document.getElementById('tabla-forecast') || document.body;
+            contenedor.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+        }
+    }
+
+    function toggleGlosas(proyectoId, tipo) {
+        const glosasRows = document.querySelectorAll(`tr.glosa-row[data-proyecto="${proyectoId}"][data-tipo="${tipo}"]`);
+        const tipoRow = document.querySelector(`tr.tipo-row[data-proyecto="${proyectoId}"][data-tipo="${tipo}"]`);
+        const expandBtn = tipoRow.querySelector('.expand-btn i');
+
+        glosasRows.forEach(row => {
+            row.classList.toggle('hidden');
+        });
+
+        if (expandBtn.classList.contains('fa-plus')) {
+            expandBtn.classList.remove('fa-plus');
+            expandBtn.classList.add('fa-minus');
+        } else {
+            expandBtn.classList.remove('fa-minus');
+            expandBtn.classList.add('fa-plus');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        cargarDatosYGenerarTabla();
+
+
+        document.getElementById('estado').addEventListener('change', function () {
+            cargarDatosYGenerarTabla();
+        });
+    });
+
+
+</script>

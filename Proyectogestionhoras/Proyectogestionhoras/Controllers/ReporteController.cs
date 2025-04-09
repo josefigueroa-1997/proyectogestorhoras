@@ -390,6 +390,17 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+        public  IActionResult ReporteForecastConsolidado()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerForecastConsolidado()
+        {
+            var resultado = await _reporteService.ObtenerForecastConsolidado();
+            return Ok(resultado);
+        }
 
         /*Exportar Plnilla excel*/
 
