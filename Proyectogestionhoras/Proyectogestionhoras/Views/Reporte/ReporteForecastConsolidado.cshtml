@@ -234,13 +234,13 @@
 
                 // Fila de Saldo Acumulado por proyecto
                 const saldoRow = document.createElement('tr');
-                saldoRow.className = 'saldo-row';
+                
                 const emptyCell1 = document.createElement('td');
                 const emptyCell2 = document.createElement('td');
                 const saldoLabel = document.createElement('td');
                 saldoLabel.textContent = 'Saldo Acumulado';
                 saldoLabel.style.fontWeight = 'bold';
-                saldoLabel.style.backgroundColor = '#dff0d8';
+                
 
                 saldoRow.appendChild(emptyCell1);
                 saldoRow.appendChild(emptyCell2);
@@ -271,7 +271,7 @@
                         maximumFractionDigits: 0
                     }) : '';
                     saldoCell.style.fontWeight = 'bold';
-                    saldoCell.style.backgroundColor = '#dff0d8';
+                    
                     if (saldoActual < 0) {
                         saldoCell.classList.add('text-red-600');
                     }
@@ -308,7 +308,7 @@
             const tiposResumen = Object.keys(totalesPorTipo);
             tiposResumen.forEach(tipo => {
                 const tipoRow = document.createElement('tr');
-                tipoRow.className = 'total-tipo-row';
+               
 
                 const emptyCell1 = document.createElement('td');
                 const tipoCell = document.createElement('td');
@@ -345,7 +345,7 @@
             const saldoResumenLabel = document.createElement('td');
             saldoResumenLabel.textContent = 'Saldo Acumulado';
             saldoResumenLabel.style.fontWeight = 'bold';
-            saldoResumenLabel.style.backgroundColor = '#dff0d8';
+           
 
             saldoResumenRow.appendChild(emptyCellResumen1);
             saldoResumenRow.appendChild(emptyCellResumen2);
@@ -385,14 +385,14 @@
                     saldoResumenCell.classList.add('text-red-600');
                 }
                 saldoResumenCell.style.fontWeight = 'bold';
-                saldoResumenCell.style.backgroundColor = '#dff0d8';
+               
 
                 saldoResumenRow.appendChild(saldoResumenCell);
                 saldoResumenAnterior = saldoResumenActual;
             });
 
             tbody.appendChild(saldoResumenRow);
-            const mostrarNoVendido = estadoSeleccionado !== "Vendido";
+            
             // Filas de Detalles Ingreso
             const detallesIngresoRow = document.createElement('tr');
             detallesIngresoRow.className = 'detalles-ingreso-header';
@@ -437,14 +437,14 @@
 
             // Fila para Vendido
             const vendidoRow = document.createElement('tr');
-            vendidoRow.className = 'vendido-row';
+       
 
             const emptyVendidoCell1 = document.createElement('td');
             const vendidoLabelCell = document.createElement('td');
             vendidoLabelCell.textContent = 'Vendido';
             vendidoLabelCell.colSpan = 2;
             vendidoLabelCell.style.fontWeight = 'bold';
-            vendidoLabelCell.style.backgroundColor = '#c3e6cb';
+           
 
             vendidoRow.appendChild(emptyVendidoCell1);
             vendidoRow.appendChild(vendidoLabelCell);
@@ -461,23 +461,23 @@
                     montoCell.classList.add('text-red-600');
                 }
                 montoCell.style.fontWeight = 'bold';
-                montoCell.style.backgroundColor = '#c3e6cb';
+               
                 vendidoRow.appendChild(montoCell);
             });
 
             tbody.appendChild(vendidoRow);
 
             // Fila para No Vendido
-            if (mostrarNoVendido) {
+           
                 const noVendidoRow = document.createElement('tr');
-                noVendidoRow.className = 'no-vendido-row';
+               
 
                 const emptyNoVendidoCell1 = document.createElement('td');
                 const noVendidoLabelCell = document.createElement('td');
                 noVendidoLabelCell.textContent = 'No Vendido';
                 noVendidoLabelCell.colSpan = 2;
                 noVendidoLabelCell.style.fontWeight = 'bold';
-                noVendidoLabelCell.style.backgroundColor = '#f5c6cb';
+               
 
                 noVendidoRow.appendChild(emptyNoVendidoCell1);
                 noVendidoRow.appendChild(noVendidoLabelCell);
@@ -494,24 +494,24 @@
                         montoCell.classList.add('text-red-600');
                     }
                     montoCell.style.fontWeight = 'bold';
-                    montoCell.style.backgroundColor = '#f5c6cb';
+                   
                     noVendidoRow.appendChild(montoCell);
                 });
 
                 tbody.appendChild(noVendidoRow);
-            }
+            
            
 
             // Fila para Forecast Ingreso (suma de Vendido + No Vendido)
             const forecastIngresoRow = document.createElement('tr');
-            forecastIngresoRow.className = 'forecast-ingreso-row';
+            
 
             const emptyForecastCell1 = document.createElement('td');
             const forecastLabelCell = document.createElement('td');
             forecastLabelCell.textContent = 'Forecast Ingreso';
             forecastLabelCell.colSpan = 2;
             forecastLabelCell.style.fontWeight = 'bold';
-            forecastLabelCell.style.backgroundColor = '#bee5eb';
+           
 
             forecastIngresoRow.appendChild(emptyForecastCell1);
             forecastIngresoRow.appendChild(forecastLabelCell);
@@ -520,7 +520,7 @@
                 const montoCellIngreso = document.createElement('td');
                 montoCellIngreso.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
                 const montoVendidoIngreso = ingresosVendido[periodo] || 0;
-                const montoNoVendidoIngreso = mostrarNoVendido ? (ingresosNoVendido[periodo] || 0) : 0;
+                const montoNoVendidoIngreso = ingresosNoVendido[periodo] || 0;
                 const totalIngreso = montoVendidoIngreso + montoNoVendidoIngreso;
 
                 montoCellIngreso.textContent = totalIngreso !== 0 ? totalIngreso.toLocaleString('es-CL', {
@@ -531,7 +531,7 @@
                     montoCellIngreso.classList.add('text-red-600');
                 }
                 montoCellIngreso.style.fontWeight = 'bold';
-                montoCellIngreso.style.backgroundColor = '#bee5eb';
+            
                 forecastIngresoRow.appendChild(montoCellIngreso);
             });
 
@@ -581,14 +581,14 @@
 
             // Fila para Egresos Vendido
             const egresoVendidoRow = document.createElement('tr');
-            egresoVendidoRow.className = 'egreso-vendido-row';
+          
 
             const emptyEgresoVendidoCell1 = document.createElement('td');
             const egresoVendidoLabelCell = document.createElement('td');
             egresoVendidoLabelCell.textContent = 'Vendido';
             egresoVendidoLabelCell.colSpan = 2;
             egresoVendidoLabelCell.style.fontWeight = 'bold';
-            egresoVendidoLabelCell.style.backgroundColor = '#c3e6cb';
+         
 
             egresoVendidoRow.appendChild(emptyEgresoVendidoCell1);
             egresoVendidoRow.appendChild(egresoVendidoLabelCell);
@@ -605,23 +605,23 @@
                     montoCell.classList.add('text-red-600');
                 }
                 montoCell.style.fontWeight = 'bold';
-                montoCell.style.backgroundColor = '#c3e6cb';
+                
                 egresoVendidoRow.appendChild(montoCell);
             });
 
             tbody.appendChild(egresoVendidoRow);
 
             // Fila para Egresos No Vendido
-            if (mostrarNoVendido){
+            
                 const egresoNoVendidoRow = document.createElement('tr');
-                egresoNoVendidoRow.className = 'egreso-no-vendido-row';
+                
 
                 const emptyEgresoNoVendidoCell1 = document.createElement('td');
                 const egresoNoVendidoLabelCell = document.createElement('td');
                 egresoNoVendidoLabelCell.textContent = 'No Vendido';
                 egresoNoVendidoLabelCell.colSpan = 2;
                 egresoNoVendidoLabelCell.style.fontWeight = 'bold';
-                egresoNoVendidoLabelCell.style.backgroundColor = '#f5c6cb';
+                
 
                 egresoNoVendidoRow.appendChild(emptyEgresoNoVendidoCell1);
                 egresoNoVendidoRow.appendChild(egresoNoVendidoLabelCell);
@@ -638,24 +638,24 @@
                         montoCell.classList.add('text-red-600');
                     }
                     montoCell.style.fontWeight = 'bold';
-                    montoCell.style.backgroundColor = '#f5c6cb';
+                   
                     egresoNoVendidoRow.appendChild(montoCell);
                 });
 
-                tbody.appendChild(egresoNoVendidoRow);
-            }
+               tbody.appendChild(egresoNoVendidoRow);
+            
            
 
             // Fila para Forecast Egreso (suma de Vendido + No Vendido)
             const forecastEgresoRow = document.createElement('tr');
-            forecastEgresoRow.className = 'forecast-egreso-row';
+            
 
             const emptyForecastEgresoCell1 = document.createElement('td');
             const forecastEgresoLabelCell = document.createElement('td');
             forecastEgresoLabelCell.textContent = 'Forecast Egreso';
             forecastEgresoLabelCell.colSpan = 2;
             forecastEgresoLabelCell.style.fontWeight = 'bold';
-            forecastEgresoLabelCell.style.backgroundColor = '#bee5eb';
+            
 
             forecastEgresoRow.appendChild(emptyForecastEgresoCell1);
             forecastEgresoRow.appendChild(forecastEgresoLabelCell);
@@ -664,7 +664,7 @@
                 const montoCellEgreso = document.createElement('td');
                 montoCellEgreso.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
                 const montoVendidoEgreso = egresosVendido[periodo] || 0;
-                const montoNoVendidoEgreso = mostrarNoVendido ? (egresosNoVendido[periodo] || 0) : 0;
+                const montoNoVendidoEgreso = egresosNoVendido[periodo] || 0;
                 const totalEgreso = montoVendidoEgreso + montoNoVendidoEgreso;
 
                 montoCellEgreso.textContent = totalEgreso !== 0 ? totalEgreso.toLocaleString('es-CL', {
@@ -675,7 +675,7 @@
                     montoCellEgreso.classList.add('text-red-600');
                 }
                 montoCellEgreso.style.fontWeight = 'bold';
-                montoCellEgreso.style.backgroundColor = '#bee5eb';
+                
                 forecastEgresoRow.appendChild(montoCellEgreso);
             });
 
