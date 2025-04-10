@@ -50,7 +50,7 @@
             const periodosUnicos = new Set();
            
             const totalesPorTipo = {};
-
+            const totalesPorTipoGlobal = {};
             datosFiltrados.forEach(item => {
                 const periodo = `${item.mes}/${item.anio}`;
                 periodosUnicos.add(periodo);
@@ -67,6 +67,22 @@
                 }
                 totalesPorTipo[tipoKey].montosPorPeriodo[periodo] += item.monto;
             });
+
+                datos.forEach(item => {
+                const periodo = `${item.mes}/${item.anio}`;
+                const tipoKey = item.tipo || 'Sin tipo';
+
+                if (!totalesPorTipoGlobal[tipoKey]) {
+                    totalesPorTipoGlobal[tipoKey] = {
+                     montosPorPeriodo: {}
+                };
+                 }
+
+                if (!totalesPorTipoGlobal[tipoKey].montosPorPeriodo[periodo]) {
+            totalesPorTipoGlobal[tipoKey].montosPorPeriodo[periodo] = 0;
+                }
+                totalesPorTipoGlobal[tipoKey].montosPorPeriodo[periodo] += item.monto;
+                });
 
             const periodosOrdenados = Array.from(periodosUnicos).sort((a, b) => {
                 const [mesA, anioA] = a.split('/').map(Number);
@@ -305,7 +321,7 @@
             tbody.appendChild(resumenRow);
 
             //  filas de totales por tipo
-            const tiposResumen = Object.keys(totalesPorTipo);
+            const tiposResumen = Object.keys(totalesPorTipoGlobal );
             tiposResumen.forEach(tipo => {
                 const tipoRow = document.createElement('tr');
                
@@ -322,11 +338,11 @@
                 periodosOrdenados.forEach(periodo => {
                     const montoCell = document.createElement('td');
                     montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
-                    const monto = totalesPorTipo[tipo].montosPorPeriodo[periodo] || 0;
+                    const monto = totalesPorTipoGlobal [tipo].montosPorPeriodo[periodo] || 0;
                     montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0
-                    }) : '-';
+                    }) : '';
                     if (monto < 0) {
                         montoCell.classList.add('text-red-600');
                     }
@@ -359,16 +375,16 @@
                 if (tiposResumen.length === 1) {
                
                     const unicoTipo = tiposResumen[0];
-                    const monto = totalesPorTipo[unicoTipo]?.montosPorPeriodo[periodo] || 0;
+                    const monto = totalesPorTipoGlobal[unicoTipo]?.montosPorPeriodo[periodo] || 0;
                     saldoResumenActual = saldoResumenAnterior + monto;
                 } else {
                 
-                    const primerTipo = totalesPorTipo[tiposResumen[0]]?.montosPorPeriodo[periodo] || 0;
+                    const primerTipo = totalesPorTipoGlobal[tiposResumen[0]]?.montosPorPeriodo[periodo] || 0;
                     let sumaOtrosTipos = 0;
 
                     
                     for (let i = 1; i < tiposResumen.length; i++) {
-                        sumaOtrosTipos += totalesPorTipo[tiposResumen[i]]?.montosPorPeriodo[periodo] || 0;
+                        sumaOtrosTipos += totalesPorTipoGlobal[tiposResumen[i]]?.montosPorPeriodo[periodo] || 0;
                     }
 
                     const diferencia = primerTipo - sumaOtrosTipos;
