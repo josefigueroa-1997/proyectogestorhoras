@@ -19,13 +19,11 @@
     </div>
 </div>
 
-<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md sticky top-[900px] z-50">
     <div class="overflow-x-auto relative">
         <div class="w-full max-w-3xl border-collapse text-left text-sm justify-center" id="tabla-forecast"></div>
-
     </div>
 </div>
-
 
 <script>
     async function cargarDatosYGenerarTabla() {
@@ -130,7 +128,7 @@
             });
 
             const tabla = document.createElement('table');
-           
+            tabla.className = 'min-w-full border-collapse table-auto';
             tabla.id = 'tabla-forecast-detalle';
 
             const thead = document.createElement('thead');
@@ -139,7 +137,7 @@
 
             ['Proyecto', 'Tipo', 'Glosa', ...periodosOrdenados].forEach(texto => {
                 const th = document.createElement('th');
-                th.className = 'text-center  px-4 py-2 min-w-[100px]';
+                th.className = 'text-center  px-4 py-2 min-w-[100px] ';
                 th.textContent = texto;
                 headerRow.appendChild(th);
             });
@@ -156,12 +154,18 @@
                 proyectoRow.className = 'proyecto-header';
 
                 const proyectoCell = document.createElement('td');
+                proyectoCell.className = 'sticky left-0 z-10 font-bold bg-blue-50';
                 proyectoCell.textContent = proyecto.nombre;
-                proyectoCell.colSpan = 3 + periodosOrdenados.length;
+                proyectoCell.colSpan = 3 ;
                 proyectoCell.style.fontWeight = 'bold';
                 proyectoCell.style.backgroundColor = '#e6f7ff';
 
                 proyectoRow.appendChild(proyectoCell);
+                periodosOrdenados.forEach(() => {
+                    const periodoCell = document.createElement('td');
+                    periodoCell.className = 'bg-blue-50';
+                    proyectoRow.appendChild(periodoCell);
+                });
                 tbody.appendChild(proyectoRow);
 
                 const tiposOrdenados = Object.keys(proyecto.tipos);
@@ -181,7 +185,7 @@
 
                     const tipoCell = document.createElement('td');
                     tipoCell.textContent = tipo;
-                    tipoCell.className = 'text-left  px-4 py-2 min-w-[250px]';
+                    tipoCell.className = 'text-left  px-4 py-2 min-w-[250px] sticky left-0 z-10 bg-gray-100';
                     tipoRow.appendChild(tipoCell);
 
                     const glosaCell = document.createElement('td');
@@ -227,12 +231,13 @@
                         glosaRow.appendChild(tipoCell);
 
                         const glosaCell = document.createElement('td');
+                        glosaCell.className = 'sticky left-0 z-10 bg-white';
                         glosaCell.textContent = glosa;
                         glosaRow.appendChild(glosaCell);
 
                         periodosOrdenados.forEach(periodo => {
                             const montoCell = document.createElement('td');
-                            montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px]';
+                            montoCell.className = 'text-sm font-bold text-right  px-4 py-2 min-w-[100px] ';
                             const monto = glosaData.montosPorPeriodo[periodo] || 0;
                             montoCell.textContent = monto !== 0 ? monto.toLocaleString('es-CL', {
                                 minimumFractionDigits: 0,
@@ -255,6 +260,7 @@
                 const emptyCell2 = document.createElement('td');
                 const saldoLabel = document.createElement('td');
                 saldoLabel.textContent = 'Saldo Acumulado';
+                saldoLabel.className = 'sticky left-0 z-10 bg-white';
                 saldoLabel.style.fontWeight = 'bold';
                 
 
@@ -303,6 +309,7 @@
             resumenRow.className = 'resumen-header';
 
             const resumenCell = document.createElement('td');
+            resumenCell.className = 'sticky left-0 z-10 bg-red-100';
             resumenCell.textContent = 'Resumen';
             resumenCell.colSpan = 3;
             resumenCell.style.fontWeight = 'bold';
@@ -328,6 +335,7 @@
 
                 const emptyCell1 = document.createElement('td');
                 const tipoCell = document.createElement('td');
+                tipoCell.className = 'sticky left-0 z-10 bg-white';
                 tipoCell.textContent = tipo;
                 tipoCell.style.fontWeight = 'bold';
                 tipoCell.colSpan = 2;
@@ -359,6 +367,7 @@
             const emptyCellResumen1 = document.createElement('td');
             const emptyCellResumen2 = document.createElement('td');
             const saldoResumenLabel = document.createElement('td');
+            saldoResumenLabel.className = 'sticky left-0 z-10 bg-white';
             saldoResumenLabel.textContent = 'Saldo Acumulado';
             saldoResumenLabel.style.fontWeight = 'bold';
            
@@ -415,6 +424,7 @@
 
             const detallesIngresoCell = document.createElement('td');
             detallesIngresoCell.textContent = 'Detalles Ingreso';
+            detallesIngresoCell.className = 'sticky left-0 z-10 bg-gray-200';
             detallesIngresoCell.colSpan = 3;
             detallesIngresoCell.style.fontWeight = 'bold';
             detallesIngresoCell.style.backgroundColor = '#e2e3e5';
@@ -457,6 +467,7 @@
 
             const emptyVendidoCell1 = document.createElement('td');
             const vendidoLabelCell = document.createElement('td');
+            vendidoLabelCell.className = 'sticky left-0 z-10 bg-white';
             vendidoLabelCell.textContent = 'Vendido';
             vendidoLabelCell.colSpan = 2;
             vendidoLabelCell.style.fontWeight = 'bold';
@@ -490,6 +501,7 @@
 
                 const emptyNoVendidoCell1 = document.createElement('td');
                 const noVendidoLabelCell = document.createElement('td');
+                noVendidoLabelCell.className = 'sticky left-0 z-10 bg-white';
                 noVendidoLabelCell.textContent = 'No Vendido';
                 noVendidoLabelCell.colSpan = 2;
                 noVendidoLabelCell.style.fontWeight = 'bold';
@@ -524,6 +536,7 @@
 
             const emptyForecastCell1 = document.createElement('td');
             const forecastLabelCell = document.createElement('td');
+            forecastLabelCell.className = 'sticky left-0 z-10 bg-white';
             forecastLabelCell.textContent = 'Forecast Ingreso';
             forecastLabelCell.colSpan = 2;
             forecastLabelCell.style.fontWeight = 'bold';
@@ -560,6 +573,7 @@
 
             const detallesEgresoCell = document.createElement('td');
             detallesEgresoCell.textContent = 'Detalles Egreso';
+            detallesEgresoCell.className = 'sticky left-0 z-10 bg-white';
             detallesEgresoCell.colSpan = 3;
             detallesEgresoCell.style.fontWeight = 'bold';
             detallesEgresoCell.style.backgroundColor = '#e2e3e5';
@@ -601,6 +615,7 @@
 
             const emptyEgresoVendidoCell1 = document.createElement('td');
             const egresoVendidoLabelCell = document.createElement('td');
+            egresoVendidoLabelCell.className = 'sticky left-0 z-10 bg-white';
             egresoVendidoLabelCell.textContent = 'Vendido';
             egresoVendidoLabelCell.colSpan = 2;
             egresoVendidoLabelCell.style.fontWeight = 'bold';
@@ -634,6 +649,7 @@
 
                 const emptyEgresoNoVendidoCell1 = document.createElement('td');
                 const egresoNoVendidoLabelCell = document.createElement('td');
+                egresoNoVendidoLabelCell.className = 'sticky left-0 z-10 bg-white';
                 egresoNoVendidoLabelCell.textContent = 'No Vendido';
                 egresoNoVendidoLabelCell.colSpan = 2;
                 egresoNoVendidoLabelCell.style.fontWeight = 'bold';
@@ -668,6 +684,7 @@
 
             const emptyForecastEgresoCell1 = document.createElement('td');
             const forecastEgresoLabelCell = document.createElement('td');
+            forecastEgresoLabelCell.className = 'sticky left-0 z-10 bg-white';
             forecastEgresoLabelCell.textContent = 'Forecast Egreso';
             forecastEgresoLabelCell.colSpan = 2;
             forecastEgresoLabelCell.style.fontWeight = 'bold';
