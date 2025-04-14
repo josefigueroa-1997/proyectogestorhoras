@@ -26,7 +26,7 @@
                         <tr>
                             <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
                                 <button type="button"
-                                        onclick="cargarDatosAlternativa('@actividad.Id', '@Html.Encode(actividad.Nombre)','@Html.Encode(actividad.TipoAcatividad)','@Html.Encode(actividad.Controlhh)')">
+                                        onclick="cargarDatosAlternativa( '@string.Join(",", actividad.Ids)', '@Html.Encode(actividad.Nombre)','@Html.Encode(actividad.Roles)','@Html.Encode(actividad.Controlhh)')">
                                     Seleccionar
                                 </button>
                             </td>
@@ -35,7 +35,7 @@
                                 @actividad.Nombre
                             </td>
                             <td style="padding: 5px; border: 1px solid #ddd;">
-                                @actividad.TipoAcatividad
+                                @actividad.Roles
                             </td>
                             <td style="padding: 5px; border: 1px solid #ddd;">
                                 @actividad.Controlhh
@@ -51,29 +51,28 @@
         <h2 style="text-align: center; color: #333;">Agregar Actividad</h2>
 
         <form action="@Url.Action("GuardarActualizarActividades", "Parametros")" method="post">
-            <input type="hidden" id="id" name="Id" />
+            <input type="hidden" id="id" name="id" value="" />
 
-            <label for="idcuenta" style="display: block; margin-bottom: 10px;">Nombre:</label>
+            <label for="nombre" style="display: block; margin-bottom: 10px;">Nombre:</label>
             <input type="text" id="nombre" name="Nombre" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
-            <label for="tipo" style="display: block; margin-bottom: 10px;">Rol de Actividad:</label>
-            <select id="tipo" name="TipoAcatividad" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
-                
-                    <option value="Socio">Socio</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Consultor Externo">Consultor Externo</option>
-                
-               
-            </select>
+
+            <label style="display: block; margin-bottom: 10px;">Rol de Actividad:</label>
+            <div id="roles-container" style="margin-bottom: 15px;">
+                <label style="margin-right: 10px;">
+                    <input type="checkbox" name="Roles" value="Socio" style="margin-right: 5px;"> Socio
+                </label>
+                <label>
+                    <input type="checkbox" name="Roles" value="Staff" style="margin-right: 5px;"> Staff
+                </label>
+            </div>
+
             <label for="controlhh" style="display: block; margin-bottom: 10px;">Tipo de Actividad:</label>
             <select id="controlhh" name="Controlhh" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
-
                 <option value="Proyecto En Ejecucion">Proyecto En Ejecución</option>
                 <option value="Proyecto En Negociación">Proyecto En Negociación</option>
                 <option value="Empresa">Empresa</option>
-               
-
-
             </select>
+
             <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
                 Guardar
             </button>
@@ -85,17 +84,27 @@
 </div>
 
 <script>
-    function cargarDatosAlternativa(id, nombre, tipo,controlhh) {
-        const idInput = document.querySelector('#id');
-        const idcuentaInput = document.querySelector('#nombre');
-        const tipoactividadInput = document.querySelector('#tipo');
-        const controlhhInput = document.querySelector('#controlhh');
+    function cargarDatosAlternativa(ids, nombre, roles, controlhh) {
+        
+        document.querySelector('#id').value = ids;
+        document.querySelector('#nombre').value = nombre;
+        document.querySelector('#controlhh').value = controlhh;
 
-        idInput.value = id;
-        idcuentaInput.value = nombre;
-        tipoactividadInput.value = tipo;
-        controlhhInput.value = controlhh;
+        
+        const checkboxes = document.querySelectorAll('input[name="Roles"]');
+        checkboxes.forEach(cb => cb.checked = false);
+
+       
+        if (roles) {
+            const rolesArray = roles.split(',');
+            rolesArray.forEach(rol => {
+                const rolTrimmed = rol.trim();
+                const checkbox = document.querySelector(`input[name="Roles"][value="${rolTrimmed}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
     }
+
     function limpiarFormulario() {
         location.reload();
     }

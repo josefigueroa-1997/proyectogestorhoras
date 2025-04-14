@@ -178,47 +178,109 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("GestorServicios");
         }
         /*Actividades*/
-        public async Task<IActionResult> GestorActividades()
+        public IActionResult GestorActividades()
         {
+            
+            var actividades = context.Actividades.ToList();
 
-            var actividades = await context.Actividades.ToListAsync();
-            ViewBag.Actividades = actividades;
+            
+            var actividadesAgrupadas = actividades
+                .GroupBy(a => a.Nombre)
+                .Select(g => new {
+                    Nombre = g.Key,
+                    Roles = string.Join(", ", g.Select(x => x.TipoAcatividad)),
+                   
+                    Controlhh = g.First().Controlhh,
+                    
+                    Ids = string.Join(",", g.Select(x => x.Id.ToString()))
+                })
+                .ToList();
+
+            ViewBag.Actividades = actividadesAgrupadas;
             return View();
-
         }
-
         [HttpPost]
-        public async Task<IActionResult> GuardarActualizarActividades(Actividade actividades)
+        public async Task<IActionResult> GuardarActualizarActividades(string nombre, List<string> Roles, string controlhh, string id)
         {
-            if (actividades == null)
+            if (string.IsNullOrEmpty(nombre) || Roles == null || Roles.Count == 0)
             {
-                return BadRequest("La Actividad es nula.");
+                return BadRequest("Nombre y al menos un rol son requeridos.");
             }
 
+          
+            var ids = string.IsNullOrEmpty(id) ? new List<int>() : id.Split(',').Select(int.Parse).ToList();
 
-            if (actividades.Id == 0)
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
             {
-
-                context.Actividades.Add(actividades);
-            }
-            else
-            {
-
-                var actividadexistente = await context.Actividades.FindAsync(actividades.Id);
-                if (actividadexistente == null)
+                if (ids.Any()) 
                 {
-                    return NotFound("Actividad no encontrada.");
+                   
+                    var actividadesExistentes = await context.Actividades
+                        .Where(a => ids.Contains(a.Id))
+                        .ToListAsync();
+
+                    
+                    foreach (var actividad in actividadesExistentes)
+                    {
+                        if (Roles.Contains(actividad.TipoAcatividad))
+                        {
+                            actividad.Nombre = nombre;
+                            actividad.Controlhh = controlhh;
+                            context.Update(actividad);
+                            Roles.Remove(actividad.TipoAcatividad); 
+                        }
+                        else
+                        {
+                            context.Remove(actividad); 
+                        }
+                    }
+
+                    
+                    foreach (var nuevoRol in Roles)
+                    {
+                        context.Actividades.Add(new Actividade
+                        {
+                            Nombre = nombre,
+                            TipoAcatividad = nuevoRol,
+                            Controlhh = controlhh
+                        });
+                    }
+                }
+                else 
+                {
+                    
+                    var existentes = await context.Actividades
+                        .Where(a => a.Nombre == nombre && Roles.Contains(a.TipoAcatividad))
+                        .AnyAsync();
+
+                    if (existentes)
+                    {
+                        await transaction.RollbackAsync();
+                        return BadRequest("Algunas combinaciones de nombre y rol ya existen.");
+                    }
+
+                    
+                    foreach (var rol in Roles)
+                    {
+                        context.Actividades.Add(new Actividade
+                        {
+                            Nombre = nombre,
+                            TipoAcatividad = rol,
+                            Controlhh = controlhh
+                        });
+                    }
                 }
 
-                actividadexistente.Nombre = actividades.Nombre;
-                actividadexistente.TipoAcatividad = actividades.TipoAcatividad;
-                actividadexistente.Controlhh = actividades.Controlhh;
-                context.Actividades.Update(actividadexistente);
+                await context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return RedirectToAction("GestorActividades");
             }
-
-
-            await context.SaveChangesAsync();
-            return RedirectToAction("GestorActividades");
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, $"Error interno: {ex.Message}");
+            }
         }
 
 
