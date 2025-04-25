@@ -68,7 +68,7 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<List<Cuentum>> ObtenerCuentas()
         {
-            var cuentas = await context.Cuenta.ToListAsync();
+            var cuentas = await context.Cuenta.OrderBy(c=>c.Idcuenta).ToListAsync();
             return cuentas;
         }
 
@@ -551,7 +551,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> GestorProveedores()
         {
 
-            var proveedores = await context.Proveedores.ToListAsync();
+            var proveedores = await context.Proveedores.OrderBy(p=>p.Nombre).ToListAsync();
             ViewBag.Proveedores = proveedores;
             return View();
 
