@@ -154,8 +154,8 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == id).ToListAsync();
-            var gastosejecucion = await ejecucionService.ObtenerGastosReales(id);
+            var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == id).OrderBy(s=>s.Estado !="Forecast").ThenBy(s=>s.Fecha).ToListAsync();
+            var gastosejecucion = await context.Gastosejecucions.Where(s => s.Idproyecto == id).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
             var servicios = await GetServicios();
             var gastos = await GetGastos();
             var proveedoresservicios = await GetProveedoresServicios();
@@ -195,10 +195,10 @@ namespace Proyectogestionhoras.Controllers
                 .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
 
             var gastosTotales = from gasejecucion in gastosejecucion
-                                group gasejecucion by new { gasejecucion.IdGasto,gasejecucion.Estado} into grupo
+                                group gasejecucion by new { gasejecucion.Idgasto,gasejecucion.Estado} into grupo
                                 select new
                                 {
-                                    IdGasto = grupo.Key.IdGasto,
+                                    IdGasto = grupo.Key.Idgasto,
                                     Estado = grupo.Key.Estado,
                                     TotalMonto = grupo.Sum(x => x.Monto)
                                 };
