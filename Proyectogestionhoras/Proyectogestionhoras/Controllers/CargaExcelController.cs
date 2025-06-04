@@ -53,8 +53,14 @@ namespace Proyectogestionhoras.Controllers
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                     ExcelWorksheet hoja = package.Workbook.Worksheets[0];
                      int totalFilas = hoja.Dimension.Rows;
-
-                     for (int fila = 2; fila <= totalFilas; fila++) 
+                    int totalColumnas = hoja.Dimension.Columns;
+                    if (totalColumnas != 9)
+                    {
+                        
+                        ModelState.AddModelError("", "El archivo Excel debe tener exactamente 9 columnas.");
+                        return View(); 
+                    }
+                    for (int fila = 2; fila <= totalFilas; fila++) 
                      {
                          var proyecto = hoja.Cells[fila, 1].Text;
                          var servicio = hoja.Cells[fila, 2].Text;
@@ -110,13 +116,13 @@ namespace Proyectogestionhoras.Controllers
         {
             try
             {
-                // Obtener los datos del formulario
+                
                 var form = await Request.ReadFormAsync();
 
-                // Crear lista para almacenar los egresos
+              
                 var egresos = new List<EgresosExcelViewModel>();
 
-                // Obtener arrays de datos del formulario
+             
                 var numProyectos = form["numproyecto"].ToList();
                 var egresosNombres = form["egreso"].ToList();
                 var proveedores = form["proveedor"].ToList();
@@ -130,7 +136,8 @@ namespace Proyectogestionhoras.Controllers
                 var idsEgreso = form["IdEgreso"].ToList();
                 var idsProveedor = form["IdsProveedor"].ToList();
 
-                // Validar que todos los arrays tengan la misma longitud
+
+                
                 if (new[] { numProyectos.Count, egresosNombres.Count, proveedores.Count,
                    montos.Count, fechas.Count, estados.Count, estadosVenta.Count,
                    glosas.Count, tipos.Count, idsProyecto.Count, idsEgreso.Count,
@@ -139,10 +146,10 @@ namespace Proyectogestionhoras.Controllers
                     return BadRequest("Los datos recibidos no son consistentes");
                 }
 
-                // Procesar cada fila de datos
+              
                 for (int i = 0; i < numProyectos.Count; i++)
                 {
-                    // Parsear los valores necesarios
+                 
                     decimal monto;
                     if (!decimal.TryParse(montos[i].Replace("$", "").Replace(",", ""), out monto))
                     {
@@ -173,7 +180,7 @@ namespace Proyectogestionhoras.Controllers
                         return BadRequest($"ID de proveedor inválido en la fila {i + 1}");
                     }
 
-                    // Crear el modelo de egreso
+                  
                     var egreso = new EgresosExcelViewModel
                     {
                         Idpeoyecto = idProyecto,
@@ -190,14 +197,16 @@ namespace Proyectogestionhoras.Controllers
                     egresos.Add(egreso);
                 }
 
-                // Llamar al servicio para guardar los egresos
+               
                 await excelService.IngresarEgresosMasivosExcel(egresos);
 
                 return Ok(new { success = true, message = "Egresos guardados correctamente" });
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                var inner = ex.InnerException?.Message;
+                Debug.WriteLine($"DbUpdateException: {ex.Message}");
+                Debug.WriteLine($"Inner: {inner}");
                 return StatusCode(500, new { success = false, message = $"Error al guardar los egresos: {ex.Message}" });
             }
         }

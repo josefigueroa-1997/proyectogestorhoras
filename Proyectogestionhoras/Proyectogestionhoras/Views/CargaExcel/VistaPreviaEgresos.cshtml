@@ -1,5 +1,6 @@
 ﻿@model List<Proyectogestionhoras.Models.DTO.EgresosExcelDTO>;
 
+<link rel="stylesheet" href="~/css/pageloading.css" asp-append-version="true" />
 
  <style>
 
@@ -28,6 +29,7 @@
         margin-bottom: 20px;
     }
 
+   
   </style>
 
 <div class="form-container">
@@ -68,13 +70,28 @@
                             <td class="p-2 border border-gray-300 text-left">@item.EstadoVenta</td>
                             <td class="p-2 border border-gray-300 text-left">@item.Glosa</td>
                             <td class="p-2 border border-gray-300 text-left">@item.Tipo</td>
+                            <td class="cuenta-cell"></td>
+                            <td style="display:none;">
+                                <input name="numproyecto" type="hidden" value="@item.numproyecto" />
+                                <input name="egreso" type="hidden" value="@item.egreso" />
+                                <input name="proveedor" type="hidden" value="@item.proveedor" />
+                                <input name="Monto" type="hidden" value="@item.Monto" />
+                                <input name="Fecha" type="hidden" value="@item.Fecha" />
+                                <input name="Estado" type="hidden" value="@item.Estado" />
+                                <input name="EstadoVenta" type="hidden" value="@item.EstadoVenta" />
+                                <input name="Glosa" type="hidden" value="@item.Glosa" />
+                                <input name="Tipo" type="hidden" value="@item.Tipo" />
+
+
+                            </td>
+                           
                             <td class="project-id-container"></td>
                             <td class="egreso-id-container"></td>
                             <td class="proveedor-id-container">
 
                                 <input type="hidden" name="IdsProveedor" class="id-proveedor-hidden" />
                             </td>
-
+                           
                         </tr>
                     }
 
@@ -96,7 +113,29 @@
     </div>
 </div>
 
-
+<div id="loader" style="
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+">
+    <div class="spinner"></div>
+</div>
+<script>
+    window.addEventListener('load', function () {
+        // Espera a que TODO (incluyendo imágenes, scripts, etc.) esté listo
+        const loader = document.getElementById('loader');
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    });
+</script>
 
 <script>
     //ID PROYECTO
@@ -167,25 +206,26 @@
        
                         egresoIdContainer.appendChild(input);
 
-       
-                        egresoIdContainer.textContent = idEgreso || 'No encontrado';
+                        cell.textContent = `${nombreEgreso} (ID: ${idEgreso})`;
+                  
                         return fetch(`/CargaExcel/ObtenerDatosCuenta?idegreso=${idEgreso}&tipo=${encodeURIComponent(tipo)}`);
                     })
                     .then(response => response.json())
-                    .then(datosCuenta => {
-       
-                        cuentaCell.innerHTML = `
-                            <p><strong>${datosCuenta.idcuenta}</strong> - ${datosCuenta.cuenta}</p>
-                        `;
-                    })
+                .then(cuentaData => {
+                    if (cuentaData && cuentaCell) {
+                        cuentaCell.textContent = `${cuentaData.idcuenta} - ${cuentaData.cuenta}`;
+                    }
+                    else{
+                        console.error('No hay datos');
+                    }
+                })
                     .catch(error => {
                         console.error('Error al obtener ID de egreso:', error);
-                        if (!egresoIdContainer.textContent) {
-                            egresoIdContainer.textContent = 'Egreso No Encontrado';
-                            row.style.backgroundColor = '#fee2e2'; 
-                            row.style.color = '#000000';           
-                            row.style.fontWeight = 'bold';
-                        }
+                         const inputs = row.querySelectorAll('input');
+                            inputs.forEach(input => {
+                            input.disabled = true;
+                            });
+                        
                     });
             }
         });
