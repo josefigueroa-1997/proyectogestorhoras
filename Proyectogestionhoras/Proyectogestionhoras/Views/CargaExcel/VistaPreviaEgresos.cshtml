@@ -1,0 +1,223 @@
+﻿@model List<Proyectogestionhoras.Models.DTO.EgresosExcelDTO>;
+
+
+ <style>
+
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 60px;
+    }
+
+    .form-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.0rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+  </style>
+
+<div class="form-container">
+
+    <p class="form-subtitle" style="color:black;">Vista Prevía de Egresos Cargados</p>
+    <div class="overflow-x-auto">
+        <form id="formEgresos" method="post" action="/CargaExcel/GuardarEgresosMasivos">
+            <table class="min-w-full text-xs border-collapse">
+
+                <thead>
+                    <tr class="bg-green-100 text-black">
+
+                        <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
+                        <th class="p-2 border border-gray-300 text-left">Egreso</th>
+                        <th class="p-2 border border-gray-300 text-left">Proveedor</th>
+                        <th class="p-2 border border-gray-300 text-left">Monto</th>
+                        <th class="p-2 border border-gray-300 text-left">Fecha</th>
+                        <th class="p-2 border border-gray-300 text-left">Estado</th>
+                        <th class="p-2 border border-gray-300 text-left">EstadoVenta</th>
+                        <th class="p-2 border border-gray-300 text-left">Glosa</th>
+                        <th class="p-2 border border-gray-300 text-left">Tipo</th>
+                        <th class="p-2 border border-gray-300 text-left">Cuenta</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">@item.numproyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.egreso</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.proveedor</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Monto.ToString("C")</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Fecha.ToString("dd-MM-yyyy")</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Estado</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.EstadoVenta</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Glosa</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Tipo</td>
+                            <td class="project-id-container"></td>
+                            <td class="egreso-id-container"></td>
+                            <td class="proveedor-id-container">
+
+                                <input type="hidden" name="IdsProveedor" class="id-proveedor-hidden" />
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <div class="mt-4">
+                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Guardar Egresos
+                </button>
+            </div>
+        
+        
+        </form>
+       
+
+
+    </div>
+</div>
+
+
+
+<script>
+    //ID PROYECTO
+    document.addEventListener('DOMContentLoaded', function () {
+        const numProyectoCells = document.querySelectorAll('tbody td:first-child');
+
+        numProyectoCells.forEach((cell, index) => {
+            const numproyecto = cell.textContent.trim();
+            const row = cell.closest('tr');
+
+            if (numproyecto) {
+                fetch(`/CargaExcel/ObtenerIdProyecto?numproyecto=${encodeURIComponent(numproyecto)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            // Crear input hidden
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = `ProyectoId`;
+                            hiddenInput.value = data[0];
+
+                            // Agregar el input a la celda reservada
+                            const container = row.querySelector('.project-id-container');
+                            container.appendChild(hiddenInput);
+
+                            // Opcional: Mostrar el ID en la celda de NumProyecto
+                            cell.textContent = `${numproyecto} (ID: ${data[0]})`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener el ID del proyecto:', error);
+                    });
+            }
+        });
+    });
+    //ID EGRESO
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seleccionar todas las celdas de egreso
+        const egresoCells = document.querySelectorAll('tbody tr td:nth-child(2)');
+
+        // Iterar sobre cada celda de egreso
+        egresoCells.forEach(cell => {
+            const nombreEgreso = cell.textContent.trim();
+            const row = cell.parentElement;
+            const egresoIdContainer = row.querySelector('.egreso-id-container');
+            const cuentaCell = row.querySelector('td:nth-child(10)');
+            const tipoCell = row.querySelector('td:nth-child(9)');
+            if (nombreEgreso) {
+                const tipo = tipoCell ? tipoCell.textContent.trim() : "";
+                // Hacer la llamada AJAX para obtener el ID del egreso
+                fetch(`/CargaExcel/ObtenerIdEgreso?nombreegreso=${encodeURIComponent(nombreEgreso)}`)
+                    .then(response => response.json())
+                    .then(idEgreso => {
+                        
+                        if (!idEgreso || idEgreso === 0) {
+                            
+                            egresoIdContainer.textContent = 'Egreso No Encontrado';
+                            row.style.backgroundColor = '#fee2e2';
+                            row.style.color = '#000000';
+                            row.style.fontWeight = 'bold';
+                            throw new Error('Egreso no encontrado');
+                        }
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'IdEgreso';
+                        input.value = idEgreso;
+
+       
+                        egresoIdContainer.appendChild(input);
+
+       
+                        egresoIdContainer.textContent = idEgreso || 'No encontrado';
+                        return fetch(`/CargaExcel/ObtenerDatosCuenta?idegreso=${idEgreso}&tipo=${encodeURIComponent(tipo)}`);
+                    })
+                    .then(response => response.json())
+                    .then(datosCuenta => {
+       
+                        cuentaCell.innerHTML = `
+                            <p><strong>${datosCuenta.idcuenta}</strong> - ${datosCuenta.cuenta}</p>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener ID de egreso:', error);
+                        if (!egresoIdContainer.textContent) {
+                            egresoIdContainer.textContent = 'Egreso No Encontrado';
+                            row.style.backgroundColor = '#fee2e2'; 
+                            row.style.color = '#000000';           
+                            row.style.fontWeight = 'bold';
+                        }
+                    });
+            }
+        });
+    });
+
+
+  
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const rows = document.querySelectorAll("table tbody tr");
+
+        for (const row of rows) {
+            const proveedorCell = row.children[2]; // columna proveedor
+            const inputHidden = row.querySelector(".id-proveedor-hidden");
+
+            if (proveedorCell && inputHidden) {
+                const nombreProveedor = proveedorCell.textContent.trim();
+
+                try {
+                    const response = await fetch(`/CargaExcel/ObtenerIdProveedor?nombreproveedor=${encodeURIComponent(nombreProveedor)}`);
+                    if (response.ok) {
+                        const id = await response.json();
+                        inputHidden.value = id;
+                    } else {
+                        console.error("Error al obtener ID del proveedor");
+                    }
+                } catch (error) {
+                    console.error("Error de red:", error);
+                }
+            }
+        }
+    });
+</script>

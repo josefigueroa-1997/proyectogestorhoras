@@ -1,11 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Proyectos Unit";
-
 }
 
 <link rel="stylesheet" href="~/css/index.css" asp-append-version="true"/>
 
+@{
+    int? idusuario = Context.Session.GetInt32("id");
 
+}
 <div class="dashboard-container">
     <!-- Sección de Proyectos -->
     <div class="dashboard-section projects-section">
@@ -27,11 +29,46 @@
                 <h3>Desarrollo del Proyecto</h3>
                 <p>Agregar costos y gastos</p>
             </a>
+            @if (idusuario == 99)
+            {
+                <button class="card new-cliente" onclick="abrirModal()">
+                    <h3>Agregar Egresos Masivos</h3>
+                    <p>Cargar Archivo Excel</p>
+                </button>
+            }
            
          
     </div>
 
   </div>
+    <!-- Modal para carga masiva  -->
+    
+    <div id="modalExcel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
+            <!-- Botón cerrar -->
+            <button onclick="cerrarModal()" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
+                &times;
+            </button>
+
+            <!-- Contenido del modal -->
+            <h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel</h2>
+
+            <form action="@Url.Action("CargarExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
+                <div class="mb-4">
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
+                    <input type="file" name="archivo" accept=".xlsx" required
+                           class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full mt-4">
+                    <i class="fas fa-upload mr-2"></i>Cargar Archivo
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+
+
     <!-- Modal para agregar nuevo cliente  -->
     <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 100px;">
         <div class="modal-content bg-white p-3 rounded-lg shadow-lg w-full max-w-5xl">
@@ -197,5 +234,26 @@
                 $('#submit-btn').prop('disabled', false);
             }
         });
+    });
+</script>
+
+<script>
+    function abrirModal() {
+        document.getElementById("modalExcel").classList.remove("hidden");
+    }
+
+    function cerrarModal() {
+        document.getElementById("modalExcel").classList.add("hidden");
+    }
+</script>
+<script>
+    document.getElementById('excelForm').addEventListener('submit', function (e) {
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput.files.length === 0) {
+            e.preventDefault();
+            alert('Por favor seleccione un archivo');
+            return false;
+        }
+        return true;
     });
 </script>
