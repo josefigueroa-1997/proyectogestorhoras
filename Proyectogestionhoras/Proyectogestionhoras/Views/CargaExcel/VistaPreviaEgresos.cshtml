@@ -145,24 +145,31 @@
         numProyectoCells.forEach((cell, index) => {
             const numproyecto = cell.textContent.trim();
             const row = cell.closest('tr');
-
+            const container = row.querySelector('.project-id-container');
             if (numproyecto) {
                 fetch(`/CargaExcel/ObtenerIdProyecto?numproyecto=${encodeURIComponent(numproyecto)}`)
                     .then(response => response.json())
                     .then(data => {
-                        if (data && data.length > 0) {
+                        if (data>0 && data) {
                             // Crear input hidden
                             const hiddenInput = document.createElement('input');
                             hiddenInput.type = 'hidden';
                             hiddenInput.name = `ProyectoId`;
-                            hiddenInput.value = data[0];
+                            hiddenInput.value = data;
 
                             // Agregar el input a la celda reservada
-                            const container = row.querySelector('.project-id-container');
+                            
                             container.appendChild(hiddenInput);
 
                             // Opcional: Mostrar el ID en la celda de NumProyecto
-                            cell.textContent = `${numproyecto} (ID: ${data[0]})`;
+                            cell.textContent = `${numproyecto} (ID: ${data})`;
+                        }
+                        else{
+                            container.textContent = 'Proyecto No Encontrado';
+                            row.style.backgroundColor = '#fee2e2';
+                            row.style.color = '#000000';
+                            row.style.fontWeight = 'bold';
+                            throw new Error('Proyecto no encontrado');
                         }
                     })
                     .catch(error => {

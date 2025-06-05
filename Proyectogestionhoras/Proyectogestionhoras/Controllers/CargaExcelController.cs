@@ -219,7 +219,7 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> ObtenerIdProyecto(string numproyecto)
         {
-            var resultado = await context.Proyectos.Where(p => p.NumProyecto == numproyecto).Select(p => p.Id).ToListAsync();
+            var resultado = await context.Proyectos.Where(p => p.NumProyecto == numproyecto).Select(p => p.Id).FirstOrDefaultAsync();
             return Json(resultado);
         }
 
