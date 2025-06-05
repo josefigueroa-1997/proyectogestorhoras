@@ -1,6 +1,9 @@
 ﻿using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services.Interface;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Proyectogestionhoras.Services
 {
@@ -63,6 +66,97 @@ namespace Proyectogestionhoras.Services
 
             await context.SaveChangesAsync(); 
         }
+
+        public async Task RegistrarIngresosMasivosExcel(List<IngresosExcelViewModel> ingresos)
+        {
+            if (ingresos == null || !ingresos.Any())
+                return;
+
+            var listaingreso = new List<Ingresosreale>();
+
+            foreach (var ingreso in ingresos)
+            {
+              
+                
+                    listaingreso.Add(new Ingresosreale
+                    {
+                        Idproyecto = ingreso.Idproyecto,
+                        Numdocumento = ingreso.numdocumento,
+                        FechaEmision = ingreso.Fechaemision,
+                        FechaPago = ingreso.Fechapago,
+                        Montoclp = ingreso.Monto,
+                        Iva = ingreso.iva,
+                        Estado = ingreso.Estado,
+                        Venta = ingreso.Venta,
+                        Observacion = ingreso.Observacion,
+                        Montous = 0,
+                        Tc = 0,
+                        Idcuenta = 4101001,
+
+                    });
+                
+            }
+
+
+            if (listaingreso.Any())
+                await context.Ingresosreales.AddRangeAsync(listaingreso);
+            await context.SaveChangesAsync();
+
+        }
+        public async Task AgregarServicioProyectonuevos(List<ServicioViewModel> servicios)
+        {
+            if (servicios == null || !servicios.Any())
+            {
+                return;
+            }
+
+            var todosProyectos = servicios
+                .SelectMany(s => s.IdsProyecto)
+                .Distinct()
+                .ToList();
+
+            
+            var serviciosExistentes = await context.ProyectoServicios
+                .Where(ps => todosProyectos.Contains(ps.IdProyecto))
+                .Select(ps => new { ps.IdProyecto, ps.IdServicio })
+                .ToListAsync();
+
+            var yaAgregados = new HashSet<(int, int)>(); 
+            var serviciosAGrabar = new List<ProyectoServicio>();
+
+            foreach (var servicio in servicios)
+            {
+                foreach (var idProyecto in servicio.IdsProyecto)
+                {
+                    var clave = (idProyecto, servicio.Idservicios);
+
+                    bool yaExisteBD = serviciosExistentes.Any(se =>
+                        se.IdProyecto == idProyecto &&
+                        se.IdServicio == servicio.Idservicios);
+
+                    if (!yaExisteBD && !yaAgregados.Contains(clave))
+                    {
+                        yaAgregados.Add(clave);
+
+                        serviciosAGrabar.Add(new ProyectoServicio
+                        {
+                            IdProyecto = idProyecto,
+                            IdServicio = servicio.Idservicios,
+                            Idsegmento = 7,
+                            Monto = 0,
+                            Fecha = DateTime.Now
+                        });
+                    }
+                }
+            }
+
+            if (serviciosAGrabar.Any())
+            {
+                await context.ProyectoServicios.AddRangeAsync(serviciosAGrabar);
+                await context.SaveChangesAsync();
+            }
+        }
+
 
 
     }

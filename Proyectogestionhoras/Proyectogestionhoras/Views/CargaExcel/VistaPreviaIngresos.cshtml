@@ -1,0 +1,272 @@
+﻿@model List<Proyectogestionhoras.Models.DTO.IngresosExcelDTO>;
+
+<link rel="stylesheet" href="~/css/pageloading.css" asp-append-version="true" />
+
+<style>
+
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 60px;
+    }
+
+    .form-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.0rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+</style>
+
+<div class="form-container">
+
+    <p class="form-subtitle" style="color:black;">Vista Prevía de Ingresos Cargados</p>
+    <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+        <p class="text-sm text-gray-600">A Continuación, se muestran los datos cargados del Excel que usted ha subido. Las filas que se marcan en rojo significan que no ha podido encontrar un proyecto. Estas filas no se guardarán en el sistema. Deberá corregir algun dato.</p>
+    </div>
+    <div class="overflow-x-auto">
+        <form id="formEgresos" method="post" action="/CargaExcel/GuardarEgresosMasivos">
+            <table class="min-w-full text-xs border-collapse">
+
+                <thead>
+                    <tr class="bg-green-100 text-black">
+
+                        <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
+                        <th class="p-2 border border-gray-300 text-left">NumDocumento</th>
+                        <th class="p-2 border border-gray-300 text-left">FechaEmision</th>
+                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
+                        <th class="p-2 border border-gray-300 text-left">Monto</th>
+                        <th class="p-2 border border-gray-300 text-left">IVA</th>
+                        <th class="p-2 border border-gray-300 text-left">Estado</th>
+                        <th class="p-2 border border-gray-300 text-left">EstadoVenta</th>
+                        <th class="p-2 border border-gray-300 text-left">Glosa</th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left">@item.numproyecto</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.numdocumento</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.fechaemision.ToString("dd-MM-yyyy")</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Fechapago.ToString("dd-MM-yyyy")</td>
+                            <td class="p-2 border border-gray-300 text-left"> @(item.Monto != 0 ? String.Format("{0:N0}", item.Monto) : "")</td>
+                            <td class="p-2 border border-gray-300 text-left"> @(item.iva != 0 ? String.Format("{0:N0}", item.iva) : "")</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Estado</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.EstadoVenta</td>
+                            <td class="p-2 border border-gray-300 text-left">@item.Glosa</td>
+                          
+                            <td style="display:none;">
+                                <input name="numproyecto" type="hidden" value="@item.numproyecto" />
+                                <input name="numdocumento" type="hidden" value="@item.numdocumento" />
+                                <input name="fechaemision" type="hidden" value="@item.fechaemision" />
+                                <input name="monto" type="hidden" value="@item.Monto" />
+                                <input name="iva" type="hidden" value="@item.iva" />
+                                <input name="Fechapago" type="hidden" value="@item.Fechapago" />
+                                <input name="Estado" type="hidden" value="@item.Estado" />
+                                <input name="EstadoVenta" type="hidden" value="@item.EstadoVenta" />
+                                <input name="Glosa" type="hidden" value="@item.Glosa" />
+                                
+
+
+                            </td>
+                            <td class="project-id-container"></td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <div class="mt-4">
+                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Guardar Ingresos
+                </button>
+            </div>
+
+
+        </form>
+
+
+
+    </div>
+</div>
+
+<div id="loader" style="
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+">
+    <div class="spinner"></div>
+</div>
+
+<!--MODAL REGISRO-->
+
+<div id="modalMensaje" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+        <div id="modalHeader" class="px-4 py-2 rounded-t-lg text-white text-lg font-semibold">
+            Resultado
+        </div>
+        <div class="px-4 py-4 text-gray-800" id="modalBody">
+        </div>
+        <div class="px-4 py-2 flex justify-end">
+            <button id="cerrarModal" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    window.addEventListener('load', function () {
+
+        const loader = document.getElementById('loader');
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    });
+</script>
+
+<script>
+    
+
+    //ID PROYECTO
+    document.addEventListener('DOMContentLoaded', function () {
+        const numProyectoCells = document.querySelectorAll('tbody td:first-child');
+
+        numProyectoCells.forEach((cell, index) => {
+            const numproyecto = cell.textContent.trim();
+            const row = cell.closest('tr');
+            const container = row.querySelector('.project-id-container');
+            if (numproyecto) {
+                fetch(`/CargaExcel/ObtenerIdProyecto?numproyecto=${encodeURIComponent(numproyecto)}`)
+                    .then(response => response.json())
+                    .then(data => {
+
+
+
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = `ProyectoId`;
+                        container.appendChild(hiddenInput);
+
+
+                        
+                        if (!data || data === 0) {
+                            container.textContent = 'Proyecto No Encontrado';
+                            row.style.backgroundColor = '#fee2e2';
+                            row.style.color = '#000000';
+                            row.style.fontWeight = 'bold';
+
+                            hiddenInput.disabled = true;
+                            throw new Error('Proyecto no encontrado');
+                        }
+                        hiddenInput.value = data;
+
+                        
+
+                      
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener el ID del proyecto:', error);
+                        const inputs = row.querySelectorAll('input');
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                        });
+
+                        const projectInput = row.querySelector('.project-id-container input');
+                        if (projectInput) {
+                            projectInput.disabled = true;
+                        }
+
+                        row.classList.add('fila-invalida');
+
+
+
+                    });
+            }
+        });
+    });
+  
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const filasInvalidas = document.querySelectorAll('tr.fila-invalida');
+        filasInvalidas.forEach(fila => {
+            const inputs = fila.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => input.remove());
+        });
+    });
+
+   
+    
+
+
+</script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('formEgresos');
+        const modal = document.getElementById('modalMensaje');
+        const modalBody = document.getElementById('modalBody');
+        const modalHeader = document.getElementById('modalHeader');
+        const cerrarModal = document.getElementById('cerrarModal');
+
+        cerrarModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('/CargaExcel/GuardarIngresosMasivos', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        modalHeader.className = "px-4 py-2 rounded-t-lg bg-green-600 text-white text-lg font-semibold";
+                    } else {
+                        modalHeader.className = "px-4 py-2 rounded-t-lg bg-red-600 text-white text-lg font-semibold";
+                    }
+
+                    modalBody.textContent = result.message || "Operación completada.";
+                    modal.classList.remove('hidden');
+                })
+                .catch(error => {
+                    modalHeader.className = "px-4 py-2 rounded-t-lg bg-red-600 text-white text-lg font-semibold";
+                    modalBody.textContent = "Error al guardar los ingresos.";
+                    modal.classList.remove('hidden');
+                    console.error(error);
+                });
+        });
+    });
+</script>

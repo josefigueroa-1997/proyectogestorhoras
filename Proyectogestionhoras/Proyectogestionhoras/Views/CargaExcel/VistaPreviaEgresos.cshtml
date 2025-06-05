@@ -35,6 +35,9 @@
 <div class="form-container">
 
     <p class="form-subtitle" style="color:black;">Vista Prevía de Egresos Cargados</p>
+    <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+        <p class="text-sm text-gray-600">A Continuación, se muestran los datos cargados del Excel que usted ha subido. Las filas que se marcan en rojo significan que no ha podido encontrar, ya sea un proyecto, proveedor, egreso o un segmento. Estas filas no se guardarán en el sistema. Deberá corregir algun dato o registrar en los parametros dependiendo del dato que no ha encontrado.</p>
+    </div>
     <div class="overflow-x-auto">
         <form id="formEgresos" method="post" action="/CargaExcel/GuardarEgresosMasivos">
             <table class="min-w-full text-xs border-collapse">
@@ -52,6 +55,7 @@
                         <th class="p-2 border border-gray-300 text-left">Glosa</th>
                         <th class="p-2 border border-gray-300 text-left">Tipo</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta</th>
+                        <th class="p-2 border border-gray-300 text-left">Segmento</th>
 
 
                     </tr>
@@ -84,7 +88,7 @@
 
 
                             </td>
-                           
+                            <td class="segmento-id-container"></td>
                             <td class="project-id-container"></td>
                             <td class="egreso-id-container"></td>
                             <td class="error-id-proveedor-container"></td>
@@ -92,7 +96,7 @@
 
                                 <input type="hidden" name="IdsProveedor" class="id-proveedor-hidden" />
                             </td>
-                           
+                            
                         </tr>
                     }
 
@@ -128,9 +132,28 @@
 ">
     <div class="spinner"></div>
 </div>
+
+<!--MODAL REGISRO-->
+
+<div id="modalMensaje" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+        <div id="modalHeader" class="px-4 py-2 rounded-t-lg text-white text-lg font-semibold">
+            Resultado
+        </div>
+        <div class="px-4 py-4 text-gray-800" id="modalBody">
+            
+        </div>
+        <div class="px-4 py-2 flex justify-end">
+            <button id="cerrarModal" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
     window.addEventListener('load', function () {
-        // Espera a que TODO (incluyendo imágenes, scripts, etc.) esté listo
+        
         const loader = document.getElementById('loader');
         if (loader) {
             loader.style.display = 'none';
@@ -139,6 +162,8 @@
 </script>
 
 <script>
+    const filaDatos = new Map(); 
+
     //ID PROYECTO
     document.addEventListener('DOMContentLoaded', function () {
         const numProyectoCells = document.querySelectorAll('tbody td:first-child');
@@ -153,13 +178,13 @@
                     .then(data => {
                        
                         
-                           // Crear input hidden
+                         
                             const hiddenInput = document.createElement('input');
                             hiddenInput.type = 'hidden';
                             hiddenInput.name = `ProyectoId`;
                              container.appendChild(hiddenInput);
 
-                            // Opcional: Mostrar el ID en la celda de NumProyecto
+                           
                             cell.textContent = `${numproyecto} (ID: ${data})`;
                             if (!data || data === 0) {
                                      container.textContent = 'Proyecto No Encontrado';
@@ -167,14 +192,18 @@
                                      row.style.color = '#000000';
                                      row.style.fontWeight = 'bold';
 
-                                    hiddenInput.disabled = true; // Deshabilita el input ya creado
+                                    hiddenInput.disabled = true; 
                                     throw new Error('Proyecto no encontrado');
                             }
                             hiddenInput.value = data;
 
-                            // Agregar el input a la celda reservada
-                            cell.textContent = `${numproyecto} (ID: ${data})`;
-                           
+                            cell.textContent = `${numproyecto} `;
+                        
+                        if (!filaDatos.has(row)) filaDatos.set(row, {});
+                        filaDatos.get(row).idProyecto = data;
+
+                        
+                        intentarObtenerSegmento(row);
                     })
                     .catch(error => {
                         console.error('Error al obtener el ID del proyecto:', error);
@@ -198,10 +227,10 @@
     });
     //ID EGRESO
     document.addEventListener('DOMContentLoaded', function () {
-        // Seleccionar todas las celdas de egreso
+    
         const egresoCells = document.querySelectorAll('tbody tr td:nth-child(2)');
 
-        // Iterar sobre cada celda de egreso
+   
         egresoCells.forEach(cell => {
             const nombreEgreso = cell.textContent.trim();
             const row = cell.parentElement;
@@ -210,7 +239,7 @@
             const tipoCell = row.querySelector('td:nth-child(9)');
             if (nombreEgreso) {
                 const tipo = tipoCell ? tipoCell.textContent.trim() : "";
-                // Hacer la llamada AJAX para obtener el ID del egreso
+              
                 fetch(`/CargaExcel/ObtenerIdEgreso?nombreegreso=${encodeURIComponent(nombreEgreso)}`)
                     .then(response => response.json())
                     .then(idEgreso => {
@@ -231,7 +260,7 @@
        
                         egresoIdContainer.appendChild(input);
 
-                        cell.textContent = `${nombreEgreso} (ID: ${idEgreso})`;
+                        cell.textContent = `${nombreEgreso}`;
                   
                         return fetch(`/CargaExcel/ObtenerDatosCuenta?idegreso=${idEgreso}&tipo=${encodeURIComponent(tipo)}`);
                     })
@@ -239,6 +268,13 @@
                 .then(cuentaData => {
                     if (cuentaData && cuentaCell) {
                         cuentaCell.textContent = `${cuentaData.idcuenta} - ${cuentaData.cuenta}`;
+                          
+                            if (!filaDatos.has(row)) filaDatos.set(row, {});
+                            filaDatos.get(row).idCuenta = cuentaData.id;
+                            filaDatos.get(row).tipo = tipo;
+
+                           
+                            intentarObtenerSegmento(row);
                     }
                     else{
                         console.error('No hay datos');
@@ -246,19 +282,19 @@
                 })
                     .catch(error => {
                         console.error('Error al obtener ID de egreso:', error);
-                         
-                          const inputs = row.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.disabled = true;
-    });
+                        const inputs = row.querySelectorAll('input');
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                        });
 
-    const projectInput = row.querySelector('.project-id-container input');
-    if (projectInput) {
-        projectInput.disabled = true;
-    }
+                        const projectInput = row.querySelector('.project-id-container input');
+                        if (projectInput) {
+                            projectInput.disabled = true;
+                        }
 
-    row.classList.add('fila-invalida');
+                        row.classList.add('fila-invalida');
                     });
+               
             }
         });
     });
@@ -266,9 +302,43 @@
         const filasInvalidas = document.querySelectorAll('tr.fila-invalida');
         filasInvalidas.forEach(fila => {
             const inputs = fila.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => input.remove()); // Elimina campos inválidos
+            inputs.forEach(input => input.remove()); 
         });
     });
+
+    function intentarObtenerSegmento(row) {
+        const datos = filaDatos.get(row);
+        if (datos && datos.idProyecto && datos.idCuenta && datos.tipo) {
+            fetch(`/CargaExcel/obtenerSegmento?idproyecto=${datos.idProyecto}&idcuenta=${datos.idCuenta}&tipo=${encodeURIComponent(datos.tipo)}`)
+                .then(response => response.json())
+                .then(segmentoData => {
+                    const segmentoCell = row.querySelector('.segmento-id-container');
+                    if (segmentoData && segmentoData.idsegmento) {
+                        segmentoCell.textContent = `${segmentoData.nombre}`;
+                    } else {
+                        segmentoCell.textContent = 'Segmento no encontrado';
+                        row.style.backgroundColor = '#fee2e2';
+                        row.style.color = '#000000';
+                        row.style.fontWeight = 'bold';
+                        throw new Error('Segmento no encontrado');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener segmento:', error);
+                    const inputs = row.querySelectorAll('input');
+                    inputs.forEach(input => {
+                        input.disabled = true;
+                    });
+
+                    const projectInput = row.querySelector('.project-id-container input');
+                    if (projectInput) {
+                        projectInput.disabled = true;
+                    }
+
+                    row.classList.add('fila-invalida');
+                });
+        }
+    }
 
   
 </script>
@@ -278,7 +348,7 @@
         const rows = document.querySelectorAll("table tbody tr");
 
         for (const row of rows) {
-            const proveedorCell = row.children[2]; // columna proveedor
+            const proveedorCell = row.children[2]; 
             const inputHidden = row.querySelector(".id-proveedor-hidden");
             const proveedorerror = row.querySelector(".error-id-proveedor-container");
             if (proveedorCell && inputHidden) {
@@ -316,5 +386,48 @@
                 }
             }
         }
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('formEgresos');
+        const modal = document.getElementById('modalMensaje');
+        const modalBody = document.getElementById('modalBody');
+        const modalHeader = document.getElementById('modalHeader');
+        const cerrarModal = document.getElementById('cerrarModal');
+
+        cerrarModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('/CargaExcel/GuardarEgresosMasivos', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        modalHeader.className = "px-4 py-2 rounded-t-lg bg-green-600 text-white text-lg font-semibold";
+                    } else {
+                        modalHeader.className = "px-4 py-2 rounded-t-lg bg-red-600 text-white text-lg font-semibold";
+                    }
+
+                    modalBody.textContent = result.message || "Operación completada.";
+                    modal.classList.remove('hidden');
+                })
+                .catch(error => {
+                    modalHeader.className = "px-4 py-2 rounded-t-lg bg-red-600 text-white text-lg font-semibold";
+                    modalBody.textContent = "Error al guardar los egresos.";
+                    modal.classList.remove('hidden');
+                    console.error(error);
+                });
+        });
     });
 </script>

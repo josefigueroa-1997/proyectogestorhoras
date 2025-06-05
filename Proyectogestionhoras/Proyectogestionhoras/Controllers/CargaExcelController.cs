@@ -56,9 +56,15 @@ namespace Proyectogestionhoras.Controllers
                     int totalColumnas = hoja.Dimension.Columns;
                     if (totalColumnas != 9)
                     {
-                        
-                        ModelState.AddModelError("", "El archivo Excel debe tener exactamente 9 columnas.");
-                        return View(); 
+
+                        TempData["ExcelErrorEgreso"] = "El Documento Excel que usted ha subido no tiene un formato compatible.Por favor, ingrese uno correcto.";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    var encabezadoColumna2 = hoja.Cells[1, 2].Text.Trim();
+                    if (encabezadoColumna2.Equals("NumDocumento", StringComparison.OrdinalIgnoreCase))
+                    {
+                        TempData["ExcelErrorEgreso"] = "El Documento Excel que usted ha subido no tiene un formato compatible.Por favor, ingrese uno correcto.";
+                        return RedirectToAction("Index", "Home");
                     }
                     for (int fila = 2; fila <= totalFilas; fila++) 
                      {
@@ -136,12 +142,7 @@ namespace Proyectogestionhoras.Controllers
                 var idsEgreso = form["IdEgreso"].ToList();
                 var idsProveedor = form["IdsProveedor"].ToList();
 
-                Debug.WriteLine(numProyectos.Count);
-                Debug.WriteLine(idsProyecto.Count);
-                Debug.WriteLine(idsProveedor.Count);
-                Debug.WriteLine(idsEgreso.Count);
-                Debug.WriteLine(idsProveedor.Count);
-                Debug.WriteLine(montos.Count);
+              
 
                 
                 if (new[] { numProyectos.Count, egresosNombres.Count, proveedores.Count,
@@ -206,6 +207,8 @@ namespace Proyectogestionhoras.Controllers
                
                 await excelService.IngresarEgresosMasivosExcel(egresos);
 
+
+
                 return Ok(new { success = true, message = "Egresos guardados correctamente" });
             }
             catch (Exception ex)
@@ -213,19 +216,240 @@ namespace Proyectogestionhoras.Controllers
                 var inner = ex.InnerException?.Message;
                 Debug.WriteLine($"DbUpdateException: {ex.Message}");
                 Debug.WriteLine($"Inner: {inner}");
-                return StatusCode(500, new { success = false, message = $"Error al guardar los egresos: {ex.Message}" });
+                return StatusCode(500, new { success = false, message = $"Error al guardar los egresos" });
             }
         }
 
+        [HttpPost]
+        public IActionResult CargarIngresosExcel(IFormFile archivoingreso)
+        {
+            List<IngresosExcelDTO> listaingresos = new List<IngresosExcelDTO>();
+
+            if (archivoingreso != null && archivoingreso.Length > 0)
+            {
+                using (var stream = archivoingreso.OpenReadStream())
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    ExcelWorksheet hoja = package.Workbook.Worksheets[0];
+                    int totalFilas = hoja.Dimension.Rows;
+                    int totalColumnas = hoja.Dimension.Columns;
+                    if (totalColumnas != 9)
+                    {
+
+                        TempData["ExcelErrorIngreso"] = "El Documento Excel que usted ha subido no tiene un formato compatible.Por favor, ingrese uno correcto.";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    var encabezadoColumna2 = hoja.Cells[1, 2].Text.Trim();
+                    if (!encabezadoColumna2.Equals("NumDocumento", StringComparison.OrdinalIgnoreCase))
+                    {
+                        TempData["ExcelErrorIngreso"] = "El Documento Excel que usted ha subido no tiene un formato compatible.Por favor, ingrese uno correcto.";
+                        return RedirectToAction("Index","Home");
+                    }
+                    for (int fila = 2; fila <= totalFilas; fila++)
+                    {
+                        var proyecto = hoja.Cells[fila, 1].Text;
+                        var numdocumento = hoja.Cells[fila, 2].Text;
+                        var fechaemisiontexto = hoja.Cells[fila, 3].Text;
+                        var fechapagotexto = hoja.Cells[fila, 4].Text;
+                        var montotexto = hoja.Cells[fila, 5].Text;
+                        var ivatexto = hoja.Cells[fila, 6].Text;
+                        var estado = hoja.Cells[fila, 7].Text;
+                        var estadoventa = hoja.Cells[fila, 8].Text;
+                        var glosa = hoja.Cells[fila, 9].Text;
+
+                        if (string.IsNullOrWhiteSpace(proyecto) &&
+                            string.IsNullOrWhiteSpace(numdocumento) &&
+                            string.IsNullOrWhiteSpace(fechaemisiontexto) &&
+                            string.IsNullOrWhiteSpace(fechapagotexto) &&
+                            string.IsNullOrWhiteSpace(montotexto) &&
+                            string.IsNullOrWhiteSpace(ivatexto) &&
+                            string.IsNullOrWhiteSpace(estado) &&
+                            string.IsNullOrWhiteSpace(estadoventa) &&
+                            string.IsNullOrWhiteSpace(glosa))
+                            continue;
+
+                        if (decimal.TryParse(montotexto, out decimal monto) &&
+                            decimal.TryParse(ivatexto, out decimal iva) &&
+                            DateTime.TryParse(fechaemisiontexto, out DateTime fechaemision) &&
+                            DateTime.TryParse(fechapagotexto, out DateTime fechapago))
+                        {
+                            listaingresos.Add(new IngresosExcelDTO
+                            {
+                                numproyecto = proyecto,
+                                numdocumento = numdocumento,
+                                fechaemision = fechaemision,
+                                Fechapago = fechapago,
+                                Monto = monto,
+                                iva = iva,
+                                Estado = estado,
+                                EstadoVenta = estadoventa,
+                                Glosa = glosa,
+                                
+                            });
+                        }
+                    }
+                }
+            }
+
+
+            TempData["ExcelingresosData"] = System.Text.Json.JsonSerializer.Serialize(listaingresos);
+
+            return RedirectToAction("VistaPreviaIngresos");
+        }
+
+        public IActionResult VistaPreviaIngresos()
+        {
+            if (TempData["ExcelingresosData"] != null)
+            {
+                var json = TempData["ExcelingresosData"].ToString();
+                var datos = System.Text.Json.JsonSerializer.Deserialize<List<IngresosExcelDTO>>(json);
+                return View(datos);
+            }
+
+            return RedirectToAction("Index", "Home");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarIngresosMasivos()
+        {
+            try
+            {
+
+                var form = await Request.ReadFormAsync();
+
+
+                var ingresos = new List<IngresosExcelViewModel>();
+
+
+                var numProyectos = form["numproyecto"].ToList();
+                var numdocumentos = form["numdocumento"].ToList();
+                var fechaemisiones = form["fechaemision"].ToList();
+                var montos = form["Monto"].ToList();
+                var ivas = form["iva"].ToList();
+                var Fechapagos = form["Fechapago"].ToList();
+                var estados = form["Estado"].ToList();
+                var estadosVenta = form["EstadoVenta"].ToList();
+                var glosas = form["Glosa"].ToList();
+                var idsProyecto = form["ProyectoId"].ToList();
+              
 
 
 
 
+                if (new[] { numProyectos.Count, numdocumentos.Count, fechaemisiones.Count,
+                   montos.Count, ivas.Count, estados.Count, estadosVenta.Count,
+                   glosas.Count, Fechapagos.Count, idsProyecto.Count}.Distinct().Count() > 1)
+                {
+                    return BadRequest("Los datos recibidos no son consistentes");
+                }
+
+
+                for (int i = 0; i < numProyectos.Count; i++)
+                {
+
+                    decimal monto;
+                    if (!decimal.TryParse(montos[i].Replace("$", "").Replace(",", ""), out monto))
+                    {
+                        return BadRequest($"Formato de monto inválido en la fila {i + 1}");
+                    }
+                    decimal iva;
+                    if (!decimal.TryParse(ivas[i].Replace("$", "").Replace(",", ""), out iva))
+                    {
+                        return BadRequest($"Formato de monto inválido en la fila {i + 1}");
+                    }
+
+                    DateTime fechaemision;
+                    if (!DateTime.TryParse(fechaemisiones[i], out fechaemision))
+                    {
+                        return BadRequest($"Formato de fecha inválido en la fila {i + 1}");
+                    }
+                    DateTime fechapago;
+                    if (!DateTime.TryParse(Fechapagos[i], out fechapago))
+                    {
+                        return BadRequest($"Formato de fecha inválido en la fila {i + 1}");
+                    }
+
+                    int idProyecto;
+                    if (!int.TryParse(idsProyecto[i], out idProyecto))
+                    {
+                        return BadRequest($"ID de proyecto inválido en la fila {i + 1}");
+                    }
+
+                    
+
+
+                    var ingreso = new IngresosExcelViewModel
+                    {
+                        Idproyecto = idProyecto,
+                        numdocumento = numdocumentos[i],
+                        Fechaemision = fechaemision,
+                        Monto = monto,
+                        iva = iva,
+                        Fechapago = fechapago,
+                        Observacion = glosas[i],
+                        Estado = estados[i],
+                        Venta = estadosVenta[i],
+                        
+                    };
+
+                    ingresos.Add(ingreso);
+                }
+
+
+                await excelService.RegistrarIngresosMasivosExcel(ingresos);
+
+
+
+                return Ok(new { success = true, message = "Ingresos guardados correctamente" });
+            }
+            catch (Exception ex)
+            {
+                var inner = ex.InnerException?.Message;
+                Debug.WriteLine($"DbUpdateException: {ex.Message}");
+                Debug.WriteLine($"Inner: {inner}");
+                return StatusCode(500, new { success = false, message = $"Error al guardar los ingresos" });
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> ObtenerIdProyecto(string numproyecto)
         {
             var resultado = await context.Proyectos.Where(p => p.NumProyecto == numproyecto).Select(p => p.Id).FirstOrDefaultAsync();
+            return Json(resultado);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> obtenerSegmento(int idproyecto, int idcuenta, string tipo)
+        {
+            var ccostounegocio = await context.Proyectos.Where(p => p.Id == idproyecto).Select(p => p.IdCcostoUnegocio).FirstOrDefaultAsync();
+            ServiciosDTO resultado = null;
+            tipo = tipo?.Trim();
+            if (tipo != "Gastos")
+            {
+                resultado = await (from cu in context.CcostoUnegocios
+                                   join sc in context.SegmentoCcostos on cu.Id equals sc.IdCcosto
+                                   join s in context.Segmentos on sc.IdSegmento equals s.Id
+                                   where s.TipoSegmento == "Servicios" && s.IdCuenta == idcuenta && cu.Id == ccostounegocio
+                                   select new ServiciosDTO
+                                   {
+                                       IDSEGMENTO = s.Id,
+                                       NOMBRE = s.Nombre
+                                   }).FirstOrDefaultAsync();
+            }
+            else
+            {
+                resultado = await (from cu in context.CcostoUnegocios
+                                   join sc in context.SegmentoCcostos on cu.Id equals sc.IdCcosto
+                                   join s in context.Segmentos on sc.IdSegmento equals s.Id
+                                   where s.TipoSegmento == "Gastos" && s.IdCuenta == idcuenta && cu.Id == ccostounegocio
+                                   select new ServiciosDTO
+                                   {
+                                       IDSEGMENTO = s.Id,
+                                       NOMBRE = s.Nombre
+                                   }).FirstOrDefaultAsync();
+            }
             return Json(resultado);
         }
 
