@@ -136,6 +136,12 @@ namespace Proyectogestionhoras.Controllers
                 var idsEgreso = form["IdEgreso"].ToList();
                 var idsProveedor = form["IdsProveedor"].ToList();
 
+                Debug.WriteLine(numProyectos.Count);
+                Debug.WriteLine(idsProyecto.Count);
+                Debug.WriteLine(idsProveedor.Count);
+                Debug.WriteLine(idsEgreso.Count);
+                Debug.WriteLine(idsProveedor.Count);
+                Debug.WriteLine(montos.Count);
 
                 
                 if (new[] { numProyectos.Count, egresosNombres.Count, proveedores.Count,

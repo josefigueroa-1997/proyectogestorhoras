@@ -87,6 +87,7 @@
                            
                             <td class="project-id-container"></td>
                             <td class="egreso-id-container"></td>
+                            <td class="error-id-proveedor-container"></td>
                             <td class="proveedor-id-container">
 
                                 <input type="hidden" name="IdsProveedor" class="id-proveedor-hidden" />
@@ -150,30 +151,47 @@
                 fetch(`/CargaExcel/ObtenerIdProyecto?numproyecto=${encodeURIComponent(numproyecto)}`)
                     .then(response => response.json())
                     .then(data => {
-                        if (data>0 && data) {
-                            // Crear input hidden
+                       
+                        
+                           // Crear input hidden
                             const hiddenInput = document.createElement('input');
                             hiddenInput.type = 'hidden';
                             hiddenInput.name = `ProyectoId`;
-                            hiddenInput.value = data;
-
-                            // Agregar el input a la celda reservada
-                            
-                            container.appendChild(hiddenInput);
+                             container.appendChild(hiddenInput);
 
                             // Opcional: Mostrar el ID en la celda de NumProyecto
                             cell.textContent = `${numproyecto} (ID: ${data})`;
-                        }
-                        else{
-                            container.textContent = 'Proyecto No Encontrado';
-                            row.style.backgroundColor = '#fee2e2';
-                            row.style.color = '#000000';
-                            row.style.fontWeight = 'bold';
-                            throw new Error('Proyecto no encontrado');
-                        }
+                            if (!data || data === 0) {
+                                     container.textContent = 'Proyecto No Encontrado';
+                                    row.style.backgroundColor = '#fee2e2';
+                                     row.style.color = '#000000';
+                                     row.style.fontWeight = 'bold';
+
+                                    hiddenInput.disabled = true; // Deshabilita el input ya creado
+                                    throw new Error('Proyecto no encontrado');
+                            }
+                            hiddenInput.value = data;
+
+                            // Agregar el input a la celda reservada
+                            cell.textContent = `${numproyecto} (ID: ${data})`;
+                           
                     })
                     .catch(error => {
                         console.error('Error al obtener el ID del proyecto:', error);
+                          const inputs = row.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.disabled = true;
+    });
+
+    const projectInput = row.querySelector('.project-id-container input');
+    if (projectInput) {
+        projectInput.disabled = true;
+    }
+
+    row.classList.add('fila-invalida');
+
+
+
                     });
             }
         });
@@ -228,16 +246,29 @@
                 })
                     .catch(error => {
                         console.error('Error al obtener ID de egreso:', error);
-                         const inputs = row.querySelectorAll('input');
-                            inputs.forEach(input => {
-                            input.disabled = true;
-                            });
-                        
+                         
+                          const inputs = row.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.disabled = true;
+    });
+
+    const projectInput = row.querySelector('.project-id-container input');
+    if (projectInput) {
+        projectInput.disabled = true;
+    }
+
+    row.classList.add('fila-invalida');
                     });
             }
         });
     });
-
+        document.querySelector('form').addEventListener('submit', function (e) {
+        const filasInvalidas = document.querySelectorAll('tr.fila-invalida');
+        filasInvalidas.forEach(fila => {
+            const inputs = fila.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => input.remove()); // Elimina campos inválidos
+        });
+    });
 
   
 </script>
@@ -249,7 +280,7 @@
         for (const row of rows) {
             const proveedorCell = row.children[2]; // columna proveedor
             const inputHidden = row.querySelector(".id-proveedor-hidden");
-
+            const proveedorerror = row.querySelector(".error-id-proveedor-container");
             if (proveedorCell && inputHidden) {
                 const nombreProveedor = proveedorCell.textContent.trim();
 
@@ -258,11 +289,30 @@
                     if (response.ok) {
                         const id = await response.json();
                         inputHidden.value = id;
+                        if(!id || id===0){
+                             proveedorerror.textContent = 'Proveedor No Encontrado';
+                            row.style.backgroundColor = '#fee2e2';
+                            row.style.color = '#000000';
+                            row.style.fontWeight = 'bold';
+                            throw new Error('Proveedor no encontrado');
+                        }
                     } else {
                         console.error("Error al obtener ID del proveedor");
+                        
                     }
                 } catch (error) {
                     console.error("Error de red:", error);
+                     const inputs = row.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.disabled = true;
+    });
+
+    const projectInput = row.querySelector('.project-id-container input');
+    if (projectInput) {
+        projectInput.disabled = true;
+    }
+
+    row.classList.add('fila-invalida');
                 }
             }
         }
