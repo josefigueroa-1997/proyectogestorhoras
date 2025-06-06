@@ -70,8 +70,7 @@ namespace Proyectogestionhoras.Controllers
                 var numdocumento = Request.Form["Numdocumento"];
                 var fechapago = Request.Form["FechaPago"];
                 var fechaemision = Request.Form["FechaEmision"];
-                // var montousdlist = Request.Form["Montous"];
-                // var Tclist = Request.Form["Tc"];
+              
                 var Montoclplist = Request.Form["Montoclp"];
                 var Ivalist = Request.Form["Iva"];
                 var Estado = Request.Form["Estado"];
@@ -88,16 +87,16 @@ namespace Proyectogestionhoras.Controllers
                         continue;
                     }
 
-                    // string montosusdStr = montousdlist[i]?.ToString().Trim() ?? "0";
+                    
                     string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
                     string montosivaStr = Ivalist[i]?.ToString().Trim() ?? "0";
-                    // string tcStr = Tclist[i]?.ToString().Trim() ?? "0";
+                   
 
 
-                    // decimal.TryParse(montosusdStr.Replace(".", ""), out decimal montousd);
+                    
                     decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
                     decimal.TryParse(montosivaStr.Replace(".", ""), out decimal montoiva);
-                    //  decimal.TryParse(tcStr.Replace(".", ""), out decimal tc);
+                    
 
 
                     int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
@@ -115,8 +114,7 @@ namespace Proyectogestionhoras.Controllers
                         Numdocumento = numdocumento[i],
                         FechaEmision = fechaemisionParsed,
                         FechaPago = DateTime.TryParse(fechapago[i], out DateTime fecha)? (DateTime?)fecha : null,
-                        // Montous = montousd,
-                        // Tc = tc,
+                      
                         Montoclp = montoclp,
                         Iva = montoiva,
                         Estado = Estado[i],
@@ -151,6 +149,14 @@ namespace Proyectogestionhoras.Controllers
 
         /*FORECAST COSTOS*/
        
+
+        public async Task<IActionResult> PagosDistribucionHH(int? idproyecto, int? estado)
+        {
+            var distribucion = await ejecucionService.ObtenerDistribucionHH(idproyecto,estado);
+            return View(distribucion);
+        }
+
+
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);

@@ -1,306 +1,309 @@
 ﻿@{
-    ViewData["Title"] = "Proyectos Unit";
+	ViewData["Title"] = "Proyectos Unit";
 }
 
-<link rel="stylesheet" href="~/css/index.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
 
 
 
 <div class="dashboard-container">
-    <!-- Sección de Proyectos -->
-    <div class="dashboard-section projects-section">
-        @if (TempData["ExcelErrorIngreso"] != null)
-        {
-            <div class="alert alert-danger" role="alert">
-                @TempData["ExcelErrorIngreso"]
-            </div>
-        }
-        @if (TempData["ExcelErrorEgreso"] != null)
-        {
-            <div class="alert alert-danger" role="alert">
-                @TempData["ExcelErrorEgreso"]
-            </div>
-        }
-        <h2 class="section-header">Ingreso</h2>
-        <div class="section-content">
-            <!-- Nuevo Proyecto -->
-       
-            
-            
-                <a href="@Url.Action("NuevoProyecto","Proyecto")" id="nuevoProyectoBtn" class="card new">
-                    <h3>+ Nuevo Proyecto</h3>
-                    <p>Crear un nuevo proyecto</p>
-                </a>
-            <div id="nuevoClienteBtn" class="card new-cliente">
-                <h3>+ Nuevo Cliente</h3>
-                <p>Agregar un nuevo cliente</p>
-            </div>
-            <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="card new-cliente">
-                <h3>Desarrollo del Proyecto</h3>
-                <p>Agregar costos y gastos</p>
-            </a>
-           
-            
-                <button class="card new-cliente" onclick="abrirModal()">
-                    <h3>Agregar Egresos Masivos</h3>
-                    <p>Cargar Archivo Excel</p>
-                </button>
-                <button class="card new-cliente" onclick="abrirmodalingreso()">
-                    <h3>Agregar Ingresos Masivos</h3>
-                    <p>Cargar Archivo Excel</p>
-                </button>
-            
-           
-         
-    </div>
-
-  </div>
-    <!-- Modal para carga egreso masiva  -->
-    
-    <div id="modalExcel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
-            <!-- Botón cerrar -->
-            <button onclick="cerrarModal()" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
-                &times;
-            </button>
-
-            <!-- Contenido del modal -->
-            <h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Egresos</h2>
-
-            <form action="@Url.Action("CargarExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
-                <div class="mb-4">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
-                    <input type="file" name="archivo" accept=".xlsx" required
-                           class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full mt-4">
-                    <i class="fas fa-upload mr-2"></i>Cargar Archivo
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para carga ingreso masiva  -->
-
-    <div id="modalExcelIngresos" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
-            <!-- Botón cerrar -->
-            <button onclick="cerrarmodalingreso()" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
-                &times;
-            </button>
-
-            <!-- Contenido del modal -->
-            <h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Ingresos</h2>
-
-            <form action="@Url.Action("CargarIngresosExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
-                <div class="mb-4">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
-                    <input type="file" name="archivoingreso" accept=".xlsx" required
-                           class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full mt-4">
-                    <i class="fas fa-upload mr-2"></i>Cargar Archivo
-                </button>
-            </form>
-        </div>
-    </div>
+	<!-- Sección de Proyectos -->
+	<div class="dashboard-section projects-section">
+		@if (TempData["ExcelErrorIngreso"] != null)
+		{
+			<div class="alert alert-danger" role="alert">
+				@TempData["ExcelErrorIngreso"]
+			</div>
+		}
+		@if (TempData["ExcelErrorEgreso"] != null)
+		{
+			<div class="alert alert-danger" role="alert">
+				@TempData["ExcelErrorEgreso"]
+			</div>
+		}
+		<h2 class="section-header">Ingreso</h2>
+		<div class="section-content">
+			<!-- Nuevo Proyecto -->
 
 
 
+			<a href="@Url.Action("NuevoProyecto","Proyecto")" id="nuevoProyectoBtn" class="card new">
+				<h3>+ Nuevo Proyecto</h3>
+				<p>Crear un nuevo proyecto</p>
+			</a>
+			<div id="nuevoClienteBtn" class="card new-cliente">
+				<h3>+ Nuevo Cliente</h3>
+				<p>Agregar un nuevo cliente</p>
+			</div>
+			<a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="card new-cliente">
+				<h3>Desarrollo del Proyecto</h3>
+				<p>Agregar costos y gastos</p>
+			</a>
 
-    <!-- Modal para agregar nuevo cliente  -->
-    <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 100px;">
-        <div class="modal-content bg-white p-3 rounded-lg shadow-lg w-full max-w-5xl">
-            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
-            <form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
-                
-                <div>
-                    <label for="nombre" class="block text-gray-700 font-bold">Nombre:<span class="text-red-500">*</span></label>
-                    <input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
-                </div>
-                <div>
-                    <label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:<span class="text-red-500">*</span></label>
-                    <input type="text" id="idcliente" name="idcliente" class="w-full p-2 border border-gray-300 rounded" required>
-                    <span id="idClienteStatus"></span>
-                </div>
-                <div>
-                    <label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:<span class="text-red-500">*</span></label>
-                    <input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
-                </div>
-                <div>
-                    <label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:<span class="text-red-500">*</span></label>
-                    
-                    <select name="tipocliente" class="w-full p-2 border border-gray-300 rounded" required>
-                        <option value="" selected disabled>
-                            Seleccione un Tipo de Cliente
 
-                        </option>
-                        <option value="Empr.Públicas Chile">
-                            Empr.Públicas Chile
-                        </option>
-                        <option value="Empr.Privadas Chile">
-                            Empr.Privadas Chile
-                        </option>
-                        <option value="Fundaciones y Org.Sin Fin Lucro">
-                            Fundaciones y Org.Sin Fin Lucro
-                        </option>
-                        <option value="Empr.Internacional">
-                            Empr.Internacional
-                        </option>
-                    </select>
-                </div>
-            
-                <div>
-                    <label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>
-                    <input type="text" id="direccion" name="direccion" class="w-full p-2 border border-gray-300 rounded" >
-                </div>
-                <div>
-                    <label for="ciudad" class="block text-gray-700 font-bold">Ciudad:</label>
-                    <input type="text" id="ciudad" name="ciudad" class="w-full p-2 border border-gray-300 rounded" >
-                </div>
-                <div>
-                    <label for="pais" class="block text-gray-700 font-bold">País:</label>
-                    <input type="text" id="pais" name="pais" class="w-full p-2 border border-gray-300 rounded" >
-                </div>
+			<button class="card new-cliente" onclick="abrirModal()">
+				<h3>Agregar Egresos Masivos</h3>
+				<p>Cargar Archivo Excel</p>
+			</button>
+			<button class="card new-cliente" onclick="abrirmodalingreso()">
+				<h3>Agregar Ingresos Masivos</h3>
+				<p>Cargar Archivo Excel</p>
+			</button>
+			<a href="@Url.Action("PagosDistribucionHH","EjecucionProyecto",new{estado=0})" class="card new-cliente">
+				<h3>Agregar Registro de Pagos HH</h3>
+				<p>Socios y Staff</p>
+			</a>
 
-                <div>
-                    <label for="telefono" class="block text-gray-700 font-bold">Teléfono:</label>
-                    <input type="tel" id="telefono" name="telefono" class="w-full p-2 border border-gray-300 rounded" >
-                </div>
-                <div>
-                    <label for="paginaWeb" class="block text-gray-700 font-bold">Página Web:</label>
-                    <input type="text" id="paginaWeb" name="pagweb" class="w-full p-2 border border-gray-300 rounded">
-                </div>
-                <div>
-                    <label for="instagram" class="block text-gray-700 font-bold">Linkedin:</label>
-                    <input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
-                </div>
-                <div>
-                    <label for="linkedin" class="block text-gray-700 font-bold">Instagram:</label>
-                    <input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
-                </div>
 
-                <div class="col-span-3 text-gray-600 mb-4">
-                    <p>Los campos marcados con <span class="text-red-500">*</span> son obligatorios.</p>
-                </div>
-                <div class="col-span-3 flex justify-end gap-4 mt-6">
-                    <button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
-                    <button type="submit" id="submit-btn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Modal para mostrar el mensaje de éxito -->
-    <div id="successModal" style="margin-top: 70px;" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
-        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
-            <p>@TempData["SuccessMessage"]</p>
-            <button id="closeModalBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-4">Cerrar</button>
-        </div>
-    </div>
+		</div>
 
-</div>  
+	</div>
+	<!-- Modal para carga egreso masiva  -->
+
+	<div id="modalExcel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+		<div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
+			<!-- Botón cerrar -->
+			<button onclick="cerrarModal()" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
+				&times;
+			</button>
+
+			<!-- Contenido del modal -->
+			<h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Egresos</h2>
+
+			<form action="@Url.Action("CargarExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
+				<div class="mb-4">
+					<label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
+					<input type="file" name="archivo" accept=".xlsx" required
+						   class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
+				</div>
+				<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full mt-4">
+					<i class="fas fa-upload mr-2"></i>Cargar Archivo
+				</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal para carga ingreso masiva  -->
+
+	<div id="modalExcelIngresos" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+		<div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
+			<!-- Botón cerrar -->
+			<button onclick="cerrarmodalingreso()" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
+				&times;
+			</button>
+
+			<!-- Contenido del modal -->
+			<h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Ingresos</h2>
+
+			<form action="@Url.Action("CargarIngresosExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
+				<div class="mb-4">
+					<label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
+					<input type="file" name="archivoingreso" accept=".xlsx" required
+						   class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
+				</div>
+				<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full mt-4">
+					<i class="fas fa-upload mr-2"></i>Cargar Archivo
+				</button>
+			</form>
+		</div>
+	</div>
+
+
+
+
+	<!-- Modal para agregar nuevo cliente  -->
+	<div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 100px;">
+		<div class="modal-content bg-white p-3 rounded-lg shadow-lg w-full max-w-5xl">
+			<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
+			<form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
+
+				<div>
+					<label for="nombre" class="block text-gray-700 font-bold">Nombre:<span class="text-red-500">*</span></label>
+					<input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
+				</div>
+				<div>
+					<label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:<span class="text-red-500">*</span></label>
+					<input type="text" id="idcliente" name="idcliente" class="w-full p-2 border border-gray-300 rounded" required>
+					<span id="idClienteStatus"></span>
+				</div>
+				<div>
+					<label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:<span class="text-red-500">*</span></label>
+					<input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
+				</div>
+				<div>
+					<label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:<span class="text-red-500">*</span></label>
+
+					<select name="tipocliente" class="w-full p-2 border border-gray-300 rounded" required>
+						<option value="" selected disabled>
+							Seleccione un Tipo de Cliente
+
+						</option>
+						<option value="Empr.Públicas Chile">
+							Empr.Públicas Chile
+						</option>
+						<option value="Empr.Privadas Chile">
+							Empr.Privadas Chile
+						</option>
+						<option value="Fundaciones y Org.Sin Fin Lucro">
+							Fundaciones y Org.Sin Fin Lucro
+						</option>
+						<option value="Empr.Internacional">
+							Empr.Internacional
+						</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>
+					<input type="text" id="direccion" name="direccion" class="w-full p-2 border border-gray-300 rounded">
+				</div>
+				<div>
+					<label for="ciudad" class="block text-gray-700 font-bold">Ciudad:</label>
+					<input type="text" id="ciudad" name="ciudad" class="w-full p-2 border border-gray-300 rounded">
+				</div>
+				<div>
+					<label for="pais" class="block text-gray-700 font-bold">País:</label>
+					<input type="text" id="pais" name="pais" class="w-full p-2 border border-gray-300 rounded">
+				</div>
+
+				<div>
+					<label for="telefono" class="block text-gray-700 font-bold">Teléfono:</label>
+					<input type="tel" id="telefono" name="telefono" class="w-full p-2 border border-gray-300 rounded">
+				</div>
+				<div>
+					<label for="paginaWeb" class="block text-gray-700 font-bold">Página Web:</label>
+					<input type="text" id="paginaWeb" name="pagweb" class="w-full p-2 border border-gray-300 rounded">
+				</div>
+				<div>
+					<label for="instagram" class="block text-gray-700 font-bold">Linkedin:</label>
+					<input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
+				</div>
+				<div>
+					<label for="linkedin" class="block text-gray-700 font-bold">Instagram:</label>
+					<input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
+				</div>
+
+				<div class="col-span-3 text-gray-600 mb-4">
+					<p>Los campos marcados con <span class="text-red-500">*</span> son obligatorios.</p>
+				</div>
+				<div class="col-span-3 flex justify-end gap-4 mt-6">
+					<button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
+					<button type="submit" id="submit-btn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- Modal para mostrar el mensaje de éxito -->
+	<div id="successModal" style="margin-top: 70px;" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
+		<div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+			<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
+			<p>@TempData["SuccessMessage"]</p>
+			<button id="closeModalBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-4">Cerrar</button>
+		</div>
+	</div>
+
+</div>
 
 <script>
-    /*MODAL REGISTRO CLIENTE*/ 
-    const nuevoClienteBtn = document.getElementById('nuevoClienteBtn');
-    const nuevoClienteModal = document.getElementById('nuevoClienteModal');
-    const cancelarBtn = document.getElementById('cancelarBtn');
+	/*MODAL REGISTRO CLIENTE*/
+	const nuevoClienteBtn = document.getElementById('nuevoClienteBtn');
+	const nuevoClienteModal = document.getElementById('nuevoClienteModal');
+	const cancelarBtn = document.getElementById('cancelarBtn');
 
-    nuevoClienteBtn.addEventListener('click', () => {
-        nuevoClienteModal.classList.remove('hidden');
-    });
+	nuevoClienteBtn.addEventListener('click', () => {
+		nuevoClienteModal.classList.remove('hidden');
+	});
 
-    cancelarBtn.addEventListener('click', () => {
-        nuevoClienteModal.classList.add('hidden');
-    });
+	cancelarBtn.addEventListener('click', () => {
+		nuevoClienteModal.classList.add('hidden');
+	});
 
-    window.addEventListener('click', (e) => {
-        if (e.target === nuevoClienteModal) {
-            nuevoClienteModal.classList.add('hidden');
-        }
-    });
-    
+	window.addEventListener('click', (e) => {
+		if (e.target === nuevoClienteModal) {
+			nuevoClienteModal.classList.add('hidden');
+		}
+	});
+
 </script>
 <script>
-    
-    window.addEventListener('DOMContentLoaded', (event) => {
-        const successModal = document.getElementById('successModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
 
-        
-        if (successModal.getAttribute('data-show') === "true") {
-            successModal.classList.remove('hidden');
-        }
+	window.addEventListener('DOMContentLoaded', (event) => {
+		const successModal = document.getElementById('successModal');
+		const closeModalBtn = document.getElementById('closeModalBtn');
 
-        closeModalBtn.addEventListener('click', () => {
-            successModal.classList.add('hidden');
-        });
 
-            window.addEventListener('click', (e) => {
-            if (e.target === successModal) {
-                successModal.classList.add('hidden');
-            }
-        });
-    });
-</script>
+		if (successModal.getAttribute('data-show') === "true") {
+			successModal.classList.remove('hidden');
+		}
 
-<script>
-    $(document).ready(function () {
-        $('#idcliente').on('input', function () {
-            var idcliente = $(this).val();
-            if (idcliente.length > 0) {
-                $.ajax({
-                    url: '@Url.Action("VerificarExistenciaIdCliente", "Cliente")',
-                    type: 'GET',
-                    data: { idcliente: idcliente },
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    success: function (resultado) {
-                        if (resultado === 1) {
-                            $('#idClienteStatus').text("El idCliente ya está registrado.").css("color", "red");
-                            $('#submit-btn').prop('disabled', true);
-                        } else {
-                            $('#idClienteStatus').text("").css("color", "green");
-                            $('#submit-btn').prop('disabled', false);
-                        }
-                    },
-                    error: function () {
-                        $('#idClienteStatus').text("Error al verificar el IdCliente.").css("color", "orange");
-                    }
-                });
-            } else {
-                $('#idClienteStatus').text("");
-                $('#submit-btn').prop('disabled', false);
-            }
-        });
-    });
+		closeModalBtn.addEventListener('click', () => {
+			successModal.classList.add('hidden');
+		});
+
+			window.addEventListener('click', (e) => {
+			if (e.target === successModal) {
+				successModal.classList.add('hidden');
+			}
+		});
+	});
 </script>
 
 <script>
-    function abrirModal() {
-        document.getElementById("modalExcel").classList.remove("hidden");
-       
-    }
-    function abrirmodalingreso(){
-        document.getElementById("modalExcelIngresos").classList.remove("hidden");
-    }
+	$(document).ready(function () {
+		$('#idcliente').on('input', function () {
+			var idcliente = $(this).val();
+			if (idcliente.length > 0) {
+				$.ajax({
+					url: '@Url.Action("VerificarExistenciaIdCliente", "Cliente")',
+					type: 'GET',
+					data: { idcliente: idcliente },
+					contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+					success: function (resultado) {
+						if (resultado === 1) {
+							$('#idClienteStatus').text("El idCliente ya está registrado.").css("color", "red");
+							$('#submit-btn').prop('disabled', true);
+						} else {
+							$('#idClienteStatus').text("").css("color", "green");
+							$('#submit-btn').prop('disabled', false);
+						}
+					},
+					error: function () {
+						$('#idClienteStatus').text("Error al verificar el IdCliente.").css("color", "orange");
+					}
+				});
+			} else {
+				$('#idClienteStatus').text("");
+				$('#submit-btn').prop('disabled', false);
+			}
+		});
+	});
+</script>
 
-    function cerrarModal() {
-        document.getElementById("modalExcel").classList.add("hidden");
-     
-    }
-    function cerrarmodalingreso(){
-        document.getElementById("modalExcelIngresos").classList.add("hidden");
-    }
+<script>
+	function abrirModal() {
+		document.getElementById("modalExcel").classList.remove("hidden");
+
+	}
+	function abrirmodalingreso(){
+		document.getElementById("modalExcelIngresos").classList.remove("hidden");
+	}
+
+	function cerrarModal() {
+		document.getElementById("modalExcel").classList.add("hidden");
+
+	}
+	function cerrarmodalingreso(){
+		document.getElementById("modalExcelIngresos").classList.add("hidden");
+	}
 </script>
 <script>
-    document.getElementById('excelForm').addEventListener('submit', function (e) {
-        const fileInput = document.querySelector('input[type="file"]');
-        if (fileInput.files.length === 0) {
-            e.preventDefault();
-            alert('Por favor seleccione un archivo');
-            return false;
-        }
-        return true;
-    });
+	document.getElementById('excelForm').addEventListener('submit', function (e) {
+		const fileInput = document.querySelector('input[type="file"]');
+		if (fileInput.files.length === 0) {
+			e.preventDefault();
+			alert('Por favor seleccione un archivo');
+			return false;
+		}
+		return true;
+	});
 </script>

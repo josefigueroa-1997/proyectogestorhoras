@@ -264,6 +264,11 @@ namespace Proyectogestionhoras.Services
                     {
                         gastoshh.Hhtotales -= hh;
                     }
+                    if(eliminar == 2)
+                    {
+                        decimal? diferencia = gastoshh.Hhtotales - hh;
+                        gastoshh.Hhtotales -= diferencia;
+                    }
                     else
                     {
                         gastoshh.Hhtotales += hh;
@@ -519,7 +524,7 @@ namespace Proyectogestionhoras.Services
                             int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == editarregistro.idusuproy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
                             var usuario = usuarioproyecto.IdUsuarioNavigation;
                             var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
-                            await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro,0);
+                            await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro,2);
                         }
                         /* if (statusProyecto == 2)
                          {
@@ -646,6 +651,8 @@ namespace Proyectogestionhoras.Services
                                     }
                                     else if (statusProyecto == 2 || statusProyecto == 4)
                                     {
+                                        int mesregistro = registro.FechaRegistro.Month;
+                                        int anioregistro = registro.FechaRegistro.Year;
                                         var usuarioproyecto = await context.UsuarioProyectos
                                         .Include(up => up.IdUsuarioNavigation)
                                         .ThenInclude(u => u.IdRecursoNavigation)
@@ -654,6 +661,9 @@ namespace Proyectogestionhoras.Services
                                         var usuario = usuarioproyecto.IdUsuarioNavigation;
 
                                         var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                                        int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == registro.IdUsuProy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
+                                       
+                                        await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro, 1);
                                         if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
                                         {
                                             if (recurso.NombreRecurso == "Socio")
@@ -813,7 +823,7 @@ namespace Proyectogestionhoras.Services
                                 int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == editarregistro.idusuproy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
                                 var usuario = usuarioproyecto.IdUsuarioNavigation;
                                 var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
-                                await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro, 0);
+                                await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro, 2);
                             }
                             /*int usuproy = await context.PlanillaUsusarioProyectos.Where(p => p.Id == editarregistro.idregistro).Select(p => p.IdUsuProy).FirstOrDefaultAsync();
                             if (statusProyecto == 2)

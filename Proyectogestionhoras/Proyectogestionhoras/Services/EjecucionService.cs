@@ -411,7 +411,51 @@ namespace Proyectogestionhoras.Services
 
             }
         }
-       
+
+
+
+        public async Task<List<GastosHHRecursosDTO>> ObtenerDistribucionHH(int? idproyecto,int? estado)
+        {
+            try
+            {
+
+
+                var gastoshh = new List<GastosHHRecursosDTO>();
+                int? idProyectoNullable = idproyecto;
+                int? estadoNullable = estado;
+                gastoshh = await (from g in context.Gastoshhhejecucions
+                                  join p in context.Proyectos on g.Idproyecto equals p.Id
+                                  join c in context.Historialcuentasproyectos on p.Id equals c.Idproyecto
+                                  join hc in context.HistorialCostosProyectos on p.Id equals hc.Idproyecto
+                                  where p.StatusProyecto == 2 && (g.Estado == estado || estadoNullable == null) &&( p.Id == idProyectoNullable || idProyectoNullable == null)
+                                  select new GastosHHRecursosDTO
+                                  {
+                                      idcuentasocio = c.Idcuentasocio ?? 0,
+                                      idcuentastaff = c.Idcuentastaff ?? 0,
+                                      cuentasocio = c.Cuentasocio,
+                                      cuentastaff = c.Cuentastaff,
+                                      anio = g.Anio ?? 0,
+                                      mes = g.Mes ?? 0,
+                                      tiporecurso = g.Tiporecurso,
+                                      totalhh = g.Hhtotales ?? 0,
+                                      costorecursosocio = hc.Costosocio  * g.Hhtotales,
+                                      costorecurstaff = hc.Costostaff  * g.Hhtotales,
+                                      nombreproyecto = p.Nombre,
+                                      idgastohh = g.Id,
+                                  }).OrderBy(g=>g.anio).ThenBy(g=>g.mes).ToListAsync();
+
+
+                return gastoshh;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el gastos hh  de los proyectos:{ex.Message}");
+                return new List<GastosHHRecursosDTO>();
+
+            }
+        }
+
         public async Task<List<ProveedorForecastDTO>> ObtenerForecastProveedores(int? idproyecto)
         {
             try
