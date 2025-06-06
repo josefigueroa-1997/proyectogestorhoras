@@ -26,7 +26,7 @@ namespace Proyectogestionhoras.Controllers
             this.context = context;
             this.excelService = excelService;
         }
-      
+      /*Egresos*/
         public IActionResult VistaPreviaEgresos()
         {
             if (TempData["ExcelData"] != null)
@@ -141,9 +141,9 @@ namespace Proyectogestionhoras.Controllers
                 var idsProyecto = form["ProyectoId"].ToList();
                 var idsEgreso = form["IdEgreso"].ToList();
                 var idsProveedor = form["IdsProveedor"].ToList();
+                var idsSegmentos = form["idsegmento"].ToList();
 
-              
-
+                
                 
                 if (new[] { numProyectos.Count, egresosNombres.Count, proveedores.Count,
                    montos.Count, fechas.Count, estados.Count, estadosVenta.Count,
@@ -207,7 +207,39 @@ namespace Proyectogestionhoras.Controllers
                
                 await excelService.IngresarEgresosMasivosExcel(egresos);
 
+                List<ServicioViewModel> verificarserviciohonorario = new List<ServicioViewModel>();
 
+                for (int i = 0; i < numProyectos.Count; i++)
+                {
+                    if (tipos[i] == "Gastos") continue; 
+
+                    var servicioViewModel = new ServicioViewModel
+                    {
+                        Idservicios = int.Parse(idsEgreso[i]),
+                        IdSegmento = int.Parse(idsSegmentos[i]),
+                        IdsProyecto = new List<int> { int.Parse(idsProyecto[i]) }
+                    };
+
+                    verificarserviciohonorario.Add(servicioViewModel);
+                }
+                await excelService.AgregarServicioProyectonuevos(verificarserviciohonorario);
+
+                List<GastoViewModel> gastosaingresar = new List<GastoViewModel>();
+                for (int i = 0; i < numProyectos.Count; i++)
+                {
+                    if (tipos[i] != "Gastos") continue;
+
+                    var gastoViewModel = new GastoViewModel
+                    {
+                        Idgastos = int.Parse(idsEgreso[i]),
+                        IdSegmento = int.Parse(idsSegmentos[i]),
+                        IdProyecto = new List<int> { int.Parse(idsProyecto[i]) }
+                    };
+
+                    gastosaingresar.Add(gastoViewModel);
+                }
+
+                await excelService.AgregarGastosProyectonuevos(gastosaingresar);
 
                 return Ok(new { success = true, message = "Egresos guardados correctamente" });
             }
@@ -220,6 +252,7 @@ namespace Proyectogestionhoras.Controllers
             }
         }
 
+        /*Ingresos*/
         [HttpPost]
         public IActionResult CargarIngresosExcel(IFormFile archivoingreso)
         {

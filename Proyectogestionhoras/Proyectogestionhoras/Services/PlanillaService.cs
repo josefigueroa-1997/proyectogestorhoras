@@ -137,6 +137,14 @@ namespace Proyectogestionhoras.Services
                     await context.SaveChangesAsync();
                     return 1;
                 }
+                if (statusProyecto == 2)
+                {
+                    int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == idusuproy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
+                    var usuario = usuarioproyecto.IdUsuarioNavigation;
+                    var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                    await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro,0);
+                }
+               
                 /*
                 if (usuarioproyecto != null)
                 {
@@ -239,6 +247,54 @@ namespace Proyectogestionhoras.Services
                 return 2;
             }
         }
+
+
+        public async Task gestorhhplanilla(int idproyecto,string tiporecurso,decimal hh,int mes,int anio,int eliminar)
+        {
+
+            var idregistro = await context.Gastoshhhejecucions.Where(g => g.Mes == mes && g.Anio == anio && g.Idproyecto == idproyecto ).Select(g => g.Id).FirstOrDefaultAsync();
+            Debug.WriteLine(idregistro);
+            if (idregistro > 0)
+            {
+
+                var gastoshh = await context.Gastoshhhejecucions.FindAsync(idregistro);
+                if (gastoshh.Estado == 0)
+                {
+                    if (eliminar == 1)
+                    {
+                        gastoshh.Hhtotales -= hh;
+                    }
+                    else
+                    {
+                        gastoshh.Hhtotales += hh;
+                    }
+                 
+                    context.Update(gastoshh);
+                }
+               
+            }
+            else
+            {
+                var nuevogasto = new Gastoshhhejecucion
+                {
+                    Mes = mes,
+                    Anio = anio,
+                    Idproyecto = idproyecto,
+                    Tiporecurso = tiporecurso,
+                    Hhtotales = hh,
+                    Estado = 0,
+                    Subtotal = 0,
+                    Monto = 0,
+                    Reajuste = 0,
+                };
+               await context.AddAsync(nuevogasto);
+            }
+            await context.SaveChangesAsync();
+        }
+
+
+
+
         public Proyecto ObtenerProyectoPorUsuarioProyectoId(int idUsuarioProyecto)
         {
 
@@ -457,6 +513,13 @@ namespace Proyectogestionhoras.Services
                         if (statusProyecto == 1)
                         {
                             await context.SaveChangesAsync();
+                        }
+                        if (statusProyecto == 2)
+                        {
+                            int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == editarregistro.idusuproy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
+                            var usuario = usuarioproyecto.IdUsuarioNavigation;
+                            var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                            await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro,0);
                         }
                         /* if (statusProyecto == 2)
                          {
@@ -741,6 +804,17 @@ namespace Proyectogestionhoras.Services
                             registro.Idactividad = editarregistro.Idactividad;
                             registro.Tipo = tipo;
 
+                            var usuarioproyecto = await context.UsuarioProyectos
+                            .Include(up => up.IdUsuarioNavigation)
+                             .ThenInclude(u => u.IdRecursoNavigation)
+                                .FirstOrDefaultAsync(up => up.Id == editarregistro.idusuproy);
+                            if (statusProyecto == 2)
+                            {
+                                int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == editarregistro.idusuproy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
+                                var usuario = usuarioproyecto.IdUsuarioNavigation;
+                                var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                                await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro, 0);
+                            }
                             /*int usuproy = await context.PlanillaUsusarioProyectos.Where(p => p.Id == editarregistro.idregistro).Select(p => p.IdUsuProy).FirstOrDefaultAsync();
                             if (statusProyecto == 2)
                             {
@@ -876,7 +950,9 @@ namespace Proyectogestionhoras.Services
                 else
                 {
                     var registro = await context.PlanillaUsusarioProyectos.FindAsync(idregistro);
-                    decimal? horasAsignadasDecimal = await context.PlanillaUsusarioProyectos.Where(p => p.Id == idregistro).Select(p => p.RegistroHhProyecto).FirstOrDefaultAsync();
+                    int mesregistro = registro.FechaRegistro.Month;
+                    int anioregistro = registro.FechaRegistro.Year;
+                    decimal horasAsignadasDecimal = await context.PlanillaUsusarioProyectos.Where(p => p.Id == idregistro).Select(p => p.RegistroHhProyecto).FirstOrDefaultAsync() ?? 0;
                     int usuproy = await context.PlanillaUsusarioProyectos.Where(p => p.Id == idregistro).Select(p => p.IdUsuProy).FirstOrDefaultAsync();
                     if (usuproy != 0)
                     {
@@ -904,6 +980,9 @@ namespace Proyectogestionhoras.Services
                             var usuario = usuarioproyecto.IdUsuarioNavigation;
 
                             var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                            int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == registro.IdUsuProy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
+                            
+                            await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro, 1);
                             if (recurso.NombreRecurso == "Socio" || recurso.NombreRecurso == "Staff")
                             {
                                 if (recurso.NombreRecurso == "Socio")

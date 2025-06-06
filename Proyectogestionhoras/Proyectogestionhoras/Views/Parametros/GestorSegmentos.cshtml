@@ -32,7 +32,7 @@
                             {
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
-                                        <button type="button" class="btn-select" onclick="cargarDatosAlternativa('@segmento.idsegmento', '@Html.Encode(segmento.SegmentoNombre)','@Html.Encode(segmento.tiposegmento)','@Html.Encode(segmento.idcuenta)','@Html.Encode(segmento.Idunidad)')">
+                                        <button type="button" class="btn-select" onclick="cargarDatosAlternativa('@segmento.idsegmento', '@Html.Encode(segmento.SegmentoNombre)','@Html.Encode(segmento.tiposegmento)','@Html.Encode(segmento.idcuenta)')">
                                             Seleccionar
                                         </button>
                                     </td>
@@ -124,18 +124,9 @@
                     
                 }
             </select>
-            <label for="ccosto" style="display: block; margin-bottom: 10px;">Cccosto:</label>
             
-            <select id="ccosto" name="Idccosto"  style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
-                <option value="" disabled selected>Seleccione un Ccosto</option>
-                @if (ViewBag.Ccostos!=null)
-                {
-                    @foreach(var ccosto in ViewBag.Ccostos)
-                    {
-                        <option value="@ccosto.Id">@ccosto.Codigo</option>
-                    }
-                }
-            </select>
+            
+           
             <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
                 Guardar
             </button>
@@ -148,21 +139,18 @@
 
 
 <script>
-    function cargarDatosAlternativa(id, nombre, tipo,cuenta,ccosto) {
+    function cargarDatosAlternativa(id, nombre, tipo,cuenta) {
         const idInput = document.querySelector('#id');
         const nombreInput = document.querySelector('#nombre');
         const tiposegmentoInput = document.querySelector('#tipo');
         const cuentaInput = document.querySelector('#cuenta');
-        const ccostoInput = document.querySelector('#ccosto');
+       
 
         idInput.value = id;
         nombreInput.value = nombre;
         tiposegmentoInput.value = tipo;
         cuentaInput.value = cuenta;
-        ccostoInput.value = ccosto;
-        if (ccostoInput.value) {
-            ccostoInput.disabled = true;
-        }
+     
     }
     function limpiarFormulario() {
         location.reload();

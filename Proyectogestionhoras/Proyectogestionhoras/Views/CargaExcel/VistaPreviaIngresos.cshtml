@@ -130,7 +130,7 @@
 <div id="modalMensaje" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
         <div id="modalHeader" class="px-4 py-2 rounded-t-lg text-white text-lg font-semibold">
-            Resultado
+            
         </div>
         <div class="px-4 py-4 text-gray-800" id="modalBody">
         </div>
@@ -243,7 +243,10 @@
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-
+            modalHeader.className = "px-4 py-2 rounded-t-lg bg-blue-600 text-white text-lg font-semibold";
+            modalHeader.textContent = "Espere...";
+            modalBody.textContent = "Cargando solicitud...";
+            modal.classList.remove('hidden');
             const formData = new FormData(form);
 
             fetch('/CargaExcel/GuardarIngresosMasivos', {
@@ -254,6 +257,7 @@
                 .then(result => {
                     if (result.success) {
                         modalHeader.className = "px-4 py-2 rounded-t-lg bg-green-600 text-white text-lg font-semibold";
+                        modalHeader.textContent = "¡Éxito!";
                     } else {
                         modalHeader.className = "px-4 py-2 rounded-t-lg bg-red-600 text-white text-lg font-semibold";
                     }

@@ -440,59 +440,84 @@ namespace Proyectogestionhoras.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> GuardarActualizarSegmentos(Segmento segmentos,SegmentoCcosto segmentoCcostos)
+        public async Task<IActionResult> GuardarActualizarSegmentos(Segmento segmentos)
         {
             try
             {
-                if (segmentos == null || segmentoCcostos == null)
+                if (segmentos == null)
                 {
-                    return BadRequest("La Actividad es nula.");
+                    return BadRequest("El segmento es nulo.");
                 }
 
-
+                var ccosto = await context.CcostoUnegocios.ToListAsync();
 
                 if (segmentos.Id == 0)
                 {
-
+                    
                     context.Segmentos.Add(segmentos);
-                    await context.SaveChangesAsync();
-                    segmentoCcostos.IdSegmento = segmentos.Id;
-                    segmentoCcostos.IdCcosto = int.Parse(Request.Form["Idccosto"].ToString());
-                    context.SegmentoCcostos.Add(segmentoCcostos);
+                    await context.SaveChangesAsync(); 
+
+                   
+                    foreach (var item in ccosto)
+                    {
+                        var nuevoSegmentoCcosto = new SegmentoCcosto
+                        {
+                            IdSegmento = segmentos.Id,
+                            IdCcosto = item.Id 
+                        };
+
+                        context.SegmentoCcostos.Add(nuevoSegmentoCcosto);
+                    }
+
                     await context.SaveChangesAsync();
                 }
                 else
                 {
+                    // Editar segmento existente
+                    var segmentoExistente = await context.Segmentos.FindAsync(segmentos.Id);
 
-                    var segmentoexistente = await context.Segmentos.FindAsync(segmentos.Id);
-                    
-                    if (segmentoexistente == null)
+                    if (segmentoExistente == null)
                     {
                         return NotFound("Segmento no encontrado.");
                     }
 
-                    segmentoexistente.Nombre = segmentos.Nombre;
-                    segmentoexistente.TipoSegmento = segmentos.TipoSegmento;
-                    segmentoexistente.IdCuenta = segmentos.IdCuenta;
-                    context.Segmentos.Update(segmentoexistente);
+                    segmentoExistente.Nombre = segmentos.Nombre;
+                    segmentoExistente.TipoSegmento = segmentos.TipoSegmento;
+                    segmentoExistente.IdCuenta = segmentos.IdCuenta;
+
+                    context.Segmentos.Update(segmentoExistente);
                     await context.SaveChangesAsync();
 
-                   
+                    // Eliminar los registros anteriores (si se quiere actualizar la relación completamente)
+                    var relacionesAnteriores = context.SegmentoCcostos
+                        .Where(x => x.IdSegmento == segmentos.Id);
 
+                    context.SegmentoCcostos.RemoveRange(relacionesAnteriores);
 
+                    // Agregar nuevas relaciones
+                    foreach (var item in ccosto)
+                    {
+                        var nuevoSegmentoCcosto = new SegmentoCcosto
+                        {
+                            IdSegmento = segmentos.Id,
+                            IdCcosto = item.Id
+                        };
 
+                        context.SegmentoCcostos.Add(nuevoSegmentoCcosto);
+                    }
+
+                    await context.SaveChangesAsync();
                 }
-
-
 
                 return RedirectToAction("GestorSegmentos");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine($"Hubo un error al registrar el segmento:{ex.Message}");
+                Debug.WriteLine($"Hubo un error al registrar el segmento: {ex.Message}");
                 return View();
             }
-         }
+        }
+
 
         /*Tipologias*/
         public async Task<IActionResult> GestorTipologias()

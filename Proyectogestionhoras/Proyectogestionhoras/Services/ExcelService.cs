@@ -142,7 +142,7 @@ namespace Proyectogestionhoras.Services
                         {
                             IdProyecto = idProyecto,
                             IdServicio = servicio.Idservicios,
-                            Idsegmento = 7,
+                            Idsegmento = servicio.IdSegmento,
                             Monto = 0,
                             Fecha = DateTime.Now
                         });
@@ -157,6 +157,59 @@ namespace Proyectogestionhoras.Services
             }
         }
 
+        public async Task AgregarGastosProyectonuevos(List<GastoViewModel> gastos)
+        {
+            if (gastos == null || !gastos.Any())
+            {
+                return;
+            }
+
+            var todosProyectos = gastos
+                .SelectMany(s => s.IdProyecto)
+                .Distinct()
+                .ToList();
+
+
+            var gastosExistentes = await context.ProyectoGastos
+                .Where(ps => todosProyectos.Contains(ps.IdProyecto))
+                .Select(ps => new { ps.IdProyecto, ps.IdGastos })
+                .ToListAsync();
+
+            var yaAgregados = new HashSet<(int, int)>();
+            var gastosAGrabar = new List<ProyectoGasto>();
+
+            foreach (var gasto in gastos)
+            {
+                foreach (var idProyecto in gasto.IdProyecto)
+                {
+                    var clave = (idProyecto, gasto.Idgastos);
+
+                    bool yaExisteBD = gastosExistentes.Any(se =>
+                        se.IdProyecto == idProyecto &&
+                        se.IdGastos == gasto.Idgastos);
+
+                    if (!yaExisteBD && !yaAgregados.Contains(clave))
+                    {
+                        yaAgregados.Add(clave);
+
+                        gastosAGrabar.Add(new ProyectoGasto
+                        {
+                            IdProyecto = idProyecto,
+                            IdGastos = gasto.Idgastos,
+                            Idsegmento = gasto.IdSegmento,
+                            Monto = 0,
+                            Fecha = DateTime.Now
+                        });
+                    }
+                }
+            }
+
+            if (gastosAGrabar.Any())
+            {
+                await context.ProyectoGastos.AddRangeAsync(gastosAGrabar);
+                await context.SaveChangesAsync();
+            }
+        }
 
 
     }
