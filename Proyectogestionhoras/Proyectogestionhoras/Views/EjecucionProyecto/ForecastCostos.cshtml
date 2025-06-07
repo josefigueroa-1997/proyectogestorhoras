@@ -215,44 +215,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.GastosHH != null)
+                        @if (ViewBag.prueba != null)
                         {
 
-                            @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
+                            @for (int i = 0; i < ViewBag.prueba.Count; i++)
                             {
 
-                                var gasto = ViewBag.GastosHH[i];
+                                var gasto = ViewBag.prueba[i];
                                 @if (gasto.tiporecurso == "Socio")
                                 {
 
 
                                     <tr>
-                                        <input type="hidden" name="gastosHH[@i].Tiporecurso" value="@gasto.tiporecurso" />
-                                        <input type="hidden" name="gastosHH[@i].Mes" value="@gasto.mes" />
-                                        <input type="hidden" name="gastosHH[@i].Anio" value="@gasto.anio" />
-                                        <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costorecurso" />
-                                        <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
+                                        <input type="hidden" name="Tiporecurso" value="@gasto.tiporecurso" />
+                                        <input type="hidden" name="Mes" value="@gasto.mes" />
+                                        <input type="hidden" name="Anio" value="@gasto.anio" />
+                                        <input type="hidden" name="Subtotal" value="@gasto.costorecursosocio" />
+                                        <input type="hidden" name="HHtotales" value="@gasto.totalhh" />
 
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
-                                        {
-                                            <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
+                                        <input type="hidden" name="IdGastoHH" value="@gasto.idgastohh" />
+                                        @if (gasto.fechapago != null){
                                             <td class="p-1 border border-gray-300 text-right">
-                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+                                                <input type="date" name="Fechapago" value="@gasto.fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
-                                            if (ViewBag.GastosRecursos[i].Fechapago != null)
-                                            {
-                                                totalsocios += ViewBag.GastosRecursos[i]?.Monto ?? 0;
-                                            }
-                                            else
-                                            {
-                                                totalsociosforecast += ViewBag.GastosRecursos[i]?.Monto ?? 0;
-                                            }
+                                           
                                         }
+                                       
                                         else
                                         {
                                             <td class="p-1 border border-gray-300 text-right">
-                                                <input type="date" name="gastosHH[@i].Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+                                                <input type="date" name="Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
 
 
@@ -262,38 +255,45 @@
                                         <td class="p-1">@gasto.cuentasocio</td>
 
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
-                                        <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecursosocio)</td>
+                                        @if(gasto.reajuste != null){
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",gasto.reajuste ?? "")" name="Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        
+                                        else
                                         {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        }
+                                        @if (gasto.monto != null)
+                                        {
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montosocio" value="@String.Format("{0:N0}",gasto.monto ?? "")" readonly name="Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
                                         else
                                         {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montosocio" readonly name="Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
-                                        {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montosocio" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Monto ?? "")" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        }
-                                        else
-                                        {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montosocio" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        }
-                                        @if (ViewBag.GastosRecursos != null && ViewBag.GastosRecursos.Count > i)
+                                        @if (gasto.observacion != "")
                                         {
 
                                             <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
+                                                <textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@gasto.observacion</textarea>
                                             </td>
 
                                         }
                                         else
                                         {
                                             <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                                <textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                                             </td>
                                         }
-
+                                        @if (gasto.estado == 1)
+                                        {
+                                            totalsocios += gasto.monto ?? 0;
+                                        }
+                                        else
+                                        {
+                                            totalsociosforecast += gasto.monto ?? 0;
+                                        }
 
 
                                         @{
@@ -312,6 +312,12 @@
                 </table>
 
             </div>
+
+
+
+
+
+           
 
         </div>
         <div class="form-group">
@@ -541,19 +547,20 @@
                                         <input type="hidden" name="gastosHH[@i].Subtotal" value="@gasto.costorecurso" />
                                         <input type="hidden" name="gastosHH[@i].HHtotales" value="@gasto.totalhh" />
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        @if (ViewBag.prueba.Count > i && ViewBag.prueba != null)
                                         {
-                                            <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.GastosRecursos[i].Id" />
+                                            
+                                            <input type="hidden" name="gastosHH[@i].IdGastoHH" value="@ViewBag.prueba[i].idgastohh" />
                                             <td class="p-2 border border-gray-300 text-right">
-                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.GastosRecursos[i].Fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                                <input type="date" name="gastosHH[@i].Fechapago" value="@ViewBag.prueba[i].fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
                                             </td>
-                                            if (ViewBag.GastosRecursos[i].Fechapago != null)
+                                            if (ViewBag.prueba[i].fechapago != null)
                                             {
-                                                totalstaff += ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                                totalstaff += ViewBag.prueba[i]?.monto ?? 0;
                                             }
                                             else
                                             {
-                                                totalstaffforecast += ViewBag.GastosRecursos[i]?.Monto ?? 0;
+                                                totalstaffforecast += ViewBag.prueba[i]?.monto ?? 0;
                                             }
                                         }
                                         else
@@ -566,27 +573,27 @@
                                         <td class="p-2">@gasto.cuentastaff</td>
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecurso)</td>
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        @if (ViewBag.prueba.Count > i && ViewBag.prueba != null)
                                         {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",ViewBag.prueba[i]?.reajuste ?? "")" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
                                         else
                                         {
                                             <td class="p-2 border border-gray-300 text-right"><input type="text" name="gastosHH[@i].Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
-                                        @if (ViewBag.GastosRecursos.Count > i && ViewBag.GastosRecursos != null)
+                                        @if (ViewBag.prueba.Count > i && ViewBag.prueba != null)
                                         {
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montostaff" value="@String.Format("{0:N0}",ViewBag.GastosRecursos[i]?.Monto ?? "")" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montostaff" value="@String.Format("{0:N0}",ViewBag.prueba[i]?.monto ?? "")" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
                                         else
                                         {
                                             <td class="p-2 border border-gray-300 text-right"><input type="text" id="montostaff" readonly name="gastosHH[@i].Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
-                                        @if (ViewBag.GastosRecursos != null && ViewBag.GastosRecursos.Count > i)
+                                        @if (ViewBag.prueba != null && ViewBag.prueba.Count > i)
                                         {
 
                                             <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.GastosRecursos[i].Observacion</textarea>
+                                                <textarea rows="2" name="gastosHH[@i].Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ViewBag.prueba[i].observacion</textarea>
                                             </td>
 
                                         }

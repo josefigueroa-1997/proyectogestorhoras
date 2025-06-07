@@ -1,268 +1,293 @@
-﻿@model List<Proyectogestionhoras.Models.DTO.GastosHHRecursosDTO>
+﻿@{
+	ViewData["Title"] = "Vista Previa Distribución HH";
+}
+
+
+@model List<Proyectogestionhoras.Models.DTO.GastosHHRecursosDTO>
 
 
 <style>
 
-    .form-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
-    }
+	.form-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		background-color: #fff;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		margin-top: 60px;
+	}
 
-    .form-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-        margin-bottom: 10px;
-    }
+	.form-title {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: #333;
+		text-align: center;
+		margin-bottom: 10px;
+	}
 
-    .form-subtitle {
-        font-size: 1.0rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+	.form-subtitle {
+		font-size: 1.0rem;
+		color: #666;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+
+	.alert {
+		padding: 15px;
+		font-size: 16px;
+		font-weight: bold;
+		border: 1px solid transparent;
+		border-radius: 5px;
+		margin-bottom: 15px;
+		text-align: center;
+		transition: opacity 0.3s ease-in-out;
+	}
+
+	.alert-danger {
+		background-color: #f8d7da;
+		color: #721c24;
+		border-color: #f5c6cb;
+	}
+
+	.alert-success {
+		background-color: #d4edda;
+		color: #155724;
+		border-color: #c3e6cb;
+	}
 
 </style>
 
 
 <div class="form-container">
+	@if (TempData["ErrorMessageGastosHH"] != null)
+	{
+		<div class="alert alert-danger" role="alert">
+			@TempData["ErrorMessageGastosHH"]
+		</div>
+	}
+	@if (TempData["SuccessMessageGastosHH"] != null)
+	{
+		<div class="alert alert-success" role="alert">
+			@TempData["SuccessMessageGastosHH"]
+		</div>
+	}
+	<p class="form-subtitle" style="color:black;"> Registrar Pagos de Distribución HH Socios y Staff en Proyectos</p>
+	
+	@if(Model.Count>0){
+		<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+			<p class="text-sm text-gray-600">A Continuación, se muestran los pagos pendientes de las hh de socios y staff. Para registrar el pago, solo tiene que escribir la fecha de dicho pago y darle clic en guardar registros. Tambien, hay  campos de reajuste de pago y glosa, por si quiere escribir una observación.</p>
+		</div>
+		<div class="overflow-x-auto">
+			<form id="formEgresos" method="post" action="@Url.Action("GuardarDistribucionHHMasiva","EjecucionProyecto")">
+				<p class="form-subtitle" style="color:black;">Distribución HH Socios</p>
+				<table class="min-w-full text-xs border-collapse">
+					<thead>
+						<tr class="bg-blue-100 text-black">
+							<th class="p-2 border">Mes/Año</th>
+							<th class="p-2 border">FechaPago</th>
+							<th class="p-2 border">Nombre del Proyecto</th>
+							<th class="p-2 border">IDCuenta</th>
+							<th class="p-2 border">Cuenta</th>
+							<th class="p-2 border">HH</th>
+							<th class="p-2 border">SubTotal</th>
+							<th class="p-2 border">Reajuste</th>
+							<th class="p-2 border">Total</th>
+							<th class="p-2 border">Glosa</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (int i = 0; i < Model.Count; i++)
+						{
+							var item = Model[i];
+							if (item.tiporecurso == "Socio")
+							{
+								<tr>
+									<input type="hidden" name="gastos[@i].Subtotal" value="@item.costorecursosocio" />
+									<td class="p-2 border">@item.mes/@item.anio</td>
+									<td class="p-2 border">
+										<input type="date" name="gastos[@i].Fechapago" class="form-control text-right px-3 py-2 border rounded w-25" />
+									</td>
+									<td class="p-2 border">@item.nombreproyecto</td>
+									<td class="p-2 border">@item.idcuentasocio</td>
+									<td class="p-2 border">@item.cuentasocio</td>
+									<td class="p-2 border">@item.totalhh</td>
+									<td class="p-2 border">@(item.costorecursosocio != 0 ? String.Format("{0:N0}", item.costorecursosocio) : "")</td>
+									<td class="p-2 border">
+										<input type="text" name="gastos[@i].Reajuste" class="form-control text-right px-3 py-2 border rounded w-25" />
+									</td>
+									<td class="p-2 border">
+										<input type="text" readonly name="gastos[@i].Monto" class="form-control text-right px-3 py-2 border rounded w-25" />
+									</td>
+									<td class="p-2 border">
+										<textarea rows="2" name="gastos[@i].Observacion" class="form-control text-left px-3 py-2 border rounded w-48"></textarea>
+									</td>
+									<td style="display:none;">
+										<input type="hidden" name="gastos[@i].Mes" value="@item.mes" />
+										<input type="hidden" name="gastos[@i].Anio" value="@item.anio" />
 
-    <p class="form-subtitle" style="color:black;"> Registrar Pagos de Distribución HH Socios y Staff en Proyectos</p>
-    <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
-        <p class="text-sm text-gray-600">A Continuación, se muestran los datos cargados del Excel que usted ha subido. Las filas que se marcan en rojo significan que no ha podido encontrar un proyecto. Estas filas no se guardarán en el sistema. Deberá corregir algun dato.</p>
-    </div>
-    <div class="overflow-x-auto">
-        <form id="formEgresos" method="post" action="/CargaExcel/GuardarEgresosMasivos">
-           
-            
-            <p class="form-subtitle" style="color:black;">Distribución HH Socios</p>
-            <table class="min-w-full text-xs border-collapse">
+										<input type="hidden" name="gastos[@i].IdGastoHH" value="@item.idgastohh" />
+										<input type="hidden" name="gastos[@i].TipoRecurso" value="@item.tiporecurso" />
+										<input type="hidden" name="gastos[@i].HHtotales" value="@item.totalhh" />
+									</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
 
-                <thead>
-                    <tr class="bg-blue-100 text-black">
+				<p class="form-subtitle" style="color:black;">Distribución HH Staff</p>
+				<table class="min-w-full text-xs border-collapse">
+					<thead>
+						<tr class="bg-blue-100 text-black">
+							<th class="p-2 border">Mes/Año</th>
+							<th class="p-2 border">FechaPago</th>
+							<th class="p-2 border">Nombre del Proyecto</th>
+							<th class="p-2 border">IDCuenta</th>
+							<th class="p-2 border">Cuenta</th>
+							<th class="p-2 border">HH</th>
+							<th class="p-2 border">SubTotal</th>
+							<th class="p-2 border">Reajuste</th>
+							<th class="p-2 border">Total</th>
+							<th class="p-2 border">Glosa</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (int i = 0; i < Model.Count; i++)
+						{
+							var item = Model[i];
+							if (item.tiporecurso == "Staff")
+							{
+								<tr>
+									<input type="hidden" name="gastos[@i].Subtotal" value="@item.costorecurstaff" />
+									<td class="p-2 border">@item.mes/@item.anio</td>
+									<td class="p-2 border">
+										<input type="date" name="gastos[@i].Fechapago" class="form-control text-right px-3 py-2 border rounded w-25" />
+									</td>
+									<td class="p-2 border">@item.nombreproyecto</td>
+									<td class="p-2 border">@item.idcuentastaff</td>
+									<td class="p-2 border">@item.cuentastaff</td>
+									<td class="p-2 border">@item.totalhh</td>
+									<td class="p-2 border">@(item.costorecurstaff != 0 ? String.Format("{0:N0}", item.costorecurstaff) : "")</td>
+									<td class="p-2 border">
+										<input type="text" name="gastos[@i].Reajuste" class="form-control text-right px-3 py-2 border rounded w-25" />
+									</td>
+									<td class="p-2 border">
+										<input type="text" readonly name="gastos[@i].Monto" class="form-control text-right px-3 py-2 border rounded w-25" />
+									</td>
+									<td class="p-2 border">
+										<textarea rows="2" name="gastos[@i].Observacion" class="form-control text-left px-3 py-2 border rounded w-48"></textarea>
+									</td>
+									<td style="display:none;">
+										<input type="hidden" name="gastos[@i].Mes" value="@item.mes" />
+										<input type="hidden" name="gastos[@i].Anio" value="@item.anio" />
 
-                        
-                        <th class="p-2 border border-gray-300 text-left">Mes/Anio</th>
-                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
-                        <th class="p-2 border border-gray-300 text-left">Nombre del Proyecto</th>
-                        <th class="p-2 border border-gray-300 text-left">IDCuenta</th>
-                        <th class="p-2 border border-gray-300 text-left">Cuenta</th>
-                        <th class="p-2 border border-gray-300 text-left">HH</th>
-                        <th class="p-2 border border-gray-300 text-left">SubTotal</th>
-                        <th class="p-2 border border-gray-300 text-left">Reajuste</th>
-                        <th class="p-2 border border-gray-300 text-left">Total</th>
-                        <th class="p-2 border border-gray-300 text-left">Glosa</th>
+										<input type="hidden" name="gastos[@i].IdGastoHH" value="@item.idgastohh" />
+										<input type="hidden" name="gastos[@i].TipoRecurso" value="@item.tiporecurso" />
+										<input type="hidden" name="gastos[@i].HHtotales" value="@item.totalhh" />
+									</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
 
-
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-                        @if(item.tiporecurso=="Socio"){
-
-                            <tr>
-                                <input type="hidden" name="Subtotal" value="@item.costorecursosocio" />
-                                <td class="p-2 border border-gray-300 text-left">@item.mes/@item.anio</td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left">@item.nombreproyecto</td>
-                                <td class="p-2 border border-gray-300 text-left">@item.idcuentasocio</td>
-                                <td class="p-2 border border-gray-300 text-left">@item.cuentasocio</td>
-                                <td class="p-2 border border-gray-300 text-left">@item.totalhh</td>
-                                <td class="p-2 border border-gray-300 text-left"> @(item.costorecursosocio != 0 ? String.Format("{0:N0}", item.costorecursosocio) : "")</td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="text" name="Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="text" id="montosocio" readonly name="Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                </td>
-
-                                @* <td style="display:none;">
-                                <input name="numproyecto" type="hidden" value="@item.numproyecto" />
-                                <input name="numdocumento" type="hidden" value="@item.numdocumento" />
-                                <input name="fechaemision" type="hidden" value="@item.fechaemision" />
-                                <input name="monto" type="hidden" value="@item.Monto" />
-                                <input name="iva" type="hidden" value="@item.iva" />
-                                <input name="Fechapago" type="hidden" value="@item.Fechapago" />
-                                <input name="Estado" type="hidden" value="@item.Estado" />
-                                <input name="EstadoVenta" type="hidden" value="@item.EstadoVenta" />
-                                <input name="Glosa" type="hidden" value="@item.Glosa" />
-
-
-
-                            </td>*@ 
-                                    
-
-                            </tr>
-                        }
-                        
-                    }
-
-                </tbody>
-
-            </table>
-
-            <p class="form-subtitle" style="color:black;">Distribución HH Staff</p>
-            <table class="min-w-full text-xs border-collapse">
-
-                <thead>
-                    <tr class="bg-blue-100 text-black">
-
-
-                        <th class="p-2 border border-gray-300 text-left">Mes/Anio</th>
-                        <th class="p-2 border border-gray-300 text-left">FechaPago</th>
-                        <th class="p-2 border border-gray-300 text-left">Nombre del Proyecto</th>
-                        <th class="p-2 border border-gray-300 text-left">IDCuenta</th>
-                        <th class="p-2 border border-gray-300 text-left">Cuenta</th>
-                        <th class="p-2 border border-gray-300 text-left">HH</th>
-                        <th class="p-2 border border-gray-300 text-left">SubTotal</th>
-                        <th class="p-2 border border-gray-300 text-left">Reajuste</th>
-                        <th class="p-2 border border-gray-300 text-left">Total</th>
-                        <th class="p-2 border border-gray-300 text-left">Glosa</th>
-
-
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-                        @if (item.tiporecurso == "Staff")
-                        {
-
-                            <tr>
-                                <input type="hidden" name="Subtotal" value="@item.costorecurstaff" />
-                                <td class="p-2 border border-gray-300 text-left">@item.mes/@item.anio</td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left">@item.nombreproyecto</td>
-                                <td class="p-2 border border-gray-300 text-left">@item.idcuentastaff</td>
-                                <td class="p-2 border border-gray-300 text-left">@item.cuentastaff</td>
-                                <td class="p-2 border border-gray-300 text-left">@item.totalhh</td>
-                                <td class="p-2 border border-gray-300 text-left"> @(item.costorecurstaff != 0 ? String.Format("{0:N0}", item.costorecurstaff) : "")</td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="text" name="Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="text" id="montosocio" readonly name="Monto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-
-                                <td class="p-2 border border-gray-300 text-left">
-                                    <textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                </td>
-                               
-                                @* <td style="display:none;">
-                                <input name="numproyecto" type="hidden" value="@item.numproyecto" />
-                                <input name="numdocumento" type="hidden" value="@item.numdocumento" />
-                                <input name="fechaemision" type="hidden" value="@item.fechaemision" />
-                                <input name="monto" type="hidden" value="@item.Monto" />
-                                <input name="iva" type="hidden" value="@item.iva" />
-                                <input name="Fechapago" type="hidden" value="@item.Fechapago" />
-                                <input name="Estado" type="hidden" value="@item.Estado" />
-                                <input name="EstadoVenta" type="hidden" value="@item.EstadoVenta" />
-                                <input name="Glosa" type="hidden" value="@item.Glosa" />
-
-
-
-                            </td>*@ 
-                                        
-
-                            </tr>
-                        }
-
-                    }
-
-                </tbody>
-
-            </table>
-
-            <div class="mt-4">
-                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                    Guardar Registros
-                </button>
-            </div>
-
-
-        </form>
+				<div class="mt-4">
+					<button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+						Guardar Registros
+					</button>
+				</div>
+			</form>
 
 
 
-    </div>
+
+		</div>
+	}
+	else{
+		<p class="form-subtitle" style="color:black;"> No hay registros de pagos hh pendientes.</p>
+	}
+	
 </div>
+
+
+
+<!--MODAL REGISRO-->
+
+
+
+
 
 <script>
 
-    document.addEventListener('DOMContentLoaded', function () {
+	document.addEventListener('DOMContentLoaded', function () {
 
-       function formatCurrency(event) {
-           let value = event.target.value;
-
-
-           value = value.replace(/[^\d-]/g, '');
+	   function formatCurrency(event) {
+		   let value = event.target.value;
 
 
-           if (value.includes('-') && value.indexOf('-') > 0) {
-               value = '-' + value.replace(/-/g, '');
-           }
-
-           if (value !== '' && value !== '-') {
-               const isNegative = value.startsWith('-');
-               value = value.replace(/-/g, '');
+		   value = value.replace(/[^\d-]/g, '');
 
 
-               let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+		   if (value.includes('-') && value.indexOf('-') > 0) {
+			   value = '-' + value.replace(/-/g, '');
+		   }
+
+		   if (value !== '' && value !== '-') {
+			   const isNegative = value.startsWith('-');
+			   value = value.replace(/-/g, '');
 
 
-               if (isNegative) {
-                   formattedValue = '-' + formattedValue;
-               }
-
-               event.target.value = formattedValue;
-           } else {
-               event.target.value = value;
-           }
-
-           updateMonto(event.target);
-         
-       }
+			   let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 
+			   if (isNegative) {
+				   formattedValue = '-' + formattedValue;
+			   }
 
-       function removePoints(event) {
-           let value = event.target.value;
+			   event.target.value = formattedValue;
+		   } else {
+			   event.target.value = value;
+		   }
 
+		   updateMonto(event.target);
 
-           value = value.replace(/\./g, '');
-           event.target.value = value;
-       }
-
-       function updateMonto(reajusteInput) {
-           const row = reajusteInput.closest('tr');
-           const reajusteValue = parseCurrency(reajusteInput.value);
-           const subtotalValue = parseCurrency(row.querySelector('input[name*="Subtotal"]').value);
-           const montoInput = row.querySelector('input[name*="Monto"]');
-
-           const total = reajusteValue + subtotalValue;
-           montoInput.value = total.toLocaleString('es-CL');
-       }
-
-       const reajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
-
-       reajusteInputs.forEach(input => {
-           input.addEventListener('input', formatCurrency);
-       });
-
-       function parseCurrency(value) {
-           return parseInt(value.replace(/\./g, ''), 10) || 0;
-       }
+	   }
 
 
-      
 
-    });
+	   function removePoints(event) {
+		   let value = event.target.value;
+
+
+		   value = value.replace(/\./g, '');
+		   event.target.value = value;
+	   }
+
+	   function updateMonto(reajusteInput) {
+		   const row = reajusteInput.closest('tr');
+		   const reajusteValue = parseCurrency(reajusteInput.value);
+		   const subtotalValue = parseCurrency(row.querySelector('input[name*="Subtotal"]').value);
+		   const montoInput = row.querySelector('input[name*="Monto"]');
+
+		   const total = reajusteValue + subtotalValue;
+		   montoInput.value = total.toLocaleString('es-CL');
+	   }
+
+	   const reajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
+
+	   reajusteInputs.forEach(input => {
+		   input.addEventListener('input', formatCurrency);
+	   });
+
+	   function parseCurrency(value) {
+		   return parseInt(value.replace(/\./g, ''), 10) || 0;
+	   }
+
+
+
+
+	});
 
 </script>

@@ -142,6 +142,7 @@ namespace Proyectogestionhoras.Services
                     int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == idusuproy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
                     var usuario = usuarioproyecto.IdUsuarioNavigation;
                     var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
+                    Debug.WriteLine(recurso.NombreRecurso);
                     await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro,0);
                 }
                
@@ -251,9 +252,10 @@ namespace Proyectogestionhoras.Services
 
         public async Task gestorhhplanilla(int idproyecto,string tiporecurso,decimal hh,int mes,int anio,int eliminar)
         {
-
-            var idregistro = await context.Gastoshhhejecucions.Where(g => g.Mes == mes && g.Anio == anio && g.Idproyecto == idproyecto ).Select(g => g.Id).FirstOrDefaultAsync();
+            
+            var idregistro = await context.Gastoshhhejecucions.Where(g => g.Mes == mes && g.Anio == anio && g.Idproyecto == idproyecto && g.Tiporecurso==tiporecurso ).Select(g => g.Id).FirstOrDefaultAsync();
             Debug.WriteLine(idregistro);
+            
             if (idregistro > 0)
             {
 

@@ -167,6 +167,7 @@ namespace Proyectogestionhoras.Controllers
             var proveedoresservicios = await GetProveedoresServicios();
             var proveedoresgastos = await GetProveedoresGastos();
             var gastoshh = await ejecucionService.ObtenerGastosHH(id);
+            ViewBag.prueba = await ejecucionService.ObtenerDistribucionHH(id,null);
             var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == id).ToListAsync();
             var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(id);
             var gastosproyectados = await proyectoService.ObtenerGastosProyectos(id);
@@ -436,6 +437,114 @@ namespace Proyectogestionhoras.Controllers
 
                 }
 
+                /*gastos socios*/
+
+                var idgastohhsocios = Request.Form["IdGastoHH"];
+                var tiporecursosocioo = Request.Form["Tiporecurso"];
+                var messocio = Request.Form["Mes"];
+                var aniosocio = Request.Form["Anio"];
+                var subtotalsociolist = Request.Form["Subtotal"];
+                var hhtotalessocioslist = Request.Form["HHtotales"];
+                var fechapagosocio = Request.Form["Fechapago"];
+                var reajustesocioolist = Request.Form["Reajuste"];
+                var montosociolist = Request.Form["Monto"];
+                var observacionsocio = Request.Form["Observacion"];
+               
+                List<GastosHHViewModel> gastosocioo = new List<GastosHHViewModel>();
+
+                for (int i = 0; i < idgastohhsocios.Count; i++)
+                {
+                    var subtotalsocioStr = subtotalsociolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(subtotalsocioStr))
+                    {
+                        subtotalsocioStr = "0";
+                    }
+                    else
+                    {
+                        subtotalsocioStr = subtotalsocioStr.Replace(".", "");
+                    }
+
+                    decimal subtotalsocio = decimal.Parse(subtotalsocioStr);
+
+
+                    var reajustesocioStr = reajustesocioolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(reajustesocioStr))
+                    {
+                        reajustesocioStr = "0";
+                    }
+                    else
+                    {
+                        reajustesocioStr = reajustesocioStr.Replace(".", "");
+                    }
+
+                   
+
+                    decimal reajustesocio = decimal.Parse(reajustesocioStr);
+
+
+                    var montosocioStr = montosociolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(montosocioStr))
+                    {
+                        montosocioStr = "0";
+                    }
+                    else
+                    {
+                        montosocioStr = montosocioStr.Replace(".", "");
+                    }
+
+
+
+                    decimal montosocio = decimal.Parse(montosocioStr);
+
+
+                    var hhtotalessocioStr = hhtotalessocioslist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(hhtotalessocioStr))
+                    {
+                        hhtotalessocioStr = "0";
+                    }
+                    else
+                    {
+                        hhtotalessocioStr = hhtotalessocioStr.Replace(".", "");
+                    }
+
+
+
+                    decimal hhtotalessocios = decimal.Parse(hhtotalessocioStr);
+
+                    int idgastohhsocioRealParsed = string.IsNullOrWhiteSpace(idgastohhsocios[i])
+                                               ? 0
+                                               : int.Parse(idgastohhsocios[i]);
+
+
+
+                    DateTime? fechapagoParsed;
+                    if (string.IsNullOrWhiteSpace(fechapagosocio[i]))
+                    {
+                        fechapagoParsed = null;
+                    }
+                    else
+                    {
+                        fechapagoParsed = DateTime.Parse(fechapagosocio[i]);
+                    }
+                    var gastohhViewModel = new GastosHHViewModel
+                    {
+                        IdGastoHH = idgastohhsocioRealParsed,
+                        Tiporecurso = tiporecursosocioo[i],
+                        Mes = int.Parse(messocio[i]),
+                        Anio = int.Parse(aniosocio[i]),
+                        Fechapago = fechapagoParsed,
+                        Monto = montosocio,
+                        HHtotales = hhtotalessocios,
+                        Observacion = observacionsocio[i],
+                        Subtotal = subtotalsocio,
+                        Reajuste = reajustesocio,
+                    };
+
+                    gastosocioo.Add(gastohhViewModel);
+
+
+                }
+
 
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 await ejecucionService.GestorServiciosReales(idproyecto, servicios);
@@ -443,6 +552,7 @@ namespace Proyectogestionhoras.Controllers
                 await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);
                 await ejecucionService.GestorGastosReales(idproyecto, gastos);
                 await ejecucionService.GestorGastosHH(idproyecto, gastosHH);
+                await ejecucionService.GestorGastosHH(idproyecto, gastosocioo);
                 await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastos);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciootro);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciosocio);
@@ -539,5 +649,28 @@ namespace Proyectogestionhoras.Controllers
             var flujo = await reporteService.ObtenerFlujoCajaDetalle(id);
             return Ok(flujo);
         }
+
+
+
+        /*Guardar Distribucion HH Masivos*/
+        [HttpPost]
+        public async Task<IActionResult> GuardarDistribucionHHMasiva(List<GastosHHViewModel> gastos)
+        {
+            try
+            {
+                await ejecucionService.GestorGastosHH(0, gastos);
+                TempData["SuccessMessageGastosHH"] = "Los pagos de HH socios/staff se han registrado correctamente.";
+                return RedirectToAction("PagosDistribucionHH", new {estado=0});
+            }
+
+            catch (Exception ex) { 
+            
+                Debug.WriteLine(ex.InnerException);
+                TempData["ErrorMessageGastosHH"] = "Hubo un error al Registrar pagos de distribución hh de los socios y staff.";
+                return RedirectToAction("PagosDistribucionHH", new { estado = 0 });
+            }
+            
+        }
+
     }
 }
