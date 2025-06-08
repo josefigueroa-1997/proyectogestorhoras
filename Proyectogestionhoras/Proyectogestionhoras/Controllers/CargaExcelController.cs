@@ -21,10 +21,12 @@ namespace Proyectogestionhoras.Controllers
     {
         private readonly PROYECTO_CONTROL_HORASContext context;
         private readonly ExcelService excelService;
+        private readonly ProyectoService proyectoService;
 
-        public CargaExcelController(PROYECTO_CONTROL_HORASContext context,ExcelService excelService) {
+        public CargaExcelController(PROYECTO_CONTROL_HORASContext context,ExcelService excelService, ProyectoService proyectoService) {
             this.context = context;
             this.excelService = excelService;
+            this.proyectoService = proyectoService;
         }
       /*Egresos*/
         public IActionResult VistaPreviaEgresos()
@@ -224,6 +226,10 @@ namespace Proyectogestionhoras.Controllers
                 }
                 await excelService.AgregarServicioProyectonuevos(verificarserviciohonorario);
 
+
+
+
+
                 List<GastoViewModel> gastosaingresar = new List<GastoViewModel>();
                 for (int i = 0; i < numProyectos.Count; i++)
                 {
@@ -240,7 +246,18 @@ namespace Proyectogestionhoras.Controllers
                 }
 
                 await excelService.AgregarGastosProyectonuevos(gastosaingresar);
-
+                
+                
+                var modificacion = egresos
+                    .Where(g => g.Fecha != null)
+                    .Select(g => new MoficacionProyectoViewModel
+                    {
+                        IdProyecto = g.Idpeoyecto.Value,
+                        FechaPago = g.Fecha
+                    })
+                    .Distinct()
+                    .ToList();
+                await proyectoService.GestorFechaModificacionProyectoMasivo(modificacion);
                 return Ok(new { success = true, message = "Egresos guardados correctamente" });
             }
             catch (Exception ex)
@@ -433,7 +450,16 @@ namespace Proyectogestionhoras.Controllers
 
                 await excelService.RegistrarIngresosMasivosExcel(ingresos);
 
-
+                var modificacion = ingresos
+                   .Where(g => g.Fechapago != null)
+                   .Select(g => new MoficacionProyectoViewModel
+                   {
+                       IdProyecto = g.Idproyecto.Value,
+                       FechaPago = g.Fechapago
+                   })
+                   .Distinct()
+                   .ToList();
+                await proyectoService.GestorFechaModificacionProyectoMasivo(modificacion);
 
                 return Ok(new { success = true, message = "Ingresos guardados correctamente" });
             }

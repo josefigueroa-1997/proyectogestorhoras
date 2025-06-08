@@ -32,7 +32,7 @@ namespace Proyectogestionhoras.Services
 
 
 
-        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio,  int cantidadcuotas,List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<CuotasViewModel> cuotas)
+        public async Task<bool> CrearProyecto(decimal monto, string moneda, string afectaiva, int idtipologia, string nombre, string numproyecto, DateTime fechainicio, DateTime fechatermino, int plazo, int tipoempresa, int codigoccosto, int idclientesucursal, string? probabilidad, decimal? porcentajeprobabilidad, DateTime? fechaplazoneg, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc, int idsegmentofactura, decimal montoorigen, decimal tasacambio, int cantidadcuotas, List<ServicioViewModel> servicios, List<GastoViewModel> gastos, List<CuotasViewModel> cuotas)
         {
             try
             {
@@ -303,7 +303,7 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public async Task GestorCuotas(int idpresupuesto,List<CuotasViewModel> cuotas)
+        public async Task GestorCuotas(int idpresupuesto, List<CuotasViewModel> cuotas)
         {
             try
             {
@@ -350,7 +350,7 @@ namespace Proyectogestionhoras.Services
 
                 await context.SaveChangesAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al agregar/actualizar una cuota:{e.Message}");
             }
@@ -555,7 +555,7 @@ namespace Proyectogestionhoras.Services
 
         public async Task GuardarActualizarHistorialCuenta(int idproyecto, int idcuentasocio, int idcuentastaff, string cuentasocio, string cuentastaff)
         {
-            var historialcuenta = await context.Historialcuentasproyectos.Where(p=>p.Idproyecto==idproyecto).FirstOrDefaultAsync();
+            var historialcuenta = await context.Historialcuentasproyectos.Where(p => p.Idproyecto == idproyecto).FirstOrDefaultAsync();
 
             if (historialcuenta == null)
             {
@@ -568,7 +568,7 @@ namespace Proyectogestionhoras.Services
                     Cuentastaff = cuentastaff
                 };
 
-        
+
                 context.Historialcuentasproyectos.Add(nuevohistorial);
             }
             else
@@ -578,7 +578,7 @@ namespace Proyectogestionhoras.Services
                 historialcuenta.Idcuentasocio = idcuentasocio;
                 historialcuenta.Idcuentastaff = idcuentastaff;
 
-                
+
             }
 
             await context.SaveChangesAsync();
@@ -1758,8 +1758,8 @@ namespace Proyectogestionhoras.Services
                                 MontoOrigenExtranjero = reader.IsDBNull(reader.GetOrdinal("MONTOMONEDAORIGEN")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MONTOMONEDAORIGEN")),
                                 TasaCambio = reader.IsDBNull(reader.GetOrdinal("TASACAMBIO")) ? 0 : reader.GetDecimal(reader.GetOrdinal("TASACAMBIO")),
                                 idpresupuesto = reader.IsDBNull(reader.GetOrdinal("IDPRESUPUESTO")) ? 0 : reader.GetInt32(reader.GetOrdinal("IDPRESUPUESTO")),
-                                
-                              
+
+
 
 
 
@@ -1793,12 +1793,12 @@ namespace Proyectogestionhoras.Services
                 TimeZoneInfo zonaChile = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
                 if (fechaModificacion != null)
                 {
-                    
+
                     fechaModificacion.Fechamodificacion = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zonaChile);
                 }
                 else
                 {
-                    
+
                     fechaModificacion = new Fechamodificacionproyecto
                     {
                         Idproyecto = idproyecto,
@@ -1815,5 +1815,52 @@ namespace Proyectogestionhoras.Services
                 Debug.WriteLine($"Hubo un error al modificar la fecha de proyecto modificacion:{e.Message}");
             }
         }
+
+        public async Task GestorFechaModificacionProyectoMasivo(List<MoficacionProyectoViewModel> lista)
+        {
+            try
+            {
+                var idsConFechaPago = lista
+                    .Where(m => m.FechaPago != null)
+                    .Select(m => m.IdProyecto)
+                    .ToList();
+
+                
+                var existentes = await context.Fechamodificacionproyectos
+                    .Where(f => idsConFechaPago.Contains(f.Idproyecto))
+                    .ToListAsync();
+
+                TimeZoneInfo zonaChile = TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time");
+                DateTime fechaActual = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zonaChile);
+
+                foreach (var idProyecto in idsConFechaPago)
+                {
+                    var existente = existentes.FirstOrDefault(f => f.Idproyecto == idProyecto);
+
+                    if (existente != null)
+                    {
+                        existente.Fechamodificacion = fechaActual;
+                        context.Fechamodificacionproyectos.Update(existente);
+                    }
+                    else
+                    {
+                        var nuevo = new Fechamodificacionproyecto
+                        {
+                            Idproyecto = idProyecto,
+                            Fechamodificacion = fechaActual
+                        };
+                        await context.Fechamodificacionproyectos.AddAsync(nuevo);
+                    }
+                }
+
+                
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al modificar la fecha de proyecto modificación: {e.Message}");
+            }
+        }
+
     }
 }

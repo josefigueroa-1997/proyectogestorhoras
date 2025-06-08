@@ -251,7 +251,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarCostos(int idproyecto, List<GastosHHViewModel> gastosHH)
+        public async Task<IActionResult> RegistrarCostos(int idproyecto)
         {
             try
             {
@@ -449,6 +449,8 @@ namespace Proyectogestionhoras.Controllers
                 var reajustesocioolist = Request.Form["Reajuste"];
                 var montosociolist = Request.Form["Monto"];
                 var observacionsocio = Request.Form["Observacion"];
+
+                
                
                 List<GastosHHViewModel> gastosocioo = new List<GastosHHViewModel>();
 
@@ -546,12 +548,127 @@ namespace Proyectogestionhoras.Controllers
                 }
 
 
+
+
+                /*gastos staff*/
+
+                var idgastohhstaff = Request.Form["IdGastoHHstaff"];
+                var tiporecursostaff = Request.Form["Tiporecursostaff"];
+                var messtaff = Request.Form["Messtaff"];
+                var aniostaff = Request.Form["Aniostaff"];
+                var subtotalstafflist = Request.Form["Subtotalstaff"];
+                var hhtotalesstafflist = Request.Form["HHtotalesstaff"];
+                var fechapagostaff = Request.Form["Fechapagostaff"];
+                var reajustestafflist = Request.Form["Reajustestaff"];
+                var montostafflist = Request.Form["Montostaff"];
+                var observacionstaff = Request.Form["Observacionstaff"];
+
+
+               
+
+
+                List<GastosHHViewModel> gastostaff = new List<GastosHHViewModel>();
+
+                for (int i = 0; i < idgastohhstaff.Count; i++)
+                {
+                    var subtotalstaffStr = subtotalstafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(subtotalstaffStr))
+                    {
+                        subtotalstaffStr = "0";
+                    }
+                    else
+                    {
+                        subtotalstaffStr = subtotalstaffStr.Replace(".", "");
+                    }
+
+                    decimal subtotalstaff = decimal.Parse(subtotalstaffStr);
+
+
+                    var reajustestaffStr = reajustestafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(reajustestaffStr))
+                    {
+                        reajustestaffStr = "0";
+                    }
+                    else
+                    {
+                        reajustestaffStr = reajustestaffStr.Replace(".", "");
+                    }
+
+
+
+                    decimal reajustestaff = decimal.Parse(reajustestaffStr);
+
+
+                    var montostaffStr = montostafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(montostaffStr))
+                    {
+                        montostaffStr = "0";
+                    }
+                    else
+                    {
+                        montostaffStr = montostaffStr.Replace(".", "");
+                    }
+
+
+
+                    decimal montostaff = decimal.Parse(montostaffStr);
+
+
+                    var hhtotalesstaffStr = hhtotalesstafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(hhtotalesstaffStr))
+                    {
+                        hhtotalesstaffStr = "0";
+                    }
+                    else
+                    {
+                        hhtotalesstaffStr = hhtotalesstaffStr.Replace(".", "");
+                    }
+
+
+
+                    decimal hhtotalesstaff = decimal.Parse(hhtotalesstaffStr);
+
+                    int idgastohhstaffRealParsed = string.IsNullOrWhiteSpace(idgastohhstaff[i])
+                                               ? 0
+                                               : int.Parse(idgastohhstaff[i]);
+
+
+
+                    DateTime? fechapagostaffParsed;
+                    if (string.IsNullOrWhiteSpace(fechapagostaff[i]))
+                    {
+                        fechapagostaffParsed = null;
+                    }
+                    else
+                    {
+                        fechapagostaffParsed = DateTime.Parse(fechapagostaff[i]);
+                    }
+                    var gastohhstaffViewModel = new GastosHHViewModel
+                    {
+                        IdGastoHH = idgastohhstaffRealParsed,
+                        Tiporecurso = tiporecursostaff[i],
+                        Mes = int.Parse(messtaff[i]),
+                        Anio = int.Parse(aniostaff[i]),
+                        Fechapago = fechapagostaffParsed,
+                        Monto = montostaff,
+                        HHtotales = hhtotalesstaff,
+                        Observacion = observacionstaff[i],
+                        Subtotal = subtotalstaff,
+                        Reajuste = reajustestaff,
+                    };
+
+                    gastostaff.Add(gastohhstaffViewModel);
+
+
+                }
+
+
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 await ejecucionService.GestorServiciosReales(idproyecto, servicios);
                 await ejecucionService.GestorServiciosReales(idproyecto, serviciossocios);
                 await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);
                 await ejecucionService.GestorGastosReales(idproyecto, gastos);
-                await ejecucionService.GestorGastosHH(idproyecto, gastosHH);
+                await ejecucionService.GestorGastosHH(idproyecto, gastostaff);
                 await ejecucionService.GestorGastosHH(idproyecto, gastosocioo);
                 await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastos);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciootro);
@@ -659,6 +776,16 @@ namespace Proyectogestionhoras.Controllers
             try
             {
                 await ejecucionService.GestorGastosHH(0, gastos);
+                var modificacion = gastos
+                    .Where(g => g.Fechapago != null)
+                    .Select(g => new MoficacionProyectoViewModel
+                    {
+                            IdProyecto = int.Parse(g.idproyecto), 
+                             FechaPago = g.Fechapago
+                     })
+                    .Distinct() 
+                    .ToList();
+                await proyectoService.GestorFechaModificacionProyectoMasivo(modificacion);
                 TempData["SuccessMessageGastosHH"] = "Los pagos de HH socios/staff se han registrado correctamente.";
                 return RedirectToAction("PagosDistribucionHH", new {estado=0});
             }

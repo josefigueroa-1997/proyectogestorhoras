@@ -4,6 +4,7 @@
     {
         public int IdGastoHH { get; set; }
         public string? Tiporecurso { get; set; }
+        public string? idproyecto { get; set; }
         public int? Mes { get; set; }
         public int? Anio { get; set; }
         public DateTime? Fechapago { get; set; }

@@ -254,26 +254,42 @@ namespace Proyectogestionhoras.Services
         {
             
             var idregistro = await context.Gastoshhhejecucions.Where(g => g.Mes == mes && g.Anio == anio && g.Idproyecto == idproyecto && g.Tiporecurso==tiporecurso ).Select(g => g.Id).FirstOrDefaultAsync();
-            Debug.WriteLine(idregistro);
+            decimal? costoproyecto = 0;
+
+            if(idproyecto != 0)
+            {
+                if(tiporecurso == "Socio")
+                {
+                    costoproyecto = await context.HistorialCostosProyectos.Where(hc=>hc.Idproyecto==idproyecto).Select(hc=>hc.Costosocio).FirstOrDefaultAsync();
+                }
+                else if(tiporecurso == "Staff")
+                {
+                    costoproyecto = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costostaff).FirstOrDefaultAsync();
+                }
+            }
             
             if (idregistro > 0)
             {
 
                 var gastoshh = await context.Gastoshhhejecucions.FindAsync(idregistro);
+               
                 if (gastoshh.Estado == 0)
                 {
                     if (eliminar == 1)
                     {
                         gastoshh.Hhtotales -= hh;
+                        gastoshh.Monto = costoproyecto * gastoshh.Hhtotales;
                     }
                     if(eliminar == 2)
                     {
                         decimal? diferencia = gastoshh.Hhtotales - hh;
                         gastoshh.Hhtotales -= diferencia;
+                        gastoshh.Monto = costoproyecto * gastoshh.Hhtotales;
                     }
                     else
                     {
                         gastoshh.Hhtotales += hh;
+                        gastoshh.Monto = costoproyecto * gastoshh.Hhtotales;
                     }
                  
                     context.Update(gastoshh);
@@ -291,7 +307,7 @@ namespace Proyectogestionhoras.Services
                     Hhtotales = hh,
                     Estado = 0,
                     Subtotal = 0,
-                    Monto = 0,
+                    Monto = costoproyecto * hh,
                     Reajuste = 0,
                 };
                await context.AddAsync(nuevogasto);
