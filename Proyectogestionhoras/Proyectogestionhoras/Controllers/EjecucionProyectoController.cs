@@ -30,9 +30,16 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> SeleccionarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            ViewBag.Proyectos = proyectos;
-            return View();
+            var idsession = HttpContext.Session.GetInt32("id");
+            if (idsession.HasValue)
+            {
+                var proyectos = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                ViewBag.Proyectos = proyectos;
+                return View();
+
+            }
+            return RedirectToAction("Index", "Home");
+              
         }
 
         [HttpPost]
@@ -44,18 +51,30 @@ namespace Proyectogestionhoras.Controllers
         }
         public IActionResult SeleccionarActividad() {
 
-            return View();
+            var idsession = HttpContext.Session.GetInt32("id");
+            if (idsession.HasValue)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
+
         }
 
         /*FORECAST INGRESOS*/
         public async Task<IActionResult> ForecastIngreso(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            var ingresos = await context.Ingresosreales.Where(x => x.Idproyecto == id).ToListAsync();
-            var flujocaja = await reporteService.ProcesarFlujoCajaPorMesAsync(id);
-            ViewBag.Ingresos = ingresos;
-            ViewBag.Proyecto = proyecto;
-            return View(flujocaja);
+            var idsession = HttpContext.Session.GetInt32("id");
+            if (idsession.HasValue)
+            {
+                var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                var ingresos = await context.Ingresosreales.Where(x => x.Idproyecto == id).ToListAsync();
+                var flujocaja = await reporteService.ProcesarFlujoCajaPorMesAsync(id);
+                ViewBag.Ingresos = ingresos;
+                ViewBag.Proyecto = proyecto;
+                return View(flujocaja);
+
+            }
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -152,73 +171,85 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> PagosDistribucionHH(int? idproyecto, int? estado)
         {
-            var distribucion = await ejecucionService.ObtenerDistribucionHH(idproyecto,estado);
-            return View(distribucion);
+            var idsession = HttpContext.Session.GetInt32("id");
+            if (idsession.HasValue)
+            {
+                var distribucion = await ejecucionService.ObtenerDistribucionHH(idproyecto, estado);
+                return View(distribucion);
+
+            }
+            return RedirectToAction("Index", "Home");
         }
 
 
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-            var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
-            var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == id).OrderBy(s=>s.Estado !="Forecast").ThenBy(s=>s.Fecha).ToListAsync();
-            var gastosejecucion = await context.Gastosejecucions.Where(s => s.Idproyecto == id).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
-            var servicios = await GetServicios();
-            var gastos = await GetGastos();
-            var proveedoresservicios = await GetProveedoresServicios();
-            var proveedoresgastos = await GetProveedoresGastos();
-            var gastoshh = await ejecucionService.ObtenerGastosHH(id);
-            ViewBag.prueba = await ejecucionService.ObtenerDistribucionHH(id,null);
-            var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == id).ToListAsync();
-            var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(id);
-            var gastosproyectados = await proyectoService.ObtenerGastosProyectos(id);
-            ViewBag.Proyecto = proyecto;
-            ViewBag.ServiciosEjecucion = serviciosejecucion;
-            ViewBag.GastosEjecucion = gastosejecucion;
-            ViewBag.Servicios = servicios;
-            ViewBag.Gastos = gastos;
-            ViewBag.Proveedores = proveedoresservicios;
-            ViewBag.ProGastos = proveedoresgastos;
-            ViewBag.GastosHH = gastoshh;
-            ViewBag.GastosRecursos = datosgastosrecursos;
-            ViewBag.ServiciosProyectos = serviciosproyectados;
-            ViewBag.GastosProyectos = gastosproyectados;
+            var idsession = HttpContext.Session.GetInt32("id");
+            if (idsession.HasValue)
+            {
+                var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == id).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
+                var gastosejecucion = await context.Gastosejecucions.Where(s => s.Idproyecto == id).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
+                var servicios = await GetServicios();
+                var gastos = await GetGastos();
+                var proveedoresservicios = await GetProveedoresServicios();
+                var proveedoresgastos = await GetProveedoresGastos();
+                var gastoshh = await ejecucionService.ObtenerGastosHH(id);
+                ViewBag.prueba = await ejecucionService.ObtenerDistribucionHH(id, null);
+                var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == id).ToListAsync();
+                var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(id);
+                var gastosproyectados = await proyectoService.ObtenerGastosProyectos(id);
+                ViewBag.Proyecto = proyecto;
+                ViewBag.ServiciosEjecucion = serviciosejecucion;
+                ViewBag.GastosEjecucion = gastosejecucion;
+                ViewBag.Servicios = servicios;
+                ViewBag.Gastos = gastos;
+                ViewBag.Proveedores = proveedoresservicios;
+                ViewBag.ProGastos = proveedoresgastos;
+                ViewBag.GastosHH = gastoshh;
+                ViewBag.GastosRecursos = datosgastosrecursos;
+                ViewBag.ServiciosProyectos = serviciosproyectados;
+                ViewBag.GastosProyectos = gastosproyectados;
 
-            var serviciosreales = from serejecucucion in serviciosejecucion
-                                  group serejecucucion by new { serejecucucion.Idservicio, serejecucucion.Estado } into grupo
-                                  select new
-                                  {
-                                      Idservicio = grupo.Key.Idservicio,
-                                      Estado = grupo.Key.Estado,
-                                      TotalMonto = grupo.Sum(x => x.Monto)
-                                  };
+                var serviciosreales = from serejecucucion in serviciosejecucion
+                                      group serejecucucion by new { serejecucucion.Idservicio, serejecucucion.Estado } into grupo
+                                      select new
+                                      {
+                                          Idservicio = grupo.Key.Idservicio,
+                                          Estado = grupo.Key.Estado,
+                                          TotalMonto = grupo.Sum(x => x.Monto)
+                                      };
 
-            
-            ViewBag.ServiciosTotalesPagados = serviciosreales
-                .Where(x => x.Estado == "Pagada")
-                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
 
-            ViewBag.ServiciosTotalesForecast = serviciosreales
-                .Where(x => x.Estado == "Forecast")
-                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+                ViewBag.ServiciosTotalesPagados = serviciosreales
+                    .Where(x => x.Estado == "Pagada")
+                    .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
 
-            var gastosTotales = from gasejecucion in gastosejecucion
-                                group gasejecucion by new { gasejecucion.Idgasto,gasejecucion.Estado} into grupo
-                                select new
-                                {
-                                    IdGasto = grupo.Key.Idgasto,
-                                    Estado = grupo.Key.Estado,
-                                    TotalMonto = grupo.Sum(x => x.Monto)
-                                };
+                ViewBag.ServiciosTotalesForecast = serviciosreales
+                    .Where(x => x.Estado == "Forecast")
+                    .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
 
-            ViewBag.GastosTotalesPagados = gastosTotales
-                .Where(x => x.Estado == "Pagada")
-                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
+                var gastosTotales = from gasejecucion in gastosejecucion
+                                    group gasejecucion by new { gasejecucion.Idgasto, gasejecucion.Estado } into grupo
+                                    select new
+                                    {
+                                        IdGasto = grupo.Key.Idgasto,
+                                        Estado = grupo.Key.Estado,
+                                        TotalMonto = grupo.Sum(x => x.Monto)
+                                    };
 
-            ViewBag.GastosTotalesForecast = gastosTotales
-                .Where(x => x.Estado == "Forecast")
-                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
+                ViewBag.GastosTotalesPagados = gastosTotales
+                    .Where(x => x.Estado == "Pagada")
+                    .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
 
-            return View();
+                ViewBag.GastosTotalesForecast = gastosTotales
+                    .Where(x => x.Estado == "Forecast")
+                    .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
+
+                return View();
+
+            }
+            return RedirectToAction("Index", "Home");
         }
 
 
