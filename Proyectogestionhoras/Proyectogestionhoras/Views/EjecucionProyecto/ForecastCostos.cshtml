@@ -545,7 +545,7 @@
                                         <input type="hidden" name="Tiporecursostaff" value="@gasto.tiporecurso" />
                                         <input type="hidden" name="Messtaff" value="@gasto.mes" />
                                         <input type="hidden" name="Aniostaff" value="@gasto.anio" />
-                                        <input type="hidden" name="Subtotalstaff" value="@gasto.costorecursosocio" />
+                                        <input type="hidden" name="Subtotalstaff" value="@gasto.costorecurstaff" />
                                         <input type="hidden" name="HHtotalesstaff" value="@gasto.totalhh" />
 
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
@@ -1562,7 +1562,8 @@
                 event.target.value = value;
             }
 
-            updateMonto(event.target);
+            updateMontoGeneral(event.target);
+            //updateMontoStaff(event.target);
             updateTotal();
         }
 
@@ -1576,21 +1577,34 @@
             event.target.value = value;
         }
 
-        function updateMonto(reajusteInput) {
-            const row = reajusteInput.closest('tr');
-            const reajusteValue = parseCurrency(reajusteInput.value);
-            const subtotalValue = parseCurrency(row.querySelector('input[name*="Subtotal"]').value);
-            const montoInput = row.querySelector('input[name*="Monto"]');
+          function updateMontoGeneral(reajusteInput) {
+        const row = reajusteInput.closest('tr');
+        const name = reajusteInput.name;
 
-            const total = reajusteValue + subtotalValue;
-            montoInput.value = total.toLocaleString('es-CL');
-        }
+        const isStaff = name.includes('Reajustestaff');
 
-        const reajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
+        const reajusteValue = parseCurrency(reajusteInput.value);
+        const subtotalInputName = isStaff ? 'Subtotalstaff' : 'Subtotal';
+        const montoInputName = isStaff ? 'Montostaff' : 'Monto';
 
-        reajusteInputs.forEach(input => {
-            input.addEventListener('input', formatCurrency);
+        const subtotalValue = parseCurrency(row.querySelector(`input[name*="${subtotalInputName}"]`).value);
+        const montoInput = row.querySelector(`input[name*="${montoInputName}"]`);
+
+        const total = reajusteValue + subtotalValue;
+        montoInput.value = total.toLocaleString('es-CL');
+    }
+
+    
+    const allReajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
+
+    allReajusteInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+            formatCurrency(e);           
+            updateMontoGeneral(input);  
         });
+    });
+
+
 
         function parseCurrency(value) {
             return parseInt(value.replace(/\./g, ''), 10) || 0;
@@ -1654,11 +1668,11 @@
 
             document.getElementById('totalCostos').textContent = totalCostos.toLocaleString('es-CL');
         }
-
+        
 
         function cleanInputsOnSubmit(event) {
 
-            const inputs = event.target.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"], input[name*="Reajuste"], input[name*="Monto"]');
+            const inputs = event.target.querySelectorAll('input[name*="montoservicio"], input[name*="montogasto"], input[name*="Reajuste"], input[name*="Monto"],input[name*="Montostaff"]');
 
             inputs.forEach(input => {
 
