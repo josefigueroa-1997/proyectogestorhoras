@@ -56,7 +56,7 @@
                         <th class="p-2 border border-gray-300 text-left">Monto</th>
                         <th class="p-2 border border-gray-300 text-left">Fecha</th>
                         <th class="p-2 border border-gray-300 text-left">Estado</th>
-                        <th class="p-2 border border-gray-300 text-left">EstadoVenta</th>
+                        
                         <th class="p-2 border border-gray-300 text-left">Glosa</th>
                         <th class="p-2 border border-gray-300 text-left">Tipo</th>
                         <th class="p-2 border border-gray-300 text-left">Cuenta</th>
@@ -76,7 +76,7 @@
                             <td class="p-2 border border-gray-300 text-left">@item.Monto.ToString("C")</td>
                             <td class="p-2 border border-gray-300 text-left">@item.Fecha.ToString("dd-MM-yyyy")</td>
                             <td class="p-2 border border-gray-300 text-left">@item.Estado</td>
-                            <td class="p-2 border border-gray-300 text-left">@item.EstadoVenta</td>
+                            
                             <td class="p-2 border border-gray-300 text-left">@item.Glosa</td>
                             <td class="p-2 border border-gray-300 text-left">@item.Tipo</td>
                             <td class="cuenta-cell"></td>
@@ -87,7 +87,7 @@
                                 <input name="Monto" type="hidden" value="@item.Monto" />
                                 <input name="Fecha" type="hidden" value="@item.Fecha" />
                                 <input name="Estado" type="hidden" value="@item.Estado" />
-                                <input name="EstadoVenta" type="hidden" value="@item.EstadoVenta" />
+                               
                                 <input name="Glosa" type="hidden" value="@item.Glosa" />
                                 <input name="Tipo" type="hidden" value="@item.Tipo" />
 
@@ -241,8 +241,8 @@
             const nombreEgreso = cell.textContent.trim();
             const row = cell.parentElement;
             const egresoIdContainer = row.querySelector('.egreso-id-container');
-            const cuentaCell = row.querySelector('td:nth-child(10)');
-            const tipoCell = row.querySelector('td:nth-child(9)');
+            const cuentaCell = row.querySelector('td:nth-child(9)');
+            const tipoCell = row.querySelector('td:nth-child(8)');
             if (nombreEgreso) {
                 const tipo = tipoCell ? tipoCell.textContent.trim() : "";
               

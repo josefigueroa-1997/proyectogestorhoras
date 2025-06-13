@@ -37,7 +37,7 @@ namespace Proyectogestionhoras.Services
                         Monto = egreso.Monto,
                         Observacion = egreso.Observacion,
                         Estado = egreso.Estado,
-                        Venta = egreso.Venta,
+                        Venta = "Vendido",
                         Tiposervicio = egreso.Tiposervicio
                     });
                 }
@@ -52,7 +52,7 @@ namespace Proyectogestionhoras.Services
                         Monto = egreso.Monto,
                         Observacion = egreso.Observacion,
                         Estado = egreso.Estado,
-                        Venta = egreso.Venta
+                        Venta = "Vendido"
                     });
                 }
             }
@@ -87,7 +87,7 @@ namespace Proyectogestionhoras.Services
                         Montoclp = ingreso.Monto,
                         Iva = ingreso.iva,
                         Estado = ingreso.Estado,
-                        Venta = ingreso.Venta,
+                        Venta = "Vendido",
                         Observacion = ingreso.Observacion,
                         Montous = 0,
                         Tc = 0,

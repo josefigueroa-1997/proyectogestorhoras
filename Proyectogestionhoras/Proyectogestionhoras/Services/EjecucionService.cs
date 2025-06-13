@@ -63,7 +63,7 @@ namespace Proyectogestionhoras.Services
                             ingresoExistente.Montoclp = ingreso.Montoclp;
                             ingresoExistente.Iva = ingreso.Iva;
                             ingresoExistente.Estado = ingreso.Estado;
-                            ingresoExistente.Venta = ingreso.Venta;
+                            
                             ingresoExistente.Idcuenta = ingreso.Idcuenta;
                             ingresoExistente.FechaPago = ingreso.FechaPago;
                             ingresoExistente.Observacion = ingreso.Observacion;
@@ -84,7 +84,7 @@ namespace Proyectogestionhoras.Services
                             Montoclp = ingreso.Montoclp,
                             Iva = ingreso.Iva,
                             Estado = ingreso.Estado,
-                            Venta = ingreso.Venta,
+                            Venta = "Vendido",
                             Idcuenta = ingreso.Idcuenta,
                             FechaPago = ingreso.FechaPago,
                             Observacion = ingreso.Observacion
@@ -145,7 +145,7 @@ namespace Proyectogestionhoras.Services
                         servicioExistente.Monto = servicio.Monto;
                         servicioExistente.Observacion = servicio.Observacion;
                         servicioExistente.Estado = servicio.Estado;
-                        servicioExistente.Venta = servicio.Venta;
+                        
                         servicioExistente.Tiposervicio = servicio.Tiposervicio;
                     }
                 }
@@ -159,7 +159,7 @@ namespace Proyectogestionhoras.Services
                     Monto = servicio.Monto,
                     Observacion = servicio.Observacion,
                     Estado = servicio.Estado,
-                    Venta = servicio.Venta,
+                    Venta = "Vendido",
                     Tiposervicio = servicio.Tiposervicio,
                 }).ToList();
 
@@ -223,7 +223,7 @@ namespace Proyectogestionhoras.Services
                         gastoExistente.Fecha = gasto.Fecha;
                         gastoExistente.Observacion = gasto.Observacion;
                         gastoExistente.Estado = gasto.Estado;
-                        gastoExistente.Venta = gasto.Venta;
+                        
                     }
                 }
 
@@ -238,7 +238,7 @@ namespace Proyectogestionhoras.Services
                     Fecha = gasto.Fecha,
                     Observacion = gasto.Observacion,
                     Estado = gasto.Estado,
-                    Venta = gasto.Venta,
+                    Venta = "Vendido",
                 }).ToList();
 
                 await context.Gastosejecucions.AddRangeAsync(gastosParaInsertar);
@@ -263,7 +263,22 @@ namespace Proyectogestionhoras.Services
                 if (gastosHH == null || !gastosHH.Any())
                     return;
 
-                
+
+
+                var idsGastoshhEliminados = gastosHH.Where(g => g.EsEliminado).Select(g => g.IdGastoHH)
+                .Where(id => id > 0)
+                .ToList();
+
+                if (idsGastoshhEliminados.Any())
+                {
+                    var gastosParaEliminar = await context.Gastoshhhejecucions
+                                                          .Where(g => idsGastoshhEliminados.Contains(g.Id))
+                                                          .ToListAsync();
+                    context.Gastoshhhejecucions.RemoveRange(gastosParaEliminar);
+                }
+
+
+
                 var idsExistentes = gastosHH.Select(g => g.IdGastoHH).Where(id => id != null).ToList();
                 var registrosExistentes = await context.Gastoshhhejecucions
                                                        .Where(g => idsExistentes.Contains(g.Id))
@@ -273,8 +288,12 @@ namespace Proyectogestionhoras.Services
 
                 foreach (var gasto in gastosHH)
                 {
+                    if(gasto.Estado != 2)
+                    {
+                        gasto.Estado = gasto.Fechapago != null ? 1 : 0;
+                    }
                     gasto.Reajuste ??= 0;
-                    gasto.Estado = gasto.Fechapago != null ? 1 : 0;
+                    
                     gasto.Monto = gasto.Subtotal + gasto.Reajuste;
 
                     
@@ -460,6 +479,7 @@ namespace Proyectogestionhoras.Services
                         totalhh = grp.Sum(x => x.g.Hhtotales ?? 0),
                         costorecursosocio = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.hc.Costosocio),
                         costorecurstaff = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.hc.Costostaff),
+                        costohhsocio = grp.Key.Costosocio,
                         idgastohh = grp.Key.Id,
                         reajuste = grp.Key.Reajuste ?? 0,
                         monto = grp.Key.Monto ?? 0,

@@ -56,7 +56,7 @@ namespace Proyectogestionhoras.Controllers
                     ExcelWorksheet hoja = package.Workbook.Worksheets[0];
                      int totalFilas = hoja.Dimension.Rows;
                     int totalColumnas = hoja.Dimension.Columns;
-                    if (totalColumnas != 9)
+                    if (totalColumnas != 8)
                     {
 
                         TempData["ExcelErrorEgreso"] = "El Documento Excel que usted ha subido no tiene un formato compatible.Por favor, ingrese uno correcto.";
@@ -76,9 +76,9 @@ namespace Proyectogestionhoras.Controllers
                          var montoTexto = hoja.Cells[fila, 4].Text;
                          var fechaTexto = hoja.Cells[fila, 5].Text;
                          var estado = hoja.Cells[fila, 6].Text;
-                         var estadoventa = hoja.Cells[fila, 7].Text;
-                         var glosa = hoja.Cells[fila, 8].Text;
-                         var tipo = hoja.Cells[fila, 9].Text;
+                         
+                         var glosa = hoja.Cells[fila, 7].Text;
+                         var tipo = hoja.Cells[fila, 8].Text;
 
                          if (string.IsNullOrWhiteSpace(proyecto) &&
                              string.IsNullOrWhiteSpace(servicio) &&
@@ -86,12 +86,17 @@ namespace Proyectogestionhoras.Controllers
                              string.IsNullOrWhiteSpace(montoTexto) &&
                              string.IsNullOrWhiteSpace(fechaTexto) &&
                              string.IsNullOrWhiteSpace(estado) &&
-                             string.IsNullOrWhiteSpace(estadoventa) &&
+                             
                              string.IsNullOrWhiteSpace(glosa) &&
                              string.IsNullOrWhiteSpace(tipo) )
                              continue;
-
-                         if (decimal.TryParse(montoTexto, out decimal monto) &&
+                        var tiposPermitidos = new List<string> { "Otros", "Consultores Externos", "Gastos" };
+                        if (!tiposPermitidos.Contains(tipo))
+                        {
+                            TempData["ExcelErrorEgreso"] = $"El tipo '{tipo}' en la fila {fila} no es válido. Solo se permiten: Otros, Consultores Externos, Gastos.";
+                            return RedirectToAction("Index", "Home");
+                        }
+                        if (decimal.TryParse(montoTexto, out decimal monto) &&
                              DateTime.TryParse(fechaTexto, out DateTime fecha))
                          {
                              listaServicios.Add(new EgresosExcelDTO
@@ -102,7 +107,7 @@ namespace Proyectogestionhoras.Controllers
                                  Monto = monto,
                                  Fecha = fecha,
                                  Estado = estado,
-                                 EstadoVenta = estadoventa,
+                                 
                                  Glosa = glosa,
                                  Tipo = tipo,
                              });
@@ -137,7 +142,7 @@ namespace Proyectogestionhoras.Controllers
                 var montos = form["Monto"].ToList();
                 var fechas = form["Fecha"].ToList();
                 var estados = form["Estado"].ToList();
-                var estadosVenta = form["EstadoVenta"].ToList();
+                
                 var glosas = form["Glosa"].ToList();
                 var tipos = form["Tipo"].ToList();
                 var idsProyecto = form["ProyectoId"].ToList();
@@ -148,7 +153,7 @@ namespace Proyectogestionhoras.Controllers
                 
                 
                 if (new[] { numProyectos.Count, egresosNombres.Count, proveedores.Count,
-                   montos.Count, fechas.Count, estados.Count, estadosVenta.Count,
+                   montos.Count, fechas.Count, estados.Count, 
                    glosas.Count, tipos.Count, idsProyecto.Count, idsEgreso.Count,
                    idsProveedor.Count }.Distinct().Count() > 1)
                 {
@@ -199,7 +204,7 @@ namespace Proyectogestionhoras.Controllers
                         Fecha = fecha,
                         Observacion = glosas[i],
                         Estado = estados[i],
-                        Venta = estadosVenta[i],
+                      
                         Tiposervicio = tipos[i]
                     };
 
@@ -284,7 +289,7 @@ namespace Proyectogestionhoras.Controllers
                     ExcelWorksheet hoja = package.Workbook.Worksheets[0];
                     int totalFilas = hoja.Dimension.Rows;
                     int totalColumnas = hoja.Dimension.Columns;
-                    if (totalColumnas != 9)
+                    if (totalColumnas != 8)
                     {
 
                         TempData["ExcelErrorIngreso"] = "El Documento Excel que usted ha subido no tiene un formato compatible.Por favor, ingrese uno correcto.";
@@ -305,8 +310,8 @@ namespace Proyectogestionhoras.Controllers
                         var montotexto = hoja.Cells[fila, 5].Text;
                         var ivatexto = hoja.Cells[fila, 6].Text;
                         var estado = hoja.Cells[fila, 7].Text;
-                        var estadoventa = hoja.Cells[fila, 8].Text;
-                        var glosa = hoja.Cells[fila, 9].Text;
+                       
+                        var glosa = hoja.Cells[fila, 8].Text;
 
                         if (string.IsNullOrWhiteSpace(proyecto) &&
                             string.IsNullOrWhiteSpace(numdocumento) &&
@@ -315,7 +320,7 @@ namespace Proyectogestionhoras.Controllers
                             string.IsNullOrWhiteSpace(montotexto) &&
                             string.IsNullOrWhiteSpace(ivatexto) &&
                             string.IsNullOrWhiteSpace(estado) &&
-                            string.IsNullOrWhiteSpace(estadoventa) &&
+                            
                             string.IsNullOrWhiteSpace(glosa))
                             continue;
 
@@ -333,7 +338,7 @@ namespace Proyectogestionhoras.Controllers
                                 Monto = monto,
                                 iva = iva,
                                 Estado = estado,
-                                EstadoVenta = estadoventa,
+                              
                                 Glosa = glosa,
                                 
                             });
@@ -380,7 +385,7 @@ namespace Proyectogestionhoras.Controllers
                 var ivas = form["iva"].ToList();
                 var Fechapagos = form["Fechapago"].ToList();
                 var estados = form["Estado"].ToList();
-                var estadosVenta = form["EstadoVenta"].ToList();
+               
                 var glosas = form["Glosa"].ToList();
                 var idsProyecto = form["ProyectoId"].ToList();
               
@@ -389,7 +394,7 @@ namespace Proyectogestionhoras.Controllers
 
 
                 if (new[] { numProyectos.Count, numdocumentos.Count, fechaemisiones.Count,
-                   montos.Count, ivas.Count, estados.Count, estadosVenta.Count,
+                   montos.Count, ivas.Count, estados.Count, 
                    glosas.Count, Fechapagos.Count, idsProyecto.Count}.Distinct().Count() > 1)
                 {
                     return BadRequest("Los datos recibidos no son consistentes");
@@ -440,7 +445,7 @@ namespace Proyectogestionhoras.Controllers
                         Fechapago = fechapago,
                         Observacion = glosas[i],
                         Estado = estados[i],
-                        Venta = estadosVenta[i],
+                        
                         
                     };
 

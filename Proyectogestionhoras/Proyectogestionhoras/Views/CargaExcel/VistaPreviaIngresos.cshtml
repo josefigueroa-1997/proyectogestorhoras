@@ -56,7 +56,6 @@
                         <th class="p-2 border border-gray-300 text-left">Monto</th>
                         <th class="p-2 border border-gray-300 text-left">IVA</th>
                         <th class="p-2 border border-gray-300 text-left">Estado</th>
-                        <th class="p-2 border border-gray-300 text-left">EstadoVenta</th>
                         <th class="p-2 border border-gray-300 text-left">Glosa</th>
 
 
@@ -75,7 +74,6 @@
                             <td class="p-2 border border-gray-300 text-left"> @(item.Monto != 0 ? String.Format("{0:N0}", item.Monto) : "")</td>
                             <td class="p-2 border border-gray-300 text-left"> @(item.iva != 0 ? String.Format("{0:N0}", item.iva) : "")</td>
                             <td class="p-2 border border-gray-300 text-left">@item.Estado</td>
-                            <td class="p-2 border border-gray-300 text-left">@item.EstadoVenta</td>
                             <td class="p-2 border border-gray-300 text-left">@item.Glosa</td>
                           
                             <td style="display:none;">
@@ -86,7 +84,6 @@
                                 <input name="iva" type="hidden" value="@item.iva" />
                                 <input name="Fechapago" type="hidden" value="@item.Fechapago" />
                                 <input name="Estado" type="hidden" value="@item.Estado" />
-                                <input name="EstadoVenta" type="hidden" value="@item.EstadoVenta" />
                                 <input name="Glosa" type="hidden" value="@item.Glosa" />
                                 
 

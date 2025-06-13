@@ -96,8 +96,9 @@
     decimal totalserviciosproyectados = 0;
     decimal totalgastosproyectados = 0;
     decimal totalcostosproyectados = 0;
-    int idcuentasocio = 0;
-    string? cuentasocio = "";
+    int idcuentasocio = ViewBag.Idcuentasocio;
+    decimal costohhscio = ViewBag.costohhsocio;
+    string? cuentasocio = ViewBag.cuentasocio;
     int idcuentastaff = 0;
     string? cuentastaff = "";
     decimal totalsociosforecast = 0;
@@ -136,7 +137,7 @@
                     Seleccionar otro Proyecto
                 </a>
             </div>
-            <p class="form-subtitle" style="color:black;">Información del Proyecto</p> 
+            <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
 
             <input type="hidden" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
             <input type="hidden" id="centroCosto" value="@proyecto.IDCOSTO" />
@@ -215,14 +216,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.prueba != null)
+                        @if (ViewBag.GastosHH != null)
                         {
 
-                            @for (int i = 0; i < ViewBag.prueba.Count; i++)
+                            @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
                             {
 
-                                var gasto = ViewBag.prueba[i];
-                                @if (gasto.tiporecurso == "Socio")
+                                var gasto = ViewBag.GastosHH[i];
+                                @if (gasto.tiporecurso == "Socio" && gasto.estado!=2)
                                 {
 
 
@@ -235,13 +236,14 @@
 
                                         <td class="p-2 border border-gray-300 text-left">@gasto.mes/@gasto.anio</td>
                                         <input type="hidden" name="IdGastoHH" value="@gasto.idgastohh" />
-                                        @if (gasto.fechapago != null){
+                                        @if (gasto.fechapago != null)
+                                        {
                                             <td class="p-1 border border-gray-300 text-right">
                                                 <input type="date" name="Fechapago" value="@gasto.fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                             </td>
-                                           
+
                                         }
-                                       
+
                                         else
                                         {
                                             <td class="p-1 border border-gray-300 text-right">
@@ -256,10 +258,11 @@
 
                                         <td class="p-1 border border-gray-300 text-right w-20">@String.Format("{0:N2}", gasto.totalhh)</td>
                                         <td class="p-1 border border-gray-300 text-right w-25">@String.Format("{0:N0}", gasto.costorecursosocio)</td>
-                                        @if(gasto.reajuste != null){
+                                        @if (gasto.reajuste != null)
+                                        {
                                             <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",gasto.reajuste ?? "")" name="Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
                                         }
-                                        
+
                                         else
                                         {
                                             <td class="p-2 border border-gray-300 text-right"><input type="text" name="Reajuste" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
@@ -290,17 +293,9 @@
                                         {
                                             totalsocios += gasto.monto ?? 0;
                                         }
-                                        else
-                                        {
-                                            totalsociosforecast += gasto.monto ?? 0;
-                                        }
+                                      
 
 
-                                        @{
-
-                                            cuentasocio = gasto.cuentasocio;
-                                            idcuentasocio = gasto.idcuentasocio;
-                                        }
                                     </tr>
                                 }
                             }
@@ -317,9 +312,106 @@
 
 
 
-           
+
 
         </div>
+
+        @*HH FORECAST SOCIOS*@
+        <div class="form-group">
+
+            <p class="form-subtitle" style="color:black;">Forecast HH Socios</p>
+            <div class="overflow-x-auto">
+                <table id="tablahhSocios" class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-red-100 text-black">
+                            <th class="p-2 border border-gray-300 text-left">Fecha Pago</th>
+                            <th class="p-2 border border-gray-300 text-left">HH</th>
+                            <th class="p-2 border border-gray-300 text-left">Valor HH/Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Total</th>
+
+
+
+                            <th class="p-2 border border-gray-300 text-left">Glosa</th>
+
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Acción</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.GastosHH != null)
+                        {
+                            @foreach (var gs in ViewBag.GastosHH)
+                            {
+                                if (gs.estado == 2 && gs.tiporecurso == "Socio")
+                                {
+                                    <tr>
+                                        <td class="p-2 border border-gray-300 text-left"><input type="date" value="@gs.fechapago.ToString("yyyy-MM-dd")" name="fechahhsocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                        <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @gs.totalhh)"  name="hhsocio" class="hhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        <td class="p-2 border border-gray-300 text-right costohhsocio">
+                                            @String.Format("{0:N0}", @gs.costohhsocio)
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right"><input type="text"  value="@String.Format("{0:N0}",gs.monto ?? "")" readonly name="montohhsocio" class="montohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+
+
+
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="observacionhhsocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@gs.observacion</textarea>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right ">@gs.idcuentasocio</td>
+                                        <td class="p-2 border border-gray-300 text-right ">@gs.cuentasocio</td>
+
+                                        <td style="display:none;">
+                                            <input type="hidden" name="EliminarhhSocio" class="EliminarhhSocio" value="false" />
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarhhSocio(this)">Eliminar</button>
+                                        </td>
+
+                                    </tr>
+                                    totalsociosforecast += gs.monto;
+                                    <input type="hidden" name="Idhhsocio" value="@gs.idgastohh" />
+                                    <input type="hidden" name="estadohhsocio" value="@gs.estado" />
+                                    <input type="hidden" name="recursohhsocio" value="@gs.tiporecurso" />
+                                }
+
+                            }
+                        }
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechahhsocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text"   name="hhsocio" class="hhsocio  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                            <td class="p-2 border border-gray-300 text-right costohhsocio"> @String.Format("{0:N0}", costohhscio)</td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhsocio"  readonly name="montohhsocio" class="montohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+
+
+
+                            <td class="p-2 border border-gray-300 text-left">
+                                <textarea rows="2" name="observacionhhsocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right ">@idcuentasocio</td>
+                            <td class="p-2 border border-gray-300 text-right ">@cuentasocio</td>
+                            <td style="display:none;">
+                                <input type="hidden" name="EliminarhhSocio" class="EliminarhhSocio" value="false" />
+                            </td>
+                           
+                            <input type="hidden" name="Idhhsocio" value="" />
+                            <input type="hidden" name="estadohhsocio" value="2" />
+                            <input type="hidden" name="recursohhsocio" value="Socio" />
+                        </tr>
+
+                    </tbody>
+                </table>
+                <button id="btnAgregarhhSocio" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Forecast hh Socio</button>
+
+            </div>
+
+        </div>
+
+
+
         <div class="form-group">
 
             <p class="form-subtitle" style="color:black;">Otros Gastos Socios</p>
@@ -332,7 +424,7 @@
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                             <th class="p-2 border border-gray-300 text-left">Estado</th>
-                            <th class="p-2 border border-gray-300 text-left">Estado de Venta</th>
+
 
                             <th class="p-2 border border-gray-300 text-left">Glosa</th>
 
@@ -417,29 +509,7 @@
                                                 }
                                             </select>
                                         </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="VentaServicioSocios" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
 
-
-                                                @if (se.Venta == "No Vendido")
-                                                {
-                                                    <option value="No Vendido" selected>No Vendido</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="No Vendido">No Vendido</option>
-                                                }
-
-                                                @if (se.Venta == "Vendido")
-                                                {
-                                                    <option value="Vendido" selected>Vendido</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="Vendido">Vendido</option>
-                                                }
-                                            </select>
-                                        </td>
                                         <td class="p-2 border border-gray-300 text-left">
                                             <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
                                         </td>
@@ -478,12 +548,7 @@
                                     <option value="Pagada">Pagada</option>
                                 </select>
                             </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select name="VentaServicioSocios" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                    <option value="No Vendido" selected>No Vendido</option>
-                                    <option value="Vendido">Vendido</option>
-                                </select>
-                            </td>
+
                             <td class="p-2 border border-gray-300 text-left">
                                 <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
@@ -647,7 +712,7 @@
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                             <th class="p-2 border border-gray-300 text-left">Estado</th>
-                            <th class="p-2 border border-gray-300 text-left">Estado de Venta</th>
+
 
                             <th class="p-2 border border-gray-300 text-left">Glosa</th>
 
@@ -732,29 +797,7 @@
                                                 }
                                             </select>
                                         </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="VentaServiciohonorarios" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
 
-
-                                                @if (se.Venta == "No Vendido")
-                                                {
-                                                    <option value="No Vendido" selected>No Vendido</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="No Vendido">No Vendido</option>
-                                                }
-
-                                                @if (se.Venta == "Vendido")
-                                                {
-                                                    <option value="Vendido" selected>Vendido</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="Vendido">Vendido</option>
-                                                }
-                                            </select>
-                                        </td>
                                         <td class="p-2 border border-gray-300 text-left">
                                             <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
                                         </td>
@@ -793,12 +836,7 @@
                                     <option value="Pagada">Pagada</option>
                                 </select>
                             </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select name="VentaServiciohonorarios" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                    <option value="No Vendido" selected>No Vendido</option>
-                                    <option value="Vendido">Vendido</option>
-                                </select>
-                            </td>
+
                             <td class="p-2 border border-gray-300 text-left">
                                 <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
@@ -837,7 +875,7 @@
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                             <th class="p-2 border border-gray-300 text-left">Estado</th>
-                            <th class="p-2 border border-gray-300 text-left">Estado de Venta</th>
+
 
                             <th class="p-2 border border-gray-300 text-left">Glosa</th>
 
@@ -922,29 +960,7 @@
                                                 }
                                             </select>
                                         </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="VentaServicio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
 
-
-                                                @if (se.Venta == "No Vendido")
-                                                {
-                                                    <option value="No Vendido" selected>No Vendido</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="No Vendido">No Vendido</option>
-                                                }
-
-                                                @if (se.Venta == "Vendido")
-                                                {
-                                                    <option value="Vendido" selected>Vendido</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="Vendido">Vendido</option>
-                                                }
-                                            </select>
-                                        </td>
                                         <td class="p-2 border border-gray-300 text-left">
                                             <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@se.Observacion</textarea>
                                         </td>
@@ -983,12 +999,7 @@
                                     <option value="Pagada">Pagada</option>
                                 </select>
                             </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select name="VentaServicio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                    <option value="No Vendido" selected>No Vendido</option>
-                                    <option value="Vendido">Vendido</option>
-                                </select>
-                            </td>
+
                             <td class="p-2 border border-gray-300 text-left">
                                 <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
@@ -1024,7 +1035,7 @@
                             <th class="p-2 border border-gray-300 text-left">Monto</th>
                             <th class="p-2 border border-gray-300 text-left">FechaPago</th>
                             <th class="p-2 border border-gray-300 text-left">Estado</th>
-                            <th class="p-2 border border-gray-300 text-left">Estado de Venta</th>
+
                             <th class="p-2 border border-gray-300 text-left">Glosa</th>
                             <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
                             <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
@@ -1101,29 +1112,7 @@
                                             }
                                         </select>
                                     </td>
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <select name="ventagastos" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
 
-
-                                            @if (ge.Venta == "No Vendido")
-                                            {
-                                                <option value="No Vendido" selected>No Vendido</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="No Vendido">No Vendido</option>
-                                            }
-
-                                            @if (ge.Venta == "Vendido")
-                                            {
-                                                <option value="Vendido" selected>Vendido</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Vendido">Vendido</option>
-                                            }
-                                        </select>
-                                    </td>
                                     <td class="p-2 border border-gray-300 text-left">
                                         <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ge.Observacion</textarea>
                                     </td>
@@ -1166,12 +1155,7 @@
                                     <option value="Pagada">Pagada</option>
                                 </select>
                             </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select name="ventagastos" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                    <option value="No Vendido" selected>No Vendido</option>
-                                    <option value="Vendido">Vendido</option>
-                                </select>
-                            </td>
+
                             <td class="p-2 border border-gray-300 text-left">
                                 <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
@@ -1577,32 +1561,32 @@
             event.target.value = value;
         }
 
-          function updateMontoGeneral(reajusteInput) {
-        const row = reajusteInput.closest('tr');
-        const name = reajusteInput.name;
+        function updateMontoGeneral(reajusteInput) {
+            const row = reajusteInput.closest('tr');
+            const name = reajusteInput.name;
 
-        const isStaff = name.includes('Reajustestaff');
+            const isStaff = name.includes('Reajustestaff');
 
-        const reajusteValue = parseCurrency(reajusteInput.value);
-        const subtotalInputName = isStaff ? 'Subtotalstaff' : 'Subtotal';
-        const montoInputName = isStaff ? 'Montostaff' : 'Monto';
+            const reajusteValue = parseCurrency(reajusteInput.value);
+            const subtotalInputName = isStaff ? 'Subtotalstaff' : 'Subtotal';
+            const montoInputName = isStaff ? 'Montostaff' : 'Monto';
 
-        const subtotalValue = parseCurrency(row.querySelector(`input[name*="${subtotalInputName}"]`).value);
-        const montoInput = row.querySelector(`input[name*="${montoInputName}"]`);
+            const subtotalValue = parseCurrency(row.querySelector(`input[name*="${subtotalInputName}"]`).value);
+            const montoInput = row.querySelector(`input[name*="${montoInputName}"]`);
 
-        const total = reajusteValue + subtotalValue;
-        montoInput.value = total.toLocaleString('es-CL');
-    }
+            const total = reajusteValue + subtotalValue;
+            montoInput.value = total.toLocaleString('es-CL');
+        }
 
-    
-    const allReajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
 
-    allReajusteInputs.forEach(input => {
-        input.addEventListener('input', (e) => {
-            formatCurrency(e);           
-            updateMontoGeneral(input);  
+        const allReajusteInputs = document.querySelectorAll('input[name*="Reajuste"]');
+
+        allReajusteInputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                formatCurrency(e);
+                updateMontoGeneral(input);
+            });
         });
-    });
 
 
 
@@ -1668,7 +1652,7 @@
 
             document.getElementById('totalCostos').textContent = totalCostos.toLocaleString('es-CL');
         }
-        
+
 
         function cleanInputsOnSubmit(event) {
 
@@ -1818,47 +1802,42 @@
             e.preventDefault();
 
             var nuevaFila = `
-                            <tr>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <tr>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select  name="Idservicio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                                            </select>
-                                        </td>
-                                            <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                            <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                                 <td class="p-2 border border-gray-300 text-left">
-                                                <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                    <option value="Forecast" selected>Forecast</option>
-                                                    <option value="Pagada">Pagada</option>
                                                 </select>
                                             </td>
-                                           <td class="p-2 border border-gray-300 text-left">
-                                            <select name="VentaServicio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                <option value="No Vendido" selected>No Vendido</option>
-                                                <option value="Vendido">Vendido</option>
-                                            </select>
-                                           </td>
-                                                <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                            </td>
-                                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
-                                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
-                                             <td style="display:none;">
-                                                    <input type="hidden" name="EliminarServicioOtro" class="EliminarServicioOtro" value="false" />
-                                                </td>
-                                           <td style="display:none">
-                                    <input type="text" class="idsegmentoservicio" name="idsegmentoserviciootro" />
-                                </td>
-                                            <input type="hidden" name="IdServicioReal" value="" />
-                                                <input type="hidden" name="Tiposervicio" value="Otros" />
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select  name="Idproveedor" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-                                    </tr>
-                    `;
+                                                </select>
+                                            </td>
+                                                <td class="p-2 border border-gray-300 text-right"><input  type="text" id="montoservicio" name="montoservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                                <td class="p-2 border border-gray-300 text-left"><input  type="date" name="fechaservicio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                                     <td class="p-2 border border-gray-300 text-left">
+                                                    <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                                        <option value="Forecast" selected>Forecast</option>
+                                                        <option value="Pagada">Pagada</option>
+                                                    </select>
+                                                </td>
+
+                                                    <td class="p-2 border border-gray-300 text-left">
+                                                    <textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                                </td>
+                                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly/></td>
+                                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly/></td>
+                                                 <td style="display:none;">
+                                                        <input type="hidden" name="EliminarServicioOtro" class="EliminarServicioOtro" value="false" />
+                                                    </td>
+                                               <td style="display:none">
+                                        <input type="text" class="idsegmentoservicio" name="idsegmentoserviciootro" />
+                                    </td>
+                                                <input type="hidden" name="IdServicioReal" value="" />
+                                                    <input type="hidden" name="Tiposervicio" value="Otros" />
+
+                                        </tr>
+                        `;
 
             $('#tablaServicios tbody').append(nuevaFila);
 
@@ -1883,51 +1862,122 @@
             e.preventDefault();
 
             var nuevaFila = `
-                                   <tr>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                <option value="Forecast" selected>Forecast</option>
-                                                <option value="Pagada">Pagada</option>
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="VentaServicioSocios" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                <option value="No Vendido" selected>No Vendido</option>
-                                                <option value="Vendido">Vendido</option>
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
-                                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
-                                            <td style="display:none;">
-                                                    <input type="hidden" name="EliminarServicioSocio" class="EliminarServicioSocio" value="false" />
-                                                </td>
-                                        <td style="display:none">
-                                    <input type="text" class="idsegmentoservicio" name="idsegmentoserviciosocio" />
-                                </td>
-                                        <input type="hidden" name="IdServicioRealsocio" value="" />
-                                        <input type="hidden" name="Tiposerviciosocio" value="Socios" />
+                                       <tr>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                </select>
+                                            </td>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                </select>
+                                            </td>
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                                    <option value="Forecast" selected>Forecast</option>
+                                                    <option value="Pagada">Pagada</option>
+                                                </select>
+                                            </td>
 
-                                    </tr>
-                        `;
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                            </td>
+                                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                                <td style="display:none;">
+                                                        <input type="hidden" name="EliminarServicioSocio" class="EliminarServicioSocio" value="false" />
+                                                    </td>
+                                            <td style="display:none">
+                                        <input type="text" class="idsegmentoservicio" name="idsegmentoserviciosocio" />
+                                    </td>
+                                            <input type="hidden" name="IdServicioRealsocio" value="" />
+                                            <input type="hidden" name="Tiposerviciosocio" value="Socios" />
+
+                                        </tr>
+                            `;
 
             $('#tablaGastosSocios tbody').append(nuevaFila);
 
             var lastRow = $('#tablaGastosSocios tbody tr:last');
             rellenarSelectServicios(lastRow.find('.serviciosSelect'));
             rellenarSelectProveedores(lastRow.find('.proveedorSelect'));
+        });
+    });
+
+    /*agregar hh socio*/
+    $(document).ready(function () {
+        function parseNumber(str) {
+            return parseFloat(str.replace(/\./g, '').replace(',', '.')) || 0;
+        }
+
+        
+        function formatNumber(num) {
+            return num.toLocaleString('es-CL', { minimumFractionDigits: 0 });
+        }
+
+
+        function calcularMontosHHsocio() {
+            $('#tablahhSocios tbody tr').each(function () {
+                const row = $(this);
+
+                const hhInput = row.find('.hhsocio');
+                const montoInput = row.find('.montohhsocio');
+                const costoTd = row.find('.costohhsocio');
+
+                const hhRaw = hhInput.val().trim();
+                const costoTexto = costoTd.text().trim();
+
+                // Solo calculamos si hh no está vacío
+                if (hhRaw !== "") {
+                    const hhValue = parseNumber(hhRaw);
+                    const costoValue = parseNumber(costoTexto);
+
+                    const total = hhValue * costoValue;
+                    montoInput.val(formatNumber(total));
+                }
+                // Si hh está vacío, no tocar el valor actual de monto
+            });
+        }
+
+
+        
+        $(document).on('input', '.hhsocio', function () {
+            calcularMontosHHsocio();
+        });
+
+
+        $('#btnAgregarhhSocio').on('click', function (e) {
+            e.preventDefault();
+
+            var nuevaFila = `
+                                           <tr>
+                                                   <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechahhsocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                    <td class="p-2 border border-gray-300 text-right"><input type="text"   name="hhsocio" class="hhsocio  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        <td class="p-2 border border-gray-300 text-right costohhsocio"> @String.Format("{0:N0}", @costohhscio)</td>
+                                    <td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhsocio"  readonly name="montohhsocio" class="montohhsocio  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+
+
+
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <textarea rows="2" name="observacionhhsocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right ">@idcuentasocio</td>
+                                <td class="p-2 border border-gray-300 text-right ">@cuentasocio</td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="EliminarhhSocio" class="EliminarhhSocio" value="false" />
+                                </td>
+
+                                <input type="hidden" name="Idhhsocio" value="" />
+                                     <input type="hidden" name="estadohhsocio" value="2" />
+                                     <input type="hidden" name="recursohhsocio" value="Socio" />
+                                            </tr>
+                                `;
+
+            $('#tablahhSocios tbody').append(nuevaFila);
+
+            var lastRow = $('#tablahhSocios tbody tr:last');
+          
         });
     });
     /*honorarios externos */
@@ -1945,45 +1995,40 @@
             e.preventDefault();
 
             var nuevaFila = `
-                                       <tr>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="Idserviciohonorario" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="Idproveedorhonorario" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                        <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="Estadohonorario" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                <option value="Forecast" selected>Forecast</option>
-                                                <option value="Pagada">Pagada</option>
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <select name="VentaServiciohonorarios" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                <option value="No Vendido" selected>No Vendido</option>
-                                                <option value="Vendido">Vendido</option>
-                                            </select>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-left">
-                                            <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                        </td>
-                                        <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
-                                        <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
-                                            <td style="display:none;">
-                                        <input type="hidden" name="EliminarServicioHonorario" class="EliminarServicioHonorario" value="false" />
-                                    </td>
-                                          <td style="display:none">
-                                    <input type="text" class="idsegmentoservicio" name="idsegmentoserviciohonorario" />
-                                </td>
-                                        <input type="hidden" name="IdServicioRealhonorario" value="" />
-                                        <input type="hidden" name="Tiposerviciohonorario" value="Consultores Externos" />
+                                           <tr>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select name="Idserviciohonorario" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                </select>
+                                            </td>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select name="Idproveedorhonorario" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                </select>
+                                            </td>
+                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciohonorario" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <select name="Estadohonorario" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                                    <option value="Forecast" selected>Forecast</option>
+                                                    <option value="Pagada">Pagada</option>
+                                                </select>
+                                            </td>
 
-                                    </tr>
-                            `;
+                                            <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="observacionserviciohonorario" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                            </td>
+                                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
+                                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
+                                                <td style="display:none;">
+                                            <input type="hidden" name="EliminarServicioHonorario" class="EliminarServicioHonorario" value="false" />
+                                        </td>
+                                              <td style="display:none">
+                                        <input type="text" class="idsegmentoservicio" name="idsegmentoserviciohonorario" />
+                                    </td>
+                                            <input type="hidden" name="IdServicioRealhonorario" value="" />
+                                            <input type="hidden" name="Tiposerviciohonorario" value="Consultores Externos" />
+
+                                        </tr>
+                                `;
 
             $('#tablaHonorarios tbody').append(nuevaFila);
 
@@ -2139,56 +2184,51 @@
 
 
             var nuevaFila = `
-                        <tr>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="" disabled selected>Seleccione un gasto</option>
-                                </select>
-                            </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                 <select name="idproveedorgastos" class="proveedorGastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="" disabled selected>Seleccione un proveedor</option>
-                                </select>
-                            </td>
-                            <td class="p-2 border border-gray-300 text-right">
-                                <input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-                            </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
-                            </td>
-                                 <td class="p-2 border border-gray-300 text-left">
-                                            <select name="EstadoGasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                <option value="Forecast" selected>Forecast</option>
-                                                <option value="Pagada">Pagada</option>
-                                            </select>
-                                        </td>
-
+                            <tr>
                                 <td class="p-2 border border-gray-300 text-left">
-                                        <select name="ventagastos" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                            <option value="No Vendido" selected>No Vendido</option>
-                                            <option value="Vendido">Vendido</option>
-                                        </select>
-                                    </td>
-                                 <td class="p-2 border border-gray-300 text-left">
-                                            <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                        </td>
-                            <td class="p-2 border border-gray-300 text-right">
-                                <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly />
-                            </td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly />
-                            </td>
-                                <td style="display:none;">
-                                                <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                    <select name="idgastos" class="gastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="" disabled selected>Seleccione un gasto</option>
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                     <select name="idproveedorgastos" class="proveedorGastosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="" disabled selected>Seleccione un proveedor</option>
+                                    </select>
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right">
+                                    <input type="text" id="montogasto" name="montogasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+                                </td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <input type="date" name="fechagasto" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+                                </td>
+                                     <td class="p-2 border border-gray-300 text-left">
+                                                <select name="EstadoGasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                                                    <option value="Forecast" selected>Forecast</option>
+                                                    <option value="Pagada">Pagada</option>
+                                                </select>
                                             </td>
-                            <td style="display:none">
-                                <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
-                            </td>
-                            <td style="display:none;">
-                                <input type="hidden" name="IdGastoReal" value="" />
-                            </td>
-                        </tr>
-                    `;
+
+
+                                     <td class="p-2 border border-gray-300 text-left">
+                                                <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                                            </td>
+                                <td class="p-2 border border-gray-300 text-right">
+                                    <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentagastos" readonly />
+                                </td>
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentagastos" readonly />
+                                </td>
+                                    <td style="display:none;">
+                                                    <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+                                                </td>
+                                <td style="display:none">
+                                    <input type="text" class="idsegmentogasto" name="idsegmentogasto" />
+                                </td>
+                                <td style="display:none;">
+                                    <input type="hidden" name="IdGastoReal" value="" />
+                                </td>
+                            </tr>
+                        `;
 
 
             $('#tablagastos tbody').append(nuevaFila);
@@ -2244,6 +2284,25 @@
 
 
     }
+
+    /*Eliminar hh Socio*/
+    function limpiarhhSocio(button) {
+
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.EliminarhhSocio');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+
+        fila.style.display = 'none';
+
+
+    }
+
+
+
     /*Eliminar Gasto*/
     function limpiarFilagasto(button) {
         var fila = button.closest('tr');
@@ -2298,10 +2357,10 @@
 
 
             let encabezado = `
-                            <tr class="bg-green-100 text-black">
-                            <th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
-                            <th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
-                            <th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
+                                <tr class="bg-green-100 text-black">
+                                <th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
+                                <th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
+                                <th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
             mesesUnicos.forEach(mes => {
                 encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
             });
@@ -2321,10 +2380,10 @@
 
 
                 let fila = `
-                            <tr>
-                                <td class="p-2 border border-gray-300 text-left">${proveedor}</td>
-                                <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
-                                <td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
+                                <tr>
+                                    <td class="p-2 border border-gray-300 text-left">${proveedor}</td>
+                                    <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
+                                    <td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
 
 
                 let totalFila = 0;
@@ -2350,8 +2409,8 @@
 
 
             let filaTotales = `
-                            <tr class="bg-green-100">
-                            <td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
+                                <tr class="bg-green-100">
+                                <td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
             totalesPorMes.forEach(totalMes => {
                 filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
             });
