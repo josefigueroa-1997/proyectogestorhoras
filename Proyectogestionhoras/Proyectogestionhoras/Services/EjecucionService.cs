@@ -480,6 +480,7 @@ namespace Proyectogestionhoras.Services
                         costorecursosocio = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.hc.Costosocio),
                         costorecurstaff = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.hc.Costostaff),
                         costohhsocio = grp.Key.Costosocio,
+                        costohhstaff = grp.Key.Costostaff,
                         idgastohh = grp.Key.Id,
                         reajuste = grp.Key.Reajuste ?? 0,
                         monto = grp.Key.Monto ?? 0,

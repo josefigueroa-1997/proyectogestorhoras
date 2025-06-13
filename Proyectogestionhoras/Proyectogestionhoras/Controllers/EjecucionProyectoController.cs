@@ -39,7 +39,7 @@ namespace Proyectogestionhoras.Controllers
 
             }
             return RedirectToAction("Index", "Home");
-              
+
         }
 
         [HttpPost]
@@ -49,7 +49,8 @@ namespace Proyectogestionhoras.Controllers
             HttpContext.Session.SetInt32("numproyecto", idproyecto);
             return RedirectToAction("SeleccionarActividad", "EjecucionProyecto");
         }
-        public IActionResult SeleccionarActividad() {
+        public IActionResult SeleccionarActividad()
+        {
 
             var idsession = HttpContext.Session.GetInt32("id");
             if (idsession.HasValue)
@@ -89,7 +90,7 @@ namespace Proyectogestionhoras.Controllers
                 var numdocumento = Request.Form["Numdocumento"];
                 var fechapago = Request.Form["FechaPago"];
                 var fechaemision = Request.Form["FechaEmision"];
-              
+
                 var Montoclplist = Request.Form["Montoclp"];
                 var Ivalist = Request.Form["Iva"];
                 var Estado = Request.Form["Estado"];
@@ -97,7 +98,7 @@ namespace Proyectogestionhoras.Controllers
                 var Observacion = Request.Form["Observacion"];
                 var idingresoreal = Request.Form["IdIngresoreal"];
                 var esliminado = Request.Form["esEliminados"];
-                
+
 
                 for (int i = 0; i < numdocumento.Count; i++)
                 {
@@ -106,16 +107,16 @@ namespace Proyectogestionhoras.Controllers
                         continue;
                     }
 
-                    
+
                     string montosclpStr = Montoclplist[i]?.ToString().Trim() ?? "0";
                     string montosivaStr = Ivalist[i]?.ToString().Trim() ?? "0";
-                   
 
 
-                    
+
+
                     decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
                     decimal.TryParse(montosivaStr.Replace(".", ""), out decimal montoiva);
-                    
+
 
 
                     int.TryParse(idingresoreal[i]?.ToString(), out int idIngresoRealParsed);
@@ -125,19 +126,19 @@ namespace Proyectogestionhoras.Controllers
                     DateTime fechaemisionParsed = DateTime.TryParse(fechaemision[i], out DateTime tempDate)
                         ? tempDate
                         : DateTime.Today;
-                    
+
 
                     var ingresoViewModel = new IngresoViewModel
                     {
                         IdIngresoreal = idIngresoRealParsed,
                         Numdocumento = numdocumento[i],
                         FechaEmision = fechaemisionParsed,
-                        FechaPago = DateTime.TryParse(fechapago[i], out DateTime fecha)? (DateTime?)fecha : null,
-                      
+                        FechaPago = DateTime.TryParse(fechapago[i], out DateTime fecha) ? (DateTime?)fecha : null,
+
                         Montoclp = montoclp,
                         Iva = montoiva,
                         Estado = Estado[i],
-                        
+
                         Idcuenta = idCuentaParsed,
                         Observacion = Observacion[i],
                         EsEliminado = esliminado[i] == "true",
@@ -150,13 +151,13 @@ namespace Proyectogestionhoras.Controllers
                 TempData["SuccessMessageIngresos"] = "Los ingresos del proyecto se han registrado y actualizado correctamente.";
                 return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al registrar/editar costos del proyecto:{e.Message}");
                 TempData["ErrorMessageIngresos"] = "Hubo un error al Registrar/Editar ingresos del proyecto.";
                 return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
             }
-           
+
         }
 
         [HttpGet]
@@ -167,7 +168,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         /*FORECAST COSTOS*/
-       
+
 
         public async Task<IActionResult> PagosDistribucionHH(int? idproyecto, int? estado)
         {
@@ -198,6 +199,9 @@ namespace Proyectogestionhoras.Controllers
                 ViewBag.Idcuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == id).Select(hc => hc.Idcuentasocio).FirstOrDefaultAsync();
                 ViewBag.cuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == id).Select(hc => hc.Cuentasocio).FirstOrDefaultAsync();
                 ViewBag.costohhsocio = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == id).Select(hc => hc.Costosocio).FirstOrDefaultAsync();
+                ViewBag.Idcuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == id).Select(hc => hc.Idcuentastaff).FirstOrDefaultAsync();
+                ViewBag.cuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == id).Select(hc => hc.Cuentastaff).FirstOrDefaultAsync();
+                ViewBag.costohhstaff = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == id).Select(hc => hc.Costostaff).FirstOrDefaultAsync();
                 var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == id).ToListAsync();
                 var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(id);
                 var gastosproyectados = await proyectoService.ObtenerGastosProyectos(id);
@@ -300,7 +304,7 @@ namespace Proyectogestionhoras.Controllers
                 var tiposervicio = Request.Form["Tiposervicio"];
                 var idsegmentootro = Request.Form["idsegmentoserviciootro"];
                 var eliminarServicioOtro = Request.Form["EliminarServicioOtro"].Select(e => e == "true").ToList();
-                
+
                 /*verificar existencia servicio otro*/
                 List<ServicioViewModel> verificarserviciootro = new List<ServicioViewModel>();
 
@@ -331,7 +335,7 @@ namespace Proyectogestionhoras.Controllers
                 var Tiposerviciosocio = Request.Form["Tiposerviciosocio"];
                 var idsegmentosocio = Request.Form["idsegmentoserviciosocio"];
                 var eliminarsocioservicio = Request.Form["EliminarServicioSocio"].Select(e => e == "true").ToList();
-                
+
                 /*verificar existencia servicio socio*/
                 List<ServicioViewModel> verificarserviciosocio = new List<ServicioViewModel>();
 
@@ -364,7 +368,7 @@ namespace Proyectogestionhoras.Controllers
                 var Tiposerviciohonorario = Request.Form["Tiposerviciohonorario"];
                 var idsegmentohonorario = Request.Form["idsegmentoserviciohonorario"];
                 var eliminarserviciohonorario = Request.Form["EliminarServicioHonorario"].Select(e => e == "true").ToList();
-                
+
                 /*verificar existencia servicio honorarios*/
                 List<ServicioViewModel> verificarserviciohonorario = new List<ServicioViewModel>();
 
@@ -387,8 +391,8 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-                var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(),  Request.Form["Tiposervicio"].ToList(), eliminarServicioOtro);
-                var serviciossocios = ProcesarServicios(Request.Form["Idserviciosocio"].ToList(), Request.Form["Idproveedorsocio"].ToList(), Request.Form["montoserviciosocio"].ToList(), Request.Form["fechaserviciosocio"].ToList(), Request.Form["IdServicioRealsocio"].ToList(), Request.Form["observacionserviciosocio"].ToList(), Request.Form["Estadosocio"].ToList(),  Request.Form["Tiposerviciosocio"].ToList(), eliminarsocioservicio);
+                var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedor"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["Estado"].ToList(), Request.Form["Tiposervicio"].ToList(), eliminarServicioOtro);
+
                 var servicioshonorarios = ProcesarServicios(Request.Form["Idserviciohonorario"].ToList(), Request.Form["Idproveedorhonorario"].ToList(), Request.Form["montoserviciohonorario"].ToList(), Request.Form["fechaserviciohonorario"].ToList(), Request.Form["IdServicioRealhonorario"].ToList(), Request.Form["observacionserviciohonorario"].ToList(), Request.Form["Estadohonorario"].ToList(), Request.Form["Tiposerviciohonorario"].ToList(), eliminarserviciohonorario);
 
 
@@ -404,7 +408,7 @@ namespace Proyectogestionhoras.Controllers
                 var observaciongasto = Request.Form["observaciongasto"];
                 var estadogasto = Request.Form["EstadoGasto"];
                 var eliminargasto = Request.Form["esEliminados"];
-               
+
                 for (int i = 0; i < idsgastos.Count; i++)
                 {
                     var montogastoStr = montogastosList[i]?.ToString().Trim() ?? "";
@@ -442,7 +446,7 @@ namespace Proyectogestionhoras.Controllers
                         Fecha = fechaGastoParsed,
                         Observacion = observaciongasto[i],
                         Estado = estadogasto[i],
-                       
+
                         EsEliminado = eliminargasto[i] == "true",
                     };
 
@@ -483,8 +487,8 @@ namespace Proyectogestionhoras.Controllers
                 var montosociolist = Request.Form["Monto"];
                 var observacionsocio = Request.Form["Observacion"];
 
-                
-               
+
+
                 List<GastosHHViewModel> gastosocioo = new List<GastosHHViewModel>();
 
                 for (int i = 0; i < idgastohhsocios.Count; i++)
@@ -512,7 +516,7 @@ namespace Proyectogestionhoras.Controllers
                         reajustesocioStr = reajustesocioStr.Replace(".", "");
                     }
 
-                   
+
 
                     decimal reajustesocio = decimal.Parse(reajustesocioStr);
 
@@ -582,92 +586,8 @@ namespace Proyectogestionhoras.Controllers
 
                 /*hh forecast socios*/
 
-                
-
-                var idhhsocios = Request.Form["Idhhsocio"];
-                var tiporecursohhsocio = Request.Form["recursohhsocio"];
-             
-                var subtotalhhsociolist = Request.Form["montohhsocio"];
-                var hhtsocioslist = Request.Form["hhsocio"];
-                var fechapagohhsocio = Request.Form["fechahhsocio"];
-                
-                var observacionhhsocio = Request.Form["observacionhhsocio"];
-                var estadohhsocio = Request.Form["estadohhsocio"];
-                var eliminarhhsocio = Request.Form["EliminarhhSocio"];
-
-
-                List<GastosHHViewModel> gastohhsocio = new List<GastosHHViewModel>();
-
-                for (int i = 0; i < fechapagohhsocio.Count; i++)
-                {
-                    if (string.IsNullOrWhiteSpace(fechapagohhsocio[i]))
-                        continue;
-                    var subtotalhhsocioStr = subtotalhhsociolist[i]?.ToString().Trim() ?? "";
-                    if (string.IsNullOrEmpty(subtotalhhsocioStr))
-                    {
-                        subtotalhhsocioStr = "0";
-                    }
-                    else
-                    {
-                        subtotalhhsocioStr = subtotalhhsocioStr.Replace(".", "");
-                    }
-
-                    decimal subtotalhhsocio = decimal.Parse(subtotalhhsocioStr);
-
-
                   
-
-
-                  
-
-
-                    var hhsocioStr = hhtsocioslist[i]?.ToString().Trim() ?? "";
-                    if (string.IsNullOrEmpty(hhsocioStr))
-                    {
-                        hhsocioStr = "0";
-                    }
-                    else
-                    {
-                        hhsocioStr = hhsocioStr.Replace(".", "");
-                    }
-
-
-
-                    decimal hhsocios = decimal.Parse(hhsocioStr);
-
-                    int idhhsocioRealParsed = string.IsNullOrWhiteSpace(idhhsocios[i])
-                                               ? 0
-                                               : int.Parse(idhhsocios[i]);
-
-
-
-                    DateTime? fechapagohhscocioParsed;
-                    if (string.IsNullOrWhiteSpace(fechapagohhsocio[i]))
-                    {
-                        fechapagohhscocioParsed = null;
-                    }
-                    else
-                    {
-                        fechapagohhscocioParsed = DateTime.Parse(fechapagohhsocio[i]);
-                    }
-                    var gastohhsocioViewModel = new GastosHHViewModel
-                    {
-                        IdGastoHH = idhhsocioRealParsed,
-                        Tiporecurso = tiporecursohhsocio[i],
-                        
-                        Fechapago = fechapagohhscocioParsed,
-                        
-                        HHtotales = hhsocios,
-                        Observacion = observacionhhsocio[i],
-                        Subtotal = subtotalhhsocio,
-                        Estado = int.Parse(estadohhsocio[i]),
-                        EsEliminado = eliminarhhsocio[i] == "true",
-                    };
-
-                    gastohhsocio.Add(gastohhsocioViewModel);
-
-
-                }
+                var gastohhsocio = ProcesarGastosHH(Request.Form,"Idhhsocio","recursohhsocio","montohhsocio","hhsocio","fechahhsocio","observacionhhsocio","estadohhsocio","EliminarhhSocio");
 
 
                 /*gastos staff*/
@@ -684,7 +604,7 @@ namespace Proyectogestionhoras.Controllers
                 var observacionstaff = Request.Form["Observacionstaff"];
 
 
-               
+
 
 
                 List<GastosHHViewModel> gastostaff = new List<GastosHHViewModel>();
@@ -783,48 +703,63 @@ namespace Proyectogestionhoras.Controllers
                 }
 
 
+
+             
+
+                var gastohhstaff = ProcesarGastosHH(
+                    Request.Form,
+                    "Idhhstaff",
+                    "recursohhstaff",
+                    "montohhstaff",
+                    "hhstaff",
+                    "fechahhstaff",
+                    "observacionhhstaff",
+                    "estadohhstaff",
+                    "EliminarhhStaff"
+                );
+
+
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 await ejecucionService.GestorServiciosReales(idproyecto, servicios);
-                await ejecucionService.GestorServiciosReales(idproyecto, serviciossocios);
                 await ejecucionService.GestorServiciosReales(idproyecto, servicioshonorarios);
                 await ejecucionService.GestorGastosReales(idproyecto, gastos);
                 await ejecucionService.GestorGastosHH(idproyecto, gastostaff);
                 await ejecucionService.GestorGastosHH(idproyecto, gastosocioo);
                 await ejecucionService.GestorGastosHH(idproyecto, gastohhsocio);
+                await ejecucionService.GestorGastosHH(idproyecto, gastohhstaff);
                 await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastos);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciootro);
-                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciosocio);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarserviciohonorario);
                 TempData["SuccessMessage"] = "Los costos del proyecto se han registrado y actualizado correctamente.";
                 return RedirectToAction("ForecastCostos", "EjecucionProyecto", new { id = idproyecto });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al registrar/editar costos del proyecto:{e.Message}");
                 TempData["ErrorMessage"] = "Hubo un error al Registrar/Editar costos del proyecto.";
                 return RedirectToAction("ForecastCostos", "EjecucionProyecto", new { id = idproyecto });
             }
-            
+
         }
 
-        private List<ServiciosRealesViewModel> ProcesarServicios(List<string> ids, List<string> proveedores, List<string> montos, List<string> fechas, List<string> idsReales, List<string> observaciones, List<string> estados, List<string> tipos,List<bool> eliminar)
+        private List<ServiciosRealesViewModel> ProcesarServicios(List<string> ids, List<string> proveedores, List<string> montos, List<string> fechas, List<string> idsReales, List<string> observaciones, List<string> estados, List<string> tipos, List<bool> eliminar)
         {
             List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
 
             for (int i = 0; i < ids.Count; i++)
             {
-           
+
                 string montoStr = montos[i]?.ToString().Trim() ?? "0";
                 montoStr = string.IsNullOrEmpty(montoStr) ? "0" : montoStr.Replace(".", "");
                 decimal monto = decimal.TryParse(montoStr, out decimal result) ? result : 0;
 
-               
+
                 int idServicioReal = int.TryParse(idsReales[i], out int parsedIdServicioReal) ? parsedIdServicioReal : 0;
 
-         
+
                 DateTime fecha = DateTime.TryParse(fechas[i], out DateTime parsedFecha) ? parsedFecha : DateTime.Today;
 
-               
+
                 var servicioViewModel = new ServiciosRealesViewModel
                 {
                     IdServicioReal = idServicioReal,
@@ -834,7 +769,7 @@ namespace Proyectogestionhoras.Controllers
                     Fecha = fecha,
                     Observacion = observaciones[i],
                     Estado = estados[i],
-                    
+
                     Tiposervicio = tipos[i],
                     EsEliminado = eliminar[i],
                 };
@@ -843,6 +778,55 @@ namespace Proyectogestionhoras.Controllers
             }
 
             return servicios;
+        }
+
+
+        private List<GastosHHViewModel> ProcesarGastosHH(IFormCollection form,string prefixId,string prefixTipoRecurso,string prefixMonto,string prefixHH,string prefixFecha,string prefixObs,string prefixEstado,string prefixEliminar)
+        {
+            var ids = form[prefixId];
+            var tipos = form[prefixTipoRecurso];
+            var montos = form[prefixMonto];
+            var hhs = form[prefixHH];
+            var fechas = form[prefixFecha];
+            var observaciones = form[prefixObs];
+            var estados = form[prefixEstado];
+            var eliminados = form[prefixEliminar];
+
+            var lista = new List<GastosHHViewModel>();
+
+            for (int i = 0; i < fechas.Count; i++)
+            {
+                if (string.IsNullOrWhiteSpace(fechas[i]))
+                    continue;
+
+                decimal monto = ParseDecimalSafe(montos[i]);
+                decimal hh = ParseDecimalSafe(hhs[i]);
+                int id = string.IsNullOrWhiteSpace(ids[i]) ? 0 : int.Parse(ids[i]);
+                DateTime? fecha = string.IsNullOrWhiteSpace(fechas[i]) ? null : DateTime.Parse(fechas[i]);
+
+                var viewModel = new GastosHHViewModel
+                {
+                    IdGastoHH = id,
+                    Tiporecurso = tipos[i],
+                    Fechapago = fecha,
+                    HHtotales = hh,
+                    Observacion = observaciones[i],
+                    Subtotal = monto,
+                    Estado = int.Parse(estados[i]),
+                    EsEliminado = eliminados[i] == "true"
+                };
+
+                lista.Add(viewModel);
+            }
+
+            return lista;
+        }
+
+        private decimal ParseDecimalSafe(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return 0;
+            value = value.Replace(".", "").Trim();
+            return decimal.TryParse(value, out var result) ? result : 0;
         }
 
 
@@ -876,8 +860,8 @@ namespace Proyectogestionhoras.Controllers
         /*FLUJO CAJA*/
         public async Task<IActionResult> FlujoCajaProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
-           var proyecto = await proyectoService.ObtenerProyectos(id,idcliente,nombre,idtipoempresa,statusproyecto,numproyecto,idtipologia,unidadneg,idccosto,idusuario);
-            ViewBag.Proyecto = proyecto;          
+            var proyecto = await proyectoService.ObtenerProyectos(id, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+            ViewBag.Proyecto = proyecto;
             return View("flujocaja");
         }
 
@@ -901,23 +885,24 @@ namespace Proyectogestionhoras.Controllers
                     .Where(g => g.Fechapago != null)
                     .Select(g => new MoficacionProyectoViewModel
                     {
-                            IdProyecto = int.Parse(g.idproyecto), 
-                             FechaPago = g.Fechapago
-                     })
-                    .Distinct() 
+                        IdProyecto = int.Parse(g.idproyecto),
+                        FechaPago = g.Fechapago
+                    })
+                    .Distinct()
                     .ToList();
                 await proyectoService.GestorFechaModificacionProyectoMasivo(modificacion);
                 TempData["SuccessMessageGastosHH"] = "Los pagos de HH socios/staff se han registrado correctamente.";
-                return RedirectToAction("PagosDistribucionHH", new {estado=0});
+                return RedirectToAction("PagosDistribucionHH", new { estado = 0 });
             }
 
-            catch (Exception ex) { 
-            
+            catch (Exception ex)
+            {
+
                 Debug.WriteLine(ex.InnerException);
                 TempData["ErrorMessageGastosHH"] = "Hubo un error al Registrar pagos de distribución hh de los socios y staff.";
                 return RedirectToAction("PagosDistribucionHH", new { estado = 0 });
             }
-            
+
         }
 
     }

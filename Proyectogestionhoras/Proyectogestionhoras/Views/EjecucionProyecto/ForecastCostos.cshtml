@@ -98,9 +98,11 @@
     decimal totalcostosproyectados = 0;
     int idcuentasocio = ViewBag.Idcuentasocio;
     decimal costohhscio = ViewBag.costohhsocio;
+    
     string? cuentasocio = ViewBag.cuentasocio;
-    int idcuentastaff = 0;
-    string? cuentastaff = "";
+    int idcuentastaff = ViewBag.Idcuentastaff;
+    string? cuentastaff = ViewBag.cuentastaff;
+    decimal costohhstaff = ViewBag.costohhstaff;
     decimal totalsociosforecast = 0;
     decimal totalstaffforecast = 0;
 
@@ -323,9 +325,9 @@
             <div class="overflow-x-auto">
                 <table id="tablahhSocios" class="min-w-full text-xs border-collapse">
                     <thead>
-                        <tr class="bg-red-100 text-black">
+                        <tr class="bg-green-200 text-black">
                             <th class="p-2 border border-gray-300 text-left">Fecha Pago</th>
-                            <th class="p-2 border border-gray-300 text-left">HH</th>
+                            <th class="p-2 border border-gray-300 text-center">HH</th>
                             <th class="p-2 border border-gray-300 text-left">Valor HH/Proyecto</th>
                             <th class="p-2 border border-gray-300 text-left">Total</th>
 
@@ -362,7 +364,7 @@
                                             <textarea rows="2" name="observacionhhsocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@gs.observacion</textarea>
                                         </td>
                                         <td class="p-2 border border-gray-300 text-right ">@gs.idcuentasocio</td>
-                                        <td class="p-2 border border-gray-300 text-right ">@gs.cuentasocio</td>
+                                        <td class="p-2 border border-gray-300 text-left ">@gs.cuentasocio</td>
 
                                         <td style="display:none;">
                                             <input type="hidden" name="EliminarhhSocio" class="EliminarhhSocio" value="false" />
@@ -392,7 +394,7 @@
                                 <textarea rows="2" name="observacionhhsocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                             </td>
                             <td class="p-2 border border-gray-300 text-right ">@idcuentasocio</td>
-                            <td class="p-2 border border-gray-300 text-right ">@cuentasocio</td>
+                            <td class="p-2 border border-gray-300 text-left ">@cuentasocio</td>
                             <td style="display:none;">
                                 <input type="hidden" name="EliminarhhSocio" class="EliminarhhSocio" value="false" />
                             </td>
@@ -412,7 +414,7 @@
 
 
 
-        <div class="form-group">
+        @*<div class="form-group">
 
             <p class="form-subtitle" style="color:black;">Otros Gastos Socios</p>
             <div class="overflow-x-auto">
@@ -571,7 +573,10 @@
 
             </div>
 
-        </div>
+        </div>*@
+
+
+
         @*staff*@
         <div class="form-group">
 
@@ -595,14 +600,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (ViewBag.prueba != null)
+                        @if (ViewBag.GastosHH != null)
                         {
 
-                            @for (int i = 0; i < ViewBag.prueba.Count; i++)
+                            @for (int i = 0; i < ViewBag.GastosHH.Count; i++)
                             {
 
-                                var gasto = ViewBag.prueba[i];
-                                @if (gasto.tiporecurso == "Staff")
+                                var gasto = ViewBag.GastosHH[i];
+                                @if (gasto.tiporecurso == "Staff" && gasto.estado != 2)
                                 {
 
 
@@ -672,17 +677,10 @@
                                         {
                                             totalstaff += gasto.monto ?? 0;
                                         }
-                                        else
-                                        {
-                                            totalstaffforecast += gasto.monto ?? 0;
-                                        }
+                                      
 
 
-                                        @{
-
-                                            cuentastaff = gasto.cuentastaff;
-                                            idcuentastaff = gasto.idcuentastaff;
-                                        }
+                                       
                                     </tr>
                                 }
                             }
@@ -697,6 +695,99 @@
 
         </div>
 
+        @*HH FORECAST Staff*@
+        <div class="form-group">
+
+            <p class="form-subtitle" style="color:black;">Forecast HH Staff</p>
+            <div class="overflow-x-auto">
+                <table id="tablahhStaff" class="min-w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-green-200 text-black">
+                            <th class="p-2 border border-gray-300 text-left">Fecha Pago</th>
+                            <th class="p-2 border border-gray-300 text-center">HH</th>
+                            <th class="p-2 border border-gray-300 text-left">Valor HH/Proyecto</th>
+                            <th class="p-2 border border-gray-300 text-left">Total</th>
+
+
+
+                            <th class="p-2 border border-gray-300 text-left">Glosa</th>
+
+                            <th class="p-2 border border-gray-300 text-left">IDCUENTA</th>
+                            <th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+                            <th class="p-2 border border-gray-300 text-left">Acción</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @if (ViewBag.GastosHH != null)
+                        {
+                            @foreach (var gs in ViewBag.GastosHH)
+                            {
+                                if (gs.estado == 2 && gs.tiporecurso == "Staff")
+                                {
+                                    <tr>
+                                        <td class="p-2 border border-gray-300 text-left"><input type="date" value="@gs.fechapago.ToString("yyyy-MM-dd")" name="fechahhstaff" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                                       <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @gs.totalhh)" name="hhstaff" class="hhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                                        <td class="p-2 border border-gray-300 text-right costohhstaff">
+                                            @String.Format("{0:N0}", @gs.costohhstaff)
+                                        </td>
+                                         <td class="p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}",gs.monto ?? "")" readonly name="montohhstaff" class="montohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+
+
+
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <textarea rows="2" name="observacionhhstaff" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@gs.observacion</textarea>
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-right ">@gs.idcuentastaff</td>
+                                        <td class="p-2 border border-gray-300 text-left ">@gs.cuentastaff</td>
+
+                                        <td style="display:none;">
+                                            <input type="hidden" name="EliminarhhStaff" class="EliminarhhStaff" value="false" />
+                                        </td>
+                                        <td class="p-2 border border-gray-300 text-left">
+                                            <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarhhStaff(this)">Eliminar</button>
+                                        </td>
+
+                                    </tr>
+                                    totalstaffforecast += gs.monto;
+                                    <input type="hidden" name="Idhhstaff" value="@gs.idgastohh" />
+                                    <input type="hidden" name="estadohhstaff" value="@gs.estado" />
+                                    <input type="hidden" name="recursohhstaff" value="@gs.tiporecurso" />
+                                }
+
+                            }
+                        }
+                        <tr>
+                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechahhstaff" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="hhstaff" class="hhstaff  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                            <td class="p-2 border border-gray-300 text-right costohhstaff"> @String.Format("{0:N0}", costohhstaff)</td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhstaff" readonly name="montohhstaff" class="montohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+
+
+
+                            <td class="p-2 border border-gray-300 text-left">
+                                <textarea rows="2" name="observacionhhstaff" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right ">@idcuentastaff</td>
+                            <td class="p-2 border border-gray-300 text-left ">@cuentastaff</td>
+                            <td style="display:none;">
+                                <input type="hidden" name="EliminarhhStaff" class="EliminarhhStaff" value="false" />
+                            </td>
+
+                            <input type="hidden" name="Idhhstaff" value="" />
+                            <input type="hidden" name="estadohhstaff" value="2" />
+                            <input type="hidden" name="recursohhstaff" value="Staff" />
+                        </tr>
+
+                    </tbody>
+                </table>
+                <button id="btnAgregarhhStaff" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Forecast hh Staff</button>
+
+            </div>
+
+        </div>
 
 
 
@@ -1546,8 +1637,8 @@
                 event.target.value = value;
             }
 
-            updateMontoGeneral(event.target);
-            //updateMontoStaff(event.target);
+            
+            
             updateTotal();
         }
 
@@ -1698,20 +1789,7 @@
                 });
             }, 100);
         });
-        document.getElementById("btnAgregarGastoSocio").addEventListener("click", function () {
-
-            setTimeout(() => {
-
-                const nuevosMontos = document.querySelectorAll('input[name*="montoserviciosocio"]');
-
-                nuevosMontos.forEach(input => {
-                    if (!input.hasAttribute('data-format-listener')) {
-                        input.addEventListener('input', formatCurrency);
-                        input.setAttribute('data-format-listener', 'true');
-                    }
-                });
-            }, 100);
-        });
+       
         document.getElementById("btnAgregarHonorario").addEventListener("click", function () {
 
             setTimeout(() => {
@@ -1847,63 +1925,7 @@
         });
     });
 
-    /*agregar gasto socio*/
-    $(document).ready(function () {
-        cargarDatosIniciales();
-
-        $('.serviciosSelect').each(function () {
-            rellenarSelectServicios(this);
-        });
-        $('.proveedorSelect').each(function () {
-            rellenarSelectProveedores(this);
-        });
-
-        $('#btnAgregarGastoSocio').on('click', function (e) {
-            e.preventDefault();
-
-            var nuevaFila = `
-                                       <tr>
-                                            <td class="p-2 border border-gray-300 text-left">
-                                                <select name="Idserviciosocio" class="serviciosSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </select>
-                                            </td>
-                                            <td class="p-2 border border-gray-300 text-left">
-                                                <select name="Idproveedorsocio" class="proveedorSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </select>
-                                            </td>
-                                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoservicio" name="montoserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechaserviciosocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                            <td class="p-2 border border-gray-300 text-left">
-                                                <select name="Estadosocio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                    <option value="Forecast" selected>Forecast</option>
-                                                    <option value="Pagada">Pagada</option>
-                                                </select>
-                                            </td>
-
-                                            <td class="p-2 border border-gray-300 text-left">
-                                                <textarea rows="2" name="observacionserviciosocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                                            </td>
-                                            <td class="p-2 border border-gray-300 text-right "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 idcuentaservicio" readonly /></td>
-                                            <td class="p-2 border border-gray-300 text-left "><input class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 cuentaservicio" readonly /></td>
-                                                <td style="display:none;">
-                                                        <input type="hidden" name="EliminarServicioSocio" class="EliminarServicioSocio" value="false" />
-                                                    </td>
-                                            <td style="display:none">
-                                        <input type="text" class="idsegmentoservicio" name="idsegmentoserviciosocio" />
-                                    </td>
-                                            <input type="hidden" name="IdServicioRealsocio" value="" />
-                                            <input type="hidden" name="Tiposerviciosocio" value="Socios" />
-
-                                        </tr>
-                            `;
-
-            $('#tablaGastosSocios tbody').append(nuevaFila);
-
-            var lastRow = $('#tablaGastosSocios tbody tr:last');
-            rellenarSelectServicios(lastRow.find('.serviciosSelect'));
-            rellenarSelectProveedores(lastRow.find('.proveedorSelect'));
-        });
-    });
+  
 
     /*agregar hh socio*/
     $(document).ready(function () {
@@ -1928,7 +1950,7 @@
                 const hhRaw = hhInput.val().trim();
                 const costoTexto = costoTd.text().trim();
 
-                // Solo calculamos si hh no está vacío
+               
                 if (hhRaw !== "") {
                     const hhValue = parseNumber(hhRaw);
                     const costoValue = parseNumber(costoTexto);
@@ -1936,7 +1958,7 @@
                     const total = hhValue * costoValue;
                     montoInput.val(formatNumber(total));
                 }
-                // Si hh está vacío, no tocar el valor actual de monto
+                
             });
         }
 
@@ -1963,7 +1985,7 @@
                                     <textarea rows="2" name="observacionhhsocio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
                                 </td>
                                 <td class="p-2 border border-gray-300 text-right ">@idcuentasocio</td>
-                                <td class="p-2 border border-gray-300 text-right ">@cuentasocio</td>
+                                <td class="p-2 border border-gray-300 text-left ">@cuentasocio</td>
                                 <td style="display:none;">
                                     <input type="hidden" name="EliminarhhSocio" class="EliminarhhSocio" value="false" />
                                 </td>
@@ -1978,6 +2000,82 @@
 
             var lastRow = $('#tablahhSocios tbody tr:last');
           
+        });
+    });
+
+     /*agregar hh staff*/
+    $(document).ready(function () {
+         function parseNumber(str) {
+            return parseFloat(str.replace(/\./g, '').replace(',', '.')) || 0;
+        }
+
+
+        function formatNumber(num) {
+            return num.toLocaleString('es-CL', { minimumFractionDigits: 0 });
+        }
+
+
+        function calcularMontosHHstaff() {
+            $('#tablahhStaff tbody tr').each(function () {
+                const row = $(this);
+
+                const hhInput = row.find('.hhstaff');
+                const montoInput = row.find('.montohhstaff');
+                const costoTd = row.find('.costohhstaff');
+
+                const hhRaw = hhInput.val().trim();
+                const costoTexto = costoTd.text().trim();
+
+               
+                if (hhRaw !== "") {
+                    const hhValue = parseNumber(hhRaw);
+                    const costoValue = parseNumber(costoTexto);
+
+                    const total = hhValue * costoValue;
+                    montoInput.val(formatNumber(total));
+                }
+
+            });
+        }
+
+
+
+        $(document).on('input', '.hhstaff', function () {
+            calcularMontosHHstaff();
+        });
+
+
+        $('#btnAgregarhhStaff').on('click', function (e) {
+            e.preventDefault();
+
+            var nuevaFila = `
+                                           <tr>
+                                                 <td class="p-2 border border-gray-300 text-left"><input type="date" name="fechahhstaff" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" name="hhstaff" class="hhstaff  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+                            <td class="p-2 border border-gray-300 text-right costohhstaff"> @String.Format("{0:N0}", costohhstaff)</td>
+                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhstaff" readonly name="montohhstaff" class="montohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+
+
+
+                            <td class="p-2 border border-gray-300 text-left">
+                                <textarea rows="2" name="observacionhhstaff" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+                            </td>
+                            <td class="p-2 border border-gray-300 text-right ">@idcuentastaff</td>
+                            <td class="p-2 border border-gray-300 text-left ">@cuentastaff</td>
+                            <td style="display:none;">
+                                <input type="hidden" name="EliminarhhStaff" class="EliminarhhStaff" value="false" />
+                            </td>
+
+                            <input type="hidden" name="Idhhstaff" value="" />
+                            <input type="hidden" name="estadohhstaff" value="2" />
+                            <input type="hidden" name="recursohhstaff" value="Staff" />
+                                            </tr>
+                                `;
+
+            $('#tablahhStaff tbody').append(nuevaFila);
+
+            var lastRow = $('#tablahhStaff tbody tr:last');
+
         });
     });
     /*honorarios externos */
@@ -2269,21 +2367,7 @@
 
 
     }
-    /*Eliminar Servicio Socio*/
-    function limpiarServicioSocio(button) {
-
-        var fila = button.closest('tr');
-
-
-        var esEliminado = fila.querySelector('input.EliminarServicioSocio');
-        if (esEliminado) {
-            esEliminado.value = 'true';
-        }
-
-        fila.style.display = 'none';
-
-
-    }
+  
 
     /*Eliminar hh Socio*/
     function limpiarhhSocio(button) {
@@ -2301,7 +2385,21 @@
 
     }
 
+     /*Eliminar hh Staff*/
+    function limpiarhhStaff(button) {
 
+        var fila = button.closest('tr');
+
+
+        var esEliminado = fila.querySelector('input.EliminarhhStaff');
+        if (esEliminado) {
+            esEliminado.value = 'true';
+        }
+
+        fila.style.display = 'none';
+
+
+    }
 
     /*Eliminar Gasto*/
     function limpiarFilagasto(button) {
