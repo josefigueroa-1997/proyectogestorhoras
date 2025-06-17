@@ -1,0 +1,720 @@
+﻿@{
+    ViewData["Title"] = "Planilla Mes";
+    int? mes = ViewBag.MesSeleccionado;
+    int? anio = ViewBag.AnioSeleccionado;
+    string nombreMes = mes.HasValue
+        ? System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(mes.Value)
+        : "Mes no seleccionado";
+}
+
+
+
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+    .form-group-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .form-group-radio label {
+            margin-bottom: 0;
+        }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .submit-btn, .planilla-btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-left: 10px;
+    }
+
+    .submit-btn {
+        color: #fff;
+        background-color: #fcaa67;
+    }
+
+        .submit-btn:hover {
+            background-color: #e39450;
+        }
+
+
+    .planilla-btn {
+        color: #fff;
+        background-color: royalblue;
+    }
+
+
+    .horas-disponibles {
+        display: block;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .eliminar-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: red;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .tabla-margen td {
+        text-align: right;
+    }
+
+    .alert {
+        padding: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        text-align: center;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+    }
+</style>
+@{
+    
+    int? idusuario = Context.Session.GetInt32("id");
+}
+<h2 style="margin-top: 50px;" class="text-2xl text-center font-bold mb-4">
+    Planilla HH General - @nombreMes @anio
+</h2>
+<div class="text-center mb-4">
+    <a href="@Url.Action("ExportarPlanillaExcel","Reporte", new { mes = mes, anio = anio })"
+       class="planilla-btn px-4 py-2 rounded"
+       style="background-color: #28a745; color: white;">
+        Descargar Planilla
+    </a>
+</div>
+
+
+
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">
+        Muestra el registro de HH de todos los usuarios en el año y mes seleccionado.
+
+    </p>
+</div>
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <table id="planillausuario" class="w-full border-collapse text-left text-xs min-w-[1200px]">
+            <thead>
+                <tr class="bg-blue-200 text-black">
+                    <th class="p-2 border border-gray-300">Editar</th>
+                    <th class="p-2 border border-gray-300">Fecha</th>
+                    <th class="p-2 border border-gray-300">Nombre Usuario</th>
+                    <th class="p-2 border border-gray-300">Actividad</th>
+                    
+                    <th class="p-2 border border-gray-300">Proyecto</th>
+                    
+                    <th class="p-2 border border-gray-300">Cuenta</th>
+                   
+                    <th class="p-2 border border-gray-300">Número Horas</th>
+                    <th class="p-2 border border-gray-300">Costo Unitario</th>
+                    <th class="p-2 border border-gray-300">Costo Total</th>
+                    <th class="p-2 border border-gray-300">Observaciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body">
+                @if (ViewBag.Registros != null)
+                {
+                  
+
+
+                    @foreach (var planilla in ViewBag.Registros)
+                    {
+                        if (idusuario == 88)
+                        {
+                            <tr>
+                                <td class="px-2 py-2 border border-[#ddd] text-center">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <form>
+                                        </form>
+                                        <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" value="@planilla.idusuproy" />
+                                        <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
+                                        <input type="hidden" name="correlativo" value="@planilla.correlativo" />
+                                        <input type="hidden" name="proyectoorigen" value="@planilla.IDPROYECTO" />
+                                        <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
+                                        <button type="button" class="editarBtn bg-orange-500 text-white border-none py-1 px-2 cursor-pointer">
+                                            Editar
+                                        </button>
+                                    }
+                                </td>
+                                <td class="p-2 border min-w-[100px] border-gray-300 text-center">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <input type="date" name="fecharegistro" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="text-xs" />
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="fecharegistro" />
+                                        @planilla.FechaRegistro.ToString("dd/MM/yyyy")
+                                    }
+                                    
+                                </td>
+                                <td class="p-2 min-w-[100px] border sticky left-0 bg-white border-gray-300 text-left">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <select name="usuario" class="usuarioSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" data-idusuario="@planilla.idusuario">
+                                            <option value="">Cargando...</option>
+                                        </select>
+                                    
+                                    }
+                                    else
+                                    {
+                                        @planilla.NombreUsuario
+                                    }
+                                  
+                                </td>
+                                <td class="p-2 border min-w-[200px] border-gray-300 text-left">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <input type="hidden" name="controlhhactividad" class="controlhh-hidden" value="">
+                                        <select name="idactividad" class="actividadSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" data-idactividad="@planilla.IdActividad">
+                                            <option value="">Cargando...</option>
+                                        </select>
+                                        
+                                    }
+                                    else
+                                    {
+                                        @planilla.NombreActividad
+                                    }
+                                   
+                                   
+                                </td>
+
+                                <td class="p-2 border min-w-[200px] border-gray-300 text-left">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <select name="idproyecto" class="nombreSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            @foreach (var actividad in ViewBag.Actividad)
+                                            {
+                                                if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Ejecucion")
+                                                {
+                                                    @foreach (var proyecto in ViewBag.Ejecucion)
+                                                    {
+                                                        if (proyecto.Nombre == planilla.Nombre)
+                                                        {
+                                                            <option value="@proyecto.Id" selected>@proyecto.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@proyecto.Id">@proyecto.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                                if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Proyecto En Negociación")
+                                                {
+                                                    @foreach (var p in ViewBag.Negociacion)
+                                                    {
+                                                        if (p.Nombre == planilla.Nombre)
+                                                        {
+                                                            <option value="@p.Id" selected>@p.Nombre</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@p.Id">@p.Nombre</option>
+                                                        }
+                                                    }
+                                                }
+                                                @if (actividad.Id == planilla.IdActividad && actividad.Controlhh == "Empresa")
+                                                {
+                                                    @foreach (var p in ViewBag.Subactividades)
+                                                    {
+                                                        if (p.Idactividad == actividad.Id)
+                                                        {
+                                                            if (p.Nombre == planilla.Nombre)
+                                                            {
+                                                                <option value="@p.Id" selected>@p.Nombre</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@p.Id">@p.Nombre</option>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                       
+                                        @planilla.Nombre
+                                    }
+
+                                </td>
+
+                                <td class="p-2 border min-w-[100px] border-gray-300 text-left">@planilla.Cuenta</td>
+
+                                <td class="px-2 py-2 border border-[#ddd] text-right">
+                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    {
+                                        <input type="number" name="hhregistradas" value="@planilla.HHregistradas.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="0.5" min="0" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="hhregistradas" value="@planilla.HHregistradas" />
+                                        @planilla.HHregistradas
+                                    }
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @(planilla.CostoUnitario == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoUnitario))
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @(planilla.CostoTotal == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoTotal))
+                                </td>
+                                <td class="p-2 border border-gray-300 text-center">@planilla.Observaciones - </td>
+                               
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="p-2 border min-w-[100px] border-gray-300 text-center">@planilla.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                                <td class="p-2 min-w-[100px] border sticky left-0 bg-white border-gray-300 text-left">@planilla.NombreUsuario</td>
+                                <td class="p-2 border min-w-[200px] border-gray-300 text-left">@planilla.NombreActividad</td>
+
+                                <td class="p-2 border min-w-[200px] border-gray-300 text-left">@planilla.Nombre</td>
+
+                                <td class="p-2 border min-w-[100px] border-gray-300 text-left">@planilla.Cuenta</td>
+
+                                <td class="p-2 border border-gray-300 text-right">@planilla.HHregistradas</td>
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @(planilla.CostoUnitario == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoUnitario))
+                                </td>
+                                <td class="p-2 border border-gray-300 text-right">
+                                    @(planilla.CostoTotal == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoTotal))
+                                </td>
+                                <td class="p-2 border border-gray-300 text-center">@planilla.Observaciones</td>
+                            </tr>
+                        }
+                      
+                       
+                    }
+                  
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="fixed inset-0 flex items-center justify-center z-50" id="edicionModal" style="display: none;">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+            <div class="flex justify-between items-center border-b p-4">
+                <h5 class="text-lg font-semibold">Registro de Horas</h5>
+                <button type="button" class="text-gray-600 hover:text-gray-900" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="p-4">
+                <p id="modalMensaje"></p>
+            </div>
+            <div class="flex justify-end border-t p-4">
+                <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /*Usuarios*/
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        fetch(`/Usuario/ObtenerdatosUsuarios`)
+            .then(response => response.json())
+            .then(data => {
+                document.querySelectorAll(".usuarioSelect").forEach(select => {
+                    let usuarioSeleccionado = select.getAttribute("data-idusuario");
+                    select.innerHTML = "";
+
+                    data.forEach(item => {
+                        let option = document.createElement("option");
+                        option.value = item.idusuario;
+                        option.textContent = item.nombreUsuario;
+                        option.setAttribute("data-recurso", item.recurso);
+                        
+                        if (item.idusuario == usuarioSeleccionado) {
+                            option.selected = true;
+                            recursoSeleccionado = item.recurso;
+                            
+                        }
+
+                        select.appendChild(option);
+                    });
+
+                    if (recursoSeleccionado) {
+                        console.log(recursoSeleccionado);
+                        cargaractividades(recursoSeleccionado, select.closest('tr'));
+                    }
+
+                   
+                    select.addEventListener("change", function () {
+                        const recursoNuevo = this.options[this.selectedIndex].getAttribute("data-recurso");
+                        const fila = this.closest('tr');
+                        const idusuario = this.value;
+                        const idproyecto = fila.querySelector(".nombreSelect")?.value;
+
+                        cargaractividades(recursoNuevo, fila);
+
+                        if (idproyecto) {
+                            cargarInformacionUsuario(idusuario, idproyecto,fila);
+                        }
+                    });
+                });
+            })
+            .catch(error => console.error("Error al cargar usuarios:", error));
+    });
+
+    function cargaractividades(recurso, fila) {
+        fetch(`/Usuario/RecuperarActividades?recurso=${recurso}`)
+            .then(response => response.json())
+            .then(data => {
+                const select = fila.querySelector(".actividadSelect");
+                const actividadSeleccionada = select.getAttribute("data-idactividad");
+              
+                select.innerHTML = "";
+
+                data.forEach(item => {
+                    let option = document.createElement("option");
+                    option.value = item.id;
+                    option.textContent = item.nombre;
+                    option.setAttribute("data-controlhh", item.controlhh);
+
+                    if (item.id == actividadSeleccionada) {
+                       
+                       
+                        option.selected = true;
+                    }
+
+                    select.appendChild(option);
+
+                    if (option.selected) {
+                        fila.querySelector('.controlhh-hidden').value = item.controlhh.toLowerCase().trim();
+                    }
+                });
+            })
+            .catch(error => console.error("Error al cargar actividades:", error));
+    }
+
+    function cargarSubactividades(idActividad, fila) {
+        $.ajax({
+            url: '@Url.Action("RecuperarSubActividades", "Usuario")',
+            type: 'GET',
+            data: { idactividad: idActividad },
+            success: function (subactividades) {
+                const select = fila.find('.nombreSelect');
+                select.empty();
+                select.append('<option value="" disabled selected>Seleccione un Item</option>');
+
+                $.each(subactividades, function (index, subactividad) {
+                    select.append($('<option>', {
+                        value: subactividad.id,
+                        text: subactividad.nombre
+                    }));
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener las subactividades:", error);
+            }
+        });
+    }
+
+    function cargarProyectosNegociacion(fila) {
+        
+            $.ajax({
+                url: '@Url.Action("ObtenerProyectoNegociacion", "Usuario")',
+                type: 'GET',
+                success: function (response) {
+                    const select = fila.find('.nombreSelect');
+                    select.empty();
+                    select.append('<option value="" disabled selected>Seleccione un proyecto</option>');
+
+                    if (response.length > 0) {
+                        $.each(response, function (index, proyecto) {
+                            select.append($('<option>', {
+                                value: proyecto.id,
+                                text: proyecto.numProyecto + ' - ' + proyecto.nombre
+                            }));
+                        });
+                        select.on('change', function () {
+                            var idproyecto = $(this).val();
+                            var fila = $(this).closest('tr');
+                            var idusuario = fila.find('.usuarioSelect').val();
+
+                            if (idusuario && idproyecto) {
+                                cargarInformacionUsuario(idusuario, idproyecto,fila);
+                            }
+                        });
+                    } else {
+                        select.append('<option value="" disabled>No hay proyectos disponibles</option>');
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al obtener los proyectos:", error);
+                }
+            });
+        
+    }
+    function cargarProyectos(fila) {
+        var idusuario = fila.find('.usuarioSelect').val();
+            $.ajax({
+                url: '@Url.Action("ObtenerMisproyectos", "Usuario")',
+                type: 'GET',
+                data: { idusuario: idusuario },
+                success: function (response) {
+                    const select = fila.find('.nombreSelect');
+                    select.empty();
+                    select.append('<option value="" disabled selected>Seleccione un proyecto</option>');
+
+                    if (response.length > 0) {
+                        $.each(response, function (index, proyecto) {
+                            select.append($('<option>', {
+                                value: proyecto.id,
+                                text: proyecto.numproyecto + ' - ' + proyecto.nombreproyecto
+                            }));
+                        });
+
+
+                        select.on('change', function () {
+                            var idproyecto = $(this).val();
+                            var fila = $(this).closest('tr');
+                           
+
+                            if (idusuario && idproyecto) {
+                                cargarInformacionUsuario(idusuario, idproyecto,fila);
+                            }
+                        });
+                    } else {
+                        select.append('<option value="" disabled>No hay proyectos disponibles</option>');
+                    }
+                },
+                error: function (error) {
+                    console.error("Error al obtener los proyectos:", error);
+                }
+            });
+        
+    }
+
+    $(document).on('change', '.nombreSelect', function () {
+        var idproyecto = $(this).val();
+       
+        var fila = $(this).closest('tr');
+        var idusuario = fila.find('.usuarioSelect').val();
+        cargarInformacionUsuario(idusuario, idproyecto, fila);
+    });
+
+
+    $(document).on('change', '.usuarioSelect', function () {
+        var idusuario = $(this).val();
+
+        var fila = $(this).closest('tr');
+        var idproyecto = fila.find('.nombreSelect').val();
+        cargarInformacionUsuario(idusuario, idproyecto, fila);
+    });
+
+    function cargarInformacionUsuario(idusuario, idproyecto, fila) {
+        $.ajax({
+            url: '@Url.Action("Recuperarhhusuarios", "Usuario")',
+            type: 'GET',
+            data: { idusuario: idusuario, idproyecto: idproyecto },
+            success: function (informacionusuario) {
+                if (informacionusuario && informacionusuario.length > 0) {
+                    fila.find('.rolrecurso').val(informacionusuario[0].recurso);
+                    fila.find('.hhrestantes').val(informacionusuario[0].hhasignadas);
+                    fila.find('.idusuarioproyecto').val(informacionusuario[0].idusuarioproyecto);
+                } else {
+                    fila.find('.rolrecurso').val('Recurso no disponible');
+                }
+            },
+            error: function (error) {
+                console.error("Error al obtener la información del recurso:", error);
+                fila.find('.rolrecurso').val('Error al obtener recurso');
+            }
+        });
+    }
+
+
+    var controlvalor = 0;
+    $(document).on('change', '.actividadSelect', function () {
+        const idActividad = $(this).val();
+        const controlhh = $(this).find(':selected').data('controlhh').toLowerCase().trim();
+
+        const fila = $(this).closest('tr');
+        fila.find('.controlhh-hidden').val(controlhh);
+        if (idActividad) {
+            if (controlhh === 'proyecto en ejecucion') {
+
+                cargarProyectos(fila);
+                fila.find('.proyectoid').val(0);
+                controlvalor = 1;
+
+            } else if (controlhh === 'empresa') {
+                fila.find('.idusuarioproyecto').val(0);
+                cargarSubactividades(idActividad, fila);
+                controlvalor = 2;
+            } else if (controlhh === "proyecto en negociación") {
+                fila.find('.proyectoid').val(0);
+                cargarProyectosNegociacion(fila);
+                controlvalor = 1;
+            }
+        } else {
+            console.log("Error al mostrar datos");
+        }
+    });
+
+
+    /*editar registro*/
+    $(document).ready(function () {
+        $(".editarBtn").on("click", function (event) {
+            event.preventDefault();
+
+            let row = $(this).closest("tr");
+            var tipoactividad = row.find("[name='controlhhactividad']").val();
+            let idregistro = row.find("[name='idregistro']").val();
+            let idusuarioeditar = row.find("[name='usuario']").val();
+            
+            let idusuproy = row.find("[name='idusuarioproyecto']").val();;
+            let horasasignadas = row.find("[name='hhregistradas']").val();
+            let fecharegistro = row.find("[name='fecharegistro']").val();
+            let observaciones = row.find("[name='observaciones']").val() || "";
+            let idactividad = row.find("[name='idactividad']").val();
+            let idsubactividad = row.find("[name='idproyecto']").val();
+            let correlativo = row.find("[name='correlativo']").val();
+            let proyectoorigen = row.find("[name='proyectoorigen']").val();
+            
+            if (tipoactividad === "proyecto en ejecucion" || tipoactividad === "proyecto en negociación") {
+                idsubactividad = 0;
+            }
+            if (tipoactividad === "empresa") {
+                idusuproy = 0;
+            }
+            $('#modalMensaje').text("Procesando Su Solicitud...");
+            $('#edicionModal').show();
+            $.ajax({
+                url: "/Planilla/EditarRegistroPlanilla",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    idregistro: parseInt(idregistro),
+                    idusuario: parseInt(idusuarioeditar),
+                    idusuproy: parseInt(idusuproy),
+                    horasasignadas: horasasignadas,
+                    correlativo: correlativo,
+                    Fecharegistro: fecharegistro,
+                    observaciones: observaciones,
+                    Idactividad: parseInt(idactividad),
+                    idsubactividad: parseInt(idsubactividad),
+                    proyectoorigen: parseInt(proyectoorigen)
+
+                }),
+                success: function (data) {
+                    if (data.success) {
+
+                        $('#modalMensaje').text("✅ " + data.message);
+                    } else {
+                        $('#modalMensaje').text("⚠️ Error: " + data.message);
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("❌ Error:", error);
+                }
+            });
+        });
+    });
+
+    window.closeModal = function () {
+        $('#edicionModal').hide();
+    };
+</script>
+

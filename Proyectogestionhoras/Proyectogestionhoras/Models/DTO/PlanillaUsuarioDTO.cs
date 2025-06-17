@@ -27,6 +27,8 @@
         public string? Rol { get; set;}
         public decimal CostoUnitario  { get; set;}
         public decimal CostoTotal  { get; set;}
+        public int idusuario { get; set; }
+        public string? recurso { get;set;}
 
     }
 }

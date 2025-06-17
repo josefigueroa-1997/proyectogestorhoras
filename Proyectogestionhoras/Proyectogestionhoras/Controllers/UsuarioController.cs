@@ -234,6 +234,23 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ObtenerdatosUsuarios()
+        {
+            var usuarios = await ( from u in context.Usuarios
+                                   join r in context.Recursos on u.IdRecurso equals r.Id
+                                   where (r.NombreRecurso == "Socio" || r.NombreRecurso == "Staff")
+                                   select new PlanillaUsuarioDTO
+                                   { 
+                                    idusuario = u.Id,
+                                    NombreUsuario = u.Nombre,
+                                    recurso = r.NombreRecurso,
+                                   }
+                                   ).ToListAsync();
+            
+            return Json(usuarios);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> RecuperarActividades(string recurso)
         {
             var actividades = await context.Actividades
