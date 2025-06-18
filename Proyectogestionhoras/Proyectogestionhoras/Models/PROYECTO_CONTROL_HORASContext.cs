@@ -26,6 +26,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<CostoPromedio> CostoPromedios { get; set; } = null!;
         public virtual DbSet<Cuentum> Cuenta { get; set; } = null!;
         public virtual DbSet<Cuota> Cuotas { get; set; } = null!;
+        public virtual DbSet<Diapago> Diapagos { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<Fechamodificacionproyecto> Fechamodificacionproyectos { get; set; } = null!;
@@ -353,6 +354,15 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.Cuota)
                     .HasForeignKey(d => d.Idpresupuesto)
                     .HasConstraintName("PRESUPUESTOCUOTA_FK");
+            });
+
+            modelBuilder.Entity<Diapago>(entity =>
+            {
+                entity.ToTable("Diapago");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Dia).HasColumnName("dia");
             });
 
             modelBuilder.Entity<Empresa>(entity =>

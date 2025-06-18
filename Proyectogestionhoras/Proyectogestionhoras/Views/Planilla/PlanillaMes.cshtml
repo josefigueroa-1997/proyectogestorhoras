@@ -153,6 +153,11 @@
         string? nombre = Context.Session.GetString("nombre");
         int? idusuario = Context.Session.GetInt32("id");
         string? recurso = Context.Session.GetString("recurso");
+        var fechaInicio = (DateTime)ViewBag.FechaInicio;
+        var fechaFin = (DateTime)ViewBag.FechaFin;
+
+       
+       
     }
     @if (TempData["ErrorMessageEliminacion"] != null)
     {
@@ -205,11 +210,13 @@
 
                         @foreach (var planilla in ViewBag.Planilla)
                         {
+                           
+                            bool editable = planilla.FechaRegistro.Date >= fechaInicio && planilla.FechaRegistro.Date <= fechaFin;
                             <tr>
                                 <td class="px-2 py-2 border border-[#ddd] text-center">
-                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    @if ((planilla.estado == 1 || planilla.estado == 2) && editable)
                                     {
-                                        <input type="date" name="fecharegistro" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="text-xs" />
+                                        <input type="date" name="fecharegistro" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" min="@fechaInicio.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" class="text-xs" />
                                     }
                                     else
                                     {
@@ -218,7 +225,7 @@
                                     }
                                 </td>
                                 <td class="px-2 py-2 border border-[#ddd] text-center">
-                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    @if ((planilla.estado == 1 || planilla.estado == 2) && editable)
                                     {
                                         <input type="hidden" name="controlhhactividad" class="controlhh-hidden" value="">
                                         <select name="idactividad" class="actividadSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" data-idactividad="@planilla.IdActividad">
@@ -232,7 +239,7 @@
                                     }
                                 </td>
                                 <td class="px-2 py-2 border border-[#ddd]">
-                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    @if ((planilla.estado == 1 || planilla.estado == 2) && editable)
                                     {
                                         <select name="idproyecto" class="nombreSelect px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
                                             @foreach (var actividad in ViewBag.Actividad)
@@ -295,7 +302,7 @@
 
 
                                 <td class="px-2 py-2 border border-[#ddd] text-right">
-                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    @if ((planilla.estado == 1 || planilla.estado == 2) && editable)
                                     {
                                         <input type="number" name="hhregistradas" value="@planilla.HHregistradas.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="0.5" min="0" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
                                     }
@@ -317,13 +324,14 @@
                                     @planilla.Observaciones
                                 </td>
                                 <td class="px-2 py-2 border border-[#ddd] text-center">
-                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    @if ((planilla.estado == 1 || planilla.estado == 2) && editable)
                                     {
                                         <form>
                                         </form>
                                         <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" value="@planilla.idusuproy" />
                                         <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
                                         <input type="hidden" name="correlativo" value="@planilla.correlativo" />
+                                        <input type="hidden" name="idproyectoantiguo" value="@planilla.idproyectoantiguo" />
                                         <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
                                         <button type="button" class="editarBtn bg-orange-500 text-white border-none py-1 px-2 cursor-pointer">
                                             Editar
@@ -331,7 +339,7 @@
                                     }
                                 </td>
                                 <td class="px-2 py-2 border border-[#ddd] text-center">
-                                    @if (planilla.estado == 1 || planilla.estado == 2)
+                                    @if ((planilla.estado == 1 || planilla.estado == 2) && editable)
                                     {
                                         <form action="@Url.Action("EliminarRegistroPlanilla", "Planilla")" method="post" onsubmit="return confirmarEliminacion();">
                                             <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
@@ -577,6 +585,7 @@
             let idactividad = row.find("[name='idactividad']").val();
             let idsubactividad = row.find("[name='idproyecto']").val();
             let correlativo = row.find("[name='correlativo']").val();
+            let idproyectoantiguo = row.find("[name='idproyectoantiguo']").val();
             if (tipoactividad === "proyecto en ejecucion" || tipoactividad === "proyecto en negociación") {
                 idsubactividad = 0;
             }
@@ -598,7 +607,8 @@
                     Fecharegistro: fecharegistro,
                     observaciones: observaciones,
                     Idactividad: parseInt(idactividad),
-                    idsubactividad: parseInt(idsubactividad)
+                    idsubactividad: parseInt(idsubactividad),
+                    proyectoorigen: parseInt(idproyectoantiguo)
                 }),
                 success: function (data) {
                     if (data.success) {

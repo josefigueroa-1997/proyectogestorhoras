@@ -33,6 +33,7 @@
                 </div>
                 @{
                     int? idrol = Context.Session.GetInt32("idrol");
+                    int? idusuario = Context.Session.GetInt32("id");
                 }
                 <!-- Navigation Menu -->
                 <nav class="flex-grow">
@@ -47,8 +48,13 @@
                             
                             <li><a href="@Url.Action("TodosReportes","Reporte")">Reportes</a></li>
                             <li><a href="@Url.Action("MetasFunciones","Metas")">Metas</a></li>
+                            if (idusuario == 88)
+                            {
+                                <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin","AdminHH")">Admin.Registros HH</a></li>
+                            }
                             <li><a href="@Url.Action("TodoslosParametros","Parametros")">Parametros</a></li>
-                            <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin","AdminHH")">Admin.Registros HH</a></li>
+                           
+                            
                         }
                         else if(idrol==2)
                         {
@@ -62,8 +68,12 @@
                            
                             <li><a href="@Url.Action("TodosReportes","Reporte")">Reportes</a></li>
                             <li><a href="@Url.Action("MetasFunciones","Metas")">Metas</a></li>
+                            if (idusuario == 96)
+                            {
+                                <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin","AdminHH")">Admin.Registros HH</a></li>
+                            }
                             <li><a href="@Url.Action("TodoslosParametros","Parametros")">Parametros</a></li>
-                            <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin","AdminHH")">Admin.Registros HH</a></li>
+                           
                         }
                     </ul>
                 </nav>

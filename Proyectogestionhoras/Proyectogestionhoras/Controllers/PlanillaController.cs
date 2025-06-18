@@ -45,6 +45,38 @@ namespace Proyectogestionhoras.Controllers
 
                 ViewBag.Planilla = planillaFiltrada;
 
+
+                int diaPago = await context.Diapagos.Select(d => d.Dia).FirstOrDefaultAsync();
+                DateTime hoy = DateTime.Today;
+
+
+                DateTime fechaPagoMesActual = new DateTime(hoy.Year, hoy.Month, diaPago);
+
+
+                DateTime fechaInicio;
+                DateTime fechaFin = new DateTime(hoy.Year, hoy.Month, DateTime.DaysInMonth(hoy.Year, hoy.Month)); // fin de mes actual
+
+                if (hoy.Day <= diaPago)
+                {
+
+
+                    DateTime mesAnterior = hoy.AddMonths(-1);
+                    fechaInicio = new DateTime(mesAnterior.Year, mesAnterior.Month, 1);
+                }
+                else
+                {
+
+
+                    fechaInicio = new DateTime(hoy.Year, hoy.Month, 1);
+                }
+
+                ViewBag.FechaInicio = fechaInicio;
+                ViewBag.FechaFin = fechaFin;
+
+
+
+
+
                 return View("Planilla");
 
             }
@@ -233,12 +265,41 @@ namespace Proyectogestionhoras.Controllers
             var actividad = await context.Actividades.ToListAsync();
             var ejecucion = await context.Proyectos.Where(p => p.StatusProyecto == 2).Select(p => new { p.Id, p.Nombre }).ToListAsync();
             var negociacion = await context.Proyectos.Where(p => p.StatusProyecto == 1).Select(p => new { p.Id, p.Nombre,p.StatusProyecto }).ToListAsync();
+            int diaPago = await context.Diapagos.Select(d => d.Dia).FirstOrDefaultAsync();
+            DateTime hoy = DateTime.Today;
+
+            
+            DateTime fechaPagoMesActual = new DateTime(hoy.Year, hoy.Month, diaPago);
+
+           
+            DateTime fechaInicio;
+            DateTime fechaFin = new DateTime(hoy.Year, hoy.Month, DateTime.DaysInMonth(hoy.Year, hoy.Month)); // fin de mes actual
+
+            if (hoy.Day <= diaPago)
+            {
+                
+                
+                DateTime mesAnterior = hoy.AddMonths(-1);
+                fechaInicio = new DateTime(mesAnterior.Year, mesAnterior.Month, 1);
+            }
+            else
+            {
+                
+               
+                fechaInicio = new DateTime(hoy.Year, hoy.Month, 1);
+            }
+
+            ViewBag.FechaInicio = fechaInicio;
+            ViewBag.FechaFin = fechaFin;
+
             ViewBag.Subactividades = subactividades;
             ViewBag.Negociacion = negociacion;
             ViewBag.Actividad = actividad;
             ViewBag.Ejecucion = ejecucion;
             return View("PlanillaMes");
         }
+
+       
 
         [HttpPost]
         public async Task<IActionResult> EditarRegistroPlanilla([FromBody] EditarRegistroViewModel editar) {

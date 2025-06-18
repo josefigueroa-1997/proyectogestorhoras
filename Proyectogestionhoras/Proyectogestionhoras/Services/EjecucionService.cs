@@ -348,6 +348,58 @@ namespace Proyectogestionhoras.Services
         }
 
 
+        public async Task<DateTime> ObtenerFechaPagoMesActual()
+        {
+            int diaPago = await context.Diapagos.Select(d => d.Dia).FirstOrDefaultAsync();
+            DateTime hoy = DateTime.Today;
+            return new DateTime(hoy.Year, hoy.Month, diaPago);
+        }
+       
+
+        public async Task PagoAutomaticoHH()
+        {
+            try
+            {
+                DateTime fechaPagoMesActual = await ObtenerFechaPagoMesActual();
+                bool resultado = fechaPagoMesActual == DateTime.Today;
+
+                if (resultado)
+                {
+                    var gastoshh = await context.Gastoshhhejecucions
+                        .Where(g => g.Estado == 0 && g.IdproyectoNavigation.StatusProyecto == 2)
+                        .ToListAsync();
+
+                    if (gastoshh.Count > 0)
+                    {
+                        List<GastosHHViewModel> gastos = new List<GastosHHViewModel>();
+
+                        foreach (var g in gastoshh)
+                        {
+                            gastos.Add(new GastosHHViewModel
+                            {
+                                IdGastoHH = g.Id,
+                                Estado = 1,
+                                Fechapago = fechaPagoMesActual,
+                                HHtotales = g.Hhtotales,
+                                Monto = g.Monto,
+                                Observacion = g.Observacion,
+                                Subtotal = g.Subtotal,
+                                Reajuste = g.Reajuste,
+                            });
+                        }
+
+                        // await GestorGastosHH(0, gastos);
+                    }
+
+
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al pagar las hh: {e.Message}");
+            }
+        }
+
 
         public async Task<List<GastosRealesDTO>> ObtenerGastosReales(int? idproyecto)
         {

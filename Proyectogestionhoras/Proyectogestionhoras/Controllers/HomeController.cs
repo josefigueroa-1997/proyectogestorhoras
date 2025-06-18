@@ -10,13 +10,15 @@ namespace Proyectogestionhoras.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ClienteService cliente;
         private readonly UsuarioService usuario;
+        private readonly EjecucionService ejecucionService;
         private readonly PlanillaService planilla;
-        public HomeController(ILogger<HomeController> logger, ClienteService cliente, UsuarioService usuario, PlanillaService planilla)
+        public HomeController(ILogger<HomeController> logger, ClienteService cliente, UsuarioService usuario, PlanillaService planilla, EjecucionService ejecucionService)
         {
             _logger = logger;
             this.cliente = cliente;
             this.usuario = usuario;
             this.planilla = planilla;
+            this.ejecucionService = ejecucionService;
         }
 
         public async Task<IActionResult> Index()
@@ -33,6 +35,7 @@ namespace Proyectogestionhoras.Controllers
                         var usuariosproyectos = await usuario.ObtenerUsuariosProyecto(id.Value);
                         await usuario.GestorHHSocios();
                         await usuario.GestorHHStaff();
+                       // await ejecucionService.PagoAutomaticoHH();
                         ViewBag.clientes = clientes;
                         ViewBag.Proyectos = usuariosproyectos;
                         return View();

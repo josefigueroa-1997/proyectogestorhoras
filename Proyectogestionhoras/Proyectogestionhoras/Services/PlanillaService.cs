@@ -342,6 +342,7 @@ namespace Proyectogestionhoras.Services
                     }
 
                     gastoshh.Monto = costoproyecto * gastoshh.Hhtotales;
+                    gastoshh.Subtotal = costoproyecto * gastoshh.Hhtotales;
                     context.Update(gastoshh);
                 }
                
@@ -356,7 +357,7 @@ namespace Proyectogestionhoras.Services
                     Tiporecurso = tiporecurso,
                     Hhtotales = hh,
                     Estado = 0,
-                    Subtotal = 0,
+                    Subtotal = costoproyecto * hh,
                     Monto = costoproyecto * hh,
                     Reajuste = 0,
                 };
@@ -1254,6 +1255,7 @@ namespace Proyectogestionhoras.Services
                                 IdPlanilla = reader.IsDBNull(reader.GetOrdinal("IdPlanilla")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanilla")),
                                 IdRegistro = reader.IsDBNull(reader.GetOrdinal("IdRegistro")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdRegistro")),
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("IdProyecto")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdProyecto")),
+                                idproyectoantiguo = reader.IsDBNull(reader.GetOrdinal("IdProyectoantiguo")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdProyectoantiguo")),
                                 IdActividad = reader.IsDBNull(reader.GetOrdinal("IdActividad")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdActividad")),
                                 estado = reader.IsDBNull(reader.GetOrdinal("estado")) ? 0 : reader.GetInt32(reader.GetOrdinal("estado")),
                                 idusuproy = reader.IsDBNull(reader.GetOrdinal("idusuproy")) ? 0 : reader.GetInt32(reader.GetOrdinal("idusuproy")),

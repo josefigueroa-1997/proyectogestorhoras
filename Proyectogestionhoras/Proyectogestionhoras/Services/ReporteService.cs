@@ -1340,6 +1340,7 @@ namespace Proyectogestionhoras.Services
                                 IdRegistro = reader.IsDBNull(reader.GetOrdinal("IdRegistro")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdRegistro")),
                                 idusuproy = reader.IsDBNull(reader.GetOrdinal("idusuproy")) ? 0 : reader.GetInt32(reader.GetOrdinal("idusuproy")),
                                 IDPROYECTO = reader.IsDBNull(reader.GetOrdinal("idproyecto")) ? 0 : reader.GetInt32(reader.GetOrdinal("idproyecto")),
+                                idproyectoantiguo = reader.IsDBNull(reader.GetOrdinal("IdProyectoantiguo")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdProyectoantiguo")),
                                 estado = reader.IsDBNull(reader.GetOrdinal("estado")) ? 0 : reader.GetInt32(reader.GetOrdinal("estado")),
                                 Anio = reader.IsDBNull(reader.GetOrdinal("Anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("Anio")),
                                 NombreUsuario = reader.IsDBNull(reader.GetOrdinal("NombreUsuario")) ? string.Empty : reader.GetString(reader.GetOrdinal("NombreUsuario")),

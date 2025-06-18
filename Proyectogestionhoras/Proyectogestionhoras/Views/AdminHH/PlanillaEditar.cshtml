@@ -88,25 +88,7 @@
         margin-top: 20px;
     }
 
-    .submit-btn, .planilla-btn {
-        padding: 8px 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin-left: 10px;
-    }
-
-    .submit-btn {
-        color: #fff;
-        background-color: #fcaa67;
-    }
-
-        .submit-btn:hover {
-            background-color: #e39450;
-        }
+   
 
 
     .planilla-btn {
@@ -169,19 +151,13 @@
 <h2 style="margin-top: 50px;" class="text-2xl text-center font-bold mb-4">
     Planilla HH General - @nombreMes @anio
 </h2>
-<div class="text-center mb-4">
-    <a href="@Url.Action("ExportarPlanillaExcel","Reporte", new { mes = mes, anio = anio })"
-       class="planilla-btn px-4 py-2 rounded"
-       style="background-color: #28a745; color: white;">
-        Descargar Planilla
-    </a>
-</div>
+
 
 
 
 <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
     <p class="text-sm text-gray-600">
-        Muestra el registro de HH de todos los usuarios en el año y mes seleccionado.
+        Muestra el registro de HH de todos los usuarios en el año y mes seleccionado. Usted puede editar el nombre del usuario, la actividad, el proyecto o subactividad y las hh. Luego de editar todos los parametros, tiene que darle clic en Editar.
 
     </p>
 </div>
@@ -198,9 +174,10 @@
                     
                     <th class="p-2 border border-gray-300">Proyecto</th>
                     
-                    <th class="p-2 border border-gray-300">Cuenta</th>
+                    
                    
                     <th class="p-2 border border-gray-300">Número Horas</th>
+                    <th class="p-2 border border-gray-300">Cuenta</th>
                     <th class="p-2 border border-gray-300">Costo Unitario</th>
                     <th class="p-2 border border-gray-300">Costo Total</th>
                     <th class="p-2 border border-gray-300">Observaciones</th>
@@ -214,7 +191,7 @@
 
                     @foreach (var planilla in ViewBag.Registros)
                     {
-                        if (idusuario == 88)
+                        if (idusuario == 88 || idusuario == 96)
                         {
                             <tr>
                                 <td class="px-2 py-2 border border-[#ddd] text-center">
@@ -225,9 +202,9 @@
                                         <input type="hidden" class="idusuarioproyecto" name="idusuarioproyecto" value="@planilla.idusuproy" />
                                         <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
                                         <input type="hidden" name="correlativo" value="@planilla.correlativo" />
-                                        <input type="hidden" name="proyectoorigen" value="@planilla.IDPROYECTO" />
+                                        <input type="hidden" name="proyectoorigen" value="@planilla.idproyectoantiguo" />
                                         <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
-                                        <button type="button" class="editarBtn bg-orange-500 text-white border-none py-1 px-2 cursor-pointer">
+                                        <button type="button" class="editarBtn bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
                                             Editar
                                         </button>
                                     }
@@ -336,9 +313,6 @@
                                     }
 
                                 </td>
-
-                                <td class="p-2 border min-w-[100px] border-gray-300 text-left">@planilla.Cuenta</td>
-
                                 <td class="px-2 py-2 border border-[#ddd] text-right">
                                     @if (planilla.estado == 1 || planilla.estado == 2)
                                     {
@@ -350,14 +324,20 @@
                                         @planilla.HHregistradas
                                     }
                                 </td>
+                                <td class="p-2 border min-w-[100px] border-gray-300 text-left">@planilla.Cuenta</td>
+
+                               
                                 <td class="p-2 border border-gray-300 text-right">
                                     @(planilla.CostoUnitario == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoUnitario))
                                 </td>
                                 <td class="p-2 border border-gray-300 text-right">
                                     @(planilla.CostoTotal == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoTotal))
                                 </td>
-                                <td class="p-2 border border-gray-300 text-center">@planilla.Observaciones - </td>
-                               
+                                
+                                <td class="p-2 border border-gray-300 text-left">
+                                    <textarea rows="2" name="observaciones" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@planilla.Observaciones</textarea>
+
+                                </td>
                             </tr>
                         }
                         else
@@ -378,7 +358,7 @@
                                 <td class="p-2 border border-gray-300 text-right">
                                     @(planilla.CostoTotal == 0 ? "" : @String.Format("{0:N0}", @planilla.CostoTotal))
                                 </td>
-                                <td class="p-2 border border-gray-300 text-center">@planilla.Observaciones</td>
+                               
                             </tr>
                         }
                       
@@ -433,7 +413,7 @@
                     });
 
                     if (recursoSeleccionado) {
-                        console.log(recursoSeleccionado);
+                        
                         cargaractividades(recursoSeleccionado, select.closest('tr'));
                     }
 
@@ -587,10 +567,19 @@
 
     $(document).on('change', '.nombreSelect', function () {
         var idproyecto = $(this).val();
-       
+        
         var fila = $(this).closest('tr');
-        var idusuario = fila.find('.usuarioSelect').val();
-        cargarInformacionUsuario(idusuario, idproyecto, fila);
+       
+        var tipoactividad = fila.find("[name='controlhhactividad']").val();
+        if (tipoactividad === "proyecto en ejecucion" || tipoactividad === "proyecto en negociación") {
+            var idusuario = fila.find('.usuarioSelect').val();
+            cargarInformacionUsuario(idusuario, idproyecto, fila);
+        }
+        if (tipoactividad === "empresa") {
+            var subactividadseleccionada = $(this).val();
+
+            fila.find('.proyectoid').val(subactividadseleccionada);
+        }
     });
 
 
@@ -640,6 +629,7 @@
 
             } else if (controlhh === 'empresa') {
                 fila.find('.idusuarioproyecto').val(0);
+                
                 cargarSubactividades(idActividad, fila);
                 controlvalor = 2;
             } else if (controlhh === "proyecto en negociación") {
@@ -672,6 +662,9 @@
             let correlativo = row.find("[name='correlativo']").val();
             let proyectoorigen = row.find("[name='proyectoorigen']").val();
             
+          
+
+
             if (tipoactividad === "proyecto en ejecucion" || tipoactividad === "proyecto en negociación") {
                 idsubactividad = 0;
             }
@@ -680,6 +673,7 @@
             }
             $('#modalMensaje').text("Procesando Su Solicitud...");
             $('#edicionModal').show();
+          
             $.ajax({
                 url: "/Planilla/EditarRegistroPlanilla",
                 type: "POST",

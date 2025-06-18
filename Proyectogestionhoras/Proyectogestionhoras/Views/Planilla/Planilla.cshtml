@@ -199,6 +199,7 @@
         string? nombre = Context.Session.GetString("nombre");
         int? idusuario = Context.Session.GetInt32("id");
         string? recurso = Context.Session.GetString("recurso");
+        var fechaInicio = (DateTime)ViewBag.FechaInicio;
     }
 
     <div style="display: flex; justify-content: flex-end; margin-top: 10px; margin-right: 20px;">
@@ -318,10 +319,10 @@
     $(document).ready(function () {
         var today = new Date().toISOString().split('T')[0];
         $('.fecharegistro').val(today);
-
+        const fechaminima = '@fechaInicio.ToString("yyyy-MM-dd")';
 
         $('.fecharegistro').attr('max', today);
-
+        $('.fecharegistro').attr('min', fechaminima);
         window.closeModal = function () {
             $('#mensajeModal').hide();
         };
@@ -656,7 +657,7 @@
 
                         let nuevaFila = `
                                             <tr>
-                                                    <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" max="${today}" /></td>
+                                                        <td style="padding: 10px; border: 1px solid #ddd;"><input type="date" name="fecharegistro" class="fecharegistro" value="${today}" min="${fechaminima}" max="${today}" /></td>
                                                          <td style="padding: 10px; border: 1px solid #ddd;">
                                                         <select class="actividadesSelect" name="actividad">
                                                             <option value="" disabled selected>Seleccione una actividad</option>

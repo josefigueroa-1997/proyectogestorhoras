@@ -617,5 +617,60 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("GestorProveedores", "Parametros");
         }
 
+
+        /*Dia Pago*/
+        public async Task<IActionResult> GestorDiaPago()
+        {
+
+            var diapago = await context.Diapagos.FirstOrDefaultAsync();
+            return View(diapago);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarActualizarDiaPago(Diapago dias)
+        {
+            if (dias == null)
+            {
+                TempData["Errordia"] = "No se pudo actualizar el día de pago.";
+                return RedirectToAction("GestorDiaPago");
+            }
+            if (dias.Dia < 1 || dias.Dia > 31)
+            {
+                TempData["Errordia"] = "El día de pago debe estar entre 1 y 31.";
+                return RedirectToAction("GestorDiaPago");
+            }
+
+            try
+            {
+                if (dias.Id == 0)
+                {
+                    context.Diapagos.Add(dias);
+                    TempData["Successdia"] = "Día de pago asignado correctamente.";
+                }
+                else
+                {
+                    var diaExistente = await context.Diapagos.FindAsync(dias.Id);
+                    if (diaExistente == null)
+                    {
+                        TempData["Errordia"] = "Día no encontrado.";
+                        return RedirectToAction("GestorDiaPago");
+                    }
+
+                    diaExistente.Dia = dias.Dia;
+                    context.Diapagos.Update(diaExistente);
+                    TempData["Successdia"] = "Día de pago actualizado correctamente.";
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch
+            {
+                TempData["Errordia"] = "Ocurrió un error al guardar el día de pago.";
+            }
+
+            return RedirectToAction("GestorDiaPago");
+        }
+
     }
 }
