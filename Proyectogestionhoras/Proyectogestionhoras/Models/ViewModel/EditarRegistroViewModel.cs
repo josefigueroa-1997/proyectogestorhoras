@@ -9,6 +9,7 @@
         public string? horasasignadas { get; set; }
         public string? correlativo { get; set; }
         public DateTime Fecharegistro { get; set; }
+        public DateTime Fechaorigen { get; set; }
         public string? observaciones { get; set; }
         public int Idactividad { get; set; }
         public int idsubactividad { get; set; }
