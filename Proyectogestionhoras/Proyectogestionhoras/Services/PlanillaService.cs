@@ -306,7 +306,7 @@ namespace Proyectogestionhoras.Services
                     }
                     else if (eliminar == 2)
                     {
-                        /*distinto proyecto , pero mismo mes*/
+                        /*distinto proyecto , pero mismo mes aca SUMA*/
                         if (esTraspaso)
                         {
                             Debug.WriteLine($"estoy entranco aca???");
@@ -367,9 +367,6 @@ namespace Proyectogestionhoras.Services
                 await context.AddAsync(nuevogasto);
 
 
-
-
-
             }
 
 
@@ -411,7 +408,7 @@ namespace Proyectogestionhoras.Services
                     }
                     else
                     {
-                        /*mismo proyecto, pero distinto mes*/
+                        /*mismo proyecto, pero distinto mes RESTA*/
                         var idregistrohistorico = await context.Gastoshhhejecucions.Where(g => g.Mes == mesantiguo && g.Anio == anioantiguo && g.Idproyecto == idproyecto && g.Tiporecurso == tiporecurso).Select(g => g.Id).FirstOrDefaultAsync();
                         if (idregistrohistorico > 0)
                         {

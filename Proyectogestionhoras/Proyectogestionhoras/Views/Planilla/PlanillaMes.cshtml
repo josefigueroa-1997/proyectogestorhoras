@@ -332,6 +332,7 @@
                                         <input type="hidden" name="idregistro" value="@planilla.IdRegistro" />
                                         <input type="hidden" name="correlativo" value="@planilla.correlativo" />
                                         <input type="hidden" name="idproyectoantiguo" value="@planilla.idproyectoantiguo" />
+                                        <input type="hidden" name="fechaorigen" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")" />
                                         <input class="proyectoid" type="hidden" name="idproyecto" value="@planilla.IDPROYECTO" />
                                         <button type="button" class="editarBtn bg-orange-500 text-white border-none py-1 px-2 cursor-pointer">
                                             Editar
@@ -581,6 +582,7 @@
             let idusuproy = row.find("[name='idusuarioproyecto']").val();;
             let horasasignadas = row.find("[name='hhregistradas']").val();
             let fecharegistro = row.find("[name='fecharegistro']").val();
+            let fechaorigen = row.find("[name='fechaorigen']").val();
             let observaciones = row.find("[name='observaciones']").val() || "";
             let idactividad = row.find("[name='idactividad']").val();
             let idsubactividad = row.find("[name='idproyecto']").val();
