@@ -60,6 +60,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Subactividad> Subactividads { get; set; } = null!;
         public virtual DbSet<Sucursal> Sucursals { get; set; } = null!;
         public virtual DbSet<SucursalCliente> SucursalClientes { get; set; } = null!;
+        public virtual DbSet<Tipocuentum> Tipocuenta { get; set; } = null!;
         public virtual DbSet<Tipologium> Tipologia { get; set; } = null!;
         public virtual DbSet<TotalRecurso> TotalRecursos { get; set; } = null!;
         public virtual DbSet<Totalfacturaejecucion> Totalfacturaejecucions { get; set; } = null!;
@@ -323,6 +324,13 @@ namespace Proyectogestionhoras.Models
                     .HasColumnName("CUENTA");
 
                 entity.Property(e => e.Idcuenta).HasColumnName("IDCUENTA");
+
+                entity.Property(e => e.Idtipocuenta).HasColumnName("idtipocuenta");
+
+                entity.HasOne(d => d.IdtipocuentaNavigation)
+                    .WithMany(p => p.Cuenta)
+                    .HasForeignKey(d => d.Idtipocuenta)
+                    .HasConstraintName("tipocuenta_fk");
             });
 
             modelBuilder.Entity<Cuota>(entity =>
@@ -1499,6 +1507,18 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.IdSucursal)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ID_SUCURSAL_CLI_FK");
+            });
+
+            modelBuilder.Entity<Tipocuentum>(entity =>
+            {
+                entity.ToTable("tipocuenta");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("nombre");
             });
 
             modelBuilder.Entity<Tipologium>(entity =>

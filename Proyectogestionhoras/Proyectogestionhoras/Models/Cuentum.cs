@@ -14,7 +14,9 @@ namespace Proyectogestionhoras.Models
         public int Id { get; set; }
         public int Idcuenta { get; set; }
         public string Cuenta { get; set; } = null!;
+        public int? Idtipocuenta { get; set; }
 
+        public virtual Tipocuentum? IdtipocuentaNavigation { get; set; }
         public virtual ICollection<Segmento> Segmentos { get; set; }
         public virtual ICollection<Subactividad> Subactividads { get; set; }
     }

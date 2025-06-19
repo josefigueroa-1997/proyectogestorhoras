@@ -1,40 +1,57 @@
 ﻿@{
     ViewData["Title"] = "Gestor Cuentas";
 }
+@{
+    var cuentas = ViewBag.Cuentas as List<Proyectogestionhoras.Models.Cuentum>; 
+}
 
-<div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; display: flex; justify-content: space-between;margin-top: 50px;">
-    <div style="width: 60%;">
-        <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
-            <p class="text-sm text-gray-600">Es el vínculo con la plataforma squallo de contabilidad y permite sincronizar este Dashboard con los estados financieros.</p>
+<div class="w-4/5 mx-auto bg-white p-6 shadow-md rounded-xl mt-12 flex justify-between">
+    <!-- Sección izquierda: Tabla de cuentas -->
+    <div class="w-3/5">
+        <div class="mb-4 p-4 bg-white rounded-lg shadow-md">
+            <p class="text-sm text-gray-600">
+                Es el vínculo con la plataforma squallo de contabilidad y permite sincronizar este Dashboard con los estados financieros.
+            </p>
         </div>
-        <h2 style="text-align: center; color: #333;">Cuentas</h2>
+        @if (TempData["Successcuenta"] != null)
+        {
+            <div class="mb-4 p-4 text-green-800 bg-green-100 border border-green-300 rounded-md">
+                @TempData["Successcuenta"]
+            </div>
+        }
+        @if (TempData["Errorcuenta"] != null)
+        {
+            <div class="mb-4 p-4 text-red-800 bg-red-100 border border-red-300 rounded-md">
+                @TempData["Errorcuenta"]
+            </div>
+        }
+        <h2 class="text-center text-gray-800 font-semibold text-lg mb-4">Cuentas</h2>
 
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
+        <table class="w-full border-collapse text-xs text-left" id="tablagastos">
             <thead>
-                <tr style="background-color: #d9e2f3; color: black;">
-                    <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Seleccionar</th>
-                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">IDCUENTA</th>
-                    <th style="padding: 5px; border: 1px solid #ddd; width: 20%;">Cuenta</th>
+                <tr class="bg-blue-100 text-black">
+                    <th class="p-2 border border-gray-300 w-1/6">Seleccionar</th>
+                    <th class="p-2 border border-gray-300 w-2/5">IDCUENTA</th>
+                    <th class="p-2 border border-gray-300 w-2/5">Cuenta</th>
+                    <th class="p-2 border border-gray-300 w-2/5">Tipo de Cuenta</th>
                 </tr>
             </thead>
             <tbody>
-                @if (ViewBag.Cuentas != null)
+                @if (cuentas != null)
                 {
-                    foreach (var cuenta in ViewBag.Cuentas)
+                    foreach (var cuenta in cuentas)
                     {
                         <tr>
-                            <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
+                            <td class="p-2 border border-gray-300 text-center">
                                 <button type="button"
-                                        onclick="cargarDatosAlternativa('@cuenta.Id', '@Html.Encode(cuenta.Idcuenta.ToString())', '@Html.Encode(cuenta.Cuenta)')">
+                                        onclick="cargarDatosAlternativa('@cuenta.Id', '@Html.Encode(cuenta.Idcuenta.ToString())', '@Html.Encode(cuenta.Cuenta)','@Html.Encode(cuenta.Idtipocuenta)')"
+                                        class="text-blue-600 hover:underline">
                                     Seleccionar
                                 </button>
                             </td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">
-                                @cuenta.Idcuenta
-                            </td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">
-                                @cuenta.Cuenta
-                            </td>
+                            <td class="p-2 border border-gray-300">@cuenta.Idcuenta</td>
+                            <td class="p-2 border border-gray-300">@cuenta.Cuenta</td>
+                            <td class="p-2 border border-gray-300">@cuenta.IdtipocuentaNavigation?.Nombre</td>
                         </tr>
                     }
                 }
@@ -42,38 +59,70 @@
         </table>
     </div>
 
-    <div style="width: 35%; margin-left: 20px;">
-        <h2 style="text-align: center; color: #333;">Agregar Cuenta</h2>
+    <!-- Sección derecha: Formulario -->
+    <div class="w-1/3 ml-6">
+        <h2 class="text-center text-gray-800 font-semibold text-lg mb-4">Agregar Cuenta</h2>
 
-        <form action="@Url.Action("GuardarActualizarCuenta", "Parametros")" method="post">
+        <form asp-action="GuardarActualizarCuenta" asp-controller="Parametros" method="post" class="space-y-4">
             <input type="hidden" id="id" name="Id" />
 
-            <label for="idcuenta" style="display: block; margin-bottom: 10px;">IDCUENTA:</label>
-            <input type="text" id="idcuenta" name="Idcuenta" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+            <div>
+                <label for="idcuenta" class="block mb-1 text-sm font-medium text-gray-700">IDCUENTA:</label>
+                <input type="text" id="idcuenta" name="Idcuenta"
+                       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required>
+            </div>
 
-            <label for="cuenta" style="display: block; margin-bottom: 10px;">Cuenta:</label>
-            <input type="text" id="cuenta" name="Cuenta" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+            <div>
+                <label for="cuenta" class="block mb-1 text-sm font-medium text-gray-700">Cuenta:</label>
+                <input type="text" id="cuenta" name="Cuenta"
+                       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required>
+            </div>
+            <div>
+                <label for="cuenta" class="block mb-1 text-sm font-medium text-gray-700">Tipo de Cuenta:</label>
+                <select type="text" id="tipocuenta" name="Idtipocuenta"
+                       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required>
+                    <option selected disabled value="">Seleccione una opción</option>
+                    @if (ViewBag.Tipocuentas != null)
+                    {
+                        @foreach (var tipocuenta in ViewBag.Tipocuentas)
+                        {
+                            <option value="@tipocuenta.Id">@tipocuenta.Nombre</option>
+                        }
 
-            <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Guardar
-            </button>
-            <button type="button" onclick="limpiarFormulario()" style="width: 100%; padding: 10px; background-color: cornflowerblue; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">
-                Limpiar
-            </button>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <button type="submit"
+                        class="w-full py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-md transition">
+                    Guardar
+                </button>
+                <button type="button" onclick="limpiarFormulario()"
+                        class="w-full mt-2 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition">
+                    Limpiar
+                </button>
+            </div>
         </form>
     </div>
 </div>
 
+
 <script>
-    function cargarDatosAlternativa(id, idcuenta, cuenta) {
+    function cargarDatosAlternativa(id, idcuenta, cuenta,tipocuenta) {
         const idInput = document.querySelector('#id');
         const idcuentaInput = document.querySelector('#idcuenta');
         const cuentaInput = document.querySelector('#cuenta');
+        const tipocuentaInput = document.querySelector('#tipocuenta');
 
         idInput.value = id;
         idcuentaInput.value = idcuenta;
         cuentaInput.value = cuenta;
-        idcuentaInput.readOnly = true; // Establecer el campo IDCUENTA como solo lectura
+        tipocuentaInput.value = tipocuenta;
+        idcuentaInput.readOnly = true; 
     }
     function limpiarFormulario() {
         location.reload();

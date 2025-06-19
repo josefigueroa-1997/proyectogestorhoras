@@ -1,0 +1,255 @@
+﻿<h2 style="margin-top:50px;">Estado de Resultado</h2>
+<div id="tablaContainer">Cargando...</div>
+
+<script>
+    window.onload = async function () {
+        const anio = new Date().getFullYear();
+        const response = await fetch(`/Reporte/ObtenerEERR?anio=${anio}`);
+        const data = await response.json();
+        renderizarTabla(data);
+    }
+
+    function renderizarTabla(data) {
+        // Obtener claves mes/año únicas y ordenarlas
+        const mesesUnicos = Array.from(
+            new Set(data.map(d => `${d.mes}/${d.anio}`))
+        ).sort((a, b) => {
+            const [mesA, anioA] = a.split('/').map(Number);
+            const [mesB, anioB] = b.split('/').map(Number);
+            return anioA - anioB || mesA - mesB;
+        });
+
+        // Agrupar por tipo
+        const tiposMap = {};
+        for (const item of data) {
+            if (!tiposMap[item.tipo]) tiposMap[item.tipo] = [];
+            tiposMap[item.tipo].push(item);
+        }
+
+        let html = `<table><thead><tr><th>Tipo</th>`;
+        for (const mes of mesesUnicos) {
+            html += `<th>${mes}</th>`;
+        }
+        html += `<th>Total ${2025}</th>`;
+
+        html += `</tr></thead><tbody>`;
+
+        const totalesPorMes = {};
+        for (const mes of mesesUnicos) totalesPorMes[mes] = 0;
+        const ventasAsesoriasPorMes = {};
+
+        // Calcular esto una vez fuera del loop:
+        if (tiposMap["Ingresos de la Explotación"]) {
+            for (const item of tiposMap["Ingresos de la Explotación"]) {
+                if (item.cuenta === "Ventas Asesorias") {
+                    const claveMes = `${item.mes}/${item.anio}`;
+                    if (!ventasAsesoriasPorMes[claveMes]) ventasAsesoriasPorMes[claveMes] = 0;
+                    ventasAsesoriasPorMes[claveMes] += item.monto;
+                }
+            }
+        }
+
+        const totalesInversion = {};
+        const totalesGastosAdmVentas = {};
+        const totalesEgresosFueraExplotacion = {};
+        const totalesIIDyA = {};
+        const utilidadNetaPorMes = {};
+        function acumularTotalesTipo(tipoNombre, acumulador) {
+            if (tiposMap[tipoNombre]) {
+                for (const item of tiposMap[tipoNombre]) {
+                    const claveMes = `${item.mes}/${item.anio}`;
+                    if (!acumulador[claveMes]) acumulador[claveMes] = 0;
+                    acumulador[claveMes] += item.monto;
+                }
+            }
+        }
+
+        acumularTotalesTipo("Inversion", totalesInversion);
+        acumularTotalesTipo("Gastos de Administración y Ventas", totalesGastosAdmVentas);
+        acumularTotalesTipo("Egresos fuera de la Explotación", totalesEgresosFueraExplotacion);
+        acumularTotalesTipo("Intereses, Impuestos, Depreciaciones y Amortizaciones", totalesIIDyA);
+        let utilidadNetaAgregada = false;
+
+
+        for (const tipo in tiposMap) {
+            // Calcular totales por tipo y mes
+            const totalesTipoMes = {};
+            for (const item of tiposMap[tipo]) {
+                const claveMes = `${item.mes}/${item.anio}`;
+                if (!totalesTipoMes[claveMes]) totalesTipoMes[claveMes] = 0;
+                totalesTipoMes[claveMes] += item.monto;
+            }
+
+            // Fila del tipo con totales
+            html += `<tr class="tipo-row"><td>${tipo}</td>`;
+            for (const mes of mesesUnicos) {
+                const suma = totalesTipoMes[mes] || 0;
+                html += `<td>${suma.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+            }
+            const totalAnualTipo = mesesUnicos.reduce((acc, mes) => acc + (totalesTipoMes[mes] || 0), 0);
+            html += `<td>${totalAnualTipo.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+            html += `</tr>`;
+
+            const cuentas = {};
+            for (const item of tiposMap[tipo]) {
+                if (!cuentas[item.cuenta]) cuentas[item.cuenta] = {};
+                const claveMes = `${item.mes}/${item.anio}`;
+                if (!cuentas[item.cuenta][claveMes]) cuentas[item.cuenta][claveMes] = 0;
+                cuentas[item.cuenta][claveMes] += item.monto;
+            }
+
+            Object.keys(cuentas).sort().forEach(cuenta => {
+                html += `<tr><td>${cuenta}</td>`;
+                let totalCuenta = 0;
+                for (const mes of mesesUnicos) {
+                    const monto = cuentas[cuenta][mes] || 0;
+                    html += `<td>${monto.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                    totalCuenta += monto;
+                    totalesPorMes[mes] += monto;
+                }
+                html += `<td>${totalCuenta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                html += `</tr>`;
+            });
+            if (tipo === "Costos Directos") {
+                html += `<tr class="tipo-row"><td>Margen de contribución</td>`;
+                let totalmargen = 0;
+                for (const mes of mesesUnicos) {
+                    const venta = ventasAsesoriasPorMes[mes] || 0;
+                    const costo = totalesTipoMes[mes] || 0;
+                    const margen = venta + costo;
+                    totalmargen += margen;
+                    html += `<td>${margen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                }
+                html += `<td>${totalmargen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                
+                html += `<tr class="tipo-row"><td>% Margen de contribución</td>`;
+                for (const mes of mesesUnicos) {
+                    const venta = ventasAsesoriasPorMes[mes] || 0;
+                    const costo = totalesTipoMes[mes] || 0;
+                    const margen = venta + costo;
+
+                    let porcentaje = 0;
+                    if (venta !== 0) {
+                        porcentaje = (margen / venta) * 100;
+                    }
+                    // Mostrar porcentaje con 2 decimales y signo %
+                    html += `<td>${porcentaje.toFixed(2)}%</td>`;
+                }
+                html += `</tr>`;
+            }
+            if (tipo === "Egresos fuera de la Explotación") {
+                // EBITDA = Margen de contribución + Inversion + Gastos Adm y Ventas + Egresos fuera explotación
+                html += `<tr class="tipo-row"><td>EBITDA</td>`;
+                let totalebitda = 0;
+                for (const mes of mesesUnicos) {
+                    const margen = (() => {
+                        const venta = ventasAsesoriasPorMes[mes] || 0;
+                        const costo = (tiposMap["Costos Directos"] ? tiposMap["Costos Directos"].reduce((acc, cur) => {
+                            if (`${cur.mes}/${cur.anio}` === mes) return acc + cur.monto;
+                            return acc;
+                        }, 0) : 0);
+                        return venta + costo;
+                    })();
+
+                    const inversion = totalesInversion[mes] || 0;
+                    const gastosAdmVentas = totalesGastosAdmVentas[mes] || 0;
+                    const egresosFuera = totalesEgresosFueraExplotacion[mes] || 0;
+
+                    const ebitda = margen + inversion + gastosAdmVentas + egresosFuera;
+                    totalebitda += ebitda;
+                    html += `<td>${ebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                }
+                html += `<td>${totalebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                html += `</tr>`;
+            }
+            if (tipo === "Intereses, Impuestos, Depreciaciones y Amortizaciones") {
+                html += generarFilaUtilidadNeta(mesesUnicos, ventasAsesoriasPorMes, tiposMap, totalesIIDyA, utilidadNetaPorMes);
+                utilidadNetaAgregada = true;
+                html += generarFilaPorcentajeUtilidadNeta(mesesUnicos, tiposMap, utilidadNetaPorMes);
+            }
+
+           
+        }
+        if (!utilidadNetaAgregada) {
+            html += generarFilaUtilidadNeta(mesesUnicos, ventasAsesoriasPorMes, tiposMap, totalesIIDyA, utilidadNetaPorMes);
+            html += generarFilaPorcentajeUtilidadNeta(mesesUnicos, tiposMap, utilidadNetaPorMes);
+        }
+        html += `<tr class="total-row"><td>Total</td>`;
+        for (const mes of mesesUnicos) {
+            html += `<td>${totalesPorMes[mes].toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+        }
+        html += `</tr>`;
+
+        html += `</tbody></table>`;
+        document.getElementById('tablaContainer').innerHTML = html;
+    }
+    function generarFilaUtilidadNeta(mesesUnicos, ventasAsesoriasPorMes, tiposMap, totalesIIDyA, utilidadNetaPorMes) {
+        // Recalcular totales para EBITDA como en el paso anterior
+        const totalesInversion = {};
+        const totalesGastosAdmVentas = {};
+        const totalesEgresosFueraExplotacion = {};
+
+        function acumularTotales(tipoNombre, acumulador) {
+            if (tiposMap[tipoNombre]) {
+                for (const item of tiposMap[tipoNombre]) {
+                    const claveMes = `${item.mes}/${item.anio}`;
+                    if (!acumulador[claveMes]) acumulador[claveMes] = 0;
+                    acumulador[claveMes] += item.monto;
+                }
+            }
+        }
+        acumularTotales("Inversion", totalesInversion);
+        acumularTotales("Gastos de Administración y Ventas", totalesGastosAdmVentas);
+        acumularTotales("Egresos fuera de la Explotación", totalesEgresosFueraExplotacion);
+
+        let fila = `<tr class="tipo-row"><td>Utilidad neta</td>`;
+        for (const mes of mesesUnicos) {
+            const venta = ventasAsesoriasPorMes[mes] || 0;
+            const costo = (tiposMap["Costos Directos"] ? tiposMap["Costos Directos"].reduce((acc, cur) => {
+                if (`${cur.mes}/${cur.anio}` === mes) return acc + cur.monto;
+                return acc;
+            }, 0) : 0);
+            const margen = venta + costo;
+
+            const inversion = totalesInversion[mes] || 0;
+            const gastosAdmVentas = totalesGastosAdmVentas[mes] || 0;
+            const egresosFuera = totalesEgresosFueraExplotacion[mes] || 0;
+            const ebitda = margen + inversion + gastosAdmVentas + egresosFuera;
+
+            const iidya = totalesIIDyA[mes] || 0;
+
+            const utilidadNeta = ebitda + iidya;
+            utilidadNetaPorMes[mes] = utilidadNeta;
+
+            fila += `<td>${utilidadNeta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+        }
+        fila += `</tr>`;
+
+        return fila;
+    }
+
+    function generarFilaPorcentajeUtilidadNeta(mesesUnicos, tiposMap, utilidadNetaPorMes) {
+        // Totales Ingresos de la Explotación
+        const totalesIngresosExplotacion = {};
+        if (tiposMap["Ingresos de la Explotación"]) {
+            for (const item of tiposMap["Ingresos de la Explotación"]) {
+                const claveMes = `${item.mes}/${item.anio}`;
+                if (!totalesIngresosExplotacion[claveMes]) totalesIngresosExplotacion[claveMes] = 0;
+                totalesIngresosExplotacion[claveMes] += item.monto;
+            }
+        }
+
+        let fila = `<tr class="tipo-row"><td>% Utilidad neta</td>`;
+        for (const mes of mesesUnicos) {
+            const ingreso = totalesIngresosExplotacion[mes] || 0;
+            const utilidad = utilidadNetaPorMes[mes] || 0;
+            let porcentaje = 0;
+            if (ingreso !== 0) {
+                porcentaje = (utilidad / ingreso) * 100;
+            }
+            fila += `<td>${porcentaje.toFixed(2)}%</td>`;
+        }
+        fila += `</tr>`;
+        return fila;
+    }
+</script>

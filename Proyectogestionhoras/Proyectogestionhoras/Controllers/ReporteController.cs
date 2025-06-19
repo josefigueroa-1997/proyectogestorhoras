@@ -402,6 +402,19 @@ namespace Proyectogestionhoras.Controllers
             return Ok(resultado);
         }
 
+        public IActionResult ReporteEstadoResultado() {
+
+            return View();
+        
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerEERR(int anio)
+        {
+            var resultado = await _reporteService.ObtenerEstadoResultado(anio);
+            return Ok(resultado);
+        }
+
         /*Exportar Plnilla excel*/
 
         public async Task<IActionResult> ExportarPlanillaExcel(int? mes, int? anio)

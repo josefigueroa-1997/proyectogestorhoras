@@ -1409,5 +1409,50 @@ namespace Proyectogestionhoras.Services
 
             }
         }
+
+
+        public async Task<List<EstadoResultadoDTO>> ObtenerEstadoResultado(int anio)
+        {
+            try
+            {
+
+                var eerr = new List<EstadoResultadoDTO>();
+                DbConnection connection = await conexion.OpenDatabaseConnectionAsync();
+                using (DbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "REPORTEEERR";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@ANIO", anio));
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            EstadoResultadoDTO datos = new()
+                            {
+                                tipo = reader.IsDBNull(reader.GetOrdinal("tipocuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("tipocuenta")),
+                                cuenta = reader.IsDBNull(reader.GetOrdinal("cuenta")) ? string.Empty : reader.GetString(reader.GetOrdinal("cuenta")),
+                               
+                                mes = reader.IsDBNull(reader.GetOrdinal("mes")) ? 0 : reader.GetInt32(reader.GetOrdinal("mes")),
+                                anio = reader.IsDBNull(reader.GetOrdinal("anio")) ? 0 : reader.GetInt32(reader.GetOrdinal("anio")),
+                                monto = reader.IsDBNull(reader.GetOrdinal("monto")) ? 0 : reader.GetDecimal(reader.GetOrdinal("monto")),
+                               
+                            };
+                            eerr.Add(datos);
+
+                        }
+                    }
+
+                }
+                await conexion.CloseDatabaseConnectionAsync();
+                return eerr;
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Hubo un error al obtener el estado resultado:{ex.Message}");
+                return new List<EstadoResultadoDTO>();
+
+            }
+        }
     }
 }

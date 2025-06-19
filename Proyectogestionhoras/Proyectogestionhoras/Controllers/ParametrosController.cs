@@ -29,7 +29,9 @@ namespace Proyectogestionhoras.Controllers
         {
 
             var cuentas = await ObtenerCuentas();
+            var tipocuenta = await context.Tipocuenta.ToListAsync();
             ViewBag.Cuentas = cuentas;
+            ViewBag.Tipocuentas = tipocuenta;
             return View();
         
         }
@@ -39,36 +41,49 @@ namespace Proyectogestionhoras.Controllers
         {
             if (cuentas == null)
             {
-                return BadRequest("La cuenta es nula.");
+                TempData["Errorcuenta"] = "No se pudo crear/actualizar la cuenta.";
+                return RedirectToAction("GestorCuentas");
             }
 
-           
-            if (cuentas.Id == 0)
+            try
             {
-              
-                context.Cuenta.Add(cuentas);
-            }
-            else
-            {
-               
-                var cuentaExistente = await context.Cuenta.FindAsync(cuentas.Id);
-                if (cuentaExistente == null)
+                if (cuentas.Id == 0)
                 {
-                    return NotFound("Cuenta no encontrada.");
-                }
-               
-                cuentaExistente.Cuenta = cuentas.Cuenta; 
-                context.Cuenta.Update(cuentaExistente);
-            }
 
-            
-            await context.SaveChangesAsync();
+                    context.Cuenta.Add(cuentas);
+                    TempData["Successcuenta"] = "Cuenta creada Éxitosamente.";
+                }
+                else
+                {
+
+                    var cuentaExistente = await context.Cuenta.FindAsync(cuentas.Id);
+                    if (cuentaExistente == null)
+                    {
+                        TempData["Errorcuenta"] = "Cuenta no Encontrada.";
+                        return RedirectToAction("GestorDiaPago");
+                    }
+
+                    cuentaExistente.Cuenta = cuentas.Cuenta;
+                    cuentaExistente.Idtipocuenta = cuentas.Idtipocuenta;
+                    context.Cuenta.Update(cuentaExistente);
+                    TempData["Successcuenta"] = "Cuenta actualizada correctamente.";
+                }
+
+
+                await context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                TempData["Errorcuenta"] = "Ocurrió un error al guardar la cuenta.";
+                Debug.WriteLine($"Hubo un error al gaurdar la cuenta:{ex.InnerException}");
+            }
+           
             return RedirectToAction("GestorCuentas");
         }
 
         public async Task<List<Cuentum>> ObtenerCuentas()
         {
-            var cuentas = await context.Cuenta.OrderBy(c=>c.Idcuenta).ToListAsync();
+            var cuentas = await context.Cuenta.Include(c=>c.IdtipocuentaNavigation).OrderBy(c=>c.Idcuenta).ToListAsync();
             return cuentas;
         }
 
