@@ -6,10 +6,10 @@
         const anio = new Date().getFullYear();
         const response = await fetch(`/Reporte/ObtenerEERR?anio=${anio}`);
         const data = await response.json();
-        renderizarTabla(data);
+        renderizarTabla(data,anio);
     }
 
-    function renderizarTabla(data) {
+    function renderizarTabla(data,anio) {
         // Obtener claves mes/año únicas y ordenarlas
         const mesesUnicos = Array.from(
             new Set(data.map(d => `${d.mes}/${d.anio}`))
@@ -30,7 +30,7 @@
         for (const mes of mesesUnicos) {
             html += `<th>${mes}</th>`;
         }
-        html += `<th>Total ${2025}</th>`;
+        html += `<th>Total ${anio}</th>`;
 
         html += `</tr></thead><tbody>`;
 
@@ -69,9 +69,17 @@
         acumularTotalesTipo("Egresos fuera de la Explotación", totalesEgresosFueraExplotacion);
         acumularTotalesTipo("Intereses, Impuestos, Depreciaciones y Amortizaciones", totalesIIDyA);
         let utilidadNetaAgregada = false;
+            const ordenTipos = [
+                 "Ingresos de la Explotación",
+                 "Costos Directos",
+                "Gastos de Administración y Ventas",
+                "Inversion",
+                "Egresos fuera de la Explotación",
+                 "Intereses, Impuestos, Depreciaciones y Amortizaciones"
+                 ];
 
-
-        for (const tipo in tiposMap) {
+        for (const tipo of ordenTipos) {
+            if (!tiposMap[tipo]) continue;
             // Calcular totales por tipo y mes
             const totalesTipoMes = {};
             for (const item of tiposMap[tipo]) {
