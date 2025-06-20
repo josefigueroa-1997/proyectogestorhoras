@@ -5,6 +5,7 @@
 
 
 <h2 style="margin-top:50px;">Estado de Resultado</h2>
+<button onclick="exportarExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
 
 
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md sticky top-[900px] z-50">
@@ -39,7 +40,7 @@
             tiposMap[item.tipo].push(item);
         }
 
-        let html = `<table class="min-w-full border-collapse table-auto"><thead><tr class="bg-blue-100 text-black"><th class="text-center  px-4 py-2 min-w-[100px] ">Tipo</th>`;
+        let html = `<table id="tablaestadoresultado" class="min-w-full border-collapse table-auto"><thead><tr class="bg-blue-100 text-black"><th class="text-center  px-4 py-2 min-w-[100px] ">Tipo</th>`;
         for (const mes of mesesUnicos) {
             html += `<th class="text-center  px-4 py-2 min-w-[100px] ">${mes}</th>`;
         }
@@ -320,5 +321,92 @@
         
         fila += `</tr>`;
         return fila;
+    }
+</script>
+
+<script>
+    async function exportarExcel() {
+        const table = document.getElementById("tablaestadoresultado");
+        if (!table) return alert("No se encontró la tabla.");
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Estado de Resultados");
+
+       
+        const rows = Array.from(table.rows);
+        rows.forEach((htmlRow, rowIndex) => {
+            const cells = Array.from(htmlRow.cells);
+            const rowData = [];
+            cells.forEach((cell, colIndex) => {
+                const text = cell.textContent.trim();
+
+                const alignRight = cell.classList.contains("text-right");
+                const isCurrency = /^\$/.test(text);
+                const isPercentage = text.endsWith("%");
+
+                
+                let value = text;
+                if (isCurrency) {
+                    value = parseFloat(text.replace(/\$/g, '').replace(/\./g, '').replace(/,/g, '.')) || '';
+                } else if (isPercentage) {
+                    value = parseFloat(text.replace('%', '')) / 100 || '';
+                }
+
+                
+                rowData.push({
+                    value: value === 0 ? '' : value,
+                    alignment: { horizontal: alignRight || isCurrency || isPercentage ? 'right' : 'left' },
+                    numFmt: isCurrency ? '"$"#,##0' : (isPercentage ? '0.00%' : undefined)
+                });
+            });
+            worksheet.addRow(rowData.map(c => c.value));
+
+            
+            rowData.forEach((c, i) => {
+                const cell = worksheet.getRow(rowIndex + 1).getCell(i + 1);
+                cell.alignment = c.alignment;
+                if (c.numFmt) cell.numFmt = c.numFmt;
+                if (rowIndex === 0) {
+                    cell.font = { bold: true };
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFCCE5FF' } 
+                    };
+                }
+                    const tiposEnNegrita = [
+        "Ingresos de la Explotación",
+        "Costos Directos",
+        "Gastos de Administración y Ventas",
+        "Ingresos fuera de la Explotación",
+        "Inversion",
+        "Egresos fuera de la Explotación",
+        "Intereses, Impuestos, Depreciaciones y Amortizaciones"
+    ];
+
+    // Si la primera celda de la fila coincide con algún tipo, aplicar estilo gris y negrita
+    if (i === 0 && tiposEnNegrita.includes(c.value)) {
+        worksheet.getRow(rowIndex + 1).eachCell((cell) => {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFD9D9D9' } // Gris claro
+            };
+            cell.font = { bold: true };
+        });
+    }
+            });
+
+        });
+
+
+        const blob = await workbook.xlsx.writeBuffer();
+        const blobURL = URL.createObjectURL(new Blob([blob], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+        const a = document.createElement("a");
+        a.href = blobURL;
+        a.download = "EstadoResultados.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
     }
 </script>
