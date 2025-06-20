@@ -121,11 +121,13 @@
             if (tipo === "Costos Directos") {
                 html += `<tr class="tipo-row"><td>Margen de contribución</td>`;
                 let totalmargen = 0;
+                let totalventa = 0;
                 for (const mes of mesesUnicos) {
                     const venta = ventasAsesoriasPorMes[mes] || 0;
                     const costo = totalesTipoMes[mes] || 0;
                     const margen = venta + costo;
                     totalmargen += margen;
+                    totalventa +=venta;
                     html += `<td>${margen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                 }
                 html += `<td>${totalmargen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
@@ -143,6 +145,11 @@
                     // Mostrar porcentaje con 2 decimales y signo %
                     html += `<td>${porcentaje.toFixed(2)}%</td>`;
                 }
+                let porcentajetotalmargen = 0;
+                 if (totalventa !== 0) {
+                        porcentajetotalmargen = (totalmargen / totalventa) * 100;
+                 }
+                 html += `<td>${porcentajetotalmargen.toFixed(2)}%</td>`;
                 html += `</tr>`;
             }
             if (tipo === "Egresos fuera de la Explotación") {
@@ -211,6 +218,7 @@
         acumularTotales("Egresos fuera de la Explotación", totalesEgresosFueraExplotacion);
 
         let fila = `<tr class="tipo-row"><td>Utilidad neta</td>`;
+        let totaleneto = 0;
         for (const mes of mesesUnicos) {
             const venta = ventasAsesoriasPorMes[mes] || 0;
             const costo = (tiposMap["Costos Directos"] ? tiposMap["Costos Directos"].reduce((acc, cur) => {
@@ -227,10 +235,12 @@
             const iidya = totalesIIDyA[mes] || 0;
 
             const utilidadNeta = ebitda + iidya;
+            totaleneto+=utilidadNeta;
             utilidadNetaPorMes[mes] = utilidadNeta;
 
             fila += `<td>${utilidadNeta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
         }
+        fila += `<td>${totaleneto.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
         fila += `</tr>`;
 
         return fila;
