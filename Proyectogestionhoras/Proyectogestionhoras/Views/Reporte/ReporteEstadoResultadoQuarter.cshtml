@@ -1,0 +1,250 @@
+﻿@{
+    ViewData["Title"] = "Estado Resultado Quarter";
+}
+
+
+
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Estado Resultado por Quater</h2>
+
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">
+        Muestra mes a mes el estado resultado  de la empresa en el año actual.
+    </p>
+</div>
+<button onclick="exportarExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md sticky top-[900px] z-50">
+    <div class="overflow-x-auto relative">
+        <div class="w-full max-w-3xl border-collapse text-left text-sm justify-center" id="tablaContainer"></div>
+    </div>
+</div>
+<script>
+        // Fragmento modificado para agrupar por trimestres en vez de meses con todos los cálculos: EBITDA, Margen, Utilidad Neta
+    window.onload = async function () {
+        const anio = new Date().getFullYear();
+        const response = await fetch(`/Reporte/ObtenerEERR?anio=${anio}`);
+        const data = await response.json();
+        renderizarTablaTrimestral(data, anio);
+    }
+
+    function renderizarTablaTrimestral(data, anio) {
+        const trimestreMap = {
+            1: 'Q1', 2: 'Q1', 3: 'Q1',
+            4: 'Q2', 5: 'Q2', 6: 'Q2',
+            7: 'Q3', 8: 'Q3', 9: 'Q3',
+            10: 'Q4', 11: 'Q4', 12: 'Q4'
+        };
+
+        function obtenerClaveTrimestre(mes, anio) {
+            return `${trimestreMap[mes]}/${anio}`;
+        }
+
+        const trimestresUnicos = Array.from(
+            new Set(data.map(d => obtenerClaveTrimestre(d.mes, d.anio)))
+        ).sort((a, b) => {
+            const [qA, yA] = a.split('/');
+            const [qB, yB] = b.split('/');
+            return parseInt(yA) - parseInt(yB) || qA.localeCompare(qB);
+        });
+
+        const tiposMap = {};
+        for (const item of data) {
+            if (!tiposMap[item.tipo]) tiposMap[item.tipo] = [];
+            tiposMap[item.tipo].push(item);
+        }
+
+        let html = `<table id="tablaestadoresultado" class="min-w-full border-collapse table-auto"><thead><tr class="bg-blue-100 text-black"><th class="text-center px-4 py-2 min-w-[100px]">Tipo</th>`;
+        for (const trimestre of trimestresUnicos) {
+            html += `<th class="text-center px-4 py-2 min-w-[100px]">${trimestre}</th>`;
+        }
+        html += `<th class="text-center px-4 py-2 min-w-[100px]">Total ${anio}</th>`;
+        html += `<th class="text-center px-4 py-2 min-w-[100px]">%</th>`;
+        html += `</tr></thead><tbody>`;
+
+        const ventasAsesoriasPorTrimestre = {};
+        let totalVentasAsesorias = 0;
+
+        for (const item of data) {
+            const clave = obtenerClaveTrimestre(item.mes, item.anio);
+            if (item.tipo === "Ingresos de la Explotación" && item.cuenta === "Ventas Asesorias") {
+                ventasAsesoriasPorTrimestre[clave] = (ventasAsesoriasPorTrimestre[clave] || 0) + item.monto;
+                totalVentasAsesorias += item.monto;
+            }
+        }
+
+        const acumuladores = {
+            "Inversion": {},
+            "Gastos de Administración y Ventas": {},
+            "Egresos fuera de la Explotación": {},
+            "Intereses, Impuestos, Depreciaciones y Amortizaciones": {},
+            "Costos Directos": {}
+        };
+
+        for (const tipo in acumuladores) {
+            if (tiposMap[tipo]) {
+                for (const item of tiposMap[tipo]) {
+                    const clave = obtenerClaveTrimestre(item.mes, item.anio);
+                    acumuladores[tipo][clave] = (acumuladores[tipo][clave] || 0) + item.monto;
+                }
+            }
+        }
+
+        const ordenTipos = [
+            "Ingresos de la Explotación",
+            "Costos Directos",
+            "Gastos de Administración y Ventas",     
+            "Inversion",
+            "Ingresos fuera de la Explotación",
+            "Egresos fuera de la Explotación",
+            "Intereses, Impuestos, Depreciaciones y Amortizaciones"
+        ];
+
+        const utilidadNetaPorTrimestre = {};
+
+        for (const tipo of ordenTipos) {
+            if (!tiposMap[tipo]) continue;
+
+            const totalesPorTrimestre = {};
+            const cuentas = {};
+
+            for (const item of tiposMap[tipo]) {
+                const clave = obtenerClaveTrimestre(item.mes, item.anio);
+                totalesPorTrimestre[clave] = (totalesPorTrimestre[clave] || 0) + item.monto;
+                if (!cuentas[item.cuenta]) cuentas[item.cuenta] = {};
+                cuentas[item.cuenta][clave] = (cuentas[item.cuenta][clave] || 0) + item.monto;
+            }
+
+            html += `<tr class="p-2 bg-gray-300 border border-black font-bold"><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">${tipo}</td>`;
+            for (const trimestre of trimestresUnicos) {
+                const monto = totalesPorTrimestre[trimestre] || 0;
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${monto === 0 ? '' : monto.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+            }
+            const totalAnualTipo = trimestresUnicos.reduce((acc, q) => acc + (totalesPorTrimestre[q] || 0), 0);
+            html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${totalAnualTipo === 0 ? '' : totalAnualTipo.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+            let porcentaje = totalVentasAsesorias ? (totalAnualTipo / totalVentasAsesorias) * 100 : 0;
+            html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%</td>`;
+            html += `</tr>`;
+
+            Object.keys(cuentas).sort().forEach(cuenta => {
+                html += `<tr><td class="text-left text-xs sticky left-0 bg-white min-w-[300px]">${cuenta}</td>`;
+                let totalCuenta = 0;
+                for (const trimestre of trimestresUnicos) {
+                    const monto = cuentas[cuenta][trimestre] || 0;
+                    totalCuenta += monto;
+                    html += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${monto === 0 ? '' : monto.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                }
+                html += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${totalCuenta === 0 ? '' : totalCuenta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                let porcentajeCuenta = totalVentasAsesorias ? (totalCuenta / totalVentasAsesorias) * 100 : 0;
+                html += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${porcentajeCuenta === 0 ? '' : porcentajeCuenta.toFixed(2)}%</td>`;
+                html += `</tr>`;
+            });
+
+            if (tipo === "Costos Directos") {
+                html += `<tr class="p-2 bg-gray-300 border border-black font-bold"><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">Margen de contribución</td>`;
+                let totalMargen = 0, totalVentas = 0;
+                for (const trimestre of trimestresUnicos) {
+                    const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
+                    const costo = totalesPorTrimestre[trimestre] || 0;
+                    const margen = venta + costo;
+                    totalMargen += margen;
+                    totalVentas += venta;
+                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${margen === 0 ? '' : margen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                }
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${totalMargen === 0 ? '' : totalMargen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                let porcentajeMargen = totalVentas ? (totalMargen / totalVentas) * 100 : 0;
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${porcentajeMargen === 0 ? '' : porcentajeMargen.toFixed(2)}%</td>`;
+                 let porcentajetotalmargen = 0;
+                 if (totalVentas !== 0) {
+                        porcentajetotalmargen = (totalMargen / totalVentas) * 100;
+                 }
+                
+                 // % MARGEN DE CONTRIBUCION
+                html += `<tr class="p-2 bg-gray-300  font-bold border border-black"><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">% Margen de contribución</td>`;
+                for (const trimestre of trimestresUnicos) {
+                    const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
+                    const costo = totalesPorTrimestre[trimestre] || 0;
+                    const margen = venta + costo;
+
+                    let porcentaje = 0;
+                    if (venta !== 0) {
+                        porcentaje = (margen / venta) * 100;
+                    }
+
+                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%</td>`;
+                }
+
+                 html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
+                  html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
+
+
+                html += `</tr>`;
+            }
+            // EBITDA
+               if (tipo === "Egresos fuera de la Explotación") {
+        html += `<tr class="p-2 bg-gray-300 border border-black font-bold">
+                    <td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">EBITDA</td>`;
+
+        let totalebitda = 0;
+
+        for (const trimestre of trimestresUnicos) {
+            const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
+            const costo = acumuladores["Costos Directos"][trimestre] || 0;
+            const margen = venta + costo;
+
+            const inversion = acumuladores["Inversion"][trimestre] || 0;
+            const gastosAdmVentas = acumuladores["Gastos de Administración y Ventas"][trimestre] || 0;
+            const egresosFuera = acumuladores["Egresos fuera de la Explotación"][trimestre] || 0;
+
+            const ebitda = margen + inversion + gastosAdmVentas + egresosFuera;
+            totalebitda += ebitda;
+
+            html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                        ${ebitda === 0 ? '' : ebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
+                    </td>`;
+        }
+
+        html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                    ${totalebitda === 0 ? '' : totalebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
+                 </td>`;
+
+        let porcentajetotalebitda = totalVentasAsesorias !== 0
+            ? (totalebitda / totalVentasAsesorias) * 100
+            : 0;
+
+        html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                    ${porcentajetotalebitda === 0 ? '' : porcentajetotalebitda.toFixed(2)}%
+                 </td>`;
+        html += `</tr>`;
+    }
+
+
+            if (tipo === "Intereses, Impuestos, Depreciaciones y Amortizaciones") {
+                html += `<tr class="p-2 bg-gray-300 border border-black font-bold"><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">Utilidad neta</td>`;
+                let totalNeta = 0, totalIngresos = 0;
+                for (const trimestre of trimestresUnicos) {
+                    const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
+                    const costo = acumuladores["Costos Directos"][trimestre] || 0;
+                    const margen = venta + costo;
+                    const inversion = acumuladores["Inversion"][trimestre] || 0;
+                    const gastos = acumuladores["Gastos de Administración y Ventas"][trimestre] || 0;
+                    const egresos = acumuladores["Egresos fuera de la Explotación"][trimestre] || 0;
+                    const iidya = acumuladores["Intereses, Impuestos, Depreciaciones y Amortizaciones"][trimestre] || 0;
+                    const utilidad = margen + inversion + gastos + egresos + iidya;
+                    utilidadNetaPorTrimestre[trimestre] = utilidad;
+                    totalNeta += utilidad;
+                    totalIngresos += venta;
+                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${utilidad === 0 ? '' : utilidad.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                }
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${totalNeta === 0 ? '' : totalNeta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                let porcentajeUtilidad = totalIngresos ? (totalNeta / totalIngresos) * 100 : 0;
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${porcentajeUtilidad === 0 ? '' : porcentajeUtilidad.toFixed(2)}%</td>`;
+                html += `</tr>`;
+            }
+        }
+
+        html += `</tbody></table>`;
+        document.getElementById('tablaContainer').innerHTML = html;
+    }
+
+
+
+</script>

@@ -13,6 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
 </head>
+@{
+    int? idrol = Context.Session.GetInt32("idrol");
+    int? idusuario = Context.Session.GetInt32("id");
+    string? nombre = Context.Session.GetString("nombre");
+}
 <body class="bg-gray-100">
     <!-- Top Panel (New Header) -->
     <header class="shadow">
@@ -31,10 +36,7 @@
                 <div class="logo flex items-center">
                     <img src="~/images/logo-unit.png" alt="Logo" class="h-12">
                 </div>
-                @{
-                    int? idrol = Context.Session.GetInt32("idrol");
-                    int? idusuario = Context.Session.GetInt32("id");
-                }
+               
                 <!-- Navigation Menu -->
                 <nav class="flex-grow">
                     <ul class="menu-items">
@@ -78,7 +80,7 @@
                     </ul>
                 </nav>
                 @{
-                    string? nombre = Context.Session.GetString("nombre");
+                   
                 }
                 <!-- User Profile -->
                 <div class="user-profile">

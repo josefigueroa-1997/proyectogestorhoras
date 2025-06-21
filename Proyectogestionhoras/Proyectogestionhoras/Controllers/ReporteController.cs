@@ -408,6 +408,13 @@ namespace Proyectogestionhoras.Controllers
         
         }
 
+        public IActionResult ReporteEstadoResultadoQuarter()
+        {
+
+            return View();
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> ObtenerEERR(int anio)
         {

@@ -4,10 +4,14 @@
 
 
 
-<h2 style="margin-top:50px;">Estado de Resultado</h2>
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Estado Resultado Mes a Mes</h2>
+
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">
+        Muestra mes a mes el estado resultado  de la empresa en el año actual.
+    </p>
+</div>
 <button onclick="exportarExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
-
-
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md sticky top-[900px] z-50">
     <div class="overflow-x-auto relative">
         <div class="w-full max-w-3xl border-collapse text-left text-sm justify-center" id="tablaContainer"></div>
@@ -24,7 +28,7 @@
     }
 
     function renderizarTabla(data,anio) {
-        // Obtener claves mes/año únicas y ordenarlas
+        
         const mesesUnicos = Array.from(
             new Set(data.map(d => `${d.mes}/${d.anio}`))
         ).sort((a, b) => {
@@ -33,7 +37,7 @@
             return anioA - anioB || mesA - mesB;
         });
 
-        // Agrupar por tipo
+    
         const tiposMap = {};
         for (const item of data) {
             if (!tiposMap[item.tipo]) tiposMap[item.tipo] = [];
@@ -54,7 +58,7 @@
         for (const mes of mesesUnicos) totalesPorMes[mes] = 0;
         const ventasAsesoriasPorMes = {};
         let totalVentasAsesorias = 0;
-        // Calcular esto una vez fuera del loop:
+        
         if (tiposMap["Ingresos de la Explotación"]) {
             for (const item of tiposMap["Ingresos de la Explotación"]) {
                 if (item.cuenta === "Ventas Asesorias") {
@@ -90,15 +94,16 @@
                  "Ingresos de la Explotación",
                  "Costos Directos",
                 "Gastos de Administración y Ventas",
-                "Ingresos fuera de la Explotación",
+                
                 "Inversion",
+                "Ingresos fuera de la Explotación",
                 "Egresos fuera de la Explotación",
                  "Intereses, Impuestos, Depreciaciones y Amortizaciones"
                  ];
 
         for (const tipo of ordenTipos) {
             if (!tiposMap[tipo]) continue;
-            // Calcular totales por tipo y mes
+            
             const totalesTipoMes = {};
             for (const item of tiposMap[tipo]) {
                 const claveMes = `${item.mes}/${item.anio}`;
@@ -106,21 +111,21 @@
                 totalesTipoMes[claveMes] += item.monto;
             }
 
-            // Fila del tipo con totales
-            html += `<tr class="p-2 bg-gray-300 border font-bold border-gray-300"><td class="text-left text-xs min-w-[300px]">${tipo}</td>`;
+            
+            html += `<tr class="p-2 bg-gray-300   border border-black font-bold "><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">${tipo}</td>`;
             for (const mes of mesesUnicos) {
                 const suma = totalesTipoMes[mes] || 0;
-                html += `<td class="text-right text-xs border-gray px-4 py-2 min-w-[250px]">${suma === 0 ? '' : suma.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                html += `<td class="text-right text-xs  border border-black px-4 py-2 min-w-[250px]">${suma === 0 ? '' : suma.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
 
             }
             
             const totalAnualTipo = mesesUnicos.reduce((acc, mes) => acc + (totalesTipoMes[mes] || 0), 0);
-            html += `<td>${totalAnualTipo ===0 ? '' :   totalAnualTipo.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+            html += `<td class="text-right text-xs  border border-black px-4 py-2 min-w-[250px]">${totalAnualTipo ===0 ? '' :   totalAnualTipo.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                let porcentajetotaltipo = 0;
                 if (totalVentasAsesorias !== 0) {
                         porcentajetotaltipo = (totalAnualTipo / totalVentasAsesorias) * 100;
                 }
-            html += `<td>${porcentajetotaltipo === 0 ? '' : porcentajetotaltipo.toFixed(2)}%</td>`;
+            html += `<td class="text-right text-xs  border border-black px-4 py-2 min-w-[250px]">${porcentajetotaltipo === 0 ? '' : porcentajetotaltipo.toFixed(2)}%</td>`;
 
             html += `</tr>`;
 
@@ -133,7 +138,7 @@
             }
 
             Object.keys(cuentas).sort().forEach(cuenta => {
-                html += `<tr><td>${cuenta}</td>`;
+                html += `<tr><td class="text-left text-xs sticky left-0 bg-white min-w-[300px]">${cuenta}</td>`;
                 let totalCuenta = 0;
                 for (const mes of mesesUnicos) {
                     const monto = cuentas[cuenta][mes] || 0;
@@ -141,16 +146,17 @@
                     totalCuenta += monto;
                     totalesPorMes[mes] += monto;
                 }
-                html += `<td>${totalCuenta === 0 ? '' : totalCuenta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                html += `<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${totalCuenta === 0 ? '' : totalCuenta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                 let porcentajetotalcuenta = 0;
                 if (totalVentasAsesorias !== 0) {
                         porcentajetotalcuenta = (totalCuenta / totalVentasAsesorias) * 100;
                 }
-                html += `<td>${porcentajetotalcuenta === 0 ? '' :  porcentajetotalcuenta.toFixed(2)}%</td>`;
+                html += `<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${porcentajetotalcuenta === 0 ? '' :  porcentajetotalcuenta.toFixed(2)}%</td>`;
                 html += `</tr>`;
             });
+            // Margen de contribución
             if (tipo === "Costos Directos") {
-                html += `<tr class="tipo-row"><td>Margen de contribución</td>`;
+                html += `<tr class="p-2 bg-gray-300 border border-black font-bold "><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">Margen de contribución</td>`;
                 let totalmargen = 0;
                 let totalventa = 0;
                 for (const mes of mesesUnicos) {
@@ -159,15 +165,16 @@
                     const margen = venta + costo;
                     totalmargen += margen;
                     totalventa +=venta;
-                    html += `<td>${margen === 0 ? '' :margen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${margen === 0 ? '' :margen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                 }
-                html += `<td>${totalmargen === 0 ? '' : totalmargen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${totalmargen === 0 ? '' : totalmargen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                  let porcentajetotalmargen = 0;
                  if (totalventa !== 0) {
                         porcentajetotalmargen = (totalmargen / totalventa) * 100;
                  }
-                 html += `<td>${porcentajetotalmargen === 0 ? '' : porcentajetotalmargen.toFixed(2)}%</td>`;
-                html += `<tr class="tipo-row"><td>% Margen de contribución</td>`;
+                 html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '' : porcentajetotalmargen.toFixed(2)}%</td>`;
+                 // % MARGEN DE CONTRIBUCION
+                html += `<tr class="p-2 bg-gray-300  font-bold border border-black"><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">% Margen de contribución</td>`;
                 for (const mes of mesesUnicos) {
                     const venta = ventasAsesoriasPorMes[mes] || 0;
                     const costo = totalesTipoMes[mes] || 0;
@@ -178,16 +185,17 @@
                         porcentaje = (margen / venta) * 100;
                     }
                   
-                    html += `<td>${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%</td>`;
+                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%</td>`;
                 }
                
-                 html += `<td>${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
-                  html += `<td>${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
+                 html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
+                  html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
                 html += `</tr>`;
             }
+            // EBITDA
             if (tipo === "Egresos fuera de la Explotación") {
                 
-                html += `<tr class="tipo-row"><td>EBITDA</td>`;
+                html += `<tr class="p-2 bg-gray-300 border border-black font-bold "><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">EBITDA</td>`;
                 let totalebitda = 0;
                 for (const mes of mesesUnicos) {
                     const margen = (() => {
@@ -205,14 +213,14 @@
 
                     const ebitda = margen + inversion + gastosAdmVentas + egresosFuera;
                     totalebitda += ebitda;
-                    html += `<td>${ebitda === 0 ? '': ebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${ebitda === 0 ? '': ebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                 }
-                html += `<td>${totalebitda === 0 ? '': totalebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${totalebitda === 0 ? '': totalebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                  let porcentajetotalebitda = 0;
                  if (totalVentasAsesorias !== 0) {
                         porcentajetotalebitda = (totalebitda / totalVentasAsesorias) * 100;
                  }
-                 html += `<td>${porcentajetotalebitda === 0 ? '': porcentajetotalebitda.toFixed(2)}%</td>`;
+                 html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalebitda === 0 ? '': porcentajetotalebitda.toFixed(2)}%</td>`;
                 html += `</tr>`;
             }
             if (tipo === "Intereses, Impuestos, Depreciaciones y Amortizaciones") {
@@ -234,7 +242,7 @@
         document.getElementById('tablaContainer').innerHTML = html;
     }
     function generarFilaUtilidadNeta(mesesUnicos, ventasAsesoriasPorMes, tiposMap, totalesIIDyA, utilidadNetaPorMes) {
-        // Recalcular totales para EBITDA como en el paso anterior
+        
         const totalesInversion = {};
         const totalesGastosAdmVentas = {};
         const totalesEgresosFueraExplotacion = {};
@@ -252,7 +260,7 @@
         acumularTotales("Gastos de Administración y Ventas", totalesGastosAdmVentas);
         acumularTotales("Egresos fuera de la Explotación", totalesEgresosFueraExplotacion);
 
-        let fila = `<tr class="tipo-row"><td>Utilidad neta</td>`;
+        let fila = `<tr class="p-2 bg-gray-300 border border-black font-bold "><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">Utilidad neta</td>`;
         let totaleneto = 0;
         let totalingreo = 0;
         for (const mes of mesesUnicos) {
@@ -274,21 +282,21 @@
             totaleneto+=utilidadNeta;
             utilidadNetaPorMes[mes] = utilidadNeta;
 
-            fila += `<td>${utilidadNeta === 0 ? '' : utilidadNeta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+            fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${utilidadNeta === 0 ? '' : utilidadNeta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
         }
-        fila += `<td>${totaleneto === 0 ? '' :totaleneto.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
+        fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${totaleneto === 0 ? '' :totaleneto.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
          let porcentajetotal = 0;
         if (totalingreo !== 0) {
                 porcentajetotal = (totaleneto / totalingreo) * 100;
             }
-            fila += `<td>${porcentajetotal === 0 ? '' : porcentajetotal.toFixed(2)}%</td>`;
+            fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotal === 0 ? '' : porcentajetotal.toFixed(2)}%</td>`;
         fila += `</tr>`;
 
         return fila;
     }
 
     function generarFilaPorcentajeUtilidadNeta(mesesUnicos, tiposMap, utilidadNetaPorMes) {
-        // Totales Ingresos de la Explotación
+        
         const totalesIngresosExplotacion = {};
         totalneto = 0;
         totalingreo = 0;
@@ -301,7 +309,7 @@
             }
         }
 
-        let fila = `<tr class="tipo-row"><td>% Utilidad neta</td>`;
+        let fila = `<tr class="p-2 bg-gray-300 border border-black font-bold "><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">% Utilidad neta</td>`;
         for (const mes of mesesUnicos) {
             const ingreso = totalesIngresosExplotacion[mes] || 0;
             const utilidad = utilidadNetaPorMes[mes] || 0;
@@ -309,15 +317,15 @@
             if (ingreso !== 0) {
                 porcentaje = (utilidad / ingreso) * 100;
             }
-            fila += `<td>${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%</td>`;
+            fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%</td>`;
             totalneto+=utilidad;
         }
         let porcentajetotal = 0;
         if (totalingreo !== 0) {
                 porcentajetotal = (totalneto / totalingreo) * 100;
             }
-        fila += `<td>${porcentajetotal === 0 ? '' : porcentajetotal.toFixed(2)}%</td>`;
-        fila += `<td>${porcentajetotal === 0 ? '' : porcentajetotal.toFixed(2)}%</td>`;
+        fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotal === 0 ? '' : porcentajetotal.toFixed(2)}%</td>`;
+        fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotal === 0 ? '' : porcentajetotal.toFixed(2)}%</td>`;
         
         fila += `</tr>`;
         return fila;
@@ -332,7 +340,32 @@
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Estado de Resultados");
 
-       
+         worksheet.views = [{ state: 'frozen', xSplit: 1, ySplit: 6 }];
+
+        const response = await fetch('/images/unitt.png');
+        const imageBlob = await response.blob();
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const logoImageId = workbook.addImage({
+            buffer: arrayBuffer,
+            extension: 'png',
+        });
+
+
+        worksheet.addImage(logoImageId, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 150, height: 50 },
+        });
+
+
+        worksheet.mergeCells('B3:D3');
+        const titleCell = worksheet.getCell('B3');
+        titleCell.value = `Estado Resultado Mensual`;
+        titleCell.font = { bold: true, size: 14 };
+        titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+
+
+        const startRow = 5;
+
         const rows = Array.from(table.rows);
         rows.forEach((htmlRow, rowIndex) => {
             const cells = Array.from(htmlRow.cells);
@@ -359,11 +392,13 @@
                     numFmt: isCurrency ? '"$"#,##0' : (isPercentage ? '0.00%' : undefined)
                 });
             });
-            worksheet.addRow(rowData.map(c => c.value));
+            worksheet.insertRow(startRow + rowIndex, rowData.map(c => c.value));
+
 
             
             rowData.forEach((c, i) => {
-                const cell = worksheet.getRow(rowIndex + 1).getCell(i + 1);
+                const cell = worksheet.getRow(startRow + rowIndex).getCell(i + 1);
+
                 cell.alignment = c.alignment;
                 if (c.numFmt) cell.numFmt = c.numFmt;
                 if (rowIndex === 0) {
@@ -381,16 +416,19 @@
         "Ingresos fuera de la Explotación",
         "Inversion",
         "Egresos fuera de la Explotación",
-        "Intereses, Impuestos, Depreciaciones y Amortizaciones"
+        "Intereses, Impuestos, Depreciaciones y Amortizaciones",
+        "Utilidad neta",
+        "EBITDA",
+        "Margen de contribución"
     ];
 
-    // Si la primera celda de la fila coincide con algún tipo, aplicar estilo gris y negrita
+   
     if (i === 0 && tiposEnNegrita.includes(c.value)) {
-        worksheet.getRow(rowIndex + 1).eachCell((cell) => {
+        worksheet.getRow(startRow  + rowIndex).eachCell((cell) => {
             cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
-                fgColor: { argb: 'FFD9D9D9' } // Gris claro
+                fgColor: { argb: 'FFD9D9D9' }
             };
             cell.font = { bold: true };
         });
@@ -398,7 +436,9 @@
             });
 
         });
-
+         worksheet.columns.forEach(column => {
+            column.width = 20;
+        });
 
         const blob = await workbook.xlsx.writeBuffer();
         const blobURL = URL.createObjectURL(new Blob([blob], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
