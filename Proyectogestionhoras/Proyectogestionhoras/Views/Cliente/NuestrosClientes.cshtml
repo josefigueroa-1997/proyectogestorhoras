@@ -1,121 +1,123 @@
 ﻿@{
     ViewData["Title"] = "Nuestros Clientes";
 }
-<link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
 
-<div class="projects-container">
-    <h1>Clientes</h1>
 
-    <div class="filter-select">
-        <select id="projectStatus" onchange="filterProjects()">
-            <option value="">Todos los Clientes</option>
-            <option value="negociacion">Empr.Públicas Chile</option>
-            <option value="licitado">Empr.Privadas Chile</option>
-            <option value="ejecucion">Fundaciones y Org.Sin Fin Lucro</option>
-            <option value="terminados">Empr.Internacional</option>
-            
-        </select>
-    </div>
+<h1 class="text-3xl py-10 font-bold text-gray-800 mb-6">Clientes</h1>
 
-    <!-- Secciones de proyectos -->
-    <div class="projects-section" id="licitadoSection" style="display: none;">
-        <div class="section-header">Empresas Privadas Chile</div>
-        <div class="section-content" id="licitadoProjects">
-            @foreach (var cliente in ViewBag.Clientes)
+<div class="mb-8">
+    <select id="projectStatus" onchange="filterProjects()"
+            class="w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400">
+        <option value="">Todos los Clientes</option>
+        <option value="negociacion">Empr.Públicas Chile</option>
+        <option value="licitado">Empr.Privadas Chile</option>
+        <option value="ejecucion">Fundaciones y Org.Sin Fin Lucro</option>
+        <option value="terminados">Empr.Internacional</option>
+    </select>
+</div>
+
+<!-- Empresas Privadas Chile -->
+<div id="licitadoSection" style="display: none;">
+    <h2 class="text-2xl font-bold text-black mb-4">🏢 Empresas Privadas Chile</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @foreach (var cliente in ViewBag.Clientes)
+        {
+            if (cliente.TipoCliente == "Empr.Privadas Chile")
             {
-                @if (cliente.TipoCliente == "Empr.Privadas Chile")
-                {
-                    <a href="@Url.Action("ProyectosCliente","Cliente",new{idcliente=cliente.Id})">
-                        <div class="card new-cliente">
-
-                            <h3>@cliente.Nombre</h3>
-                           
-                        </div>
-                    </a>
-                }
+                <a href="@Url.Action("ProyectosCliente", "Cliente", new { idcliente = cliente.Id })"
+                   class="group transform hover:scale-[1.03] transition-all duration-300">
+                    <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 flex items-center justify-center h-24">
+                        <h3 class="text-lg font-semibold text-orange-500 text-center">@cliente.Nombre</h3>
+                    </div>
+                </a>
             }
-        </div>
+        }
     </div>
+</div>
 
-   <div class="projects-section" id="negociacionSection" style="display: none;">
-        <div class="section-header">Empresas Públicas Chile</div>
-        <div class="section-content" id="negociacionProjects">
-            @foreach (var cliente in ViewBag.Clientes)
+<!-- Empresas Públicas Chile -->
+<div id="negociacionSection" style="display: none;">
+    <h2 class="text-2xl font-bold text-black mb-4">🏛️ Empresas Públicas Chile</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @foreach (var cliente in ViewBag.Clientes)
+        {
+            if (cliente.TipoCliente == "Empr.Públicas Chile")
             {
-                @if (cliente.TipoCliente == "Empr.Públicas Chile")
-                {
-                    <a href="@Url.Action("ProyectosCliente","Cliente",new{idcliente=cliente.Id})">
-                        <div class="card new-cliente">
-
-                            <h3>@cliente.Nombre</h3>
-
-                        </div>
-                    </a>
-                }
+                <a href="@Url.Action("ProyectosCliente", "Cliente", new { idcliente = cliente.Id })"
+                   class="group transform hover:scale-[1.03] transition-all duration-300">
+                    <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 flex items-center justify-center h-24">
+                        <h3 class="text-lg font-semibold text-orange-500 text-center">@cliente.Nombre</h3>
+                    </div>
+                </a>
             }
-        </div>
+        }
     </div>
+</div>
 
-    <div class="projects-section" id="ejecucionSection" style="display: none;">
-        <div class="section-header">Fundaciones y Org.Sin Fin Lucro</div>
-        <div class="section-content" id="ejecucionProjects">
-            @foreach (var cliente in ViewBag.Clientes)
+<!-- Fundaciones y Org.Sin Fin Lucro -->
+<div id="ejecucionSection" style="display: none;">
+    <h2 class="text-2xl font-bold text-black mb-4">🏥 Fundaciones y Org.Sin Fin Lucro</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @foreach (var cliente in ViewBag.Clientes)
+        {
+            if (cliente.TipoCliente == "Fundaciones y Org.Sin Fin Lucro")
             {
-                @if (cliente.TipoCliente == "Fundaciones y Org.Sin Fin Lucro")
-                {
-                    <a href="@Url.Action("ProyectosCliente","Cliente",new{idcliente=cliente.Id})">
-                        <div class="card new-cliente">
-
-                            <h3>@cliente.Nombre</h3>
-
-                        </div>
-                    </a>
-                }
+                <a href="@Url.Action("ProyectosCliente", "Cliente", new { idcliente = cliente.Id })"
+                   class="group transform hover:scale-[1.03] transition-all duration-300">
+                    <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 flex items-center justify-center h-24">
+                        <h3 class="text-lg font-semibold text-orange-500 text-center">@cliente.Nombre</h3>
+                    </div>
+                </a>
             }
-        </div>
+        }
     </div>
+</div>
 
-    <div class="projects-section" id="terminadosSection" style="display: none;">
-        <div class="section-header">Empr.Internacional</div>
-        <div class="section-content" id="terminadosProjects">
-            @foreach (var cliente in ViewBag.Clientes)
+<!-- Empresas Internacionales -->
+<div id="terminadosSection" style="display: none;">
+    <h2 class="text-2xl font-bold text-black mb-4">🌍 Empresas Internacionales</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @foreach (var cliente in ViewBag.Clientes)
+        {
+            if (cliente.TipoCliente == "Empr.Internacional")
             {
-                @if (cliente.TipoCliente == "Empr.Internacional")
-                {
-                    <a href="@Url.Action("ProyectosCliente","Cliente",new{idcliente=cliente.Id})">
-                        <div class="card new-cliente">
-
-                            <h3>@cliente.Nombre</h3>
-
-                        </div>
-                    </a>
-                }
+                <a href="@Url.Action("ProyectosCliente", "Cliente", new { idcliente = cliente.Id })"
+                   class="group transform hover:scale-[1.03] transition-all duration-300">
+                    <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 flex items-center justify-center h-24">
+                        <h3 class="text-lg font-semibold text-orange-500 text-center">@cliente.Nombre</h3>
+                    </div>
+                </a>
             }
-        </div>
+        }
     </div>
-    
-   
 </div>
 
 <script>
     function filterProjects() {
         const statusFilter = document.getElementById('projectStatus').value;
-
-        // Ocultar todas las secciones
         const sections = ['licitadoSection', 'negociacionSection', 'ejecucionSection', 'terminadosSection'];
         sections.forEach(section => {
             document.getElementById(section).style.display = 'none';
         });
-
-        // Mostrar la sección correspondiente según el filtro
         if (statusFilter) {
-            const selectedSection = statusFilter + 'Section';
-            document.getElementById(selectedSection).style.display = 'block';
+            document.getElementById(statusFilter + 'Section').style.display = 'block';
         } else {
-            // Si no hay filtro, mostrar todas las secciones
             sections.forEach(section => {
                 document.getElementById(section).style.display = 'block';
             });
         }
     }
+
+            const cards = document.querySelectorAll(".group");
+    cards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const { left, top } = card.getBoundingClientRect();
+            const x = e.clientX - left;
+            const y = e.clientY - top;
+            card.style.backgroundImage = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 153, 0, 0.15), transparent 50%)`;
+        });
+        card.addEventListener("mouseleave", () => {
+            card.style.backgroundImage = "none";
+        });
+    });
 </script>

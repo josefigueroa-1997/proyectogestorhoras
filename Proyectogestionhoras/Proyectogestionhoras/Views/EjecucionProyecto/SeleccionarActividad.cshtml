@@ -1,89 +1,63 @@
 ﻿@{
 
-    ViewData["Title"] = "Forecasts";
+    ViewData["Title"] = "Actividades";
 
 }
-<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
-<style>
-
-    .dashboard-container {
-        padding: 0;
-        background-color: transparent;
-        margin-top: 50px;
-    }
-
-
-    .section-content {
-        background-color: #ffffff;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 50px;
-    }
-
-
-    .card {
-        background-color: #ffffff;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        transition: background-color 0.3s, border-color 0.3s;
-        height: 100px;
-        margin-right: 1rem;
-        justify-content: center;
-    }
-
-        .card.new-cliente {
-            background-color: #333;
-            border-left: 4px solid #fcaa67;
-            cursor: pointer;
-            color: #fff;
-        }
-
-            .card.new-cliente h3 {
-                color: #fcaa67;
-                font-size: 18px;
-            }
-
-            .card.new-cliente:hover {
-                background-color: #fcaa67;
-                border-color: #fff;
-            }
-
-                .card.new-cliente:hover h3 {
-                    color: #fff;
-                }
-
-                .card.new-cliente:hover p {
-                    color: #fff;
-                }
-
-</style>
 
 @{
     int? idproyecto = Context.Session.GetInt32("numproyecto");
 }
-<h2 style="margin-top: 50px;" class="section-header">Seleccione una Actividad</h2>
-<div class="section-content">
-    <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyecto})">
-        <div class="card new-cliente">
-            <h3>Ingresos del Proyecto</h3>
-        </div>
+<section class="bg-gray-100 py-10 px-6">
+    <h2 class="text-3xl font-bold text-black mb-8">🧾 Seleccione una Actividad</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Ingresos del Proyecto -->
+        <a href="@Url.Action("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                <div class="flex justify-center mb-4">
+                    <svg class="w-10 h-10 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-orange-500 text-center">Ingresos del Proyecto</h3>
+            </div>
+        </a>
 
-    </a>
-    <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyecto})">
-        <div class="card new-cliente">
-            <h3>Costos del Proyecto</h3>
-        </div>
-    </a>
-    <a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=idproyecto})">
-        <div class="card new-cliente">
-            <h3>Flujo de Caja del Proyecto</h3>
-        </div>
-    </a>
+        <!-- Costos del Proyecto -->
+        <a href="@Url.Action("ForecastCostos", "EjecucionProyecto", new { id = idproyecto })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                <div class="flex justify-center mb-4">
+                    <svg class="w-10 h-10 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8M13 13h6M13 9h4M13 5h2M3 17h4M3 13h6M3 9h4M3 5h2" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-orange-500 text-center">Costos del Proyecto</h3>
+            </div>
+        </a>
 
-</div>
+        <!-- Flujo de Caja del Proyecto -->
+        <a href="@Url.Action("FlujoCajaProyecto", "EjecucionProyecto", new { id = idproyecto })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                <div class="flex justify-center mb-4">
+                    <svg class="w-10 h-10 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.343-3 3m6 0c0-1.657-1.343-3-3-3m0 0V4m0 7v7m0 0h4m-4 0H8" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-orange-500 text-center">Flujo de Caja del Proyecto</h3>
+            </div>
+        </a>
+    </div>
+</section>
+<script>
+        const cards = document.querySelectorAll(".group");
+    cards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const { left, top } = card.getBoundingClientRect();
+            const x = e.clientX - left;
+            const y = e.clientY - top;
+            card.style.backgroundImage = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 153, 0, 0.15), transparent 50%)`;
+        });
+        card.addEventListener("mouseleave", () => {
+            card.style.backgroundImage = "none";
+        });
+    });
+</script>

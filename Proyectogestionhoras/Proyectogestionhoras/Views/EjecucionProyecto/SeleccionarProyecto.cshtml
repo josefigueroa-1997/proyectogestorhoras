@@ -1,33 +1,47 @@
 ﻿@{
     ViewData["Title"] = "Proyectos en ejecución";
 }
-<link rel="stylesheet" href="~/css/proyecto.css" asp-append-version="true" />
 
-<div class="projects-container">
-<h2 style="margin-top:60px" class="text-2xl font-bold mb-4">Seleccione un Proyecto</h2>
-<div class="projects-section">
-    <div class="section-header"></div>
-    <div class="section-content" id="presupuestoProjects">
-        @foreach (var proyecto in ViewBag.Proyectos)
-        {
-                <form id="myForm_@proyecto.Id" action="@Url.Action("RedirigirActividad","EjecucionProyecto")" method="POST">
-                <input type="hidden" name="idproyecto" value="@proyecto.Id"/>
-                    <a href="#" onclick="submitForm(@proyecto.Id); return false;">
-                        <div class="card new-cliente">
-                            <h3>@proyecto.NombreProyecto</h3>
-                            <p>@proyecto.numproyecto</p>
-                            <p>@proyecto.NombreCliente</p>
-                        </div>
-                    </a>
-            </form>
-        }
-    </div>
 
-</div>
+<h2 class="text-3xl font-bold text-black mt-16 mb-8">🏗️ Seleccione un Proyecto</h2>
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    @foreach (var proyecto in ViewBag.Proyectos)
+    {
+        <form id="myForm_@proyecto.Id" action="@Url.Action("RedirigirActividad", "EjecucionProyecto")" method="POST">
+            <input type="hidden" name="idproyecto" value="@proyecto.Id" />
+            <a href="#" onclick="submitForm(@proyecto.Id); return false;" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full flex flex-col justify-between">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-10 h-10 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18" />
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-lg font-bold text-orange-500">@proyecto.NombreProyecto</h3>
+                        <p class="text-sm text-gray-600 mt-1">N° @proyecto.numproyecto</p>
+                        <p class="text-sm text-gray-600">@proyecto.NombreCliente</p>
+                    </div>
+                </div>
+            </a>
+        </form>
+    }
 </div>
 
 <script>
     function submitForm(proyectoId) {
         document.getElementById(`myForm_${proyectoId}`).submit();
     }
+
+           const cards = document.querySelectorAll(".group");
+    cards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const { left, top } = card.getBoundingClientRect();
+            const x = e.clientX - left;
+            const y = e.clientY - top;
+            card.style.backgroundImage = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 153, 0, 0.15), transparent 50%)`;
+        });
+        card.addEventListener("mouseleave", () => {
+            card.style.backgroundImage = "none";
+        });
+    });
 </script>

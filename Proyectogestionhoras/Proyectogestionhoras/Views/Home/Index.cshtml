@@ -1,208 +1,266 @@
 ﻿@{
-	ViewData["Title"] = "Proyectos Unit";
+	ViewData["Title"] = "Portal Unit";
 }
 
-<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
 
 
+<section class="bg-gray-100 py-10 px-6">
+	@if (TempData["ExcelErrorIngreso"] != null)
+	{
+		<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+			<strong class="font-bold">¡Error!</strong>
+			<span class="block sm:inline">@TempData["ExcelErrorIngreso"]</span>
+		</div>
+	}
+	@if (TempData["ExcelErrorEgreso"] != null)
+	{
+		<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+			<strong class="font-bold">¡Error!</strong>
+			<span class="block sm:inline">@TempData["ExcelErrorEgreso"]</span>
+		</div>
+	}
 
-<div class="dashboard-container">
-	<!-- Sección de Proyectos -->
-	<div class="dashboard-section projects-section">
-		@if (TempData["ExcelErrorIngreso"] != null)
-		{
-			<div class="alert alert-danger" role="alert">
-				@TempData["ExcelErrorIngreso"]
+	<h2 class="text-3xl font-bold text-black mb-8">📝 Ingreso de Datos</h2>
+	<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+		<!-- Nuevo Proyecto -->
+		<a href="@Url.Action("NuevoProyecto","Proyecto")" class="group transform hover:scale-[1.03] transition-all duration-300">
+			<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6">
+				<div class="flex justify-center">
+					<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+					</svg>
+				</div>
+				<div class="text-center mt-4">
+					<h3 class="text-lg font-bold text-orange-600">+ Nuevo Proyecto</h3>
+					<p class="text-sm text-gray-600 mt-2">Crear un nuevo proyecto</p>
+				</div>
 			</div>
-		}
-		@if (TempData["ExcelErrorEgreso"] != null)
-		{
-			<div class="alert alert-danger" role="alert">
-				@TempData["ExcelErrorEgreso"]
+		</a>
+
+		<!-- Nuevo Cliente -->
+		<button id="nuevoClienteBtn" class="group transform hover:scale-[1.03] transition-all duration-300">
+			<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 w-full">
+				<div class="flex justify-center">
+					<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M16 14v-2a4 4 0 00-8 0v2M12 18h.01M20 12h.01M4 12h.01M12 4h.01" />
+					</svg>
+				</div>
+				<div class="text-center mt-4">
+					<h3 class="text-lg font-bold text-orange-600">+ Nuevo Cliente</h3>
+					<p class="text-sm text-gray-600 mt-2">Agregar un nuevo cliente</p>
+				</div>
 			</div>
-		}
-		<h2 class="section-header">Ingreso</h2>
-		<div class="section-content">
-			<!-- Nuevo Proyecto -->
+		</button>
 
-
-
-			<a href="@Url.Action("NuevoProyecto","Proyecto")" id="nuevoProyectoBtn" class="card new">
-				<h3>+ Nuevo Proyecto</h3>
-				<p>Crear un nuevo proyecto</p>
-			</a>
-			<div id="nuevoClienteBtn" class="card new-cliente">
-				<h3>+ Nuevo Cliente</h3>
-				<p>Agregar un nuevo cliente</p>
+		<!-- Desarrollo del Proyecto -->
+		<a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="group transform hover:scale-[1.03] transition-all duration-300">
+			<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6">
+				<div class="flex justify-center">
+					<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+					</svg>
+				</div>
+				<div class="text-center mt-4">
+					<h3 class="text-lg font-bold text-orange-600">Desarrollo del Proyecto</h3>
+					<p class="text-sm text-gray-600 mt-2">Agregar costos y gastos</p>
+				</div>
 			</div>
-			<a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="card new-cliente">
-				<h3>Desarrollo del Proyecto</h3>
-				<p>Agregar costos y gastos</p>
-			</a>
+		</a>
+
+		<!-- Agregar Egresos Masivos -->
+		<button onclick="abrirModal('modalExcel')" class="group transform hover:scale-[1.03] transition-all duration-300">
+			<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 w-full">
+				<div class="flex justify-center">
+					<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v16h16M16 8H8v8h8V8z" />
+					</svg>
+				</div>
+				<div class="text-center mt-4">
+					<h3 class="text-lg font-bold text-orange-600">Agregar Egresos Masivos</h3>
+					<p class="text-sm text-gray-600 mt-2">Cargar Archivo Excel</p>
+				</div>
+			</div>
+		</button>
+
+		<!-- Agregar Ingresos Masivos -->
+		<button onclick="abrirModal('modalExcelIngresos')" class="group transform hover:scale-[1.03] transition-all duration-300">
+			<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 w-full">
+				<div class="flex justify-center">
+					<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M9 21V3m6 0v18" />
+					</svg>
+				</div>
+				<div class="text-center mt-4">
+					<h3 class="text-lg font-bold text-orange-600">Agregar Ingresos Masivos</h3>
+					<p class="text-sm text-gray-600 mt-2">Cargar Archivo Excel</p>
+				</div>
+			</div>
+		</button>
+
+		<!-- Registro de Pagos HH -->
+		<a href="@Url.Action("PagosDistribucionHH","EjecucionProyecto",new{estado=0})" class="group transform hover:scale-[1.03] transition-all duration-300">
+			<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6">
+				<div class="flex justify-center">
+					<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+					</svg>
+				</div>
+				<div class="text-center mt-4">
+					<h3 class="text-lg font-bold text-orange-600">Registro de Pagos HH</h3>
+					<p class="text-sm text-gray-600 mt-2">Socios y Staff</p>
+				</div>
+			</div>
+		</a>
+	</div>
+</section>
 
 
-			<button class="card new-cliente" onclick="abrirModal('modalExcel')">
-				<h3>Agregar Egresos Masivos</h3>
-				<p>Cargar Archivo Excel</p>
+
+<!-- Modal para carga egreso masiva  -->
+
+<div id="modalExcel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+	<div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
+		<!-- Botón cerrar -->
+		<button onclick="cerrarModal('modalExcel')" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
+			&times;
+		</button>
+
+		<!-- Contenido del modal -->
+		<h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Egresos</h2>
+
+		<form action="@Url.Action("CargarExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
+			<div class="mb-4">
+				<label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
+				<input type="file" name="archivo" accept=".xlsx" required
+					   class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
+			</div>
+			<button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md w-full mt-4">
+				<i class="fas fa-upload mr-2"></i>Cargar Archivo
 			</button>
-			<button class="card new-cliente" onclick="abrirModal('modalExcelIngresos')">
-				<h3>Agregar Ingresos Masivos</h3>
-				<p>Cargar Archivo Excel</p>
-			</button>
-			<a href="@Url.Action("PagosDistribucionHH","EjecucionProyecto",new{estado=0})" class="card new-cliente">
-				<h3>Agregar Registro de Pagos HH</h3>
-				<p>Socios y Staff</p>
-			</a>
-
-
-		</div>
-
+		</form>
 	</div>
-	<!-- Modal para carga egreso masiva  -->
-
-	<div id="modalExcel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-		<div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
-			<!-- Botón cerrar -->
-			<button onclick="cerrarModal('modalExcel')" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
-				&times;
-			</button>
-
-			<!-- Contenido del modal -->
-			<h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Egresos</h2>
-
-			<form action="@Url.Action("CargarExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
-				<div class="mb-4">
-					<label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
-					<input type="file" name="archivo" accept=".xlsx" required
-						   class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
-				</div>
-				<button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md w-full mt-4">
-					<i class="fas fa-upload mr-2"></i>Cargar Archivo
-				</button>
-			</form>
-		</div>
-	</div>
-
-	<!-- Modal para carga ingreso masiva  -->
-
-	<div id="modalExcelIngresos" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-		<div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
-			<!-- Botón cerrar -->
-			<button onclick="cerrarModal('modalExcelIngresos')" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
-				&times;
-			</button>
-
-			<!-- Contenido del modal -->
-			<h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Ingresos</h2>
-
-			<form action="@Url.Action("CargarIngresosExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
-				<div class="mb-4">
-					<label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
-					<input type="file" name="archivoingreso" accept=".xlsx" required
-						   class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
-				</div>
-				<button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md w-full mt-4">
-					<i class="fas fa-upload mr-2"></i>Cargar Archivo
-				</button>
-			</form>
-		</div>
-	</div>
-
-
-
-
-	<!-- Modal para agregar nuevo cliente  -->
-	<div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 100px;">
-		<div class="modal-content bg-white p-3 rounded-lg shadow-lg w-full max-w-5xl">
-			<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
-			<form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
-
-				<div>
-					<label for="nombre" class="block text-gray-700 font-bold">Nombre:<span class="text-red-500">*</span></label>
-					<input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
-				</div>
-				<div>
-					<label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:<span class="text-red-500">*</span></label>
-					<input type="text" id="idcliente" name="idcliente" class="w-full p-2 border border-gray-300 rounded" required>
-					<span id="idClienteStatus"></span>
-				</div>
-				<div>
-					<label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:<span class="text-red-500">*</span></label>
-					<input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
-				</div>
-				<div>
-					<label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:<span class="text-red-500">*</span></label>
-
-					<select name="tipocliente" class="w-full p-2 border border-gray-300 rounded" required>
-						<option value="" selected disabled>
-							Seleccione un Tipo de Cliente
-
-						</option>
-						<option value="Empr.Públicas Chile">
-							Empr.Públicas Chile
-						</option>
-						<option value="Empr.Privadas Chile">
-							Empr.Privadas Chile
-						</option>
-						<option value="Fundaciones y Org.Sin Fin Lucro">
-							Fundaciones y Org.Sin Fin Lucro
-						</option>
-						<option value="Empr.Internacional">
-							Empr.Internacional
-						</option>
-					</select>
-				</div>
-
-				<div>
-					<label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>
-					<input type="text" id="direccion" name="direccion" class="w-full p-2 border border-gray-300 rounded">
-				</div>
-				<div>
-					<label for="ciudad" class="block text-gray-700 font-bold">Ciudad:</label>
-					<input type="text" id="ciudad" name="ciudad" class="w-full p-2 border border-gray-300 rounded">
-				</div>
-				<div>
-					<label for="pais" class="block text-gray-700 font-bold">País:</label>
-					<input type="text" id="pais" name="pais" class="w-full p-2 border border-gray-300 rounded">
-				</div>
-
-				<div>
-					<label for="telefono" class="block text-gray-700 font-bold">Teléfono:</label>
-					<input type="tel" id="telefono" name="telefono" class="w-full p-2 border border-gray-300 rounded">
-				</div>
-				<div>
-					<label for="paginaWeb" class="block text-gray-700 font-bold">Página Web:</label>
-					<input type="text" id="paginaWeb" name="pagweb" class="w-full p-2 border border-gray-300 rounded">
-				</div>
-				<div>
-					<label for="instagram" class="block text-gray-700 font-bold">Linkedin:</label>
-					<input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
-				</div>
-				<div>
-					<label for="linkedin" class="block text-gray-700 font-bold">Instagram:</label>
-					<input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
-				</div>
-
-				<div class="col-span-3 text-gray-600 mb-4">
-					<p>Los campos marcados con <span class="text-red-500">*</span> son obligatorios.</p>
-				</div>
-				<div class="col-span-3 flex justify-end gap-4 mt-6">
-					<button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
-					<button type="submit" id="submit-btn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-	<!-- Modal para mostrar el mensaje de éxito -->
-	<div id="successModal" style="margin-top: 70px;" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
-		<div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-			<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
-			<p>@TempData["SuccessMessage"]</p>
-			<button id="closeModalBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-4">Cerrar</button>
-		</div>
-	</div>
-
 </div>
+
+<!-- Modal para carga ingreso masiva  -->
+
+<div id="modalExcelIngresos" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+	<div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative">
+		<!-- Botón cerrar -->
+		<button onclick="cerrarModal('modalExcelIngresos')" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">
+			&times;
+		</button>
+
+		<!-- Contenido del modal -->
+		<h2 class="text-xl font-semibold mb-4">Cargar Archivo Excel Ingresos</h2>
+
+		<form action="@Url.Action("CargarIngresosExcel","CargaExcel")" method="post" enctype="multipart/form-data" id="excelForm" onsubmit="console.log('Formulario enviado');">
+			<div class="mb-4">
+				<label class="block mb-2 text-sm font-medium text-gray-700">Seleccione archivo (.xlsx):</label>
+				<input type="file" name="archivoingreso" accept=".xlsx" required
+					   class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500" />
+			</div>
+			<button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md w-full mt-4">
+				<i class="fas fa-upload mr-2"></i>Cargar Archivo
+			</button>
+		</form>
+	</div>
+</div>
+
+
+
+
+<!-- Modal para agregar nuevo cliente  -->
+<div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 100px;">
+	<div class="modal-content bg-white p-3 rounded-lg shadow-lg w-full max-w-5xl">
+		<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
+		<form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
+
+			<div>
+				<label for="nombre" class="block text-gray-700 font-bold">Nombre:<span class="text-red-500">*</span></label>
+				<input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
+			</div>
+			<div>
+				<label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:<span class="text-red-500">*</span></label>
+				<input type="text" id="idcliente" name="idcliente" class="w-full p-2 border border-gray-300 rounded" required>
+				<span id="idClienteStatus"></span>
+			</div>
+			<div>
+				<label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:<span class="text-red-500">*</span></label>
+				<input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
+			</div>
+			<div>
+				<label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:<span class="text-red-500">*</span></label>
+
+				<select name="tipocliente" class="w-full p-2 border border-gray-300 rounded" required>
+					<option value="" selected disabled>
+						Seleccione un Tipo de Cliente
+
+					</option>
+					<option value="Empr.Públicas Chile">
+						Empr.Públicas Chile
+					</option>
+					<option value="Empr.Privadas Chile">
+						Empr.Privadas Chile
+					</option>
+					<option value="Fundaciones y Org.Sin Fin Lucro">
+						Fundaciones y Org.Sin Fin Lucro
+					</option>
+					<option value="Empr.Internacional">
+						Empr.Internacional
+					</option>
+				</select>
+			</div>
+
+			<div>
+				<label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>
+				<input type="text" id="direccion" name="direccion" class="w-full p-2 border border-gray-300 rounded">
+			</div>
+			<div>
+				<label for="ciudad" class="block text-gray-700 font-bold">Ciudad:</label>
+				<input type="text" id="ciudad" name="ciudad" class="w-full p-2 border border-gray-300 rounded">
+			</div>
+			<div>
+				<label for="pais" class="block text-gray-700 font-bold">País:</label>
+				<input type="text" id="pais" name="pais" class="w-full p-2 border border-gray-300 rounded">
+			</div>
+
+			<div>
+				<label for="telefono" class="block text-gray-700 font-bold">Teléfono:</label>
+				<input type="tel" id="telefono" name="telefono" class="w-full p-2 border border-gray-300 rounded">
+			</div>
+			<div>
+				<label for="paginaWeb" class="block text-gray-700 font-bold">Página Web:</label>
+				<input type="text" id="paginaWeb" name="pagweb" class="w-full p-2 border border-gray-300 rounded">
+			</div>
+			<div>
+				<label for="instagram" class="block text-gray-700 font-bold">Linkedin:</label>
+				<input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
+			</div>
+			<div>
+				<label for="linkedin" class="block text-gray-700 font-bold">Instagram:</label>
+				<input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
+			</div>
+
+			<div class="col-span-3 text-gray-600 mb-4">
+				<p>Los campos marcados con <span class="text-red-500">*</span> son obligatorios.</p>
+			</div>
+			<div class="col-span-3 flex justify-end gap-4 mt-6">
+				<button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
+				<button type="submit" id="submit-btn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- Modal para mostrar el mensaje de éxito -->
+<div id="successModal" style="margin-top: 70px;" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
+	<div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+		<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
+		<p>@TempData["SuccessMessage"]</p>
+		<button id="closeModalBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-4">Cerrar</button>
+	</div>
+</div>
+
+
 
 <script>
 	/*MODAL REGISTRO CLIENTE*/
@@ -298,5 +356,19 @@
 			return false;
 		}
 		return true;
+	});
+</script>
+<script>
+		const cards = document.querySelectorAll(".group");
+	cards.forEach(card => {
+		card.addEventListener("mousemove", (e) => {
+			const { left, top } = card.getBoundingClientRect();
+			const x = e.clientX - left;
+			const y = e.clientY - top;
+			card.style.backgroundImage = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 153, 0, 0.15), transparent 50%)`;
+		});
+		card.addEventListener("mouseleave", () => {
+			card.style.backgroundImage = "none";
+		});
 	});
 </script>

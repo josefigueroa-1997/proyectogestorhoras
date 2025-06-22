@@ -1,291 +1,523 @@
 ﻿@{
-
-    ViewData["Title"] = "Reportes";
-
+    ViewData["Title"] = "Listado de Reportes";
 }
-<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
-<style>
-
-    .dashboard-container {
-        padding: 0;
-        background-color: transparent;
-        margin-top: 50px;
-    }
 
 
-    .section-content {
-        background-color: #ffffff;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 50px;
-    }
+<section class="bg-gray-100  py-10 px-6">
+    <h2 class="text-3xl font-bold text-black mb-8">📊 Key Indicators</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col justify-between h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7 16l4-4 4 4m0-4v8" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Metas de Facturación</h3>
+                    <p class="text-sm text-gray-600 mt-2">Visualiza las metas establecidas por proyecto y compara con el avance mensual.</p>
+                </div>
+            </div>
+        </a>
+        <a href="@Url.Action("ReporteNeogiciacionKey","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col justify-between h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8M8 11h8M8 15h8M4 6h1M4 10h1M4 14h1M4 18h1" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Proyectos en Negociación</h3>
+                    <p class="text-sm text-gray-600 mt-2">Lista los proyectos en proceso de negociación activa.</p>
+                </div>
+            </div>
+        </a>
+        <a href="@Url.Action("ReportehorasSociosProyectos","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col justify-between h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2M5.64 5.64A9 9 0 1118.36 18.36 9 9 0 015.64 5.64z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">HH Socios</h3>
+                    <p class="text-sm text-gray-600 mt-2">Visualiza las horas hombre asignadas por los socios a distintos proyectos.</p>
+                </div>
+            </div>
+        </a>
+          <!-- Tarjeta 4 -->
+            <a href="@Url.Action("ReporteMargenProyectos","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                    <div class="flex justify-center">
+                        <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-lg font-bold text-orange-500">Margen de Contribución</h3>
+                        <p class="text-sm text-gray-600 mt-2">Análisis del margen bruto por proyecto y período.</p>
+                    </div>
+                </div>
+            </a>
+            <!-- Tarjeta 5 -->
+            <a href="@Url.Action("ReportePlandeVentas","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                    <div class="flex justify-center">
+                        <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-lg font-bold text-orange-500">Plan de Venta</h3>
+                        <p class="text-sm text-gray-600 mt-2">Planificación de ingresos proyectados por unidad de negocio.</p>
+                    </div>
+                </div>
+            </a>
+            <!-- Tarjeta 6 -->
+            <a href="@Url.Action("ReporteEstadoResultado","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                    <div class="flex justify-center">
+                        <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m0 0V3m0 15v3" />
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-lg font-bold text-orange-500">Estado Resultado Mensual</h3>
+                        <p class="text-sm text-gray-600 mt-2">Informe mensual con ingresos, egresos y utilidad operativa.</p>
+                    </div>
+                </div>
+            </a>
+            <!-- Tarjeta 7 -->
+            <a href="@Url.Action("ReporteEstadoResultadoQuarter","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                    <div class="flex justify-center">
+                        <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-lg font-bold text-orange-500">Estado Resultado Quarter</h3>
+                        <p class="text-sm text-gray-600 mt-2">Análisis consolidado de resultados financieros por trimestre.</p>
+                    </div>
+                </div>
+            </a>
+    </div>
+</section>
+<section class="bg-gray-100  py-6 px-6 ">
+ 
+    <!-- FORECAST -->
+    <div>
+        <h2 class="text-3xl font-bold text-black mb-8">📈 Forecast</h2>
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <!-- Forecast Ingresos -->
+            <a href="@Url.Action("ReporteForecastIngresos","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                    <div class="flex justify-center">
+                        <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8" />
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-lg font-bold text-orange-500">Forecast Ingresos</h3>
+                        <p class="text-sm text-gray-600 mt-2">Proyección de ingresos mensuales y acumulados.</p>
+                    </div>
+                </div>
+            </a>
 
+            <!-- Forecast Costos -->
+            <a href="@Url.Action("ReporteForecastCostos","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                    <div class="flex justify-center">
+                        <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m-8-4h6m-6-4h4m-4-4h2M3 17h4m-4-4h6m-6-4h4m-4-4h2" />
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-lg font-bold text-orange-500">Forecast Costos</h3>
+                        <p class="text-sm text-gray-600 mt-2">Estimación de los costos operacionales proyectados y reales.</p>
+                    </div>
+                </div>
+            </a>
 
-    .card {
-        background-color: #ffffff;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        transition: background-color 0.3s, border-color 0.3s;
-        height: 100px;
-        margin-right: 1rem;
-        justify-content: center;
-    }
-
-        .card.new-cliente {
-            background-color: #333;
-            border-left: 4px solid #fcaa67;
-            cursor: pointer;
-            color: #fff;
-        }
-
-            .card.new-cliente h3 {
-                color: #fcaa67;
-                font-size: 18px;
-            }
-
-            .card.new-cliente:hover {
-                background-color: #fcaa67;
-                border-color: #fff;
-            }
-
-                .card.new-cliente:hover h3 {
-                    color: #fff;
-                }
-
-                .card.new-cliente:hover p {
-                    color: #fff;
-                }
-
-</style>
-
-
-<h2 style="margin-top: 50px;" class="section-header">Key Indicators</h2>
-<div class="section-content">
-    <a href="@Url.Action("recuperarcuotas","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
-        <div class="card new-cliente">
-            <h3>Metas de Facturación</h3>
+            <!-- Forecast Flujo de Caja -->
+            <a href="@Url.Action("ReporteForecastFlujoCaja","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+                <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6">
+                    <div class="flex justify-center">
+                        <svg class="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.343-3 3m6 0c0-1.657-1.343-3-3-3m0 0V4m0 7v7m0 0h4m-4 0H8" />
+                        </svg>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h3 class="text-lg font-bold text-orange-500">Forecast Flujo de Caja</h3>
+                        <p class="text-sm text-gray-600 mt-2">Proyección del flujo de caja por cada proyecto.</p>
+                    </div>
+                </div>
+            </a>
         </div>
+    </div>
+</section>
 
-    </a>
-    <a href="@Url.Action("ReporteNeogiciacionKey","Reporte")">
-        <div class="card new-cliente">
-            <h3>Proyectos en Negociación</h3>
-        </div>
-    </a>
-    <a href="@Url.Action("ReportehorasSociosProyectos","Reporte",new{mes=DateTime.Now.Month,anio=DateTime.Now.Year})">
-        <div class="card new-cliente">
-            <h3>HH-Socios a Proyectos</h3>
-        </div>
-    </a>
-    <a href="@Url.Action("ReporteMargenProyectos","Reporte")">
-        <div class="card new-cliente">
-            <h3>Margen de Contribución de Proyectos</h3>
-        </div>
+<section class="bg-gray-100 py-6 px-6">
+    <h2 class="text-3xl font-bold text-black mb-8">📁 Facturación</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <!-- Reporte Facturación por Proyecto -->
+        <a href="@Url.Action("ReportesFactura","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-6h6v6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h3l2-2h2l2 2h3a2 2 0 012 2v12a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Facturación por Proyecto</h3>
+                    <p class="text-sm text-gray-600 mt-2">Desglose mensual de facturas emitidas por proyecto.</p>
+                </div>
+            </div>
+        </a>
 
-    </a>
-    <a  href="@Url.Action("ReportePlandeVentas","Reporte")">
-        <div class="card new-cliente">
-            <h3>Plan de Venta de Proyectos</h3>
-        </div>
+       
+        <a href="@Url.Action("ReporteProyectosNegociacion","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M9 16h6M12 6v12" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Proyectos en Negociación</h3>
+                    <p class="text-sm text-gray-600 mt-2">Visualización las facturas de los proyectos en negociación a través de los meses.</p>
+                </div>
+            </div>
+        </a>
 
-    </a>
-    <a href="@Url.Action("ReporteEstadoResultado","Reporte")">
-        <div class="card new-cliente">
-            <h3>Estado Resultado Mensual</h3>
-        </div>
+        
+        <a href="@Url.Action("ReporteResumenQuarter","Reporte",new{anio = DateTime.Now.Year})" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h4" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Resumen por Quarter</h3>
+                    <p class="text-sm text-gray-600 mt-2">Muestra los ingresos, egresos y margén de contribución por quarters.</p>
+                </div>
+            </div>
+        </a>
+        <a href="@Url.Action("ReporteResumenCostosProyecto","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h4" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Resumen Costos Proyecto</h3>
+                    <p class="text-sm text-gray-600 mt-2">Muestra un resumen de los costos por cada proyecto en ejecución, separarando por tipo de moneda.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
 
-    </a>
-    <a href="@Url.Action("ReporteEstadoResultadoQuarter","Reporte")">
-        <div class="card new-cliente">
-            <h3>Estado Resultado por Quarter</h3>
-        </div>
+<section class="bg-gray-100 py-6 px-6">
+    <h2 class="text-3xl font-bold text-black mb-8">📘 Reportes HH Asignadas</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
-    </a>
-</div>
-<h2 class="section-header">Forecast</h2>
-<div class="section-content">
-    <a href="@Url.Action("ReporteForecastIngresos","Reporte")">
-        <div class="card new-cliente">
-            <h3>Forecast Ingresos</h3>
-        </div>
+        <!-- HH Socios -->
+        <a href="@Url.Action("ReporteHHSocios", "Reporte", new { recurso = "Socio" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5.121 17.804A4 4 0 017 14h10a4 4 0 011.879 3.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">HH Socios Asignadas</h3>
+                    <p class="text-sm text-gray-600 mt-2">Horas hombre asignadas a proyectos por socios.</p>
+                </div>
+            </div>
+        </a>
 
-    </a>
-    <a href="@Url.Action("ReporteForecastCostos","Reporte")">
-        <div class="card new-cliente">
-            <h3>Forecast Costos</h3>
-        </div>
+        <!-- HH Staff -->
+        <a href="@Url.Action("ReporteHHStaff", "Reporte", new { recurso = "Staff" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5.121 17.804A4 4 0 017 14h10a4 4 0 011.879 3.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">HH Staff Asignadas</h3>
+                    <p class="text-sm text-gray-600 mt-2">Distribución de HH asignadas por el equipo Staff.</p>
+                </div>
+            </div>
+        </a>
 
-    </a>
-    <a href="@Url.Action("ReporteForecastFlujoCaja","Reporte")">
-        <div class="card new-cliente">
-            <h3>Forecast Flujo de Caja</h3>
-        </div>
+        <!-- HH Consultor A -->
+        <a href="@Url.Action("ReporteHHConsultorA", "Reporte", new { tipoconsultor = "Consultor A" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5.121 17.804A4 4 0 017 14h10a4 4 0 011.879 3.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">HH Consultor A</h3>
+                    <p class="text-sm text-gray-600 mt-2">Horas asignadas por Consultores A a proyectos.</p>
+                </div>
+            </div>
+        </a>
 
-    </a>
+        <!-- HH Consultor B -->
+        <a href="@Url.Action("ReporteHHConsultorB", "Reporte", new { tipoconsultor = "Consultor B" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5.121 17.804A4 4 0 017 14h10a4 4 0 011.879 3.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">HH Consultor B</h3>
+                    <p class="text-sm text-gray-600 mt-2">Asignación de HH por Consultores B.</p>
+                </div>
+            </div>
+        </a>
 
-    @*<a href="@Url.Action("ReporteForecastConsolidado","Reporte")">
-        <div class="card new-cliente">
-            <h3>Forecast Consolidado</h3>
-        </div>
+        <!-- HH Consultor C -->
+        <a href="@Url.Action("ReporteHHConsultorC", "Reporte", new { tipoconsultor = "Consultor C" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5.121 17.804A4 4 0 017 14h10a4 4 0 011.879 3.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">HH Consultor C</h3>
+                    <p class="text-sm text-gray-600 mt-2">Distribución de HH asignadas por Consultores C.</p>
+                </div>
+            </div>
+        </a>
 
-    </a>*@
+    </div>
+</section>
+
+<section class="bg-gray-100 py-6 px-6">
+    <h2 class="text-3xl font-bold text-black mb-8">💰 Reportes Costos Asignados</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+        <!-- Costos Socios -->
+        <a href="@Url.Action("ReporteCostosSocios", "Reporte", new { recurso = "Socio" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor"
+                         stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 8c-1.105 0-2 .895-2 2s.895 2 2 2m0 4v2m0-2a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Costos HH Socios</h3>
+                    <p class="text-sm text-gray-600 mt-2">Costos asociados a horas de socios asignadas a proyectos.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Costos Staff -->
+        <a href="@Url.Action("ReporteCostosStaff", "Reporte", new { recurso = "Staff" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor"
+                         stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 8c-1.105 0-2 .895-2 2s.895 2 2 2m0 4v2m0-2a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Costos HH Staff</h3>
+                    <p class="text-sm text-gray-600 mt-2">Costos del personal interno asignado a proyectos.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Costos Consultor A -->
+        <a href="@Url.Action("ReporteCostosConsultorA", "Reporte", new { tipoconsultor = "Consultor A" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor"
+                         stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 8c-1.105 0-2 .895-2 2s.895 2 2 2m0 4v2m0-2a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Costos HH Cons. A</h3>
+                    <p class="text-sm text-gray-600 mt-2">Costos de consultores tipo A en los proyectos.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Costos Consultor B -->
+        <a href="@Url.Action("ReporteCostosConsultorB", "Reporte", new { tipoconsultor = "Consultor B" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor"
+                         stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 8c-1.105 0-2 .895-2 2s.895 2 2 2m0 4v2m0-2a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Costos HH Cons. B</h3>
+                    <p class="text-sm text-gray-600 mt-2">HH de consultores tipo B con sus respectivos costos.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Costos Consultor C -->
+        <a href="@Url.Action("ReporteCostosConsultorC", "Reporte", new { tipoconsultor = "Consultor C" })" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor"
+                         stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 8c-1.105 0-2 .895-2 2s.895 2 2 2m0 4v2m0-2a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Costos HH Cons. C</h3>
+                    <p class="text-sm text-gray-600 mt-2">Costos asignables de consultores tipo C.</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<section class="bg-gray-100 py-6 px-6">
+    <h2 class="text-3xl font-bold text-black mb-8">📅 Reporte Control Avance HH</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+        <!-- Control Avance HH -->
+        <a href="@Url.Action("SeleccionarProyecto","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2h6v2m-6-4h6V7H9v6zm-6 4h18M3 5h18" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Control Avances HH</h3>
+                    <p class="text-sm text-gray-600 mt-2">Planilla de control de avance por proyecto.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Actividades Socios -->
+        <a href="@Url.Action("HHsociosActividad","Reporte",new{mes=DateTime.Now.Month})" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h2l1 2h4l1-2h2l1 2h4l1-2h2M4 14h16" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Actividades Socios</h3>
+                    <p class="text-sm text-gray-600 mt-2">Horas por actividad de socios en el mes actual, último año.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Detalle HH Personal -->
+        <a href="@Url.Action("PersonalChoice","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Detalle HH Personal</h3>
+                    <p class="text-sm text-gray-600 mt-2">Detalle completo por integrante y proyecto.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Detalle HH General -->
+        <a href="@Url.Action("SeleccionarMesAnioPlanilla","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Detalle HH General</h3>
+                    <p class="text-sm text-gray-600 mt-2">Resumen de horas mensuales por todos los recursos.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Balance Horas Efectivas -->
+        <a href="@Url.Action("ReporteBalanceHoras","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Balance Horas Efectivas</h3>
+                    <p class="text-sm text-gray-600 mt-2">Horas reales a proyectos.</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<section class="bg-gray-100 py-6 px-6">
+    <h2 class="text-3xl font-bold text-black mb-8">🗃️ Base de Datos</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <!-- Descargar base de datos -->
+        <a href="@Url.Action("DescargarBasedeDatos","Reporte")" class="group transform hover:scale-[1.03] transition-all duration-300">
+            <div class="bg-white border-2 border-orange-500 rounded-2xl shadow-md hover:shadow-xl p-6 h-full">
+                <div class="flex justify-center">
+                    <svg class="w-12 h-12 text-orange-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4m-6 6h8a2 2 0 002-2V6a2 2 0 00-2-2h-4" />
+                    </svg>
+                </div>
+                <div class="text-center mt-4">
+                    <h3 class="text-lg font-bold text-orange-500">Descargar Base de Datos de Proyectos</h3>
+                    <p class="text-sm text-gray-600 mt-2">Obtén un respaldo completo de todos los proyectos registrados.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
 
 
-</div>
-<h2 class="section-header">Facturaciones</h2>
-<div class="section-content">
-    <a href="@Url.Action("ReportesFactura","Reporte")">
-        <div class="card new-cliente">
-            <h3>Proyección de Facturación</h3>
-        </div>
-
-    </a>
-    
-    <a href="@Url.Action("ReporteProyectosNegociacion","Reporte")">
-        <div class="card new-cliente">
-            <h3>Proyectos en Negociación</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteResumenQuarter","Reporte",new{anio = DateTime.Now.Year})">
-        <div class="card new-cliente">
-            <h3>Resumen por Quarter</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteResumenCostosProyecto","Reporte")">
-        <div class="card new-cliente">
-            <h3>Resumen Costos Proyecto</h3>
-        </div>
-
-    </a>
-    
-
-</div>
-
-<h2 class="section-header">Reportes HH Asignadas</h2>
-<div class="section-content">
-    <a href="@Url.Action("ReporteHHSocios","Reporte",new{recurso = "Socio"})">
-        <div class="card new-cliente">
-            <h3>HH Socios Asignadas a Proyectos</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteHHStaff","Reporte",new{recurso = "Staff"})">
-        <div class="card new-cliente">
-            <h3>HH Staff Asignadas a Proyectos</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteHHConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
-        <div class="card new-cliente">
-            <h3>HH Cons. A Asignadas a Proyectos</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteHHConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
-        <div class="card new-cliente">
-            <h3>HH Cons. B Asignadas a Proyectos</h3>
-        </div>
-
-    </a>
-
-    <a href="@Url.Action("ReporteHHConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
-        <div class="card new-cliente">
-            <h3>HH Cons. C Asignadas a Proyectos</h3>
-        </div>
-
-    </a>
-
-</div>
-<h2 class="section-header">Reportes Costos Asignadas</h2>
-<div class="section-content">
-
-    <a href="@Url.Action("ReporteCostosSocios","Reporte",new{recurso = "Socio"})">
-        <div class="card new-cliente">
-            <h3>Costos HH Socios Asignable a Proyectos</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteCostosStaff","Reporte",new{recurso = "Staff"})">
-        <div class="card new-cliente">
-            <h3>Costos HH Staff Asignable a Proyectos</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteCostosConsultorA","Reporte",new{tipoconsultor = "Consultor A"})">
-        <div class="card new-cliente">
-            <h3>Costos HH Cons. A Asignable a Proyectos</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteCostosConsultorB","Reporte",new{tipoconsultor = "Consultor B"})">
-        <div class="card new-cliente">
-            <h3>Costos HH Cons. B Asignable a Proyectos</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteCostosConsultorC","Reporte",new{tipoconsultor = "Consultor C"})">
-        <div class="card new-cliente">
-            <h3>Costos HH Cons. C Asignable a Proyectos</h3>
-        </div>
-
-    </a>
-
-</div>
-<h2 class="section-header">Reporte Control Avance HH</h2>
-<div class="section-content">
-    <a href="@Url.Action("SeleccionarProyecto","Reporte")">
-        <div class="card new-cliente">
-            <h3>Control Avances HH</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("HHsociosActividad","Reporte",new{mes=DateTime.Now.Month})">
-        <div class="card new-cliente">
-            <h3>Actividades Socios</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("PersonalChoice","Reporte")">
-        <div class="card new-cliente">
-            <h3>Detalle HH Personal</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("SeleccionarMesAnioPlanilla","Reporte")">
-        <div class="card new-cliente">
-            <h3>Detalle HH General</h3>
-        </div>
-
-    </a>
-    <a href="@Url.Action("ReporteBalanceHoras","Reporte")">
-        <div class="card new-cliente">
-            <h3>Balance Horas Efectivas</h3>
-        </div>
-
-    </a>
-
-</div>
-<h2 class="section-header">Base de Datos</h2>
-<div class="section-content">
-    <a href="@Url.Action("DescargarBasedeDatos","Reporte")">
-        <div class="card new-cliente">
-            <h3>Descargar Base de Datos de Proyectos</h3>
-        </div>
-
-    </a>
-
-
-
-</div>
-
-
-
-
+<script>
+    const cards = document.querySelectorAll(".group");
+    cards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const { left, top, width, height } = card.getBoundingClientRect();
+            const x = e.clientX - left;
+            const y = e.clientY - top;
+            card.style.backgroundImage = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 153, 0, 0.15), transparent 50%)`;
+        });
+        card.addEventListener("mouseleave", () => {
+            card.style.backgroundImage = "none";
+        });
+    });
+</script>
