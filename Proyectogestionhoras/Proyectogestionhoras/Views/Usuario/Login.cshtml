@@ -1,45 +1,69 @@
-﻿
-
-@{
+﻿@{
     Layout = null;
-    
 }
-<link rel="icon" href="~/favicon-unit.png type="image/x-icon">
-<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
-<title>Inicio Sesión | Unit</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<div class="login-container">
-    <div class="login-logo">
-        <h1 class="login-title">Bienvenido a Unit Gestión de Proyectos</h1>
-               
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio Sesión | Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white shadow-xl border border-gray-200 rounded-xl w-full max-w-md p-8">
+        <!-- Logo -->
+        <div class="flex justify-center mb-4">
+            <img src="~/images/logo-unit.png" alt="Logo" class="h-12">
+        </div>
+
+        <!-- Encabezado -->
+        <div class="text-center mb-6">
+            <h1 class="text-xl font-semibold text-gray-700">Bienvenido a Unit</h1>
+            <p class="text-sm text-gray-500">Gestión de Proyectos</p>
+        </div>
+
+        <!-- Alertas -->
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 border border-red-300 text-sm">
+                @ViewBag.Error
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(ViewBag.Warning))
+        {
+            <div class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded mb-4 border border-yellow-300 text-sm">
+                @ViewBag.Warning
+            </div>
+        }
+
+        <!-- Formulario -->
+        <form action="@Url.Action("Login", "Usuario")" method="post" class="space-y-4">
+            <!-- RUT -->
+            <div>
+                <label for="rut" class="block text-sm font-medium text-gray-700">RUT</label>
+                <input type="text" id="rut" name="rut"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required />
+            </div>
+
+            <!-- Contraseña -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input type="password" id="password" name="contrasena"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required />
+            </div>
+
+            <!-- Botón -->
+            <div>
+                <button type="submit"
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 rounded-md transition duration-200">
+                    Iniciar Sesión
+                </button>
+            </div>
+        </form>
     </div>
-    <h2 class="login-title">Iniciar Sesión</h2>
-    @if (!string.IsNullOrEmpty(ViewBag.Error))
-    {
-        <div class="alert alert-danger">
-            @ViewBag.Error
-        </div>
-    }
-    @if (!string.IsNullOrEmpty(ViewBag.Warning))
-    {
-        <div class="alert alert-warning">
-            @ViewBag.Warning
-        </div>
-    }
-    <form action="@Url.Action("Login", "Usuario")" method="post" enctype="multipart/form-data">
-        
-        <div class="form-group">
-            <label for="rut">RUT</label>
-            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" id="rut" name="rut" required>
-        </div>
 
-        <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" name="contrasena" required>
-        </div>
-
-        <button type="submit" class="w-full py-2 bg-orange-500 hover:bg-orange-500 text-white font-semibold rounded-md transition duration-200">Iniciar Sesión</button>
-
-     
-    </form>
-</div>
+</body>
+</html>
