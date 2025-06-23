@@ -4,21 +4,24 @@
 
 
 
-<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Estado Resultado por Quater</h2>
+<h2 style="margin-top: 50px;" class="text-2xl font-bold mb-4">Estado Resultado por Quarter</h2>
 
 <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
     <p class="text-sm text-gray-600">
-        Muestra mes a mes el estado resultado  de la empresa en el año actual.
+        Muestra  el estado resultado  de la empresa en el año actual por quarter.
     </p>
 </div>
-<button onclick="exportarExcel()" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
+<button onclick="exportarExcelEERR('Quarter')" class="bg-green-500 text-white px-4 py-2 rounded">Exportar a Excel</button>
 <div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md sticky top-[900px] z-50">
     <div class="overflow-x-auto relative">
         <div class="w-full max-w-3xl border-collapse text-left text-sm justify-center" id="tablaContainer"></div>
     </div>
 </div>
+@section Scripts {
+    <script src="~/js/ExportarEstadoResultado.js"></script>
+}
 <script>
-        // Fragmento modificado para agrupar por trimestres en vez de meses con todos los cálculos: EBITDA, Margen, Utilidad Neta
+    5555
     window.onload = async function () {
         const anio = new Date().getFullYear();
         const response = await fetch(`/Reporte/ObtenerEERR?anio=${anio}`);
@@ -76,8 +79,11 @@
             "Gastos de Administración y Ventas": {},
             "Egresos fuera de la Explotación": {},
             "Intereses, Impuestos, Depreciaciones y Amortizaciones": {},
-            "Costos Directos": {}
+            "Costos Directos": {},
+            "Ingresos de la Explotación": {},
+            
         };
+        const totalesIIDyA = acumuladores["Intereses, Impuestos, Depreciaciones y Amortizaciones"];
 
         for (const tipo in acumuladores) {
             if (tiposMap[tipo]) {
@@ -91,13 +97,13 @@
         const ordenTipos = [
             "Ingresos de la Explotación",
             "Costos Directos",
-            "Gastos de Administración y Ventas",     
+            "Gastos de Administración y Ventas",
             "Inversion",
             "Ingresos fuera de la Explotación",
             "Egresos fuera de la Explotación",
             "Intereses, Impuestos, Depreciaciones y Amortizaciones"
         ];
-
+        let utilidadNetaAgregada = false;
         const utilidadNetaPorTrimestre = {};
 
         for (const tipo of ordenTipos) {
@@ -152,12 +158,12 @@
                 html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${totalMargen === 0 ? '' : totalMargen.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
                 let porcentajeMargen = totalVentas ? (totalMargen / totalVentas) * 100 : 0;
                 html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${porcentajeMargen === 0 ? '' : porcentajeMargen.toFixed(2)}%</td>`;
-                 let porcentajetotalmargen = 0;
-                 if (totalVentas !== 0) {
-                        porcentajetotalmargen = (totalMargen / totalVentas) * 100;
-                 }
-                
-                 // % MARGEN DE CONTRIBUCION
+                let porcentajetotalmargen = 0;
+                if (totalVentas !== 0) {
+                    porcentajetotalmargen = (totalMargen / totalVentas) * 100;
+                }
+
+                // % MARGEN DE CONTRIBUCION
                 html += `<tr class="p-2 bg-gray-300  font-bold border border-black"><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">% Margen de contribución</td>`;
                 for (const trimestre of trimestresUnicos) {
                     const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
@@ -172,18 +178,72 @@
                     html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%</td>`;
                 }
 
-                 html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
-                  html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '': porcentajetotalmargen.toFixed(2)}%</td>`;
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '' : porcentajetotalmargen.toFixed(2)}%</td>`;
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">${porcentajetotalmargen === 0 ? '' : porcentajetotalmargen.toFixed(2)}%</td>`;
 
 
                 html += `</tr>`;
             }
             // EBITDA
-               if (tipo === "Egresos fuera de la Explotación") {
-        html += `<tr class="p-2 bg-gray-300 border border-black font-bold">
-                    <td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">EBITDA</td>`;
+            if (tipo === "Egresos fuera de la Explotación") {
+                html += `<tr class="p-2 bg-gray-300 border border-black font-bold">
+                        <td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">EBITDA</td>`;
 
-        let totalebitda = 0;
+                let totalebitda = 0;
+
+                for (const trimestre of trimestresUnicos) {
+                    const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
+                    const costo = acumuladores["Costos Directos"][trimestre] || 0;
+                    const margen = venta + costo;
+
+                    const inversion = acumuladores["Inversion"][trimestre] || 0;
+                    const gastosAdmVentas = acumuladores["Gastos de Administración y Ventas"][trimestre] || 0;
+                    const egresosFuera = acumuladores["Egresos fuera de la Explotación"][trimestre] || 0;
+
+                    const ebitda = margen + inversion + gastosAdmVentas + egresosFuera;
+                    totalebitda += ebitda;
+
+                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                            ${ebitda === 0 ? '' : ebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
+                        </td>`;
+                }
+
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                        ${totalebitda === 0 ? '' : totalebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
+                     </td>`;
+
+                let porcentajetotalebitda = totalVentasAsesorias !== 0
+                    ? (totalebitda / totalVentasAsesorias) * 100
+                    : 0;
+
+                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                        ${porcentajetotalebitda === 0 ? '' : porcentajetotalebitda.toFixed(2)}%
+                     </td>`;
+                html += `</tr>`;
+            }
+
+
+            if (tipo === "Intereses, Impuestos, Depreciaciones y Amortizaciones") {
+                html += generarFilaUtilidadNeta(trimestresUnicos, ventasAsesoriasPorTrimestre, acumuladores, totalesIIDyA, utilidadNetaPorTrimestre);
+                utilidadNetaAgregada = true;
+                html += generarFilaPorcentajeUtilidadNeta(trimestresUnicos, utilidadNetaPorTrimestre, acumuladores);
+            }
+        }
+        if (!utilidadNetaAgregada) {
+            html += generarFilaUtilidadNeta(trimestresUnicos, ventasAsesoriasPorTrimestre, acumuladores, totalesIIDyA, utilidadNetaPorTrimestre);
+            html += generarFilaPorcentajeUtilidadNeta(trimestresUnicos, utilidadNetaPorTrimestre, acumuladores);
+        }
+
+        html += `</tbody></table>`;
+        document.getElementById('tablaContainer').innerHTML = html;
+    }
+
+    function generarFilaUtilidadNeta(trimestresUnicos, ventasAsesoriasPorTrimestre, acumuladores, totalesIIDyA, utilidadNetaPorTrimestre) {
+        let fila = `<tr class="p-2 bg-gray-300 border border-black font-bold">
+            <td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">Utilidad neta</td>`;
+
+        let totalUtilidad = 0;
+        let totalVentas = 0;
 
         for (const trimestre of trimestresUnicos) {
             const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
@@ -191,60 +251,69 @@
             const margen = venta + costo;
 
             const inversion = acumuladores["Inversion"][trimestre] || 0;
-            const gastosAdmVentas = acumuladores["Gastos de Administración y Ventas"][trimestre] || 0;
+            const gastosAdm = acumuladores["Gastos de Administración y Ventas"][trimestre] || 0;
             const egresosFuera = acumuladores["Egresos fuera de la Explotación"][trimestre] || 0;
 
-            const ebitda = margen + inversion + gastosAdmVentas + egresosFuera;
-            totalebitda += ebitda;
+            const ebitda = margen + inversion + gastosAdm + egresosFuera;
+            const iidya = totalesIIDyA[trimestre] || 0;
 
-            html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
-                        ${ebitda === 0 ? '' : ebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
-                    </td>`;
+            const utilidadNeta = ebitda + iidya;
+            totalUtilidad += utilidadNeta;
+            totalVentas += venta;
+
+            utilidadNetaPorTrimestre[trimestre] = utilidadNeta;
+
+            fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                ${utilidadNeta === 0 ? '' : utilidadNeta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
+            </td>`;
         }
 
-        html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
-                    ${totalebitda === 0 ? '' : totalebitda.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
-                 </td>`;
+        fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+            ${totalUtilidad === 0 ? '' : totalUtilidad.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
+        </td>`;
 
-        let porcentajetotalebitda = totalVentasAsesorias !== 0
-            ? (totalebitda / totalVentasAsesorias) * 100
-            : 0;
+        const porcentajeTotal = totalVentas !== 0 ? (totalUtilidad / totalVentas) * 100 : 0;
+        fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+            ${porcentajeTotal === 0 ? '' : porcentajeTotal.toFixed(2)}%
+        </td>`;
 
-        html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
-                    ${porcentajetotalebitda === 0 ? '' : porcentajetotalebitda.toFixed(2)}%
-                 </td>`;
-        html += `</tr>`;
+        fila += `</tr>`;
+        return fila;
     }
 
 
-            if (tipo === "Intereses, Impuestos, Depreciaciones y Amortizaciones") {
-                html += `<tr class="p-2 bg-gray-300 border border-black font-bold"><td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">Utilidad neta</td>`;
-                let totalNeta = 0, totalIngresos = 0;
-                for (const trimestre of trimestresUnicos) {
-                    const venta = ventasAsesoriasPorTrimestre[trimestre] || 0;
-                    const costo = acumuladores["Costos Directos"][trimestre] || 0;
-                    const margen = venta + costo;
-                    const inversion = acumuladores["Inversion"][trimestre] || 0;
-                    const gastos = acumuladores["Gastos de Administración y Ventas"][trimestre] || 0;
-                    const egresos = acumuladores["Egresos fuera de la Explotación"][trimestre] || 0;
-                    const iidya = acumuladores["Intereses, Impuestos, Depreciaciones y Amortizaciones"][trimestre] || 0;
-                    const utilidad = margen + inversion + gastos + egresos + iidya;
-                    utilidadNetaPorTrimestre[trimestre] = utilidad;
-                    totalNeta += utilidad;
-                    totalIngresos += venta;
-                    html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${utilidad === 0 ? '' : utilidad.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
-                }
-                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${totalNeta === 0 ? '' : totalNeta.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</td>`;
-                let porcentajeUtilidad = totalIngresos ? (totalNeta / totalIngresos) * 100 : 0;
-                html += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[100px]">${porcentajeUtilidad === 0 ? '' : porcentajeUtilidad.toFixed(2)}%</td>`;
-                html += `</tr>`;
-            }
+    function generarFilaPorcentajeUtilidadNeta(trimestresUnicos, utilidadNetaPorTrimestre, acumuladores) {
+        let fila = `<tr class="p-2 bg-gray-300 border border-black font-bold">
+            <td class="text-left sticky left-0 bg-gray text-xs min-w-[300px]">% Utilidad neta</td>`;
+
+        let totalUtilidad = 0;
+        let totalIngresos = 0;
+
+        for (const trimestre of trimestresUnicos) {
+            const ingreso = acumuladores["Ingresos de la Explotación"][trimestre] || 0;
+            const utilidad = utilidadNetaPorTrimestre[trimestre] || 0;
+
+            totalUtilidad += utilidad;
+            totalIngresos += ingreso;
+
+            const porcentaje = ingreso !== 0 ? (utilidad / ingreso) * 100 : 0;
+
+            fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+                ${porcentaje === 0 ? '' : porcentaje.toFixed(2)}%
+            </td>`;
         }
 
-        html += `</tbody></table>`;
-        document.getElementById('tablaContainer').innerHTML = html;
-    }
+        const porcentajeTotal = totalIngresos !== 0 ? (totalUtilidad / totalIngresos) * 100 : 0;
+        fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+            ${porcentajeTotal === 0 ? '' : porcentajeTotal.toFixed(2)}%
+        </td>`;
+        fila += `<td class="text-right text-xs border border-black px-4 py-2 min-w-[250px]">
+            ${porcentajeTotal === 0 ? '' : porcentajeTotal.toFixed(2)}%
+        </td>`;
 
+        fila += `</tr>`;
+        return fila;
+    }
 
 
 </script>

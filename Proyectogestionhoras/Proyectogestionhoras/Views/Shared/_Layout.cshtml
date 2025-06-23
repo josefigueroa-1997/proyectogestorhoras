@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="~/unit-ico.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
@@ -20,7 +21,7 @@
 }
 <body class="bg-gray-100">
     <!-- Top Panel (New Header) -->
-    <header class="shadow">
+    <header class="shadow bg-gray-100">
         <div class="container mx-auto flex flex-col">
             <!-- Encabezado adicional -->
             <div class="header-title w-full flex items-center justify-center py-2">
@@ -36,52 +37,81 @@
                 <div class="logo flex items-center">
                     <img src="~/images/logo-unit.png" alt="Logo" class="h-12">
                 </div>
-               
+
                 <!-- Navigation Menu -->
-                <nav class="flex-grow">
-                    <ul class="menu-items">
-                        @if (idrol == 1)
-                        {
-                            <li><a href="@Url.Action("Index","Home")">Ingreso</a></li>
-                            <li><a href="@Url.Action("GetProyectos","Proyecto")">Proyectos</a></li>
-                            <li><a href="@Url.Action("NuestrosClientes","Cliente")">Clientes</a></li>
-                            <li><a href="@Url.Action("GetProyectosCategoria","Proyecto")">Clasificación Proyectos</a></li>
-                            <li><a href="@Url.Action("PlanillaRegistro","Planilla")">Control HH </a></li>
-                            
-                            <li><a href="@Url.Action("TodosReportes","Reporte")">Reportes</a></li>
-                            <li><a href="@Url.Action("MetasFunciones","Metas")">Metas</a></li>
-                            if (idusuario == 88)
-                            {
-                                <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin","AdminHH")">Admin.Registros HH</a></li>
-                            }
-                            <li><a href="@Url.Action("TodoslosParametros","Parametros")">Parametros</a></li>
-                           
-                            
-                        }
-                        else if(idrol==2)
-                        {
-                            <li><a href="@Url.Action("PlanillaRegistro","Planilla")">Control HH </a></li>
-                        }
-                        else if(idrol==3){
-                            <li><a href="@Url.Action("Index","Home")">Ingreso</a></li>
-                            <li><a href="@Url.Action("GetProyectos","Proyecto")">Proyectos</a></li>
-                            <li><a href="@Url.Action("NuestrosClientes","Cliente")">Clientes</a></li>
-                            <li><a href="@Url.Action("GetProyectosCategoria","Proyecto")">Clasificación Proyectos</a></li>
-                           
-                            <li><a href="@Url.Action("TodosReportes","Reporte")">Reportes</a></li>
-                            <li><a href="@Url.Action("MetasFunciones","Metas")">Metas</a></li>
-                            if (idusuario == 96)
-                            {
-                                <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin","AdminHH")">Admin.Registros HH</a></li>
-                            }
-                            <li><a href="@Url.Action("TodoslosParametros","Parametros")">Parametros</a></li>
-                           
-                        }
-                    </ul>
-                </nav>
-                @{
-                   
+                @if (idrol == 1 || idrol == 3)
+                {
+                    <nav class="flex text-sm font-light text-gray-800 h-16">
+                        <!-- Menú Proyectos -->
+                        <div class="relative group h-full">
+                            <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                Menú Proyectos
+                            </button>
+                            <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("Index", "Home")">Ingreso de proyectos y clientes</a>
+                                </li>
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("GetProyectos", "Proyecto")">Proyectos</a>
+                                </li>
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("NuestrosClientes", "Cliente")">Clientes</a>
+                                </li>
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("GetProyectosCategoria", "Proyecto")">Clasificación Proyectos</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Menú Control HH -->
+                        <div class="relative group h-full">
+                            <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                Menú Control HH
+                            </button>
+                            <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+                                </li>
+                                @if (idusuario == 88 || idusuario == 96)
+                                {
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")">Admin.Registros HH</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <!-- Menú Administración -->
+                        <div class="relative group h-full">
+                            <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                Menú Administración
+                            </button>
+                            <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("TodosReportes", "Reporte")">Reportes</a>
+                                </li>
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("TodoslosParametros", "Parametros")">Parámetros</a>
+                                </li>
+                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                    <a href="@Url.Action("MetasFunciones", "Metas")">Metas</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                 }
+                else if (idrol == 2)
+                {
+                    <nav class="flex text-sm font-light text-gray-800 h-16">
+                        <ul class="flex">
+                            <li class="list-none text-center border border-gray-300 bg-gray-100 px-6 h-16 flex items-center hover:bg-gray-200">
+                                <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+
+              
                 <!-- User Profile -->
                 <div class="user-profile">
                     <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
@@ -95,14 +125,14 @@
     </header>
 
     <!-- Main Content -->
-    <div class="main-content">
-      @RenderBody()
-        
+    <div class="py-20">
+        @RenderBody()
+
     </div>
     @RenderSection("Scripts", required: false)
     <script>
         document.getElementById('userMenuButton').addEventListener('click', (event) => {
-            event.stopPropagation(); 
+            event.stopPropagation();
             const userMenu = document.getElementById('userMenu');
             userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
         });
