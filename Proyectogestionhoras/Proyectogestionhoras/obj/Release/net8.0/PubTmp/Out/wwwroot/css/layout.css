@@ -9,7 +9,7 @@ header {
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: #f7f6f5;
+   /* background-color: #f7f6f5;*/
     padding: 0;
     border-bottom: 2px solid #ccc;
     display: flex;
@@ -30,7 +30,7 @@ header {
     margin-top: 200px; 
     padding: 20px;
 }
-nav ul {
+/*nav ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,7 +80,7 @@ nav ul {
     .menu-items a:hover {
         color: #fff;
     }
-
+    */
 .main-content {
     margin-top: 60px;
     padding: 20px;

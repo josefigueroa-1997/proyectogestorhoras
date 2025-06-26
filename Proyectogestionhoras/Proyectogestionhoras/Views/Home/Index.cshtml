@@ -171,94 +171,113 @@
 
 <!-- Modal para agregar nuevo cliente  -->
 <div id="nuevoClienteModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="margin-top: 100px;">
-	<div class="modal-content bg-white p-3 rounded-lg shadow-lg w-full max-w-5xl">
-		<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">Agregar Nuevo Cliente</h2>
-		<form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-4" enctype="multipart/form-data">
+	<div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl">
+		<h2 class="text-xl font-semibold mb-4 text-orange-500">Agregar Nuevo Cliente</h2>
+		<form method="post" action="@Url.Action("RegistrarCliente","Cliente")" id="nuevoClienteForm" class="grid grid-cols-3 gap-6" enctype="multipart/form-data">
 
+			<!-- Nombre -->
 			<div>
-				<label for="nombre" class="block text-gray-700 font-bold">Nombre:<span class="text-red-500">*</span></label>
-				<input type="text" id="nombre" name="nombre" class="w-full p-2 border border-gray-300 rounded" required>
+				<label for="nombre" class="block text-sm font-medium text-gray-700">Nombre:<span class="text-red-500">*</span></label>
+				<input type="text" id="nombre" name="nombre" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" required>
 			</div>
+
+			<!-- ID Cliente -->
 			<div>
-				<label for="Id_Cliente" class="block text-gray-700 font-bold">IdCliente:<span class="text-red-500">*</span></label>
-				<input type="text" id="idcliente" name="idcliente" class="w-full p-2 border border-gray-300 rounded" required>
+				<label for="idcliente" class="block text-sm font-medium text-gray-700">IdCliente:<span class="text-red-500">*</span></label>
+				<input type="text" id="idcliente" name="idcliente" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" required>
 				<span id="idClienteStatus"></span>
 			</div>
+
+			<!-- Sucursal -->
 			<div>
-				<label for="Sucursal" class="block text-gray-700 font-bold">Departamento General:<span class="text-red-500">*</span></label>
-				<input type="text" id="sucursal" name="sucursal" class="w-full p-2 border border-gray-300 rounded" required>
+				<label for="sucursal" class="block text-sm font-medium text-gray-700">Departamento General:<span class="text-red-500">*</span></label>
+				<input type="text" id="sucursal" name="sucursal" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" required>
 			</div>
+
+			<!-- Tipo Cliente -->
 			<div>
-				<label for="TipoCliente" class="block text-gray-700 font-bold">Tipo Cliente:<span class="text-red-500">*</span></label>
-
-				<select name="tipocliente" class="w-full p-2 border border-gray-300 rounded" required>
-					<option value="" selected disabled>
-						Seleccione un Tipo de Cliente
-
-					</option>
-					<option value="Empr.Públicas Chile">
-						Empr.Públicas Chile
-					</option>
-					<option value="Empr.Privadas Chile">
-						Empr.Privadas Chile
-					</option>
-					<option value="Fundaciones y Org.Sin Fin Lucro">
-						Fundaciones y Org.Sin Fin Lucro
-					</option>
-					<option value="Empr.Internacional">
-						Empr.Internacional
-					</option>
+				<label for="tipocliente" class="block text-sm font-medium text-gray-700">Tipo Cliente:<span class="text-red-500">*</span></label>
+				<select name="tipocliente" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" required>
+					<option value="" selected disabled>Seleccione un Tipo de Cliente</option>
+					<option value="Empr.Públicas Chile">Empr.Públicas Chile</option>
+					<option value="Empr.Privadas Chile">Empr.Privadas Chile</option>
+					<option value="Fundaciones y Org.Sin Fin Lucro">Fundaciones y Org.Sin Fin Lucro</option>
+					<option value="Empr.Internacional">Empr.Internacional</option>
 				</select>
 			</div>
 
+			<!-- Dirección -->
 			<div>
-				<label for="direccion" class="block text-gray-700 font-bold">Dirección:</label>
-				<input type="text" id="direccion" name="direccion" class="w-full p-2 border border-gray-300 rounded">
-			</div>
-			<div>
-				<label for="ciudad" class="block text-gray-700 font-bold">Ciudad:</label>
-				<input type="text" id="ciudad" name="ciudad" class="w-full p-2 border border-gray-300 rounded">
-			</div>
-			<div>
-				<label for="pais" class="block text-gray-700 font-bold">País:</label>
-				<input type="text" id="pais" name="pais" class="w-full p-2 border border-gray-300 rounded">
+				<label for="direccion" class="block text-sm font-medium text-gray-700">Dirección:</label>
+				<input type="text" id="direccion" name="direccion" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">
 			</div>
 
+			<!-- Ciudad -->
 			<div>
-				<label for="telefono" class="block text-gray-700 font-bold">Teléfono:</label>
-				<input type="tel" id="telefono" name="telefono" class="w-full p-2 border border-gray-300 rounded">
-			</div>
-			<div>
-				<label for="paginaWeb" class="block text-gray-700 font-bold">Página Web:</label>
-				<input type="text" id="paginaWeb" name="pagweb" class="w-full p-2 border border-gray-300 rounded">
-			</div>
-			<div>
-				<label for="instagram" class="block text-gray-700 font-bold">Linkedin:</label>
-				<input type="text" id="linkedin" name="linkedin" class="w-full p-2 border border-gray-300 rounded">
-			</div>
-			<div>
-				<label for="linkedin" class="block text-gray-700 font-bold">Instagram:</label>
-				<input type="text" id="instagram" name="instagram" class="w-full p-2 border border-gray-300 rounded">
+				<label for="ciudad" class="block text-sm font-medium text-gray-700">Ciudad:</label>
+				<input type="text" id="ciudad" name="ciudad" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">
 			</div>
 
-			<div class="col-span-3 text-gray-600 mb-4">
+			<!-- País -->
+			<div>
+				<label for="pais" class="block text-sm font-medium text-gray-700">País:</label>
+				<input type="text" id="pais" name="pais" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">
+			</div>
+
+			<!-- Teléfono -->
+			<div>
+				<label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono:</label>
+				<input type="tel" id="telefono" name="telefono" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">
+			</div>
+
+			<!-- Página web -->
+			<div>
+				<label for="paginaWeb" class="block text-sm font-medium text-gray-700">Página Web:</label>
+				<input type="text" id="paginaWeb" name="pagweb" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">
+			</div>
+
+			<!-- Linkedin -->
+			<div>
+				<label for="linkedin" class="block text-sm font-medium text-gray-700">LinkedIn:</label>
+				<input type="text" id="linkedin" name="linkedin" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">
+			</div>
+
+			<!-- Instagram -->
+			<div>
+				<label for="instagram" class="block text-sm font-medium text-gray-700">Instagram:</label>
+				<input type="text" id="instagram" name="instagram" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">
+			</div>
+
+			<!-- Nota -->
+			<div class="col-span-3 text-sm text-gray-600 mt-2">
 				<p>Los campos marcados con <span class="text-red-500">*</span> son obligatorios.</p>
 			</div>
+
+			<!-- Botones -->
 			<div class="col-span-3 flex justify-end gap-4 mt-6">
-				<button type="button" id="cancelarBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
-				<button type="submit" id="submit-btn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Guardar</button>
+				<button type="button" id="cancelarBtn" class="px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white rounded-md transition">Cancelar</button>
+				<button type="submit" id="submit-btn" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md transition">Guardar</button>
 			</div>
 		</form>
 	</div>
+
+	
 </div>
 <!-- Modal para mostrar el mensaje de éxito -->
-<div id="successModal" style="margin-top: 70px;" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
+<div id="successModal" style="margin-top: 70px;" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" data-show="@((TempData["SuccessMessage"] != null) ? "true" : "false")">
 	<div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-		<h2 class="text-xl font-semibold mb-4" style="color: #fcaa67;">¡Éxito!</h2>
-		<p>@TempData["SuccessMessage"]</p>
-		<button id="closeModalBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mt-4">Cerrar</button>
+		<h2 class="text-xl font-semibold mb-4 text-orange-500">¡Éxito!</h2>
+		<p class="text-gray-700">@TempData["SuccessMessage"]</p>
+
+		<div class="mt-6 flex justify-end">
+			<button id="closeModalBtn"
+					class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md transition duration-200">
+				Cerrar
+			</button>
+		</div>
 	</div>
 </div>
+
 
 
 
