@@ -2,19 +2,36 @@
     ViewData["Title"] = "Gestor Servicios";
 }
 
-<div style="width: 80%; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px; display: flex; justify-content: space-between;margin-top: 50px;">
-    <div style="width: 60%;">
-        <div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
-            <p class="text-sm text-gray-600">Muestra las distintas categorías de servicios externos contratados para cada proyecto.</p>
+<div class="w-4/5 mx-auto bg-white p-6 shadow-lg rounded-xl flex justify-between mt-12">
+  
+    <!-- Tabla de Servicios -->
+    <div class="w-3/5">
+        @if (TempData["SuccessServicio"] != null)
+        {
+            <div class="mb-4 p-4 rounded-md bg-green-100 text-green-800 border border-green-300">
+                <p class="text-sm">@TempData["SuccessServicio"]</p>
+            </div>
+        }
+        @if (TempData["ErrorServicio"] != null)
+        {
+            <div class="mb-4 p-4 rounded-md bg-red-100 text-red-800 border border-red-300">
+                <p class="text-sm">@TempData["ErrorServicio"]</p>
+            </div>
+        }
+        <div class="mb-4 p-4 bg-white rounded-lg shadow-md">
+            <p class="text-sm text-gray-600">
+                Muestra las distintas categorías de servicios externos contratados para cada proyecto.
+            </p>
         </div>
-        <h2 style="text-align: center; color: #333;">Servicios</h2>
 
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 12px;" id="tablagastos">
+        <h2 class="text-center text-black text-lg font-semibold mb-4">Servicios</h2>
+
+        <table class="w-full border-collapse text-left text-xs" id="tablagastos">
             <thead>
-                <tr style="background-color: #d9e2f3; color: black;">
-                    <th style="padding: 5px; border: 1px solid #ddd; width: 10%;">Seleccionar</th>
-                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Nombre</th>
-                    <th style="padding: 5px; border: 1px solid #ddd; width: 35%;">Cuenta</th>
+                <tr class="bg-blue-100 text-black">
+                    <th class="p-2 border border-gray-300 w-1/6">Seleccionar</th>
+                    <th class="p-2 border border-gray-300 w-2/5">Nombre</th>
+                    <th class="p-2 border border-gray-300 w-2/5">Cuenta</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,19 +40,15 @@
                     foreach (var servicio in ViewBag.Servicios)
                     {
                         <tr>
-                            <td style="padding: 5px; border: 1px solid #ddd; text-align: center;">
+                            <td class="p-2 border border-gray-300 text-center">
                                 <button type="button"
-                                        onclick="cargarDatosAlternativa('@servicio.Id', '@Html.Encode(servicio.Nombre)','@Html.Encode(servicio.Idcuenta)')">
+                                        onclick="cargarDatosAlternativa('@servicio.Id', '@Html.Encode(servicio.Nombre)','@Html.Encode(servicio.Idcuenta)')"
+                                        class="text-blue-600 hover:underline">
                                     Seleccionar
                                 </button>
                             </td>
-
-                            <td style="padding: 5px; border: 1px solid #ddd;">
-                                @servicio.Nombre
-                            </td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">
-                                @servicio.CuentaNombre
-                            </td>
+                            <td class="p-2 border border-gray-300">@servicio.Nombre</td>
+                            <td class="p-2 border border-gray-300">@servicio.CuentaNombre</td>
                         </tr>
                     }
                 }
@@ -43,16 +56,22 @@
         </table>
     </div>
 
-    <div style="width: 35%; margin-left: 20px;">
-        <h2 style="text-align: center; color: #333;">Agregar Servicio</h2>
+    <!-- Formulario -->
+    <div class="w-[35%] ml-6">
+        <h2 class="text-center text-black text-lg font-semibold mb-4">Agregar Servicio</h2>
 
         <form action="@Url.Action("GuardarActualizarServicio", "Parametros")" method="post">
             <input type="hidden" id="id" name="Id" />
 
-            <label for="nombre" style="display: block; margin-bottom: 10px;">Nombre:</label>
-            <input type="text" id="nombre" name="Nombre" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
-            <label for="cuenta" style="display: block; margin-bottom: 10px;">Cuenta:</label>
-            <select id="cuenta" name="IdCuenta" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;" required>
+            <label for="nombre" class="block mb-2 text-sm font-medium text-gray-700">Nombre:</label>
+            <input type="text" id="nombre" name="Nombre"
+                   class="w-full p-2 mb-4 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-orange-500"
+                   required>
+
+            <label for="cuenta" class="block mb-2 text-sm font-medium text-gray-700">Cuenta:</label>
+            <select id="cuenta" name="IdCuenta"
+                    class="w-full p-2 mb-4 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-orange-500"
+                    required>
                 <option value="" disabled selected>Seleccione una Cuenta</option>
                 @if (ViewBag.Cuentas != null)
                 {
@@ -60,18 +79,21 @@
                     {
                         <option value="@cuenta.Id">@cuenta.Cuenta - @cuenta.Idcuenta</option>
                     }
-
                 }
             </select>
-            <button type="submit" style="width: 100%; padding: 10px; background-color: #fcaa67; color: white; border: none; border-radius: 4px; cursor: pointer;">
+
+            <button type="submit"
+                    class="w-full p-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition">
                 Guardar
             </button>
-            <button type="button" onclick="limpiarFormulario()" style="width: 100%; padding: 10px; background-color: cornflowerblue; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">
+            <button type="button" onclick="limpiarFormulario()"
+                    class="w-full p-2 mt-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
                 Limpiar
             </button>
         </form>
     </div>
 </div>
+
 
 <script>
     function cargarDatosAlternativa(id, nombre, cuenta) {

@@ -113,33 +113,43 @@ namespace Proyectogestionhoras.Controllers
         {
             if (gastos == null)
             {
-                return BadRequest("el Gasto es nulo.");
+                TempData["ErrorGasto"] = "Error: El gasto es nulo.";
+                return RedirectToAction("GestorGastos");
             }
 
-
-            if (gastos.Id == 0)
+            try
             {
-
-                context.Gastos.Add(gastos);
-            }
-            else
-            {
-
-                var gastoexistente = await context.Gastos.FindAsync(gastos.Id);
-                if (gastoexistente == null)
+                if (gastos.Id == 0)
                 {
-                    return NotFound("Gasto no encontrado.");
+                    context.Gastos.Add(gastos);
+                    TempData["SuccessGasto"] = "Gasto agregado correctamente.";
+                }
+                else
+                {
+                    var gastoexistente = await context.Gastos.FindAsync(gastos.Id);
+                    if (gastoexistente == null)
+                    {
+                        TempData["ErrorGasto"] = "Error: Gasto no encontrado.";
+                        return RedirectToAction("GestorGastos");
+                    }
+
+                    gastoexistente.Nombre = gastos.Nombre;
+                    gastoexistente.Idcuenta = gastos.Idcuenta;
+                    context.Gastos.Update(gastoexistente);
+
+                    TempData["SuccessGasto"] = "Gasto actualizado correctamente.";
                 }
 
-                gastoexistente.Nombre = gastos.Nombre;
-                gastoexistente.Idcuenta = gastos.Idcuenta;
-                context.Gastos.Update(gastoexistente);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                TempData["ErrorGasto"] = "Ocurrió un error al guardar el gasto.";
             }
 
-
-            await context.SaveChangesAsync();
             return RedirectToAction("GestorGastos");
         }
+
         /*Servicios*/
         public async Task<IActionResult> GestorServicios()
         {
@@ -165,33 +175,43 @@ namespace Proyectogestionhoras.Controllers
         {
             if (servicios == null)
             {
-                return BadRequest("el Serivicio es nulo.");
+                TempData["ErrorServicio"] = "Error: El servicio es nulo.";
+                return RedirectToAction("GestorServicios");
             }
 
-
-            if (servicios.Id == 0)
+            try
             {
-
-                context.Servicios.Add(servicios);
-            }
-            else
-            {
-
-                var servicioexistente = await context.Servicios.FindAsync(servicios.Id);
-                if (servicioexistente == null)
+                if (servicios.Id == 0)
                 {
-                    return NotFound("Servicio no encontrado.");
+                    context.Servicios.Add(servicios);
+                    TempData["SuccessServicio"] = "Servicio agregado correctamente.";
+                }
+                else
+                {
+                    var servicioexistente = await context.Servicios.FindAsync(servicios.Id);
+                    if (servicioexistente == null)
+                    {
+                        TempData["ErrorServicio"] = "Error: Servicio no encontrado.";
+                        return RedirectToAction("GestorServicios");
+                    }
+
+                    servicioexistente.Nombre = servicios.Nombre;
+                    servicioexistente.Idcuenta = servicios.Idcuenta;
+                    context.Servicios.Update(servicioexistente);
+
+                    TempData["SuccessServicio"] = "Servicio actualizado correctamente.";
                 }
 
-                servicioexistente.Nombre = servicios.Nombre;
-                servicioexistente.Idcuenta = servicios.Idcuenta;
-                context.Servicios.Update(servicioexistente);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorServicio"] = "Ocurrió un error al guardar el servicio.";
             }
 
-
-            await context.SaveChangesAsync();
             return RedirectToAction("GestorServicios");
         }
+
         /*Actividades*/
         public IActionResult GestorActividades()
         {
@@ -602,35 +622,52 @@ namespace Proyectogestionhoras.Controllers
         {
             if (proveedor == null)
             {
-                return BadRequest("El proveedor es nulo.");
+                TempData["ErrorProveedor"] = "Error: El proveedor es nulo.";
+                return RedirectToAction("GestorProveedores", "Parametros");
             }
 
             if (string.IsNullOrEmpty(proveedor.Rut) || string.IsNullOrEmpty(proveedor.Nombre) || string.IsNullOrEmpty(proveedor.Funcion))
             {
-                return BadRequest("Todos los campos requeridos deben estar llenos.");
+                TempData["ErrorProveedor"] = "Todos los campos requeridos deben estar llenos.";
+                return RedirectToAction("GestorProveedores", "Parametros");
             }
 
-            proveedor.Tipo = string.Join(",", Tipo);
-            if (proveedor.Id == 0) 
+            try
             {
-                
-                await context.Proveedores.AddAsync(proveedor);
-            }
-            else
-            {
-                var proveedorExistente = await context.Proveedores.FindAsync(proveedor.Id);
-                if (proveedorExistente == null)
+                proveedor.Tipo = string.Join(",", Tipo);
+
+                if (proveedor.Id == 0)
                 {
-                    return NotFound("Proveedor no encontrado.");
+                    await context.Proveedores.AddAsync(proveedor);
+                    TempData["SuccessProveedor"] = "Proveedor agregado correctamente.";
                 }
-                proveedorExistente.Nombre = proveedor.Nombre;
-                proveedorExistente.Funcion = proveedor.Funcion;
-                proveedorExistente.Tipo = proveedor.Tipo;
-                context.Proveedores.Update(proveedorExistente);
+                else
+                {
+                    var proveedorExistente = await context.Proveedores.FindAsync(proveedor.Id);
+                    if (proveedorExistente == null)
+                    {
+                        TempData["ErrorProveedor"] = "Error: Proveedor no encontrado.";
+                        return RedirectToAction("GestorProveedores", "Parametros");
+                    }
+
+                    proveedorExistente.Nombre = proveedor.Nombre;
+                    proveedorExistente.Funcion = proveedor.Funcion;
+                    proveedorExistente.Tipo = proveedor.Tipo;
+
+                    context.Proveedores.Update(proveedorExistente);
+                    TempData["SuccessProveedor"] = "Proveedor actualizado correctamente.";
+                }
+
+                await context.SaveChangesAsync();
             }
-            await context.SaveChangesAsync();
+            catch (Exception)
+            {
+                TempData["ErrorProveedor"] = "Ocurrió un error al guardar el proveedor.";
+            }
+
             return RedirectToAction("GestorProveedores", "Parametros");
         }
+
 
 
         /*Dia Pago*/

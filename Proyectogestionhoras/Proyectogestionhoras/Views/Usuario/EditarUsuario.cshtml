@@ -2,272 +2,150 @@
     ViewData["Title"] = "Editar Usuario";
     int? idusuario = Context.Session.GetInt32("id");
 }
-<style>
-    body {
-        font-family: 'Montserrat', sans-serif;
-        background-color: #f5f5f5;
-    }
+<div class="max-w-6xl mx-auto bg-white p-10 rounded-xl shadow-md mt-12 font-montserrat">
+    <h1 class="text-2xl font-semibold text-center text-gray-800 mb-8">Editar Personal</h1>
 
-    .change-password-btn {
-        position: absolute;
-        top: 120px;
-        right: 20px;
-        padding: 10px 15px;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #fff;
-        background-color: #007bff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
-
-        .change-password-btn:hover {
-            background-color: #0056b3;
-        }
-
-    .form-container {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 50px;
-    }
-
-    .form-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-        .form-group label {
-            display: block;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .form-group select {
-            cursor: pointer;
-        }
-
-    .submit-btn {
-        display: inline-block;
-        width: 100%;
-        padding: 10px;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #fff;
-        background-color: #fcaa67;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-        .submit-btn:hover {
-            background-color: #e39450;
-        }
-</style>
-
-<div class="form-container">
-    <h1 class="form-title">Editar Personal</h1>
     @if (ViewBag.Usuario != null)
     {
         @foreach (var usuario in ViewBag.Usuario)
         {
-            @*<a href="@Url.Action("EditarContrasena","Usuario",new{idusuario=usuario.Id})" class="change-password-btn">Cambiar Contraseña</a>*@
             <form action="@Url.Action("ActualizarDatos","Usuario")" method="post" enctype="multipart/form-data">
-                <!-- Nombre -->
                 <input type="hidden" name="idusuario" value="@usuario.Id" />
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" value="@usuario.Nombre" required>
-                </div>
 
-                <!-- RUT -->
-                <div class="form-group">
-                    <label for="rut">RUT(Sin Puntos Ni Guiones)</label>
-                    <input type="number" id="rut" name="nombreusuario" value="@usuario.Nombre_Usuario" required>
-                    <span id="rutStatus"></span>
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Nombre -->
+                    <div>
+                        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" value="@usuario.Nombre"
+                               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                               required />
+                    </div>
 
-                <!-- Teléfono -->
-                <div class="form-group">
-                    <label for="telefono">Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" value="@usuario.Telefono" required>
-                </div>
+                    <!-- RUT -->
+                    <div>
+                        <label for="rut" class="block text-sm font-medium text-gray-700">RUT (Sin puntos ni guiones)</label>
+                        <input type="number" id="rut" name="nombreusuario" value="@usuario.Nombre_Usuario"
+                               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                               required />
+                        <span id="rutStatus" class="text-sm text-red-500"></span>
+                    </div>
 
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="@usuario.Email" required>
-                    <span id="emailStatus"></span>
-                </div>
+                    <!-- Teléfono -->
+                    <div>
+                        <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" value="@usuario.Telefono"
+                               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                               required />
+                    </div>
 
-                <!-- Nombre del Recurso -->
-                <div class="form-group">
-                    
-                    @if (idusuario == 88)
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" value="@usuario.Email"
+                               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                               required />
+                        <span id="emailStatus" class="text-sm text-red-500"></span>
+                    </div>
+
+                    <!-- Tipo de Personal -->
+                    <div class="md:col-span-2">
+                        @if (idusuario == 88)
+                        {
+                            <label for="tipoPersonal" class="block text-sm font-medium text-gray-700">Tipo de Personal</label>
+                            <select id="tipoPersonal" name="nombrerecurso"
+                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                    required>
+                                <option disabled>Seleccione un tipo de recurso</option>
+                                <option value="Socio" selected="@(usuario.RolRecurso == "Socio")">Socio</option>
+                                <option value="Staff" selected="@(usuario.RolRecurso == "Staff")">Staff</option>
+                                <option value="Consultor Externo" selected="@(usuario.RolRecurso == "Consultor Externo")">Consultor Externo</option>
+                                <option value="Administrador MyCFO" selected="@(usuario.RolRecurso == "Administrador MyCFO")">Administrador MyCFO</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <input type="hidden" name="nombrerecurso" value="@usuario.RolRecurso" />
+                        }
+                    </div>
+
+                    <!-- Horas Semanales -->
+                    @if (usuario.Numero_Horas > 0)
                     {
-                        <label for="nombreRecurso">Tipo de Personal</label>
-                        <select id="tipoPersonal" name="nombrerecurso" required>
-                            <option value="" disabled selected>Seleccione un tipo de recurso</option>
-                            @if (usuario.RolRecurso == "Socio")
-                            {
-                                <option value="Socio" selected>Socio</option>
-                            }
-                            else
-                            {
-                                <option value="Socio">Socio</option>
-                            }
-                            @if (usuario.RolRecurso == "Staff")
-                            {
-                                <option value="Staff" selected>Staff</option>
-                            }
-                            else
-                            {
-                                <option value="Staff">Staff</option>
-                            }
-                            @if (usuario.RolRecurso == "Consultor Externo")
-                            {
-                                <option value="Consultor Externo" selected>Consultor Externo</option>
-                            }
-                            else
-                            {
-                                <option value="Consultor Externo">Consultor Externo</option>
-                            }
-                            @if (usuario.RolRecurso == "Administrador MyCFO")
-                            {
-                                <option value="Administrador MyCFO" selected>Administrador MyCFO</option>
-                            }
-                            else
-                            {
-                                <option value="Administrador MyCFO">Administrador MyCFO</option>
-                            }
-
-             
-                        </select>
+                        <div>
+                            <label for="numeroHoras" class="block text-sm font-medium text-gray-700">Horas Semanales</label>
+                            <input type="number" id="numeroHoras" name="hhsemanales" value="@usuario.Numero_Horas" min="1"
+                                   class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                        </div>
                     }
-                    
-                    else{
 
-                        <input value="@usuario.RolRecurso" name="nombrerecurso" type="hidden"/>
+                    <!-- Porcentaje a Proyectos -->
+                    @if (usuario.PROCENTAJE_PROYECTO > 0)
+                    {
+                        <div>
+                            <label for="porcentaje" class="block text-sm font-medium text-gray-700">Porcentaje a Proyectos</label>
+                            <input type="text" id="porcentaje" name="porcentaje" value="@usuario.PROCENTAJE_PROYECTO"
+                                   class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                        </div>
                     }
+
+                    <!-- Costo Unitario -->
+                    <div>
+                        <label for="costoUnitario" class="block text-sm font-medium text-gray-700">Costo Unitario</label>
+                        <input type="text" id="costoUnitario" name="costo" value="@usuario.Costo_Unitario"
+                        @(usuario.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Admin.") || usuario.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Administrador") ? "readonly" : "")
+                               class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                    </div>
+
+                    <!-- Desde -->
+                    @if (usuario.Desde != null)
+                    {
+                        <div>
+                            <label for="desde" class="block text-sm font-medium text-gray-700">Desde</label>
+                            <input type="date" id="desde" name="fechainicio" value="@usuario.Desde.ToString("yyyy-MM-dd")"
+                                   class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                        </div>
+                    }
+
+                    <!-- Hasta -->
+                    @if (usuario.Hasta != null)
+                    {
+                        <div>
+                            <label for="hasta" class="block text-sm font-medium text-gray-700">Hasta</label>
+                            <input type="date" id="hasta" name="fechatermino" value="@usuario.Hasta.ToString("yyyy-MM-dd")"
+                                   class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                        </div>
+                    }
+
+                    <!-- Estado -->
+                    <div class="md:col-span-2">
+                        @if (idusuario == 88)
+                        {
+                            <label for="estado" class="block text-sm font-medium text-gray-700">Estado</label>
+                            <select id="estado" name="estado"
+                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                    required>
+                                <option disabled>Seleccione un Estado</option>
+                                <option value="Activo" selected="@(usuario.Estado == "Activo")">Activo</option>
+                                <option value="Inactivo" selected="@(usuario.Estado == "Inactivo")">Inactivo</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <input type="hidden" name="estado" value="@usuario.Estado" />
+                        }
+                    </div>
                 </div>
 
-                @if (usuario.Numero_Horas > 0)
-                {
-                    <div class="form-group">
-                        <label for="numeroHoras">Contrato de Número de Horas Semanales</label>
-                        <input type="number" id="numeroHoras" name="hhsemanales" value="@usuario.Numero_Horas" min="1">
-                    </div>
-                }
-                <!-- Número de Horas -->
-                
-
-                <!-- % Horas a Proyectos -->
-                @if (usuario.PROCENTAJE_PROYECTO > 0)
-                {
-                    <div class="form-group">
-                        <label for="porcentaje">Porcentaje de Horas a Proyectos</label>
-                        <input type="text" id="porcentaje" name="porcentaje" value="@usuario.PROCENTAJE_PROYECTO" min="1">
-                    </div>
-                }
-               
-
-                <!-- Costo Unitario -->
-                @if (usuario.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Admin.") || usuario.NOMBRE_RECURSO_CORRELATIVO.StartsWith("Administrador"))
-                {
-                    <div class="form-group">
-                        <label for="costoUnitario">Costo Unitario</label>
-                        <input readonly type="text" id="costoUnitario" name="costo" value="@usuario.Costo_Unitario" required step="0.01" min="0">
-                    </div>
-                }
-                else
-                {
-                    <div class="form-group">
-                        <label for="costoUnitario">Costo Unitario</label>
-                        <input type="text" id="costoUnitario" name="costo" value="@usuario.Costo_Unitario" required step="0.01" min="0">
-                    </div>
-                }
-                
-                @if (usuario.Desde != null)
-                {
-                    <div class="form-group">
-                        <label for="desde">Desde</label>
-                        <input type="date" id="desde" name="fechainicio" value="@usuario.Desde.ToString("yyyy/MM/dd")">
-                    </div>
-                }
-                @if(usuario.Hasta!= null)
-                {
-                    <div class="form-group">
-                        <label for="hasta">Hasta</label>
-                        <input type="date" id="hasta" name="fechatermino" value="@usuario.Hasta.ToString("yyyy/MM/dd")">
-                    </div>
-                }
-                <div class="form-group">
-
-                    @if (idusuario == 88)
-                    {
-                        <label for="estado">Estado</label>
-                        <select id="estado" name="estado" required>
-                            <option value="" disabled selected>Seleccione un Estado</option>
-                            @if (usuario.Estado == "Activo")
-                            {
-                                <option value="Activo" selected>Activo</option>
-                            }
-                            else
-                            {
-                                <option value="Activo">Activo</option>
-                            }
-                            @if (usuario.Estado == "Inactivo")
-                            {
-                                <option value="Inactivo" selected>Inactivo</option>
-                            }
-                            else
-                            {
-                                <option value="Inactivo">Inactivo</option>
-                            }
-                           
-
-
-                        </select>
-                    }
-
-                    else
-                    {
-
-                        <input value="@usuario.Estado" name="estado" type="hidden" />
-                    }
+                <!-- Botón -->
+                <div class="mt-8">
+                    <button type="submit"
+                            class="submit-btn w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-md transition duration-200">
+                        Guardar Cambios
+                    </button>
                 </div>
-
-
-                <button type="submit" class="submit-btn">Guardar Cambios</button>
             </form>
         }
     }
-   
-    
 </div>
 
 <script>

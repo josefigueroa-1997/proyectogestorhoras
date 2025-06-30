@@ -1,156 +1,119 @@
 ﻿@{
     ViewData["Title"] = "Agregar Personal";
 }
-<style>
-    body {
-        font-family: 'Montserrat', sans-serif;
-        background-color: #f5f5f5;
-    }
-
-    .form-container {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 50px;
-    }
-
-    .form-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-        .form-group label {
-            display: block;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .form-group select {
-            cursor: pointer;
-        }
-
-    .submit-btn {
-        display: inline-block;
-        width: 100%;
-        padding: 10px;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #fff;
-        background-color: #fcaa67;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-        .submit-btn:hover {
-            background-color: #e39450;
-        }
-</style>
-
-<div class="form-container">
-    <h1 class="form-title">Agregar Personal</h1>
+<div class="max-w-6xl mx-auto bg-white p-10 rounded-xl shadow-md mt-12 font-montserrat">
+    <h1 class="text-2xl font-semibold text-center text-gray-800 mb-8">Agregar Personal</h1>
 
     <form action="@Url.Action("RegistrarUsuario","Usuario")" method="post" enctype="multipart/form-data">
-        <!-- Nombre -->
-        <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" required>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Nombre -->
+            <div>
+                <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                <input type="text" id="nombre" name="nombre"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required />
+            </div>
+
+            <!-- RUT -->
+            <div>
+                <label for="rut" class="block text-sm font-medium text-gray-700">RUT (Sin puntos ni guiones)</label>
+                <input type="number" id="rut" name="rut"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required />
+                <span id="rutStatus" class="text-sm text-red-500"></span>
+            </div>
+
+            <!-- Teléfono -->
+            <div>
+                <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required />
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                       required />
+                <span id="emailStatus" class="text-sm text-red-500"></span>
+            </div>
+
+            <!-- Tipo de Personal -->
+            <div>
+                <label for="tipoPersonal" class="block text-sm font-medium text-gray-700">Tipo de Personal</label>
+                <select id="tipoPersonal" name="nombrerecurso"
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        required>
+                    <option value="" disabled selected>Seleccione un tipo de recurso</option>
+                    <option value="Socio">Socio</option>
+                    <option value="Staff">Staff</option>
+                    <option value="Consultor Externo">Consultor Externo</option>
+                    <option value="Administrador MyCFO">Administrador MyCFO</option>
+                </select>
+            </div>
+
+            <!-- Número de Horas -->
+            <div>
+                <label for="numeroHoras" class="block text-sm font-medium text-gray-700">Horas Semanales Contratadas</label>
+                <input type="number" id="numeroHoras" name="numhoras" min="1"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            </div>
+
+            <!-- Porcentaje de Horas -->
+            <div>
+                <label for="porcentaje" class="block text-sm font-medium text-gray-700">% Horas a Proyectos</label>
+                <input type="number" id="porcentaje" name="porcentajehoras" min="1"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            </div>
+
+            <!-- Costo Unitario -->
+            <div>
+                <label for="costoUnitario" class="block text-sm font-medium text-gray-700">Costo Unitario</label>
+                <input type="number" id="costoUnitario" name="costounitario" required step="0.01" min="0"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            </div>
+
+            <!-- Desde -->
+            <div>
+                <label for="desde" class="block text-sm font-medium text-gray-700">Desde</label>
+                <input type="date" id="desde" name="fechainicio"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            </div>
+
+            <!-- Hasta -->
+            <div>
+                <label for="hasta" class="block text-sm font-medium text-gray-700">Hasta</label>
+                <input type="date" id="hasta" name="fechafin"
+                       class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+            </div>
+
+            <!-- Tipo de Usuario -->
+            <div class="md:col-span-2">
+                <label for="tipoUsuario" class="block text-sm font-medium text-gray-700">Tipo de Usuario del Sistema</label>
+                <select id="tipoUsuario" name="idrol"
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        required>
+                    <option value="" disabled selected>Seleccione un tipo de usuario</option>
+                    @foreach (var rol in ViewBag.Roles)
+                    {
+                        <option value="@rol.Id">@rol.Nombre</option>
+                    }
+                </select>
+            </div>
         </div>
 
-        <!-- RUT -->
-        <div class="form-group">
-            <label for="rut">RUT(Sin Puntos Ni Guiones)</label>
-            <input type="number" id="rut" name="rut" required>
-            <span id="rutStatus"></span>
+        <!-- Botón -->
+        <div class="mt-8">
+            <button type="submit"
+                    class="submit-btn w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-md transition duration-200">
+                Agregar Personal
+            </button>
         </div>
-
-        <!-- Teléfono -->
-        <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" required>
-        </div>
-
-        <!-- Email -->
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-            <span id="emailStatus"></span>
-        </div>
-        
-        <!-- Nombre del Recurso -->
-        <div class="form-group">
-            <label for="nombreRecurso">Tipo de Personal</label>
-            <select id="tipoPersonal" name="nombrerecurso" required>
-                <option value="" disabled selected>Seleccione un tipo de recurso</option>
-                <option value="Socio">Socio</option>
-                <option value="Staff" >Staff</option>
-                <option value="Consultor Externo">Consultor Externo</option>
-                <option value="Administrador MyCFO">Administrador MyCFO</option>
-            </select>
-        </div>
-
-        <!-- Número de Horas -->
-        <div class="form-group">
-            <label for="numeroHoras">Contrato de Número de Horas Semanales</label>
-            <input type="number" id="numeroHoras" name="numhoras"  min="1">
-        </div>
-        <!-- % Horas a Proyectos -->
-        <div class="form-group" >
-            <label for="porcentaje">Porcentaje de Horas a Proyectos</label>
-            <input type="number" id="porcentaje" name="porcentajehoras"  min="1">
-        </div>
-
-        <!-- Costo Unitario -->
-        <div class="form-group">
-            <label for="costoUnitario">Costo Unitario</label>
-            <input type="number" id="costoUnitario" name="costounitario" required step="0.01" min="0">
-        </div>
-        <div class="form-group">
-            <label for="desde">Desde</label>
-            <input type="date" id="desde" name="fechainicio" >
-        </div>
-        <div class="form-group">
-            <label for="hasta">Hasta</label>
-            <input type="date" id="hasta" name="fechafin" >
-        </div>
-        <!-- Tipo de Usuario (Select) -->
-        <div class="form-group">
-            <label for="tipoUsuario">Tipo de Usuario del Sistema</label>
-            <select id="tipoUsuario" name="idrol" required>
-                <option value="" disabled selected>Seleccione un tipo de usuario</option>
-                @foreach(var rol in ViewBag.Roles)
-                {
-                    <option value="@rol.Id">@rol.Nombre</option>
-                }
-              
-            </select>
-        </div>
-        <button type="submit" class="submit-btn">Agregar Personal</button>
     </form>
 </div>
+
 
 <script>
     $(document).ready(function () {
@@ -239,9 +202,9 @@
                 fechainicioInput.style.display = 'none';
                 fechafinInput.style.display = 'none';
                 costoInput.style.display = 'block';
-                const costoInputField = costoInput.querySelector('input'); // Selecciona el input dentro del div
+                const costoInputField = costoInput.querySelector('input'); 
                 costoInputField.value = 0;
-                costoInputField.readOnly = true; // Aplica readonly al input
+                costoInputField.readOnly = true; 
 
             }
             

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Proyectogestionhoras")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd7c7763961ff25633e0aa000b7c78a505937ab5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b228451ddc53ecf7b8eb217d6355972e789a7dd7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Proyectogestionhoras")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Proyectogestionhoras")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
