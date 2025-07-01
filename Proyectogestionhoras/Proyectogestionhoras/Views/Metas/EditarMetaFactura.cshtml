@@ -1,58 +1,58 @@
 ﻿@model List<Proyectogestionhoras.Models.DTO.MetaFacturacionqxDTO>
-<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+<div class="max-w-lg mx-auto bg-white py-14 p-6 rounded-lg shadow-md">
 
 
     @foreach (var f in Model)
     {
         <h2 class="text-2xl font-bold text-gray-800 mb-4">Meta FacturaciónQ Año:@f.Anio</h2>
         <form method="post" action="@Url.Action("ActualizarMetaFactura","Metas")" class="space-y-4">
-            <!-- Campo para el Año -->
+           
             <input type="hidden" name="id" value="@f.Id"/>
             <div>
                 <label for="anio" class="block text-sm font-medium text-gray-700">Año</label>
-                <input type="number" id="anio" name="anio" class="mt-1 block w-full p-2 text-right border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" readonly value="@f.Anio" />
+                <input type="number" id="anio" name="anio" class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" readonly value="@f.Anio" />
             </div>
 
-            <!-- Campo para Monto Q1 -->
+           
             <div>
                 <label for="montoQ1" class="block text-sm font-medium text-gray-700">Monto Q1</label>
                 <input type="text" id="montoQ1" name="montoQ1"
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                        value="@String.Format("{0:N0}", @f.q1)" required oninput="formatAndCalculate(this);" />
             </div>
 
-            <!-- Campo para Monto Q2 -->
+           
             <div>
                 <label for="montoQ2" class="block text-sm font-medium text-gray-700">Monto Q2</label>
                 <input type="text" id="montoQ2" name="montoQ2"
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                        value="@String.Format("{0:N0}", @f.q2)" required oninput="formatAndCalculate(this);" />
             </div>
 
-            <!-- Campo para Monto Q3 -->
+           
             <div>
                 <label for="montoQ3" class="block text-sm font-medium text-gray-700">Monto Q3</label>
                 <input type="text" id="montoQ3" name="montoQ3"
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                        value="@String.Format("{0:N0}", @f.q3)" required oninput="formatAndCalculate(this);" />
             </div>
 
-            <!-- Campo para Monto Q4 -->
+          
             <div>
                 <label for="montoQ4" class="block text-sm font-medium text-gray-700">Monto Q4</label>
                 <input type="text" id="montoQ4" name="montoQ4"
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                        value="@String.Format("{0:N0}", @f.q4)" required oninput="formatAndCalculate(this);" />
             </div>
 
             <div>
                 <label for="montototal" class="block text-sm font-medium text-gray-700">Monto Total</label>
                 <input type="text" id="montototal" name="montototal"
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-right" readonly />
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" readonly />
             </div>
-            <!-- Botón Guardar -->
+           
             <div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                <button type="submit" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50">
                     Guardar
                 </button>
             </div>

@@ -32,7 +32,8 @@
                             <tr data-anio="@factura.Anio" data-q1="@factura.q1" data-q2="@factura.q2" data-q3="@factura.q3" data-q4="@factura.q4" data-totalq="@factura.totalq">
                                 <td class="text-left text-sm text-gray-700 px-4 py-2">
                                     <a href="@Url.Action("EditarMetaFactura","Metas",new{ id= factura.Id })"
-                                       class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">
+                                       class="w-full bg-orange-400 text-white py-2 px-4 rounded-md shadow hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50">
+                                        
                                         Editar
                                     </a>
                                 </td>
@@ -55,37 +56,37 @@
             <form action="@Url.Action("RegistrarMetaFacturas", "Metas")" method="post" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="anio" class="block text-sm font-semibold text-gray-700">Año</label>
-                    <input type="number" name="anio" id="aniofactura" required class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <input type="number" name="anio" id="aniofactura" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
                     <span id="anioError" class="text-red-500 text-sm hidden">Ya existe una meta facturación para este año.</span>
                 </div>
 
                 <div class="mb-4">
                     <label for="q1" class="block text-sm font-semibold text-gray-700">Q1</label>
-                    <input type="text" name="q1" id="q1" required class="format-number w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <input type="text" name="q1" id="q1" required class="format-number mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
                 </div>
 
                 <div class="mb-4">
                     <label for="q2" class="block text-sm font-semibold text-gray-700">Q2</label>
-                    <input type="text" name="q2" id="q2" required class="format-number w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <input type="text" name="q2" id="q2" required class="format-number mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
                 </div>
 
                 <div class="mb-4">
                     <label for="q3" class="block text-sm font-semibold text-gray-700">Q3</label>
-                    <input type="text" name="q3" id="q3" required class="format-number w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <input type="text" name="q3" id="q3" required class="format-number mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
                 </div>
 
                 <div class="mb-4">
                     <label for="q4" class="block text-sm font-semibold text-gray-700">Q4</label>
-                    <input type="text" name="q4" id="q4" required class="format-number w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" />
+                    <input type="text" name="q4" id="q4" required class="format-number mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
                 </div>
 
                 <div class="mb-4">
                     <label for="total" class="block text-sm font-semibold text-gray-700">Total</label>
-                    <input type="text" name="total" id="total" class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 focus:outline-none text-right" readonly />
+                    <input type="text" name="total" id="total" class=" mt-1 block w-full p-2 border border-gray-300 rounded-md text-right shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" readonly />
                 </div>
 
                 <div>
-                    <button type="submit" id="submitButton" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow focus:ring focus:ring-blue-300 focus:outline-none">Guardar</button>
+                    <button type="submit" id="submitButton" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50">Guardar</button>
                 </div>
             </form>
         </div>
@@ -93,7 +94,7 @@
 </div>
 
 
-<h1 class="text-2xl font-bold mt-8 mb-6 text-gray-800">Metas Mix Por Tipologías</h1>
+<h1 class="text-2xl font-bold text-center mt-8 mb-6 text-gray-800">Metas Mix Por Tipologías</h1>
 
 <div class="container mx-auto p-6 bg-white rounded-lg shadow-lg">
     <!-- Flex container for form and tables -->
@@ -129,7 +130,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="anio">
                         Año:
                     </label>
-                    <input class="shadow  appearance-none border rounded w-full py-2 px-3 text-gray-700 text-right leading-tight focus:outline-none focus:ring" id="anio" name="aniotipologia" type="number" required>
+                    <input class="shadow appearance-none border rounded w-full py-2  px-3 text-right text-gray-700 leading-tight focus:outline-none focus:ring" id="anio" name="aniotipologia" type="number" required>
                     <span id="aniotError" class="text-red-500 text-sm hidden">Ya existe una meta tipología para este año.</span>
                 </div>
                 <div class="mb-4">
@@ -181,7 +182,7 @@
                     <input readonly class="text-right shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring" id="montomensual" type="text" name="montomensual">
                 </div>
                 <div class="col-span-1 md:col-span-3">
-                    <button id="guardartipolgia" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring w-full md:w-auto" type="submit">
+                    <button id="guardartipolgia" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring w-full md:w-auto" type="submit">
                         Guardar
                     </button>
                 </div>
@@ -213,7 +214,7 @@
                         <tr>
                             <td class="text-left text-sm text-gray-700 px-4 py-2">
                                 <a href="@Url.Action("EditarMetaTipologia","Metas",new{ id= t.Id })"
-                                   class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">
+                                   class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-block">
                                     Editar
                                 </a>
                             </td>
