@@ -33,6 +33,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
         public virtual DbSet<Gastosejecucion> Gastosejecucions { get; set; } = null!;
         public virtual DbSet<Gastoshhhejecucion> Gastoshhhejecucions { get; set; } = null!;
+        public virtual DbSet<Gestorpagohhemepresa> Gestorpagohhemepresas { get; set; } = null!;
         public virtual DbSet<HhUsuarioHistorial> HhUsuarioHistorials { get; set; } = null!;
         public virtual DbSet<HistorialCosto> HistorialCostos { get; set; } = null!;
         public virtual DbSet<HistorialCostosProyecto> HistorialCostosProyectos { get; set; } = null!;
@@ -557,6 +558,26 @@ namespace Proyectogestionhoras.Models
                     .WithMany(p => p.Gastoshhhejecucions)
                     .HasForeignKey(d => d.Idproyecto)
                     .HasConstraintName("IDPROYECTOGASTOHH");
+            });
+
+            modelBuilder.Entity<Gestorpagohhemepresa>(entity =>
+            {
+                entity.ToTable("gestorpagohhemepresa");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Estado).HasColumnName("estado");
+
+                entity.Property(e => e.Fechapago)
+                    .HasColumnType("date")
+                    .HasColumnName("fechapago");
+
+                entity.Property(e => e.Idplanillaempresa).HasColumnName("idplanillaempresa");
+
+                entity.HasOne(d => d.IdplanillaempresaNavigation)
+                    .WithMany(p => p.Gestorpagohhemepresas)
+                    .HasForeignKey(d => d.Idplanillaempresa)
+                    .HasConstraintName("id_planilla_emp");
             });
 
             modelBuilder.Entity<HhUsuarioHistorial>(entity =>

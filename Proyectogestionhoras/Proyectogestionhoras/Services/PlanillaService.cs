@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using iText.Commons.Actions.Contexts;
 using iText.Layout.Element;
 using iText.Bouncycastle.Asn1;
+using Humanizer;
+using Microsoft.Win32;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static Org.BouncyCastle.Utilities.Test.FixedSecureRandom;
 namespace Proyectogestionhoras.Services
 {
     public class PlanillaService : IPlanilla
@@ -511,7 +515,9 @@ namespace Proyectogestionhoras.Services
                     Correlativo = GenerarCorrelativo()
                 };
                 context.PlanillaRegistroEmpresas.Add(registro);
+               
                 await context.SaveChangesAsync();
+                await gestorhhempresa(registro.Id,1);
                 return 1;
 
             }
@@ -521,26 +527,153 @@ namespace Proyectogestionhoras.Services
                 return 2;
             }
         }
-        public string GenerarCorrelativo(string letra = "A")
+
+        public async Task gestorhhempresa(int idplanilla, int crud)
         {
-
-            var ultimoRegistro = ObtenerUltimoRegistroCorrelativo();
-
-            if (ultimoRegistro == null)
+            /*
+              crud == 1 : crear
+            crud == 2 : acualizar
+            crud == 3 : eliminar
+             
+             */
+            if (crud == 1)
             {
-                return letra + "1";
+                var registropagohh = new Gestorpagohhemepresa
+                {
+                    Idplanillaempresa = idplanilla,
+                    Estado = 0,
+
+                };
+                context.Gestorpagohhemepresas.Add(registropagohh);
+                
+            }
+            else if(crud == 2)
+            {
+                var registro = await context.Gestorpagohhemepresas.Where(r => r.Idplanillaempresa == idplanilla).FirstOrDefaultAsync();
+                if (registro != null)
+                {
+                    
+                    DateTime? fechahhplanilla = await context.PlanillaRegistroEmpresas.Where(p => p.Id == registro.Idplanillaempresa).Select(d => d.Fecharegistro).FirstOrDefaultAsync();
+                    Debug.WriteLine("fecha acual:" + fechahhplanilla);
+                    int diapago = await context.Diapagos.Select(d => d.Dia).FirstOrDefaultAsync();
+                    DateTime hoy = DateTime.Today;
+                    DateTime fechaPagoMesActual = new DateTime(hoy.Year, hoy.Month, diapago);
+
+                    Debug.WriteLine("Mes planilla: " + fechahhplanilla.Value.Month);
+                    Debug.WriteLine("Año planilla: " + fechahhplanilla.Value.Year);
+                    Debug.WriteLine("Mes actual: " + DateTime.Now.Month);
+                    Debug.WriteLine("Año actual: " + DateTime.Now.Year);
+                    Debug.WriteLine("fecha pago mes actual: " + fechaPagoMesActual);
+                    DateTime mesAnterior = DateTime.Today.AddMonths(-1);
+                    if (fechahhplanilla.Value.Month == DateTime.Now.Month && fechahhplanilla.Value.Year == DateTime.Now.Year)
+                    {
+                        Debug.WriteLine("eeeeeee" );
+                        registro.Estado = 0;
+                        registro.Fechapago = null;
+                    }
+                   
+
+                    else if (fechahhplanilla.Value.Month == mesAnterior.Month && fechahhplanilla.Value.Year == mesAnterior.Year && DateTime.Today < fechaPagoMesActual)
+                    {
+                        Debug.WriteLine("aaaaaaaaaaa");
+                        registro.Estado = 0;
+                        registro.Fechapago = null;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("iiiiiiiiii");
+                        DateTime messig = fechahhplanilla.Value.AddMonths(1);
+                        DateTime fechaPagoMessiguiente = new DateTime(messig.Year, messig.Month, diapago);
+
+                        registro.Estado = 1;
+                        registro.Fechapago = fechaPagoMessiguiente;
+                    }
+                }
+            }
+            else if(crud == 3)
+            {
+                var registro = await context.Gestorpagohhemepresas.Where(r=>r.Idplanillaempresa==idplanilla).FirstOrDefaultAsync();
+                if (registro != null)
+                {
+                    context.Gestorpagohhemepresas.Remove(registro);
+                }
             }
 
-            var ultimoNumero = int.Parse(ultimoRegistro.Correlativo.Substring(1));
-            return letra + (ultimoNumero + 1).ToString();
+            await context.SaveChangesAsync();
         }
-        public PlanillaRegistroEmpresa ObtenerUltimoRegistroCorrelativo()
+        public string GenerarCorrelativo()
         {
+            var ultimoRegistro = ObtenerUltimoRegistroGlobal();
 
+            if (ultimoRegistro == null || string.IsNullOrWhiteSpace(ultimoRegistro.Correlativo))
+            {
+                return "A1";
+            }
+
+            string correlativo = ultimoRegistro.Correlativo;
+
+            // Separar letras y números
+            string letras = new string(correlativo.TakeWhile(char.IsLetter).ToArray());
+            string numeros = new string(correlativo.SkipWhile(char.IsLetter).ToArray());
+
+            int numero = int.Parse(numeros);
+
+            if (numero >= 115)
+            {
+                string siguienteLetra = IncrementarLetra(letras);
+                return siguienteLetra + "1";
+            }
+
+            return letras + (numero + 1).ToString();
+        }
+
+
+        public PlanillaRegistroEmpresa ObtenerUltimoRegistroGlobal()
+        {
             return context.PlanillaRegistroEmpresas
-                .OrderByDescending(r => r.Correlativo)
+                .AsEnumerable() 
+                .OrderByDescending(r =>
+                {
+                    string correlativo = r.Correlativo ?? "";
+
+                    string letras = new string(correlativo.TakeWhile(char.IsLetter).ToArray());
+                    string numeros = new string(correlativo.SkipWhile(char.IsLetter).ToArray());
+
+                    int numero = int.TryParse(numeros, out int n) ? n : 0;
+
+                    
+                    int letrasValor = letras
+                        .ToUpper()
+                        .Aggregate(0, (acc, c) => acc * 26 + (c - 'A' + 1));
+
+                    return letras.Length * 100000000 + letrasValor * 1000 + numero;
+                })
                 .FirstOrDefault();
         }
+
+        private string IncrementarLetra(string letraActual)
+        {
+            var letras = letraActual.ToUpper().ToCharArray();
+            int i = letras.Length - 1;
+
+            while (i >= 0)
+            {
+                if (letras[i] < 'Z')
+                {
+                    letras[i]++;
+                    for (int j = i + 1; j < letras.Length; j++)
+                    {
+                        letras[j] = 'A';
+                    }
+                    return new string(letras);
+                }
+                i--;
+            }
+
+           
+            return new string('A', letraActual.Length + 1);
+        }
+
 
         public async Task<int> EditarRegistro([FromBody] EditarRegistroViewModel editarregistro)
         {
@@ -597,7 +730,7 @@ namespace Proyectogestionhoras.Services
                             registro.Observaciones = editarregistro.observaciones;
                             registro.CostoMonetario = costoUnitario;
                             await context.SaveChangesAsync();
-
+                            await gestorhhempresa(registro.Id, 2);
                         }
                         resultado = 1;
                     }
@@ -665,6 +798,8 @@ namespace Proyectogestionhoras.Services
                                 .FirstOrDefaultAsync(up => up.Id == editarregistro.idusuproy);
                         if (statusProyecto == 1)
                         {
+                            await gestorhhempresa(registro.Id, 3);
+                            context.PlanillaRegistroEmpresas.Remove(registro);
                             await context.SaveChangesAsync();
                         }
                         if (statusProyecto == 2)
@@ -672,8 +807,9 @@ namespace Proyectogestionhoras.Services
                             int idproyecto = await context.UsuarioProyectos.Include(up => up.IdProyectoNavigation).Where(up => up.Id == editarregistro.idusuproy).Select(up => up.IdProyectoNavigation.Id).FirstOrDefaultAsync();
                             var usuario = usuarioproyecto.IdUsuarioNavigation;
                             var recurso = await context.Recursos.FindAsync(usuario.IdRecurso);
-
+                            await gestorhhempresa(registro.Id, 3);
                             context.PlanillaRegistroEmpresas.Remove(registro);
+                            
                             await context.SaveChangesAsync();
                             await gestorhhplanilla(idproyecto, recurso.NombreRecurso, horasAsignadasDecimal, mesregistro, anioregistro, 0, editarregistro.proyectoorigen);
                         }
@@ -1102,8 +1238,10 @@ namespace Proyectogestionhoras.Services
                     var registro = await context.PlanillaRegistroEmpresas.FindAsync(idregistro);
                     if (registro != null)
                     {
+                        await gestorhhempresa(idregistro, 3);
                         context.PlanillaRegistroEmpresas.Remove(registro);
                         await context.SaveChangesAsync();
+                        
                         resultado = true;
                     }
                 }
@@ -1485,11 +1623,10 @@ namespace Proyectogestionhoras.Services
 
                 Debug.WriteLine($"Hubo un error al obtener los gantt:" + ex.Message);
                 return new List<HHUSUARIOPROYECTOTOTALDTO>();
-
             }
         }
-
-
-
     }
 }
+
+
+

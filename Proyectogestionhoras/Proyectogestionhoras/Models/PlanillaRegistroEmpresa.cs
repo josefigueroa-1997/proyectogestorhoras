@@ -5,6 +5,11 @@ namespace Proyectogestionhoras.Models
 {
     public partial class PlanillaRegistroEmpresa
     {
+        public PlanillaRegistroEmpresa()
+        {
+            Gestorpagohhemepresas = new HashSet<Gestorpagohhemepresa>();
+        }
+
         public int Id { get; set; }
         public int IdPlanilla { get; set; }
         public decimal? Hhregistradas { get; set; }
@@ -16,5 +21,6 @@ namespace Proyectogestionhoras.Models
 
         public virtual Planilla IdPlanillaNavigation { get; set; } = null!;
         public virtual Subactividad IdsubactividadNavigation { get; set; } = null!;
+        public virtual ICollection<Gestorpagohhemepresa> Gestorpagohhemepresas { get; set; }
     }
 }
