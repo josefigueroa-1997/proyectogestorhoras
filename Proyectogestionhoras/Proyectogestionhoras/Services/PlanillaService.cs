@@ -603,7 +603,9 @@ namespace Proyectogestionhoras.Services
         }
         public string GenerarCorrelativo()
         {
-            var ultimoRegistro = ObtenerUltimoRegistroGlobal();
+            var ultimoRegistro = context.PlanillaRegistroEmpresas
+                .OrderByDescending(r => r.Id) 
+                .FirstOrDefault();
 
             if (ultimoRegistro == null || string.IsNullOrWhiteSpace(ultimoRegistro.Correlativo))
             {
@@ -612,7 +614,6 @@ namespace Proyectogestionhoras.Services
 
             string correlativo = ultimoRegistro.Correlativo;
 
-            // Separar letras y números
             string letras = new string(correlativo.TakeWhile(char.IsLetter).ToArray());
             string numeros = new string(correlativo.SkipWhile(char.IsLetter).ToArray());
 
@@ -628,28 +629,7 @@ namespace Proyectogestionhoras.Services
         }
 
 
-        public PlanillaRegistroEmpresa ObtenerUltimoRegistroGlobal()
-        {
-            return context.PlanillaRegistroEmpresas
-                .AsEnumerable() 
-                .OrderByDescending(r =>
-                {
-                    string correlativo = r.Correlativo ?? "";
 
-                    string letras = new string(correlativo.TakeWhile(char.IsLetter).ToArray());
-                    string numeros = new string(correlativo.SkipWhile(char.IsLetter).ToArray());
-
-                    int numero = int.TryParse(numeros, out int n) ? n : 0;
-
-                    
-                    int letrasValor = letras
-                        .ToUpper()
-                        .Aggregate(0, (acc, c) => acc * 26 + (c - 'A' + 1));
-
-                    return letras.Length * 100000000 + letrasValor * 1000 + numero;
-                })
-                .FirstOrDefault();
-        }
 
         private string IncrementarLetra(string letraActual)
         {

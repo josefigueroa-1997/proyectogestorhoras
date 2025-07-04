@@ -10,6 +10,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Services.Interface;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 namespace Proyectogestionhoras.Controllers
 {
     public class UsuarioController : Controller
@@ -86,6 +87,13 @@ namespace Proyectogestionhoras.Controllers
         {
             try
             {
+                var verificarrut = await context.Usuarios.Where(r=>r.NombreUsuario == rut).FirstOrDefaultAsync();
+                var verificaremail = await context.Usuarios.Where(r=>r.Email == email).FirstOrDefaultAsync();
+                if(verificarrut != null || verificaremail != null)
+                {
+                    TempData["Errorpersonal"] = "¡Error! Ya existe un usuario con ese rut y/o email";
+                    return RedirectToAction("AddPersonal", "Usuario");
+                }
                 bool resultado = await _usuarioService.RegistrarUsuario(nombre,rut,telefono,email,idrol,nombrerecurso,numhoras,costounitario,porcentajehoras,fechainicio,fechafin);
                 if (resultado)
                 {
@@ -94,13 +102,15 @@ namespace Proyectogestionhoras.Controllers
                 }
                 else
                 {
-                    return View();
+                    TempData["Errorpersonal"] = "¡Error! al crear el usuario";
+                    return RedirectToAction("AddPersonal", "Usuario");
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                return View();
+                TempData["Errorpersonal"] = "¡Error! al crear el usuario";
+                return RedirectToAction("AddPersonal", "Usuario");
 
 
             }
@@ -109,15 +119,37 @@ namespace Proyectogestionhoras.Controllers
         [HttpPost]
         public async Task <IActionResult> ActualizarDatos(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino, string nombrerecurso,string estado)
         {
-            bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino,nombrerecurso,estado);
-            if (resultado)
-            {
-                return RedirectToAction("Personal", "Usuario");
+            try {
+                var verificarrut = await context.Usuarios.Where(r => r.NombreUsuario == nombreusuario).FirstOrDefaultAsync();
+                var verificaremail = await context.Usuarios.Where(r => r.Email == email).FirstOrDefaultAsync();
+                if (verificarrut != null || verificaremail != null)
+                {
+                    TempData["Errorpersonal"] = "¡Error! Ya existe un usuario con ese rut y/o email";
+                    return RedirectToAction("EditarDatosUsuario", "Usuario", new { idusuario = idusuario });
+                }
+                bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino, nombrerecurso, estado);
+                if (resultado)
+                {
+                    return RedirectToAction("Personal", "Usuario");
+                }
+                else
+                {
+
+                    TempData["Errorpersonal"] = "¡Error! al crear el usuario";
+                    return RedirectToAction("EditarDatosUsuario", "Usuario", new { idusuario = idusuario });
+                }
+
+
             }
-            else
-            {
-                return View();
+            catch {
+
+              
+                TempData["Errorpersonal"] = "¡Error! al crear el usuario";
+                return RedirectToAction("EditarDatosUsuario", "Usuario", new { idusuario = idusuario });
+
+
             }
+           
         }
 
         [HttpGet]
