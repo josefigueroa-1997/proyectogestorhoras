@@ -92,7 +92,7 @@ namespace Proyectogestionhoras.Controllers
         {
 
             var gastos = await context.Gastos.ToListAsync();
-            var cuentas = await context.Cuenta.ToListAsync();
+            var cuentas = await context.Cuenta.OrderBy(c=>c.Idcuenta).ToListAsync();
             var gastosConCuentas = from gasto in gastos
                                    join cuenta in cuentas on gasto.Idcuenta equals cuenta.Id
                                    select new
@@ -155,7 +155,7 @@ namespace Proyectogestionhoras.Controllers
         {
 
             var servicios = await context.Servicios.ToListAsync();
-            var cuentas = await context.Cuenta.ToListAsync();
+            var cuentas = await context.Cuenta.OrderBy(c=>c.Idcuenta).ToListAsync();
             var servicioConCuentas = from servicio in servicios
                                      join cuenta in cuentas on servicio.Idcuenta equals cuenta.Id
                                    select new
@@ -466,7 +466,7 @@ namespace Proyectogestionhoras.Controllers
                         };
 
             var segmentos = await query.ToListAsync();
-            var cuentas = await context.Cuenta.ToListAsync();
+            var cuentas = await context.Cuenta.OrderBy(c => c.Idcuenta).ToListAsync();
             var ccostos = await context.CcostoUnegocios.ToListAsync();
             ViewBag.Ccostos = ccostos;
             ViewBag.Cuentas = cuentas;

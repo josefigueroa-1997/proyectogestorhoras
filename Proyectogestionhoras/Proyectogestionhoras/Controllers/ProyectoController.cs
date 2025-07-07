@@ -137,6 +137,12 @@ namespace Proyectogestionhoras.Controllers
                 int idcliente = int.Parse(Request.Form["cliente"]);
                 int idsucursal = int.Parse(Request.Form["sucursal"]);
                 var montopresupuesto = Request.Form["monto"].ToString();
+
+                if (int.Parse(montopresupuesto.Replace(".", "")) == 0)
+                {
+                    montopresupuesto = "1";
+                }
+
                 var montopresupuestostr = montopresupuesto.Replace(".", "");
                 decimal montofinal = decimal.Parse(montopresupuestostr, System.Globalization.CultureInfo.InvariantCulture);
                 int idsucursalcliente = await GetIdClienteSucrusal(idcliente, idsucursal);
@@ -371,7 +377,7 @@ namespace Proyectogestionhoras.Controllers
                 var rol = HttpContext.Session.GetInt32("idrol");
                 if (rol.HasValue)
                 {
-                    if (rol == 1)
+                    if (rol == 1 || iduser == 96)
                     {
                         var cuotasproyecto = await context.Cuotas.Where(x => x.Idpresupuesto == id).ToListAsync();
                         var totalhhanuales = await context.TotalRecursos.Where(t => t.Anio == DateTime.Now.Year).ToListAsync();
@@ -551,6 +557,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc,fechaquarterinicio,fechaquarterfin,plazo,fechatermino);
                     await proyectoService.GuardarActualizarHistorialCuenta(idproyecto, idcuentasocio, idcuentastaff, cuentasocio, cuentastaff);
+                    TempData["SuccessEdicionProyecto"] = "¡Se Actualizaron los datos del proyecto con éxito!";
                     return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
                 }
 
@@ -670,6 +677,8 @@ namespace Proyectogestionhoras.Controllers
                     }
                     else
                     {
+                        
+                        TempData["SuccessEdicionProyecto"] = "¡Se Actualizaron los datos del proyecto con éxito!";
                         return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
                     }
 

@@ -6,7 +6,7 @@
 @model List<Proyectogestionhoras.Models.DTO.IngresosExcelDTO>;
 
 <link rel="stylesheet" href="~/css/pageloading.css" asp-append-version="true" />
-
+<link rel="stylesheet" href="~/css/dataloading.css" asp-append-version="true" />
 <style>
 
     .form-container {
@@ -143,6 +143,14 @@
     </div>
 </div>
 
+<!-- Modal de Cargando -->
+<div id="modalCargando" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <div class="loader mb-4"></div>
+        <p class="text-lg font-semibold text-gray-700">Cargando datos, por favor espera...</p>
+    </div>
+</div>
+
 
 
 <script>
@@ -179,7 +187,7 @@
                         container.appendChild(hiddenInput);
 
 
-                        
+                        marcarFilaProcesada(row);
                         if (!data || data === 0) {
                             container.textContent = 'Proyecto No Encontrado';
                             row.style.backgroundColor = '#fee2e2';
@@ -187,6 +195,7 @@
                             row.style.fontWeight = 'bold';
 
                             hiddenInput.disabled = true;
+                            marcarFilaProcesada(row);
                             throw new Error('Proyecto no encontrado');
                         }
                         hiddenInput.value = data;
@@ -196,6 +205,7 @@
                       
                     })
                     .catch(error => {
+                        marcarFilaProcesada(row);
                         console.error('Error al obtener el ID del proyecto:', error);
                         const inputs = row.querySelectorAll('input');
                         inputs.forEach(input => {
@@ -275,5 +285,35 @@
                     console.error(error);
                 });
         });
+    });
+</script>
+
+<script>
+    const totalFilas = document.querySelectorAll("table tbody tr").length;
+        let filasProcesadas = 0;
+
+    function marcarFilaProcesada(row) {
+        if (!row.classList.contains('procesada')) {
+            row.classList.add('procesada');
+            filasProcesadas++;
+            verificarSiTodasLasFilasEstanProcesadas();
+        }
+    }
+
+       function verificarSiTodasLasFilasEstanProcesadas() {
+        if (filasProcesadas === totalFilas) {
+            const modal = document.getElementById("modalCargando");
+            const boton = document.getElementById("btnGuardarEgresos");
+
+            if (modal) modal.style.display = "none";
+            boton.disabled = false;
+            boton.classList.remove("opacity-50", "cursor-not-allowed");
+        }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("modalCargando");
+        if (modal) modal.style.display = "flex";
     });
 </script>

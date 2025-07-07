@@ -31,9 +31,9 @@ namespace Proyectogestionhoras.Controllers
       /*Egresos*/
         public IActionResult VistaPreviaEgresos()
         {
-            if (TempData["ExcelData"] != null)
+            var json = HttpContext.Session.GetString("ExcelData");
+            if (!string.IsNullOrEmpty(json))
             {
-                var json = TempData["ExcelData"].ToString();
                 var datos = System.Text.Json.JsonSerializer.Deserialize<List<EgresosExcelDTO>>(json);
                 return View(datos);
             }
@@ -117,7 +117,8 @@ namespace Proyectogestionhoras.Controllers
              }
 
 
-            TempData["ExcelData"] = System.Text.Json.JsonSerializer.Serialize(listaServicios);
+            HttpContext.Session.SetString("ExcelData", System.Text.Json.JsonSerializer.Serialize(listaServicios));
+
 
             return RedirectToAction("VistaPreviaEgresos");
          }
@@ -348,19 +349,21 @@ namespace Proyectogestionhoras.Controllers
             }
 
 
-            TempData["ExcelingresosData"] = System.Text.Json.JsonSerializer.Serialize(listaingresos);
+            HttpContext.Session.SetString("ExcelingresosData", System.Text.Json.JsonSerializer.Serialize(listaingresos));
+
 
             return RedirectToAction("VistaPreviaIngresos");
         }
 
         public IActionResult VistaPreviaIngresos()
         {
-            if (TempData["ExcelingresosData"] != null)
+            var json = HttpContext.Session.GetString("ExcelingresosData");
+            if (!string.IsNullOrEmpty(json))
             {
-                var json = TempData["ExcelingresosData"].ToString();
                 var datos = System.Text.Json.JsonSerializer.Deserialize<List<IngresosExcelDTO>>(json);
                 return View(datos);
             }
+            
 
             return RedirectToAction("Index", "Home");
 

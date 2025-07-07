@@ -6,6 +6,7 @@
 @model List<Proyectogestionhoras.Models.DTO.EgresosExcelDTO>;
 
 <link rel="stylesheet" href="~/css/pageloading.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/dataloading.css" asp-append-version="true" />
 
  <style>
 
@@ -111,7 +112,7 @@
             </table>
 
             <div class="mt-4 flex justify-center">
-                <button type="submit" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                <button id="btnGuardarEgresos" type="submit" disabled class="bg-orange-500 opacity-50 cursor-not-allowed hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
                     Guardar Egresos
                 </button>
             </div>
@@ -152,6 +153,15 @@
         <div class="px-4 py-2 flex justify-end">
             <button id="cerrarModal" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded">Cerrar</button>
         </div>
+    </div>
+</div>
+
+
+<!-- Modal de Cargando -->
+<div id="modalCargando" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <div class="loader mb-4"></div>
+        <p class="text-lg font-semibold text-gray-700">Cargando datos, por favor espera...</p>
     </div>
 </div>
 
@@ -197,9 +207,10 @@
                                     row.style.backgroundColor = '#fee2e2';
                                      row.style.color = '#000000';
                                      row.style.fontWeight = 'bold';
-
+                                     marcarFilaProcesada(row);
                                     hiddenInput.disabled = true; 
                                     throw new Error('Proyecto no encontrado');
+
                             }
                             hiddenInput.value = data;
 
@@ -207,11 +218,12 @@
                         
                         if (!filaDatos.has(row)) filaDatos.set(row, {});
                         filaDatos.get(row).idProyecto = data;
-
                         
+                        marcarFilaProcesada(row);
                         intentarObtenerSegmento(row);
                     })
                     .catch(error => {
+                        marcarFilaProcesada(row);
                         console.error('Error al obtener el ID del proyecto:', error);
                           const inputs = row.querySelectorAll('input');
     inputs.forEach(input => {
@@ -256,6 +268,7 @@
                             row.style.backgroundColor = '#fee2e2';
                             row.style.color = '#000000';
                             row.style.fontWeight = 'bold';
+                            marcarFilaProcesada(row);
                             throw new Error('Egreso no encontrado');
                         }
                         const input = document.createElement('input');
@@ -263,11 +276,11 @@
                         input.name = 'IdEgreso';
                         input.value = idEgreso;
 
-       
+                        marcarFilaProcesada(row);
                         egresoIdContainer.appendChild(input);
 
                         cell.textContent = `${nombreEgreso}`;
-                  
+                       
                         return fetch(`/CargaExcel/ObtenerDatosCuenta?idegreso=${idEgreso}&tipo=${encodeURIComponent(tipo)}`);
                     })
                     .then(response => response.json())
@@ -279,15 +292,17 @@
                             filaDatos.get(row).idCuenta = cuentaData.id;
                             filaDatos.get(row).tipo = tipo;
 
-                           
+                          marcarFilaProcesada(row);
                             intentarObtenerSegmento(row);
                     }
                     else{
+                        marcarFilaProcesada(row);
                         console.error('No hay datos');
                     }
+                    
                 })
                     .catch(error => {
-                        console.error('Error al obtener ID de egreso:', error);
+                        marcarFilaProcesada(row);
                         const inputs = row.querySelectorAll('input');
                         inputs.forEach(input => {
                             input.disabled = true;
@@ -328,16 +343,20 @@
                         
                         segmentoinput.appendChild(input);
                         segmentoCell.textContent = `${segmentoData.nombre}`;
+                        marcarFilaProcesada(row);
+                       
                     } else {
                         segmentoCell.textContent = 'Segmento no encontrado';
                         row.style.backgroundColor = '#fee2e2';
                         row.style.color = '#000000';
                         row.style.fontWeight = 'bold';
+                        marcarFilaProcesada(row);
                         throw new Error('Segmento no encontrado');
                     }
+                      
                 })
                 .catch(error => {
-                    console.error('Error al obtener segmento:', error);
+                   marcarFilaProcesada(row);
                     const inputs = row.querySelectorAll('input');
                     inputs.forEach(input => {
                         input.disabled = true;
@@ -372,32 +391,41 @@
                     if (response.ok) {
                         const id = await response.json();
                         inputHidden.value = id;
+                       
                         if(!id || id===0){
                              proveedorerror.textContent = 'Proveedor No Encontrado';
                             row.style.backgroundColor = '#fee2e2';
                             row.style.color = '#000000';
                             row.style.fontWeight = 'bold';
+                           
                             throw new Error('Proveedor no encontrado');
                         }
-                    } else {
-                        console.error("Error al obtener ID del proveedor");
                         
                     }
                 } catch (error) {
                     console.error("Error de red:", error);
+                   
                      const inputs = row.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.disabled = true;
-    });
+                        inputs.forEach(input => {
+                        input.disabled = true;
+                     });
 
-    const projectInput = row.querySelector('.project-id-container input');
-    if (projectInput) {
-        projectInput.disabled = true;
-    }
+                            const projectInput = row.querySelector('.project-id-container input');
+                     if (projectInput) {
+                            projectInput.disabled = true;
+                     }
 
-    row.classList.add('fila-invalida');
+                    row.classList.add('fila-invalida');
                 }
+                finally {
+                
+                marcarFilaProcesada(row);
+                }   
             }
+              else {
+            
+            marcarFilaProcesada(row);
+        }
         }
     });
 </script>
@@ -446,5 +474,35 @@
                     console.error(error);
                 });
         });
+    });
+</script>
+
+<script>
+    const totalFilas = document.querySelectorAll("table tbody tr").length;
+        let filasProcesadas = 0; 
+
+    function marcarFilaProcesada(row) {
+        if (!row.classList.contains('procesada')) {
+            row.classList.add('procesada');
+            filasProcesadas++;
+            verificarSiTodasLasFilasEstanProcesadas();
+        }
+    }
+
+       function verificarSiTodasLasFilasEstanProcesadas() {
+        if (filasProcesadas === totalFilas) {
+            const modal = document.getElementById("modalCargando");
+            const boton = document.getElementById("btnGuardarEgresos");
+
+            if (modal) modal.style.display = "none";
+            boton.disabled = false;
+            boton.classList.remove("opacity-50", "cursor-not-allowed");
+        }
+    }
+
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("modalCargando");
+        if (modal) modal.style.display = "flex"; 
     });
 </script>

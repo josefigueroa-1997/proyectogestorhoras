@@ -14,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-
 try
 {
     
@@ -53,7 +52,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(3600);
+    options.IdleTimeout = TimeSpan.FromHours(12);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 
