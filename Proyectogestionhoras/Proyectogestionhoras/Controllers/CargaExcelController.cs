@@ -391,9 +391,11 @@ namespace Proyectogestionhoras.Controllers
                
                 var glosas = form["Glosa"].ToList();
                 var idsProyecto = form["ProyectoId"].ToList();
-              
 
 
+                Debug.WriteLine(numProyectos.Count);
+                Debug.WriteLine(idsProyecto.Count);
+                Debug.WriteLine(fechaemisiones.Count);
 
 
                 if (new[] { numProyectos.Count, numdocumentos.Count, fechaemisiones.Count,

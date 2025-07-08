@@ -10,6 +10,7 @@ using Serilog;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http.Features;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -71,7 +72,10 @@ builder.Services.AddScoped<BonoService>();
 builder.Services.AddScoped<PresupuestoService>();
 builder.Services.AddScoped<EjecucionService>();
 builder.Services.AddScoped<ExcelService>();
-
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueCountLimit = 20000; 
+});
 builder.Services.AddDbContext<PROYECTO_CONTROL_HORASContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("cadenasql")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

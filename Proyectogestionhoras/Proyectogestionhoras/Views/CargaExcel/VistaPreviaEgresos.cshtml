@@ -460,12 +460,18 @@
                     if (result.success) {
                         modalHeader.className = "px-4 py-2 rounded-t-lg bg-green-600 text-white text-lg font-semibold";
                         modalHeader.textContent = "¡Éxito!";
+                         modalBody.textContent = result.message || "Operación completada.";
+                         modal.classList.remove('hidden');
+                         cerrarModal.classList.add('hidden');
+                         setTimeout(() => {
+                                window.location.href = "/Home/Index"; 
+                        }, 2500);
+                        return;
                     } else {
                         modalHeader.className = "px-4 py-2 rounded-t-lg bg-red-600 text-white text-lg font-semibold";
                     }
 
-                    modalBody.textContent = result.message || "Operación completada.";
-                    modal.classList.remove('hidden');
+                   
                 })
                 .catch(error => {
                     modalHeader.className = "px-4 py-2 rounded-t-lg bg-red-600 text-white text-lg font-semibold";
