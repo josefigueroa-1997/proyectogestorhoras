@@ -207,7 +207,7 @@
                                     row.style.backgroundColor = '#fee2e2';
                                      row.style.color = '#000000';
                                      row.style.fontWeight = 'bold';
-                                     marcarFilaProcesada(row);
+                                     marcarPaso(row, "proyecto");
                                     hiddenInput.disabled = true; 
                                     throw new Error('Proyecto no encontrado');
 
@@ -219,11 +219,11 @@
                         if (!filaDatos.has(row)) filaDatos.set(row, {});
                         filaDatos.get(row).idProyecto = data;
                         
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "proyecto");
                         intentarObtenerSegmento(row);
                     })
                     .catch(error => {
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "proyecto");
                         console.error('Error al obtener el ID del proyecto:', error);
                           const inputs = row.querySelectorAll('input');
     inputs.forEach(input => {
@@ -268,7 +268,7 @@
                             row.style.backgroundColor = '#fee2e2';
                             row.style.color = '#000000';
                             row.style.fontWeight = 'bold';
-                            marcarFilaProcesada(row);
+                            marcarPaso(row, "egreso");
                             throw new Error('Egreso no encontrado');
                         }
                         const input = document.createElement('input');
@@ -276,7 +276,7 @@
                         input.name = 'IdEgreso';
                         input.value = idEgreso;
 
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "egreso");
                         egresoIdContainer.appendChild(input);
 
                         cell.textContent = `${nombreEgreso}`;
@@ -292,7 +292,7 @@
                             filaDatos.get(row).idCuenta = cuentaData.id;
                             filaDatos.get(row).tipo = tipo;
 
-                          marcarFilaProcesada(row);
+                          marcarPaso(row, "cuenta");
                             intentarObtenerSegmento(row);
                     }
                     else{
@@ -302,7 +302,8 @@
                     
                 })
                     .catch(error => {
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "egreso");
+                        marcarPaso(row, "cuenta");
                         const inputs = row.querySelectorAll('input');
                         inputs.forEach(input => {
                             input.disabled = true;
@@ -343,20 +344,20 @@
                         
                         segmentoinput.appendChild(input);
                         segmentoCell.textContent = `${segmentoData.nombre}`;
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "segmento");
                        
                     } else {
                         segmentoCell.textContent = 'Segmento no encontrado';
                         row.style.backgroundColor = '#fee2e2';
                         row.style.color = '#000000';
                         row.style.fontWeight = 'bold';
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "segmento");
                         throw new Error('Segmento no encontrado');
                     }
                       
                 })
                 .catch(error => {
-                   marcarFilaProcesada(row);
+                   marcarPaso(row, "segmento");
                     const inputs = row.querySelectorAll('input');
                     inputs.forEach(input => {
                         input.disabled = true;
@@ -419,12 +420,12 @@
                 }
                 finally {
                 
-                marcarFilaProcesada(row);
+                marcarPaso(row, "proveedor");
                 }   
             }
               else {
             
-            marcarFilaProcesada(row);
+           marcarPaso(row, "proveedor");
         }
         }
     });
@@ -484,19 +485,34 @@
 </script>
 
 <script>
-    const totalFilas = document.querySelectorAll("table tbody tr").length;
-        let filasProcesadas = 0; 
+    const estadoFilas = new Map();
 
-    function marcarFilaProcesada(row) {
-        if (!row.classList.contains('procesada')) {
+        function marcarPaso(row, paso) {
+        if (!estadoFilas.has(row)) {
+            estadoFilas.set(row, {
+                proyecto: false,
+                egreso: false,
+                cuenta: false,
+                segmento: false,
+                proveedor: false
+            });
+        }
+
+        const estado = estadoFilas.get(row);
+        estado[paso] = true;
+
+        const completa = Object.values(estado).every(v => v === true);
+        if (completa && !row.classList.contains('procesada')) {
             row.classList.add('procesada');
-            filasProcesadas++;
-            verificarSiTodasLasFilasEstanProcesadas();
+            verificarSiTodasLasFilasEstanCompletas();
         }
     }
 
-       function verificarSiTodasLasFilasEstanProcesadas() {
-        if (filasProcesadas === totalFilas) {
+          function verificarSiTodasLasFilasEstanCompletas() {
+        const totalFilas = document.querySelectorAll("table tbody tr").length;
+        const completadas = document.querySelectorAll("tr.procesada").length;
+
+        if (completadas === totalFilas) {
             const modal = document.getElementById("modalCargando");
             const boton = document.getElementById("btnGuardarEgresos");
 

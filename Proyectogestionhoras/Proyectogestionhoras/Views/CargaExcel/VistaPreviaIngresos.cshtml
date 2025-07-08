@@ -187,7 +187,7 @@
                         container.appendChild(hiddenInput);
 
 
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "proyecto");
                         if (!data || data === 0) {
                             container.textContent = 'Proyecto No Encontrado';
                             row.style.backgroundColor = '#fee2e2';
@@ -195,7 +195,7 @@
                             row.style.fontWeight = 'bold';
 
                             hiddenInput.disabled = true;
-                            marcarFilaProcesada(row);
+                            marcarPaso(row, "proyecto");
                             throw new Error('Proyecto no encontrado');
                         }
                         hiddenInput.value = data;
@@ -205,7 +205,7 @@
                       
                     })
                     .catch(error => {
-                        marcarFilaProcesada(row);
+                        marcarPaso(row, "proyecto");
                         console.error('Error al obtener el ID del proyecto:', error);
                         const inputs = row.querySelectorAll('input');
                         inputs.forEach(input => {
@@ -293,19 +293,31 @@
 </script>
 
 <script>
-    const totalFilas = document.querySelectorAll("table tbody tr").length;
-        let filasProcesadas = 0;
+    const estadoFilas = new Map();
 
-    function marcarFilaProcesada(row) {
-        if (!row.classList.contains('procesada')) {
+        function marcarPaso(row, paso) {
+        if (!estadoFilas.has(row)) {
+            estadoFilas.set(row, {
+                proyecto: false,
+               
+            });
+        }
+
+        const estado = estadoFilas.get(row);
+        estado[paso] = true;
+
+        const completa = Object.values(estado).every(v => v === true);
+        if (completa && !row.classList.contains('procesada')) {
             row.classList.add('procesada');
-            filasProcesadas++;
-            verificarSiTodasLasFilasEstanProcesadas();
+            verificarSiTodasLasFilasEstanCompletas();
         }
     }
 
-       function verificarSiTodasLasFilasEstanProcesadas() {
-        if (filasProcesadas === totalFilas) {
+          function verificarSiTodasLasFilasEstanCompletas() {
+        const totalFilas = document.querySelectorAll("table tbody tr").length;
+        const completadas = document.querySelectorAll("tr.procesada").length;
+
+        if (completadas === totalFilas) {
             const modal = document.getElementById("modalCargando");
             const boton = document.getElementById("btnGuardarEgresos");
 
