@@ -24,18 +24,48 @@ namespace Proyectogestionhoras.Services
             var servicios = new List<Serviciosejecucion>();
             var gastos = new List<Gastosejecucion>();
 
+            
+            var glosaPorProyecto = new Dictionary<int, Dictionary<string, List<int>>>();
+
             foreach (var egreso in egresos)
             {
+                var idProyecto = egreso.Idpeoyecto;
+                var idEgreso = egreso.Idegreso;
+                var glosaOriginal = egreso.Observacion?.Trim() ?? "";
+                string glosaFinal = glosaOriginal;
+
+                if (!glosaPorProyecto.ContainsKey(idProyecto))
+                    glosaPorProyecto[idProyecto] = new Dictionary<string, List<int>>();
+
+                var glosasProyecto = glosaPorProyecto[idProyecto];
+
+                if (!glosasProyecto.ContainsKey(glosaOriginal))
+                {
+                    glosasProyecto[glosaOriginal] = new List<int> { idEgreso };
+                }
+                else
+                {
+                    var egresosUsados = glosasProyecto[glosaOriginal];
+
+                    if (!egresosUsados.Contains(idEgreso))
+                    {
+                        int repeticion = egresosUsados.Count;
+                        glosaFinal = $"{glosaOriginal}_{repeticion}";
+                        egresosUsados.Add(idEgreso);
+                    }
+                    
+                }
+
                 if (egreso.Tiposervicio != "Gastos")
                 {
                     servicios.Add(new Serviciosejecucion
                     {
-                        Idproyecto = egreso.Idpeoyecto,
-                        Idservicio = egreso.Idegreso,
+                        Idproyecto = idProyecto,
+                        Idservicio = idEgreso,
                         Idproveedor = egreso.Idproveedor,
                         Fecha = egreso.Fecha,
                         Monto = egreso.Monto,
-                        Observacion = egreso.Observacion,
+                        Observacion = glosaFinal,
                         Estado = egreso.Estado,
                         Venta = "Vendido",
                         Tiposervicio = egreso.Tiposervicio
@@ -45,27 +75,27 @@ namespace Proyectogestionhoras.Services
                 {
                     gastos.Add(new Gastosejecucion
                     {
-                        Idproyecto = egreso.Idpeoyecto,
-                        Idgasto = egreso.Idegreso,
+                        Idproyecto = idProyecto,
+                        Idgasto = idEgreso,
                         Idproveedor = egreso.Idproveedor,
                         Fecha = egreso.Fecha,
                         Monto = egreso.Monto,
-                        Observacion = egreso.Observacion,
+                        Observacion = glosaFinal,
                         Estado = egreso.Estado,
                         Venta = "Vendido"
                     });
                 }
             }
 
-            
             if (servicios.Any())
                 await context.Serviciosejecucions.AddRangeAsync(servicios);
 
             if (gastos.Any())
                 await context.Gastosejecucions.AddRangeAsync(gastos);
 
-            await context.SaveChangesAsync(); 
+            await context.SaveChangesAsync();
         }
+
 
         public async Task RegistrarIngresosMasivosExcel(List<IngresosExcelViewModel> ingresos)
         {

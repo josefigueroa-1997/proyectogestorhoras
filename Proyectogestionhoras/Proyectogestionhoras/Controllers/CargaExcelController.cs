@@ -258,7 +258,7 @@ namespace Proyectogestionhoras.Controllers
                     .Where(g => g.Fecha != null)
                     .Select(g => new MoficacionProyectoViewModel
                     {
-                        IdProyecto = g.Idpeoyecto.Value,
+                        IdProyecto = g.Idpeoyecto,
                         FechaPago = g.Fecha
                     })
                     .Distinct()

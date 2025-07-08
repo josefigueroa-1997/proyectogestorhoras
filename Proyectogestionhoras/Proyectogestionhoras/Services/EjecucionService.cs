@@ -8,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 using System.Globalization;
+using System.Linq;
 
 namespace Proyectogestionhoras.Services
 {
@@ -109,35 +110,81 @@ namespace Proyectogestionhoras.Services
             try
             {
                 if (servicios == null || !servicios.Any())
-                {
                     return;
-                }
 
-                var idsServiciosEliminados = servicios.Where(s => s.EsEliminado).Select(s => s.IdServicioReal)
-                .Where(id => id > 0)
-                .ToList();
+                var idsServiciosEliminados = servicios
+                    .Where(s => s.EsEliminado)
+                    .Select(s => s.IdServicioReal)
+                    .Where(id => id > 0)
+                    .ToList();
 
                 if (idsServiciosEliminados.Any())
                 {
                     var serviciosParaEliminar = await context.Serviciosejecucions
-                                                          .Where(s => idsServiciosEliminados.Contains(s.Id))
-                                                          .ToListAsync();
+                        .Where(s => idsServiciosEliminados.Contains(s.Id))
+                        .ToListAsync();
+
                     context.Serviciosejecucions.RemoveRange(serviciosParaEliminar);
                 }
 
-                var idsServicios = servicios.Where(s => s.IdServicioReal > 0 && s.EsEliminado == false)
-                                            .Select(s => s.IdServicioReal)
-                                            .ToList();
+                var idsServicios = servicios
+                    .Where(s => s.IdServicioReal > 0 && !s.EsEliminado)
+                    .Select(s => s.IdServicioReal)
+                    .ToList();
 
                 var serviciosExistentes = await context.Serviciosejecucions
-                                                      .Where(s => idsServicios.Contains(s.Id))
-                                                      .ToDictionaryAsync(s => s.Id);
+                    .Where(s => idsServicios.Contains(s.Id))
+                    .ToDictionaryAsync(s => s.Id);
 
-                var serviciosNuevos = servicios.Where(s => s.IdServicioReal <= 0).ToList();
+                var serviciosNuevos = servicios
+                    .Where(s => s.IdServicioReal <= 0 && !s.EsEliminado)
+                    .ToList();
 
-                foreach (var servicio in servicios)
+                // Diccionario para controlar glosas por proyecto → lista de Idservicio en que se usaron
+                var glosasPorServicio = new Dictionary<string, List<int>>();
+
+                var nuevosServicios = new List<Serviciosejecucion>();
+
+                foreach (var servicio in serviciosNuevos)
                 {
-                    if (servicio.IdServicioReal > 0 && serviciosExistentes.TryGetValue(servicio.IdServicioReal, out var servicioExistente))
+                    var glosaOriginal = servicio.Observacion?.Trim() ?? "";
+                    string glosaFinal = glosaOriginal;
+
+                    if (!glosasPorServicio.ContainsKey(glosaOriginal))
+                    {
+                        glosasPorServicio[glosaOriginal] = new List<int> { servicio.Idservicio };
+                    }
+                    else
+                    {
+                        var serviciosUsados = glosasPorServicio[glosaOriginal];
+
+                        if (!serviciosUsados.Contains(servicio.Idservicio))
+                        {
+                            int repeticion = serviciosUsados.Count;
+                            glosaFinal = $"{glosaOriginal}_{repeticion}";
+                            serviciosUsados.Add(servicio.Idservicio);
+                        }
+                        // Si ya se usó en ese Idservicio, no se cambia
+                    }
+
+                    nuevosServicios.Add(new Serviciosejecucion
+                    {
+                        Idproyecto = idproyecto,
+                        Idservicio = servicio.Idservicio,
+                        Idproveedor = servicio.Idproveedor,
+                        Fecha = servicio.Fecha,
+                        Monto = servicio.Monto,
+                        Observacion = glosaFinal,
+                        Estado = servicio.Estado,
+                        Venta = "Vendido",
+                        Tiposervicio = servicio.Tiposervicio,
+                    });
+                }
+
+                // Actualizar servicios existentes
+                foreach (var servicio in servicios.Where(s => s.IdServicioReal > 0 && !s.EsEliminado))
+                {
+                    if (serviciosExistentes.TryGetValue(servicio.IdServicioReal, out var servicioExistente))
                     {
                         servicioExistente.Idservicio = servicio.Idservicio;
                         servicioExistente.Idproveedor = servicio.Idproveedor;
@@ -145,23 +192,9 @@ namespace Proyectogestionhoras.Services
                         servicioExistente.Monto = servicio.Monto;
                         servicioExistente.Observacion = servicio.Observacion;
                         servicioExistente.Estado = servicio.Estado;
-                        
                         servicioExistente.Tiposervicio = servicio.Tiposervicio;
                     }
                 }
-
-                var nuevosServicios = serviciosNuevos.Select(servicio => new Serviciosejecucion
-                {
-                    Idproyecto = idproyecto,
-                    Idservicio = servicio.Idservicio,
-                    Idproveedor = servicio.Idproveedor,
-                    Fecha = servicio.Fecha,
-                    Monto = servicio.Monto,
-                    Observacion = servicio.Observacion,
-                    Estado = servicio.Estado,
-                    Venta = "Vendido",
-                    Tiposervicio = servicio.Tiposervicio,
-                }).ToList();
 
                 await context.Serviciosejecucions.AddRangeAsync(nuevosServicios);
                 await context.SaveChangesAsync();
@@ -170,24 +203,23 @@ namespace Proyectogestionhoras.Services
             {
                 Debug.WriteLine($"Error al registrar/actualizar un servicio de ejecución: {e.Message}");
                 if (e.InnerException != null)
-                {
                     Debug.WriteLine($"Inner exception: {e.InnerException.Message}");
-                }
             }
         }
+
 
         public async Task GestorGastosReales(int idproyecto, List<GastosRealesViewModel> gastos)
         {
             try
             {
                 if (gastos == null || !gastos.Any())
-                {
                     return;
-                }
 
-                var idsGastosEliminados = gastos.Where(g => g.EsEliminado).Select(g => g.IdGastoReal)
-                .Where(id => id > 0)
-                .ToList();
+                var idsGastosEliminados = gastos
+                    .Where(g => g.EsEliminado)
+                    .Select(g => g.IdGastoReal)
+                    .Where(id => id > 0)
+                    .ToList();
 
                 if (idsGastosEliminados.Any())
                 {
@@ -197,64 +229,108 @@ namespace Proyectogestionhoras.Services
                     context.Gastosejecucions.RemoveRange(gastosParaEliminar);
                 }
 
+                var idsGastos = gastos
+                    .Where(g => g.IdGastoReal > 0 && !g.EsEliminado)
+                    .Select(g => g.IdGastoReal)
+                    .ToList();
 
-                var idsGastos = gastos.Where(g => g.IdGastoReal > 0 && g.EsEliminado == false)
-                                      .Select(g => g.IdGastoReal)
-                                      .ToList();
-
-          
                 var gastosExistentes = await context.Gastosejecucions
                                                     .Where(g => idsGastos.Contains(g.Id))
                                                     .ToDictionaryAsync(g => g.Id);
 
-              
-                var nuevosGastos = gastos.Where(g => g.IdGastoReal <= 0).ToList();
+                var nuevosGastos = gastos
+                    .Where(g => g.IdGastoReal <= 0 && !g.EsEliminado)
+                    .ToList();
+
+                var editadosGastos = gastos
+                    .Where(g => g.IdGastoReal > 0 && !g.EsEliminado)
+                    .ToList();
 
                
+                var glosaUsos = new Dictionary<string, HashSet<int>>();
+
+                var gastosParaInsertar = new List<Gastosejecucion>();
+
+         
+                foreach (var gasto in nuevosGastos.Concat(editadosGastos))
+                {
+                    var glosa = gasto.Observacion?.Trim() ?? "";
+                    if (!glosaUsos.ContainsKey(glosa))
+                        glosaUsos[glosa] = new HashSet<int>();
+
+                    glosaUsos[glosa].Add(gasto.Idgasto);
+                }
+
+                foreach (var gasto in nuevosGastos)
+                {
+                    var glosaOriginal = gasto.Observacion?.Trim() ?? "";
+                    string glosaFinal = glosaOriginal;
+
+                  
+                    if (glosaUsos.TryGetValue(glosaOriginal, out var ids) && ids.Count > 1)
+                    {
+                       
+                        var orden = ids.OrderBy(x => x).ToList();
+                        int indice = orden.IndexOf(gasto.Idgasto);
+
+                        if (indice > 0)
+                            glosaFinal = $"{glosaOriginal}_{indice}";
+                    }
+
+                    gastosParaInsertar.Add(new Gastosejecucion
+                    {
+                        Idproyecto = idproyecto,
+                        Idgasto = gasto.Idgasto,
+                        Idproveedor = gasto.Idproveedor,
+                        Segmento = gasto.Segmento,
+                        Monto = gasto.Monto,
+                        Fecha = gasto.Fecha,
+                        Observacion = glosaFinal,
+                        Estado = gasto.Estado,
+                        Venta = "Vendido",
+                    });
+                }
+
                
-                foreach (var gasto in gastos.Where(g => g.IdGastoReal > 0))
+                foreach (var gasto in editadosGastos)
                 {
                     if (gastosExistentes.TryGetValue(gasto.IdGastoReal, out var gastoExistente))
                     {
+                        var glosaOriginal = gasto.Observacion?.Trim() ?? "";
+                        string glosaFinal = glosaOriginal;
+
+                        if (glosaUsos.TryGetValue(glosaOriginal, out var ids) && ids.Count > 1)
+                        {
+                            var orden = ids.OrderBy(x => x).ToList();
+                            int indice = orden.IndexOf(gasto.Idgasto);
+
+                            if (indice > 0)
+                                glosaFinal = $"{glosaOriginal}_{indice}";
+                        }
+
                         gastoExistente.Idgasto = gasto.Idgasto;
                         gastoExistente.Idproveedor = gasto.Idproveedor;
                         gastoExistente.Segmento = gasto.Segmento;
                         gastoExistente.Monto = gasto.Monto;
                         gastoExistente.Fecha = gasto.Fecha;
-                        gastoExistente.Observacion = gasto.Observacion;
+                        gastoExistente.Observacion = glosaFinal;
                         gastoExistente.Estado = gasto.Estado;
-                        
                     }
                 }
 
-                
-                var gastosParaInsertar = nuevosGastos.Select(gasto => new Gastosejecucion
-                {
-                    Idproyecto = idproyecto,
-                    Idgasto = gasto.Idgasto,
-                    Idproveedor = gasto.Idproveedor,
-                    Segmento = gasto.Segmento,
-                    Monto = gasto.Monto,
-                    Fecha = gasto.Fecha,
-                    Observacion = gasto.Observacion,
-                    Estado = gasto.Estado,
-                    Venta = "Vendido",
-                }).ToList();
-
                 await context.Gastosejecucions.AddRangeAsync(gastosParaInsertar);
-
-           
                 await context.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Error al registrar/actualizar un gasto de ejecución: {e.Message}");
                 if (e.InnerException != null)
-                {
                     Debug.WriteLine($"Inner exception: {e.InnerException.Message}");
-                }
             }
         }
+
+
+
 
         public async Task GestorGastosHH(int idproyecto, List<GastosHHViewModel> gastosHH)
         {
