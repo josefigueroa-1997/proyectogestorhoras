@@ -1,590 +1,624 @@
-﻿
-@{
-    ViewData["Title"] = "Flujo Caja Proyecto";
+﻿@{
+	ViewData["Title"] = "Flujo Caja Proyecto";
 }
 
 
 <style>
-    .form-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
-    }
+	.form-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		background-color: #fff;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		margin-top: 60px;
+	}
 
-    .form-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-        margin-bottom: 10px;
-    }
+	.form-title {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: #333;
+		text-align: center;
+		margin-bottom: 10px;
+	}
 
-    .form-subtitle {
-        font-size: 1.0rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-
-
-    .highlight {
-        background-color: #f8d7da;
-        font-weight: bold;
-    }
-
-    .panel-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 0px;
-        width: 100%;
-        margin-top: 0;
-        padding-top: 0;
-    }
-
-    .panel-item {
-        flex-grow: 1;
-        border: 2px solid #444;
-        border-radius: 0;
-        padding: 10px 20px;
-        background-color: #f2f3f4;
-        color: black;
-        text-align: center;
-        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-    }
+	.form-subtitle {
+		font-size: 1.0rem;
+		color: #666;
+		text-align: center;
+		margin-bottom: 20px;
+	}
 
 
 
-        .panel-item:hover {
-            background-color: #fcaa67;
-            color: #fff;
-        }
+	.highlight {
+		background-color: #f8d7da;
+		font-weight: bold;
+	}
+
+	.panel-container {
+		display: flex;
+		justify-content: space-between;
+		gap: 0px;
+		width: 100%;
+		margin-top: 0;
+		padding-top: 0;
+	}
+
+	.panel-item {
+		flex-grow: 1;
+		border: 2px solid #444;
+		border-radius: 0;
+		padding: 10px 20px;
+		background-color: #f2f3f4;
+		color: black;
+		text-align: center;
+		transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+	}
+
+
+
+		.panel-item:hover {
+			background-color: #fcaa67;
+			color: #fff;
+		}
 </style>
 @{
-    int? idproyecto = Context.Session.GetInt32("numproyecto");
-    int idproyectos = 0;
+	int? idproyecto = Context.Session.GetInt32("numproyecto");
+	int idproyectos = 0;
 }
+<div class="max-w-[1200px] py-3 mx-auto mt-10">
+	@foreach (var proyecto in ViewBag.Proyecto)
+	{
+		idproyectos = proyecto.Id;
+		@if (proyecto.Tipo_Status == "En Ejecución")
+		{
+			<div class="flex bg-white rounded-t-xl overflow-hidden border border-gray-300">
+				<!--tab marcada-->
+				<a href="#"
+				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+					Flujo Caja Proyecto
+				</a>
+				<!-- TAB 1 -->
+				<a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyectos})"
+				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastCostos"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+					Forecast Costos del Proyecto
+				</a>
 
-<div class="form-container">
+				<!-- TAB 2 -->
+				<a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyectos})"
+				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+					Forecast Ingresos del Proyecto
+				</a>
 
+				<!-- TAB 3 -->
+				<a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})"
+				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+					Seleccionar otro Proyecto
+				</a>
+			</div>
 
-   
-    <div class="form-group">
-
-        @foreach (var proyecto in ViewBag.Proyecto)
-        {
-            idproyectos = proyecto.Id;
-            @if(proyecto.Tipo_Status == "En Ejecución")
-            {
-                <div class="panel-container flex justify-center mb-5">
-                    <a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyectos})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        Forecast Ingresos del Proyecto
-                    </a>
-                    <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyectos})" class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
-                        Forecast Costos del Proyecto
-                    </a>
-                    <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
-                        Seleccionar otro Proyecto
-                    </a>
-                </div>
-            }
-           
-            <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
-            <input type="hidden" id="proyectoId" data-idproyecto="@proyecto.Id" />
-            
-              
-            
-            <input type="hidden" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
-            <input type="hidden" id="centroCosto" value="@proyecto.IDCOSTO" />
-            <input type="hidden" id="codigo" value="@proyecto.Codigo" />
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-xs border-collapse">
-                    <thead>
-                        <tr class="bg-green-100 text-black">
-                            <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
-                            <th class="p-2 border border-gray-300 text-left">Proyecto</th>
-                            <th class="p-2 border border-gray-300 text-left">Cliente</th>
-                            <th class="p-2 border border-gray-300 text-left">Departamento</th>
-                            <th class="p-2 border border-gray-300 text-left">Moneda</th>
-                            @if (proyecto.MontoOrigenExtranjero > 0)
-                            {
-                                <th class="p-2 border border-gray-300 text-left">Monto Moneda Origen</th>
-                            }
-                            <th class="p-2 border border-gray-300 text-left">MontoCLP</th>
-                            <th class="p-2 border border-gray-300 text-left">C.Costo</th>
-                            <th class="p-2 border border-gray-300 text-left">Código</th>
-                            <th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
-                            <th class="p-2 border border-gray-300 text-left">Empresa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
-                            <td id="proyectoData" data-nombreproyecto="@proyecto.NombreProyecto" class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
-                            <td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
-                                @proyecto.MONEDA
-                            </td>
-                            @if (proyecto.MontoOrigenExtranjero > 0)
-                            {
-                                <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
-                            }
-                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Empresa</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+		}
 
 
-        }
-    </div>
-    <div class="form-group">
-        
-        <p class="form-subtitle" style="color:black">Flujo de Caja del Proyecto</p>
-        <div class="text-center">
-            <button id="btnExportarExcel" class="p-2 bg-green-500 text-white rounded">
-                Exportar Flujo de Caja a Excel
-            </button>
-            <a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=idproyectos})#sintesis-economica" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block ml-4">
-                Ver Síntesis del Proyecto
-            </a>
-        </div>
-        <div class="flex overflow-x-auto">
+	}
 
-            <div class="w-full max-w-3xl border-collapse text-left text-xs" id="tablaFlujoCaja"></div>
-        </div>
-    </div>
+	<div class="bg-white p-6 border border-t-0 border-gray-300 rounded-b-xl shadow">
+
+
+
+		<div class="form-group">
+
+			@foreach (var proyecto in ViewBag.Proyecto)
+			{
+				idproyectos = proyecto.Id;
+
+
+				<p class="form-subtitle" style="color:black;">Información del Proyecto</p>
+				<input type="hidden" id="proyectoId" data-idproyecto="@proyecto.Id" />
+
+
+
+				<input type="hidden" id="unidadNegocio" value="@proyecto.IDUNEGOCIO" />
+				<input type="hidden" id="centroCosto" value="@proyecto.IDCOSTO" />
+				<input type="hidden" id="codigo" value="@proyecto.Codigo" />
+				<div class="overflow-x-auto">
+					<table class="min-w-full text-xs border-collapse">
+						<thead>
+							<tr class="bg-green-100 text-black">
+								<th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
+								<th class="p-2 border border-gray-300 text-left">Proyecto</th>
+								<th class="p-2 border border-gray-300 text-left">Cliente</th>
+								<th class="p-2 border border-gray-300 text-left">Departamento</th>
+								<th class="p-2 border border-gray-300 text-left">Moneda</th>
+								@if (proyecto.MontoOrigenExtranjero > 0)
+								{
+									<th class="p-2 border border-gray-300 text-left">Monto Moneda Origen</th>
+								}
+								<th class="p-2 border border-gray-300 text-left">MontoCLP</th>
+								<th class="p-2 border border-gray-300 text-left">C.Costo</th>
+								<th class="p-2 border border-gray-300 text-left">Código</th>
+								<th class="p-2 border border-gray-300 text-left">Tipología Proyecto</th>
+								<th class="p-2 border border-gray-300 text-left">Empresa</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
+								<td id="proyectoData" data-nombreproyecto="@proyecto.NombreProyecto" class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+								<td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
+									@proyecto.MONEDA
+								</td>
+								@if (proyecto.MontoOrigenExtranjero > 0)
+								{
+									<td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
+								}
+								<td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Empresa</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+
+			}
+		</div>
+		<div class="form-group">
+
+			<p class="form-subtitle" style="color:black">Flujo de Caja del Proyecto</p>
+			<div class="text-center">
+				<button id="btnExportarExcel" class="p-2 bg-green-500 text-white rounded">
+					Exportar Flujo de Caja a Excel
+				</button>
+				<a href="@Url.Action("ObtenerProyectos","Proyecto",new{id=idproyectos})#sintesis-economica" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block ml-4">
+					Ver Síntesis del Proyecto
+				</a>
+			</div>
+			<div class="flex overflow-x-auto">
+
+				<div class="w-full max-w-3xl border-collapse text-left text-xs" id="tablaFlujoCaja"></div>
+			</div>
+		</div>
+	</div>
 </div>
 <script>
-    async function obtenerFlujoCaja(id) {
-        const response = await fetch(`/EjecucionProyecto/ObtenerFlujo/${id}`);
-        const data = await response.json();
-        return data;
-    }
+	async function obtenerFlujoCaja(id) {
+		const response = await fetch(`/EjecucionProyecto/ObtenerFlujo/${id}`);
+		const data = await response.json();
+		return data;
+	}
 
-    function formatearMes(mes, anio) {
-        const opciones = { month: 'long', year: 'numeric' };
-        const fecha = new Date(anio, mes - 1);
-        return fecha.toLocaleDateString('es-ES', opciones);
-    }
+	function formatearMes(mes, anio) {
+		const opciones = { month: 'long', year: 'numeric' };
+		const fecha = new Date(anio, mes - 1);
+		return fecha.toLocaleDateString('es-ES', opciones);
+	}
 
-    function formatearMiles(valor) {
-        return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+	function formatearMiles(valor) {
+		return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
-    }
-  
-
-    function crearTabla(flujoCaja) {
-        const tabla = document.createElement('table');
-        tabla.id = 'TablaFlujoCaja';
-        // Cabecera
-        const thead = document.createElement('thead');
-        const cabeceraRow = document.createElement('tr');
-        cabeceraRow.className = 'bg-blue-100 text-black';
-        cabeceraRow.innerHTML = `
-                <th class="p-2 border border-gray-300 text-center">Tipo</th>
-                <th class="p-2 border border-gray-300 text-center">Id Cuenta</th>
-                <th class="p-2 border border-gray-300 text-center">Cuenta</th>
-            <th class="p-2 border border-gray-300 text-center">Glosa</th>
-        `;
-
-            const mesesUnicos = [...new Set(flujoCaja.map(item => `${item.mes}-${item.anio}`))];
-
-            mesesUnicos.sort((a, b) => new Date(a.split('-')[1], a.split('-')[0] - 1) - new Date(b.split('-')[1], b.split('-')[0] - 1));
-
-     
-                mesesUnicos.forEach(mesAnio => {
-          
-                cabeceraRow.innerHTML += `<th class="p-2 border border-gray-300 text-center" colspan="3">${mesAnio}</th>`;
-            });
-        cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Real</th>';
-        cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Proyectado</th>';
-        cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Forecast</th>';
-        thead.appendChild(cabeceraRow);
-        
-
-            // Segunda fila (Proyectado, Real, Forecast)
-        const subCabeceraRow = document.createElement('tr');
-        subCabeceraRow.className = 'bg-gray-200 text-black';
-        subCabeceraRow.innerHTML = `<th></th><th></th><th></th><th></th>`;
-
-        mesesUnicos.forEach(() => {
-            subCabeceraRow.innerHTML += `<th class="p-2 border border-gray-300  text-center">Proyectado</th><th class="p-2 border border-gray-300  text-center">Real</th><th class="p-2 border border-gray-300  text-center">Forecast</th>`;
-        });
-        subCabeceraRow.innerHTML += '<th></th';
-        subCabeceraRow.innerHTML += '<th></th';
-        subCabeceraRow.innerHTML += '<th></th';
-        thead.appendChild(subCabeceraRow);
-        tabla.appendChild(thead);
-
-  
-        const tbody = document.createElement('tbody');
-
-        const totalesEgresos = {};
-
-        const gruposPorTipoYCuenta = flujoCaja.reduce((acc, item) => {
-            if (!acc[item.tipo]) {
-                acc[item.tipo] = {};
-            }
-            if (!acc[item.tipo][item.idCuenta]) {
-                acc[item.tipo][item.idCuenta] = [];
-            }
-            acc[item.tipo][item.idCuenta].push(item);
-            return acc;
-        }, {});
-
-            const agrupadosPorGlosa = {};
-
-       
-            for (const tipo in gruposPorTipoYCuenta) {
-                const cuentas = gruposPorTipoYCuenta[tipo];
-
-                mesesUnicos.forEach(mesAnio => {
-                 const [mes, anio] = mesAnio.split('-');
-
-                    for (const idCuenta in cuentas) {
-                        cuentas[idCuenta].forEach(item => {
-                            if (item.mes == mes && item.anio == anio) {
-                             const key = `${item.glosa}-${mesAnio}-${item.estado}`;
-                                if (!agrupadosPorGlosa[key]) {
-                                 agrupadosPorGlosa[key] = { glosa: item.glosa, mes: mes, anio: anio, estado: item.estado, monto: 0 };
-                                }
-                            agrupadosPorGlosa[key].monto += item.monto; // Sumar el monto
-                    }
-                             });
-                     }
-                    });
-            }
-        let totalRealEgresos = 0;
-        let totalProyectadoEgresos = 0;
-        let totalForecastEgresos = 0;
-        let totalRealIngresos = 0;
-        for (const tipo in gruposPorTipoYCuenta) {
-            const cuentas = gruposPorTipoYCuenta[tipo];
-
-          
-            const totalesPorMes = {};
-            
-            mesesUnicos.forEach(mesAnio => {
-                const [mes, anio] = mesAnio.split('-');
-                totalesPorMes[mesAnio] = { proyectado: 0, real: 0, forecast: 0 };
-
-                for (const idCuenta in cuentas) {
-                    cuentas[idCuenta].forEach(item => {
-                        if (item.mes == mes && item.anio == anio) {
-                            if (item.estado === 'Proyectado') { 
-                                totalesPorMes[mesAnio].proyectado += item.monto;
-                                if (tipo !== "Ingreso") {
-                                    totalProyectadoEgresos += item.monto;
-                                }
-                            } 
-                            if (item.estado === 'Real') {
-                                totalesPorMes[mesAnio].real += item.monto;
-                                
-                                if (tipo !== "Ingreso") {
-                                    totalRealEgresos += item.monto;
-                                }
-                                if (tipo == "Ingreso") {
-                                    totalRealIngresos += item.monto;
-                                }
-                            }
-                            if (item.estado === 'Forecast') { 
-                                totalesPorMes[mesAnio].forecast += item.monto;
-                                if (tipo !== "Ingreso") {
-                                    totalForecastEgresos += item.monto;
-                                }
-                            } 
-
-                            if (tipo !== "Ingreso") {
-                                if (!totalesEgresos[mesAnio]) {
-                                    totalesEgresos[mesAnio] = { proyectado: 0, real: 0, forecast: 0 };
-                                }
-                                totalesEgresos[mesAnio].proyectado += item.estado === 'Proyectado' ? item.monto : 0;
-                                totalesEgresos[mesAnio].real += item.estado === 'Real' ? item.monto : 0;
-                                totalesEgresos[mesAnio].forecast += item.estado === 'Forecast' ? item.monto : 0;
-                            }
-                        }
-                    });
-                }
-            });
+	}
 
 
-            const totalRow = document.createElement('tr');
-            totalRow.innerHTML = `<td class="text-left text-xs font-medium sticky left-0 bg-white min-w-[250px]" rowspan="${Object.keys(cuentas).length}">${tipo}</td>`;
+	function crearTabla(flujoCaja) {
+		const tabla = document.createElement('table');
+		tabla.id = 'TablaFlujoCaja';
+		// Cabecera
+		const thead = document.createElement('thead');
+		const cabeceraRow = document.createElement('tr');
+		cabeceraRow.className = 'bg-blue-100 text-black';
+		cabeceraRow.innerHTML = `
+				<th class="p-2 border border-gray-300 text-center">Tipo</th>
+				<th class="p-2 border border-gray-300 text-center">Id Cuenta</th>
+				<th class="p-2 border border-gray-300 text-center">Cuenta</th>
+			<th class="p-2 border border-gray-300 text-center">Glosa</th>
+		`;
 
-            let firstAccountRow = true; 
+			const mesesUnicos = [...new Set(flujoCaja.map(item => `${item.mes}-${item.anio}`))];
 
-            for (const idCuenta in cuentas) {
-                const itemsCuenta = cuentas[idCuenta];
-
-               
-                if (firstAccountRow) {
-                    totalRow.innerHTML += `<td class="text-left text-xs font-medium ">'${itemsCuenta[0].idCuenta}</td><td class="text-left text-xs font-medium min-w-[300px]">${itemsCuenta[0].cuenta}</td><td> <span class="expand-icon" id="expand-icon-${idCuenta}">+</span></td>`;
-                    
-                    
-                    let totalReal = 0;
-                    let totalProyectado = 0;
-                    let totalForecast = 0;
-                    mesesUnicos.forEach(mesAnio => {
-                        totalRow.innerHTML += `
-                                      <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
-                                    ${totalesPorMes[mesAnio].proyectado !== 0 ? formatearMiles(totalesPorMes[mesAnio].proyectado) : ''}
-                                    </td>
-                                    <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
-                                    ${totalesPorMes[mesAnio].real !== 0 ? formatearMiles(totalesPorMes[mesAnio].real) : ''}
-                                     </td>
-                                        <td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">
-                                     ${totalesPorMes[mesAnio].forecast !== 0 ? formatearMiles(totalesPorMes[mesAnio].forecast) : ''}
-                                         </td>`;
-                        totalReal += totalesPorMes[mesAnio].real;
-                        totalProyectado += totalesPorMes[mesAnio].proyectado;
-                        totalForecast += totalesPorMes[mesAnio].forecast;
-                    });
-                    totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalReal!==0 ? formatearMiles(totalReal) : '' }</td>`;
-                    totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectado !== 0 ? formatearMiles(totalProyectado) : ''}</td>`;
-                    totalRow.innerHTML += `<td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecast !== 0 ? formatearMiles(totalForecast) : ''}</td>`;
-                    
-                    totalRow.style.cursor = 'pointer';
-                    totalRow.onclick = function () {
-                        const glosaRows = document.querySelectorAll(`.glosa-row-${idCuenta}`);
-                        const expandIcon = document.getElementById(`expand-icon-${idCuenta}`);
-                        glosaRows.forEach(row => {
-                            row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
-                        });
-                        if (expandIcon) {
-                            if (expandIcon.innerHTML === '+') { 
-                                expandIcon.innerHTML = '-'; 
-                            } else {
-                                expandIcon.innerHTML = '+'; 
-                            }
-                        }
-                    };
-                    tbody.appendChild(totalRow);
-                    firstAccountRow = false;
-                } else {
-                    
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td></td><td>'${itemsCuenta[0].idCuenta}</td><td>${itemsCuenta[0].cuenta}</td><td></td>`;
-                    mesesUnicos.forEach(mesAnio => {
-                        const [mes, anio] = mesAnio.split('-');
-
-                        // Obtener el monto específico para cada estado y mes
-                        const montoProyectado = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado')?.monto || 0;
-                        const montoReal = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Real')?.monto || 0;
-                        const montoForecast = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast')?.monto || 0;
-
-                        row.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${montoProyectado}</td><td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${montoReal}</td><td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${montoForecast}</td>`;
-                    });
-                    tbody.appendChild(row);
-                }
-
-                // Filas por glosa específicas para esta cuenta
-               
-                const glosasContadas = new Set(); 
-
-                    itemsCuenta.forEach(item => {
-                    if (item.glosa && !glosasContadas.has(item.glosa)) {
-                        glosasContadas.add(item.glosa); 
-
-                        const rowGlosa = document.createElement('tr');
-                        rowGlosa.className = `glosa-row-${idCuenta}`; 
-                        rowGlosa.style.display = 'none'; 
-                        rowGlosa.innerHTML = `<td></td><td></td><td></td><td class="text-left text-xs font-medium sticky left-0 bg-white  min-w-[250px]">${item.glosa}</td>`;
-                        let totalRealG = 0;
-                        let totalForecastG = 0;
-                        mesesUnicos.forEach(mesAnio => {
-                            const [mes, anio] = mesAnio.split('-');
-
-                            const montoProyectadoG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado' && f.glosa === item.glosa)?.monto || 0;
-                             const montoRealG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Real' && f.glosa === item.glosa)?.monto || 0;
-                            const montoForecastG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast' && f.glosa === item.glosa)?.monto || 0;
-                            totalRealG += montoRealG;
-                            totalForecastG += montoForecastG;
-                            rowGlosa.innerHTML += `
-                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
-                                        ${montoProyectadoG !== 0 ? formatearMiles(montoProyectadoG) : ''}
-                                    </td>
-                                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
-                                        ${montoRealG !== 0 ? formatearMiles(montoRealG) : ''}
-                                    </td>
-                                    <td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">
-                                        ${montoForecastG !== 0 ? formatearMiles(montoForecastG) : ''}
-                                    </td>
-                            `;
-                        });
-                            rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${totalRealG !== 0 ? formatearMiles(totalRealG) : ''}</td>`;
-                            rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-                            rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecastG !== 0 ? formatearMiles(totalForecastG) : ''}</td>`;
-                            tbody.appendChild(rowGlosa);
-                    }
-                });
-            }
-        }
-
-        // Agregar fila de Totales Egresos al final del cuerpo de la tabla
-        const totalEgresosRow = document.createElement('tr');
-        totalEgresosRow.className = 'bg-red-100';
-        totalEgresosRow.innerHTML = '<td class="text-left text-xs font-medium font-bold sticky left-0 bg-red-100">Total Egresos</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
-
-        mesesUnicos.forEach(mesAnio => {
-            totalEgresosRow.innerHTML += `
-                        <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
-                        ${totalesEgresos[mesAnio]?.proyectado != null && totalesEgresos[mesAnio]?.proyectado !== 0
-                             ? formatearMiles(totalesEgresos[mesAnio]?.proyectado)
-                                : ''
-                                }
-                         </td>
-                        <td class="text-xs border font-bold text-right  border-black px-4 py-2 min-w-[100px]">
-                            ${totalesEgresos[mesAnio]?.real != null && totalesEgresos[mesAnio]?.real !== 0
-                    ? formatearMiles(totalesEgresos[mesAnio]?.real)
-                    : ''
-                }
-                        </td>
-                        <td class="text-xs border font-bold text-right  border-black px-4 py-2 min-w-[100px]">
-                            ${totalesEgresos[mesAnio]?.forecast != null && totalesEgresos[mesAnio]?.forecast !== 0
-                    ? formatearMiles(totalesEgresos[mesAnio]?.forecast)
-                    : ''
-                }
-                        </td>`;
-        });
-        
-        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalRealEgresos !== 0 ? formatearMiles(totalRealEgresos) : ''}</td>`;
-        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectadoEgresos !==0 ? formatearMiles(totalProyectadoEgresos): ''}</td>`;
-        totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalForecastEgresos !== 0 ? formatearMiles(totalForecastEgresos): ''}</td>`;
-        tbody.appendChild(totalEgresosRow);
-    
-        const margenContribucionRow = document.createElement('tr');
-        margenContribucionRow.className = 'bg-gray-300 font-bold';
-        
-        margenContribucionRow.innerHTML = '<td class="text-left text-xs font-medium font-bold sticky left-0 bg-gray-300">Margen de Contribución</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
-        let totalmargenreal = 0;
-        mesesUnicos.forEach(mesAnio => {
-           
-            const ingresosProyectado = flujoCaja
-                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Proyectado')
-                .reduce((sum, item) => sum + item.monto, 0);
-
-            const ingresosReal = flujoCaja
-                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
-                .reduce((sum, item) => sum + item.monto, 0);
-
-            
-            const egresosProyectado = totalesEgresos[mesAnio]?.proyectado || 0;
-            const egresosReal = totalesEgresos[mesAnio]?.real || 0;
-
-            
-            const margenProyectado = ingresosProyectado - egresosProyectado;
-            const margenReal = ingresosReal - egresosReal;
-            totalmargenreal += margenReal;
-          
-            margenContribucionRow.innerHTML += `
-            <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenProyectado !== 0 ? formatearMiles(margenProyectado) : '' }</td>
-            <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenReal !== 0 ? formatearMiles(margenReal) : ''}</td>
-            <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-        });
-        margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalmargenreal)}</td>`;
-        margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-        margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-       
-        tbody.appendChild(margenContribucionRow);
-    
-
-        const porcentajeMargenRow = document.createElement('tr');
-        porcentajeMargenRow.className = 'bg-green-100 font-bold';
-        
-        porcentajeMargenRow.innerHTML = '<td class="text-left text-xs font-medium sticky left-0 bg-green-100">% de Margen de Contribución</td><td colspan="3"></td>';
-
-        mesesUnicos.forEach(mesAnio => {
-            const ingresosReal = flujoCaja
-                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
-                .reduce((sum, item) => sum + item.monto, 0);
-
-            const egresosReal = totalesEgresos[mesAnio]?.real || 0;
-            const margenReal = ingresosReal - egresosReal;
-            const porcentajeMargen = ingresosReal > 0 ? (margenReal / ingresosReal) * 100 : 0;
-
-            // Mostrar en la tabla HTML
-            porcentajeMargenRow.innerHTML += `<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
-                                          <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">
-                                              ${porcentajeMargen !== 0 ? porcentajeMargen.toFixed(2) : ''}%
-                                          </td>
-                                          <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-        });
-        const porcentajetotalmargen = totalRealIngresos > 0 ? (totalmargenreal / totalRealIngresos) * 100 : 0;
-        porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${porcentajetotalmargen.toFixed(2)}%</td>`;
-        porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-        porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-
-        tbody.appendChild(porcentajeMargenRow);
+			mesesUnicos.sort((a, b) => new Date(a.split('-')[1], a.split('-')[0] - 1) - new Date(b.split('-')[1], b.split('-')[0] - 1));
 
 
-        const saldoAcumuladoRow = document.createElement('tr');
-        saldoAcumuladoRow.className = 'bg-yellow-100 font-bold';
-        saldoAcumuladoRow.innerHTML = '<td class="text-left text-xs font-medium  sticky left-0 bg-yellow-100">Saldo Acumulado</td><td colspan="3"></td>';
+				mesesUnicos.forEach(mesAnio => {
 
-        let saldoAcumulado = 0;
-        
-        mesesUnicos.forEach(mesAnio => {
-            const ingresosReal = flujoCaja
-                .filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
-                .reduce((sum, item) => sum + item.monto, 0);
+				cabeceraRow.innerHTML += `<th class="p-2 border border-gray-300 text-center" colspan="3">${mesAnio}</th>`;
+			});
+		cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Real</th>';
+		cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Proyectado</th>';
+		cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Forecast</th>';
+		thead.appendChild(cabeceraRow);
 
-            const egresosReal = totalesEgresos[mesAnio]?.real || 0;
-            const margenReal = ingresosReal - egresosReal;
 
-            saldoAcumulado += margenReal;
+			// Segunda fila (Proyectado, Real, Forecast)
+		const subCabeceraRow = document.createElement('tr');
+		subCabeceraRow.className = 'bg-gray-200 text-black';
+		subCabeceraRow.innerHTML = `<th></th><th></th><th></th><th></th>`;
 
-            saldoAcumuladoRow.innerHTML += `
-                        <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
-                         <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${saldoAcumulado !== 0 ? formatearMiles(saldoAcumulado) : ''}</td>
-                        <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-        });
-        const saldoacumuladototal = totalmargenreal;
-        saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${saldoacumuladototal !== 0 ? formatearMiles(saldoacumuladototal) : '' }</td>`;
-        saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-        saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
-        tbody.appendChild(saldoAcumuladoRow);
-        tabla.appendChild(tbody);
-        document.getElementById('tablaFlujoCaja').appendChild(tabla);
-    }
+		mesesUnicos.forEach(() => {
+			subCabeceraRow.innerHTML += `<th class="p-2 border border-gray-300  text-center">Proyectado</th><th class="p-2 border border-gray-300  text-center">Real</th><th class="p-2 border border-gray-300  text-center">Forecast</th>`;
+		});
+		subCabeceraRow.innerHTML += '<th></th';
+		subCabeceraRow.innerHTML += '<th></th';
+		subCabeceraRow.innerHTML += '<th></th';
+		thead.appendChild(subCabeceraRow);
+		tabla.appendChild(thead);
 
-    async function init() {
-        const idProyecto = document.getElementById("proyectoId").getAttribute("data-idproyecto");
-        const flujoCajaData = await obtenerFlujoCaja(idProyecto);
 
-        if (flujoCajaData.length > 0) {
-            crearTabla(flujoCajaData);
-        } else {
-            document.getElementById('tablaFlujoCaja').innerText = 'No hay datos disponibles.';
-        }
-    }
+		const tbody = document.createElement('tbody');
 
-    init();
+		const totalesEgresos = {};
+
+		const gruposPorTipoYCuenta = flujoCaja.reduce((acc, item) => {
+			if (!acc[item.tipo]) {
+				acc[item.tipo] = {};
+			}
+			if (!acc[item.tipo][item.idCuenta]) {
+				acc[item.tipo][item.idCuenta] = [];
+			}
+			acc[item.tipo][item.idCuenta].push(item);
+			return acc;
+		}, {});
+
+			const agrupadosPorGlosa = {};
+
+
+			for (const tipo in gruposPorTipoYCuenta) {
+				const cuentas = gruposPorTipoYCuenta[tipo];
+
+				mesesUnicos.forEach(mesAnio => {
+				 const [mes, anio] = mesAnio.split('-');
+
+					for (const idCuenta in cuentas) {
+						cuentas[idCuenta].forEach(item => {
+							if (item.mes == mes && item.anio == anio) {
+							 const key = `${item.glosa}-${mesAnio}-${item.estado}`;
+								if (!agrupadosPorGlosa[key]) {
+								 agrupadosPorGlosa[key] = { glosa: item.glosa, mes: mes, anio: anio, estado: item.estado, monto: 0 };
+								}
+							agrupadosPorGlosa[key].monto += item.monto; // Sumar el monto
+					}
+							 });
+					 }
+					});
+			}
+		let totalRealEgresos = 0;
+		let totalProyectadoEgresos = 0;
+		let totalForecastEgresos = 0;
+		let totalRealIngresos = 0;
+		for (const tipo in gruposPorTipoYCuenta) {
+			const cuentas = gruposPorTipoYCuenta[tipo];
+
+
+			const totalesPorMes = {};
+
+			mesesUnicos.forEach(mesAnio => {
+				const [mes, anio] = mesAnio.split('-');
+				totalesPorMes[mesAnio] = { proyectado: 0, real: 0, forecast: 0 };
+
+				for (const idCuenta in cuentas) {
+					cuentas[idCuenta].forEach(item => {
+						if (item.mes == mes && item.anio == anio) {
+							if (item.estado === 'Proyectado') {
+								totalesPorMes[mesAnio].proyectado += item.monto;
+								if (tipo !== "Ingreso") {
+									totalProyectadoEgresos += item.monto;
+								}
+							}
+							if (item.estado === 'Real') {
+								totalesPorMes[mesAnio].real += item.monto;
+
+								if (tipo !== "Ingreso") {
+									totalRealEgresos += item.monto;
+								}
+								if (tipo == "Ingreso") {
+									totalRealIngresos += item.monto;
+								}
+							}
+							if (item.estado === 'Forecast') {
+								totalesPorMes[mesAnio].forecast += item.monto;
+								if (tipo !== "Ingreso") {
+									totalForecastEgresos += item.monto;
+								}
+							}
+
+							if (tipo !== "Ingreso") {
+								if (!totalesEgresos[mesAnio]) {
+									totalesEgresos[mesAnio] = { proyectado: 0, real: 0, forecast: 0 };
+								}
+								totalesEgresos[mesAnio].proyectado += item.estado === 'Proyectado' ? item.monto : 0;
+								totalesEgresos[mesAnio].real += item.estado === 'Real' ? item.monto : 0;
+								totalesEgresos[mesAnio].forecast += item.estado === 'Forecast' ? item.monto : 0;
+							}
+						}
+					});
+				}
+			});
+
+
+			const totalRow = document.createElement('tr');
+			totalRow.innerHTML = `<td class="text-left text-xs font-medium sticky left-0 bg-white min-w-[250px]" rowspan="${Object.keys(cuentas).length}">${tipo}</td>`;
+
+			let firstAccountRow = true;
+
+			for (const idCuenta in cuentas) {
+				const itemsCuenta = cuentas[idCuenta];
+
+
+				if (firstAccountRow) {
+					totalRow.innerHTML += `<td class="text-left text-xs font-medium ">'${itemsCuenta[0].idCuenta}</td><td class="text-left text-xs font-medium min-w-[300px]">${itemsCuenta[0].cuenta}</td><td> <span class="expand-icon" id="expand-icon-${idCuenta}">+</span></td>`;
+
+
+					let totalReal = 0;
+					let totalProyectado = 0;
+					let totalForecast = 0;
+					mesesUnicos.forEach(mesAnio => {
+						totalRow.innerHTML += `
+									  <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
+									${totalesPorMes[mesAnio].proyectado !== 0 ? formatearMiles(totalesPorMes[mesAnio].proyectado) : ''}
+									</td>
+									<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
+									${totalesPorMes[mesAnio].real !== 0 ? formatearMiles(totalesPorMes[mesAnio].real) : ''}
+									 </td>
+										<td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">
+									 ${totalesPorMes[mesAnio].forecast !== 0 ? formatearMiles(totalesPorMes[mesAnio].forecast) : ''}
+										 </td>`;
+						totalReal += totalesPorMes[mesAnio].real;
+						totalProyectado += totalesPorMes[mesAnio].proyectado;
+						totalForecast += totalesPorMes[mesAnio].forecast;
+					});
+					totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalReal!==0 ? formatearMiles(totalReal) : '' }</td>`;
+					totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectado !== 0 ? formatearMiles(totalProyectado) : ''}</td>`;
+					totalRow.innerHTML += `<td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecast !== 0 ? formatearMiles(totalForecast) : ''}</td>`;
+
+					totalRow.style.cursor = 'pointer';
+					totalRow.onclick = function () {
+						const glosaRows = document.querySelectorAll(`.glosa-row-${idCuenta}`);
+						const expandIcon = document.getElementById(`expand-icon-${idCuenta}`);
+						glosaRows.forEach(row => {
+							row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
+						});
+						if (expandIcon) {
+							if (expandIcon.innerHTML === '+') {
+								expandIcon.innerHTML = '-';
+							} else {
+								expandIcon.innerHTML = '+';
+							}
+						}
+					};
+					tbody.appendChild(totalRow);
+					firstAccountRow = false;
+				} else {
+
+					const row = document.createElement('tr');
+					row.innerHTML = `<td></td><td>'${itemsCuenta[0].idCuenta}</td><td>${itemsCuenta[0].cuenta}</td><td></td>`;
+					mesesUnicos.forEach(mesAnio => {
+						const [mes, anio] = mesAnio.split('-');
+
+						// Obtener el monto específico para cada estado y mes
+						const montoProyectado = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado')?.monto || 0;
+						const montoReal = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Real')?.monto || 0;
+						const montoForecast = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast')?.monto || 0;
+
+						row.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${montoProyectado}</td><td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${montoReal}</td><td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${montoForecast}</td>`;
+					});
+					tbody.appendChild(row);
+				}
+
+				// Filas por glosa específicas para esta cuenta
+
+				const glosasContadas = new Set();
+
+					itemsCuenta.forEach(item => {
+					if (item.glosa && !glosasContadas.has(item.glosa)) {
+						glosasContadas.add(item.glosa);
+
+						const rowGlosa = document.createElement('tr');
+						rowGlosa.className = `glosa-row-${idCuenta}`;
+						rowGlosa.style.display = 'none';
+						rowGlosa.innerHTML = `<td></td><td></td><td></td><td class="text-left text-xs font-medium sticky left-0 bg-white  min-w-[250px]">${item.glosa}</td>`;
+						let totalRealG = 0;
+						let totalForecastG = 0;
+						mesesUnicos.forEach(mesAnio => {
+							const [mes, anio] = mesAnio.split('-');
+
+							const montoProyectadoG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado' && f.glosa === item.glosa)?.monto || 0;
+							 const montoRealG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Real' && f.glosa === item.glosa)?.monto || 0;
+							const montoForecastG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast' && f.glosa === item.glosa)?.monto || 0;
+							totalRealG += montoRealG;
+							totalForecastG += montoForecastG;
+							rowGlosa.innerHTML += `
+									<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+										${montoProyectadoG !== 0 ? formatearMiles(montoProyectadoG) : ''}
+									</td>
+									<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+										${montoRealG !== 0 ? formatearMiles(montoRealG) : ''}
+									</td>
+									<td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">
+										${montoForecastG !== 0 ? formatearMiles(montoForecastG) : ''}
+									</td>
+							`;
+						});
+							rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${totalRealG !== 0 ? formatearMiles(totalRealG) : ''}</td>`;
+							rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+							rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecastG !== 0 ? formatearMiles(totalForecastG) : ''}</td>`;
+							tbody.appendChild(rowGlosa);
+					}
+				});
+			}
+		}
+
+		// Agregar fila de Totales Egresos al final del cuerpo de la tabla
+		const totalEgresosRow = document.createElement('tr');
+		totalEgresosRow.className = 'bg-red-100';
+		totalEgresosRow.innerHTML = '<td class="text-left text-xs font-medium font-bold sticky left-0 bg-red-100">Total Egresos</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
+
+		mesesUnicos.forEach(mesAnio => {
+			totalEgresosRow.innerHTML += `
+						<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
+						${totalesEgresos[mesAnio]?.proyectado != null && totalesEgresos[mesAnio]?.proyectado !== 0
+							 ? formatearMiles(totalesEgresos[mesAnio]?.proyectado)
+								: ''
+								}
+						 </td>
+						<td class="text-xs border font-bold text-right  border-black px-4 py-2 min-w-[100px]">
+							${totalesEgresos[mesAnio]?.real != null && totalesEgresos[mesAnio]?.real !== 0
+					? formatearMiles(totalesEgresos[mesAnio]?.real)
+					: ''
+				}
+						</td>
+						<td class="text-xs border font-bold text-right  border-black px-4 py-2 min-w-[100px]">
+							${totalesEgresos[mesAnio]?.forecast != null && totalesEgresos[mesAnio]?.forecast !== 0
+					? formatearMiles(totalesEgresos[mesAnio]?.forecast)
+					: ''
+				}
+						</td>`;
+		});
+
+		totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalRealEgresos !== 0 ? formatearMiles(totalRealEgresos) : ''}</td>`;
+		totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectadoEgresos !==0 ? formatearMiles(totalProyectadoEgresos): ''}</td>`;
+		totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalForecastEgresos !== 0 ? formatearMiles(totalForecastEgresos): ''}</td>`;
+		tbody.appendChild(totalEgresosRow);
+
+		const margenContribucionRow = document.createElement('tr');
+		margenContribucionRow.className = 'bg-gray-300 font-bold';
+
+		margenContribucionRow.innerHTML = '<td class="text-left text-xs font-medium font-bold sticky left-0 bg-gray-300">Margen de Contribución</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
+		let totalmargenreal = 0;
+		mesesUnicos.forEach(mesAnio => {
+
+			const ingresosProyectado = flujoCaja
+				.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Proyectado')
+				.reduce((sum, item) => sum + item.monto, 0);
+
+			const ingresosReal = flujoCaja
+				.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+				.reduce((sum, item) => sum + item.monto, 0);
+
+
+			const egresosProyectado = totalesEgresos[mesAnio]?.proyectado || 0;
+			const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+
+
+			const margenProyectado = ingresosProyectado - egresosProyectado;
+			const margenReal = ingresosReal - egresosReal;
+			totalmargenreal += margenReal;
+
+			margenContribucionRow.innerHTML += `
+			<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenProyectado !== 0 ? formatearMiles(margenProyectado) : '' }</td>
+			<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenReal !== 0 ? formatearMiles(margenReal) : ''}</td>
+			<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+		});
+		margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalmargenreal)}</td>`;
+		margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+		margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+
+		tbody.appendChild(margenContribucionRow);
+
+
+		const porcentajeMargenRow = document.createElement('tr');
+		porcentajeMargenRow.className = 'bg-green-100 font-bold';
+
+		porcentajeMargenRow.innerHTML = '<td class="text-left text-xs font-medium sticky left-0 bg-green-100">% de Margen de Contribución</td><td colspan="3"></td>';
+
+		mesesUnicos.forEach(mesAnio => {
+			const ingresosReal = flujoCaja
+				.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+				.reduce((sum, item) => sum + item.monto, 0);
+
+			const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+			const margenReal = ingresosReal - egresosReal;
+			const porcentajeMargen = ingresosReal > 0 ? (margenReal / ingresosReal) * 100 : 0;
+
+			// Mostrar en la tabla HTML
+			porcentajeMargenRow.innerHTML += `<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+										  <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">
+											  ${porcentajeMargen !== 0 ? porcentajeMargen.toFixed(2) : ''}%
+										  </td>
+										  <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+		});
+		const porcentajetotalmargen = totalRealIngresos > 0 ? (totalmargenreal / totalRealIngresos) * 100 : 0;
+		porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${porcentajetotalmargen.toFixed(2)}%</td>`;
+		porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+		porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+
+		tbody.appendChild(porcentajeMargenRow);
+
+
+		const saldoAcumuladoRow = document.createElement('tr');
+		saldoAcumuladoRow.className = 'bg-yellow-100 font-bold';
+		saldoAcumuladoRow.innerHTML = '<td class="text-left text-xs font-medium  sticky left-0 bg-yellow-100">Saldo Acumulado</td><td colspan="3"></td>';
+
+		let saldoAcumulado = 0;
+
+		mesesUnicos.forEach(mesAnio => {
+			const ingresosReal = flujoCaja
+				.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+				.reduce((sum, item) => sum + item.monto, 0);
+
+			const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+			const margenReal = ingresosReal - egresosReal;
+
+			saldoAcumulado += margenReal;
+
+			saldoAcumuladoRow.innerHTML += `
+						<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+						 <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${saldoAcumulado !== 0 ? formatearMiles(saldoAcumulado) : ''}</td>
+						<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+		});
+		const saldoacumuladototal = totalmargenreal;
+		saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${saldoacumuladototal !== 0 ? formatearMiles(saldoacumuladototal) : '' }</td>`;
+		saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+		saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+		tbody.appendChild(saldoAcumuladoRow);
+		tabla.appendChild(tbody);
+		document.getElementById('tablaFlujoCaja').appendChild(tabla);
+	}
+
+	async function init() {
+		const idProyecto = document.getElementById("proyectoId").getAttribute("data-idproyecto");
+		const flujoCajaData = await obtenerFlujoCaja(idProyecto);
+
+		if (flujoCajaData.length > 0) {
+			crearTabla(flujoCajaData);
+		} else {
+			document.getElementById('tablaFlujoCaja').innerText = 'No hay datos disponibles.';
+		}
+	}
+
+	init();
 
 </script>
 
 @section Scripts {
-    <script src="~/js/ExportarFlujoCaja.js"></script>
+	<script src="~/js/ExportarFlujoCaja.js"></script>
 }
 @*
 <script>
     const nombreProyecto = document.getElementById('proyectoData').dataset.nombreproyecto;
 
     async function exportarTablaExcel(tablaId, nombreArchivo) {
-   
+
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Flujo de Caja');
         worksheet.views = [{ state: 'frozen', xSplit: 4, ySplit: 6 }];
-       
+
         const response = await fetch('/images/unitt.png');
         const imageBlob = await response.blob();
         const arrayBuffer = await imageBlob.arrayBuffer();
@@ -599,20 +633,20 @@
             ext: { width: 150, height: 50 }, 
         });
 
-        
+
         worksheet.mergeCells('B3:D3');
         const titleCell = worksheet.getCell('B3');
         titleCell.value = `Flujo de Caja Proyecto: ${nombreProyecto}`;
         titleCell.font = { bold: true, size: 14 }; 
         titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
 
-       
+
         const startRow = 5; 
 
-     
+
         const tabla = document.getElementById(tablaId);
 
-      
+
         const rows = tabla.rows;
         for (let i = 0; i < rows.length; i++) {
             const row = rows[i];
@@ -625,7 +659,7 @@
                 const rawHtml = cell.innerHTML.trim();
                 let rawText = rawHtml.replace(/<[^>]*>/g, '').trim()
                 const cleanedText = rawText.replace(/\./g, '').replace(',', '.').replace(/\+/g, '').trim();
-                
+
                 if (rawText.includes('%')) {
                     const cleanedTextWithoutPercent = cleanedText.replace('%', '').trim(); 
                     if (!isNaN(cleanedTextWithoutPercent) && cleanedTextWithoutPercent !== '') {
@@ -635,7 +669,7 @@
                         excelCell.alignment = { vertical: 'middle', horizontal: 'right' }; 
                     } else {
                         excelCell.value = rawText;
-                       
+
                         if (rawText.includes('%') && cleanedTextWithoutPercent !== '') {
                             excelCell.alignment = { vertical: 'middle', horizontal: 'left' };
                         } else {
@@ -654,7 +688,7 @@
                     excelCell.value = rawText; 
                     excelCell.alignment = { vertical: 'middle', horizontal: 'left' }; 
                 }
-                
+
 
                 if (cell.colSpan > 1) {
                     worksheet.mergeCells(startRow + i, colIndex, startRow + i, colIndex + cell.colSpan - 1);

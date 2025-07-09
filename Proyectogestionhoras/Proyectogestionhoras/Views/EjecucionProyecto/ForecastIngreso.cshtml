@@ -1,510 +1,543 @@
 ﻿@using Proyectogestionhoras.Models.DTO
 @model Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>
 @{
-    ViewData["Title"] = "Forecast Ingreso";
+	ViewData["Title"] = "Forecast Ingreso";
 }
 
 <style>
-    .form-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 60px;
-    }
+	.form-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		background-color: #fff;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		margin-top: 60px;
+	}
 
-    .form-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-        margin-bottom: 10px;
-    }
+	.form-title {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: #333;
+		text-align: center;
+		margin-bottom: 10px;
+	}
 
-    .form-subtitle {
-        font-size: 1.0rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-
-
-    .highlight {
-        background-color: #f8d7da;
-        font-weight: bold;
-    }
-
-    .panel-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 0px;
-        width: 100%;
-        margin-top: 0;
-        padding-top: 0;
-    }
-
-    .panel-item {
-        flex-grow: 1;
-        border: 2px solid #444;
-        border-radius: 0;
-        padding: 10px 20px;
-        background-color: #f2f3f4;
-        color: black;
-        text-align: center;
-        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-    }
+	.form-subtitle {
+		font-size: 1.0rem;
+		color: #666;
+		text-align: center;
+		margin-bottom: 20px;
+	}
 
 
 
-        .panel-item:hover {
-            background-color: #fcaa67;
-            color: #fff;
-        }
+	.highlight {
+		background-color: #f8d7da;
+		font-weight: bold;
+	}
 
-    .alert {
-        padding: 15px;
-        font-size: 16px;
-        font-weight: bold;
-        border: 1px solid transparent;
-        border-radius: 5px;
-        margin-bottom: 15px;
-        text-align: center;
-        transition: opacity 0.3s ease-in-out;
-    }
+	.panel-container {
+		display: flex;
+		justify-content: space-between;
+		gap: 0px;
+		width: 100%;
+		margin-top: 0;
+		padding-top: 0;
+	}
 
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-        border-color: #f5c6cb;
-    }
+	.panel-item {
+		flex-grow: 1;
+		border: 2px solid #444;
+		border-radius: 0;
+		padding: 10px 20px;
+		background-color: #f2f3f4;
+		color: black;
+		text-align: center;
+		transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+	}
 
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border-color: #c3e6cb;
-    }
+
+
+		.panel-item:hover {
+			background-color: #fcaa67;
+			color: #fff;
+		}
+
+	.alert {
+		padding: 15px;
+		font-size: 16px;
+		font-weight: bold;
+		border: 1px solid transparent;
+		border-radius: 5px;
+		margin-bottom: 15px;
+		text-align: center;
+		transition: opacity 0.3s ease-in-out;
+	}
+
+	.alert-danger {
+		background-color: #f8d7da;
+		color: #721c24;
+		border-color: #f5c6cb;
+	}
+
+	.alert-success {
+		background-color: #d4edda;
+		color: #155724;
+		border-color: #c3e6cb;
+	}
 </style>
 @{
-    int? idproyecto = Context.Session.GetInt32("numproyecto");
-    int idproyectos = 0;
+	int? idproyecto = Context.Session.GetInt32("numproyecto");
+	int idproyectos = 0;
 }
-<div class="form-container">
-    @if (TempData["ErrorMessageIngresos"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["ErrorMessageIngresos"]
-        </div>
-    }
-    @if (TempData["SuccessMessageIngresos"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            @TempData["SuccessMessageIngresos"]
-        </div>
-    }
-   
-    <div class="form-group">
+<div class="max-w-[1200px] py-3 mx-auto mt-10">
+	@foreach (var proyecto in ViewBag.Proyecto)
+	{
+		idproyectos = proyecto.Id;
+		<div class="flex bg-white rounded-t-xl overflow-hidden border border-gray-300">
+			<!--tab marcada-->
+			<a href="#"
+			   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+				Forecast Ingresos del Proyecto
+			</a>
+			<!-- TAB 1 -->
+			<a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyectos})"
+			   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastCostos"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+				Forecast Costos del Proyecto
+			</a>
 
-        @foreach (var proyecto in ViewBag.Proyecto)
-        {
-            idproyectos = proyecto.Id;
-            <div class="panel-container flex justify-center mb-5">
-                <a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyectos})" class="panel-item bg-blue-500 text-white px-4 py-2 rounded-l hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    Forecast Costos del Proyecto
-                </a>
-                <a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=idproyectos})" class="panel-item bg-green-500 text-white px-4 py-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
-                    Flujo de Caja del Proyecto
-                </a>
-                <a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})" class="panel-item bg-gray-500 text-white px-4 py-2 rounded-r hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
-                    Seleccionar otro Proyecto
-                </a>
-            </div>
-            <p class="form-subtitle" style="color:black;">Información del Proyecto</p>
+			<!-- TAB 2 -->
+			<a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=idproyectos})"
+			   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+				Flujo de Caja del Proyecto
+			</a>
 
+			<!-- TAB 3 -->
+			<a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})"
+			   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+           @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
+               ? "text-orange-500 border-orange-500 bg-white"
+               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+				Seleccionar otro Proyecto
+			</a>
+		</div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-xs border-collapse">
-                    <thead>
-                        <tr class="bg-green-100 text-black">
-                            <th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
-                            <th class="p-2 border border-gray-300 text-left">Proyecto</th>
-                            <th class="p-2 border border-gray-300 text-left">Cliente</th>
-                            <th class="p-2 border border-gray-300 text-left">Departamento</th>
-                            <th class="p-2 border border-gray-300 text-left">Moneda</th>
-                            @if (proyecto.MontoOrigenExtranjero > 0)
-                            {
-                                <th class="p-2 border border-gray-300 text-left">Monto Moneda Origen</th>
-                            }
-                            <th class="p-2 border border-gray-300 text-left">MontoCLP</th>
-                            <th class="p-2 border border-gray-300 text-left">C.Costo</th>
-                            <th class="p-2 border border-gray-300 text-left">Código</th>
-                            <th class="p-2 border border-gray-300 text-left">Tipología</th>
-                            <th class="p-2 border border-gray-300 text-left">Empresa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
-                            <td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
-                                @proyecto.MONEDA
-                            </td>
-                            @if (proyecto.MontoOrigenExtranjero > 0)
-                            {
-                                <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
-                            }
-                            <td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+	}
+	<div class="bg-white p-6 border border-t-0 border-gray-300 rounded-b-xl shadow">
+		@if (TempData["ErrorMessageIngresos"] != null)
+		{
+			<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+				@TempData["ErrorMessageIngresos"]
+			</div>
+		}
+		@if (TempData["SuccessMessageIngresos"] != null)
+		{
+			<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
+				@TempData["SuccessMessageIngresos"]
+			</div>
+		}
+
+		<div class="form-group">
+
+			@foreach (var proyecto in ViewBag.Proyecto)
+			{
 
 
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
-                            <td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Empresa</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        }
-    </div>
-    <div class="form-group">
-        <p class="form-subtitle" style="color:black">Status Ingresos</p>
-        <div class="flex justify-center">
-            <table class="w-full max-w-3xl border-collapse text-left text-xs">
-
-                <tbody>
-                    <tr>
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha</td>
-                        @{
-
-                            var mesesAnios = new HashSet<(int, int)>();
+				<p class="form-subtitle" style="color:black;">Información del Proyecto</p>
 
 
-                            foreach (var proyecto in Model)
-                            {
-                                foreach (var tipo in proyecto.Value)
-                                {
-                                    if (tipo.Key == "Ingreso")
-                                    {
-                                        foreach (var flujo in tipo.Value)
-                                        {
-                                            var mesAnio = flujo.Key;
-                                            if (flujo.Value.Any(f => f.Estado == "Real" || f.Estado == "Proyectado" || f.Estado == "Forecast"))
-                                            {
-                                                mesesAnios.Add(mesAnio);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+				<div class="overflow-x-auto">
+					<table class="min-w-full text-xs border-collapse">
+						<thead>
+							<tr class="bg-green-100 text-black">
+								<th class="p-2 border border-gray-300 text-left">Número del Proyecto</th>
+								<th class="p-2 border border-gray-300 text-left">Proyecto</th>
+								<th class="p-2 border border-gray-300 text-left">Cliente</th>
+								<th class="p-2 border border-gray-300 text-left">Departamento</th>
+								<th class="p-2 border border-gray-300 text-left">Moneda</th>
+								@if (proyecto.MontoOrigenExtranjero > 0)
+								{
+									<th class="p-2 border border-gray-300 text-left">Monto Moneda Origen</th>
+								}
+								<th class="p-2 border border-gray-300 text-left">MontoCLP</th>
+								<th class="p-2 border border-gray-300 text-left">C.Costo</th>
+								<th class="p-2 border border-gray-300 text-left">Código</th>
+								<th class="p-2 border border-gray-300 text-left">Tipología</th>
+								<th class="p-2 border border-gray-300 text-left">Empresa</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.numproyecto</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.NombreProyecto</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.NombreCliente</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.NOMBREDEPARTAMENTO</td>
+								<td class="p-2 border border-gray-300 text-left" data-moneda="@proyecto.MONEDA">
+									@proyecto.MONEDA
+								</td>
+								@if (proyecto.MontoOrigenExtranjero > 0)
+								{
+									<td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
+								}
+								<td class="p-2 border border-gray-300 text-left">@String.Format("{0:N0}", @proyecto.MONTO)</td>
 
 
-                            var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_CCosto</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Codigo</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Tipologia</td>
+								<td class="p-2 border border-gray-300 text-left">@proyecto.Tipo_Empresa</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			}
+		</div>
+		<div class="form-group">
+			<p class="form-subtitle" style="color:black">Status Ingresos</p>
+			<div class="flex justify-center">
+				<table class="w-full max-w-3xl border-collapse text-left text-xs">
+
+					<tbody>
+						<tr>
+							<td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha</td>
+							@{
+
+								var mesesAnios = new HashSet<(int, int)>();
 
 
-                            foreach (var mesAnio in mesesAniosOrdenados)
-                            {
-                                <th class="p-2 bg-blue-100 border border-gray-300 text-center">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
-                            }
-                        }
-                        <td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Totales</td>
-                    </tr>
-                    <tr>
-                        <td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Proyectado</td>
-                        @{
-                            decimal totalProyectadoFila = 0;
-                        }
-                        @foreach (var proyecto in Model.OrderBy(p => p.Key))
-                        {
-                            foreach (var tipo in proyecto.Value)
-                            {
+								foreach (var proyecto in Model)
+								{
+									foreach (var tipo in proyecto.Value)
+									{
+										if (tipo.Key == "Ingreso")
+										{
+											foreach (var flujo in tipo.Value)
+											{
+												var mesAnio = flujo.Key;
+												if (flujo.Value.Any(f => f.Estado == "Real" || f.Estado == "Proyectado" || f.Estado == "Forecast"))
+												{
+													mesesAnios.Add(mesAnio);
+												}
+											}
+										}
+									}
+								}
 
 
-
-                                foreach (var mesAnio in mesesAniosOrdenados)
-                                {
-                                    var flujo = tipo.Value
-                                    .FirstOrDefault(flujoList =>
-                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
-
-                                    decimal proyectado = 0;
-
-                                    if (flujo.Key != default)
-                                    {
-
-                                        proyectado = flujo.Value
-                                        .Where(f => f.Estado == "Proyectado")
-                                        .Sum(f => f.Monto);
-                                    }
+								var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
 
 
-                                    if (tipo.Key == "Ingreso")
-                                    {
-                                        <td class="p-2 border border-gray-300 text-right">
-                                            @(proyectado == 0 ? "" : String.Format("{0:N0}", proyectado))
-                                        </td>
-                                        totalProyectadoFila += proyectado;
-                                    }
-                                }
-                            }
-                        }
-                        <td class="p-2 border border-gray-300 text-right">
-                            @(totalProyectadoFila == 0 ? "" : String.Format("{0:N0}", totalProyectadoFila))
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Real</td>
-                        @{
-                            decimal totalRealFila = 0;
-                        }
-                        @foreach (var proyecto in Model.OrderBy(p => p.Key))
-                        {
-                            foreach (var tipo in proyecto.Value)
-                            {
+								foreach (var mesAnio in mesesAniosOrdenados)
+								{
+									<th class="p-2 bg-blue-100 border border-gray-300 text-center">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
+								}
+							}
+							<td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Totales</td>
+						</tr>
+						<tr>
+							<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Proyectado</td>
+							@{
+								decimal totalProyectadoFila = 0;
+							}
+							@foreach (var proyecto in Model.OrderBy(p => p.Key))
+							{
+								foreach (var tipo in proyecto.Value)
+								{
 
 
 
-                                foreach (var mesAnio in mesesAniosOrdenados)
-                                {
-                                    var flujo = tipo.Value
-                                    .FirstOrDefault(flujoList =>
-                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+									foreach (var mesAnio in mesesAniosOrdenados)
+									{
+										var flujo = tipo.Value
+										.FirstOrDefault(flujoList =>
+										flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
 
-                                    decimal real = 0;
+										decimal proyectado = 0;
 
-                                    if (flujo.Key != default)
-                                    {
+										if (flujo.Key != default)
+										{
 
-                                        real = flujo.Value
-                                        .Where(f => f.Estado == "Real")
-                                        .Sum(f => f.Monto);
-                                    }
-
-
-                                    if (tipo.Key == "Ingreso")
-                                    {
-                                        <td class="p-2 border border-gray-300 text-right">
-                                            @(real == 0 ? "" : String.Format("{0:N0}", real))
-                                        </td>
-                                        totalRealFila += real;
-                                    }
-                                }
-                            }
-                        }
-                        <td class="p-2 border border-gray-300 text-right">
-                            @(totalRealFila == 0 ? "" : String.Format("{0:N0}", totalRealFila))
-                        </td>
-                    </tr>
+											proyectado = flujo.Value
+											.Where(f => f.Estado == "Proyectado")
+											.Sum(f => f.Monto);
+										}
 
 
-
-                    <tr>
-                        <td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Forecast</td>
-                        @{
-                            decimal totalForecastFila = 0;
-                        }
-                        @foreach (var proyecto in Model.OrderBy(p => p.Key))
-                        {
-                            foreach (var tipo in proyecto.Value)
-                            {
+										if (tipo.Key == "Ingreso")
+										{
+											<td class="p-2 border border-gray-300 text-right">
+												@(proyectado == 0 ? "" : String.Format("{0:N0}", proyectado))
+											</td>
+											totalProyectadoFila += proyectado;
+										}
+									}
+								}
+							}
+							<td class="p-2 border border-gray-300 text-right">
+								@(totalProyectadoFila == 0 ? "" : String.Format("{0:N0}", totalProyectadoFila))
+							</td>
+						</tr>
+						<tr>
+							<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Real</td>
+							@{
+								decimal totalRealFila = 0;
+							}
+							@foreach (var proyecto in Model.OrderBy(p => p.Key))
+							{
+								foreach (var tipo in proyecto.Value)
+								{
 
 
 
-                                foreach (var mesAnio in mesesAniosOrdenados)
-                                {
-                                    var flujo = tipo.Value
-                                    .FirstOrDefault(flujoList =>
-                                    flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+									foreach (var mesAnio in mesesAniosOrdenados)
+									{
+										var flujo = tipo.Value
+										.FirstOrDefault(flujoList =>
+										flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
 
-                                    decimal forecast = 0;
+										decimal real = 0;
 
-                                    if (flujo.Key != default)
-                                    {
+										if (flujo.Key != default)
+										{
 
-                                        forecast = flujo.Value
-                                        .Where(f => f.Estado == "Forecast")
-                                        .Sum(f => f.Monto);
-                                    }
+											real = flujo.Value
+											.Where(f => f.Estado == "Real")
+											.Sum(f => f.Monto);
+										}
 
 
-                                    if (tipo.Key == "Ingreso")
-                                    {
-                                        <td class="p-2 border border-gray-300 text-right">
-                                            @(forecast == 0 ? "" : String.Format("{0:N0}", forecast))
-                                        </td>
-                                        totalForecastFila += forecast;
-                                    }
-                                }
-                            }
-                        }
-                        <td class="p-2 border border-gray-300 text-right">
-                            @(totalForecastFila == 0 ? "" : String.Format("{0:N0}", totalForecastFila))
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+										if (tipo.Key == "Ingreso")
+										{
+											<td class="p-2 border border-gray-300 text-right">
+												@(real == 0 ? "" : String.Format("{0:N0}", real))
+											</td>
+											totalRealFila += real;
+										}
+									}
+								}
+							}
+							<td class="p-2 border border-gray-300 text-right">
+								@(totalRealFila == 0 ? "" : String.Format("{0:N0}", totalRealFila))
+							</td>
+						</tr>
 
 
 
-    <div class="form-group">
-        <form asp-action="RegistrarIngresos" asp-controller="EjecucionProyecto" method="post">
-            <input type="hidden" name="idproyecto" value="@idproyecto" />
-            <p class="form-subtitle" style="color:black;">Registro de Ingresos</p>
-            <div class="overflow-x-auto">
-                <table id="tablaingresos" class="min-w-full text-xs border-collapse">
-                    <thead>
-                        <tr class="bg-blue-100 text-black">
-                            <th class="p-2 border border-gray-300 text-left">Nº Documento</th>
-                            <th class="p-2 border border-gray-300 text-left">Fecha Emision</th>
-                            <th class="p-2 border border-gray-300 text-left">Fecha de Pago</th>
-                            @* <th class="p-2 border border-gray-300 text-left">Monto USD</th>
+						<tr>
+							<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Forecast</td>
+							@{
+								decimal totalForecastFila = 0;
+							}
+							@foreach (var proyecto in Model.OrderBy(p => p.Key))
+							{
+								foreach (var tipo in proyecto.Value)
+								{
+
+
+
+									foreach (var mesAnio in mesesAniosOrdenados)
+									{
+										var flujo = tipo.Value
+										.FirstOrDefault(flujoList =>
+										flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+
+										decimal forecast = 0;
+
+										if (flujo.Key != default)
+										{
+
+											forecast = flujo.Value
+											.Where(f => f.Estado == "Forecast")
+											.Sum(f => f.Monto);
+										}
+
+
+										if (tipo.Key == "Ingreso")
+										{
+											<td class="p-2 border border-gray-300 text-right">
+												@(forecast == 0 ? "" : String.Format("{0:N0}", forecast))
+											</td>
+											totalForecastFila += forecast;
+										}
+									}
+								}
+							}
+							<td class="p-2 border border-gray-300 text-right">
+								@(totalForecastFila == 0 ? "" : String.Format("{0:N0}", totalForecastFila))
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+
+		<div class="form-group">
+			<form asp-action="RegistrarIngresos" asp-controller="EjecucionProyecto" method="post">
+				<input type="hidden" name="idproyecto" value="@idproyecto" />
+				<p class="form-subtitle" style="color:black;">Registro de Ingresos</p>
+				<div class="overflow-x-auto">
+					<table id="tablaingresos" class="min-w-full text-xs border-collapse">
+						<thead>
+							<tr class="bg-blue-100 text-black">
+								<th class="p-2 border border-gray-300 text-left">Nº Documento</th>
+								<th class="p-2 border border-gray-300 text-left">Fecha Emision</th>
+								<th class="p-2 border border-gray-300 text-left">Fecha de Pago</th>
+								@* <th class="p-2 border border-gray-300 text-left">Monto USD</th>
                             <th class="p-2 border border-gray-300 text-left">T/C</th>*@
-                            <th class="p-2 border border-gray-300 text-left">Monto CLP</th>
-                            <th class="p-2 border border-gray-300 text-left">IVA</th>
-                            <th class="p-2 border border-gray-300 text-left">Estado</th>
-                            
-                            <th class="p-2 border border-gray-300 text-left">Cuenta Asociada</th>
+								<th class="p-2 border border-gray-300 text-left">Monto CLP</th>
+								<th class="p-2 border border-gray-300 text-left">IVA</th>
+								<th class="p-2 border border-gray-300 text-left">Estado</th>
 
-                            <th class="p-2 border border-gray-300 text-left">Glosa</th>
-                            <th class="p-2 border border-gray-300 text-left">Acción</th>
+								<th class="p-2 border border-gray-300 text-left">Cuenta Asociada</th>
+
+								<th class="p-2 border border-gray-300 text-left">Glosa</th>
+								<th class="p-2 border border-gray-300 text-left">Acción</th>
 
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (ViewBag.Ingresos != null)
-                        {
-                            foreach (var ingreso in ViewBag.Ingresos)
-                            {
+							</tr>
+						</thead>
+						<tbody>
+							@if (ViewBag.Ingresos != null)
+							{
+								foreach (var ingreso in ViewBag.Ingresos)
+								{
 
-                                <tr>
-                                    <!-- Numdocumento -->
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <input type="text" value="@ingreso.Numdocumento" name="Numdocumento" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" />
-                                    </td>
-                                    <!-- FechaEmision -->
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <input type="date" value="@ingreso.FechaEmision?.ToString("yyyy-MM-dd")" name="FechaEmision" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
-                                    </td>
-                                    <!-- FechaPago -->
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <input type="date" value="@ingreso.FechaPago?.ToString("yyyy-MM-dd")" name="FechaPago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
-                                    </td>
-                                    <!-- Montous -->
-                                    @*<td class="p-2 border border-gray-300 text-right">
+									<tr>
+										<!-- Numdocumento -->
+										<td class="p-2 border border-gray-300 text-left">
+											<input type="text" value="@ingreso.Numdocumento" name="Numdocumento" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" />
+										</td>
+										<!-- FechaEmision -->
+										<td class="p-2 border border-gray-300 text-left">
+											<input type="date" value="@ingreso.FechaEmision?.ToString("yyyy-MM-dd")" name="FechaEmision" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+										</td>
+										<!-- FechaPago -->
+										<td class="p-2 border border-gray-300 text-left">
+											<input type="date" value="@ingreso.FechaPago?.ToString("yyyy-MM-dd")" name="FechaPago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" />
+										</td>
+										<!-- Montous -->
+										@*<td class="p-2 border border-gray-300 text-right">
                             <input type="text" value="@String.Format("{0:N0}", ingreso.Montous)" name="Montous" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" />
                             </td>*@
-                                    <!-- Tc -->
-                                    @*<td class="p-2 border border-gray-300 text-right">
+										<!-- Tc -->
+										@*<td class="p-2 border border-gray-300 text-right">
                             <input type="text" value="@String.Format("{0:N0}", @ingreso.Tc)" name="Tc" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" />
                             </td>*@
-                                    <!-- Montoclp -->
-                                    <td class="p-2 border border-gray-300 text-right">
-                                        <input value="@String.Format("{0:N0}", ingreso.Montoclp)" type="text" name="Montoclp" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-                                    </td>
-                                    <!-- Iva -->
-                                    <td class="p-2 border border-gray-300 text-right">
-                                        <input value="@String.Format("{0:N0}", ingreso.Iva)" type="text" name="Iva" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-                                    </td>
-                                    <!-- Estado -->
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+										<!-- Montoclp -->
+										<td class="p-2 border border-gray-300 text-right">
+											<input value="@String.Format("{0:N0}", ingreso.Montoclp)" type="text" name="Montoclp" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+										</td>
+										<!-- Iva -->
+										<td class="p-2 border border-gray-300 text-right">
+											<input value="@String.Format("{0:N0}", ingreso.Iva)" type="text" name="Iva" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+										</td>
+										<!-- Estado -->
+										<td class="p-2 border border-gray-300 text-left">
+											<select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
 
 
-                                            @if (ingreso.Estado == "Forecast")
-                                            {
-                                                <option value="Forecast" selected>Forecast</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Forecast">Forecast</option>
-                                            }
+												@if (ingreso.Estado == "Forecast")
+												{
+													<option value="Forecast" selected>Forecast</option>
+												}
+												else
+												{
+													<option value="Forecast">Forecast</option>
+												}
 
-                                            @if (ingreso.Estado == "Pagada")
-                                            {
-                                                <option value="Pagada" selected>Pagada</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Pagada">Pagada</option>
-                                            }
-                                        </select>
-                                    </td>
-                                 
-                                    <!-- Idcuenta -->
-                                    <td class="p-2 border border-gray-300 text-right">
-                                        <input value="@ingreso.Idcuenta" name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" />
-                                    </td>
+												@if (ingreso.Estado == "Pagada")
+												{
+													<option value="Pagada" selected>Pagada</option>
+												}
+												else
+												{
+													<option value="Pagada">Pagada</option>
+												}
+											</select>
+										</td>
 
-                                    <!-- Observacion -->
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ingreso.Observacion</textarea>
-                                    </td>
-                                    <td class="p-2 border border-gray-300 text-left">
-                                        <button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarFilaIngreso(this)">Eliminar</button>
-                                    </td>
-                                    <td style="display:none;">
-                                        <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
-                                    </td>
+										<!-- Idcuenta -->
+										<td class="p-2 border border-gray-300 text-right">
+											<input value="@ingreso.Idcuenta" name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" />
+										</td>
 
-                                    <input type="hidden" name="IdIngresoreal" value="@ingreso.Id" />
+										<!-- Observacion -->
+										<td class="p-2 border border-gray-300 text-left">
+											<textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">@ingreso.Observacion</textarea>
+										</td>
+										<td class="p-2 border border-gray-300 text-left">
+											<button type="button" class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700" onclick="limpiarFilaIngreso(this)">Eliminar</button>
+										</td>
+										<td style="display:none;">
+											<input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+										</td>
 
-                                </tr>
-                            }
-                        }
-                        <tr>
+										<input type="hidden" name="IdIngresoreal" value="@ingreso.Id" />
 
-                            <td class="p-2 border border-gray-300 text-left"><input type="text" name="Numdocumento" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
-                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaEmision" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                            <td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaPago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+									</tr>
+								}
+							}
+							<tr>
 
-                            @*<td class="p-2 border border-gray-300 text-right"><input type="text" id="montousd" name="Montous" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
+								<td class="p-2 border border-gray-300 text-left"><input type="text" name="Numdocumento" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
+								<td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaEmision" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+								<td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaPago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+
+								@*<td class="p-2 border border-gray-300 text-right"><input type="text" id="montousd" name="Montous" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
 
 
                             <td class="p-2 border border-gray-300 text-right "><input name="Tc" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 " /></td>*@
-                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="montoclp" name="Montoclp" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                            <td class="p-2 border border-gray-300 text-right"><input type="text" id="iva" name="Iva" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                            <td class="p-2 border border-gray-300 text-left">
-                                <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                    <option value="Forecast" selected>Forecast</option>
-                                    <option value="Pagada">Pagada</option>
-                                </select>
-                            </td>
-                          
-                            <td class="p-2 border border-gray-300 text-right "><input name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 " /></td>
+								<td class="p-2 border border-gray-300 text-right"><input type="text" id="montoclp" name="Montoclp" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+								<td class="p-2 border border-gray-300 text-right"><input type="text" id="iva" name="Iva" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+								<td class="p-2 border border-gray-300 text-left">
+									<select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+										<option value="Forecast" selected>Forecast</option>
+										<option value="Pagada">Pagada</option>
+									</select>
+								</td>
 
-                            <td class="p-2 border border-gray-300 text-left">
-                                <textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
-                            </td>
-                            <td style="display:none;">
-                                <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
-                            </td>
-                            <td style="display:none;">
-                                <input type="hidden" name="IdIngresoreal" value="" />
-                            </td>
+								<td class="p-2 border border-gray-300 text-right "><input name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20 " /></td>
 
-
-                        </tr>
-
-                    </tbody>
-                </table>
-                <td>
-                    <button id="agregarFilaIngresos" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Ingreso</button>
-                </td>
-            </div>
-            <div class="text-center mt-2">
-                <button type="submit" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md transition">Guardar Ingresos</button>
-            </div>
-        </form>
-    </div>
+								<td class="p-2 border border-gray-300 text-left">
+									<textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea>
+								</td>
+								<td style="display:none;">
+									<input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+								</td>
+								<td style="display:none;">
+									<input type="hidden" name="IdIngresoreal" value="" />
+								</td>
 
 
+							</tr>
+
+						</tbody>
+					</table>
+					<td>
+						<button id="agregarFilaIngresos" class="px-4 py-2 text-sm text-white bg-blue-500 border border-gray-300 rounded transition duration-300 ease-in-out hover:bg-blue-400 hover:opacity-80">Agregar otro Ingreso</button>
+					</td>
+				</div>
+				<div class="text-center mt-2">
+					<button type="submit" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md transition">Guardar Ingresos</button>
+				</div>
+			</form>
+		</div>
+
+
+	</div>
 </div>
 @*
 @section Scripts {
@@ -512,150 +545,150 @@
 }
 *@
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+	document.addEventListener('DOMContentLoaded', function () {
 
-        function parseNumber(value) {
-            return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
-        }
+		function parseNumber(value) {
+			return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
+		}
 
-        function formatNumber(value) {
-            return value.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
-
-
+		function formatNumber(value) {
+			return value.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+		}
 
 
-        function formatCurrency(event) {
-            let value = event.target.value;
 
 
-            value = value.replace(/[^\d-]/g, '');
+		function formatCurrency(event) {
+			let value = event.target.value;
 
 
-            if (value.indexOf('-') > 0) {
-                value = value.replace(/-/g, '');
-            }
+			value = value.replace(/[^\d-]/g, '');
 
 
-            if (value !== '' && value !== '-') {
-
-                const isNegative = value.startsWith('-');
-                value = value.replace(/-/g, '');
-
-
-                let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+			if (value.indexOf('-') > 0) {
+				value = value.replace(/-/g, '');
+			}
 
 
-                if (isNegative) {
-                    formattedValue = '-' + formattedValue;
-                }
+			if (value !== '' && value !== '-') {
 
-                event.target.value = formattedValue;
-            } else {
-
-                event.target.value = value;
-            }
-        }
-
-        function removePoints(event) {
-            let value = event.target.value;
+				const isNegative = value.startsWith('-');
+				value = value.replace(/-/g, '');
 
 
-            value = value.replace(/\./g, '');
-            event.target.value = value;
-        }
+				let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 
-        function cleanInputsOnSubmit(event) {
+				if (isNegative) {
+					formattedValue = '-' + formattedValue;
+				}
 
-            const inputs = event.target.querySelectorAll('input[name*="Montous"], input[name*="Montoclp"], input[name*="Iva"]');
+				event.target.value = formattedValue;
+			} else {
 
-            inputs.forEach(input => {
+				event.target.value = value;
+			}
+		}
 
-                let value = input.value;
-                value = value.replace(/\./g, '');
-                input.value = value;
-            });
-        }
-
-
-        const montoInputs = document.querySelectorAll('input[name*="Montous"], input[name*="Montoclp"], input[name*="Iva"]');
-
-
-        montoInputs.forEach(input => {
-            input.addEventListener('input', formatCurrency);
-        });
+		function removePoints(event) {
+			let value = event.target.value;
 
 
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', cleanInputsOnSubmit);
-        }
-
-        document.getElementById("agregarFilaIngresos").addEventListener("click", function () {
-
-            setTimeout(() => {
-
-                const nuevosMontos = document.querySelectorAll('input[name*="Montoclp"], input[name*="Iva"]');
-
-                nuevosMontos.forEach(input => {
-                    if (!input.hasAttribute('data-format-listener')) {
-                        input.addEventListener('input', formatCurrency);
-                        input.setAttribute('data-format-listener', 'true');
-                    }
-                });
-            }, 100);
-        });
-
-        /*AGREGAR NUEVA FILA*/
-        $(document).ready(function () {
-            $('#agregarFilaIngresos').on('click', function (e) {
-                e.preventDefault();
-
-                const nuevaFila = `
-                            <tr>
-                                <td class="p-2 border border-gray-300 text-left"><input type="text" name="Numdocumento" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaEmision" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaPago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
-
-                                <td class="p-2 border border-gray-300 text-right"><input type="text" name="Montoclp" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"  /></td>
-                                <td class="p-2 border border-gray-300 text-right"><input type="text" name="Iva" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
-                                <td class="p-2 border border-gray-300 text-left">
-                                            <select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                                                <option value="Forecast" selected>Forecast</option>
-                                                <option value="Pagada">Pagada</option>
-                                            </select>
-                                </td>
-                                  
-                                <td class="p-2 border border-gray-300 text-right"><input name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
-                                <td class="p-2 border border-gray-300 text-left"><textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
-                                    <td style="display:none;">
-                                            <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
-                                        </td>
-                                <td style="display:none;">
-                                            <input type="hidden" name="IdIngresoreal" value="" />
-                                </td>
-                            </tr>
-                        `;
-
-                $('#tablaingresos tbody').append(nuevaFila);
-
-            });
-        });
-
-    });
-    function limpiarFilaIngreso(button) {
-        var fila = button.closest('tr');
+			value = value.replace(/\./g, '');
+			event.target.value = value;
+		}
 
 
-        var esEliminado = fila.querySelector('input.esEliminados');
-        if (esEliminado) {
-            esEliminado.value = 'true';
-        }
+		function cleanInputsOnSubmit(event) {
 
-        fila.style.display = 'none';
+			const inputs = event.target.querySelectorAll('input[name*="Montous"], input[name*="Montoclp"], input[name*="Iva"]');
 
-    }
+			inputs.forEach(input => {
+
+				let value = input.value;
+				value = value.replace(/\./g, '');
+				input.value = value;
+			});
+		}
+
+
+		const montoInputs = document.querySelectorAll('input[name*="Montous"], input[name*="Montoclp"], input[name*="Iva"]');
+
+
+		montoInputs.forEach(input => {
+			input.addEventListener('input', formatCurrency);
+		});
+
+
+		const form = document.querySelector('form');
+		if (form) {
+			form.addEventListener('submit', cleanInputsOnSubmit);
+		}
+
+		document.getElementById("agregarFilaIngresos").addEventListener("click", function () {
+
+			setTimeout(() => {
+
+				const nuevosMontos = document.querySelectorAll('input[name*="Montoclp"], input[name*="Iva"]');
+
+				nuevosMontos.forEach(input => {
+					if (!input.hasAttribute('data-format-listener')) {
+						input.addEventListener('input', formatCurrency);
+						input.setAttribute('data-format-listener', 'true');
+					}
+				});
+			}, 100);
+		});
+
+		/*AGREGAR NUEVA FILA*/
+		$(document).ready(function () {
+			$('#agregarFilaIngresos').on('click', function (e) {
+				e.preventDefault();
+
+				const nuevaFila = `
+							<tr>
+								<td class="p-2 border border-gray-300 text-left"><input type="text" name="Numdocumento" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
+								<td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaEmision" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+								<td class="p-2 border border-gray-300 text-left"><input type="date" name="FechaPago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+
+								<td class="p-2 border border-gray-300 text-right"><input type="text" name="Montoclp" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"  /></td>
+								<td class="p-2 border border-gray-300 text-right"><input type="text" name="Iva" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
+								<td class="p-2 border border-gray-300 text-left">
+											<select name="Estado" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+												<option value="Forecast" selected>Forecast</option>
+												<option value="Pagada">Pagada</option>
+											</select>
+								</td>
+
+								<td class="p-2 border border-gray-300 text-right"><input name="Idcuenta" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-20" /></td>
+								<td class="p-2 border border-gray-300 text-left"><textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
+									<td style="display:none;">
+											<input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+										</td>
+								<td style="display:none;">
+											<input type="hidden" name="IdIngresoreal" value="" />
+								</td>
+							</tr>
+						`;
+
+				$('#tablaingresos tbody').append(nuevaFila);
+
+			});
+		});
+
+	});
+	function limpiarFilaIngreso(button) {
+		var fila = button.closest('tr');
+
+
+		var esEliminado = fila.querySelector('input.esEliminados');
+		if (esEliminado) {
+			esEliminado.value = 'true';
+		}
+
+		fila.style.display = 'none';
+
+	}
 </script>
 
 
