@@ -537,10 +537,10 @@ namespace Proyectogestionhoras.Controllers
             await ActualizarFechaQuarterNegociacion(idproyecto,fechaquarterinicio,fechaquarterfin);
             await proyectoService.GestorServiciosProyecto(idproyecto, serviciosejecucion);
             await proyectoService.GestorProyectoGastos(idproyecto, gastosejecucion);
-            await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
-            await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
+            //await proyectoService.RestarHHAnaulesSocios(hhsocios, idproyecto);
+            //await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
             await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
-            await proyectoService.GestorFechaModificacionProyecto(idproyecto);
+           await proyectoService.GestorFechaModificacionProyecto(idproyecto);
             await EditarPlazoProyecto(idproyecto,plazo,fechatermino);
         }
 
@@ -557,6 +557,24 @@ namespace Proyectogestionhoras.Controllers
                 {
                     await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc,fechaquarterinicio,fechaquarterfin,plazo,fechatermino);
                     await proyectoService.GuardarActualizarHistorialCuenta(idproyecto, idcuentasocio, idcuentastaff, cuentasocio, cuentastaff);
+
+
+                    var montopresupuestoclp = Request.Form["monto"].ToString();
+                    var montopresupuestoclpstr = montopresupuestoclp.Replace(".", "");
+                    decimal montofinalclp = decimal.Parse(montopresupuestoclpstr);
+                    decimal montoorigenextranjeraus = 0;
+                    decimal tasacambiosus = 0;
+                    var montomonedaorigenustr = Request.Form["montoorigen"].ToString().Replace(".", "");
+                    var tasacambioustr = Request.Form["tasacambio"].ToString().Replace(".", "");
+                    montoorigenextranjeraus = decimal.Parse(montomonedaorigenustr, System.Globalization.CultureInfo.InvariantCulture);
+                    tasacambiosus = decimal.Parse(tasacambioustr, System.Globalization.CultureInfo.InvariantCulture);
+
+
+
+
+                    await EditarPresupuestoProyecto(idpresupuesto,moneda, montoorigenextranjeraus, tasacambiosus, montofinalclp);
+
+
                     TempData["SuccessEdicionProyecto"] = "¡Se Actualizaron los datos del proyecto con éxito!";
                     return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
                 }
@@ -653,8 +671,8 @@ namespace Proyectogestionhoras.Controllers
                         proyecto.Fechaejecucion = DateTime.Now;
                     }
                   
-                    await proyectoService.RestarHHAnualesCambioEstadoSocios(hhsocios);
-                    await proyectoService.RestarHHAnualesCambioEstadoStaff(hhstaff);
+                   // await proyectoService.RestarHHAnualesCambioEstadoSocios(hhsocios);
+                   // await proyectoService.RestarHHAnualesCambioEstadoStaff(hhstaff);
 
                 }
 
@@ -777,6 +795,22 @@ namespace Proyectogestionhoras.Controllers
            
         }
 
+
+        public async Task EditarPresupuestoProyecto(int idpresupuesto, string moneda, decimal montoorigen, decimal tasacambio, decimal montoclp)
+        {
+            var presupuesto = await context.Presupuestos.FindAsync(idpresupuesto);
+            if (presupuesto == null)
+            {
+
+                return;
+             }
+
+            presupuesto.Moneda = moneda;
+            presupuesto.Montomonedaorigen = montoorigen;
+            presupuesto.Monto = montoclp;
+            presupuesto.Tasacambio = tasacambio;
+            await context.SaveChangesAsync();
+        }
 
         [HttpPost]
         public async Task<IActionResult> TerminarProyecto(int id)

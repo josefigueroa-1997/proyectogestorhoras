@@ -120,13 +120,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task <IActionResult> ActualizarDatos(int idusuario, string nombre, string nombreusuario, string telefono, string email, int? hhsemanales, decimal costo, float? porcentaje, DateTime? fechainicio, DateTime? fechatermino, string nombrerecurso,string estado)
         {
             try {
-                var verificarrut = await context.Usuarios.Where(r => r.NombreUsuario == nombreusuario).FirstOrDefaultAsync();
-                var verificaremail = await context.Usuarios.Where(r => r.Email == email).FirstOrDefaultAsync();
-                if (verificarrut != null || verificaremail != null)
-                {
-                    TempData["Errorpersonal"] = "¡Error! Ya existe un usuario con ese rut y/o email";
-                    return RedirectToAction("EditarDatosUsuario", "Usuario", new { idusuario = idusuario });
-                }
+               
                 bool resultado = await _usuarioService.EditarUsuario(idusuario, nombre, nombreusuario, telefono, email, hhsemanales, costo, porcentaje, fechainicio, fechatermino, nombrerecurso, estado);
                 if (resultado)
                 {

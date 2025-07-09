@@ -443,8 +443,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="tipoMoneda">Moneda de Origen</label>
-                        <select disabled id="tipoMoneda" name="moneda" required>
-                            <option value="" disabled selected>Seleccione el tipo de Moneda</option>
+                        <select  id="tipoMoneda" name="moneda" required>
+                            <option value=""  selected>Seleccione el tipo de Moneda</option>
                             @if (proyecto.MONEDA == "CLP")
                             {
                                 <option value="CLP" selected>CLP</option>
@@ -484,15 +484,15 @@
                     </div>
                     <div id="monedaOrigenGroup" style="display:none;" class="form-group">
                         <label for="montomonedaorigen">Monto Moneda Origen</label>
-                        <input type="text" id="montomonedaorigen" name="montoorigen" readonly value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
+                        <input type="text" id="montomonedaorigen" name="montoorigen"  value="@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)">
                     </div>
                     <div id="tasacambioGroup" style="display:none;" class="form-group">
                         <label for="tasacambio">Tasa Cambio</label>
-                        <input type="text" id="tasacambio" name="tasacambio" readonly value="@String.Format("{0:N0}", @proyecto.TasaCambio) ">
+                        <input type="text" id="tasacambio" name="tasacambio"  value="@String.Format("{0:N0}", @proyecto.TasaCambio) ">
                     </div>
                     <div class="form-group">
                         <label for="monto">MontoCLP</label>
-                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) " readonly required>
+                        <input type="text" id="monto" name="monto" min="0" value="@String.Format("{0:N0}", @proyecto.MONTO) "  required>
                     </div>
                 </div>
                 <div class="form-row">
