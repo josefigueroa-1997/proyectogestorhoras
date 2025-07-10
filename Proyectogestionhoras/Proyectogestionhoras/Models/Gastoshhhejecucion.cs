@@ -19,6 +19,7 @@ namespace Proyectogestionhoras.Models
         public int? Estado { get; set; }
         public int? Mesemision { get; set; }
         public int? Anioemision { get; set; }
+        public decimal? Costounitariomes { get; set; }
 
         public virtual Proyecto? IdproyectoNavigation { get; set; }
     }

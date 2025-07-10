@@ -220,7 +220,7 @@
                                     }
                                     else
                                     {
-                                        <input type="hidden" name="fecharegistro" />
+                                        <input type="hidden" name="fecharegistro" value="@planilla.FechaRegistro.ToString("yyyy-MM-dd")"/>
                                         @planilla.FechaRegistro.ToString("dd/MM/yyyy")
                                     }
                                 </td>
@@ -588,6 +588,8 @@
             let idsubactividad = row.find("[name='idproyecto']").val();
             let correlativo = row.find("[name='correlativo']").val();
             let idproyectoantiguo = row.find("[name='idproyectoantiguo']").val();
+              
+
             if (tipoactividad === "proyecto en ejecucion" || tipoactividad === "proyecto en negociación") {
                 idsubactividad = 0;
             }

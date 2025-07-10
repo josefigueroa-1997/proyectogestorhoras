@@ -19,6 +19,7 @@
         public decimal? costohhsocio { get; set; } 
         public decimal? costohhstaff { get; set; } 
         public decimal? costorecurso { get; set; } 
+        public decimal? costounitariomes { get; set; } 
         public decimal? reajuste { get; set; } 
         public decimal? monto { get; set; } 
         public decimal costoconsultoresexternos { get; set; }

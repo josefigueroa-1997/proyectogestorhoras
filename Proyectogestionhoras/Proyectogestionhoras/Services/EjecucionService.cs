@@ -383,6 +383,7 @@ namespace Proyectogestionhoras.Services
                         registroExistente.Subtotal = gasto.Subtotal;
                         registroExistente.Reajuste = gasto.Reajuste;
                         registroExistente.Estado = gasto.Estado;
+                        registroExistente.Costounitariomes = gasto.costonitario;
                         
                     }
                     else
@@ -401,6 +402,7 @@ namespace Proyectogestionhoras.Services
                             Subtotal = gasto.Subtotal,
                             Reajuste = gasto.Reajuste,
                             Estado = gasto.Estado,
+                            Costounitariomes = gasto.costonitario,
                             
                         });
                     }
@@ -461,6 +463,7 @@ namespace Proyectogestionhoras.Services
                                 Observacion = g.Observacion,
                                 Subtotal = g.Subtotal,
                                 Reajuste = g.Reajuste,
+                                costonitario = g.Costounitariomes
                             });
                         }
 
@@ -570,6 +573,7 @@ namespace Proyectogestionhoras.Services
                     join p in context.Proyectos on g.Idproyecto equals p.Id
                     join c in context.Historialcuentasproyectos on p.Id equals c.Idproyecto
                     join hc in context.HistorialCostosProyectos on p.Id equals hc.Idproyecto
+
                     where p.StatusProyecto == 2 &&
                           (estado == null || g.Estado == estado) &&
                           (idproyecto == null || p.Id == idproyecto)
@@ -592,6 +596,7 @@ namespace Proyectogestionhoras.Services
                         g.Observacion,
                         g.Fechapago,
                         g.Estado,
+                        g.Costounitariomes,
                     } into grp
                     select new GastosHHRecursosDTO
                     {
@@ -605,8 +610,8 @@ namespace Proyectogestionhoras.Services
                         cuentasocio = grp.Key.Cuentasocio,
                         cuentastaff = grp.Key.Cuentastaff,
                         totalhh = grp.Sum(x => x.g.Hhtotales ?? 0),
-                        costorecursosocio = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.hc.Costosocio),
-                        costorecurstaff = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.hc.Costostaff),
+                        costorecursosocio = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.g.Costounitariomes),
+                        costorecurstaff = grp.Sum(x => (x.g.Hhtotales ?? 0) * x.g.Costounitariomes),
                         costohhsocio = grp.Key.Costosocio,
                         costohhstaff = grp.Key.Costostaff,
                         idgastohh = grp.Key.Id,
@@ -615,6 +620,7 @@ namespace Proyectogestionhoras.Services
                         observacion = grp.Key.Observacion,
                         fechapago = grp.Key.Fechapago ?? null,
                         estado = grp.Key.Estado ?? 0,
+                        costounitariomes = grp.Key.Costounitariomes ?? 0,
                     }
                 ).OrderBy(g => g.anio).ThenBy(g => g.mes).ToListAsync();
 

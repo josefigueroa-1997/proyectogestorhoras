@@ -486,6 +486,7 @@ namespace Proyectogestionhoras.Controllers
                 var reajustesocioolist = Request.Form["Reajuste"];
                 var montosociolist = Request.Form["Monto"];
                 var observacionsocio = Request.Form["Observacion"];
+                var costounitarioosociolist = Request.Form["CostoUnitario"];
 
 
 
@@ -550,6 +551,21 @@ namespace Proyectogestionhoras.Controllers
 
                     decimal hhtotalessocios = decimal.Parse(hhtotalessocioStr);
 
+
+                    var costounitariosocioStr = costounitarioosociolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(costounitariosocioStr))
+                    {
+                        costounitariosocioStr = "0";
+                    }
+                    else
+                    {
+                        costounitariosocioStr = costounitariosocioStr.Replace(".", "");
+                    }
+
+                    decimal costounitariosocio = decimal.Parse(costounitariosocioStr);
+
+
+
                     int idgastohhsocioRealParsed = string.IsNullOrWhiteSpace(idgastohhsocios[i])
                                                ? 0
                                                : int.Parse(idgastohhsocios[i]);
@@ -577,6 +593,7 @@ namespace Proyectogestionhoras.Controllers
                         Observacion = observacionsocio[i],
                         Subtotal = subtotalsocio,
                         Reajuste = reajustesocio,
+                        costonitario = costounitariosocio,
                     };
 
                     gastosocioo.Add(gastohhViewModel);
@@ -587,7 +604,7 @@ namespace Proyectogestionhoras.Controllers
                 /*hh forecast socios*/
 
                   
-                var gastohhsocio = ProcesarGastosHH(Request.Form,"Idhhsocio","recursohhsocio","montohhsocio","hhsocio","fechahhsocio","observacionhhsocio","estadohhsocio","EliminarhhSocio");
+                var gastohhsocio = ProcesarGastosHH(Request.Form,"Idhhsocio","recursohhsocio","montohhsocio","hhsocio","fechahhsocio","observacionhhsocio","estadohhsocio","EliminarhhSocio", "costohhsocio");
 
 
                 /*gastos staff*/
@@ -602,6 +619,7 @@ namespace Proyectogestionhoras.Controllers
                 var reajustestafflist = Request.Form["Reajustestaff"];
                 var montostafflist = Request.Form["Montostaff"];
                 var observacionstaff = Request.Form["Observacionstaff"];
+                var costounitariostafflist = Request.Form["CostoUnitarioStaff"];
 
 
 
@@ -668,6 +686,21 @@ namespace Proyectogestionhoras.Controllers
 
                     decimal hhtotalesstaff = decimal.Parse(hhtotalesstaffStr);
 
+
+                    var costounitariostaffStr = costounitariostafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(costounitariostaffStr))
+                    {
+                        costounitariostaffStr = "0";
+                    }
+                    else
+                    {
+                        costounitariostaffStr = costounitariostaffStr.Replace(".", "");
+                    }
+
+                    decimal costounitariostaff = decimal.Parse(costounitariostaffStr);
+
+
+
                     int idgastohhstaffRealParsed = string.IsNullOrWhiteSpace(idgastohhstaff[i])
                                                ? 0
                                                : int.Parse(idgastohhstaff[i]);
@@ -695,6 +728,7 @@ namespace Proyectogestionhoras.Controllers
                         Observacion = observacionstaff[i],
                         Subtotal = subtotalstaff,
                         Reajuste = reajustestaff,
+                        costonitario = costounitariostaff,
                     };
 
                     gastostaff.Add(gastohhstaffViewModel);
@@ -715,7 +749,8 @@ namespace Proyectogestionhoras.Controllers
                     "fechahhstaff",
                     "observacionhhstaff",
                     "estadohhstaff",
-                    "EliminarhhStaff"
+                    "EliminarhhStaff",
+                    "costohhstaff"
                 );
 
 
@@ -753,6 +788,8 @@ namespace Proyectogestionhoras.Controllers
                 montoStr = string.IsNullOrEmpty(montoStr) ? "0" : montoStr.Replace(".", "");
                 decimal monto = decimal.TryParse(montoStr, out decimal result) ? result : 0;
 
+              
+
 
                 int idServicioReal = int.TryParse(idsReales[i], out int parsedIdServicioReal) ? parsedIdServicioReal : 0;
 
@@ -772,6 +809,7 @@ namespace Proyectogestionhoras.Controllers
 
                     Tiposervicio = tipos[i],
                     EsEliminado = eliminar[i],
+                    
                 };
 
                 servicios.Add(servicioViewModel);
@@ -781,7 +819,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
-        private List<GastosHHViewModel> ProcesarGastosHH(IFormCollection form,string prefixId,string prefixTipoRecurso,string prefixMonto,string prefixHH,string prefixFecha,string prefixObs,string prefixEstado,string prefixEliminar)
+        private List<GastosHHViewModel> ProcesarGastosHH(IFormCollection form,string prefixId,string prefixTipoRecurso,string prefixMonto,string prefixHH,string prefixFecha,string prefixObs,string prefixEstado,string prefixEliminar, string prefixCostos)
         {
             var ids = form[prefixId];
             var tipos = form[prefixTipoRecurso];
@@ -791,6 +829,7 @@ namespace Proyectogestionhoras.Controllers
             var observaciones = form[prefixObs];
             var estados = form[prefixEstado];
             var eliminados = form[prefixEliminar];
+            var costos = form[prefixCostos];
 
             var lista = new List<GastosHHViewModel>();
 
@@ -800,6 +839,7 @@ namespace Proyectogestionhoras.Controllers
                     continue;
 
                 decimal monto = ParseDecimalSafe(montos[i]);
+                decimal costo = ParseDecimalSafe(costos[i]);
                 decimal hh = ParseDecimalSafe(hhs[i]);
                 int id = string.IsNullOrWhiteSpace(ids[i]) ? 0 : int.Parse(ids[i]);
                 DateTime? fecha = string.IsNullOrWhiteSpace(fechas[i]) ? null : DateTime.Parse(fechas[i]);
@@ -813,7 +853,8 @@ namespace Proyectogestionhoras.Controllers
                     Observacion = observaciones[i],
                     Subtotal = monto,
                     Estado = int.Parse(estados[i]),
-                    EsEliminado = eliminados[i] == "true"
+                    EsEliminado = eliminados[i] == "true",
+                    costonitario = costo
                 };
 
                 lista.Add(viewModel);

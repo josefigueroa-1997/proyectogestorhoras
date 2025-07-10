@@ -516,6 +516,10 @@ namespace Proyectogestionhoras.Models
 
                 entity.Property(e => e.Anioemision).HasColumnName("ANIOEMISION");
 
+                entity.Property(e => e.Costounitariomes)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("costounitariomes");
+
                 entity.Property(e => e.Estado).HasColumnName("ESTADO");
 
                 entity.Property(e => e.Fechapago)
