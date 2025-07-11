@@ -10,8 +10,11 @@
         public int IDCUENTA { get; set; }
         public decimal? MONTO { get; set; }
         public DateTime? FECHA { get; set; }
-
+        public int idproveedor { get; set; }
+        public int idservicioreal { get; set; }
+        public int idsegmento { get; set; }
         public string? Estado { get; set; }
+        public string? observacion { get; set; }
         public decimal? MontoProyectado { get; set; }
 
     }

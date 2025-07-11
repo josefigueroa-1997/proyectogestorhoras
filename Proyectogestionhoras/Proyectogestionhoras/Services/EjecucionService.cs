@@ -514,6 +514,46 @@ namespace Proyectogestionhoras.Services
             }
            
         }
+
+        public async Task<List<ServiciosProyectoDTO>> ObtenerServiciosReales(int? idproyecto,string tipo)
+        {
+            try
+            {
+                var resultado = await (from p in context.Proyectos
+                                       join servicio in context.Serviciosejecucions on p.Id equals servicio.Idproyecto
+                                       join se in context.ProyectoServicios on p.Id equals se.IdProyecto
+                                       join s in context.Segmentos on se.Idsegmento  equals s.Id
+                                       join c in context.Cuenta on s.IdCuenta equals c.Id
+                                       where (p.Id == idproyecto && servicio.Tiposervicio==tipo)
+                                       select new ServiciosProyectoDTO
+                                       {
+                                           idservicioreal = servicio.Id,
+                                           IDSERVICIO = servicio.Idservicio.Value,
+                                           idproveedor = servicio.Idproveedor.Value,
+                                           idsegmento = s.Id,
+                                           NOMBRSEGMENTO = s.Nombre,
+                                           CUENTA = c.Cuenta,
+                                           IDCUENTA = c.Idcuenta,
+                                           MONTO = servicio.Monto,
+                                           FECHA = servicio.Fecha,
+                                           observacion = servicio.Observacion,
+                                           Estado = servicio.Estado,
+                                           
+                                       }).ToListAsync();
+
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error al obtener los servicios de ejecución: {e.Message}");
+                return new List<ServiciosProyectoDTO>();
+            }
+
+        }
+
+
+
+
         public async Task<List<GastosHHRecursosDTO>> ObtenerGastosHH(int? idproyecto)
         {
             try

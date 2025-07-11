@@ -182,6 +182,56 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public async Task <IActionResult> CargarGastosReales(int idproyecto)
+        {
+            var resultado = await ejecucionService.ObtenerGastosReales(idproyecto);
+            return Json(resultado);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CargarServiciosReales(int idproyecto,string tipo)
+        {
+            var resultado = await ejecucionService.ObtenerServiciosReales(idproyecto,tipo);
+            return Json(resultado);
+        }
+
+        public async Task<IActionResult> EgresosProyectos(int? idproyecto)
+        {
+            Debug.WriteLine("enctro aca");
+            Debug.WriteLine(idproyecto);
+            var proyecto = await context.Proyectos.Where(p=>p.Id==idproyecto).ToListAsync();
+            ViewBag.Proyecto = proyecto;
+           var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
+            var gastosejecucion = await context.Gastosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
+            var servicios = await GetServicios();
+            var gastos = await GetGastos();
+            var proveedoresservicios = await GetProveedoresServicios();
+            var proveedoresgastos = await GetProveedoresGastos();
+            var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
+            ViewBag.Idcuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentasocio).FirstOrDefaultAsync();
+            ViewBag.cuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentasocio).FirstOrDefaultAsync();
+            ViewBag.costohhsocio = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costosocio).FirstOrDefaultAsync();
+            ViewBag.Idcuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentastaff).FirstOrDefaultAsync();
+            ViewBag.cuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentastaff).FirstOrDefaultAsync();
+            ViewBag.costohhstaff = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costostaff).FirstOrDefaultAsync();
+            var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
+            var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(idproyecto);
+            var gastosproyectados = await proyectoService.ObtenerGastosProyectos(idproyecto);
+            ViewBag.ServiciosEjecucion = serviciosejecucion;
+            ViewBag.GastosEjecucion = gastosejecucion;
+            ViewBag.Servicios = servicios;
+            ViewBag.Gastos = gastos;
+            ViewBag.Proveedores = proveedoresservicios;
+            ViewBag.ProGastos = proveedoresgastos;
+            ViewBag.GastosHH = gastoshh;
+            ViewBag.GastosRecursos = datosgastosrecursos;
+            ViewBag.ServiciosProyectos = serviciosproyectados;
+            ViewBag.GastosProyectos = gastosproyectados;
+
+            return View();
+        }
 
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
