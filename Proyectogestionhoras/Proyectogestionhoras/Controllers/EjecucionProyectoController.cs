@@ -199,16 +199,13 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<IActionResult> EgresosProyectos(int? idproyecto)
         {
-            Debug.WriteLine("enctro aca");
-            Debug.WriteLine(idproyecto);
+            
             var proyecto = await context.Proyectos.Where(p=>p.Id==idproyecto).ToListAsync();
             ViewBag.Proyecto = proyecto;
            var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
             var gastosejecucion = await context.Gastosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
-            var servicios = await GetServicios();
-            var gastos = await GetGastos();
-            var proveedoresservicios = await GetProveedoresServicios();
-            var proveedoresgastos = await GetProveedoresGastos();
+          
+          
             var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
             ViewBag.Idcuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentasocio).FirstOrDefaultAsync();
             ViewBag.cuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentasocio).FirstOrDefaultAsync();
@@ -221,10 +218,7 @@ namespace Proyectogestionhoras.Controllers
             var gastosproyectados = await proyectoService.ObtenerGastosProyectos(idproyecto);
             ViewBag.ServiciosEjecucion = serviciosejecucion;
             ViewBag.GastosEjecucion = gastosejecucion;
-            ViewBag.Servicios = servicios;
-            ViewBag.Gastos = gastos;
-            ViewBag.Proveedores = proveedoresservicios;
-            ViewBag.ProGastos = proveedoresgastos;
+           
             ViewBag.GastosHH = gastoshh;
             ViewBag.GastosRecursos = datosgastosrecursos;
             ViewBag.ServiciosProyectos = serviciosproyectados;
@@ -232,6 +226,305 @@ namespace Proyectogestionhoras.Controllers
 
             return View();
         }
+
+
+        [HttpPost]
+        public async Task <IActionResult> RegistrarHH()
+        {
+            var idproyecto = int.Parse(Request.Form["idproyecto"].ToString());
+            try
+            {
+                /*gastos socios*/
+
+                var idgastohhsocios = Request.Form["IdGastoHH"];
+                var tiporecursosocioo = Request.Form["Tiporecurso"];
+                var messocio = Request.Form["Mes"];
+                var aniosocio = Request.Form["Anio"];
+                var subtotalsociolist = Request.Form["Subtotal"];
+                var hhtotalessocioslist = Request.Form["HHtotales"];
+                var fechapagosocio = Request.Form["Fechapago"];
+                var reajustesocioolist = Request.Form["Reajuste"];
+                var montosociolist = Request.Form["Monto"];
+                var observacionsocio = Request.Form["Observacion"];
+                var costounitarioosociolist = Request.Form["CostoUnitario"];
+
+
+
+                List<GastosHHViewModel> gastosocioo = new List<GastosHHViewModel>();
+
+                for (int i = 0; i < idgastohhsocios.Count; i++)
+                {
+                    var subtotalsocioStr = subtotalsociolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(subtotalsocioStr))
+                    {
+                        subtotalsocioStr = "0";
+                    }
+                    else
+                    {
+                        subtotalsocioStr = subtotalsocioStr.Replace(".", "");
+                    }
+
+                    decimal subtotalsocio = decimal.Parse(subtotalsocioStr);
+
+
+                    var reajustesocioStr = reajustesocioolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(reajustesocioStr))
+                    {
+                        reajustesocioStr = "0";
+                    }
+                    else
+                    {
+                        reajustesocioStr = reajustesocioStr.Replace(".", "");
+                    }
+
+
+
+                    decimal reajustesocio = decimal.Parse(reajustesocioStr);
+
+
+                    var montosocioStr = montosociolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(montosocioStr))
+                    {
+                        montosocioStr = "0";
+                    }
+                    else
+                    {
+                        montosocioStr = montosocioStr.Replace(".", "");
+                    }
+
+
+
+                    decimal montosocio = decimal.Parse(montosocioStr);
+
+
+                    var hhtotalessocioStr = hhtotalessocioslist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(hhtotalessocioStr))
+                    {
+                        hhtotalessocioStr = "0";
+                    }
+                    else
+                    {
+                        hhtotalessocioStr = hhtotalessocioStr.Replace(".", "");
+                    }
+
+
+
+                    decimal hhtotalessocios = decimal.Parse(hhtotalessocioStr);
+
+
+                    var costounitariosocioStr = costounitarioosociolist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(costounitariosocioStr))
+                    {
+                        costounitariosocioStr = "0";
+                    }
+                    else
+                    {
+                        costounitariosocioStr = costounitariosocioStr.Replace(".", "");
+                    }
+
+                    decimal costounitariosocio = decimal.Parse(costounitariosocioStr);
+
+
+
+                    int idgastohhsocioRealParsed = string.IsNullOrWhiteSpace(idgastohhsocios[i])
+                                               ? 0
+                                               : int.Parse(idgastohhsocios[i]);
+
+
+
+                    DateTime? fechapagoParsed;
+                    if (string.IsNullOrWhiteSpace(fechapagosocio[i]))
+                    {
+                        fechapagoParsed = null;
+                    }
+                    else
+                    {
+                        fechapagoParsed = DateTime.Parse(fechapagosocio[i]);
+                    }
+                    var gastohhViewModel = new GastosHHViewModel
+                    {
+                        IdGastoHH = idgastohhsocioRealParsed,
+                        Tiporecurso = tiporecursosocioo[i],
+                        Mes = int.Parse(messocio[i]),
+                        Anio = int.Parse(aniosocio[i]),
+                        Fechapago = fechapagoParsed,
+                        Monto = montosocio,
+                        HHtotales = hhtotalessocios,
+                        Observacion = observacionsocio[i],
+                        Subtotal = subtotalsocio,
+                        Reajuste = reajustesocio,
+                        costonitario = costounitariosocio,
+                    };
+
+                    gastosocioo.Add(gastohhViewModel);
+
+
+                }
+
+                var gastohhsocio = ProcesarGastosHH(Request.Form, "Idhhsocio", "recursohhsocio", "montohhsocio", "hhsocio", "fechahhsocio", "observacionhhsocio", "estadohhsocio", "EliminarhhSocio", "costohhsocio");
+
+
+                /*gastos staff*/
+
+                var idgastohhstaff = Request.Form["IdGastoHHstaff"];
+                var tiporecursostaff = Request.Form["Tiporecursostaff"];
+                var messtaff = Request.Form["Messtaff"];
+                var aniostaff = Request.Form["Aniostaff"];
+                var subtotalstafflist = Request.Form["Subtotalstaff"];
+                var hhtotalesstafflist = Request.Form["HHtotalesstaff"];
+                var fechapagostaff = Request.Form["Fechapagostaff"];
+                var reajustestafflist = Request.Form["Reajustestaff"];
+                var montostafflist = Request.Form["Montostaff"];
+                var observacionstaff = Request.Form["Observacionstaff"];
+                var costounitariostafflist = Request.Form["CostoUnitarioStaff"];
+
+
+
+
+
+                List<GastosHHViewModel> gastostaff = new List<GastosHHViewModel>();
+
+                for (int i = 0; i < idgastohhstaff.Count; i++)
+                {
+                    var subtotalstaffStr = subtotalstafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(subtotalstaffStr))
+                    {
+                        subtotalstaffStr = "0";
+                    }
+                    else
+                    {
+                        subtotalstaffStr = subtotalstaffStr.Replace(".", "");
+                    }
+
+                    decimal subtotalstaff = decimal.Parse(subtotalstaffStr);
+
+
+                    var reajustestaffStr = reajustestafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(reajustestaffStr))
+                    {
+                        reajustestaffStr = "0";
+                    }
+                    else
+                    {
+                        reajustestaffStr = reajustestaffStr.Replace(".", "");
+                    }
+
+
+
+                    decimal reajustestaff = decimal.Parse(reajustestaffStr);
+
+
+                    var montostaffStr = montostafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(montostaffStr))
+                    {
+                        montostaffStr = "0";
+                    }
+                    else
+                    {
+                        montostaffStr = montostaffStr.Replace(".", "");
+                    }
+
+
+
+                    decimal montostaff = decimal.Parse(montostaffStr);
+
+
+                    var hhtotalesstaffStr = hhtotalesstafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(hhtotalesstaffStr))
+                    {
+                        hhtotalesstaffStr = "0";
+                    }
+                    else
+                    {
+                        hhtotalesstaffStr = hhtotalesstaffStr.Replace(".", "");
+                    }
+
+
+
+                    decimal hhtotalesstaff = decimal.Parse(hhtotalesstaffStr);
+
+
+                    var costounitariostaffStr = costounitariostafflist[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(costounitariostaffStr))
+                    {
+                        costounitariostaffStr = "0";
+                    }
+                    else
+                    {
+                        costounitariostaffStr = costounitariostaffStr.Replace(".", "");
+                    }
+
+                    decimal costounitariostaff = decimal.Parse(costounitariostaffStr);
+
+
+
+                    int idgastohhstaffRealParsed = string.IsNullOrWhiteSpace(idgastohhstaff[i])
+                                               ? 0
+                                               : int.Parse(idgastohhstaff[i]);
+
+
+
+                    DateTime? fechapagostaffParsed;
+                    if (string.IsNullOrWhiteSpace(fechapagostaff[i]))
+                    {
+                        fechapagostaffParsed = null;
+                    }
+                    else
+                    {
+                        fechapagostaffParsed = DateTime.Parse(fechapagostaff[i]);
+                    }
+                    var gastohhstaffViewModel = new GastosHHViewModel
+                    {
+                        IdGastoHH = idgastohhstaffRealParsed,
+                        Tiporecurso = tiporecursostaff[i],
+                        Mes = int.Parse(messtaff[i]),
+                        Anio = int.Parse(aniostaff[i]),
+                        Fechapago = fechapagostaffParsed,
+                        Monto = montostaff,
+                        HHtotales = hhtotalesstaff,
+                        Observacion = observacionstaff[i],
+                        Subtotal = subtotalstaff,
+                        Reajuste = reajustestaff,
+                        costonitario = costounitariostaff,
+                    };
+
+                    gastostaff.Add(gastohhstaffViewModel);
+
+
+                }
+                var gastohhstaff = ProcesarGastosHH(
+                    Request.Form,
+                    "Idhhstaff",
+                    "recursohhstaff",
+                    "montohhstaff",
+                    "hhstaff",
+                    "fechahhstaff",
+                    "observacionhhstaff",
+                    "estadohhstaff",
+                    "EliminarhhStaff",
+                    "costohhstaff"
+                );
+
+                await ejecucionService.GestorGastosHH(idproyecto, gastostaff);
+                await ejecucionService.GestorGastosHH(idproyecto, gastosocioo);
+                await ejecucionService.GestorGastosHH(idproyecto, gastohhsocio);
+                await ejecucionService.GestorGastosHH(idproyecto, gastohhstaff);
+
+                TempData["SuccessMessage"] = "Los Registros hh del proyecto se han registrado y actualizado correctamente.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
+
+            }
+            catch (Exception ex) { 
+            
+                Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.InnerException);
+                TempData["ErrorMessage"] = "Error al registrar/actualizar los registros hh del proyecto.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
+
+            }
+           
+        }
+
 
         public async Task<IActionResult> ForecastCostos(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {

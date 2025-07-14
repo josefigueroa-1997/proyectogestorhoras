@@ -503,7 +503,7 @@ namespace Proyectogestionhoras.Services
                                            Observacion = g.Observacion,
                                            Estado = g.Estado,
                                            Venta = g.Venta,
-                                       }).ToListAsync();
+                                       }).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
 
                 return resultado;
             }
@@ -539,7 +539,7 @@ namespace Proyectogestionhoras.Services
                                            observacion = servicio.Observacion,
                                            Estado = servicio.Estado,
                                            
-                                       }).ToListAsync();
+                                       }).OrderBy(s=>s.Estado!="Forecast").ThenBy(s=>s.FECHA).ToListAsync();
 
                 return resultado;
             }
