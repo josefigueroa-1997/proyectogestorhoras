@@ -15,6 +15,7 @@
         public int idsegmento { get; set; }
         public string? Estado { get; set; }
         public string? observacion { get; set; }
+        public string? tipo { get; set; }
         public decimal? MontoProyectado { get; set; }
 
     }

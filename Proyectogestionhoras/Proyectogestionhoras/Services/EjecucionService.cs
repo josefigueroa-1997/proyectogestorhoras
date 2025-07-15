@@ -486,16 +486,18 @@ namespace Proyectogestionhoras.Services
             {
                 var resultado = await (from p in context.Proyectos
                                        join g in context.Gastosejecucions on p.Id equals g.Idproyecto
-                                       join s in context.Segmentos on g.Segmento equals s.Id
-                                       join c in context.Cuenta on s.IdCuenta equals c.Id
+                                       join gastos in context.Gastos on g.Idgasto equals gastos.Id
+                                       join s in context.Segmentos on g.Segmento equals s.Id into segs
+                                       from s in segs.DefaultIfEmpty()
+                                       join c in context.Cuenta on gastos.Idcuenta equals c.Id
                                        where p.Id == idproyecto
                                        select new GastosRealesDTO
                                        {
                                            IdGastosReal = g.Id,
                                            IdGasto = g.Idgasto,
                                            IdProveedor = g.Idproveedor,
-                                           IdSegmento = s.Id,
-                                           NombreSegmento = s.Nombre,
+                                           IdSegmento = s != null ? s.Id : 0,
+                                           NombreSegmento = s != null ? s.Nombre : "",
                                            Cuenta = c.Cuenta,
                                            IdCuenta = c.Idcuenta,
                                            Monto = g.Monto,
@@ -521,24 +523,25 @@ namespace Proyectogestionhoras.Services
             {
                 var resultado = await (from p in context.Proyectos
                                        join servicio in context.Serviciosejecucions on p.Id equals servicio.Idproyecto
-                                       join se in context.ProyectoServicios on p.Id equals se.IdProyecto
-                                       join s in context.Segmentos on se.Idsegmento  equals s.Id
-                                       join c in context.Cuenta on s.IdCuenta equals c.Id
+ 
+
+                                       join s in context.Servicios on servicio.Idservicio  equals s.Id
+                                       join c in context.Cuenta on s.Idcuenta equals c.Id
                                        where (p.Id == idproyecto && servicio.Tiposervicio==tipo)
                                        select new ServiciosProyectoDTO
                                        {
                                            idservicioreal = servicio.Id,
                                            IDSERVICIO = servicio.Idservicio.Value,
                                            idproveedor = servicio.Idproveedor.Value,
-                                           idsegmento = s.Id,
-                                           NOMBRSEGMENTO = s.Nombre,
+                                          
                                            CUENTA = c.Cuenta,
                                            IDCUENTA = c.Idcuenta,
                                            MONTO = servicio.Monto,
                                            FECHA = servicio.Fecha,
                                            observacion = servicio.Observacion,
                                            Estado = servicio.Estado,
-                                           
+                                           tipo = servicio.Tiposervicio,
+
                                        }).OrderBy(s=>s.Estado!="Forecast").ThenBy(s=>s.FECHA).ToListAsync();
 
                 return resultado;

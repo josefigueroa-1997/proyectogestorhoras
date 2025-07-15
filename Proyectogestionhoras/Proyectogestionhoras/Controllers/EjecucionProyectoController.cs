@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
 using Proyectogestionhoras.Models;
@@ -6,9 +8,8 @@ using Proyectogestionhoras.Models.DTO;
 using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
-using System.Diagnostics;
-using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Proyectogestionhoras.Controllers
 {
@@ -185,7 +186,14 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task <IActionResult> CargarGastosReales(int idproyecto)
         {
+            Debug.WriteLine(idproyecto);
             var resultado = await ejecucionService.ObtenerGastosReales(idproyecto);
+            var json = JsonSerializer.Serialize(resultado, new JsonSerializerOptions
+            {
+                WriteIndented = true // para que se vea bonito
+            });
+
+            Debug.WriteLine(json);
             return Json(resultado);
         }
 
@@ -194,6 +202,11 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> CargarServiciosReales(int idproyecto,string tipo)
         {
             var resultado = await ejecucionService.ObtenerServiciosReales(idproyecto,tipo);
+            var json = JsonSerializer.Serialize(resultado, new JsonSerializerOptions
+            {
+                WriteIndented = true 
+            });
+            Debug.WriteLine(json);
             return Json(resultado);
         }
 
@@ -227,6 +240,263 @@ namespace Proyectogestionhoras.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> RegistrarServicios()
+        {
+            var idproyecto = int.Parse(Request.Form["idproyecto"].ToString());
+            try
+            {
+                /*COSTOS SERVICIOS base de datos*/
+                var serviciosantiguos = Request.Form["Idservicio"];
+                var eliminarServicioOtro = Request.Form["EliminarServicioOtro"].Select(e => e == "true").ToList();
+
+                var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedorservicio"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["estadoservicio"].ToList(), Request.Form["Tiposervicio"].ToList(), eliminarServicioOtro);
+
+
+               var eliminarServicioOtronuevo = Request.Form["EliminarServicioOtroNuevo"].Select(e => e == "true").ToList();
+
+                var serviciosnuevos = ProcesarServicios(Request.Form["idservicionuevos"].ToList(), Request.Form["idproveedorgastosnuevos"].ToList(), Request.Form["montoserviciosnuevos"].ToList(), Request.Form["fechaserviciosnuevos"].ToList(), Request.Form["IdServicioRealnuevos"].ToList(), Request.Form["observacionservicionuevos"].ToList(), Request.Form["estadoserviciosnuevos"].ToList(), Request.Form["Tiposervicionuevo"].ToList(), eliminarServicioOtronuevo);
+
+
+                var idservicionuevos = Request.Form["idservicionuevos"];
+
+
+                await ejecucionService.GestorServiciosReales(idproyecto, servicios);
+                await ejecucionService.GestorServiciosReales(idproyecto, serviciosnuevos);
+
+
+                List<ServicioViewModel> verificarservicioantiguos = new List<ServicioViewModel>();
+
+                for (int i = 0; i < serviciosantiguos.Count; i++)
+                {
+
+                    var servicioViewModel = new ServicioViewModel
+                    {
+
+                        Idservicios = int.Parse(serviciosantiguos[i]),
+
+
+
+                    };
+
+                    verificarservicioantiguos.Add(servicioViewModel);
+
+                }
+
+                List<ServicioViewModel> verificarservicionuevos = new List<ServicioViewModel>();
+
+                for (int i = 0; i < idservicionuevos.Count; i++)
+                {
+
+                    var servicioViewModel = new ServicioViewModel
+                    {
+
+                        Idservicios = int.Parse(idservicionuevos[i]),
+
+
+
+                    };
+
+                    verificarservicionuevos.Add(servicioViewModel);
+
+                }
+
+
+                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicioantiguos);
+                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicionuevos);
+                TempData["SuccessMessageServicios"] = "Los Servicios del proyecto se han registrado y actualizado correctamente.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Error al registrar seriviocs: {e.Message}");
+                TempData["ErrorMessageServicios"] = "Error al registrar los gastos del proyecto.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RegistrarGastos()
+        {
+            var idproyecto = int.Parse(Request.Form["idproyecto"].ToString());
+            try
+            {
+                /*Gastos Nuevos*/
+
+                List<GastosRealesViewModel> gastosnuevos = new List<GastosRealesViewModel>();
+                var idsgastosnuevos = Request.Form["idgastosnuevos"];
+                var idproveedoresgastosnuevos = Request.Form["idproveedorgastosnuevos"];
+                var montogastosListnuevos = Request.Form["montogastonuevos"];
+                var fechagastosnuevos = Request.Form["fechagastonuevos"];
+                var idgastorealnuevos = Request.Form["IdGastoRealnuevos"];
+                var observaciongastonuevos = Request.Form["observaciongastonuevos"];
+                var estadogastonuevos = Request.Form["estadogastonuevos"];
+                var eliminargastonuevos = Request.Form["esEliminadosnuevos"];
+
+
+                for (int i = 0; i < idsgastosnuevos.Count; i++)
+                {
+                    var montogastoStr = montogastosListnuevos[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(montogastoStr))
+                    {
+                        montogastoStr = "0";
+                    }
+                    else
+                    {
+                        montogastoStr = montogastoStr.Replace(".", "");
+                    }
+
+                    decimal montogasto = decimal.Parse(montogastoStr);
+
+                    int idgastoRealParsed = string.IsNullOrWhiteSpace(idgastorealnuevos[i])
+                                               ? 0
+                                               : int.Parse(idgastorealnuevos[i]);
+
+                    DateTime fechaGastoParsed;
+                    if (string.IsNullOrWhiteSpace(fechagastosnuevos[i]))
+                    {
+                        fechaGastoParsed = DateTime.Today;
+                    }
+                    else
+                    {
+                        fechaGastoParsed = DateTime.Parse(fechagastosnuevos[i]);
+                    }
+                    var gastoViewModel = new GastosRealesViewModel
+                    {
+                        IdGastoReal = idgastoRealParsed,
+                        Idgasto = int.Parse(idsgastosnuevos[i]),
+                        Idproveedor = int.Parse(idproveedoresgastosnuevos[i]),
+
+                        Monto = montogasto,
+                        Fecha = fechaGastoParsed,
+                        Observacion = observaciongastonuevos[i],
+                        Estado = estadogastonuevos[i],
+
+                        EsEliminado = eliminargastonuevos[i] == "true",
+                    };
+
+                    gastosnuevos.Add(gastoViewModel);
+
+
+                }
+
+
+
+                /*Gastos existentes*/
+                List<GastosRealesViewModel> gastos = new List<GastosRealesViewModel>();
+                var idsgastos = Request.Form["idgastos"];
+                var idproveedoresgastos = Request.Form["idproveedorgastos"];
+                var montogastosList = Request.Form["montogasto"];
+                var fechagastos = Request.Form["fechagasto"];
+                var idgastoreal = Request.Form["IdGastoReal"];
+                var observaciongasto = Request.Form["observaciongasto"];
+                var estadogasto = Request.Form["estadogasto"];
+                var eliminargasto = Request.Form["esEliminados"];
+
+                for (int i = 0; i < idsgastos.Count; i++)
+                {
+                    var montogastoStr = montogastosList[i]?.ToString().Trim() ?? "";
+                    if (string.IsNullOrEmpty(montogastoStr))
+                    {
+                        montogastoStr = "0";
+                    }
+                    else
+                    {
+                        montogastoStr = montogastoStr.Replace(".", "");
+                    }
+
+                    decimal montogasto = decimal.Parse(montogastoStr);
+
+                    int idgastoRealParsed = string.IsNullOrWhiteSpace(idgastoreal[i])
+                                               ? 0
+                                               : int.Parse(idgastoreal[i]);
+
+                    DateTime fechaGastoParsed;
+                    if (string.IsNullOrWhiteSpace(fechagastos[i]))
+                    {
+                        fechaGastoParsed = DateTime.Today;
+                    }
+                    else
+                    {
+                        fechaGastoParsed = DateTime.Parse(fechagastos[i]);
+                    }
+                    var gastoViewModel = new GastosRealesViewModel
+                    {
+                        IdGastoReal = idgastoRealParsed,
+                        Idgasto = int.Parse(idsgastos[i]),
+                        Idproveedor = int.Parse(idproveedoresgastos[i]),
+                        
+                        Monto = montogasto,
+                        Fecha = fechaGastoParsed,
+                        Observacion = observaciongasto[i],
+                        Estado = estadogasto[i],
+
+                        EsEliminado = eliminargasto[i] == "true",
+                    };
+
+                    gastos.Add(gastoViewModel);
+
+                   
+                }
+                await ejecucionService.GestorGastosReales(idproyecto, gastos);
+                await ejecucionService.GestorGastosReales(idproyecto, gastosnuevos);
+
+
+                /*verificar existencia gasto antiguos*/
+                List<GastoViewModel> verificargastos = new List<GastoViewModel>();
+
+                for (int i = 0; i < idsgastos.Count; i++)
+                {
+
+                    var gastoViewModel = new GastoViewModel
+                    {
+
+                        Idgastos = int.Parse(idsgastos[i]),
+
+                      
+
+
+                    };
+
+                    verificargastos.Add(gastoViewModel);
+
+                }
+
+                /*verificar existencia gasto antiguos*/
+                List<GastoViewModel> verificargastosnuevos = new List<GastoViewModel>();
+
+                for (int i = 0; i < idsgastosnuevos.Count; i++)
+                {
+
+                    var gastoViewModel = new GastoViewModel
+                    {
+
+                        Idgastos = int.Parse(idsgastosnuevos[i]),
+
+
+
+
+                    };
+
+                    verificargastosnuevos.Add(gastoViewModel);
+
+                }
+
+                await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastos);
+                await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastosnuevos);
+
+                TempData["SuccessMessageGastos"] = "Los Gastos del proyecto se han registrado y actualizado correctamente.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-gastos");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al registrar gastos: {ex.Message}");
+                TempData["ErrorMessageGastos"] = "Error al registrar los gastos del proyecto.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-gastos");
+            }
+        }
 
         [HttpPost]
         public async Task <IActionResult> RegistrarHH()
