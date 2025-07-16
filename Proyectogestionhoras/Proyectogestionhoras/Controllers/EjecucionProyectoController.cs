@@ -217,9 +217,7 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.Proyecto = proyecto;
            var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
             var gastosejecucion = await context.Gastosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
-          
-          
-            var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
+           var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
             ViewBag.Idcuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentasocio).FirstOrDefaultAsync();
             ViewBag.cuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentasocio).FirstOrDefaultAsync();
             ViewBag.costohhsocio = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costosocio).FirstOrDefaultAsync();
@@ -229,13 +227,49 @@ namespace Proyectogestionhoras.Controllers
             var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
             var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(idproyecto);
             var gastosproyectados = await proyectoService.ObtenerGastosProyectos(idproyecto);
-            ViewBag.ServiciosEjecucion = serviciosejecucion;
-            ViewBag.GastosEjecucion = gastosejecucion;
            
             ViewBag.GastosHH = gastoshh;
             ViewBag.GastosRecursos = datosgastosrecursos;
             ViewBag.ServiciosProyectos = serviciosproyectados;
             ViewBag.GastosProyectos = gastosproyectados;
+
+            ViewBag.ServiciosProyectos = serviciosproyectados;
+            ViewBag.GastosProyectos = gastosproyectados;
+
+            var serviciosreales = from serejecucucion in serviciosejecucion
+                                  group serejecucucion by new { serejecucucion.Idservicio, serejecucucion.Estado } into grupo
+                                  select new
+                                  {
+                                      Idservicio = grupo.Key.Idservicio,
+                                      Estado = grupo.Key.Estado,
+                                      TotalMonto = grupo.Sum(x => x.Monto)
+                                  };
+
+
+            ViewBag.ServiciosTotalesPagados = serviciosreales
+                .Where(x => x.Estado == "Pagada")
+                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+
+            ViewBag.ServiciosTotalesForecast = serviciosreales
+                .Where(x => x.Estado == "Forecast")
+                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
+
+            var gastosTotales = from gasejecucion in gastosejecucion
+                                group gasejecucion by new { gasejecucion.Idgasto, gasejecucion.Estado } into grupo
+                                select new
+                                {
+                                    IdGasto = grupo.Key.Idgasto,
+                                    Estado = grupo.Key.Estado,
+                                    TotalMonto = grupo.Sum(x => x.Monto)
+                                };
+
+            ViewBag.GastosTotalesPagados = gastosTotales
+                .Where(x => x.Estado == "Pagada")
+                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
+
+            ViewBag.GastosTotalesForecast = gastosTotales
+                .Where(x => x.Estado == "Forecast")
+                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
 
             return View();
         }
