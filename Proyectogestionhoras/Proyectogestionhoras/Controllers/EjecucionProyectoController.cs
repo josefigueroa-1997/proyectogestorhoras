@@ -10,7 +10,7 @@ using Proyectogestionhoras.Services;
 using Proyectogestionhoras.Services.Interface;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
-
+using Newtonsoft.Json;
 namespace Proyectogestionhoras.Controllers
 {
     public class EjecucionProyectoController : Controller
@@ -184,40 +184,113 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task <IActionResult> CargarGastosReales(int idproyecto)
+        public async Task<IActionResult> CargarGastosReales(int idproyecto)
         {
-            Debug.WriteLine(idproyecto);
+           
             var resultado = await ejecucionService.ObtenerGastosReales(idproyecto);
-            var json = JsonSerializer.Serialize(resultado, new JsonSerializerOptions
-            {
-                WriteIndented = true // para que se vea bonito
-            });
+           
 
-            Debug.WriteLine(json);
+           
             return Json(resultado);
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> CargarServiciosReales(int idproyecto,string tipo)
+        public async Task<IActionResult> CargarServiciosReales(int idproyecto, string tipo)
         {
-            var resultado = await ejecucionService.ObtenerServiciosReales(idproyecto,tipo);
-            var json = JsonSerializer.Serialize(resultado, new JsonSerializerOptions
-            {
-                WriteIndented = true 
-            });
-            Debug.WriteLine(json);
+            var resultado = await ejecucionService.ObtenerServiciosReales(idproyecto, tipo);
+          
             return Json(resultado);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObtenerDatosResumen(int idProyecto)
+        {
+            try
+            {
+                
+                var serviciosProyecto = await proyectoService.ObtenerServiciosProyecto(idProyecto);
+                var gastosProyecto = await proyectoService.ObtenerGastosProyectos(idProyecto);
+
+               
+                var serviciosejecucion = await context.Serviciosejecucions
+                    .Where(s => s.Idproyecto == idProyecto)
+                    .ToListAsync();
+
+                var gastosejecucion = await context.Gastosejecucions
+                    .Where(s => s.Idproyecto == idProyecto)
+                    .ToListAsync();
+
+                
+                var serviciosreales = serviciosejecucion
+                    .GroupBy(x => new { x.Idservicio, x.Estado })
+                    .Select(g => new
+                    {
+                        Idservicio = g.Key.Idservicio,
+                        Estado = g.Key.Estado,
+                        TotalMonto = g.Sum(x => x.Monto)
+                    }).ToList();
+
+                var gastosreales = gastosejecucion
+                    .GroupBy(x => new { x.Idgasto, x.Estado })
+                    .Select(g => new
+                    {
+                        Idgasto = g.Key.Idgasto,
+                        Estado = g.Key.Estado,
+                        TotalMonto = g.Sum(x => x.Monto)
+                    }).ToList();
+
+                // Diccionarios de totales
+                var serviciosTotalesPagados = serviciosreales
+                    .Where(x => x.Estado == "Pagada")
+                    .GroupBy(x => x.Idservicio)
+                    .ToDictionary(g => g.Key, g => g.First().TotalMonto);
+
+                var serviciosTotalesForecast = serviciosreales
+                    .Where(x => x.Estado == "Forecast")
+                    .GroupBy(x => x.Idservicio)
+                    .ToDictionary(g => g.Key, g => g.First().TotalMonto);
+
+                var gastosTotalesPagados = gastosreales
+                    .Where(x => x.Estado == "Pagada")
+                    .GroupBy(x => x.Idgasto)
+                    .ToDictionary(g => g.Key, g => g.First().TotalMonto);
+
+                var gastosTotalesForecast = gastosreales
+                    .Where(x => x.Estado == "Forecast")
+                    .GroupBy(x => x.Idgasto)
+                    .ToDictionary(g => g.Key, g => g.First().TotalMonto);
+
+                var jsonResult = JsonConvert.SerializeObject(new
+                {
+                    ServiciosProyectos = serviciosProyecto,
+                    ServiciosTotalesPagados = serviciosTotalesPagados,
+                    ServiciosTotalesForecast = serviciosTotalesForecast,
+                    GastosProyectos = gastosProyecto,
+                    GastosTotalesPagados = gastosTotalesPagados,
+                    GastosTotalesForecast = gastosTotalesForecast
+                });
+
+                return Content(jsonResult, "application/json");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ERROR EJECUCION: " + ex.Message);
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+
+
+
+
         public async Task<IActionResult> EgresosProyectos(int? idproyecto)
         {
-            
-            var proyecto = await context.Proyectos.Where(p=>p.Id==idproyecto).ToListAsync();
+
+            var proyecto = await context.Proyectos.Where(p => p.Id == idproyecto).ToListAsync();
             ViewBag.Proyecto = proyecto;
-           var serviciosejecucion = await context.Serviciosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
-            var gastosejecucion = await context.Gastosejecucions.Where(s => s.Idproyecto == idproyecto).OrderBy(s => s.Estado != "Forecast").ThenBy(s => s.Fecha).ToListAsync();
-           var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
+
+            var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
             ViewBag.Idcuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentasocio).FirstOrDefaultAsync();
             ViewBag.cuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentasocio).FirstOrDefaultAsync();
             ViewBag.costohhsocio = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costosocio).FirstOrDefaultAsync();
@@ -225,51 +298,7 @@ namespace Proyectogestionhoras.Controllers
             ViewBag.cuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentastaff).FirstOrDefaultAsync();
             ViewBag.costohhstaff = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costostaff).FirstOrDefaultAsync();
             var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
-            var serviciosproyectados = await proyectoService.ObtenerServiciosProyecto(idproyecto);
-            var gastosproyectados = await proyectoService.ObtenerGastosProyectos(idproyecto);
            
-            ViewBag.GastosHH = gastoshh;
-            ViewBag.GastosRecursos = datosgastosrecursos;
-            ViewBag.ServiciosProyectos = serviciosproyectados;
-            ViewBag.GastosProyectos = gastosproyectados;
-
-            ViewBag.ServiciosProyectos = serviciosproyectados;
-            ViewBag.GastosProyectos = gastosproyectados;
-
-            var serviciosreales = from serejecucucion in serviciosejecucion
-                                  group serejecucucion by new { serejecucucion.Idservicio, serejecucucion.Estado } into grupo
-                                  select new
-                                  {
-                                      Idservicio = grupo.Key.Idservicio,
-                                      Estado = grupo.Key.Estado,
-                                      TotalMonto = grupo.Sum(x => x.Monto)
-                                  };
-
-
-            ViewBag.ServiciosTotalesPagados = serviciosreales
-                .Where(x => x.Estado == "Pagada")
-                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
-
-            ViewBag.ServiciosTotalesForecast = serviciosreales
-                .Where(x => x.Estado == "Forecast")
-                .ToDictionary(x => x.Idservicio, x => x.TotalMonto);
-
-            var gastosTotales = from gasejecucion in gastosejecucion
-                                group gasejecucion by new { gasejecucion.Idgasto, gasejecucion.Estado } into grupo
-                                select new
-                                {
-                                    IdGasto = grupo.Key.Idgasto,
-                                    Estado = grupo.Key.Estado,
-                                    TotalMonto = grupo.Sum(x => x.Monto)
-                                };
-
-            ViewBag.GastosTotalesPagados = gastosTotales
-                .Where(x => x.Estado == "Pagada")
-                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
-
-            ViewBag.GastosTotalesForecast = gastosTotales
-                .Where(x => x.Estado == "Forecast")
-                .ToDictionary(x => x.IdGasto, x => x.TotalMonto);
 
             return View();
         }
@@ -288,7 +317,7 @@ namespace Proyectogestionhoras.Controllers
                 var servicios = ProcesarServicios(Request.Form["Idservicio"].ToList(), Request.Form["Idproveedorservicio"].ToList(), Request.Form["montoservicio"].ToList(), Request.Form["fechaservicio"].ToList(), Request.Form["IdServicioReal"].ToList(), Request.Form["observacionservicio"].ToList(), Request.Form["estadoservicio"].ToList(), Request.Form["Tiposervicio"].ToList(), eliminarServicioOtro);
 
 
-               var eliminarServicioOtronuevo = Request.Form["EliminarServicioOtroNuevo"].Select(e => e == "true").ToList();
+                var eliminarServicioOtronuevo = Request.Form["EliminarServicioOtroNuevo"].Select(e => e == "true").ToList();
 
                 var serviciosnuevos = ProcesarServicios(Request.Form["idservicionuevos"].ToList(), Request.Form["idproveedorgastosnuevos"].ToList(), Request.Form["montoserviciosnuevos"].ToList(), Request.Form["fechaserviciosnuevos"].ToList(), Request.Form["IdServicioRealnuevos"].ToList(), Request.Form["observacionservicionuevos"].ToList(), Request.Form["estadoserviciosnuevos"].ToList(), Request.Form["Tiposervicionuevo"].ToList(), eliminarServicioOtronuevo);
 
@@ -342,7 +371,7 @@ namespace Proyectogestionhoras.Controllers
                 TempData["SuccessMessageServicios"] = "Los Servicios del proyecto se han registrado y actualizado correctamente.";
                 return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Error al registrar seriviocs: {e.Message}");
                 TempData["ErrorMessageServicios"] = "Error al registrar los gastos del proyecto.";
@@ -461,7 +490,7 @@ namespace Proyectogestionhoras.Controllers
                         IdGastoReal = idgastoRealParsed,
                         Idgasto = int.Parse(idsgastos[i]),
                         Idproveedor = int.Parse(idproveedoresgastos[i]),
-                        
+
                         Monto = montogasto,
                         Fecha = fechaGastoParsed,
                         Observacion = observaciongasto[i],
@@ -472,7 +501,7 @@ namespace Proyectogestionhoras.Controllers
 
                     gastos.Add(gastoViewModel);
 
-                   
+
                 }
                 await ejecucionService.GestorGastosReales(idproyecto, gastos);
                 await ejecucionService.GestorGastosReales(idproyecto, gastosnuevos);
@@ -489,7 +518,7 @@ namespace Proyectogestionhoras.Controllers
 
                         Idgastos = int.Parse(idsgastos[i]),
 
-                      
+
 
 
                     };
@@ -533,7 +562,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> RegistrarHH()
+        public async Task<IActionResult> RegistrarHH()
         {
             var idproyecto = int.Parse(Request.Form["idproyecto"].ToString());
             try
@@ -818,15 +847,16 @@ namespace Proyectogestionhoras.Controllers
                 return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
 
             }
-            catch (Exception ex) { 
-            
+            catch (Exception ex)
+            {
+
                 Debug.WriteLine(ex.ToString());
                 Debug.WriteLine(ex.InnerException);
                 TempData["ErrorMessage"] = "Error al registrar/actualizar los registros hh del proyecto.";
                 return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
 
             }
-           
+
         }
 
 
@@ -1250,8 +1280,8 @@ namespace Proyectogestionhoras.Controllers
 
                 /*hh forecast socios*/
 
-                  
-                var gastohhsocio = ProcesarGastosHH(Request.Form,"Idhhsocio","recursohhsocio","montohhsocio","hhsocio","fechahhsocio","observacionhhsocio","estadohhsocio","EliminarhhSocio", "costohhsocio");
+
+                var gastohhsocio = ProcesarGastosHH(Request.Form, "Idhhsocio", "recursohhsocio", "montohhsocio", "hhsocio", "fechahhsocio", "observacionhhsocio", "estadohhsocio", "EliminarhhSocio", "costohhsocio");
 
 
                 /*gastos staff*/
@@ -1385,7 +1415,7 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-             
+
 
                 var gastohhstaff = ProcesarGastosHH(
                     Request.Form,
@@ -1435,7 +1465,7 @@ namespace Proyectogestionhoras.Controllers
                 montoStr = string.IsNullOrEmpty(montoStr) ? "0" : montoStr.Replace(".", "");
                 decimal monto = decimal.TryParse(montoStr, out decimal result) ? result : 0;
 
-              
+
 
 
                 int idServicioReal = int.TryParse(idsReales[i], out int parsedIdServicioReal) ? parsedIdServicioReal : 0;
@@ -1456,7 +1486,7 @@ namespace Proyectogestionhoras.Controllers
 
                     Tiposervicio = tipos[i],
                     EsEliminado = eliminar[i],
-                    
+
                 };
 
                 servicios.Add(servicioViewModel);
@@ -1466,7 +1496,7 @@ namespace Proyectogestionhoras.Controllers
         }
 
 
-        private List<GastosHHViewModel> ProcesarGastosHH(IFormCollection form,string prefixId,string prefixTipoRecurso,string prefixMonto,string prefixHH,string prefixFecha,string prefixObs,string prefixEstado,string prefixEliminar, string prefixCostos)
+        private List<GastosHHViewModel> ProcesarGastosHH(IFormCollection form, string prefixId, string prefixTipoRecurso, string prefixMonto, string prefixHH, string prefixFecha, string prefixObs, string prefixEstado, string prefixEliminar, string prefixCostos)
         {
             var ids = form[prefixId];
             var tipos = form[prefixTipoRecurso];

@@ -3,6 +3,7 @@
 }
 
 
+
 @{
 	int? idproyecto = Context.Session.GetInt32("numproyecto");
 	int? idusuario = Context.Session.GetInt32("id");
@@ -34,34 +35,34 @@
 	<!-- 🔶 PESTAÑAS TIPO NAVEGADOR -->
 	@foreach (var proyecto in ViewBag.Proyecto)
 	{
-
+		 idproyectos = proyecto.Id;
 		<div class="flex gap-2 mb-6">
-			<a href="@Url.Action("ForecastCostos", "EjecucionProyecto", new { id = proyecto.Id })"
+			<a href="@Url.Action("ForecastCostos", "EjecucionProyecto", new { id = idproyectos })"
 			   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-						             @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastCostos"
-																  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-															 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																			Forecast Costos
-																																		</a>
-																																		<a href="@Url.Action("ForecastIngreso", "EjecucionProyecto", new { id = idproyectos })"
-																																		   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-						             @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
-																  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-															 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																			Forecast Ingresos
-																																		</a>
-																																		<a href="@Url.Action("FlujoCajaProyecto", "EjecucionProyecto", new { id = idproyectos })"
-																																		   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-						             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
-																  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-															 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																			Flujo de Caja
-																																		</a>
-																																		<a href="@Url.Action("SeleccionarProyecto", "EjecucionProyecto", new { statusproyecto = 2 })"
-																																		   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-						             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
-																  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-															 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+							             @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastCostos"
+																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																					Forecast Costos
+																																				</a>
+																																				<a href="@Url.Action("ForecastIngreso", "EjecucionProyecto", new { id = idproyectos })"
+																																				   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+							             @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																					Forecast Ingresos
+																																				</a>
+																																				<a href="@Url.Action("FlujoCajaProyecto", "EjecucionProyecto", new { id = idproyectos })"
+																																				   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+							             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																					Flujo de Caja
+																																				</a>
+																																				<a href="@Url.Action("SeleccionarProyecto", "EjecucionProyecto", new { statusproyecto = 2 })"
+																																				   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+							             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
+																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
 			Seleccionar Proyecto
 		</a>
 	</div>
@@ -69,7 +70,7 @@
 
 	<!-- 🔶 INFORMACIÓN GENERAL -->
 	<div class="bg-white p-6 rounded-xl border border-gray-300 mb-8">
-		<h2 class="text-xl font-bold text-orange-500 mb-4">Información General del Proyecto</h2>
+		<h2 class="text-xl font-bold text-orange-500 mb-4">Resumen Costos Generales del Proyecto</h2>
 		<div class="overflow-x-auto">
 			<table class="min-w-full text-sm border-collapse">
 				<thead class="bg-gray-300 text-black">
@@ -134,120 +135,110 @@
 
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td class="p-1 border border-gray-300 text-right">
-										HH Socios
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										5101004
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										consultor socio
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										100.000
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										100.000
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										100.000
-									</td>
-								</tr>
-								<tr>
-									<td class="p-1 border border-gray-300 text-right">
-										HH Staff
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										5101005
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										consultor staff
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										100.000
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										100.000
-									</td>
-									<td class="p-1 border border-gray-300 text-right">
-										100.000
-									</td>
-								</tr>
-								@{
-									decimal totalforecastservicio = 0;
-									decimal totalforecastgasto = 0;
-									decimal totalservicioreal = 0;
-									decimal totalgastoreal = 0;
-								}
-								@foreach (var servicio in ViewBag.ServiciosProyectos)
-								{
-									decimal totaleservicioPagado = 0;
-									decimal totaleservicioForecast = 0;
-									if (ViewBag.ServiciosTotalesPagados.ContainsKey(servicio.IDSERVICIO))
-									{
-										totaleservicioPagado = ViewBag.ServiciosTotalesPagados[servicio.IDSERVICIO];
-									}
-									if (ViewBag.ServiciosTotalesForecast.ContainsKey(servicio.IDSERVICIO))
-									{
-										totaleservicioForecast = ViewBag.ServiciosTotalesForecast[servicio.IDSERVICIO];
-									}
-									<tr data-id="@servicio.IDSERVICIO">
-										<td class="p-2 border border-gray-300 text-left">@servicio.NOMBRESERVICIO</td>
-										<td class="p-2 border border-gray-300 text-left">@servicio.IDCUENTA</td>
-										<td class="p-2 border border-gray-300 text-left">@servicio.CUENTA</td>
-										<td class="p-2 border border-gray-300 text-right">
-											@(servicio.MONTO != 0 ? String.Format("{0:N0}", servicio.MONTO) : "")
-										</td>
-										<td class="p-2 border border-gray-300 text-right total-row">
-											@(totaleservicioPagado != 0 ? String.Format("{0:N0}", totaleservicioPagado) : "")
-										</td>
-										<td class="p-2 border border-gray-300 text-right">
-											@(totaleservicioForecast != 0 ? String.Format("{0:N0}", totaleservicioForecast) : "")
-										</td>
 
-									</tr>
-									totalserviciosproyectados += servicio.MONTO;
-									totalforecastservicio += totaleservicioForecast;
-									totalservicioreal += totaleservicioPagado;
-								}
-								@foreach (var gasto in ViewBag.GastosProyectos)
-								{
-									decimal totalesgastopagados = 0;
-									decimal totalesgastoforecast = 0;
-
-									if (ViewBag.GastosTotalesPagados.ContainsKey(gasto.IDGASTOS))
-									{
-										totalesgastopagados = ViewBag.GastosTotalesPagados[gasto.IDGASTOS];
-									}
-									if (ViewBag.GastosTotalesForecast.ContainsKey(gasto.IDGASTOS))
-									{
-										totalesgastoforecast = ViewBag.GastosTotalesForecast[gasto.IDGASTOS];
-									}
-									<tr>
-										<td class="p-2 border border-gray-300 text-left">@gasto.NOMBREGASTO</td>
-										<td class="p-2 border border-gray-300 text-left">@gasto.IDCUENTA</td>
-										<td class="p-2 border border-gray-300 text-left">@gasto.CUENTA</td>
-										<td class="p-2 border border-gray-300 text-right">
-											@(gasto.MONTO != 0 ? String.Format("{0:N0}", gasto.MONTO) : "")
-										</td>
-										<td class="p-2 border border-gray-300 text-right" id="totalGastos_@gasto.IDGASTOS">
-											@(totalesgastopagados != 0 ? String.Format("{0:N0}", totalesgastopagados) : "")
-										</td>
-										<td class="p-2 border border-gray-300 text-right">
-											@(totalesgastoforecast != 0 ? String.Format("{0:N0}", totalesgastoforecast) : "")
-										</td>
-
-									</tr>
-									totalgastosproyectados += gasto.MONTO;
-									totalforecastgasto += totalesgastoforecast;
-									totalgastoreal += totalesgastopagados;
-								}
-
+							<tbody id="tabla-dinamica-body">
+								
 
 							</tbody>
 						</table>
+						<div id="mensaje-costos" class="text-left p-3 text-gray-600">Cargando...</div>
+
+						
+						<script>
+
+							async function cargarDatosCosto(idProyecto) {
+								const mensajeCargando = document.getElementById("mensaje-costos");
+								const tbody = document.getElementById("tabla-dinamica-body");
+							  try {
+								const response = await fetch(`/EjecucionProyecto/ObtenerDatosResumen?idProyecto=${idProyecto}`);
+								const data = await response.json();
+
+								function formatearNumero(numero) {
+								  return numero ? numero.toLocaleString('es-CL') : "";
+								}
+
+								function crearFila(tipo, idCuenta, cuenta, proyectado, real, forecast) {
+								  return `
+									<tr>
+									  <td class="p-2 border border-gray-300 text-left">${tipo}</td>
+									  <td class="p-2 border border-gray-300 text-left">${idCuenta}</td>
+									  <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
+									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(proyectado)}</td>
+									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(real)}</td>
+									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(forecast)}</td>
+									</tr>
+								  `;
+								}
+								mensajeCargando.classList.remove("hidden");
+								tbody.innerHTML = ""; 
+
+								
+								let totalProyectado = 0;
+								let totalReal = 0;
+								let totalForecast = 0;
+
+						
+								const fijo1Proy = 100000, fijo1Real = 100000, fijo1Forecast = 100000;
+								tbody.innerHTML += crearFila("HH Socios", "5101004", "Costo Coonsultor_Socios", fijo1Proy, fijo1Real, fijo1Forecast);
+								totalProyectado += fijo1Proy;
+								totalReal += fijo1Real;
+								totalForecast += fijo1Forecast;
+
+								const fijo2Proy = 100000, fijo2Real = 100000, fijo2Forecast = 100000;
+								tbody.innerHTML += crearFila("HH Staff", "5101005", "Costo Consultor_Staff", fijo2Proy, fijo2Real, fijo2Forecast);
+								totalProyectado += fijo2Proy;
+								totalReal += fijo2Real;
+								totalForecast += fijo2Forecast;
+
+							
+								data.ServiciosProyectos.forEach(servicio => {
+								  const real = data.ServiciosTotalesPagados[servicio.IDSERVICIO] || 0;
+								  const forecast = data.ServiciosTotalesForecast[servicio.IDSERVICIO] || 0;
+								  tbody.innerHTML += crearFila(servicio.NOMBRESERVICIO, servicio.IDCUENTA, servicio.CUENTA, servicio.MONTO, real, forecast);
+
+								  totalProyectado += servicio.MONTO || 0;
+								  totalReal += real;
+								  totalForecast += forecast;
+								});
+
+								
+								data.GastosProyectos.forEach(gasto => {
+								  const real = data.GastosTotalesPagados[gasto.IDGASTOS] || 0;
+								  const forecast = data.GastosTotalesForecast[gasto.IDGASTOS] || 0;
+								  tbody.innerHTML += crearFila(gasto.NOMBREGASTO, gasto.IDCUENTA, gasto.CUENTA, gasto.MONTO, real, forecast);
+
+								  totalProyectado += gasto.MONTO || 0;
+								  totalReal += real;
+								  totalForecast += forecast;
+								});
+
+								tbody.innerHTML += `
+								  <tr class="font-bold bg-gray-200">
+									<td class="p-2 border border-gray-300 text-left" colspan="3">Totales</td>
+									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalProyectado)}</td>
+									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalReal)}</td>
+									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalForecast)}</td>
+								  </tr>
+								`;
+
+							  } catch (error) {
+								console.error("Error al cargar datos:", error);
+								alert("Hubo un problema al cargar los datos del proyecto.");
+							  }
+								finally {
+									mensajeCargando.classList.add("hidden");
+								}
+							}
+
+						</script>
+
+			
+
+					
+
+
+
+
 					</div>
 				</div>
 
@@ -908,15 +899,15 @@
 														<td class="hhsocio p-2 border border-gray-300 text-right"><input type="text" name="hhsocio" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																							<td class="p-2 border border-gray-300 text-right costohhsocio">
-																								<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																							</td>
+																								<td class="p-2 border border-gray-300 text-right costohhsocio">
+																									<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																								</td>
 						}
 						else
 						{
-																							<td class="p-2 border border-gray-300 text-right costohhsocio">
-																								<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																							</td>
+																								<td class="p-2 border border-gray-300 text-right costohhsocio">
+																									<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																								</td>
 						}
 
 
@@ -965,15 +956,15 @@
 																				<td class="hhstaff p-2 border border-gray-300 text-right"><input type="text" name="hhstaff" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																						<td class="p-2 border border-gray-300 text-right costohhstaff">
-																							<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																						</td>
+																							<td class="p-2 border border-gray-300 text-right costohhstaff">
+																								<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																							</td>
 						}
 						else
 						{
-																						<td class="p-2 border border-gray-300 text-right costohhstaff">
-																							<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																						</td>
+																							<td class="p-2 border border-gray-300 text-right costohhstaff">
+																								<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																							</td>
 						}
 													<td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhstaff" readonly name="montohhstaff" class="montohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 
@@ -1175,7 +1166,7 @@
 									  if (!valor) return "";
 									  const numero = parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
 									  if (isNaN(numero)) return "";
-									  return numero.toLocaleString("es-CL"); 
+									  return numero.toLocaleString("es-CL");
 									}
 									function renderizarTablaConsultores(data) {
 									  const tbody = document.querySelector('#tablaconsultores tbody');
@@ -1233,10 +1224,10 @@
 									  });
 															  document.querySelectorAll(".monto-input").forEach(input => {
 													input.addEventListener("input", () => {
-										
+
 													const valorSinFormato = input.value.replace(/\D/g, "");
 													if (valorSinFormato) {
-										 
+
 												 input.value = parseInt(valorSinFormato).toLocaleString("es-CL");
 													} else {
 												  input.value = "";
@@ -1335,7 +1326,7 @@
 
 
 									}
-									
+
 
 
 								</script>
@@ -1405,7 +1396,7 @@
 						</div>
 					</details>
 
-					<!-- Accordion: Tabla de Gastos (abierto por defecto, pero segundo) -->
+					<!-- Accordion: Tabla de servicios (abierto por defecto, pero segundo) -->
 					<details open class="border rounded">
 						<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">🛠 Servicios</summary>
 						<div class="p-4 bg-gray-50 rounded-b">
@@ -1481,7 +1472,7 @@
 									  if (!valor) return "";
 									  const numero = parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
 									  if (isNaN(numero)) return "";
-									  return numero.toLocaleString("es-CL"); 
+									  return numero.toLocaleString("es-CL");
 									}
 									function renderizarTablaServicio(data) {
 									  const tbody = document.querySelector('#tablaservicios tbody');
@@ -1958,10 +1949,16 @@
 <script>
 	const buttons = document.querySelectorAll("aside button");
 	const sections = document.querySelectorAll(".seccion");
-	 const idProyectoActual = '@idproyecto';
+	 const idProyectoActual = '@idproyectos';
 	 let gastosCargados = false;
 	 let serviciosCargados = false;
 	 let consultoresCargados = false;
+	 let ResumenCostos = false;
+	 document.addEventListener("DOMContentLoaded", () => {
+
+			cargarDatosCosto(idProyectoActual);
+			ResumenCostos = true;
+	});
 	buttons.forEach(btn => {
 	  btn.addEventListener("click", () => {
 		const target = btn.dataset.section;
@@ -1976,9 +1973,15 @@
 			serviciosCargados = true;
 		}
 		if (target === "consultores" && !consultoresCargados) {
-		
+
 				cargarDatosConsultores(idProyectoActual,"Consultores Externos");
 				consultoresCargados = true;
+		}
+		if(target === "general" && !ResumenCostos) {
+		
+			cargarDatosCosto(idProyectoActual);
+			ResumenCostos = true;
+		
 		}
 	  });
 	});
