@@ -208,7 +208,43 @@ namespace Proyectogestionhoras.Controllers
         {
             try
             {
+                //hh socios
+
+                decimal? costohhsocio = await context.HistorialCostosProyectos
+                    .Where(hc => hc.Idproyecto == idProyecto)
+                    .Select(hc => hc.Costosocio)
+                    .FirstOrDefaultAsync();
                 
+                decimal? hhsocioinicio = await context.HhUsuarioHistorials.Where(h=>h.IdProyecto == idProyecto).Select(h => h.HhSocios).FirstOrDefaultAsync();
+
+                decimal? hhsocioproyectadas = costohhsocio * hhsocioinicio;
+
+                decimal? hhsociosreales = await context.Gastoshhhejecucions.Where(context => context.Idproyecto == idProyecto && context.Tiporecurso == "Socio" && context.Estado == 1)
+                    .SumAsync(context => context.Monto);
+
+                decimal? hhsociosforecast = await context.Gastoshhhejecucions.Where(context => context.Idproyecto == idProyecto && context.Tiporecurso == "Socio" && context.Estado == 2)
+                    .SumAsync(context => context.Monto);
+
+                //hh staff
+
+
+                decimal? costohhstaff = await context.HistorialCostosProyectos
+                    .Where(hc => hc.Idproyecto == idProyecto)
+                    .Select(hc => hc.Costostaff)
+                    .FirstOrDefaultAsync();
+
+                decimal? hhstaffinicio = await context.HhUsuarioHistorials.Where(h => h.IdProyecto == idProyecto).Select(h => h.HhStaff).FirstOrDefaultAsync();
+
+                decimal? hhstaffproyectadas = costohhstaff * hhstaffinicio;
+
+
+                decimal? hhstaffreales = await context.Gastoshhhejecucions.Where(context => context.Idproyecto == idProyecto && context.Tiporecurso == "Staff" && context.Estado == 1)
+                    .SumAsync(context => context.Monto);
+
+                decimal? hhstaffforecast = await context.Gastoshhhejecucions.Where(context => context.Idproyecto == idProyecto && context.Tiporecurso == "Staff" && context.Estado == 2)
+                    .SumAsync(context => context.Monto);
+
+
                 var serviciosProyecto = await proyectoService.ObtenerServiciosProyecto(idProyecto);
                 var gastosProyecto = await proyectoService.ObtenerGastosProyectos(idProyecto);
 
@@ -243,22 +279,22 @@ namespace Proyectogestionhoras.Controllers
                 // Diccionarios de totales
                 var serviciosTotalesPagados = serviciosreales
                     .Where(x => x.Estado == "Pagada")
-                    .GroupBy(x => x.Idservicio)
+                    .GroupBy(x => x.Idservicio.Value)
                     .ToDictionary(g => g.Key, g => g.First().TotalMonto);
 
                 var serviciosTotalesForecast = serviciosreales
                     .Where(x => x.Estado == "Forecast")
-                    .GroupBy(x => x.Idservicio)
+                    .GroupBy(x => x.Idservicio.Value)
                     .ToDictionary(g => g.Key, g => g.First().TotalMonto);
 
                 var gastosTotalesPagados = gastosreales
                     .Where(x => x.Estado == "Pagada")
-                    .GroupBy(x => x.Idgasto)
+                    .GroupBy(x => x.Idgasto.Value)
                     .ToDictionary(g => g.Key, g => g.First().TotalMonto);
 
                 var gastosTotalesForecast = gastosreales
                     .Where(x => x.Estado == "Forecast")
-                    .GroupBy(x => x.Idgasto)
+                    .GroupBy(x => x.Idgasto.Value)
                     .ToDictionary(g => g.Key, g => g.First().TotalMonto);
 
                 var jsonResult = JsonConvert.SerializeObject(new
@@ -268,7 +304,13 @@ namespace Proyectogestionhoras.Controllers
                     ServiciosTotalesForecast = serviciosTotalesForecast,
                     GastosProyectos = gastosProyecto,
                     GastosTotalesPagados = gastosTotalesPagados,
-                    GastosTotalesForecast = gastosTotalesForecast
+                    GastosTotalesForecast = gastosTotalesForecast,
+                    HHSociosProyectadas = hhsocioproyectadas,
+                    HHSociosReales = hhsociosreales,
+                    HHsociosForecast = hhsociosforecast,
+                    HHStaffProyectadas = hhstaffproyectadas,
+                    HHStaffReales = hhstaffreales,
+                    HHStaffForecast = hhstaffforecast
                 });
 
                 return Content(jsonResult, "application/json");
@@ -284,23 +326,109 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-        public async Task<IActionResult> EgresosProyectos(int? idproyecto)
+        public async Task<IActionResult> EgresosProyectos(int? idproyecto, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
+            var idsession = HttpContext.Session.GetInt32("id");
+            if (idsession.HasValue)
+            {
+                Debug.WriteLine(idproyecto);
+                var proyecto = await proyectoService.ObtenerProyectos(idproyecto, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
+                ViewBag.Proyecto = proyecto;
 
-            var proyecto = await context.Proyectos.Where(p => p.Id == idproyecto).ToListAsync();
-            ViewBag.Proyecto = proyecto;
+                var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
+                ViewBag.Idcuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentasocio).FirstOrDefaultAsync();
+                ViewBag.cuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentasocio).FirstOrDefaultAsync();
+                ViewBag.costohhsocio = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costosocio).FirstOrDefaultAsync();
+                ViewBag.Idcuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentastaff).FirstOrDefaultAsync();
+                ViewBag.cuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentastaff).FirstOrDefaultAsync();
+                ViewBag.costohhstaff = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costostaff).FirstOrDefaultAsync();
+                var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
+                ViewBag.GastosHH = gastoshh;
+                ViewBag.GastosRecursos = datosgastosrecursos;
 
-            var gastoshh = await ejecucionService.ObtenerDistribucionHH(idproyecto, null);
-            ViewBag.Idcuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentasocio).FirstOrDefaultAsync();
-            ViewBag.cuentasocio = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentasocio).FirstOrDefaultAsync();
-            ViewBag.costohhsocio = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costosocio).FirstOrDefaultAsync();
-            ViewBag.Idcuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Idcuentastaff).FirstOrDefaultAsync();
-            ViewBag.cuentastaff = await context.Historialcuentasproyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Cuentastaff).FirstOrDefaultAsync();
-            ViewBag.costohhstaff = await context.HistorialCostosProyectos.Where(hc => hc.Idproyecto == idproyecto).Select(hc => hc.Costostaff).FirstOrDefaultAsync();
-            var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
-           
+                return View();
 
-            return View();
+            }
+             
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RegistrarConsultores()
+        {
+            var idproyecto = int.Parse(Request.Form["idproyecto"].ToString());
+            try
+            {
+                /*COSTOS SERVICIOS base de datos*/
+                var serviciosantiguos = Request.Form["idconsultores"];
+                var eliminarServicioOtro = Request.Form["EliminarServicioHonorario"].Select(e => e == "true").ToList();
+
+                var servicios = ProcesarServicios(Request.Form["idconsultores"].ToList(), Request.Form["idproveedorconsultor"].ToList(), Request.Form["montoconsultor"].ToList(), Request.Form["fechaconsultor"].ToList(), Request.Form["IdConsultorReal"].ToList(), Request.Form["observacionconsultor"].ToList(), Request.Form["estadoconsultor"].ToList(), Request.Form["TipoConsultor"].ToList(), eliminarServicioOtro);
+
+
+                var eliminarServicioOtronuevo = Request.Form["EliminarconsultorOtroNuevo"].Select(e => e == "true").ToList();
+
+                var serviciosnuevos = ProcesarServicios(Request.Form["idconsultornuevos"].ToList(), Request.Form["idproveedorconsultornuevos"].ToList(), Request.Form["montoconsultornuevos"].ToList(), Request.Form["fechaconsultornuevos"].ToList(), Request.Form["Idconsultorrealnuevos"].ToList(), Request.Form["observacionconsultornuevos"].ToList(), Request.Form["estadoconsultornuevos"].ToList(), Request.Form["Tipoconsultornuevo"].ToList(), eliminarServicioOtronuevo);
+
+
+                var idservicionuevos = Request.Form["idconsultornuevos"];
+
+
+                await ejecucionService.GestorServiciosReales(idproyecto, servicios);
+                await ejecucionService.GestorServiciosReales(idproyecto, serviciosnuevos);
+
+
+                List<ServicioViewModel> verificarservicioantiguos = new List<ServicioViewModel>();
+
+                for (int i = 0; i < serviciosantiguos.Count; i++)
+                {
+
+                    var servicioViewModel = new ServicioViewModel
+                    {
+
+                        Idservicios = int.Parse(serviciosantiguos[i]),
+
+
+
+                    };
+
+                    verificarservicioantiguos.Add(servicioViewModel);
+
+                }
+
+                List<ServicioViewModel> verificarservicionuevos = new List<ServicioViewModel>();
+
+                for (int i = 0; i < idservicionuevos.Count; i++)
+                {
+
+                    var servicioViewModel = new ServicioViewModel
+                    {
+
+                        Idservicios = int.Parse(idservicionuevos[i]),
+
+
+
+                    };
+
+                    verificarservicionuevos.Add(servicioViewModel);
+
+                }
+
+
+                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicioantiguos);
+                await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicionuevos);
+                await proyectoService.GestorFechaModificacionProyecto(idproyecto);
+                TempData["SuccessMessageSconsultores"] = "Los Honorarios del proyecto se han registrado y actualizado correctamente.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-consultores");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error al registrar honorarios: {e.Message}");
+                TempData["ErrorMessageConsultores"] = "Error al registrar los honorarios del proyecto.";
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-consultores");
+            }
         }
 
 
@@ -368,13 +496,14 @@ namespace Proyectogestionhoras.Controllers
 
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicioantiguos);
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicionuevos);
+                await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 TempData["SuccessMessageServicios"] = "Los Servicios del proyecto se han registrado y actualizado correctamente.";
                 return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Error al registrar seriviocs: {e.Message}");
-                TempData["ErrorMessageServicios"] = "Error al registrar los gastos del proyecto.";
+                TempData["ErrorMessageServicios"] = "Error al registrar los servicios del proyecto.";
                 return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
             }
         }
@@ -549,7 +678,7 @@ namespace Proyectogestionhoras.Controllers
 
                 await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastos);
                 await proyectoService.AgregarGastoProyectoeJECUCION(idproyecto, verificargastosnuevos);
-
+                await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 TempData["SuccessMessageGastos"] = "Los Gastos del proyecto se han registrado y actualizado correctamente.";
                 return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-gastos");
             }
@@ -842,7 +971,7 @@ namespace Proyectogestionhoras.Controllers
                 await ejecucionService.GestorGastosHH(idproyecto, gastosocioo);
                 await ejecucionService.GestorGastosHH(idproyecto, gastohhsocio);
                 await ejecucionService.GestorGastosHH(idproyecto, gastohhstaff);
-
+                await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 TempData["SuccessMessage"] = "Los Registros hh del proyecto se han registrado y actualizado correctamente.";
                 return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
 

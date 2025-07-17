@@ -11,12 +11,7 @@
 	decimal totalsocios = 0;
 	decimal totalstaff = 0;
 
-	decimal totalsociosproyectados = 0;
-	decimal totalstaffproyectados = 0;
-	decimal totalserviciosproyectados = 0;
-	decimal totalgastosproyectados = 0;
 
-	decimal totalcostosproyectados = 0;
 	int idcuentasocio = ViewBag.Idcuentasocio;
 	decimal costohhscio = ViewBag.costohhsocio;
 
@@ -35,34 +30,36 @@
 	<!-- 🔶 PESTAÑAS TIPO NAVEGADOR -->
 	@foreach (var proyecto in ViewBag.Proyecto)
 	{
-		 idproyectos = proyecto.Id;
+		idproyectos = proyecto.Id;
 		<div class="flex gap-2 mb-6">
-			<a href="@Url.Action("ForecastCostos", "EjecucionProyecto", new { id = idproyectos })"
+			<a href="@Url.Action("ForecastIngreso", "EjecucionProyecto", new { id = idproyectos })"
 			   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-							             @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastCostos"
-																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																					Forecast Costos
-																																				</a>
-																																				<a href="@Url.Action("ForecastIngreso", "EjecucionProyecto", new { id = idproyectos })"
-																																				   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-							             @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
-																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																					Forecast Ingresos
-																																				</a>
-																																				<a href="@Url.Action("FlujoCajaProyecto", "EjecucionProyecto", new { id = idproyectos })"
-																																				   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-							             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
-																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																					Flujo de Caja
-																																				</a>
-																																				<a href="@Url.Action("SeleccionarProyecto", "EjecucionProyecto", new { statusproyecto = 2 })"
-																																				   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-							             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
-																		   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																	 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+						@(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																											 Ingresos del Proyecto
+																																										</a>
+																																										<a href="#"
+																																										   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+										             @(ViewContext.RouteData.Values["action"]?.ToString() == "EgresosProyectos"
+																							 	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																					 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																									 Costos del Proyecto
+																																								</a>
+																																								<a href="@Url.Action("FlujoCajaProyecto", "EjecucionProyecto", new { id = idproyectos })"
+																																								   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+									             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+																							 	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																					 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																									Flujo de Caja
+																																								</a>
+																																								<a href="@Url.Action("SeleccionarProyecto", "EjecucionProyecto", new { statusproyecto = 2 })"
+																																								   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+									             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
+																							 	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																					 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
 			Seleccionar Proyecto
 		</a>
 	</div>
@@ -70,32 +67,45 @@
 
 	<!-- 🔶 INFORMACIÓN GENERAL -->
 	<div class="bg-white p-6 rounded-xl border border-gray-300 mb-8">
-		<h2 class="text-xl font-bold text-orange-500 mb-4">Resumen Costos Generales del Proyecto</h2>
+		<h2 class="text-xl font-bold text-orange-500 mb-4">Información General del Proyecto</h2>
 		<div class="overflow-x-auto">
-			<table class="min-w-full text-sm border-collapse">
-				<thead class="bg-gray-300 text-black">
-					<tr>
-						<th class="p-2 border">Proyecto</th>
-						<th class="p-2 border">Cliente</th>
-						<th class="p-2 border">Monto CLP</th>
-						<th class="p-2 border">Moneda</th>
-						<th class="p-2 border">Centro Costo</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var proyecto in ViewBag.Proyecto)
-					{
+			@foreach (var proyecto in ViewBag.Proyecto)
+			{
+				<table class="min-w-full text-sm border-collapse">
+					<thead class="bg-gray-300 text-black">
+						<tr>
+							<th class="p-2 border">Proyecto</th>
+							<th class="p-2 border">Cliente</th>
+							<th class="p-2 border">Moneda</th>
+							@if (proyecto.MontoOrigenExtranjero > 0)
+							{
+								<th class="p-2 border ">Monto Moneda Origen</th>
+							}
+							<th class="p-2 border">Monto CLP</th>
+
+							<th class="p-2 border">Centro Costo</th>
+						</tr>
+					</thead>
+					<tbody>
+
 						<tr class="bg-white hover:bg-gray-50">
-							<td class="p-2 border text-center">@proyecto.Nombre</td>
-							<td class="p-2 border text-center">UNIT</td>
-							<td class="p-2 border text-right">10.000.000</td>
-							<td class="p-2 border text-center">CLP</td>
-							<td class="p-2 border text-center">pc-ec</td>
+							<td class="p-2 border text-center">@proyecto.numproyecto - @proyecto.NombreProyecto</td>
+							<td class="p-2 border text-center">@proyecto.NombreCliente</td>
+							
+							<td class="p-2 border text-center">@proyecto.MONEDA</td>
+							@if (proyecto.MontoOrigenExtranjero > 0)
+							{
+								<td class="p-2 border  text-center">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
+							}
+							<td class="p-2 border text-right">@String.Format("{0:N0}", @proyecto.MONTO)</td>
+							
+							<td class="p-2 border text-center">@proyecto.Codigo</td>
 
 						</tr>
-					}
-				</tbody>
-			</table>
+
+					</tbody>
+				</table>
+			}
 		</div>
 	</div>
 
@@ -105,7 +115,7 @@
 		<!-- 🔸 SIDEBAR -->
 		<aside class="w-64 sticky top-20 self-start bg-white border border-gray-200 p-4 rounded-xl shadow-md">
 			<nav class="space-y-2 text-sm">
-				<button data-section="general" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">📋 Información del Proyecto</button>
+				<button data-section="general" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">📋 Resumen Costos Generales del Proyecto</button>
 				<button data-section="hh" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🔧 HH del Proyecto</button>
 				<button data-section="consultores" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">👨‍💼 Consultores</button>
 				<button data-section="servicios" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🛠 Servicios</button>
@@ -137,13 +147,28 @@
 							</thead>
 
 							<tbody id="tabla-dinamica-body">
-								
-
 							</tbody>
 						</table>
 						<div id="mensaje-costos" class="text-left p-3 text-gray-600">Cargando...</div>
 
-						
+						<div class="p-4 bg-gray-50 rounded-b">
+							<h2 class="text-center text-lg font-semibold text-gray-700 mb-4">Resumen Forecast Proveedores del proyecto</h2>
+							<div class="overflow-x-auto">
+								<table id="tablaforecastproveedor" class="min-w-full text-xs border-collapse border border-gray-300">
+									<thead>
+										<tr class="bg-green-100 text-black">
+											<th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
+											<th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
+											<th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>
+											<th class="p-2 border border-gray-300 text-center min-w-[150px]">fecha</th>
+
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
 						<script>
 
 							async function cargarDatosCosto(idProyecto) {
@@ -170,27 +195,27 @@
 								  `;
 								}
 								mensajeCargando.classList.remove("hidden");
-								tbody.innerHTML = ""; 
+								tbody.innerHTML = "";
 
-								
+
 								let totalProyectado = 0;
 								let totalReal = 0;
 								let totalForecast = 0;
 
-						
-								const fijo1Proy = 100000, fijo1Real = 100000, fijo1Forecast = 100000;
+
+								const fijo1Proy = data.HHSociosProyectadas, fijo1Real = data.HHSociosReales, fijo1Forecast = data.HHsociosForecast;
 								tbody.innerHTML += crearFila("HH Socios", "5101004", "Costo Coonsultor_Socios", fijo1Proy, fijo1Real, fijo1Forecast);
 								totalProyectado += fijo1Proy;
 								totalReal += fijo1Real;
 								totalForecast += fijo1Forecast;
 
-								const fijo2Proy = 100000, fijo2Real = 100000, fijo2Forecast = 100000;
+								const fijo2Proy = data.HHStaffProyectadas, fijo2Real = data.HHStaffReales, fijo2Forecast = data.HHStaffForecast;
 								tbody.innerHTML += crearFila("HH Staff", "5101005", "Costo Consultor_Staff", fijo2Proy, fijo2Real, fijo2Forecast);
 								totalProyectado += fijo2Proy;
 								totalReal += fijo2Real;
 								totalForecast += fijo2Forecast;
 
-							
+
 								data.ServiciosProyectos.forEach(servicio => {
 								  const real = data.ServiciosTotalesPagados[servicio.IDSERVICIO] || 0;
 								  const forecast = data.ServiciosTotalesForecast[servicio.IDSERVICIO] || 0;
@@ -201,7 +226,7 @@
 								  totalForecast += forecast;
 								});
 
-								
+
 								data.GastosProyectos.forEach(gasto => {
 								  const real = data.GastosTotalesPagados[gasto.IDGASTOS] || 0;
 								  const forecast = data.GastosTotalesForecast[gasto.IDGASTOS] || 0;
@@ -230,11 +255,134 @@
 								}
 							}
 
+
+
+
+							$(document).ready(function () {
+
+								var idproyecto = '@idproyectos';
+
+
+								$.ajax({
+									url: '/EjecucionProyecto/RecuperarForecastProveedores',
+									type: 'GET',
+									data: { idproyecto: idproyecto },
+									success: function (data) {
+										renderizarTabla(data);
+									},
+									error: function (err) {
+										console.error('Error al recuperar los datos:', err);
+									}
+								});
+
+								function renderizarTabla(data) {
+									const tabla = $('#tablaforecastproveedor');
+									const tablaBody = tabla.find('tbody');
+									const tablaHead = tabla.find('thead');
+
+
+									tablaBody.empty();
+									tablaHead.empty();
+
+
+									const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))]
+										.sort((a, b) => {
+											const [mesA, anioA] = a.split('-').map(Number);
+											const [mesB, anioB] = b.split('-').map(Number);
+											const fechaA = new Date(anioA, mesA - 1);
+											const fechaB = new Date(anioB, mesB - 1);
+											return fechaA - fechaB;
+										});
+
+
+									let encabezado = `
+														<tr class="bg-green-100 text-black">
+														<th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
+														<th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
+														<th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
+									mesesUnicos.forEach(mes => {
+										encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
+									});
+									encabezado += `<th class="p-2 border border-gray-300 text-right">Total Proveedores</th>`;
+									encabezado += `</tr>`;
+									tablaHead.append(encabezado);
+
+
+									const totalesPorMes = new Array(mesesUnicos.length).fill(0);
+									let totalGeneral = 0;
+
+
+									const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre']);
+
+									for (let [key, registros] of Object.entries(agrupados)) {
+										const [proveedor, cuenta, nombre] = key.split('|');
+
+
+										let fila = `
+														<tr>
+															<td class="p-2 border border-gray-300 text-left">${proveedor}</td>
+															<td class="p-2 border border-gray-300 text-left">${cuenta}</td>
+															<td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
+
+
+										let totalFila = 0;
+										mesesUnicos.forEach((mes, index) => {
+											const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
+											const monto = registroMes ? registroMes.totalforecastproveedor : null;
+
+											if (monto === null || monto === 0) {
+												fila += `<td class="p-2 border border-gray-300 text-right"></td>`;
+											} else {
+												totalFila += monto;
+												totalesPorMes[index] += monto;
+												fila += `<td class="p-2 border border-gray-300 text-right">${formatMoneda(monto)}</td>`;
+											}
+										});
+
+
+										fila += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalFila)}</td>`;
+										fila += `</tr>`;
+										tablaBody.append(fila);
+										totalGeneral += totalFila;
+									}
+
+
+									let filaTotales = `
+														<tr class="bg-green-100">
+														<td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
+									totalesPorMes.forEach(totalMes => {
+										filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
+									});
+									filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
+									filaTotales += `</tr>`;
+
+
+									tablaBody.append(filaTotales);
+								}
+
+
+								function agruparPor(array, keys) {
+									return array.reduce((result, item) => {
+										const groupKey = keys.map(key => item[key]).join('|');
+										if (!result[groupKey]) {
+											result[groupKey] = [];
+										}
+										result[groupKey].push(item);
+										return result;
+									}, {});
+								}
+
+
+								function formatMoneda(valor) {
+									return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+								}
+							});
+
 						</script>
 
-			
 
-					
+
+
 
 
 
@@ -899,15 +1047,15 @@
 														<td class="hhsocio p-2 border border-gray-300 text-right"><input type="text" name="hhsocio" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																								<td class="p-2 border border-gray-300 text-right costohhsocio">
-																									<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																								</td>
+																										<td class="p-2 border border-gray-300 text-right costohhsocio">
+																											<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																										</td>
 						}
 						else
 						{
-																								<td class="p-2 border border-gray-300 text-right costohhsocio">
-																									<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																								</td>
+																										<td class="p-2 border border-gray-300 text-right costohhsocio">
+																											<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																										</td>
 						}
 
 
@@ -956,15 +1104,15 @@
 																				<td class="hhstaff p-2 border border-gray-300 text-right"><input type="text" name="hhstaff" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																							<td class="p-2 border border-gray-300 text-right costohhstaff">
-																								<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																							</td>
+																									<td class="p-2 border border-gray-300 text-right costohhstaff">
+																										<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																									</td>
 						}
 						else
 						{
-																							<td class="p-2 border border-gray-300 text-right costohhstaff">
-																								<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																							</td>
+																									<td class="p-2 border border-gray-300 text-right costohhstaff">
+																										<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																									</td>
 						}
 													<td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhstaff" readonly name="montohhstaff" class="montohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 
@@ -1196,7 +1344,7 @@
 
 
 											const Estadoselect = `
-										<select name="estadoconsultor" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+										<select name="estadoconsultor"  class="border border-gray-300 rounded px-2 py-1">
 											<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
 											<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
 										</select>
@@ -1241,21 +1389,21 @@
 										const tbody = document.querySelector('#tablaAgregarConsultores tbody');
 
 										const serviciosSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idservicionuevos">
+											<select class="border border-gray-300 rounded px-2 py-1" name="idconsultornuevos">
 												<option value="" disabled selected>Seleccione un servicio</option>
 												${listaconsultores.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('')}
 											</select>
 										`;
 
 										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorgastosnuevos">
+											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorconsultornuevos">
 											<option value=""  disabled selected>Seleccione un proveedor</option>
 												${listaProveedoresconsultores.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
 											</select>
 										`;
 
 										const estadoSelect = `
-											<select name="estadoserviciosnuevos" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+											<select name="estadoconsultornuevos"  class="border border-gray-300 rounded px-2 py-1">
 												<option value="Forecast">Forecast</option>
 												<option value="Pagada">Pagada</option>
 											</select>
@@ -1267,17 +1415,17 @@
 										nuevaFila.innerHTML = `
 											<td class="p-1 border">${serviciosSelect}</td>
 											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border"><input type="text" name="montoserviciosnuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
-											<td class="p-1 border"><input type="date" name="fechaserviciosnuevos" class="w-full border rounded px-2 py-1"></td>
+											<td class="p-1 border"><input type="text" name="montoconsultornuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
+											<td class="p-1 border"><input type="date" name="fechaconsultornuevos" class="w-full border rounded px-2 py-1"></td>
 											<td class="p-1 border">${estadoSelect}</td>
-											<td class="p-1 border"><textarea rows="2" name="observacionservicionuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
+											<td class="p-1 border"><textarea rows="2" name="observacionconsultornuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
 											<td style="display:none;">
-												<input type="hidden" name="IdServicioRealnuevos" value="" />
+												<input type="hidden" name="Idconsultorrealnuevos" value="" />
 											</td>
 											<td style="display:none;">
-												<input type="hidden" name="EliminarServicioOtroNuevo" class="EliminarServicioOtro" value="false" />
+												<input type="hidden" name="EliminarconsultorOtroNuevo" class="EliminarServicioOtro" value="false" />
 											</td>
-											<input type="hidden" name="Tiposervicionuevo" value="Otros" />
+											<input type="hidden" name="Tipoconsultornuevo" value="Consultores Externos" />
 										`;
 
 										tbody.appendChild(nuevaFila);
@@ -1502,7 +1650,7 @@
 
 
 											const Estadoselect = `
-										<select name="estadoservicio" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+										<select name="estadoservicio"  class="border border-gray-300 rounded px-2 py-1">
 											<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
 											<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
 										</select>
@@ -1561,7 +1709,7 @@
 										`;
 
 										const estadoSelect = `
-											<select name="estadoserviciosnuevos" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+											<select name="estadoserviciosnuevos"  class="border border-gray-300 rounded px-2 py-1">
 												<option value="Forecast">Forecast</option>
 												<option value="Pagada">Pagada</option>
 											</select>
@@ -1804,7 +1952,7 @@
 										`;
 
 										const Estadoselect = `
-										<select name="estadogasto" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+										<select name="estadogasto"  class="border border-gray-300 rounded px-2 py-1">
 											<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
 											<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
 										</select>
@@ -1813,7 +1961,7 @@
 										row.innerHTML = `
 										  <td class="p-1 border">${gastoSelect}</td>
 										  <td class="p-1 border">${proveedorSelect}</td>
-										  <td class="p-1 border"><input type="text" name="montogasto" value="${formatearMiles(item.monto)}" class="monto-input w-full text-right border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="text" name="montogasto" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
 										  <td class="p-1 border"><input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
 										<td class="p-1 border">${Estadoselect}</td>
 										  <td class="p-1 border"><textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea></td>
@@ -1865,7 +2013,7 @@
 										`;
 
 										const estadoSelect = `
-											<select name="estadogastonuevos" class="px-4 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+											<select name="estadogastonuevos"  class="border border-gray-300 rounded px-2 py-1">
 												<option value="Forecast">Forecast</option>
 												<option value="Pagada">Pagada</option>
 											</select>
@@ -1978,10 +2126,10 @@
 				consultoresCargados = true;
 		}
 		if(target === "general" && !ResumenCostos) {
-		
+
 			cargarDatosCosto(idProyectoActual);
 			ResumenCostos = true;
-		
+
 		}
 	  });
 	});

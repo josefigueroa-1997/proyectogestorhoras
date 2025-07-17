@@ -75,31 +75,31 @@
 		{
 			<div class="flex bg-white rounded-t-xl overflow-hidden border border-gray-300">
 				<!--tab marcada-->
-				<a href="#"
+				<a href="@Url.Action("ForecastIngreso", "EjecucionProyecto", new { id = idproyectos })"
 				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
-           @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
-               ? "text-orange-500 border-orange-500 bg-white"
-               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
-					Flujo Caja Proyecto
-				</a>
+		           @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+					   	 ? "text-orange-500 border-orange-500 bg-white"
+					   	 : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+			 Ingresos del Proyecto
+																										  		</a>
 				<!-- TAB 1 -->
-				<a href="@Url.Action("ForecastCostos","EjecucionProyecto",new{id=idproyectos})"
+			<a href="@Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto = idproyectos })"
 				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
-           @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastCostos"
+		           @(ViewContext.RouteData.Values["action"]?.ToString() == "EgresosProyectos"
                ? "text-orange-500 border-orange-500 bg-white"
                : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
-					Forecast Costos del Proyecto
+		 Costos del Proyecto
 				</a>
 
 				<!-- TAB 2 -->
-				<a href="@Url.Action("ForecastIngreso","EjecucionProyecto",new{id=idproyectos})"
-				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
-           @(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
-               ? "text-orange-500 border-orange-500 bg-white"
-               : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
-					Forecast Ingresos del Proyecto
-				</a>
-
+			
+																										  		<a href="#"
+																										  		   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
+		           @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+					   	 ? "text-orange-500 border-orange-500 bg-white"
+					   	 : "text-gray-600 border-transparent hover:text-orange-500 hover:border-orange-500")">
+																										  			Flujo Caja Proyecto
+																										  		</a>
 				<!-- TAB 3 -->
 				<a href="@Url.Action("SeleccionarProyecto","EjecucionProyecto",new{statusproyecto=2})"
 				   class="flex-1 text-center py-3 text-sm font-medium border-b-2 transition duration-300
