@@ -389,7 +389,7 @@
 
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
-						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+						@*<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>*@
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Fecha</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Neto</th>
 
@@ -406,7 +406,7 @@
 						<tr>
 							<td style="padding: 10px; border: 1px solid #ddd;">@factura.IdCuenta</td>
 							<td style="padding: 10px; border: 1px solid #ddd;">@factura.Cuenta</td>
-							<td style="padding: 10px; border: 1px solid #ddd;">@factura.Segmento</td>
+							@*<td style="padding: 10px; border: 1px solid #ddd;">@factura.Segmento</td>*@
 							<td style="padding: 10px; border: 1px solid #ddd;">@factura.Fecha_Factura.ToString("MM/yyyy")</td>
 							<td id="neto" style="padding: 10px; border: 1px solid #ddd;text-align:right;">@String.Format("{0:N0}", factura.Neto)</td>
 
@@ -416,7 +416,7 @@
 						</tr>
 					}
 					<tr>
-						<td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Total</strong></td>
+						<td colspan="3" style="padding: 10px; border: 1px solid #ddd; background-color:#d9e2f3;text-align:left;"><strong>Total</strong></td>
 						<td style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#d9e2f3;"><strong>@String.Format("{0:N0}", totalneto)</strong> </td>
 
 					</tr>
@@ -453,7 +453,7 @@
 							<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Horas</th>
 							<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
 							<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
-							<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+							@*<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>*@
 							<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Total</th>
 						</tr>
 					</thead>
@@ -465,18 +465,17 @@
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_SOCIOS</td>
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_SOCIOS</td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
+								@*<td style="padding: 10px; border: 1px solid #ddd;">
 									@proyecto.SEGMENTO_SOCIOS
 
 
-								</td>
+								</td>*@
 							}
 							else
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
-								</td>
+								
 							}
 
 							@{
@@ -492,16 +491,16 @@
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_STAFF</td>
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_STAFF</td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
+								@*<td style="padding: 10px; border: 1px solid #ddd;">
 									@proyecto.SEGMENTO_STAFF
 
-								</td>
+								</td>*@
 							}
 							else
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
-								<td style="padding: 10px; border: 1px solid #ddd;">  </td>
+								
 							}
 
 
@@ -521,18 +520,17 @@
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;"> @proyecto.IDCUENTA_CONSULTOR_A</td>
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_A</td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
+								@*<td style="padding: 10px; border: 1px solid #ddd;">
 									@proyecto.SEGMENTO_CONSULTOR_A
 
 
-								</td>
+								</td>*@
 							}
 							else
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
-								</td>
+								
 							}
 
 							@{
@@ -550,16 +548,16 @@
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_B</td>
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_B</td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
+								@*<td style="padding: 10px; border: 1px solid #ddd;">
 									@proyecto.SEGMENTO_CONSULTOR_B
 
-								</td>
+								</td>*@
 							}
 							else
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
-								<td style="padding: 10px; border: 1px solid #ddd;">   </td>
+								
 							}
 
 
@@ -578,17 +576,16 @@
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA_CONSULTOR_C</td>
 								<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA_CONSULTOR_C</td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
+							@*	<td style="padding: 10px; border: 1px solid #ddd;">
 									@proyecto.SEGMENTO_CONSULTOR_C
 
-								</td>
+								</td>*@
 							}
 							else
 							{
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
 								<td style="padding: 10px; border: 1px solid #ddd;"></td>
-								<td style="padding: 10px; border: 1px solid #ddd;">
-								</td>
+								
 							}
 
 							@{
@@ -602,7 +599,7 @@
 							totalconsultores = totalconsultorC + totalconsultorB + totalconsultora;
 						}
 						<tr>
-							<td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
+							<td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#b2e6a5;text-align:left;"><strong>Total</strong></td>
 							<td id="totalcostos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#b2e6a5;"><strong>@String.Format("{0:N0}", totalescostos)</strong> </td>
 
 						</tr>
@@ -633,7 +630,7 @@
 
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
-						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+						@*th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>*@<
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Fecha</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Monto</th>
 
@@ -651,7 +648,7 @@
 
 							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
 							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
-							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
+							@*<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>*@
 							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.FECHA.ToString("dd/MM/yyyy")</td>
 							<td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
 
@@ -666,7 +663,7 @@
 						</tr>
 					}
 					<tr>
-						<td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#f9eb8b;text-align:left;"><strong>Total</strong></td>
+						<td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#f9eb8b;text-align:left;"><strong>Total</strong></td>
 						<td id="totalservicios" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f9eb8b; text-align:right">@String.Format("{0:N0}", totalservicios) </td>
 					</tr>
 				</tbody>
@@ -690,7 +687,7 @@
 
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
-						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>
+						@*<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>*@
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Fecha</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Monto</th>
 
@@ -708,7 +705,7 @@
 
 							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.IDCUENTA</td>
 							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.CUENTA</td>
-							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>
+							@*<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.NOMBRSEGMENTO</td>*@
 							<td style="padding: 10px; border: 1px solid #ddd;">@proyecto.FECHA.ToString("dd/MM/yyyy")</td>
 							<td style="padding: 10px; border: 1px solid #ddd;text-align:right;">
 
@@ -722,7 +719,7 @@
 						</tr>
 					}
 					<tr>
-						<td colspan="5" style="padding: 10px; border: 1px solid #ddd; background-color:#f5bd89;text-align:left;"><strong>Total</strong></td>
+						<td colspan="4" style="padding: 10px; border: 1px solid #ddd; background-color:#f5bd89;text-align:left;"><strong>Total</strong></td>
 						<td id="totalgastos" style="padding: 10px; border: 1px solid #ddd; text-align:right;background-color:#f5bd89;">@String.Format("{0:N0}", totalgastos) </td>
 					</tr>
 				</tbody>

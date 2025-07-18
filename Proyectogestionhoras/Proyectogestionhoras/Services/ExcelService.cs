@@ -219,12 +219,21 @@ namespace Proyectogestionhoras.Services
                     if (!yaExisteBD && !yaAgregados.Contains(clave))
                     {
                         yaAgregados.Add(clave);
+                        int idcuenta = await context
+                        .Servicios
+                        .Where(s => s.Id == servicio.Idservicios)
+                        .Select(s => s.Idcuenta.Value)
+                        .FirstOrDefaultAsync();
+
+                        int idsegmento = await context.Segmentos.Where(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Servicios")
+                            .Select(s => s.Id)
+                            .FirstOrDefaultAsync();
 
                         serviciosAGrabar.Add(new ProyectoServicio
                         {
                             IdProyecto = idProyecto,
                             IdServicio = servicio.Idservicios,
-                            Idsegmento = servicio.IdSegmento,
+                            Idsegmento = idsegmento,
                             Monto = 0,
                             Fecha = DateTime.Now
                         });
@@ -273,12 +282,20 @@ namespace Proyectogestionhoras.Services
                     if (!yaExisteBD && !yaAgregados.Contains(clave))
                     {
                         yaAgregados.Add(clave);
+                        int idcuenta = await context
+                      .Gastos
+                      .Where(s => s.Id == gasto.Idgastos)
+                      .Select(s => s.Idcuenta.Value)
+                      .FirstOrDefaultAsync();
 
+                        int idsegmento = await context.Segmentos.Where(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Gastos")
+                            .Select(s => s.Id)
+                            .FirstOrDefaultAsync();
                         gastosAGrabar.Add(new ProyectoGasto
                         {
                             IdProyecto = idProyecto,
                             IdGastos = gasto.Idgastos,
-                            Idsegmento = gasto.IdSegmento,
+                            Idsegmento = idsegmento,
                             Monto = 0,
                             Fecha = DateTime.Now
                         });

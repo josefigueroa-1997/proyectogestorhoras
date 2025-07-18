@@ -167,64 +167,80 @@
     
 
     //ID PROYECTO
-    document.addEventListener('DOMContentLoaded', function () {
-        const numProyectoCells = document.querySelectorAll('tbody td:first-child');
+    async function cargarProyectos() {
+         const filas = Array.from(document.querySelectorAll('tbody tr'));
+         const listaNumProyectos = filas.map(row => {
+             const cell = row.querySelector('td:first-child');
+             return cell?.textContent.trim() || null;
+         }).filter(x => x);
 
-        numProyectoCells.forEach((cell, index) => {
-            const numproyecto = cell.textContent.trim();
-            const row = cell.closest('tr');
-            const container = row.querySelector('.project-id-container');
-            if (numproyecto) {
-                fetch(`/CargaExcel/ObtenerIdProyecto?numproyecto=${encodeURIComponent(numproyecto)}`)
-                    .then(response => response.json())
-                    .then(data => {
+         if (listaNumProyectos.length === 0) return;
 
+         try {
+             const response = await fetch('/CargaExcel/ObtenerIdsProyectosBatch', {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(listaNumProyectos)
+             });
 
+             const data = await response.json();
 
-                        const hiddenInput = document.createElement('input');
-                        hiddenInput.type = 'hidden';
-                        hiddenInput.name = `ProyectoId`;
-                        container.appendChild(hiddenInput);
+             filas.forEach(row => {
+                 const cell = row.querySelector('td:first-child');
+                 const container = row.querySelector('.project-id-container');
+                 const numproyecto = cell?.textContent.trim();
 
+                 if (!numproyecto) {
+                     row.style.backgroundColor = '#fee2e2';
+                     row.style.color = '#000';
+                     row.style.fontWeight = 'bold';
+                     row.classList.add('fila-invalida');
+                     marcarPaso(row, "proyecto");
+                     return;
+                 }
 
-                        marcarPaso(row, "proyecto");
-                        if (!data || data === 0) {
-                            container.textContent = 'Proyecto No Encontrado';
-                            row.style.backgroundColor = '#fee2e2';
-                            row.style.color = '#000000';
-                            row.style.fontWeight = 'bold';
+                 const id = data[numproyecto] || 0;
 
-                            hiddenInput.disabled = true;
-                            marcarPaso(row, "proyecto");
-                            throw new Error('Proyecto no encontrado');
-                        }
-                        hiddenInput.value = data;
+                 if (id === 0) {
+                     container.textContent = 'Proyecto No Encontrado';
+                     row.style.backgroundColor = '#fee2e2';
+                     row.style.color = '#000';
+                     row.style.fontWeight = 'bold';
+                     row.classList.add('fila-invalida');
+                     marcarPaso(row, "proyecto");
+                 } else {
+                     container.textContent = '';
+                     const hiddenInput = document.createElement('input');
+                     hiddenInput.type = 'hidden';
+                     hiddenInput.name = 'ProyectoId';
+                     hiddenInput.value = id;
+                     container.appendChild(hiddenInput);
 
-                        
+                     cell.textContent = numproyecto;
+                     marcarPaso(row, "proyecto");
+                 }
+             });
+         } catch (error) {
+             console.error('Error al cargar proyectos batch:', error);
+              huboErrorEnFetch = true;
+             filas.forEach(row => {
+                 row.style.backgroundColor = '#fee2e2';
+                 row.style.color = '#000';
+                 row.style.fontWeight = 'bold';
+                 row.classList.add('fila-invalida');
+                 marcarPaso(row, "proyecto");
+             });
+              const inputs = row.querySelectorAll('input');
+                         inputs.forEach(input => {
+                             input.disabled = true;
+                         });
 
-                      
-                    })
-                    .catch(error => {
-                        marcarPaso(row, "proyecto");
-                        console.error('Error al obtener el ID del proyecto:', error);
-                        const inputs = row.querySelectorAll('input');
-                        inputs.forEach(input => {
-                            input.disabled = true;
-                        });
-
-                        const projectInput = row.querySelector('.project-id-container input');
-                        if (projectInput) {
-                            projectInput.disabled = true;
-                        }
-
-                        row.classList.add('fila-invalida');
-
-
-
-                    });
-            }
-        });
-    });
+                         const projectInput = row.querySelector('.project-id-container input');
+                         if (projectInput) {
+                             projectInput.disabled = true;
+                         }
+         }
+     }
   
     document.querySelector('form').addEventListener('submit', function (e) {
         const filasInvalidas = document.querySelectorAll('tr.fila-invalida');
@@ -240,7 +256,21 @@
 
 </script>
 
+<script>
+       document.addEventListener('DOMContentLoaded', async () => {
+      try {
 
+        await Promise.all([
+      cargarProyectos(),
+    
+    ]);
+
+
+      } catch (error) {
+        console.error('Error en la carga inicial:', error);
+      }
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

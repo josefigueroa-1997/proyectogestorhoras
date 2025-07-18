@@ -1872,68 +1872,75 @@
 
 								<script>
 
-									let listaGastos = [];
+																	   let listaGastos = [];
 									let listaProveedores = [];
 
+									// Cargar solo una vez
 									async function cargarListasDeGastosYProveedores() {
-										try {
-											const [gastos, proveedores] = await Promise.all([
-												fetch('/EjecucionProyecto/GetGastos').then(res => res.json()),
-												fetch('/EjecucionProyecto/GetProveedoresGastos').then(res => res.json())
-											]);
+									  try {
+										const [gastos, proveedores] = await Promise.all([
+										  fetch('/EjecucionProyecto/GetGastos').then(res => res.json()),
+										  fetch('/EjecucionProyecto/GetProveedoresGastos').then(res => res.json())
+										]);
 
-											listaGastos = gastos;
-											listaProveedores = proveedores;
-										} catch (error) {
-											console.error("Error al cargar listas de gastos y proveedores:", error);
-										}
+										listaGastos = gastos;
+										listaProveedores = proveedores;
+									  } catch (error) {
+										console.error("Error al cargar listas de gastos y proveedores:", error);
+									  }
 									}
 
+									// Se ejecuta al cargar la página
+									document.addEventListener("DOMContentLoaded", () => {
+									  cargarListasDeGastosYProveedores();
+
+									  // Delegación de eventos para inputs con formato
+									  const tbody = document.querySelector('#tablagastos tbody');
+									  tbody.addEventListener("input", function (e) {
+										if (e.target.classList.contains("monto-input")) {
+										  const input = e.target;
+										  const valorSinFormato = input.value.replace(/\D/g, "");
+										  input.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
+										}
+									  });
+									});
 
 									async function cargarDatosGastos(idProyecto) {
-										try {
+									  try {
+										const tbody = document.querySelector('#tablagastos tbody');
+										const mensajeDiv = document.getElementById("mensajeGastos");
+										tbody.innerHTML = "";
+										mensajeDiv.textContent = "Cargando Gastos...";
 
-												const tbody = document.querySelector('#tablagastos tbody');
-												const mensajeDiv = document.getElementById("mensajeGastos");
-												tbody.innerHTML = "";
-												mensajeDiv.textContent = "Cargando Gastos...";
+										const gastosReales = await fetch(`/EjecucionProyecto/CargarGastosReales?idproyecto=${idProyecto}`).then(res => res.json());
 
-											await cargarListasDeGastosYProveedores();
-
-
-											const gastosReales = await fetch(`/EjecucionProyecto/CargarGastosReales?idproyecto=${idProyecto}`).then(res => res.json());
-
-											if (gastosReales.length > 0) {
-												renderizarTablaGastos(gastosReales);
-												mensajeDiv.textContent = "";
-												document.getElementById("tablagastos").style.display = "";
-											} else {
-													mensajeDiv.textContent = "No hay gastos para este proyecto.";
-													document.getElementById("tablagastos").style.display = "none";
-												}
-
-
-										} catch (error) {
-											console.error("Error al cargar gastos:", error);
+										if (gastosReales.length > 0) {
+										  renderizarTablaGastos(gastosReales);
+										  mensajeDiv.textContent = "";
+										  document.getElementById("tablagastos").style.display = "";
+										} else {
+										  mensajeDiv.textContent = "No hay gastos para este proyecto.";
+										  document.getElementById("tablagastos").style.display = "none";
 										}
+									  } catch (error) {
+										console.error("Error al cargar gastos:", error);
+									  }
 									}
 
-
-										   function formatearMiles(valor) {
+									function formatearMiles(valor) {
 									  if (!valor) return "";
 									  const numero = parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
 									  if (isNaN(numero)) return "";
-									  return numero.toLocaleString("es-CL"); // o "es-ES"
+									  return numero.toLocaleString("es-CL");
 									}
+
 									function renderizarTablaGastos(data) {
 									  const tbody = document.querySelector('#tablagastos tbody');
 									  tbody.innerHTML = "";
 
-									  data.forEach((item, index) => {
-										const row = document.createElement('tr');
-										row.classList.add("bg-white", "hover:bg-gray-50");
+									  let html = "";
 
-										// Select para Gasto
+									  data.forEach((item) => {
 										const gastoSelect = `
 										  <select class="border border-gray-300 rounded px-2 py-1" name="idgastos">
 											${listaGastos.map(g => `
@@ -1942,7 +1949,6 @@
 										  </select>
 										`;
 
-										// Select para Proveedor
 										const proveedorSelect = `
 										  <select class="border border-gray-300 rounded px-2 py-1" name="idproveedorgastos">
 											${listaProveedores.map(p => `
@@ -1951,46 +1957,43 @@
 										  </select>
 										`;
 
-										const Estadoselect = `
-										<select name="estadogasto"  class="border border-gray-300 rounded px-2 py-1">
+										const estadoSelect = `
+										  <select name="estadogasto" class="border border-gray-300 rounded px-2 py-1">
 											<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
 											<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
-										</select>
+										  </select>
 										`;
 
-										row.innerHTML = `
-										  <td class="p-1 border">${gastoSelect}</td>
-										  <td class="p-1 border">${proveedorSelect}</td>
-										  <td class="p-1 border"><input type="text" name="montogasto" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
-										  <td class="p-1 border"><input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
-										<td class="p-1 border">${Estadoselect}</td>
-										  <td class="p-1 border"><textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea></td>
-										  <td class="p-1 border"><input type="text" readonly name="cuentagasto" value="${item.cuenta}" class="w-full border rounded px-2 py-1"></td>
-										 <td style="display:none;">
-												<input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+										html += `
+										  <tr class="bg-white hover:bg-gray-50">
+											<td class="p-1 border">${gastoSelect}</td>
+											<td class="p-1 border">${proveedorSelect}</td>
+											<td class="p-1 border">
+											  <input type="text" name="montogasto" value="${formatearMiles(item.monto)}"
+											  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">
 											</td>
-
-
-										  <td class="p-1 border text-center">
-											<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"  onclick="limpiarFilagasto(this)">🗑️</button>
-										  </td>
-										  <input type="hidden" name="IdGastoReal" value="${item.idGastosReal}"/>
+											<td class="p-1 border">
+											  <input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">
+											</td>
+											<td class="p-1 border">${estadoSelect}</td>
+											<td class="p-1 border">
+											  <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea>
+											</td>
+											<td class="p-1 border">
+											  <input type="text" readonly name="cuentagasto" value="${item.cuenta}" class="w-full border rounded px-2 py-1">
+											</td>
+											<td style="display:none;">
+											  <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+											</td>
+											<td class="p-1 border text-center">
+											  <button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarFilagasto(this)">🗑️</button>
+											</td>
+											<input type="hidden" name="IdGastoReal" value="${item.idGastosReal}"/>
+										  </tr>
 										`;
-
-										tbody.appendChild(row);
 									  });
-												document.querySelectorAll(".monto-input").forEach(input => {
-													input.addEventListener("input", () => {
 
-													const valorSinFormato = input.value.replace(/\D/g, "");
-													if (valorSinFormato) {
-
-												 input.value = parseInt(valorSinFormato).toLocaleString("es-CL");
-													} else {
-												  input.value = "";
-													}
-												});
-												});
+									  tbody.innerHTML = html;
 									}
 
 

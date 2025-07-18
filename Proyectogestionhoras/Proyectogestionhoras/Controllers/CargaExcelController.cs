@@ -149,10 +149,8 @@ namespace Proyectogestionhoras.Controllers
                 var idsProyecto = form["ProyectoId"].ToList();
                 var idsEgreso = form["IdEgreso"].ToList();
                 var idsProveedor = form["IdsProveedor"].ToList();
-                var idsSegmentos = form["idsegmento"].ToList();
+                
 
-                
-                
                 if (new[] { numProyectos.Count, egresosNombres.Count, proveedores.Count,
                    montos.Count, fechas.Count, estados.Count, 
                    glosas.Count, tipos.Count, idsProyecto.Count, idsEgreso.Count,
@@ -224,7 +222,7 @@ namespace Proyectogestionhoras.Controllers
                     var servicioViewModel = new ServicioViewModel
                     {
                         Idservicios = int.Parse(idsEgreso[i]),
-                        IdSegmento = int.Parse(idsSegmentos[i]),
+                        
                         IdsProyecto = new List<int> { int.Parse(idsProyecto[i]) }
                     };
 
@@ -244,7 +242,7 @@ namespace Proyectogestionhoras.Controllers
                     var gastoViewModel = new GastoViewModel
                     {
                         Idgastos = int.Parse(idsEgreso[i]),
-                        IdSegmento = int.Parse(idsSegmentos[i]),
+                        
                         IdProyecto = new List<int> { int.Parse(idsProyecto[i]) }
                     };
 
@@ -482,12 +480,21 @@ namespace Proyectogestionhoras.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ObtenerIdProyecto(string numproyecto)
+        [HttpPost]
+        public async Task<IActionResult> ObtenerIdsProyectosBatch([FromBody] List<string> numproyectos)
         {
-            var resultado = await context.Proyectos.Where(p => p.NumProyecto == numproyecto).Select(p => p.Id).FirstOrDefaultAsync();
+            if (numproyectos == null || !numproyectos.Any())
+                return Json(new Dictionary<string, int>());
+
+            var limpios = numproyectos.Select(n => n.Trim()).ToList();
+
+            var resultado = await context.Proyectos
+                .Where(p => limpios.Contains(p.NumProyecto))
+                .ToDictionaryAsync(p => p.NumProyecto, p => p.Id);
+
             return Json(resultado);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> obtenerSegmento(int idproyecto, int idcuenta, string tipo)
@@ -542,44 +549,75 @@ namespace Proyectogestionhoras.Controllers
             return sinAcentos;
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> ObtenerIdProveedor(string nombreproveedor)
+        [HttpPost]
+        public async Task<IActionResult> ObtenerIdsProveedoresBatch([FromBody] List<string>? nombres)
         {
-            nombreproveedor = nombreproveedor?.Trim();
-            var resultado = await context.Proveedores.Where(p=>p.Nombre==nombreproveedor).Select(p=> p.Id).FirstOrDefaultAsync();
+            try
+            {
+                if (nombres == null || !nombres.Any())
+                    return Json(new Dictionary<string, List<int>>());
+
+                var limpios = nombres
+     .Where(n => !string.IsNullOrWhiteSpace(n))
+     .Select(n => n.Trim().ToUpper())
+     .Distinct()
+     .ToList();
+
+                var proveedoresFiltrados = await context.Proveedores
+                    .Where(p => limpios.Contains(p.Nombre.ToUpper()))
+                    .ToListAsync();
+
+                var idsPorNombre = proveedoresFiltrados
+     .GroupBy(p => p.Nombre.ToUpper())
+     .ToDictionary(
+         g => g.Key,
+         g => g.First().Id  
+     );
+
+                return Json(idsPorNombre);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+
+
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ObtenerIdsEgresosBatch([FromBody] List<string> nombres)
+        {
+            if (nombres == null || !nombres.Any())
+                return Json(new Dictionary<string, int>());
+
+            var limpios = nombres
+            .Where(n => !string.IsNullOrWhiteSpace(n))
+            .Select(n => n.Trim().ToUpper())  // Normalizamos a mayúsculas y sin espacios
+            .Distinct()
+            .ToList();
+
+            var servicios = await context.Servicios
+     .Where(s => limpios.Contains(s.Nombre.Trim().ToUpper()))
+     .ToDictionaryAsync(s => s.Nombre.Trim().ToUpper(), s => s.Id);
+
+            var faltantes = limpios.Except(servicios.Keys).ToList();
+
+            var gastos = await context.Gastos
+                .Where(g => faltantes.Contains(g.Nombre.Trim().ToUpper()))
+                .ToDictionaryAsync(g => g.Nombre.Trim().ToUpper(), g => g.Id);
+
+
+            // Unir los dos diccionarios
+            var resultado = servicios.Concat(gastos)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
             return Json(resultado);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ObtenerIdEgreso(string nombreegreso)
-        {
-            int resultado = 0;
-            nombreegreso = nombreegreso?.Trim();
-
-         
-            var servicioId = await context.Servicios
-                .Where(p => p.Nombre == nombreegreso)
-                .Select(p => p.Id)
-                .FirstOrDefaultAsync();
-
-            if (servicioId != 0)
-            {
-                resultado = servicioId;
-            }
-            else
-            {
-                
-                var gastoId = await context.Gastos
-                    .Where(p => p.Nombre == nombreegreso)
-                    .Select(p => p.Id)
-                    .FirstOrDefaultAsync();
-
-                resultado = gastoId;
-            }
-
-            return Json(resultado);
-        }
 
         [HttpGet]
         public async Task<IActionResult> ObtenerDatosCuenta(int idegreso, string tipo)

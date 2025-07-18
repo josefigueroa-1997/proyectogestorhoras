@@ -74,8 +74,7 @@
                         
                         <th class="p-2 border border-gray-300 text-left">Glosa</th>
                         <th class="p-2 border border-gray-300 text-left">Tipo</th>
-                        <th class="p-2 border border-gray-300 text-left">Cuenta</th>
-                        <th class="p-2 border border-gray-300 text-left">Segmento</th>
+                      
 
 
                     </tr>
@@ -198,133 +197,70 @@
     const filaDatos = new Map(); 
 
     //ID PROYECTO
-    document.addEventListener('DOMContentLoaded', function () {
-        const numProyectoCells = document.querySelectorAll('tbody td:first-child');
+       async function cargarProyectos() {
+        const filas = Array.from(document.querySelectorAll('tbody tr'));
+        const listaNumProyectos = filas.map(row => {
+            const cell = row.querySelector('td:first-child');
+            return cell?.textContent.trim() || null;
+        }).filter(x => x);
 
-        numProyectoCells.forEach((cell, index) => {
-            const numproyecto = cell.textContent.trim();
-            const row = cell.closest('tr');
-            const container = row.querySelector('.project-id-container');
-            if (numproyecto) {
-                fetch(`/CargaExcel/ObtenerIdProyecto?numproyecto=${encodeURIComponent(numproyecto)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                       
-                        
-                         
-                            const hiddenInput = document.createElement('input');
-                            hiddenInput.type = 'hidden';
-                            hiddenInput.name = `ProyectoId`;
-                             container.appendChild(hiddenInput);
+        if (listaNumProyectos.length === 0) return;
 
-                           
-                            cell.textContent = `${numproyecto} (ID: ${data})`;
-                            if (!data || data === 0) {
-                                     container.textContent = 'Proyecto No Encontrado';
-                                    row.style.backgroundColor = '#fee2e2';
-                                     row.style.color = '#000000';
-                                     row.style.fontWeight = 'bold';
-                                     marcarPaso(row, "proyecto");
-                                    hiddenInput.disabled = true; 
-                                    throw new Error('Proyecto no encontrado');
+        try {
+            const response = await fetch('/CargaExcel/ObtenerIdsProyectosBatch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(listaNumProyectos)
+            });
 
-                            }
-                            hiddenInput.value = data;
+            const data = await response.json();
 
-                            cell.textContent = `${numproyecto} `;
-                        
-                        if (!filaDatos.has(row)) filaDatos.set(row, {});
-                        filaDatos.get(row).idProyecto = data;
-                        
-                        marcarPaso(row, "proyecto");
-                        intentarObtenerSegmento(row);
-                    })
-                    .catch(error => {
-                        marcarPaso(row, "proyecto");
-                         marcarPaso(row, "segmento");
-                        huboErrorEnFetch = true;
-                          const inputs = row.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.disabled = true;
-    });
+            filas.forEach(row => {
+                const cell = row.querySelector('td:first-child');
+                const container = row.querySelector('.project-id-container');
+                const numproyecto = cell?.textContent.trim();
 
-    const projectInput = row.querySelector('.project-id-container input');
-    if (projectInput) {
-        projectInput.disabled = true;
-    }
+                if (!numproyecto) {
+                    row.style.backgroundColor = '#fee2e2';
+                    row.style.color = '#000';
+                    row.style.fontWeight = 'bold';
+                    row.classList.add('fila-invalida');
+                    marcarPaso(row, "proyecto");
+                    return;
+                }
 
-    row.classList.add('fila-invalida');
+                const id = data[numproyecto] || 0;
 
+                if (id === 0) {
+                    container.textContent = 'Proyecto No Encontrado';
+                    row.style.backgroundColor = '#fee2e2';
+                    row.style.color = '#000';
+                    row.style.fontWeight = 'bold';
+                    row.classList.add('fila-invalida');
+                    marcarPaso(row, "proyecto");
+                } else {
+                    container.textContent = ''; 
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'ProyectoId';
+                    hiddenInput.value = id;
+                    container.appendChild(hiddenInput);
 
-
-                    });
-            }
-        });
-    });
-    //ID EGRESO
-    document.addEventListener('DOMContentLoaded', function () {
-    
-        const egresoCells = document.querySelectorAll('tbody tr td:nth-child(2)');
-
-   
-        egresoCells.forEach(cell => {
-            const nombreEgreso = cell.textContent.trim();
-            const row = cell.parentElement;
-            const egresoIdContainer = row.querySelector('.egreso-id-container');
-            const cuentaCell = row.querySelector('td:nth-child(9)');
-            const tipoCell = row.querySelector('td:nth-child(8)');
-            if (nombreEgreso) {
-                const tipo = tipoCell ? tipoCell.textContent.trim() : "";
-              
-                fetch(`/CargaExcel/ObtenerIdEgreso?nombreegreso=${encodeURIComponent(nombreEgreso)}`)
-                    .then(response => response.json())
-                    .then(idEgreso => {
-                        
-                        if (!idEgreso || idEgreso === 0) {
-                            
-                            egresoIdContainer.textContent = 'Egreso No Encontrado';
-                            row.style.backgroundColor = '#fee2e2';
-                            row.style.color = '#000000';
-                            row.style.fontWeight = 'bold';
-                            marcarPaso(row, "egreso");
-                            throw new Error('Egreso no encontrado');
-                        }
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'IdEgreso';
-                        input.value = idEgreso;
-
-                        marcarPaso(row, "egreso");
-                        egresoIdContainer.appendChild(input);
-
-                        cell.textContent = `${nombreEgreso}`;
-                       
-                        return fetch(`/CargaExcel/ObtenerDatosCuenta?idegreso=${idEgreso}&tipo=${encodeURIComponent(tipo)}`);
-                    })
-                    .then(response => response.json())
-                .then(cuentaData => {
-                    if (cuentaData && cuentaCell) {
-                        cuentaCell.textContent = `${cuentaData.idcuenta} - ${cuentaData.cuenta}`;
-                          
-                            if (!filaDatos.has(row)) filaDatos.set(row, {});
-                            filaDatos.get(row).idCuenta = cuentaData.id;
-                            filaDatos.get(row).tipo = tipo;
-
-                          marcarPaso(row, "cuenta");
-                            intentarObtenerSegmento(row);
-                    }
-                    else{
-                        marcarFilaProcesada(row);
-                        console.error('No hay datos');
-                    }
-                    
-                })
-                    .catch(error => {
-                        marcarPaso(row, "egreso");
-                        marcarPaso(row, "cuenta");
-                         marcarPaso(row, "segmento");
-                         huboErrorEnFetch = true;
-                        const inputs = row.querySelectorAll('input');
+                    cell.textContent = numproyecto;
+                    marcarPaso(row, "proyecto");
+                }
+            });
+        } catch (error) {
+            console.error('Error al cargar proyectos batch:', error);
+             huboErrorEnFetch = true;
+            filas.forEach(row => {
+                row.style.backgroundColor = '#fee2e2';
+                row.style.color = '#000';
+                row.style.fontWeight = 'bold';
+                row.classList.add('fila-invalida');
+                marcarPaso(row, "proyecto");
+            });
+             const inputs = row.querySelectorAll('input');
                         inputs.forEach(input => {
                             input.disabled = true;
                         });
@@ -333,13 +269,104 @@
                         if (projectInput) {
                             projectInput.disabled = true;
                         }
+        }
+    }
 
-                        row.classList.add('fila-invalida');
-                    });
-               
+
+    //ID EGRESO
+         async function cargarEgresos() {
+        const rows = document.querySelectorAll('tbody tr');
+        const nombresEgresos = [];
+        const filaPorEgreso = new Map();
+
+        rows.forEach(row => {
+            const cell = row.querySelector('td:nth-child(2)');
+            const nombreEgreso = cell?.textContent.trim().toUpperCase();
+
+            if (nombreEgreso) {
+                nombresEgresos.push(nombreEgreso);
+                if (!filaPorEgreso.has(nombreEgreso)) {
+                    filaPorEgreso.set(nombreEgreso, []);
+                }
+                filaPorEgreso.get(nombreEgreso).push(row);
             }
         });
-    });
+
+        if (nombresEgresos.length === 0) return;
+
+        try {
+            const response = await fetch('/CargaExcel/ObtenerIdsEgresosBatch', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(nombresEgresos)
+            });
+
+            const egresosMap = await response.json(); 
+
+            nombresEgresos.forEach(nombre => {
+                const id = egresosMap[nombre];
+                const filas = filaPorEgreso.get(nombre);
+
+                filas.forEach(row => {
+                    const egresoIdContainer = row.querySelector('.egreso-id-container');
+                    const cell = row.querySelector('td:nth-child(2)');
+
+                    if (!id || id === 0) {
+                    
+                        egresoIdContainer.textContent = 'Egreso No Encontrado';
+                        row.style.backgroundColor = '#fee2e2';
+                        row.style.color = '#000000';
+                        row.style.fontWeight = 'bold';
+                        row.classList.add('fila-invalida');
+
+                        const inputs = row.querySelectorAll('input');
+                        inputs.forEach(input => input.disabled = true);
+
+                        const projectInput = row.querySelector('.project-id-container input');
+                        if (projectInput) projectInput.disabled = true;
+
+                        marcarPaso(row, 'egreso');
+                        huboErrorEnFetch = true;
+                        return;
+                    }
+                    egresoIdContainer.textContent = ''; 
+
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'IdEgreso';
+                    input.value = id;
+                    egresoIdContainer.appendChild(input);
+
+                    marcarPaso(row, 'egreso');
+                    cell.textContent = nombre;
+                });
+            });
+
+        } catch (error) {
+            console.error('Error en cargarEgresosBatch:', error);
+             filas.forEach(row => {
+                row.style.backgroundColor = '#fee2e2';
+                row.style.color = '#000';
+                row.style.fontWeight = 'bold';
+                row.classList.add('fila-invalida');
+                marcarPaso(row, "egreso");
+            });
+            huboErrorEnFetch = true;
+             const inputs = row.querySelectorAll('input');
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                        });
+
+                        const projectInput = row.querySelector('.project-id-container input');
+                        if (projectInput) {
+                            projectInput.disabled = true;
+                        }
+        }
+    }
+
+
         document.querySelector('form').addEventListener('submit', function (e) {
         const filasInvalidas = document.querySelectorAll('tr.fila-invalida');
         filasInvalidas.forEach(fila => {
@@ -398,61 +425,112 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        const rows = document.querySelectorAll("table tbody tr");
+          async function cargarProveedores() {
+        const filas = Array.from(document.querySelectorAll("table tbody tr"));
 
-        for (const row of rows) {
-            const proveedorCell = row.children[2]; 
-            const inputHidden = row.querySelector(".id-proveedor-hidden");
-            const proveedorerror = row.querySelector(".error-id-proveedor-container");
-            if (proveedorCell && inputHidden) {
-                const nombreProveedor = proveedorCell.textContent.trim();
+      
+        const listaProveedores = filas
+            .map(row => {
+                const proveedorCell = row.children[2];
+                return proveedorCell?.textContent.trim() || null;
+            })
+            .filter(x => x);
 
-                try {
-                    const response = await fetch(`/CargaExcel/ObtenerIdProveedor?nombreproveedor=${encodeURIComponent(nombreProveedor)}`);
-                    if (response.ok) {
-                        const id = await response.json();
-                        inputHidden.value = id;
-                       
-                        if(!id || id===0){
-                             proveedorerror.textContent = 'Proveedor No Encontrado';
-                            row.style.backgroundColor = '#fee2e2';
-                            row.style.color = '#000000';
-                            row.style.fontWeight = 'bold';
-                           
-                            throw new Error('Proveedor no encontrado');
-                        }
-                        
-                    }
-                } catch (error) {
-                    
-                   huboErrorEnFetch = true;
-                     const inputs = row.querySelectorAll('input');
-                        inputs.forEach(input => {
-                        input.disabled = true;
-                     });
+        if (listaProveedores.length === 0) return;
 
-                            const projectInput = row.querySelector('.project-id-container input');
-                     if (projectInput) {
-                            projectInput.disabled = true;
-                     }
+        try {
+           
+            const response = await fetch('/CargaExcel/ObtenerIdsProveedoresBatch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(listaProveedores)
+            });
 
-                    row.classList.add('fila-invalida');
+               let data;
+    if (response.ok) {
+        data = await response.json();
+    } else {
+        const text = await response.text();
+        console.error('Error HTTP:', response.status, text);
+        throw new Error(`Error del servidor: ${text}`);
+    }
+
+            filas.forEach(row => {
+                const proveedorCell = row.children[2];
+                const inputHidden = row.querySelector(".id-proveedor-hidden");
+                const proveedorerror = row.querySelector(".error-id-proveedor-container");
+
+                if (!proveedorCell || !inputHidden) {
+                    marcarPaso(row, "proveedor");
+                    return;
                 }
-                finally {
-                
+
+                const nombreProveedor = proveedorCell.textContent.trim().toUpperCase();
+                const id = data[nombreProveedor] || 0;
+
+                if (id === 0) {
+                    if (proveedorerror) proveedorerror.textContent = 'Proveedor No Encontrado';
+                    row.style.backgroundColor = '#fee2e2';
+                    row.style.color = '#000000';
+                    row.style.fontWeight = 'bold';
+                    row.classList.add('fila-invalida');
+
+                  
+                    const inputs = row.querySelectorAll('input');
+                    inputs.forEach(input => input.disabled = true);
+                } else {
+                    if (proveedorerror) proveedorerror.textContent = '';
+                    inputHidden.value = id;
+           
+                    row.style.backgroundColor = '';
+                    row.style.color = '';
+                    row.style.fontWeight = '';
+                    row.classList.remove('fila-invalida');
+                }
+
                 marcarPaso(row, "proveedor");
-                }   
-            }
-              else {
-            
-           marcarPaso(row, "proveedor");
+            });
+
+        } catch (error) {
+            console.error('Error al cargar proveedores batch:', error);
+            filas.forEach(row => {
+                row.style.backgroundColor = '#fee2e2';
+                row.style.color = '#000000';
+                row.style.fontWeight = 'bold';
+                row.classList.add('fila-invalida');
+
+                const inputs = row.querySelectorAll('input');
+                inputs.forEach(input => input.disabled = true);
+                 
+
+                        const projectInput = row.querySelector('.project-id-container input');
+                        if (projectInput) {
+                            projectInput.disabled = true;
+                        }
+                marcarPaso(row, "proveedor");
+            });
+            huboErrorEnFetch = true;
         }
-        }
-    });
+    }
+
+
 </script>
+<script>
+       document.addEventListener('DOMContentLoaded', async () => {
+      try {
+       
+        await Promise.all([
+      cargarProyectos(),
+      cargarProveedores(),
+	  cargarEgresos()
+    ]);
 
 
+      } catch (error) {
+        console.error('Error en la carga inicial:', error);
+      }
+    });
+        </script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('formEgresos');
@@ -513,14 +591,16 @@
             estadoFilas.set(row, {
                 proyecto: false,
                 egreso: false,
-                cuenta: false,
-                segmento: false,
+               // cuenta: false,
+              //  segmento: false,
                 proveedor: false
             });
         }
 
         const estado = estadoFilas.get(row);
+
         estado[paso] = true;
+       
 
         const completa = Object.values(estado).every(v => v === true);
         if (completa && !row.classList.contains('procesada')) {
@@ -549,10 +629,10 @@
     }
 
     
-    document.addEventListener("DOMContentLoaded", () => {
+   document.addEventListener("DOMContentLoaded", () => {
         const modal = document.getElementById("modalCargando");
-        if (modal) modal.style.display = "flex"; 
-    });
+        if (modal) modal.style.display = "flex";
+     });
 </script>
 
 <script>
