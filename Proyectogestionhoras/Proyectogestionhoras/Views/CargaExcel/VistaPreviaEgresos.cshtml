@@ -274,50 +274,109 @@
 
 
     //ID EGRESO
-         async function cargarEgresos() {
+            async function cargarEgresos() {
         const rows = document.querySelectorAll('tbody tr');
-        const nombresEgresos = [];
+        const nombresPorTipo = {
+            GASTOS: [],
+            SERVICIOS: []
+        };
         const filaPorEgreso = new Map();
 
         rows.forEach(row => {
-            const cell = row.querySelector('td:nth-child(2)');
-            const nombreEgreso = cell?.textContent.trim().toUpperCase();
+            const cellNombre = row.querySelector('td:nth-child(2)');
+            const cellTipo = row.querySelector('td:nth-child(8)');
+
+            const nombreEgreso = cellNombre?.textContent.trim().toUpperCase();
+            const tipoTexto = cellTipo?.textContent.trim().toUpperCase();
+
+               let tipo;
+    if (tipoTexto === 'GASTOS') {
+      tipo = 'GASTOS';
+    } else if (tipoTexto === 'OTROS' || tipoTexto === 'CONSULTORES EXTERNOS') {
+      tipo = 'SERVICIOS';
+    } else {
+      tipo = 'SERVICIOS'; 
+    }
+
 
             if (nombreEgreso) {
-                nombresEgresos.push(nombreEgreso);
-                if (!filaPorEgreso.has(nombreEgreso)) {
-                    filaPorEgreso.set(nombreEgreso, []);
+                nombresPorTipo[tipo].push(nombreEgreso);
+
+                const key = `${tipo}||${nombreEgreso}`; 
+                if (!filaPorEgreso.has(key)) {
+                    filaPorEgreso.set(key, []);
                 }
-                filaPorEgreso.get(nombreEgreso).push(row);
+                filaPorEgreso.get(key).push(row);
             }
         });
 
-        if (nombresEgresos.length === 0) return;
+        for (const tipo of ['GASTOS', 'SERVICIOS']) {
+            if (nombresPorTipo[tipo].length === 0) continue;
 
-        try {
-            const response = await fetch('/CargaExcel/ObtenerIdsEgresosBatch', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(nombresEgresos)
-            });
+            try {
+                const response = await fetch('/CargaExcel/ObtenerIdsEgresosBatch', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombres: nombresPorTipo[tipo],
+                        tipo: tipo
+                    })
+                });
 
-            const egresosMap = await response.json(); 
+                const egresosMap = await response.json();
 
-            nombresEgresos.forEach(nombre => {
-                const id = egresosMap[nombre];
-                const filas = filaPorEgreso.get(nombre);
+                nombresPorTipo[tipo].forEach(nombre => {
+                    const key = `${tipo}||${nombre}`;
+                    const filas = filaPorEgreso.get(key);
+                    const id = egresosMap[nombre];
 
-                filas.forEach(row => {
-                    const egresoIdContainer = row.querySelector('.egreso-id-container');
-                    const cell = row.querySelector('td:nth-child(2)');
+                    filas.forEach(row => {
+                        const egresoIdContainer = row.querySelector('.egreso-id-container');
+                        const cell = row.querySelector('td:nth-child(2)');
 
-                    if (!id || id === 0) {
-                    
-                        egresoIdContainer.textContent = 'Egreso No Encontrado';
+                        if (!id || id === 0) {
+                            egresoIdContainer.textContent = 'Egreso No Encontrado';
+                            row.style.backgroundColor = '#fee2e2';
+                            row.style.color = '#000000';
+                            row.style.fontWeight = 'bold';
+                            row.classList.add('fila-invalida');
+
+                            const inputs = row.querySelectorAll('input');
+                            inputs.forEach(input => input.disabled = true);
+
+                            const projectInput = row.querySelector('.project-id-container input');
+                            if (projectInput) projectInput.disabled = true;
+
+                            marcarPaso(row, 'egreso');
+                            huboErrorEnFetch = true;
+                            return;
+                        }
+
+                        egresoIdContainer.textContent = '';
+
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'IdEgreso';
+                        input.value = id;
+                        egresoIdContainer.appendChild(input);
+
+                        marcarPaso(row, 'egreso');
+                        cell.textContent = nombre;
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error en cargarEgresosBatch:', error);
+
+                nombresPorTipo[tipo].forEach(nombre => {
+                    const key = `${tipo}||${nombre}`;
+                    const filas = filaPorEgreso.get(key);
+
+                    filas.forEach(row => {
                         row.style.backgroundColor = '#fee2e2';
-                        row.style.color = '#000000';
+                        row.style.color = '#000';
                         row.style.fontWeight = 'bold';
                         row.classList.add('fila-invalida');
 
@@ -327,44 +386,15 @@
                         const projectInput = row.querySelector('.project-id-container input');
                         if (projectInput) projectInput.disabled = true;
 
-                        marcarPaso(row, 'egreso');
-                        huboErrorEnFetch = true;
-                        return;
-                    }
-                    egresoIdContainer.textContent = ''; 
-
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'IdEgreso';
-                    input.value = id;
-                    egresoIdContainer.appendChild(input);
-
-                    marcarPaso(row, 'egreso');
-                    cell.textContent = nombre;
+                        marcarPaso(row, "egreso");
+                    });
                 });
-            });
 
-        } catch (error) {
-            console.error('Error en cargarEgresosBatch:', error);
-             filas.forEach(row => {
-                row.style.backgroundColor = '#fee2e2';
-                row.style.color = '#000';
-                row.style.fontWeight = 'bold';
-                row.classList.add('fila-invalida');
-                marcarPaso(row, "egreso");
-            });
-            huboErrorEnFetch = true;
-             const inputs = row.querySelectorAll('input');
-                        inputs.forEach(input => {
-                            input.disabled = true;
-                        });
-
-                        const projectInput = row.querySelector('.project-id-container input');
-                        if (projectInput) {
-                            projectInput.disabled = true;
-                        }
+                huboErrorEnFetch = true;
+            }
         }
     }
+
 
 
         document.querySelector('form').addEventListener('submit', function (e) {

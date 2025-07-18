@@ -21,90 +21,14 @@ namespace Proyectogestionhoras.Services
             if (egresos == null || !egresos.Any())
                 return;
 
-            var gastosregistrados = await context.Gastosejecucions.ToListAsync();
-            var serviciosregistrados = await context.Serviciosejecucions.ToListAsync();
-
             var servicios = new List<Serviciosejecucion>();
             var gastos = new List<Gastosejecucion>();
 
-        
-            var glosaPorProyecto = new Dictionary<int, Dictionary<string, List<int>>>();
-
-    
-            foreach (var item in gastosregistrados)
-            {
-                var idProyecto = item.Idproyecto;
-                var glosa = item.Observacion?.Trim() ?? "";
-                var id = item.Idgasto;
-
-                if (!glosaPorProyecto.ContainsKey(idProyecto.Value))
-                    glosaPorProyecto[idProyecto.Value] = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
-
-                var glosas = glosaPorProyecto[idProyecto.Value];
-
-                if (!glosas.ContainsKey(glosa))
-                    glosas[glosa] = new List<int>();
-
-                if (!glosas[glosa].Contains(id.Value))
-                    glosas[glosa].Add(id.Value);
-            }
-
-            foreach (var item in serviciosregistrados)
-            {
-                var idProyecto = item.Idproyecto;
-                var glosa = item.Observacion?.Trim() ?? "";
-                var id = item.Idservicio;
-
-                if (!glosaPorProyecto.ContainsKey(idProyecto.Value))
-                    glosaPorProyecto[idProyecto.Value] = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
-
-                var glosas = glosaPorProyecto[idProyecto.Value];
-
-                if (!glosas.ContainsKey(glosa))
-                    glosas[glosa] = new List<int>();
-
-                if (!glosas[glosa].Contains(id.Value))
-                    glosas[glosa].Add(id.Value);
-            }
-
-           
             foreach (var egreso in egresos)
             {
                 var idProyecto = egreso.Idpeoyecto;
                 var idEgreso = egreso.Idegreso;
-                var glosaOriginal = egreso.Observacion?.Trim() ?? "";
-                string glosaFinal = glosaOriginal;
-
-                if (!glosaPorProyecto.ContainsKey(idProyecto))
-                    glosaPorProyecto[idProyecto] = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
-
-                var glosasProyecto = glosaPorProyecto[idProyecto];
-
-
-                if (!glosasProyecto.ContainsKey(glosaOriginal))
-                {
-                    glosasProyecto[glosaOriginal] = new List<int> { idEgreso };
-                }
-                else
-                {
-                    var idsUsados = glosasProyecto[glosaOriginal];
-
-                    if (!idsUsados.Contains(idEgreso))
-                    {
-                        int sufijo = 1;
-                        string nuevaGlosa;
-
-                        do
-                        {
-                            nuevaGlosa = $"{glosaOriginal}_{sufijo}";
-                            sufijo++;
-                        }
-                        while (glosasProyecto.ContainsKey(nuevaGlosa));
-
-                        glosaFinal = nuevaGlosa;
-                        glosasProyecto[glosaFinal] = new List<int> { idEgreso };
-                    }
-                }
+                var glosa = egreso.Observacion?.Trim() ?? "";
 
                 if (egreso.Tiposervicio != "Gastos")
                 {
@@ -115,7 +39,7 @@ namespace Proyectogestionhoras.Services
                         Idproveedor = egreso.Idproveedor,
                         Fecha = egreso.Fecha,
                         Monto = egreso.Monto,
-                        Observacion = glosaFinal,
+                        Observacion = glosa,
                         Estado = egreso.Estado,
                         Venta = "Vendido",
                         Tiposervicio = egreso.Tiposervicio
@@ -130,7 +54,7 @@ namespace Proyectogestionhoras.Services
                         Idproveedor = egreso.Idproveedor,
                         Fecha = egreso.Fecha,
                         Monto = egreso.Monto,
-                        Observacion = glosaFinal,
+                        Observacion = glosa,
                         Estado = egreso.Estado,
                         Venta = "Vendido"
                     });
@@ -145,6 +69,9 @@ namespace Proyectogestionhoras.Services
 
             await context.SaveChangesAsync();
         }
+
+
+
 
 
 

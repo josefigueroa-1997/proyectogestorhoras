@@ -140,33 +140,10 @@ namespace Proyectogestionhoras.Services
                     .Where(s => s.IdServicioReal <= 0 && !s.EsEliminado)
                     .ToList();
 
-                // Diccionario para controlar glosas por proyecto → lista de Idservicio en que se usaron
-                var glosasPorServicio = new Dictionary<string, List<int>>();
-
                 var nuevosServicios = new List<Serviciosejecucion>();
 
                 foreach (var servicio in serviciosNuevos)
                 {
-                    var glosaOriginal = servicio.Observacion?.Trim() ?? "";
-                    string glosaFinal = glosaOriginal;
-
-                    if (!glosasPorServicio.ContainsKey(glosaOriginal))
-                    {
-                        glosasPorServicio[glosaOriginal] = new List<int> { servicio.Idservicio };
-                    }
-                    else
-                    {
-                        var serviciosUsados = glosasPorServicio[glosaOriginal];
-
-                        if (!serviciosUsados.Contains(servicio.Idservicio))
-                        {
-                            int repeticion = serviciosUsados.Count;
-                            glosaFinal = $"{glosaOriginal}_{repeticion}";
-                            serviciosUsados.Add(servicio.Idservicio);
-                        }
-                        // Si ya se usó en ese Idservicio, no se cambia
-                    }
-
                     nuevosServicios.Add(new Serviciosejecucion
                     {
                         Idproyecto = idproyecto,
@@ -174,14 +151,14 @@ namespace Proyectogestionhoras.Services
                         Idproveedor = servicio.Idproveedor,
                         Fecha = servicio.Fecha,
                         Monto = servicio.Monto,
-                        Observacion = glosaFinal,
+                        Observacion = servicio.Observacion?.Trim() ?? "",
                         Estado = servicio.Estado,
                         Venta = "Vendido",
                         Tiposervicio = servicio.Tiposervicio,
                     });
                 }
 
-                // Actualizar servicios existentes
+                
                 foreach (var servicio in servicios.Where(s => s.IdServicioReal > 0 && !s.EsEliminado))
                 {
                     if (serviciosExistentes.TryGetValue(servicio.IdServicioReal, out var servicioExistente))
@@ -190,7 +167,7 @@ namespace Proyectogestionhoras.Services
                         servicioExistente.Idproveedor = servicio.Idproveedor;
                         servicioExistente.Fecha = servicio.Fecha;
                         servicioExistente.Monto = servicio.Monto;
-                        servicioExistente.Observacion = servicio.Observacion;
+                        servicioExistente.Observacion = servicio.Observacion?.Trim() ?? "";
                         servicioExistente.Estado = servicio.Estado;
                         servicioExistente.Tiposervicio = servicio.Tiposervicio;
                     }
@@ -206,6 +183,7 @@ namespace Proyectogestionhoras.Services
                     Debug.WriteLine($"Inner exception: {e.InnerException.Message}");
             }
         }
+
 
 
         public async Task GestorGastosReales(int idproyecto, List<GastosRealesViewModel> gastos)
@@ -246,37 +224,12 @@ namespace Proyectogestionhoras.Services
                     .Where(g => g.IdGastoReal > 0 && !g.EsEliminado)
                     .ToList();
 
-               
-                var glosaUsos = new Dictionary<string, HashSet<int>>();
-
                 var gastosParaInsertar = new List<Gastosejecucion>();
 
-         
-                foreach (var gasto in nuevosGastos.Concat(editadosGastos))
-                {
-                    var glosa = gasto.Observacion?.Trim() ?? "";
-                    if (!glosaUsos.ContainsKey(glosa))
-                        glosaUsos[glosa] = new HashSet<int>();
-
-                    glosaUsos[glosa].Add(gasto.Idgasto);
-                }
+            
 
                 foreach (var gasto in nuevosGastos)
                 {
-                    var glosaOriginal = gasto.Observacion?.Trim() ?? "";
-                    string glosaFinal = glosaOriginal;
-
-                  
-                    if (glosaUsos.TryGetValue(glosaOriginal, out var ids) && ids.Count > 1)
-                    {
-                       
-                        var orden = ids.OrderBy(x => x).ToList();
-                        int indice = orden.IndexOf(gasto.Idgasto);
-
-                        if (indice > 0)
-                            glosaFinal = $"{glosaOriginal}_{indice}";
-                    }
-
                     gastosParaInsertar.Add(new Gastosejecucion
                     {
                         Idproyecto = idproyecto,
@@ -285,35 +238,22 @@ namespace Proyectogestionhoras.Services
                         Segmento = gasto.Segmento,
                         Monto = gasto.Monto,
                         Fecha = gasto.Fecha,
-                        Observacion = glosaFinal,
+                        Observacion = gasto.Observacion?.Trim() ?? "",
                         Estado = gasto.Estado,
                         Venta = "Vendido",
                     });
                 }
 
-               
                 foreach (var gasto in editadosGastos)
                 {
                     if (gastosExistentes.TryGetValue(gasto.IdGastoReal, out var gastoExistente))
                     {
-                        var glosaOriginal = gasto.Observacion?.Trim() ?? "";
-                        string glosaFinal = glosaOriginal;
-
-                        if (glosaUsos.TryGetValue(glosaOriginal, out var ids) && ids.Count > 1)
-                        {
-                            var orden = ids.OrderBy(x => x).ToList();
-                            int indice = orden.IndexOf(gasto.Idgasto);
-
-                            if (indice > 0)
-                                glosaFinal = $"{glosaOriginal}_{indice}";
-                        }
-
                         gastoExistente.Idgasto = gasto.Idgasto;
                         gastoExistente.Idproveedor = gasto.Idproveedor;
                         gastoExistente.Segmento = gasto.Segmento;
                         gastoExistente.Monto = gasto.Monto;
                         gastoExistente.Fecha = gasto.Fecha;
-                        gastoExistente.Observacion = glosaFinal;
+                        gastoExistente.Observacion = gasto.Observacion?.Trim() ?? "";
                         gastoExistente.Estado = gasto.Estado;
                     }
                 }

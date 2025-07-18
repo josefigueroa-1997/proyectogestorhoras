@@ -589,34 +589,48 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> ObtenerIdsEgresosBatch([FromBody] List<string> nombres)
+        public async Task<IActionResult> ObtenerIdsEgresosBatch([FromBody] EgresoBatchRequest request)
         {
-            if (nombres == null || !nombres.Any())
+            if (request.Nombres == null || !request.Nombres.Any())
                 return Json(new Dictionary<string, int>());
 
-            var limpios = nombres
-            .Where(n => !string.IsNullOrWhiteSpace(n))
-            .Select(n => n.Trim().ToUpper())  // Normalizamos a mayúsculas y sin espacios
-            .Distinct()
-            .ToList();
+            var limpios = request.Nombres
+                .Where(n => !string.IsNullOrWhiteSpace(n))
+                .Select(n => n.Trim())
+                .Distinct()
+                .ToList();
 
-            var servicios = await context.Servicios
-     .Where(s => limpios.Contains(s.Nombre.Trim().ToUpper()))
-     .ToDictionaryAsync(s => s.Nombre.Trim().ToUpper(), s => s.Id);
+            Dictionary<string, int> resultado = new();
 
-            var faltantes = limpios.Except(servicios.Keys).ToList();
+            if (request.Tipo.ToUpper() == "GASTOS")
+            {
+                foreach (var nombre in limpios)
+                {
+                    var gasto = await context.Gastos
+                        .Where(g => EF.Functions.Like(g.Nombre, $"%{nombre}%"))
+                        .FirstOrDefaultAsync();
 
-            var gastos = await context.Gastos
-                .Where(g => faltantes.Contains(g.Nombre.Trim().ToUpper()))
-                .ToDictionaryAsync(g => g.Nombre.Trim().ToUpper(), g => g.Id);
+                    if (gasto != null && !resultado.ContainsKey(nombre))
+                        resultado[nombre] = gasto.Id;
+                }
+            }
+            else
+            {
+                foreach (var nombre in limpios)
+                {
+                    var servicio = await context.Servicios
+                        .Where(s => EF.Functions.Like(s.Nombre, $"%{nombre}%"))
+                        .FirstOrDefaultAsync();
 
-
-            // Unir los dos diccionarios
-            var resultado = servicios.Concat(gastos)
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                    if (servicio != null && !resultado.ContainsKey(nombre))
+                        resultado[nombre] = servicio.Id;
+                }
+            }
 
             return Json(resultado);
         }
+
+
 
 
         [HttpGet]

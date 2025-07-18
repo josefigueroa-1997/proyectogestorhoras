@@ -288,9 +288,18 @@
 					for (const idCuenta in cuentas) {
 						cuentas[idCuenta].forEach(item => {
 							if (item.mes == mes && item.anio == anio) {
-							 const key = `${item.glosa}-${mesAnio}-${item.estado}`;
+							 const key = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mesAnio}-${item.estado}`;
+
 								if (!agrupadosPorGlosa[key]) {
-								 agrupadosPorGlosa[key] = { glosa: item.glosa, mes: mes, anio: anio, estado: item.estado, monto: 0 };
+									agrupadosPorGlosa[key] = {
+		glosa: item.glosa,
+		tipo: item.tipo,
+		idCuenta: item.idCuenta,
+		mes: mes,
+		anio: anio,
+		estado: item.estado,
+		monto: 0
+	};
 								}
 							agrupadosPorGlosa[key].monto += item.monto; // Sumar el monto
 					}
@@ -438,9 +447,13 @@
 						mesesUnicos.forEach(mesAnio => {
 							const [mes, anio] = mesAnio.split('-');
 
-							const montoProyectadoG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado' && f.glosa === item.glosa)?.monto || 0;
-							 const montoRealG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Real' && f.glosa === item.glosa)?.monto || 0;
-							const montoForecastG = Object.values(agrupadosPorGlosa).find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast' && f.glosa === item.glosa)?.monto || 0;
+								const keyP = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mes}-${anio}-Proyectado`;
+	const keyR = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mes}-${anio}-Real`;
+	const keyF = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mes}-${anio}-Forecast`;
+
+	const montoProyectadoG = agrupadosPorGlosa[keyP]?.monto || 0;
+	const montoRealG = agrupadosPorGlosa[keyR]?.monto || 0;
+	const montoForecastG = agrupadosPorGlosa[keyF]?.monto || 0;
 							totalRealG += montoRealG;
 							totalForecastG += montoForecastG;
 							rowGlosa.innerHTML += `
