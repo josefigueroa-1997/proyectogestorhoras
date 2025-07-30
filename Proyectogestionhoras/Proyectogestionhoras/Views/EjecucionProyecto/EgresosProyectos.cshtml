@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
 	ViewData["Title"] = "Costos del Proyecto";
 }
 
@@ -115,11 +116,13 @@
 		<!-- 🔸 SIDEBAR -->
 		<aside class="w-64 sticky top-20 self-start bg-white border border-gray-200 p-4 rounded-xl shadow-md">
 			<nav class="space-y-2 text-sm">
-				<button data-section="general" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">📋 Resumen Costos Generales del Proyecto</button>
+				<button data-section="general" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">📋 Resumen General del Proyecto</button>
+				@*<button data-section="ingresos" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">💰 Ingresos</button>*@
 				<button data-section="hh" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🔧 HH del Proyecto</button>
 				<button data-section="consultores" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">👨‍💼 Consultores</button>
 				<button data-section="servicios" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🛠 Servicios</button>
 				<button data-section="gastos" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">💸 Gastos</button>
+				@*<button data-section="flujo" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🔁 Flujo de Caja</button>*@
 			</nav>
 		</aside>
 
@@ -128,6 +131,8 @@
 
 			<!--general-->
 			<div id="section-general" class="seccion ">
+
+				
 				<h3 class="text-lg font-bold text-orange-500 mb-2">Resumen Costos del Proyecto</h3>
 				<div class="p-4 bg-gray-50 rounded-b">
 					<div class="overflow-x-auto">

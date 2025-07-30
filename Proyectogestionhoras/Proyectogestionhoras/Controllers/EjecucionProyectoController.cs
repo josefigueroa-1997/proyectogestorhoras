@@ -345,7 +345,7 @@ namespace Proyectogestionhoras.Controllers
                 var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
                 ViewBag.GastosHH = gastoshh;
                 ViewBag.GastosRecursos = datosgastosrecursos;
-
+  
                 return View();
 
             }

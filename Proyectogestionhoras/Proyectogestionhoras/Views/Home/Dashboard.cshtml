@@ -1,0 +1,642 @@
+﻿
+<style>
+	.gantt-container {
+		background: white; 
+		padding: 15px 20px; 
+		border-radius: 8px; 
+		box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+		border: 1px solid #ddd; 
+		overflow-x: auto;
+		position: relative;
+		max-width: 100%;
+		font-family: Arial, sans-serif;
+	}
+
+	.gantt-header {
+		display: flex;
+		background: #f5f5f5;
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		height: 40px;
+	}
+
+	.time-unit {
+		min-width: 100px;
+		padding: 10px 5px;
+		text-align: center;
+		border-right: 1px solid #ccc;
+		font-weight: bold;
+		user-select: none;
+	}
+
+	.gantt-body {
+		position: relative;
+	}
+
+	.gantt-row {
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid #eee;
+		height: 60px; 
+	}
+
+	.gantt-row-label {
+		width: 220px;
+		padding: 0 10px;
+		position: sticky;
+		left: 0;
+		background: white;
+		font-weight: 600;
+		border-right: 1px solid #ddd;
+		z-index: 5;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.gantt-row-bars {
+		position: relative;
+		flex-grow: 1;
+		height: 30px; 
+		margin-left: 10px;
+	}
+
+	.gantt-bar-total {
+		position: absolute;
+		top: 25%;
+		height: 10px;
+		background-color: #4caf50;
+		border-radius: 4px;
+		opacity: 0.5;
+		z-index: 1;
+		transform: none;
+	}
+
+	.gantt-bar-progress {
+		position: absolute;
+		top: 60%;
+		height: 10px;
+		background-color: #2196f3;
+		border-radius: 4px;
+		z-index: 2;
+		transform: none;
+	}
+
+	.today-line {
+		position: absolute;
+		top: 40px;
+		bottom: 0;
+		width: 2px;
+		background: #ff5722;
+		z-index: 20;
+	}
+
+	.today-label {
+		position: absolute;
+		top: 20px;
+		background: #ff5722;
+		color: white;
+		font-weight: bold;
+		font-size: 12px;
+		padding: 2px 6px;
+		border-radius: 3px;
+		white-space: nowrap;
+		transform: translateX(-50%);
+		z-index: 25;
+	}
+
+	.quarter-line {
+		position: absolute;
+		top: 40px; 
+		bottom: 0;
+		width: 2px;
+		border-left: 2px dotted #999;
+		z-index: 10;
+	}
+
+	.quarter-label {
+		position: absolute;
+		top: 10px;
+		font-weight: bold;
+		font-size: 12px;
+		color: #555;
+		user-select: none;
+		transform: translateX(-50%);
+		z-index: 15;
+	}
+</style>
+<div class="p-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+
+	<div class="bg-white rounded-2xl shadow-md p-6 col-span-1 lg:col-span-4 flex flex-col">
+		<h2 class="text-xl font-semibold text-gray-800 mb-4">Proyectos por Estado</h2>
+		<canvas id="graficoEstados" class="w-full h-64 block flex-grow"></canvas>
+	</div>
+
+
+	<div class="bg-white rounded-2xl shadow-md p-6 col-span-1 lg:col-span-8 flex flex-col">
+		<h2 class="text-xl font-semibold text-gray-800 mb-4">Ingresos Reales por Proyecto</h2>
+		<canvas id="graficoLineas" class="w-full h-64 block flex-grow"></canvas>
+	</div>
+
+
+	<div class="bg-white rounded-2xl shadow-md p-6 col-span-1 lg:col-span-8 flex flex-col">
+		<h2 class="text-xl font-semibold text-gray-800 mb-4">Egresos Reales por Proyecto</h2>
+		<canvas id="graficoEgresosProyecto" class="w-full h-64 block flex-grow"></canvas>
+	</div>
+
+	<div class="bg-white rounded-2xl shadow-md p-6 col-span-1 lg:col-span-12 flex flex-col">
+		<h2 class="text-xl font-semibold text-gray-800 mb-4">Comparativo Real vs Forecast por Proyecto y Mes</h2>
+		<canvas id="graficoComparativo" class="w-full h-72 block flex-grow"></canvas>
+	</div>
+	
+
+</div>
+
+<div class="gantt-container">
+	<div class="gantt-header" id="timeScale"></div>
+	<div class="gantt-body" id="ganttBody"></div>
+	<div class="gantt-today-line" id="todayLine"></div>
+</div>
+
+<div id="estadoModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+	<div class="bg-white rounded-lg w-full max-w-2xl mx-auto shadow-lg">
+		<div class="flex justify-between items-center border-b p-4">
+			<h3 class="text-lg font-semibold text-gray-700" id="modalTitle">Título</h3>
+			<button onclick="cerrarModal()" class="text-gray-500 hover:text-black">&times;</button>
+		</div>
+		<div class="p-4 space-y-2" id="modalBody">
+			<!-- Aquí se inyecta la lista de proyectos -->
+		</div>
+		<div class="flex justify-end p-4 border-t">
+			<button onclick="cerrarModal()" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded">Cerrar</button>
+		</div>
+	</div>
+</div>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.css">
+<script src="https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const anioActual = new Date().getFullYear();
+
+		fetch(`/Home/ObtenerCantidadEstadoProyecto?anio=${anioActual}`)
+			.then(response => response.json())
+			.then(data => {
+				const labels = data.map(d => d.estado);
+				const cantidades = data.map(d => d.cantidad);
+				const colores = [
+					'#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa',
+					'#f472b6', '#fb923c', '#4ade80', '#22d3ee', '#c084fc'
+				];
+
+				const ctx = document.getElementById('graficoEstados').getContext('2d');
+				new Chart(ctx, {
+					type: 'pie',
+					data: {
+						labels: labels,
+						datasets: [{
+							data: cantidades,
+							backgroundColor: colores,
+							borderWidth: 1
+						}]
+					},
+					options: {
+						 onClick: async function (evt, activeElements) {
+	  if (activeElements.length > 0) {
+		const index = activeElements[0].index;
+		const estadoSeleccionado = labels[index];
+
+		// Llamada al backend para obtener proyectos filtrados
+		 const response = await fetch(`/Home/FiltrarProyectosEstado?estado=${estadoSeleccionado}&anio=${anioActual}`);
+		const proyectos = await response.json();
+
+		
+			const lista = proyectos.map(p =>
+					`<li>
+						<a href="/Proyecto/ObtenerProyectos/${p.id}"
+							 class="text-orange-600 hover:underline">
+									${p.nombre}
+								</a>
+					 </li>`
+					).join('');
+		document.getElementById('modalBody').innerHTML = `<ul class="list-disc pl-5">${lista}</ul>`;
+		document.getElementById('modalTitle').innerText = `Proyectos en estado: ${estadoSeleccionado}`;
+
+		 abrirModal();
+	  }
+	},
+						responsive: true,
+						plugins: {
+							legend: {
+								position: 'bottom',
+								labels: {
+									color: '#374151',
+									font: {
+										size: 14,
+										weight: '500'
+									}
+								}
+							},
+							tooltip: {
+								callbacks: {
+									label: function(context) {
+										const label = context.label || '';
+										const value = context.parsed || 0;
+										return `${label}: ${value} proyecto(s)`;
+									}
+								}
+							},
+							title: {
+								display: false
+							}
+						}
+					}
+				});
+			})
+			.catch(error => {
+				console.error('Error al cargar los datos:', error);
+			});
+
+				function generarColores(n) {
+		const colores = [];
+		const saturacion = 70;
+		const luminosidad = 50;
+
+		for (let i = 0; i < n; i++) {
+			const hue = Math.floor((360 / n) * i); 
+			colores.push(`hsl(${hue}, ${saturacion}%, ${luminosidad}%)`);
+		}
+		return colores;
+	}
+			   // Gráfico de líneas
+		fetch(`/Home/ObtenerIngresosRealesAnio?anio=${anioActual}`)
+		.then(res => res.json())
+		.then(data => {
+			
+			const proyectos = [...new Set(data.map(d => d.proyecto))];
+			const colores = generarColores(proyectos.length);
+
+			const datasets = proyectos.map((nombre, i) => {
+				const datosProyecto = Array(12).fill(0);
+				data.filter(d => d.proyecto === nombre).forEach(d => {
+					datosProyecto[d.mes - 1] = d.total;
+				});
+				return {
+					label: nombre,
+					data: datosProyecto,
+					borderColor: colores[i % colores.length],
+					backgroundColor: colores[i % colores.length],
+					tension: 0.3,
+					fill: false
+				};
+			});
+
+			const ctx = document.getElementById('graficoLineas').getContext('2d');
+			new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+					datasets: datasets
+				},
+				options: {
+					responsive: true,
+					plugins: {
+						legend: { position: 'bottom' },
+						tooltip: {
+							callbacks: {
+								label: ctx => `$${ctx.parsed.y.toLocaleString('es-CL')} CLP`
+							}
+						}
+					},
+					scales: {
+						y: {
+							beginAtZero: true,
+							title: { display: true, text: 'Monto CLP' }
+						},
+						x: {
+							title: { display: true, text: 'Mes' }
+						}
+					}
+				}
+			});
+		});
+
+
+
+			 fetch(`/Home/ObtenerEgresosPagados?anio=${anioActual}`)
+			.then(res => res.json())
+			.then(data => {
+				
+				const mesesUnicos = [...new Set(data.map(d => d.mes))].sort((a, b) => a - b);
+				const labels = mesesUnicos.map(m => nombreMes(m));
+
+		
+				const proyectos = [...new Set(data.map(d => d.nombreProyecto))];
+				const colores = generarColores(proyectos.length);
+
+			
+				const datasets = proyectos.map((proyecto, i) => {
+					const dataPorMes = mesesUnicos.map(mes => {
+						const monto = data
+							.filter(d => d.nombreProyecto === proyecto && d.mes === mes)
+							.reduce((acc, curr) => acc + curr.monto, 0);
+						return monto;
+					});
+
+					return {
+						label: proyecto,
+						data: dataPorMes,
+						borderColor: colores[i],
+						backgroundColor: colores[i],
+						tension: 0.3,
+						fill: false
+					};
+				});
+
+				
+				const ctx = document.getElementById('graficoEgresosProyecto').getContext('2d');
+				new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: labels, 
+						datasets: datasets
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: { position: 'bottom' },
+							tooltip: {
+								callbacks: {
+									label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toLocaleString('es-CL')} CLP`
+								}
+							}
+						},
+						scales: {
+							y: {
+								beginAtZero: true,
+								title: { display: true, text: 'Monto CLP' }
+							},
+							x: {
+								title: { display: true, text: 'Mes' }
+							}
+						}
+					}
+				});
+			});
+	
+			cargarGraficoComparativo(anioActual);
+		
+			
+	});
+	// Traducir número de mes a nombre
+	function nombreMes(numero) {
+		const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					   'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+		return meses[numero - 1];
+	}
+
+	async function cargarGraficoComparativo(anio) {
+		const response = await fetch(`/Home/Obteneringresosrealesvsforecast?anio=${anio}`);
+		const datos = await response.json();
+
+		// Agrupar por Mes > Proyecto > Estado
+		const agrupado = {}; // { "mes": { "proyecto": { "Real": monto, "Forecast": monto } } }
+
+		datos.forEach(item => {
+			const mes = nombreMes(item.mes);
+			const proyecto = item.nombreProyecto;
+			const estado = item.estado.toLowerCase();
+
+			if (!agrupado[mes]) agrupado[mes] = {};
+			if (!agrupado[mes][proyecto]) agrupado[mes][proyecto] = { real: 0, forecast: 0 };
+
+			if (estado === 'real') agrupado[mes][proyecto].real += item.monto;
+			if (estado === 'forecast') agrupado[mes][proyecto].forecast += item.monto;
+		});
+
+		const meses = Object.keys(agrupado);
+		const proyectos = new Set();
+		meses.forEach(mes => {
+			Object.keys(agrupado[mes]).forEach(proyecto => proyectos.add(proyecto));
+		});
+
+		const datasets = [];
+		proyectos.forEach(proyecto => {
+			const reales = [];
+			const forecasts = [];
+			meses.forEach(mes => {
+				const data = agrupado[mes][proyecto];
+				reales.push(data ? data.real : 0);
+				forecasts.push(data ? data.forecast : 0);
+			});
+
+			datasets.push({
+				label: `${proyecto} (Real)`,
+				data: reales,
+				backgroundColor: getColorForProject(proyecto, 'real'),
+				stack: proyecto,
+			});
+
+			datasets.push({
+				label: `${proyecto} (Forecast)`,
+				data: forecasts,
+				backgroundColor: getColorForProject(proyecto, 'forecast'),
+				stack: proyecto,
+			});
+		});
+
+		const ctx = document.getElementById("graficoComparativo").getContext("2d");
+		new Chart(ctx, {
+			type: "bar",
+			data: {
+				labels: meses,
+				datasets: datasets
+			},
+			options: {
+				responsive: true,
+				scales: {
+					y: {
+						beginAtZero: true,
+						title: {
+							display: true,
+							text: 'Monto Total ($)'
+						}
+					},
+					x: {
+						stacked: false
+					}
+				},
+				plugins: {
+					legend: {
+						position: 'top'
+					},
+					tooltip: {
+						mode: 'index',
+						intersect: false
+					}
+				}
+			}
+		});
+	}
+
+
+		function abrirModal() {
+	  document.getElementById('estadoModal').classList.remove('hidden');
+	  document.getElementById('estadoModal').classList.add('flex');
+	}
+
+	function cerrarModal() {
+	  document.getElementById('estadoModal').classList.remove('flex');
+	  document.getElementById('estadoModal').classList.add('hidden');
+	}
+
+
+
+	// Función para asignar colores únicos por proyecto y estado
+	function getColorForProject(proyecto, estado) {
+		const coloresBase = {
+			real: ['#34d399', '#4ade80', '#10b981'],
+			forecast: ['#60a5fa', '#3b82f6', '#2563eb']
+		};
+		const hash = [...proyecto].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+		const index = hash % 3;
+		return coloresBase[estado][index];
+	}
+</script>
+
+
+
+<script>
+	async function renderGantt() {
+	  // Datos desde backend
+	  const response = await fetch('/Home/ObtenerDatosGantt');
+	  if (!response.ok) {
+		console.error('Error cargando datos Gantt:', response.statusText);
+		return;
+	  }
+	  const projects = await response.json();
+
+	  if (!projects.length) {
+		console.log('No hay proyectos para mostrar.');
+		return;
+	  }
+
+		// Fechas mínimas y máximas
+	const allDates = projects.flatMap(p => [new Date(p.fechaInicio), new Date(p.fechaTermino)]);
+	let minDate = new Date(Math.min(...allDates.map(d => d.getTime())));
+	let maxDate = new Date(Math.max(...allDates.map(d => d.getTime())));
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
+	// Ajustar minDate a inicio del mes
+	minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+
+	// Ajustar maxDate a fin del mes y fin del día (23:59:59.999)
+	maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, 0);
+	maxDate.setHours(23, 59, 59, 999);
+
+	// Asegurar que maxDate cubra el mes actual (para que "Hoy" se vea bien)
+	const currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+	if (currentMonth > maxDate) {
+	  maxDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+	  maxDate.setHours(23, 59, 59, 999);
+	}
+
+
+
+	  // Array meses para la escala
+	  const months = [];
+	  let cur = new Date(minDate);
+	  while (cur <= maxDate) {
+		months.push(new Date(cur));
+		cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+	  }
+
+	  // Renderizar encabezados meses
+	  const timeScale = document.getElementById('timeScale');
+	  timeScale.style.width = `${months.length * 100}px`;
+	  timeScale.innerHTML = months.map(m =>
+		`<div class="time-unit">${m.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}</div>`
+	  ).join('');
+
+	  // Función para porcentaje relativo
+	  const totalDuration = maxDate - minDate;
+	  function toPercent(date) {
+		return ((date - minDate) / totalDuration) * 100;
+	  }
+
+	  // Añadir líneas punteadas para cada trimestre
+	  // Eliminar líneas y etiquetas previas para evitar duplicados
+	  document.querySelectorAll('.quarter-line').forEach(el => el.remove());
+	  document.querySelectorAll('.quarter-label').forEach(el => el.remove());
+
+	  const ganttBody = document.getElementById('ganttBody');
+	  for (let i = 0; i < months.length; i++) {
+		const month = months[i];
+		// Inicio de quarter: enero(0), abril(3), julio(6), octubre(9)
+		if (month.getMonth() % 3 === 0 && i !== 0) {
+		  const leftQuarter = toPercent(month);
+
+		  // Crear línea punteada
+		  const line = document.createElement('div');
+		  line.className = 'quarter-line';
+		  line.style.left = `${leftQuarter}%`;
+
+		  // Crear etiqueta Q1, Q2, Q3, Q4
+		  const quarterNum = (month.getMonth() / 3) + 1;
+		  const label = document.createElement('div');
+		  label.className = 'quarter-label';
+		  label.style.left = `${leftQuarter}%`;
+		  label.textContent = `Q${quarterNum}`;
+
+		  ganttBody.appendChild(line);
+		  ganttBody.appendChild(label);
+		}
+	  }
+
+	  // Renderizar filas proyectos
+	  ganttBody.style.minWidth = timeScale.style.width;
+	  ganttBody.innerHTML += ''; // para mantener líneas de quarters añadidas
+
+	  projects.forEach(p => {
+		const start = new Date(p.fechaInicio);
+		const end = new Date(p.fechaTermino);
+
+		// Calcular progreso (limitar a rango proyecto)
+		const progressEnd = today < start ? start : (today > end ? end : today);
+
+		// Calcular %
+		const leftTotal = toPercent(start);
+		const widthTotal = toPercent(end) - leftTotal;
+
+		const leftProgress = toPercent(start);
+		const widthProgress = toPercent(progressEnd) - leftProgress;
+
+		const row = document.createElement('div');
+		row.className = 'gantt-row';
+
+		row.innerHTML = `
+		  <div class="gantt-row-label">${p.nombre}</div>
+		  <div class="gantt-row-bars">
+			<div class="gantt-bar-total" style="left: ${leftTotal}%; width: ${widthTotal}%;"></div>
+			<div class="gantt-bar-progress" style="left: ${leftProgress}%; width: ${widthProgress}%;"></div>
+		  </div>
+		`;
+
+		ganttBody.appendChild(row);
+	  });
+
+	 
+	}
+
+	document.addEventListener('DOMContentLoaded', renderGantt);
+</script>
