@@ -23,6 +23,7 @@
 
 	.time-unit {
 		min-width: 100px;
+		flex: 0 0 100px;
 		padding: 10px 5px;
 		text-align: center;
 		border-right: 1px solid #ccc;
@@ -59,7 +60,8 @@
 		position: relative;
 		flex-grow: 1;
 		height: 30px; 
-		margin-left: 10px;
+		margin-left: 0;
+		padding-left: 0;
 	}
 
 	.gantt-bar-total {
@@ -517,20 +519,22 @@
 
 <script>
 	async function renderGantt() {
-	  // Datos desde backend
+	  const LABEL_WIDTH = 220; // Ancho fijo de la columna de nombres
+	  const MONTH_WIDTH = 100;
+
 	  const response = await fetch('/Home/ObtenerDatosGantt');
 	  if (!response.ok) {
 		console.error('Error cargando datos Gantt:', response.statusText);
 		return;
 	  }
 	  const projects = await response.json();
-
+		 
 	  if (!projects.length) {
 		console.log('No hay proyectos para mostrar.');
 		return;
 	  }
 
-		// Fechas mínimas y máximas
+			// Fechas mínimas y máximas
 	const allDates = projects.flatMap(p => [new Date(p.fechaInicio), new Date(p.fechaTermino)]);
 	let minDate = new Date(Math.min(...allDates.map(d => d.getTime())));
 	let maxDate = new Date(Math.max(...allDates.map(d => d.getTime())));
@@ -553,49 +557,53 @@
 
 
 
-	  // Array meses para la escala
-	  const months = [];
-	  let cur = new Date(minDate);
-	  while (cur <= maxDate) {
-		months.push(new Date(cur));
-		cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
-	  }
+	  // Crear array de meses
+		 const months = [];
+	let current = new Date(minDate); // ¡Comienza desde minDate!
+	while (current <= maxDate) {
+	  months.push(new Date(current));
+	  current = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+	}
 
-	  // Renderizar encabezados meses
+	  // Renderizar encabezado
 	  const timeScale = document.getElementById('timeScale');
-	  timeScale.style.width = `${months.length * 100}px`;
-	  timeScale.innerHTML = months.map(m =>
+	  timeScale.style.width = `${LABEL_WIDTH + months.length * MONTH_WIDTH}px`;
+	  timeScale.innerHTML = `<div style="min-width: ${LABEL_WIDTH}px;"></div>` + months.map(m =>
 		`<div class="time-unit">${m.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}</div>`
 	  ).join('');
 
-	  // Función para porcentaje relativo
-	  const totalDuration = maxDate - minDate;
-	  function toPercent(date) {
-		return ((date - minDate) / totalDuration) * 100;
-	  }
+	  // Función de posicionamiento en píxeles
+			function toPixel(date) {
+	  const monthsDiff = (date.getFullYear() - minDate.getFullYear()) * 12 +
+						(date.getMonth() - minDate.getMonth());
+	  // Añade este ajuste de compensación:
+	  const offset = 2; // Compensación de 2 meses
+	  return LABEL_WIDTH + (monthsDiff - offset) * MONTH_WIDTH;
+	}
 
-	  // Añadir líneas punteadas para cada trimestre
-	  // Eliminar líneas y etiquetas previas para evitar duplicados
+	  // Eliminar líneas previas
 	  document.querySelectorAll('.quarter-line').forEach(el => el.remove());
 	  document.querySelectorAll('.quarter-label').forEach(el => el.remove());
 
 	  const ganttBody = document.getElementById('ganttBody');
+	  ganttBody.innerHTML = '';
+	  ganttBody.style.minWidth = `${LABEL_WIDTH + months.length * MONTH_WIDTH}px`;
+
+	  // Agregar líneas de trimestre
 	  for (let i = 0; i < months.length; i++) {
 		const month = months[i];
-		// Inicio de quarter: enero(0), abril(3), julio(6), octubre(9)
 		if (month.getMonth() % 3 === 0 && i !== 0) {
-		  const leftQuarter = toPercent(month);
+		  const monthIndex = (month.getFullYear() - minDate.getFullYear()) * 12 + (month.getMonth() - minDate.getMonth());
+		  const leftQuarterPx = LABEL_WIDTH + monthIndex * MONTH_WIDTH;
 
-		  // Crear línea punteada
 		  const line = document.createElement('div');
 		  line.className = 'quarter-line';
-		  line.style.left = `${leftQuarter}%`;
+		  line.style.left = `${leftQuarterPx}px`;
 
-		  // Crear etiqueta Q1, Q2, Q3, Q4
 		  const quarterNum = (month.getMonth() / 3) + 1;
 		  const label = document.createElement('div');
 		  label.className = 'quarter-label';
-		  label.style.left = `${leftQuarter}%`;
+		  label.style.left = `${leftQuarterPx}px`;
 		  label.textContent = `Q${quarterNum}`;
 
 		  ganttBody.appendChild(line);
@@ -603,40 +611,36 @@
 		}
 	  }
 
-	  // Renderizar filas proyectos
-	  ganttBody.style.minWidth = timeScale.style.width;
-	  ganttBody.innerHTML += ''; // para mantener líneas de quarters añadidas
-
+	  // Renderizar filas de proyectos
 	  projects.forEach(p => {
 		const start = new Date(p.fechaInicio);
 		const end = new Date(p.fechaTermino);
 
-		// Calcular progreso (limitar a rango proyecto)
 		const progressEnd = today < start ? start : (today > end ? end : today);
 
-		// Calcular %
-		const leftTotal = toPercent(start);
-		const widthTotal = toPercent(end) - leftTotal;
+		const leftTotal = toPixel(start);
+		const widthTotal = toPixel(end) - leftTotal;
 
-		const leftProgress = toPercent(start);
-		const widthProgress = toPercent(progressEnd) - leftProgress;
-
+		const leftProgress = toPixel(start);
+		const widthProgress = toPixel(progressEnd) - leftProgress;
 		const row = document.createElement('div');
 		row.className = 'gantt-row';
 
 		row.innerHTML = `
 		  <div class="gantt-row-label">${p.nombre}</div>
 		  <div class="gantt-row-bars">
-			<div class="gantt-bar-total" style="left: ${leftTotal}%; width: ${widthTotal}%;"></div>
-			<div class="gantt-bar-progress" style="left: ${leftProgress}%; width: ${widthProgress}%;"></div>
+			<div class="gantt-bar-total" style="left: ${leftTotal}px; width: ${widthTotal}px;"></div>
+			<div class="gantt-bar-progress" style="left: ${leftProgress}px; width: ${widthProgress}px;"></div>
 		  </div>
 		`;
 
 		ganttBody.appendChild(row);
 	  });
 
-	 
+	  // Línea de hoy
+	  const todayLine = document.getElementById('todayLine');
+	  const todayPosition = toPixel(today);
+	  todayLine.style.left = `${todayPosition}px`;
 	}
-
 	document.addEventListener('DOMContentLoaded', renderGantt);
 </script>

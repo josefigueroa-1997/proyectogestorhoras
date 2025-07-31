@@ -67,18 +67,22 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpGet]
-
         public IActionResult ObtenerCantidadEstadoProyecto(int anio)
         {
+            var fechaInicioAnio = new DateTime(anio, 1, 1);
+            var fechaFinAnio = new DateTime(anio, 12, 31);
+
             var resultado = from p in context.Proyectos
                             join s in context.StatusProyectos on p.StatusProyecto equals s.Id
-                            where p.FechaInicio.Year == anio
-                           group s by s.TipoStatus into g
-                           select new
-                           {
-                               Estado = g.Key,
-                               Cantidad = g.Count()
-                           };
+                            where p.FechaInicio <= fechaFinAnio &&
+                                  (p.FechaTermino == null || p.FechaTermino >= fechaInicioAnio)
+                            group s by s.TipoStatus into g
+                            select new
+                            {
+                                Estado = g.Key,
+                                Cantidad = g.Count()
+                            };
+
             return Json(resultado);
         }
 
