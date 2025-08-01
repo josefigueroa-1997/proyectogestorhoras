@@ -79,6 +79,12 @@ namespace Proyectogestionhoras.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CargarIngresosReales(int idproyecto)
+        {
+            var resultado = await context.Ingresosreales.Where(x => x.Idproyecto == idproyecto).ToListAsync();
+            return Json(resultado);
+        }
 
 
         [HttpPost]
