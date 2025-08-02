@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyectogestionhoras.Models;
 using Proyectogestionhoras.Services;
+using Proyectogestionhoras.Services.Interface;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 namespace Proyectogestionhoras.Controllers
 {
@@ -146,6 +147,26 @@ namespace Proyectogestionhoras.Controllers
 
             return Ok(resultado); 
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerProyectosPorEstadoJson(int idEstado)
+        {
+            var proyectos = await context.Proyectos
+                .Where(p => p.StatusProyecto == idEstado)
+                .ToListAsync();
+
+
+            // Proyecta solo lo necesario (nombre e id)
+            var resultado = proyectos.Select(p => new {
+                Id = p.Id,
+                Nombre = p.Nombre ?? p.Nombre
+            });
+
+            return Json(resultado);
+        }
+
 
         public IActionResult Privacy()
         {

@@ -127,12 +127,255 @@
             </div>
         </div>
     </header>
+    <style>
+        /* Sidebar contraído: oculta texto, ajusta padding */
+        [data-sidebar="closed"] .sidebar-text {
+            display: none;
+        }
+
+        [data-sidebar="closed"] ul {
+            padding-left: 0;
+        }
+
+        /* Opcional: centrar íconos */
+        [data-sidebar="closed"] button svg {
+            margin: auto;
+        }
+    </style>
 
     <!-- Main Content -->
-    <div class="py-20">
-        @RenderBody()
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar"
+               class="w-64 h-screen fixed top-0 left-0 bg-gray-200 text-black pt-[72px] px-4 transition-all duration-300 ease-in-out z-10"
+               data-sidebar="open">
+            <!-- Botón de toggle -->
+            <button data-toggle-sidebar
+                    class="absolute -right-3 top-10 bg-gray-200 rounded-full p-1 shadow-md border border-gray-300 hover:bg-orange-500 hover:text-white z-20 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor"
+                     data-toggle-icon>
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
 
+            <!-- Menú -->
+            <nav class="space-y-4">
+                <!-- Administración -->
+                <div>
+                    <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18" />
+                        </svg>
+                        <span class="sidebar-text">Administración</span>
+                    </button>
+                    <ul class="pl-4 mt-1 space-y-1 text-sm">
+                        <li><a href="@Url.Action("TodosReportes", "Reporte")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Reportes</a></li>
+                        <li><a href="@Url.Action("TodoslosParametros", "Parametros")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Parámetros</a></li>
+                        <li><a href="@Url.Action("MetasFunciones", "Metas")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Metas</a></li>
+                    </ul>
+                </div>
+
+                <!-- Proyectos -->
+                <div>
+                    <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        <span class="sidebar-text">Proyectos</span>
+                    </button>
+                    <ul class="pl-4 mt-1 space-y-1 text-sm">
+                        <li><a href="@Url.Action("Index", "Home")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso proyectos y clientes</a></li>
+                        <li class="relative group" id="menu-proyectos-item" style="min-width: 160px;">
+                            <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
+                                <span>Proyectos</span>
+                                <!-- Flechita derecha -->
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-4 w-4 text-gray-600 group-hover:text-white transition-transform duration-300"
+                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+
+                            <!-- Contenedor desplegable lateral -->
+                            <div id="proyectos-dropdown"
+                                 class="hidden group-hover:block absolute top-0 left-full ml-1 w-80 max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50"
+                                 style="min-width: 280px;">
+                                <div class="p-4" id="proyectos-content">
+                                    Cargando proyectos...
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="@Url.Action("NuestrosClientes", "Cliente")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Clientes</a></li>
+                        <li><a href="@Url.Action("GetProyectosCategoria", "Proyecto")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Clasificación</a></li>
+                    </ul>
+                </div>
+
+                <!-- Control HH -->
+                <div>
+                    <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M4 6h16" />
+                        </svg>
+                        <span class="sidebar-text">Control HH</span>
+                    </button>
+                    <ul class="pl-4 mt-1 space-y-1 text-sm">
+                        <li><a href="@Url.Action("PlanillaRegistro", "Planilla")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso HH</a></li>
+                        <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Administración HH</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="flex-grow mt-[72px] px-6 py-6 transition-all duration-300 ease-in-out ml-64" data-main-content>
+            <div class="mx-auto max-w-7xl" data-content-container>
+                @RenderBody()
+            </div>
+        </main>
     </div>
+
+    <script>
+        //sidebar
+             document.addEventListener('DOMContentLoaded', function () {
+            const toggleBtn = document.querySelector('[data-toggle-sidebar]');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('[data-main-content]');
+            const contentContainer = document.querySelector('[data-content-container]');
+            const toggleIcon = document.querySelector('[data-toggle-icon] path');
+
+            const initialState = localStorage.getItem('sidebarState') || 'open';
+            sidebar.setAttribute('data-sidebar', initialState);
+            updateLayout(initialState === 'open');
+
+            toggleBtn.addEventListener('click', function () {
+                const isOpen = sidebar.getAttribute('data-sidebar') === 'open';
+                const newState = isOpen ? 'closed' : 'open';
+
+                sidebar.setAttribute('data-sidebar', newState);
+                localStorage.setItem('sidebarState', newState);
+                updateLayout(!isOpen);
+            });
+
+            function updateLayout(isOpen) {
+                sidebar.classList.toggle('w-64', isOpen);
+                sidebar.classList.toggle('w-16', !isOpen);
+
+                mainContent.classList.toggle('ml-64', isOpen);
+                mainContent.classList.toggle('ml-16', !isOpen);
+
+                contentContainer.classList.toggle('max-w-7xl', isOpen);
+                contentContainer.classList.toggle('max-w-full', !isOpen);
+
+                toggleIcon.setAttribute('d', isOpen ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7');
+
+                sidebar.setAttribute('data-sidebar', isOpen ? 'open' : 'closed');
+            }
+
+            
+
+        });
+        //submenu proyectos
+                document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toggle-submenu").forEach(el => {
+                el.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const id = this.dataset.id;
+                    const submenu = document.getElementById(id);
+                    const icon = document.getElementById(`icon-${id}`);
+                    submenu.classList.toggle("hidden");
+                    icon.classList.toggle("rotate-180");
+                });
+            });
+        });
+
+                      document.addEventListener("DOMContentLoaded", () => {
+          const proyectosDropdown = document.getElementById("proyectos-dropdown");
+          const proyectosContent = document.getElementById("proyectos-content");
+
+          const estados = [
+            { id: 6, nombre: "Presupuesto" },
+            { id: 1, nombre: "En Negociación" },
+            { id: 2, nombre: "En Ejecución" },
+            { id: 4, nombre: "Terminado" },
+            { id: 3, nombre: "Rechazado" },
+          ];
+
+          let cacheProyectos = {};
+
+          async function cargarProyectos(idEstado) {
+            if (cacheProyectos[idEstado]) return cacheProyectos[idEstado];
+
+            const resp = await fetch(`/Home/ObtenerProyectosPorEstadoJson?idEstado=${idEstado}`);
+            if (!resp.ok) return [];
+
+            const data = await resp.json();
+            cacheProyectos[idEstado] = data;
+            return data;
+          }
+
+          async function mostrarProyectos() {
+            proyectosContent.innerHTML = "";
+
+            for (const estado of estados) {
+              const proyectos = await cargarProyectos(estado.id);
+
+              const contenedorEstado = document.createElement("div");
+              contenedorEstado.className = "mb-4";
+
+              const titulo = document.createElement("h3");
+              titulo.textContent = estado.nombre;
+              titulo.className = "font-semibold mb-2 text-orange-600";
+              contenedorEstado.appendChild(titulo);
+
+              if (proyectos.length === 0) {
+                const p = document.createElement("p");
+                p.textContent = "No hay proyectos";
+                p.className = "text-sm text-gray-500";
+                contenedorEstado.appendChild(p);
+              } else {
+                const ul = document.createElement("ul");
+                ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
+
+                proyectos.forEach((proy) => {
+                  const li = document.createElement("li");
+                  li.textContent = proy.Nombre ?? proy.nombre ?? "Proyecto sin nombre";
+                  li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
+                  li.title = li.textContent;
+
+                  li.addEventListener("click", () => {
+                    window.location.href = `/Proyecto/Detalle/${proy.Id ?? proy.id}`;
+                  });
+
+                  ul.appendChild(li);
+                });
+
+                contenedorEstado.appendChild(ul);
+              }
+
+              proyectosContent.appendChild(contenedorEstado);
+            }
+          }
+
+          let cargado = false;
+          const menuItem = document.getElementById("menu-proyectos-item");
+          menuItem.addEventListener("mouseenter", async () => {
+            if (!cargado) {
+              proyectosContent.textContent = "Cargando proyectos...";
+              await mostrarProyectos();
+              cargado = true;
+            }
+          });
+        });
+
+    </script>
+
     @RenderSection("Scripts", required: false)
     <script>
         document.getElementById('userMenuButton').addEventListener('click', (event) => {
@@ -149,6 +392,7 @@
                 userMenu.style.display = 'none';
             }
         });
+            
     </script>
 </body>
 </html>
