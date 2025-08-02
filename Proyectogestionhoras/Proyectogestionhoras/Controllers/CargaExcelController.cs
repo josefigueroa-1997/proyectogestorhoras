@@ -151,6 +151,9 @@ namespace Proyectogestionhoras.Controllers
                 var idsProveedor = form["IdsProveedor"].ToList();
                 
 
+             
+
+
                 if (new[] { numProyectos.Count, egresosNombres.Count, proveedores.Count,
                    montos.Count, fechas.Count, estados.Count, 
                    glosas.Count, tipos.Count, idsProyecto.Count, idsEgreso.Count,
@@ -215,23 +218,23 @@ namespace Proyectogestionhoras.Controllers
 
                 List<ServicioViewModel> verificarserviciohonorario = new List<ServicioViewModel>();
 
-                for (int i = 0; i < numProyectos.Count; i++)
-                {
-                    if (tipos[i] == "Gastos") continue; 
+                 for (int i = 0; i < numProyectos.Count; i++)
+                  {
+                      if (tipos[i] == "Gastos") continue; 
 
-                    var servicioViewModel = new ServicioViewModel
-                    {
-                        Idservicios = int.Parse(idsEgreso[i]),
-                        
-                        IdsProyecto = new List<int> { int.Parse(idsProyecto[i]) }
-                    };
+                      var servicioViewModel = new ServicioViewModel
+                      {
+                          Idservicios = int.Parse(idsEgreso[i]),
 
-                    verificarserviciohonorario.Add(servicioViewModel);
-                }
-                await excelService.AgregarServicioProyectonuevos(verificarserviciohonorario);
+                          IdsProyecto = new List<int> { int.Parse(idsProyecto[i]) }
+                      };
+
+                      verificarserviciohonorario.Add(servicioViewModel);
+                  }
+                  await excelService.AgregarServicioProyectonuevos(verificarserviciohonorario);
 
 
-
+                  
 
 
                 List<GastoViewModel> gastosaingresar = new List<GastoViewModel>();

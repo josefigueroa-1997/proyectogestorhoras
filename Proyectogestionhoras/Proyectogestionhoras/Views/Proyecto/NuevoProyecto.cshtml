@@ -670,7 +670,7 @@
                         <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>
+                        
                         <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
                
@@ -690,10 +690,7 @@
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="ccostoservicio" class="ccostoservicio" name="ccostoservicio" readonly />
                         </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="text" id="nombresegmentoservicio" class="nombresegmentoservicio" name="nombresegmentoservicio" readonly />
-                            
-                        </td>
+                      
                         
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="idcuentaservicio" class="idcuentaservicio" name="idcuentaservicio" readonly />
@@ -722,7 +719,7 @@
                         <th style="padding: 10px; border: 1px solid #ddd;">MontoCLP</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Fecha</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Centro de Costos</th>
-                        <th style="padding: 10px; border: 1px solid #ddd;">Segmento</th>                     
+                                          
                         <th style="padding: 10px; border: 1px solid #ddd;">ID Cuenta</th>
                         <th style="padding: 10px; border: 1px solid #ddd;">Cuenta</th>
                        
@@ -743,10 +740,7 @@
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input type="text" id="ccostogasto"  name="costogastos" readonly />
                         </td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">
-                            <input type="text" class="segmentogastos" name="segmentogastos" readonly/>
-                     
-                        </td>
+                      
                        
                         <td style="padding: 10px; border: 1px solid #ddd;">
                             <input class="idcuentagastos" name="idcuentagasto" readonly />
@@ -1012,7 +1006,7 @@
             const newRow = document.createElement('tr');
 
             const costoservicioValue = document.querySelector('#ccostoservicio') ? document.getElementById('ccostoservicio').value : '';
-            const nombreservicioValue = document.querySelector('#nombresegmentoservicio') ? document.getElementById('nombresegmentoservicio').value : '';
+            
             const idcuentaservicioValue = document.querySelector('#idcuentaservicio') ? document.getElementById('idcuentaservicio').value : '';
             const cuentaservicioValue = document.querySelector('#cuentaservicio') ? document.getElementById('cuentaservicio').value : '';
             const idsegmentoservicioValue = document.querySelector('.idsegmentoservicio') ? document.querySelector('.idsegmentoservicio').value : ''; 
@@ -1031,12 +1025,7 @@
         <td style="padding: 10px; border: 1px solid #ddd;">
             <input class="ccostoservicio" name="ccostoservicio" value="${costoservicioValue}" readonly />
         </td>
-        <td style="padding: 10px; border: 1px solid #ddd;">
-            <input class="nombresegmentoservicio" name="nombresegmentoservicio"  readonly/>
-            <select class="segmentoservicio" style="display:none;" name="idsegmentoservicio">
-                <option value="" disabled selected>Seleccione un segmento</option>
-            </select>
-        </td>
+      
         <td style="padding: 10px; border: 1px solid #ddd;">
             <input class="idcuentaservicio" name="idcuentaservicio"  readonly/>
         </td>
@@ -1124,7 +1113,7 @@
         const servicioCell = document.createElement('td');
         const montoCell = document.createElement('td');
         const centroCostoCell = document.createElement('td');
-        const segmentoCell = document.createElement('td');
+        
         const idCuentaCell = document.createElement('td');
         const cuentaCell = document.createElement('td');
         const eliminarCell = document.createElement('td');
@@ -1172,7 +1161,7 @@
         centroCostoCell.innerHTML = `<input type="text" name="costogastos[]" value="${costoGastoValue}" readonly />`;
 
     
-        segmentoCell.innerHTML = '<input class="segmentogastos" name="segmentogastos" readonly />';
+        
 
         idCuentaCell.innerHTML = '<input class="idcuentagastos" name="idcuentagasto" readonly />';
 
@@ -1212,7 +1201,7 @@
         newRow.appendChild(montoCell);
             newRow.appendChild(fechaCell);
         newRow.appendChild(centroCostoCell);
-        newRow.appendChild(segmentoCell);
+        
         newRow.appendChild(idCuentaCell);
         newRow.appendChild(cuentaCell);
             

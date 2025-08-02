@@ -149,7 +149,7 @@ namespace Proyectogestionhoras.Controllers
                 int idcodigoccosto = await GetCostoUNegocioIdAsync(idcosto, idunegocio);
                 List<ServicioViewModel> servicios = new List<ServicioViewModel>();
                 var idsservicios = Request.Form["idservicio"];
-                var idsegmentoservicio = Request.Form["idsegmentoservicio"];
+               
                 var montoservicioList = Request.Form["montoservicio"];
                 var fechaservicio = Request.Form["fechaservicio"];
                 var IdServicioProyecto = Request.Form["IdServicioProyecto"];
@@ -167,7 +167,7 @@ namespace Proyectogestionhoras.Controllers
                     {
                         IdServicioProyecto = idServicioRealParsed,
                         Idservicios = int.Parse(idsservicios[i]),
-                        IdSegmento = int.Parse(idsegmentoservicio[i]),
+                        IdSegmento = 56,
                         MontoServicio = montoservicio,
                         Fecha = DateTime.Parse(fechaservicio[i]),
                         espresupuesto = "Si",
@@ -178,7 +178,7 @@ namespace Proyectogestionhoras.Controllers
 
                 List<GastoViewModel> gastos = new List<GastoViewModel>();
                 var idgastos = Request.Form["idgastos[]"];
-                var idsegmentogasto = Request.Form["idsegmentogasto"];
+                
                 var montogastoList = Request.Form["montogasto"];
                 var fechagasto = Request.Form["fechagasto"];
                 var idgastoproyecto = Request.Form["IdGastoProyecto"];
@@ -191,7 +191,7 @@ namespace Proyectogestionhoras.Controllers
                     {
                         IdGastoProyecto = idGastoRealParsed,
                         Idgastos = int.Parse(idgastos[i]),
-                        IdSegmento = int.Parse(idsegmentogasto[i]),
+                        IdSegmento = 96,
                         MontoGasto = decimal.Parse(montogastoList[i].ToString().Replace(".", "")),
                         Fecha = DateTime.Parse(fechagasto[i]),
                         espresupuesto = "Si",
@@ -472,7 +472,7 @@ namespace Proyectogestionhoras.Controllers
 
             List<ServicioViewModel> serviciosejecucion = new List<ServicioViewModel>();
             var idsserviciosejecucion = Request.Form["idservicio"];
-            var idsegmentoservicioejecucion = Request.Form["idsegmentoservicio"];
+           
             var montoservicioListejecucion = Request.Form["montoservicio"];
             var fechaservicioejecucion = Request.Form["fechaservicio"];
             var esEliminado = Request.Form["esEliminado"];
@@ -488,7 +488,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     IdServicioProyecto = idServicioRealParsed,
                     Idservicios = int.Parse(idsserviciosejecucion[i]),
-                    IdSegmento = int.Parse(idsegmentoservicioejecucion[i]),
+                    IdSegmento = 56,
                     MontoServicio = decimal.Parse(montoservicioListejecucion[i].Replace(".", "")),
                     Fecha = DateTime.Parse(fechaservicioejecucion[i]),
                     EsEliminado = esEliminado[i] == "true",
@@ -502,7 +502,7 @@ namespace Proyectogestionhoras.Controllers
 
             List<GastoViewModel> gastosejecucion = new List<GastoViewModel>();
             var idgastosejecuion = Request.Form["idgastos[]"];
-            var idsegmentogastoejecucion = Request.Form["idsegmentogasto"];
+            
             var montogastoListejecucion = Request.Form["montogasto"];
             var fechagastoejecucion = Request.Form["fechagasto"];
             var esEliminadogasto = Request.Form["esEliminados"];
@@ -521,7 +521,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     IdGastoProyecto = idGastoRealParsed,
                     Idgastos = int.Parse(idgastosejecuion[i]),
-                    IdSegmento = int.Parse(idsegmentogastoejecucion[i]),
+                    IdSegmento = 96,
                     MontoGasto = montogasto,
                     Fecha = DateTime.Parse(fechagastoejecucion[i]),
                     EsEliminado = esEliminadogasto[i] == "true",
@@ -591,7 +591,7 @@ namespace Proyectogestionhoras.Controllers
 
                 List<ServicioViewModel> servicios = new List<ServicioViewModel>();
                 var idsservicios = Request.Form["idservicio"];
-                var idsegmentoservicio = Request.Form["idsegmentoservicio"];
+                
                 var montoservicioList = Request.Form["montoservicio"];
                 var fechaservicio = Request.Form["fechaservicio"];
                 var esEliminados = Request.Form["esEliminado"];
@@ -614,7 +614,7 @@ namespace Proyectogestionhoras.Controllers
                     {
                         IdServicioProyecto = idServicioRealParsed,
                         Idservicios = int.Parse(idsservicios[i]),
-                        IdSegmento = int.Parse(idsegmentoservicio[i]),
+                        IdSegmento = 56,
                         MontoServicio = montoservicio,
                         Fecha = DateTime.Parse(fechaservicio[i]),
                         EsEliminado = esEliminados[i] == "true",
@@ -626,7 +626,7 @@ namespace Proyectogestionhoras.Controllers
 
                 List<GastoViewModel> gastos = new List<GastoViewModel>();
                 var idgastos = Request.Form["idgastos[]"];
-                var idsegmentogasto = Request.Form["idsegmentogasto"];
+              
                 var montogastoList = Request.Form["montogasto"];
                 var fechagasto = Request.Form["fechagasto"];
                 var esEliminadogastos = Request.Form["esEliminados"];
@@ -645,7 +645,7 @@ namespace Proyectogestionhoras.Controllers
                     {
                         IdGastoProyecto = idGastoRealParsed,
                         Idgastos = int.Parse(idgastos[i]),
-                        IdSegmento = int.Parse(idsegmentogasto[i]),
+                        IdSegmento = 96,
                         MontoGasto = montogasto,
                         Fecha = DateTime.Parse(fechagasto[i]),
                         EsEliminado = esEliminadogastos[i] == "true",

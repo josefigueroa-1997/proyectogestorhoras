@@ -225,18 +225,23 @@
                     row.style.color = '#000';
                     row.style.fontWeight = 'bold';
                     row.classList.add('fila-invalida');
-                    marcarPaso(row, "proyecto");
+                 
                     return;
                 }
 
                 const id = data[numproyecto] || 0;
 
                 if (id === 0) {
-                    container.textContent = 'Proyecto No Encontrado';
-                    row.style.backgroundColor = '#fee2e2';
-                    row.style.color = '#000';
-                    row.style.fontWeight = 'bold';
                     row.classList.add('fila-invalida');
+    row.style.backgroundColor = '#fee2e2'; // rojo
+    row.style.color = '#000';
+   
+    const inputs = row.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => input.remove());
+    
+    const container = row.querySelector('.project-id-container');
+    container.textContent = 'Proyecto No Encontrado';
+
                     marcarPaso(row, "proyecto");
                 } else {
                     container.textContent = ''; 
@@ -258,6 +263,8 @@
                 row.style.color = '#000';
                 row.style.fontWeight = 'bold';
                 row.classList.add('fila-invalida');
+                   const inputProyectos = row.querySelectorAll('input[name="ProyectoId"]');
+    inputProyectos.forEach(input => input.remove());
                 marcarPaso(row, "proyecto");
             });
              const inputs = row.querySelectorAll('input');
@@ -265,10 +272,8 @@
                             input.disabled = true;
                         });
 
-                        const projectInput = row.querySelector('.project-id-container input');
-                        if (projectInput) {
-                            projectInput.disabled = true;
-                        }
+                         
+
         }
     }
 
@@ -335,21 +340,23 @@
                     filas.forEach(row => {
                         const egresoIdContainer = row.querySelector('.egreso-id-container');
                         const cell = row.querySelector('td:nth-child(2)');
-
+                      
                         if (!id || id === 0) {
-                            egresoIdContainer.textContent = 'Egreso No Encontrado';
-                            row.style.backgroundColor = '#fee2e2';
-                            row.style.color = '#000000';
-                            row.style.fontWeight = 'bold';
-                            row.classList.add('fila-invalida');
+                             egresoIdContainer.textContent = 'Egreso No Encontrado';
+    row.style.backgroundColor = '#fee2e2';
+    row.style.color = '#000000';
+    row.style.fontWeight = 'bold';
+    row.classList.add('fila-invalida');
 
-                            const inputs = row.querySelectorAll('input');
-                            inputs.forEach(input => input.disabled = true);
+    // Remueve todos los inputs para que no se envíen
+    const inputs = row.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => input.remove());
 
-                            const projectInput = row.querySelector('.project-id-container input');
-                            if (projectInput) projectInput.disabled = true;
 
-                            marcarPaso(row, 'egreso');
+    const inputProyectos = row.querySelectorAll('input[name="ProyectoId"]');
+    inputProyectos.forEach(input => input.remove());
+
+                                marcarPaso(row, 'egreso');
                             huboErrorEnFetch = true;
                             return;
                         }
@@ -382,11 +389,11 @@
 
                         const inputs = row.querySelectorAll('input');
                         inputs.forEach(input => input.disabled = true);
+                            const inputProyectos = row.querySelectorAll('input[name="ProyectoId"]');
+    inputProyectos.forEach(input => input.remove());
 
-                        const projectInput = row.querySelector('.project-id-container input');
-                        if (projectInput) projectInput.disabled = true;
 
-                        marcarPaso(row, "egreso");
+                            marcarPaso(row, "egreso");
                     });
                 });
 
@@ -499,15 +506,20 @@
                 const id = data[nombreProveedor] || 0;
 
                 if (id === 0) {
-                    if (proveedorerror) proveedorerror.textContent = 'Proveedor No Encontrado';
-                    row.style.backgroundColor = '#fee2e2';
-                    row.style.color = '#000000';
-                    row.style.fontWeight = 'bold';
-                    row.classList.add('fila-invalida');
+                      if (proveedorerror) proveedorerror.textContent = 'Proveedor No Encontrado';
+    row.style.backgroundColor = '#fee2e2';
+    row.style.color = '#000000';
+    row.style.fontWeight = 'bold';
+    row.classList.add('fila-invalida');
 
-                  
-                    const inputs = row.querySelectorAll('input');
-                    inputs.forEach(input => input.disabled = true);
+    
+    const inputs = row.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => input.remove());
+
+   
+    const inputProyectos = row.querySelectorAll('input[name="ProyectoId"]');
+    inputProyectos.forEach(input => input.remove());
+
                 } else {
                     if (proveedorerror) proveedorerror.textContent = '';
                     inputHidden.value = id;
@@ -531,12 +543,11 @@
 
                 const inputs = row.querySelectorAll('input');
                 inputs.forEach(input => input.disabled = true);
-                 
 
-                        const projectInput = row.querySelector('.project-id-container input');
-                        if (projectInput) {
-                            projectInput.disabled = true;
-                        }
+
+                           const inputProyectos = row.querySelectorAll('input[name="ProyectoId"]');
+    inputProyectos.forEach(input => input.remove());
+
                 marcarPaso(row, "proveedor");
             });
             huboErrorEnFetch = true;

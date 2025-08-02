@@ -215,7 +215,7 @@ namespace Proyectogestionhoras.Services
 
                     if (servicioExistente != null)
                     {
-                        servicioExistente.Idsegmento = servicio.IdSegmento;
+                        servicioExistente.Idsegmento = 65;
                         servicioExistente.Monto = servicio.MontoServicio;
                         servicioExistente.IdServicio = servicio.Idservicios;
 
@@ -228,7 +228,7 @@ namespace Proyectogestionhoras.Services
                     {
                         IdProyecto = idProyecto,
                         IdServicio = servicio.Idservicios,
-                        Idsegmento = servicio.IdSegmento,
+                        Idsegmento = 65,
                         Monto = servicio.MontoServicio,
                         Fecha = servicio.Fecha.Date,
 
@@ -276,7 +276,7 @@ namespace Proyectogestionhoras.Services
 
                     if (gastoExistente != null)
                     {
-                        gastoExistente.Idsegmento = gasto.IdSegmento;
+                        gastoExistente.Idsegmento = 96;
                         gastoExistente.Monto = gasto.MontoGasto;
                         gastoExistente.IdGastos = gasto.Idgastos;
 
@@ -289,7 +289,7 @@ namespace Proyectogestionhoras.Services
                     {
                         IdProyecto = idProyecto,
                         IdGastos = gasto.Idgastos,
-                        Idsegmento = gasto.IdSegmento,
+                        Idsegmento = 96,
                         Monto = gasto.MontoGasto,
                         Fecha = gasto.Fecha.Date,
 
@@ -386,9 +386,10 @@ namespace Proyectogestionhoras.Services
                        .Select(s => s.Idcuenta.Value)
                        .FirstOrDefaultAsync();
 
-                    int idsegmento = await context.Segmentos.Where(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Gastos")
-                        .Select(s => s.Id)
-                        .FirstOrDefaultAsync();
+                    var segmento = await context.Segmentos
+                        .FirstOrDefaultAsync(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Gastos");
+
+                    int idsegmento = segmento?.Id ?? 96;
 
 
                     var nuevoGasto = new ProyectoGasto
@@ -438,9 +439,15 @@ namespace Proyectogestionhoras.Services
                         .Select(s => s.Idcuenta.Value)
                         .FirstOrDefaultAsync();
 
-                    int idsegmento = await context.Segmentos.Where(s=> s.IdCuenta == idcuenta && s.TipoSegmento == "Servicios")
-                        .Select(s => s.Id)
-                        .FirstOrDefaultAsync();
+                    int? idsegmento = await context.Segmentos
+                            .Where(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Servicios")
+                            .Select(s => (int?)s.Id)
+                                .FirstOrDefaultAsync();
+
+                    if (idsegmento == null)
+                    {
+                        idsegmento = 65;
+                    }
 
                     var nuevoservicio = new ProyectoServicio
                     {
@@ -1612,10 +1619,10 @@ namespace Proyectogestionhoras.Services
                         {
                             GastoDTO gasto = new()
                             {
-                                NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                                
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
-                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
+                                
 
                             };
                             gastos.Add(gasto);
@@ -1655,10 +1662,10 @@ namespace Proyectogestionhoras.Services
                         {
                             ServiciosDTO servicio = new()
                             {
-                                NOMBRE = reader.GetString(reader.GetOrdinal("NOMBRE")),
+                               
                                 IDCUENTA = reader.GetInt32(reader.GetOrdinal("IDCUENTA")),
                                 CUENTA = reader.GetString(reader.GetOrdinal("CUENTA")),
-                                IDSEGMENTO = reader.GetInt32(reader.GetOrdinal("IDSEGMENTO"))
+                               
 
                             };
                             servicios.Add(servicio);

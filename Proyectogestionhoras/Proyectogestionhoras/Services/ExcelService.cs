@@ -3,6 +3,7 @@ using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services.Interface;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 
 namespace Proyectogestionhoras.Services
@@ -85,25 +86,25 @@ namespace Proyectogestionhoras.Services
 
             foreach (var ingreso in ingresos)
             {
-              
-                
-                    listaingreso.Add(new Ingresosreale
-                    {
-                        Idproyecto = ingreso.Idproyecto,
-                        Numdocumento = ingreso.numdocumento,
-                        FechaEmision = ingreso.Fechaemision,
-                        FechaPago = ingreso.Fechapago,
-                        Montoclp = ingreso.Monto,
-                        Iva = ingreso.iva,
-                        Estado = ingreso.Estado,
-                        Venta = "Vendido",
-                        Observacion = ingreso.Observacion,
-                        Montous = 0,
-                        Tc = 0,
-                        Idcuenta = 4101001,
 
-                    });
-                
+
+                listaingreso.Add(new Ingresosreale
+                {
+                    Idproyecto = ingreso.Idproyecto,
+                    Numdocumento = ingreso.numdocumento,
+                    FechaEmision = ingreso.Fechaemision,
+                    FechaPago = ingreso.Fechapago,
+                    Montoclp = ingreso.Monto,
+                    Iva = ingreso.iva,
+                    Estado = ingreso.Estado,
+                    Venta = "Vendido",
+                    Observacion = ingreso.Observacion,
+                    Montous = 0,
+                    Tc = 0,
+                    Idcuenta = 4101001,
+
+                });
+
             }
 
 
@@ -114,65 +115,83 @@ namespace Proyectogestionhoras.Services
         }
         public async Task AgregarServicioProyectonuevos(List<ServicioViewModel> servicios)
         {
-            if (servicios == null || !servicios.Any())
+            try
             {
-                return;
-            }
 
-            var todosProyectos = servicios
-                .SelectMany(s => s.IdsProyecto)
-                .Distinct()
-                .ToList();
-
-            
-            var serviciosExistentes = await context.ProyectoServicios
-                .Where(ps => todosProyectos.Contains(ps.IdProyecto))
-                .Select(ps => new { ps.IdProyecto, ps.IdServicio })
-                .ToListAsync();
-
-            var yaAgregados = new HashSet<(int, int)>(); 
-            var serviciosAGrabar = new List<ProyectoServicio>();
-
-            foreach (var servicio in servicios)
-            {
-                foreach (var idProyecto in servicio.IdsProyecto)
+                if (servicios == null || !servicios.Any())
                 {
-                    var clave = (idProyecto, servicio.Idservicios);
+                    return;
+                }
 
-                    bool yaExisteBD = serviciosExistentes.Any(se =>
-                        se.IdProyecto == idProyecto &&
-                        se.IdServicio == servicio.Idservicios);
+                var todosProyectos = servicios
+                    .SelectMany(s => s.IdsProyecto)
+                    .Distinct()
+                    .ToList();
 
-                    if (!yaExisteBD && !yaAgregados.Contains(clave))
+
+                var serviciosExistentes = await context.ProyectoServicios
+                    .Where(ps => todosProyectos.Contains(ps.IdProyecto))
+                    .Select(ps => new { ps.IdProyecto, ps.IdServicio })
+                    .ToListAsync();
+
+                var yaAgregados = new HashSet<(int, int)>();
+                var serviciosAGrabar = new List<ProyectoServicio>();
+
+                foreach (var servicio in servicios)
+                {
+                    foreach (var idProyecto in servicio.IdsProyecto)
                     {
-                        yaAgregados.Add(clave);
-                        int idcuenta = await context
-                        .Servicios
-                        .Where(s => s.Id == servicio.Idservicios)
-                        .Select(s => s.Idcuenta.Value)
-                        .FirstOrDefaultAsync();
+                        var clave = (idProyecto, servicio.Idservicios);
 
-                        int idsegmento = await context.Segmentos.Where(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Servicios")
-                            .Select(s => s.Id)
+                        bool yaExisteBD = serviciosExistentes.Any(se =>
+                            se.IdProyecto == idProyecto &&
+                            se.IdServicio == servicio.Idservicios);
+
+                        if (!yaExisteBD && !yaAgregados.Contains(clave))
+                        {
+                            yaAgregados.Add(clave);
+                            int idcuenta = await context
+                            .Servicios
+                            .Where(s => s.Id == servicio.Idservicios)
+                            .Select(s => s.Idcuenta.Value)
                             .FirstOrDefaultAsync();
 
-                        serviciosAGrabar.Add(new ProyectoServicio
-                        {
-                            IdProyecto = idProyecto,
-                            IdServicio = servicio.Idservicios,
-                            Idsegmento = idsegmento,
-                            Monto = 0,
-                            Fecha = DateTime.Now
-                        });
+                            int? idsegmento = await context.Segmentos
+                            .Where(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Servicios")
+                            .Select(s => (int?)s.Id) 
+                                .FirstOrDefaultAsync();
+
+                            if (idsegmento == null)
+                            {
+                                idsegmento = 65;
+                            }
+
+                            serviciosAGrabar.Add(new ProyectoServicio
+                            {
+                                IdProyecto = idProyecto,
+                                IdServicio = servicio.Idservicios,
+                                Idsegmento = idsegmento,
+                                Monto = 0,
+                                Fecha = DateTime.Now
+                            });
+                        }
                     }
                 }
+
+                if (serviciosAGrabar.Any())
+                {
+                    await context.ProyectoServicios.AddRangeAsync(serviciosAGrabar);
+                    await context.SaveChangesAsync();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine("Error al agregar servicios al proyecto: " + ex.Message, ex);
             }
 
-            if (serviciosAGrabar.Any())
-            {
-                await context.ProyectoServicios.AddRangeAsync(serviciosAGrabar);
-                await context.SaveChangesAsync();
-            }
         }
 
         public async Task AgregarGastosProyectonuevos(List<GastoViewModel> gastos)
@@ -215,9 +234,15 @@ namespace Proyectogestionhoras.Services
                       .Select(s => s.Idcuenta.Value)
                       .FirstOrDefaultAsync();
 
-                        int idsegmento = await context.Segmentos.Where(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Gastos")
-                            .Select(s => s.Id)
-                            .FirstOrDefaultAsync();
+
+
+
+                        var segmento = await context.Segmentos
+                        .FirstOrDefaultAsync(s => s.IdCuenta == idcuenta && s.TipoSegmento == "Gastos");
+
+                        int idsegmento = segmento?.Id ?? 96;
+
+
                         gastosAGrabar.Add(new ProyectoGasto
                         {
                             IdProyecto = idProyecto,
