@@ -153,20 +153,40 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> ObtenerProyectosPorEstadoJson(int idEstado)
         {
+            int anioactual = DateTime.Now.Year;
+
             var proyectos = await context.Proyectos
-                .Where(p => p.StatusProyecto == idEstado)
+                .Where(p => p.StatusProyecto == idEstado &&
+                            (
+                                (p.FechaInicio.Year == anioactual && p.FechaTermino.Year == anioactual) ||
+                                (p.Fechaejecucion.HasValue && p.Fechaejecucion.Value.Year == anioactual) ||
+                                (p.Fecharealtermino.HasValue && p.Fecharealtermino.Value.Year == anioactual)
+                            ))
                 .ToListAsync();
 
-
-            // Proyecta solo lo necesario (nombre e id)
-            var resultado = proyectos.Select(p => new {
-                Id = p.Id,
-                Nombre = p.Nombre ?? p.Nombre
-            });
+            
+            var resultado = proyectos
+                .DistinctBy(p => p.Id)
+                .Select(p => new {
+                    Id = p.Id,
+                    Nombre = p.Nombre ?? p.Nombre
+                });
 
             return Json(resultado);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObtenerClientesporTipo(string tipo)
+        {
+           var resultado = await context.Clientes
+                .Where(c => c.Tipocliente == tipo)
+                .Select(c => new {
+                    c.Id,
+                    c.Nombre
+                })
+                .ToListAsync();
+            return Json(resultado);
+        }
 
         public IActionResult Privacy()
         {

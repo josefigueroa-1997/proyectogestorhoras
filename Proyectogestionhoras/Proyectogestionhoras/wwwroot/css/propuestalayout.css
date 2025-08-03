@@ -1,0 +1,72 @@
+﻿
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin-left: 16rem; /* <-- deja espacio para el sidebar */
+    border-bottom: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.header-title {
+    background-color: #f7f6f5;
+    border-bottom: 2px solid #ccc;
+    color: #333;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+}
+
+
+.main-content {
+    margin-top: 200px;
+    padding: 20px;
+}
+
+.main-content {
+    margin-top: 60px;
+    padding: 20px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 20px;
+}
+
+    .user-profile img {
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+}
+
+    .dropdown-menu a {
+        display: block;
+        padding: 8px 12px;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .dropdown-menu a:hover {
+            background-color: #f0f0f0;
+        }

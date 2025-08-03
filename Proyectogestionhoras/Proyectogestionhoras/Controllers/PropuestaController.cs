@@ -178,6 +178,7 @@ namespace Proyectogestionhoras.Controllers
             var idsession = HttpContext.Session.GetInt32("id");
             if (idsession.HasValue)
             {
+                ViewBag.AnchoExtendido = true;
                 Debug.WriteLine(idproyecto);
                 var proyecto = await proyectoService.ObtenerProyectos(idproyecto, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                 ViewBag.Proyecto = proyecto;

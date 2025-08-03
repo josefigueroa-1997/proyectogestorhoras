@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+ 
 </head>
 @{
     int? idrol = Context.Session.GetInt32("idrol");
@@ -20,379 +20,751 @@
     string? nombre = Context.Session.GetString("nombre");
 }
 <body class="bg-gray-100">
-    <!-- Top Panel (New Header) -->
-    <header class="shadow bg-gray-100">
-        <div class="container mx-auto flex flex-col">
-            <!-- Encabezado adicional -->
-            <div class="header-title bg-gray-100 w-full flex items-center justify-center py-2">
-                <!-- Logo -->
-                <img src="~/images/logo-unit.png" alt="Logo" class="h-10 mr-4">
-                <!-- Título -->
-                <p class="text-lg font-semibold">Dashboard: Plataforma de Control y Gestión de Proyectos</p>
-            </div>
-
-            <!-- Contenido Principal del Header -->
-            <div class="flex justify-between items-center w-full">
-                <!-- Logo -->
-                <div class="logo flex items-center">
-                    <img src="~/images/logo-unit.png" alt="Logo" class="h-12">
+@if (idusuario != 99)
+{
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    
+        <!-- Top Panel (New Header) -->
+        <header class="shadow bg-gray-100">
+            <div class="container mx-auto flex flex-col">
+                <!-- Encabezado adicional -->
+                <div class="header-title bg-gray-100 w-full flex items-center justify-center py-2">
+                    <!-- Logo -->
+                    <img src="~/images/logo-unit.png" alt="Logo" class="h-10 mr-4">
+                    <!-- Título -->
+                    <p class="text-lg font-semibold">Dashboard: Plataforma de Control y Gestión de Proyectos</p>
                 </div>
 
-                <!-- Navigation Menu -->
-                @if (idrol == 1 || idrol == 3)
-                {
-                    <nav class="flex text-sm font-light text-gray-800 h-16">
-                        <!-- Menú Proyectos -->
-                        <div class="relative group h-full">
-                            <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-                                Menú Proyectos
-                            </button>
-                            <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                    <a href="@Url.Action("Index", "Home")">Ingreso de proyectos y clientes</a>
-                                </li>
-                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                    <a href="@Url.Action("GetProyectos", "Proyecto")">Proyectos</a>
-                                </li>
-                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                    <a href="@Url.Action("NuestrosClientes", "Cliente")">Clientes</a>
-                                </li>
-                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                    <a href="@Url.Action("GetProyectosCategoria", "Proyecto")">Clasificación Proyectos</a>
-                                </li>
-                            </ul>
-                        </div>
+                <!-- Contenido Principal del Header -->
+                <div class="flex justify-between items-center w-full">
+                    <!-- Logo -->
+                    <div class="logo flex items-center">
+                        <img src="~/images/logo-unit.png" alt="Logo" class="h-12">
+                    </div>
 
-                        <!-- Menú Control HH -->
-                        <div class="relative group h-full">
-                            <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-                                Menú Control HH
-                            </button>
-                            <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-                                @if (idrol == 1)
-                                {
+                    <!-- Navigation Menu -->
+                    @if (idrol == 1 || idrol == 3)
+                    {
+                        <nav class="flex text-sm font-light text-gray-800 h-16">
+                            <!-- Menú Proyectos -->
+                            <div class="relative group h-full">
+                                <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                    Menú Proyectos
+                                </button>
+                                <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
                                     <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                        <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+                                        <a href="@Url.Action("Index", "Home")">Ingreso de proyectos y clientes</a>
                                     </li>
-                                }
-                              
-                                @if (idusuario == 88 || idusuario == 96)
-                                {
                                     <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                        <a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")">Admin.Registros HH</a>
+                                        <a href="@Url.Action("GetProyectos", "Proyecto")">Proyectos</a>
                                     </li>
-                                }
-                            </ul>
-                        </div>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("NuestrosClientes", "Cliente")">Clientes</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("GetProyectosCategoria", "Proyecto")">Clasificación Proyectos</a>
+                                    </li>
+                                </ul>
+                            </div>
 
-                        <!-- Menú Administración -->
-                        <div class="relative group h-full">
-                            <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-                                Menú Administración
-                            </button>
-                            <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                    <a href="@Url.Action("TodosReportes", "Reporte")">Reportes</a>
-                                </li>
-                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                    <a href="@Url.Action("TodoslosParametros", "Parametros")">Parámetros</a>
-                                </li>
-                                <li class="px-6 py-2 hover:bg-gray-100 text-center">
-                                    <a href="@Url.Action("MetasFunciones", "Metas")">Metas</a>
+                            <!-- Menú Control HH -->
+                            <div class="relative group h-full">
+                                <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                    Menú Control HH
+                                </button>
+                                <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                    @if (idrol == 1)
+                                    {
+                                        <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                            <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+                                        </li>
+                                    }
+
+                                    @if (idusuario == 88 || idusuario == 96)
+                                    {
+                                        <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                            <a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")">Admin.Registros HH</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <!-- Menú Administración -->
+                            <div class="relative group h-full">
+                                <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                    Menú Administración
+                                </button>
+                                <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("TodosReportes", "Reporte")">Reportes</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("TodoslosParametros", "Parametros")">Parámetros</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("MetasFunciones", "Metas")">Metas</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    }
+                    else if (idrol == 2)
+                    {
+                        <nav class="flex text-sm font-light text-gray-800 h-16">
+                            <ul class="flex">
+                                <li class="list-none text-center border border-gray-300 bg-gray-100 px-6 h-16 flex items-center hover:bg-gray-200">
+                                    <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
                                 </li>
                             </ul>
-                        </div>
-                    </nav>
-                }
-                else if (idrol == 2)
-                {
-                    <nav class="flex text-sm font-light text-gray-800 h-16">
-                        <ul class="flex">
-                            <li class="list-none text-center border border-gray-300 bg-gray-100 px-6 h-16 flex items-center hover:bg-gray-200">
-                                <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
-                            </li>
-                        </ul>
-                    </nav>
-                }
+                        </nav>
+                    }
 
-              
-                <!-- User Profile -->
-                <div class="user-profile">
-                    <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
-                    <div class="dropdown-menu" id="userMenu">
-                        <p style="text-align:center">Hola, @nombre</p>
-                        <a href="@Url.Action("Logout","Usuario")">Cerrar sesión</a>
+
+                    <!-- User Profile -->
+                    <div class="user-profile">
+                        <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
+                        <div class="dropdown-menu" id="userMenu">
+                            <p style="text-align:center">Hola, @nombre</p>
+                            <a href="@Url.Action("Logout", "Usuario")">Cerrar sesión</a>
+                        </div>
                     </div>
                 </div>
             </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="py-20">
+            @RenderBody()
+
         </div>
-    </header>
-    <style>
-        /* Sidebar contraído: oculta texto, ajusta padding */
-        [data-sidebar="closed"] .sidebar-text {
-            display: none;
-        }
-
-        [data-sidebar="closed"] ul {
-            padding-left: 0;
-        }
-
-        /* Opcional: centrar íconos */
-        [data-sidebar="closed"] button svg {
-            margin: auto;
-        }
-    </style>
-
-    <!-- Main Content -->
-    <div class="flex">
-        <!-- Sidebar -->
-        <aside id="sidebar"
-               class="w-64 h-screen fixed top-0 left-0 bg-gray-200 text-black pt-[72px] px-4 transition-all duration-300 ease-in-out z-10"
-               data-sidebar="open">
-            <!-- Botón de toggle -->
-            <button data-toggle-sidebar
-                    class="absolute -right-3 top-10 bg-gray-200 rounded-full p-1 shadow-md border border-gray-300 hover:bg-orange-500 hover:text-white z-20 transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-5 w-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor"
-                     data-toggle-icon>
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-
-            <!-- Menú -->
-            <nav class="space-y-4">
-                <!-- Administración -->
-                <div>
-                    <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18" />
-                        </svg>
-                        <span class="sidebar-text">Administración</span>
-                    </button>
-                    <ul class="pl-4 mt-1 space-y-1 text-sm">
-                        <li><a href="@Url.Action("TodosReportes", "Reporte")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Reportes</a></li>
-                        <li><a href="@Url.Action("TodoslosParametros", "Parametros")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Parámetros</a></li>
-                        <li><a href="@Url.Action("MetasFunciones", "Metas")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Metas</a></li>
-                    </ul>
-                </div>
-
-                <!-- Proyectos -->
-                <div>
-                    <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                        </svg>
-                        <span class="sidebar-text">Proyectos</span>
-                    </button>
-                    <ul class="pl-4 mt-1 space-y-1 text-sm">
-                        <li><a href="@Url.Action("Index", "Home")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso proyectos y clientes</a></li>
-                        <li class="relative group" id="menu-proyectos-item" style="min-width: 160px;">
-                            <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
-                                <span>Proyectos</span>
-                                <!-- Flechita derecha -->
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-4 w-4 text-gray-600 group-hover:text-white transition-transform duration-300"
-                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
-
-                            <!-- Contenedor desplegable lateral -->
-                            <div id="proyectos-dropdown"
-                                 class="hidden group-hover:block absolute top-0 left-full ml-1 w-80 max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50"
-                                 style="min-width: 280px;">
-                                <div class="p-4" id="proyectos-content">
-                                    Cargando proyectos...
-                                </div>
-                            </div>
-                        </li>
-                        <li><a href="@Url.Action("NuestrosClientes", "Cliente")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Clientes</a></li>
-                        <li><a href="@Url.Action("GetProyectosCategoria", "Proyecto")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Clasificación</a></li>
-                    </ul>
-                </div>
-
-                <!-- Control HH -->
-                <div>
-                    <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M4 6h16" />
-                        </svg>
-                        <span class="sidebar-text">Control HH</span>
-                    </button>
-                    <ul class="pl-4 mt-1 space-y-1 text-sm">
-                        <li><a href="@Url.Action("PlanillaRegistro", "Planilla")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso HH</a></li>
-                        <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Administración HH</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </aside>
-
-        <!-- Contenido principal -->
-        <main class="flex-grow mt-[72px] px-6 py-6 transition-all duration-300 ease-in-out ml-64" data-main-content>
-            <div class="mx-auto max-w-7xl" data-content-container>
-                @RenderBody()
-            </div>
-        </main>
-    </div>
-
-    <script>
-        //sidebar
-             document.addEventListener('DOMContentLoaded', function () {
-            const toggleBtn = document.querySelector('[data-toggle-sidebar]');
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.querySelector('[data-main-content]');
-            const contentContainer = document.querySelector('[data-content-container]');
-            const toggleIcon = document.querySelector('[data-toggle-icon] path');
-
-            const initialState = localStorage.getItem('sidebarState') || 'open';
-            sidebar.setAttribute('data-sidebar', initialState);
-            updateLayout(initialState === 'open');
-
-            toggleBtn.addEventListener('click', function () {
-                const isOpen = sidebar.getAttribute('data-sidebar') === 'open';
-                const newState = isOpen ? 'closed' : 'open';
-
-                sidebar.setAttribute('data-sidebar', newState);
-                localStorage.setItem('sidebarState', newState);
-                updateLayout(!isOpen);
+        @RenderSection("Scripts", required: false)
+        <script>
+            document.getElementById('userMenuButton').addEventListener('click', (event) => {
+                event.stopPropagation();
+                const userMenu = document.getElementById('userMenu');
+                userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
             });
 
-            function updateLayout(isOpen) {
-                sidebar.classList.toggle('w-64', isOpen);
-                sidebar.classList.toggle('w-16', !isOpen);
+            document.addEventListener('click', (event) => {
+                const userMenu = document.getElementById('userMenu');
+                const userMenuButton = document.getElementById('userMenuButton');
 
-                mainContent.classList.toggle('ml-64', isOpen);
-                mainContent.classList.toggle('ml-16', !isOpen);
+                if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
+                    userMenu.style.display = 'none';
+                }
+            });
+        </script>
+    
 
-                contentContainer.classList.toggle('max-w-7xl', isOpen);
-                contentContainer.classList.toggle('max-w-full', !isOpen);
+}
+else
+{
+        <link rel="stylesheet" href="~/css/propuestalayout.css" asp-append-version="true" />
+        <!-- Top Panel (New Header) -->
+        <header class="shadow bg-gray-100">
+            <div class="container mx-auto flex flex-col">
+                <!-- Encabezado adicional -->
+                <div class="header-title bg-gray-100 w-full flex items-center justify-center py-2">
+                    <!-- Logo -->
+                    <img src="~/images/logo-unit.png" alt="Logo" class="h-10 mr-4">
+                    <!-- Título -->
+                    <p class="text-lg font-semibold">Dashboard: Plataforma de Control y Gestión de Proyectos</p>
+                </div>
 
-                toggleIcon.setAttribute('d', isOpen ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7');
+                <!-- Contenido Principal del Header -->
+                <div class="flex justify-between items-center w-full">
+                    <!-- Logo -->
+                    <div class="logo flex items-center">
+                        <img src="~/images/logo-unit.png" alt="Logo" class="h-12">
+                    </div>
 
-                sidebar.setAttribute('data-sidebar', isOpen ? 'open' : 'closed');
+                    <!-- Navigation Menu -->
+                    @if (idrol == 1 || idrol == 3)
+                    {
+                        <nav class="flex text-sm font-light text-gray-800 h-16">
+                            <!-- Menú Proyectos -->
+                            <div class="relative group h-full">
+                                <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                    Menú Proyectos
+                                </button>
+                                <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("Index", "Home")">Ingreso de proyectos y clientes</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("GetProyectos", "Proyecto")">Proyectos</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("NuestrosClientes", "Cliente")">Clientes</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("GetProyectosCategoria", "Proyecto")">Clasificación Proyectos</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Menú Control HH -->
+                            <div class="relative group h-full">
+                                <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                    Menú Control HH
+                                </button>
+                                <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                    @if (idrol == 1)
+                                    {
+                                        <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                            <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+                                        </li>
+                                    }
+
+                                    @if (idusuario == 88 || idusuario == 96)
+                                    {
+                                        <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                            <a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")">Admin.Registros HH</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <!-- Menú Administración -->
+                            <div class="relative group h-full">
+                                <button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+                                    Menú Administración
+                                </button>
+                                <ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("TodosReportes", "Reporte")">Reportes</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("TodoslosParametros", "Parametros")">Parámetros</a>
+                                    </li>
+                                    <li class="px-6 py-2 hover:bg-gray-100 text-center">
+                                        <a href="@Url.Action("MetasFunciones", "Metas")">Metas</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    }
+                    else if (idrol == 2)
+                    {
+                        <nav class="flex text-sm font-light text-gray-800 h-16">
+                            <ul class="flex">
+                                <li class="list-none text-center border border-gray-300 bg-gray-100 px-6 h-16 flex items-center hover:bg-gray-200">
+                                    <a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+
+
+                    <!-- User Profile -->
+                    <div class="user-profile">
+                        <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
+                        <div class="dropdown-menu" id="userMenu">
+                            <p style="text-align:center">Hola, @nombre</p>
+                            <a href="@Url.Action("Logout", "Usuario")">Cerrar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <style>
+            /* Sidebar contraído: oculta texto, ajusta padding */
+            [data-sidebar="closed"] .sidebar-text {
+                display: none;
             }
 
-            
+            [data-sidebar="closed"] ul {
+                padding-left: 0;
+            }
 
-        });
-        //submenu proyectos
-                document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".toggle-submenu").forEach(el => {
-                el.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    const id = this.dataset.id;
-                    const submenu = document.getElementById(id);
-                    const icon = document.getElementById(`icon-${id}`);
-                    submenu.classList.toggle("hidden");
-                    icon.classList.toggle("rotate-180");
+            /* Opcional: centrar íconos */
+            [data-sidebar="closed"] button svg {
+                margin: auto;
+            }
+        </style>
+
+        <!-- Main Content -->
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside id="sidebar"
+                   class="w-56 h-screen fixed top-0 left-0 bg-gray-200 text-black pt-[72px] px-4 z-10">
+                <!-- Botón de toggle -->
+               
+               
+
+                <!-- Menú -->
+                <nav class="space-y-4">
+                    <!-- Proyectos -->
+                    <div>
+                        <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                            </svg>
+                            <span class="sidebar-text">Visualización Proyectos</span>
+                        </button>
+                        <ul class="pl-4 mt-1 space-y-1 text-sm">
+
+                            <li><a href="@Url.Action("Index", "Home")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Todo los Proyectos</a></li>
+                            <!--Proyectos menu-->
+                            <li class="relative group" id="menu-proyectos-item" style="min-width: 160px;">
+                                <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
+                                    <span>Proyectos @DateTime.Now.Year</span>
+                                    <!-- Flechita derecha -->
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4 text-gray-600 group-hover:text-white transition-transform duration-300"
+                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+
+                                <!-- Contenedor desplegable lateral -->
+                                <div id="proyectos-dropdown"
+                                     class="hidden group-hover:block absolute top-0 left-full ml-1 w-80 max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50"
+                                     style="min-width: 280px;">
+                                    <div class="p-4" id="proyectos-content">
+                                        Cargando proyectos...
+                                    </div>
+                                </div>
+                            </li>
+                            <!--Clientes menu-->
+                            <li class="relative group" id="menu-cliente-item" style="min-width: 160px;">
+                                <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
+                                    <span>Clientes</span>
+                                    <!-- Flechita derecha -->
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4 text-gray-600 group-hover:text-white transition-transform duration-300"
+                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+
+                                <!-- Contenedor desplegable lateral -->
+                                <div id="clientes-dropdown"
+                                     class="hidden group-hover:block absolute top-0 left-full ml-1 w-80 max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50"
+                                     style="min-width: 280px;">
+                                    <div class="p-4" id="clientes-content">
+                                        Cargando clientes...
+                                    </div>
+                                </div>
+                            </li>
+                            <li><a href="@Url.Action("GetProyectosCategoria", "Proyecto")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Clasificación de Proyectos</a></li>
+                        </ul>
+                    </div>
+                    <!--Reporteria-->
+
+                    <div>
+                        <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M4 6h16" />
+                            </svg>
+                            <span class="sidebar-text">Reportabilidad</span>
+                        </button>
+                        <ul class="pl-4 mt-1 space-y-1 text-sm">
+                            <li class="relative group" id="menu-reportes-item" style="min-width: 160px;">
+                                <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
+                                    <span>Reportes</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4 text-gray-600 group-hover:text-white transition-transform duration-300"
+                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+
+                                <div id="reportes-dropdown"
+                                     class="hidden group-hover:block absolute top-0 left-full ml-1 w-[22rem] max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50">
+                                    <div class="p-4 space-y-4" id="reportes-content">
+
+                                        <!-- Sección: Key Indicators -->
+                                        <div class="mb-4">
+                                            <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Key Indicators</h3>
+                                            <ul class="space-y-1 text-sm">
+                                                <li><a href="/Reportes/MetasFacturacion" class="hover:text-orange-500 block">Metas de Facturación</a></li>
+                                                <li><a href="/Reportes/ProyectosNegociacion" class="hover:text-orange-500 block">Proyectos en Negociación</a></li>
+                                                <li><a href="/Reportes/HHSocios" class="hover:text-orange-500 block">HH Socios</a></li>
+                                                <li><a href="/Reportes/MargenContribucion" class="hover:text-orange-500 block">Margen de Contribución</a></li>
+                                                <li><a href="/Reportes/PlanVenta" class="hover:text-orange-500 block">Plan de Venta</a></li>
+                                                <li><a href="/Reportes/EstadoResultadoMensual" class="hover:text-orange-500 block">Estado Resultado Mensual</a></li>
+                                                <li><a href="/Reportes/EstadoResultadoQuarter" class="hover:text-orange-500 block">Estado Resultado Quarter</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Sección: Forecast -->
+                                        <div class="mb-4">
+                                            <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Forecast</h3>
+                                            <ul class="space-y-1 text-sm">
+                                                <li><a href="/Reportes/ForecastIngresos" class="hover:text-orange-500 block">Forecast Ingresos</a></li>
+                                                <li><a href="/Reportes/ForecastCostos" class="hover:text-orange-500 block">Forecast Costos</a></li>
+                                                <li><a href="/Reportes/ForecastFlujoCaja" class="hover:text-orange-500 block">Forecast Flujo de Caja</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Sección: Facturación -->
+                                        <div class="mb-4">
+                                            <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Facturación</h3>
+                                            <ul class="space-y-1 text-sm">
+                                                <li><a href="/Reportes/FacturacionProyecto" class="hover:text-orange-500 block">Facturación por Proyecto</a></li>
+                                                <li><a href="/Reportes/ProyectosNegociacion" class="hover:text-orange-500 block">Proyectos en Negociación</a></li>
+                                                <li><a href="/Reportes/ResumenQuarter" class="hover:text-orange-500 block">Resumen por Quarter</a></li>
+                                                <li><a href="/Reportes/ResumenCostosProyecto" class="hover:text-orange-500 block">Resumen Costos Proyecto</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Sección: Reportes HH Asignadas -->
+                                        <div class="mb-4">
+                                            <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Reportes HH Asignadas</h3>
+                                            <ul class="space-y-1 text-sm">
+                                                <li><a href="/Reportes/HHSociosAsignadas" class="hover:text-orange-500 block">HH Socios Asignadas</a></li>
+                                                <li><a href="/Reportes/HHStaffAsignadas" class="hover:text-orange-500 block">HH Staff Asignadas</a></li>
+                                                <li><a href="/Reportes/HHConsultorA" class="hover:text-orange-500 block">HH Consultor A</a></li>
+                                                <li><a href="/Reportes/HHConsultorB" class="hover:text-orange-500 block">HH Consultor B</a></li>
+                                                <li><a href="/Reportes/HHConsultorC" class="hover:text-orange-500 block">HH Consultor C</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Sección: Reportes Costos Asignados -->
+                                        <div class="mb-4">
+                                            <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Reportes Costos Asignados</h3>
+                                            <ul class="space-y-1 text-sm">
+                                                <li><a href="/Reportes/CostosHHSocios" class="hover:text-orange-500 block">Costos HH Socios</a></li>
+                                                <li><a href="/Reportes/CostosHHStaff" class="hover:text-orange-500 block">Costo HH Staff</a></li>
+                                                <li><a href="/Reportes/CostosConsultorA" class="hover:text-orange-500 block">Costo Consultor A</a></li>
+                                                <li><a href="/Reportes/CostosConsultorB" class="hover:text-orange-500 block">Costo Consultor B</a></li>
+                                                <li><a href="/Reportes/CostosConsultorC" class="hover:text-orange-500 block">Costo Consultor C</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Sección: Control Avances HH -->
+                                        <div class="mb-2">
+                                            <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Control Avances HH</h3>
+                                            <ul class="space-y-1 text-sm">
+                                                <li><a href="/Reportes/ControlAvancesHH" class="hover:text-orange-500 block">Control Avances HH</a></li>
+                                                <li><a href="/Reportes/ActividadesSocios" class="hover:text-orange-500 block">Actividades Socios</a></li>
+                                                <li><a href="/Reportes/DetalleHHPersonal" class="hover:text-orange-500 block">Detalle HH Personal</a></li>
+                                                <li><a href="/Reportes/DetalleHHGeneral" class="hover:text-orange-500 block">Detalle HH General</a></li>
+                                                <li><a href="/Reportes/BalanceHorasEfectivas" class="hover:text-orange-500 block">Balance Horas Efectivas</a></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </li>
+                            <!--Metas-->
+                            <li class="relative group" id="menu-metas-item" style="min-width: 160px;">
+                                <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
+                                    <span>Metas</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4 text-gray-600 group-hover:text-white transition-transform duration-300"
+                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+
+                                <div id="metas-dropdown"
+                                     class="hidden group-hover:block absolute top-0 left-full ml-1 w-80 max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50"
+                                     style="min-width: 280px;">
+                                    <div class="p-4" id="metas-content">
+                                        <ul class="list-none space-y-2">
+                                            <li><a href="/Metas/ParametrosMetas" class="text-md font-bold text-orange-600 hover:underline block">Parametros Metas</a></li>
+                                            <li><a href="/Metas/Personal" class="text-md font-bold text-orange-600 hover:underline block">Salidas Metas</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                   
+                   
+                    <!-- Control HH -->
+                    <div>
+                        <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M4 6h16" />
+                            </svg>
+                            <span class="sidebar-text">Control HH</span>
+                        </button>
+                        <ul class="pl-4 mt-1 space-y-1 text-sm">
+                            <li><a href="@Url.Action("PlanillaRegistro", "Planilla")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso HH</a></li>
+                            <li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Administración HH</a></li>
+                        </ul>
+                    </div>
+                    <!-- Administración -->
+                    <div>
+                        <button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18" />
+                            </svg>
+                            <span class="sidebar-text">Administración</span>
+                        </button>
+                        <ul class="pl-4 mt-1 space-y-1 text-sm">
+
+                            <li><a href="@Url.Action("Index", "Home")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso Datos</a></li>
+                            <!--Parametros-->
+                            <li class="relative group" id="menu-parametros-item" style="min-width: 160px;">
+                                <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
+                                    <span>Parámetros</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-4 w-4 text-gray-600 group-hover:text-white transition-transform duration-300"
+                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+
+                                <div id="parametros-dropdown"
+                                     class="hidden group-hover:block absolute top-0 left-full ml-1 w-80 max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50"
+                                     style="min-width: 280px;">
+                                    <div class="p-4" id="parametros-content">
+                                        <ul class="list-none space-y-2">
+                                            <li><a href="/Parametros/Cuentas" class="text-md font-bold text-orange-600 hover:underline block">Cuentas</a></li>
+                                            <li><a href="/Parametros/Personal" class="text-md font-bold text-orange-600 hover:underline block">Personal</a></li>
+                                            <li><a href="/Parametros/Gastos" class="text-md font-bold text-orange-600 hover:underline block">Gastos</a></li>
+                                            <li><a href="/Parametros/Servicios" class="text-md font-bold text-orange-600 hover:underline block">Servicios</a></li>
+                                            <li><a href="/Parametros/Segmentos" class="text-md font-bold text-orange-600 hover:underline block">Segmentos</a></li>
+                                            <li><a href="/Parametros/Tipologias" class="text-md font-bold text-orange-600 hover:underline block">Tipologías</a></li>
+                                            <li><a href="/Parametros/Actividades" class="text-md font-bold text-orange-600 hover:underline block">Actividades</a></li>
+                                            <li><a href="/Parametros/SubActividades" class="text-md font-bold text-orange-600 hover:underline block">SubActividades</a></li>
+                                            <li><a href="/Parametros/BonosSocios" class="text-md font-bold text-orange-600 hover:underline block">Bonos Socios</a></li>
+                                            <li><a href="/Parametros/Proveedores" class="text-md font-bold text-orange-600 hover:underline block">Proveedores</a></li>
+                                            <li><a href="/Parametros/DiaPagoHH" class="text-md font-bold text-orange-600 hover:underline block">Día de Pago HH</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+            @{
+                var viewName = ViewContext.RouteData.Values["action"]?.ToString();
+                var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+                var isGestorProyectos = controllerName == "Propuesta" && viewName == "GestorProyectos";
+            }
+            <!-- Contenido principal -->
+            <main class="flex-grow mt-[72px] ml-56">
+                @if (isGestorProyectos)
+                {
+                    <div class="w-[calc(100vw-16rem)] min-h-screen pl-1 pr-6 py-12  ">
+                        @RenderBody()
+                    </div>
+                }
+                else
+                {
+                    <div class="mx-auto max-w-7xl px-6 py-6 w-full">
+                        @RenderBody()
+                    </div>
+                }
+            </main>
+
+        </div>
+
+        <script>
+      
+
+
+
+            
+            //submenu proyectos
+                    document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".toggle-submenu").forEach(el => {
+                    el.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        const id = this.dataset.id;
+                        const submenu = document.getElementById(id);
+                        const icon = document.getElementById(`icon-${id}`);
+                        submenu.classList.toggle("hidden");
+                        icon.classList.toggle("rotate-180");
+                    });
                 });
             });
-        });
 
-                      document.addEventListener("DOMContentLoaded", () => {
-          const proyectosDropdown = document.getElementById("proyectos-dropdown");
-          const proyectosContent = document.getElementById("proyectos-content");
+                          document.addEventListener("DOMContentLoaded", () => {
+              const proyectosDropdown = document.getElementById("proyectos-dropdown");
+              const proyectosContent = document.getElementById("proyectos-content");
 
-          const estados = [
-            { id: 6, nombre: "Presupuesto" },
-            { id: 1, nombre: "En Negociación" },
-            { id: 2, nombre: "En Ejecución" },
-            { id: 4, nombre: "Terminado" },
-            { id: 3, nombre: "Rechazado" },
-          ];
+              const estados = [
+                { id: 6, nombre: "Presupuesto" },
+                { id: 1, nombre: "En Negociación" },
+                { id: 2, nombre: "En Ejecución" },
+                { id: 4, nombre: "Terminado" },
+                { id: 3, nombre: "Rechazado" },
+              ];
 
-          let cacheProyectos = {};
+              let cacheProyectos = {};
 
-          async function cargarProyectos(idEstado) {
-            if (cacheProyectos[idEstado]) return cacheProyectos[idEstado];
+              async function cargarProyectos(idEstado) {
+                if (cacheProyectos[idEstado]) return cacheProyectos[idEstado];
 
-            const resp = await fetch(`/Home/ObtenerProyectosPorEstadoJson?idEstado=${idEstado}`);
-            if (!resp.ok) return [];
+                const resp = await fetch(`/Home/ObtenerProyectosPorEstadoJson?idEstado=${idEstado}`);
+                if (!resp.ok) return [];
 
-            const data = await resp.json();
-            cacheProyectos[idEstado] = data;
-            return data;
-          }
-
-          async function mostrarProyectos() {
-            proyectosContent.innerHTML = "";
-
-            for (const estado of estados) {
-              const proyectos = await cargarProyectos(estado.id);
-
-              const contenedorEstado = document.createElement("div");
-              contenedorEstado.className = "mb-4";
-
-              const titulo = document.createElement("h3");
-              titulo.textContent = estado.nombre;
-              titulo.className = "font-semibold mb-2 text-orange-600";
-              contenedorEstado.appendChild(titulo);
-
-              if (proyectos.length === 0) {
-                const p = document.createElement("p");
-                p.textContent = "No hay proyectos";
-                p.className = "text-sm text-gray-500";
-                contenedorEstado.appendChild(p);
-              } else {
-                const ul = document.createElement("ul");
-                ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
-
-                proyectos.forEach((proy) => {
-                  const li = document.createElement("li");
-                  li.textContent = proy.Nombre ?? proy.nombre ?? "Proyecto sin nombre";
-                  li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
-                  li.title = li.textContent;
-
-                  li.addEventListener("click", () => {
-                    window.location.href = `/Proyecto/Detalle/${proy.Id ?? proy.id}`;
-                  });
-
-                  ul.appendChild(li);
-                });
-
-                contenedorEstado.appendChild(ul);
+                const data = await resp.json();
+                cacheProyectos[idEstado] = data;
+                return data;
               }
 
-              proyectosContent.appendChild(contenedorEstado);
-            }
-          }
+              async function mostrarProyectos() {
+                proyectosContent.innerHTML = "";
 
-          let cargado = false;
-          const menuItem = document.getElementById("menu-proyectos-item");
-          menuItem.addEventListener("mouseenter", async () => {
-            if (!cargado) {
-              proyectosContent.textContent = "Cargando proyectos...";
-              await mostrarProyectos();
-              cargado = true;
-            }
-          });
-        });
+                for (const estado of estados) {
+                  const proyectos = await cargarProyectos(estado.id);
 
-    </script>
+                  const contenedorEstado = document.createElement("div");
+                  contenedorEstado.className = "mb-4";
 
-    @RenderSection("Scripts", required: false)
-    <script>
-        document.getElementById('userMenuButton').addEventListener('click', (event) => {
-            event.stopPropagation();
-            const userMenu = document.getElementById('userMenu');
-            userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
-        });
+                  const titulo = document.createElement("h3");
+                  titulo.textContent = estado.nombre;
+                  titulo.className = "font-semibold mb-2 text-orange-600";
+                  contenedorEstado.appendChild(titulo);
 
-        document.addEventListener('click', (event) => {
-            const userMenu = document.getElementById('userMenu');
-            const userMenuButton = document.getElementById('userMenuButton');
+                  if (proyectos.length === 0) {
+                    const p = document.createElement("p");
+                    p.textContent = "No hay proyectos";
+                    p.className = "text-sm text-gray-500";
+                    contenedorEstado.appendChild(p);
+                  } else {
+                    const ul = document.createElement("ul");
+                    ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
 
-            if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
-                userMenu.style.display = 'none';
-            }
-        });
-            
-    </script>
+                    proyectos.forEach((proy) => {
+                      const li = document.createElement("li");
+                      li.textContent = proy.Nombre ?? proy.nombre ?? "Proyecto sin nombre";
+                      li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
+                      li.title = li.textContent;
+
+                      li.addEventListener("click", () => {
+                        window.location.href = `/Proyecto/Detalle/${proy.Id ?? proy.id}`;
+                      });
+
+                      ul.appendChild(li);
+                    });
+
+                    contenedorEstado.appendChild(ul);
+                  }
+
+                  proyectosContent.appendChild(contenedorEstado);
+                }
+              }
+
+              let cargado = false;
+              const menuItem = document.getElementById("menu-proyectos-item");
+              menuItem.addEventListener("mouseenter", async () => {
+                if (!cargado) {
+                  proyectosContent.textContent = "Cargando proyectos...";
+                  await mostrarProyectos();
+                  cargado = true;
+                }
+              });
+            });
+
+
+            //submenu clientes
+
+                document.addEventListener("DOMContentLoaded", () => {
+              const clienteDropdown = document.getElementById("clientes-dropdown");
+              const clienteContent = document.getElementById("clientes-content");
+
+              const tipos = [
+                { id: "Empr.Públicas Chile", nombre: "Empr.Públicas Chile" },
+                { id: "Empr.Privadas Chile", nombre: "Empr.Privadas Chile" },
+                 { id: "Empr.Internacional", nombre: "Empr.Internacional" },
+                { id: "Fundaciones y Org.Sin Fin Lucro", nombre: "Fundaciones y Org.Sin Fin Lucro" },
+               
+                
+              ];
+
+              let cacheClientes = {};
+
+              async function cargarClientes(tipo) {
+                if (cacheClientes[tipo]) return cacheClientes[tipo];
+
+                const resp = await fetch(`/Home/ObtenerClientesporTipo?tipo=${tipo}`);
+                if (!resp.ok) return [];
+
+                const data = await resp.json();
+                cargarClientes[tipo] = data;
+                return data;
+              }
+
+              async function mostrarClientes() {
+                clienteContent.innerHTML = "";
+
+                for (const tipo of tipos) {
+                  const clientes = await cargarClientes(tipo.id);
+
+                  const contenedorEstado = document.createElement("div");
+                  contenedorEstado.className = "mb-4";
+
+                  const titulo = document.createElement("h3");
+                  titulo.textContent = tipo.nombre;
+                  titulo.className = "font-semibold mb-2 text-orange-600";
+                  contenedorEstado.appendChild(titulo);
+
+                  if (clientes.length === 0) {
+                    const p = document.createElement("p");
+                    p.textContent = "No hay Clientes";
+                    p.className = "text-sm text-gray-500";
+                    contenedorEstado.appendChild(p);
+                  } else {
+                    const ul = document.createElement("ul");
+                    ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
+
+                    clientes.forEach((proy) => {
+                      const li = document.createElement("li");
+                      li.textContent = proy.Nombre ?? proy.nombre ?? "Cliente sin nombre";
+                      li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
+                      li.title = li.textContent;
+
+                      li.addEventListener("click", () => {
+                        window.location.href = `/Proyecto/Detalle/${proy.Id ?? proy.id}`;
+                      });
+
+                      ul.appendChild(li);
+                    });
+
+                    contenedorEstado.appendChild(ul);
+                  }
+
+                  clienteContent.appendChild(contenedorEstado);
+                }
+              }
+
+              let cargado = false;
+              const menuItem = document.getElementById("menu-cliente-item");
+              menuItem.addEventListener("mouseenter", async () => {
+                if (!cargado) {
+                  clienteContent.textContent = "Cargando Clientes...";
+                  await mostrarClientes();
+                  cargado = true;
+                }
+              });
+            });
+        </script>
+
+        @RenderSection("Scripts", required: false)
+        <script>
+            document.getElementById('userMenuButton').addEventListener('click', (event) => {
+                event.stopPropagation();
+                const userMenu = document.getElementById('userMenu');
+                userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', (event) => {
+                const userMenu = document.getElementById('userMenu');
+                const userMenuButton = document.getElementById('userMenuButton');
+
+                if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
+                    userMenu.style.display = 'none';
+                }
+            });
+
+        </script>
+    
+
+
+}
 </body>
 </html>
