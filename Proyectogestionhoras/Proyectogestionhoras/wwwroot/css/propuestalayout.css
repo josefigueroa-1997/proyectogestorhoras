@@ -9,7 +9,7 @@ header {
     left: 0;
     right: 0;
     z-index: 1000;
-    margin-left: 16rem; /* <-- deja espacio para el sidebar */
+    margin-left: 14rem; /* <-- deja espacio para el sidebar */
     border-bottom: 2px solid #ccc;
     display: flex;
     align-items: center;

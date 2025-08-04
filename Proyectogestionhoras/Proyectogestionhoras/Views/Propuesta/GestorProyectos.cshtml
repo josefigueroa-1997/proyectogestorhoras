@@ -32,8 +32,39 @@
 	@foreach (var proyecto in ViewBag.Proyecto)
 	{
 		idproyectos = proyecto.Id;
-		
-	}
+		<div class="flex gap-2 mb-6">
+			<a href="#"
+			   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+							@(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+																											   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																									 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																													Síntesis del Proyecto
+																																												</a>
+																																												<a href="#"
+																																												   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+											             @(ViewContext.RouteData.Values["action"]?.ToString() == "GestorProyectos"
+																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																											Gestor del Proyecto
+																																										</a>
+																																										<a href="#"
+																																										   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+										             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																											Presupuesto
+																																										</a>
+																																										<a href="#"
+																																										   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+										             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
+																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+			Seleccionar Proyecto
+		</a>
+	</div>
+		}
 
 	<!-- 🔶 INFORMACIÓN GENERAL -->
 	<div class="bg-white p-6 rounded-xl border border-gray-300 mb-8">
@@ -102,8 +133,8 @@
 			<div id="section-general" class="seccion ">
 				<h3 class="text-lg font-bold text-orange-500 mb-2">Resumen Ingresos del Proyecto</h3>
 				<div class="flex justify-center">
-					<div class="overflow-x-auto">
-						<table class="w-full max-w-3xl border-collapse text-left text-xs">
+					<div class="overflow-x-auto w-full max-w-full">
+						<table class="min-w-max w-full border-collapse text-left text-xs border border-gray-300">
 
 							<tbody>
 								<tr>
@@ -282,20 +313,17 @@
 					
 				</div>
 				<h3 class="text-lg font-bold text-orange-500 mb-2">Resumen Costos del Proyecto</h3>
-				<div class="p-4 bg-gray-50 rounded-b">
-					<div class="overflow-x-auto">
-						<table class="min-w-full text-xs border-collapse">
+				<div class="p-4 bg-white-50 rounded-b">
+					<div class="overflow-x-auto w-full max-w-full">
+						<table class="w-full text-xs border-collapse border border-gray-300 table-auto">
 							<thead>
 								<tr class="bg-orange-100 text-black">
-
-									<th class="p-2 border border-gray-300 text-left">Tipo</th>
-									<th class="p-1 border border-gray-300 text-left">IdCuenta</th>
-									<th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-									<th class="p-2 border border-gray-300 text-left">Total Proyectado</th>
-									<th class="p-2 border border-gray-300 text-left">Total Real</th>
-									<th class="p-2 border border-gray-300 text-left">Total Forecast</th>
-
-
+									<th class="p-2 border border-gray-300 text-left ">Tipo</th>
+									<th class="p-1 border border-gray-300 text-left ">IdCuenta</th>
+									<th class="p-2 border border-gray-300 text-left ">Cuenta Contable</th>
+									<th class="p-2 border border-gray-300 text-right ">Total Proyectado</th>
+									<th class="p-2 border border-gray-300 text-right ">Total Real</th>
+									<th class="p-2 border border-gray-300 text-right ">Total Forecast</th>
 								</tr>
 							</thead>
 
@@ -310,10 +338,10 @@
 								<table id="tablaforecastproveedor" class="min-w-full text-xs border-collapse border border-gray-300">
 									<thead>
 										<tr class="bg-green-100 text-black">
-											<th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
-											<th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
-											<th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>
-											<th class="p-2 border border-gray-300 text-center min-w-[150px]">fecha</th>
+											<th class="p-2 border border-gray-300 text-left max-w-[120px] truncate">Proveedor</th>
+											<th class="p-2 border border-gray-300 text-left max-w-[120px] truncate">Cuenta</th>
+											<th class="p-2 border border-gray-300 text-left max-w-[120px] truncate">Nombre</th>
+											<th class="p-2 border border-gray-300 text-center max-w-[120px] truncate">fecha</th>
 
 										</tr>
 									</thead>
@@ -338,12 +366,12 @@
 								function crearFila(tipo, idCuenta, cuenta, proyectado, real, forecast) {
 								  return `
 									<tr>
-									  <td class="p-2 border border-gray-300 text-left">${tipo}</td>
-									  <td class="p-2 border border-gray-300 text-left">${idCuenta}</td>
-									  <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
-									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(proyectado)}</td>
-									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(real)}</td>
-									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(forecast)}</td>
+									  <td class="p-2 border border-gray-300 text-left  max-w-[200px] truncate">${tipo}</td>
+									  <td class="p-2 border border-gray-300 text-left  max-w-[200px] truncate">${idCuenta}</td>
+									  <td class="p-2 border border-gray-300 text-left  max-w-[200px] truncate">${cuenta}</td>
+									  <td class="p-1 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(proyectado)}</td>
+									  <td class="p-1 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(real)}</td>
+									  <td class="p-1 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(forecast)}</td>
 									</tr>
 								  `;
 								}
@@ -393,9 +421,9 @@
 								tbody.innerHTML += `
 								  <tr class="font-bold bg-gray-200">
 									<td class="p-2 border border-gray-300 text-left" colspan="3">Totales</td>
-									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalProyectado)}</td>
-									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalReal)}</td>
-									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalForecast)}</td>
+									<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(totalProyectado)}</td>
+									<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(totalReal)}</td>
+									<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(totalForecast)}</td>
 								  </tr>
 								`;
 
@@ -450,9 +478,9 @@
 
 									let encabezado = `
 														<tr class="bg-green-100 text-black">
-														<th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
-														<th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
-														<th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
+														<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Proveedor</th>
+														<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Cuenta</th>
+														<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Nombre</th>`;
 									mesesUnicos.forEach(mes => {
 										encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
 									});
@@ -488,7 +516,7 @@
 											} else {
 												totalFila += monto;
 												totalesPorMes[index] += monto;
-												fila += `<td class="p-2 border border-gray-300 text-right">${formatMoneda(monto)}</td>`;
+												fila += `<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatMoneda(monto)}</td>`;
 											}
 										});
 

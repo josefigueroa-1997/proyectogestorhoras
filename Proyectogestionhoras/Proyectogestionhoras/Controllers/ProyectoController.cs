@@ -279,6 +279,7 @@ namespace Proyectogestionhoras.Controllers
                     int idproyectoultimo = ultimoidproyecto();
                     await proyectoService.GestorFechaModificacionProyecto(idproyectoultimo);
                     await proyectoService.GuardarActualizarHistorialCuenta(idproyectoultimo, idcuentasocio, idcuentastaff,cuentasocio,cuentastaff);
+                    TempData["SuccessMensaje"] = "¡Se Creó el proyecto con éxito!";
                     return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyectoultimo });
                 }
                 else
@@ -456,7 +457,7 @@ namespace Proyectogestionhoras.Controllers
             }
         }
 
-        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc,DateTime? fechaquarterinicio, DateTime? fechaquarterfin,int plazo,DateTime fechatermino)
+        public async Task ActualizarProyectoEjecucion(int idproyecto, int hhsocios, int hhstaff, int hhconsultora, int hhconsultorb, int hhconsultorc, int idsegmentosocio, int idsegmentostaff, int idsegmentoconsultora, int idsegmentoconsultorb, int idsegmentoconsultorc,DateTime? fechaquarterinicio, DateTime? fechaquarterfin,int plazo,DateTime fechatermino, int status)
         {
 
             var presupuesto = context.Presupuestos.FirstOrDefault(p => p.Id == idproyecto);
@@ -541,6 +542,7 @@ namespace Proyectogestionhoras.Controllers
             //await proyectoService.RestarHHAnaulesStaff(hhstaff, idproyecto);
             await proyectoService.ReasignarHHRecursos(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc);
            await proyectoService.GestorFechaModificacionProyecto(idproyecto);
+           
             await EditarPlazoProyecto(idproyecto,plazo,fechatermino);
         }
 
@@ -555,7 +557,7 @@ namespace Proyectogestionhoras.Controllers
                 var statusproyecto = await Obtenerstatusproyecto(idproyecto);
                 if (statusproyecto == 2)
                 {
-                    await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc,fechaquarterinicio,fechaquarterfin,plazo,fechatermino);
+                    await ActualizarProyectoEjecucion(idproyecto, hhsocios, hhstaff, hhconsultora, hhconsultorb, hhconsultorc, idsegmentosocio, idsegmentostaff, idsegmentoconsultora, idsegmentoconsultorb, idsegmentoconsultorc,fechaquarterinicio,fechaquarterfin,plazo,fechatermino,status);
                     await proyectoService.GuardarActualizarHistorialCuenta(idproyecto, idcuentasocio, idcuentastaff, cuentasocio, cuentastaff);
 
 
@@ -570,11 +572,13 @@ namespace Proyectogestionhoras.Controllers
                     tasacambiosus = decimal.Parse(tasacambioustr, System.Globalization.CultureInfo.InvariantCulture);
 
 
-
-
                     await EditarPresupuestoProyecto(idpresupuesto,moneda, montoorigenextranjeraus, tasacambiosus, montofinalclp);
-
-
+                    await EditarStatusProyecto(idproyecto, status);
+                    if (status == 6)
+                    {
+                        TempData["SuccessMensaje"] = "¡Se Actualizaron los datos del proyecto con éxito!";
+                        return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyecto });
+                    }
                     TempData["SuccessEdicionProyecto"] = "¡Se Actualizaron los datos del proyecto con éxito!";
                     return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = idproyecto });
                 }
@@ -691,6 +695,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     if (statusedicion == 6)
                     {
+                        TempData["SuccessMensaje"] = "¡Se Actualizaron los datos del proyecto con éxito!";
                         return RedirectToAction("ObtenerPresupuestoProyecto", "Proyecto", new { id = idproyecto });
                     }
                     else
@@ -795,6 +800,27 @@ namespace Proyectogestionhoras.Controllers
            
         }
 
+
+        public async Task EditarStatusProyecto(int idproyecto, int status)
+        {
+            var proyecto = await context.Proyectos.FindAsync(idproyecto);
+            if (proyecto == null)
+            {
+                return;
+            }
+            proyecto.StatusProyecto = status;
+           
+            if (status == 2)
+            {
+                proyecto.Fechaejecucion = DateTime.Now;
+            }
+            
+            else
+            {
+                proyecto.Fechaejecucion = null;
+            }
+            await context.SaveChangesAsync();
+        }
 
         public async Task EditarPresupuestoProyecto(int idpresupuesto, string moneda, decimal montoorigen, decimal tasacambio, decimal montoclp)
         {
@@ -931,7 +957,12 @@ namespace Proyectogestionhoras.Controllers
 
         public async Task<List<StatusProyecto>> RecuperarEstados()
         {
-            var estados = await context.StatusProyectos.ToListAsync();
+            var estados = await context.StatusProyectos
+                .Where(e => e.Id != 5) 
+                .OrderByDescending(e => e.Id == 6) 
+                .ThenBy(e => e.Id) 
+                .ToListAsync();
+
             return estados;
         }
         public async Task<List<Servicio>> GetServicios()

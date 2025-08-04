@@ -293,8 +293,8 @@
                     </div>
                     <div class="form-group">
                         <label for="estadoProyecto">Estado del proyecto</label>
-                        <input type="hidden" name="status" value="@proyecto.STATUSPROYECTO" />
-                        <select id="estadoProyecto" name="status" onchange="toggleFields()" disabled>
+                        
+                        <select id="estadoProyecto" name="status" onchange="toggleFields()" >
                             <option value="" disabled selected>Seleccione el estado del proyecto</option>
                             @if (ViewBag.Status != null)
                             {
@@ -317,8 +317,8 @@
                     </div>
                     <div style="display:none" class="form-group" id="probabilidadDiv">
                         <label for="Probabilidad">Probabilidad</label>
-                        <input type="hidden" name="probabilidad" value="@proyecto.Probabilidad" />
-                        <select id="probabilidad" name="probabilidad" disabled>
+                        
+                        <select id="probabilidad" name="probabilidad" required>
                             <option value="" disabled selected>Seleccione la Probabilidad del proyecto</option>
 
                             @if (proyecto.Probabilidad == "Alto")
@@ -351,17 +351,17 @@
                     </div>
                     <div style="display:none" class="form-group" id="nivelProbabilidadDiv">
                         <label for="nivelprobabilidad">Nivel Probabilidad(%)</label>
-                        <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" readonly value="@proyecto.Porcentaje_Probabilidad">
+                        <input type="text" id="nivelprobabilidad" name="porcentajeprobabilidad" required value="@proyecto.Porcentaje_Probabilidad">
                     </div>
                     <div style="display:none" class="form-group" id="fechaPlazoDiv">
                         <label for="fechaPlazo">Fecha de Plazo</label>
                         @if (proyecto.Fecha_Plazo_Neg != null)
                         {
-                            <input type="date" id="fechaPlazo" readonly name="fechaplazoneg" value="@proyecto.Fecha_Plazo_Neg.ToString("yyyy-MM-dd")">
+                            <input type="date" id="fechaPlazo" required name="fechaplazoneg" value="@proyecto.Fecha_Plazo_Neg.ToString("yyyy-MM-dd")">
                         }
                         else
                         {
-                            <input type="date" id="fechaPlazo" readonly name="fechaplazoneg">
+                            <input type="date" id="fechaPlazo" required name="fechaplazoneg">
                         }
 
                     </div>
@@ -2278,6 +2278,11 @@
             document.getElementById("fechaPlazoDiv").style.display = "none";
             document.getElementById("fechaquarterinicioDiv").style.display = "none";
             document.getElementById("fechaquarterfinDiv").style.display = "none";
+            document.getElementById("probabilidad").required = false;
+    document.getElementById("nivelprobabilidad").required = false;
+    document.getElementById("fechaPlazo").required = false;
+    document.getElementById("fechaquarterinicio").required = false;
+    document.getElementById("fechaquarterfin").required = false;
         }
 
 

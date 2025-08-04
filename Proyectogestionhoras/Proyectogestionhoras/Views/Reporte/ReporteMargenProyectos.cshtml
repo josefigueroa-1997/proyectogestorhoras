@@ -77,7 +77,7 @@
                     <th class="text-center text-xs bg-red-100  font-medium ">Real + Forecast</th>
                     <th class="text-center text-xs bg-red-100 font-medium "></th>
                     <th class="text-center text-xs bg-red-100  font-medium "></th>
-                    <th colspan="2" class="text-center text-xs border border-black bg-yellow-100 font-medium ">Diferencia Margen Presupuesto - (Real + Forecast)</th>
+                    
                   
                 </tr>
             </thead>
@@ -132,8 +132,7 @@
                         <td class="text-xs border font-medium text-left border-black bg-red-100  px-4 py-2 min-w-[150px]">Total Costos</td>
                         <td class="text-xs border font-medium text-left border-black bg-red-100  px-4 py-2 min-w-[150px]">Margen</td>
                         <td class="text-xs border font-medium text-left border-black bg-red-100  px-4 py-2 min-w-[150px]">% Margen</td>
-                        <td class="text-xs border font-medium text-left border-black bg-yellow-100  px-4 py-2 min-w-[150px]">Total</td>
-                        <td class="text-xs border font-medium text-left border-black bg-yellow-100  px-4 py-2 min-w-[150px]">% Respecto Presupuesto</td>
+                      
                     </tr>
                     @foreach (var margen in ViewBag.Margen)
                     {
@@ -185,12 +184,7 @@
                             <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
                                 <strong>@(porcentajerealforecast == 0 ? "" : String.Format("{0:N0}", porcentajerealforecast) + "%")</strong>
                             </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                @(totaldiferenciamargenes == 0 ? "" : String.Format("{0:N0}", Math.Round(totaldiferenciamargenes)))
-                            </td>
-                            <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                                <strong>@(porcentajediferencia == 0 ? "" : String.Format("{0:N0}", porcentajediferencia) + "%")</strong>
-                            </td>
+                            
                             @{
                                 totalMontoPresupuesto += margen.Monto;
                                 totalcostospresupuesto += margen.totalcostospresupuesto;
@@ -266,10 +260,7 @@
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
                         <strong>@(porcentajemargenrealforecast == 0 ? "" : String.Format("{0:N0}", porcentajemargenrealforecast) + "%")</strong>
                     </td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(diferenciatotalmargen))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                        <strong>@(porcentajediferenciamargen == 0 ? "" : String.Format("{0:N0}", porcentajediferenciamargen) + "%")</strong>
-                    </td>
+                   
                 </tr>
                 <tr class="font-bold bg-green-100">
                     <td class="text-xs border font-medium text-left border-black px-4 py-2 min-w-[150px]">Total (PROMEDIO)</td>
@@ -289,10 +280,7 @@
                     <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
                         <strong>@(porcentajemargenrealforecastpromedio == 0 ? "" : String.Format("{0:N0}", porcentajemargenrealforecastpromedio) + "%")</strong>
                     </td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">@String.Format("{0:N0}", Math.Round(diferenciamargenpromedio))</td>
-                    <td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[150px]">
-                        <strong>@(porcentajediferenciamargenpromedio == 0 ? "" : String.Format("{0:N0}", porcentajediferenciamargenpromedio) + "%")</strong>
-                    </td>
+                   
                 </tr>
             </tbody>
         </table>
@@ -415,8 +403,7 @@
         let totalIngresosRealForecast = 0;
         let totalCostosRealForecast = 0;
         let totalMargenRealForecast = 0;
-        let totalDiferenciaMargen = 0; 
-        let totalPorcentajeDiferencia = 0; 
+      
         let contador = 0;
 
         for (let i = 0; i < rows.length; i++) {
@@ -457,11 +444,7 @@
                 totalMargenRealForecast += margenRealForecast;
                
                 contador++;
-                // Calcular diferencias para esta fila
-                const diferenciaMargen = margenPresupuesto - margenRealForecast;
-                const porcentajeDiferencia = totalMargenPresupuesto !== 0 ? (totalMargenRealForecast / totalMargenPresupuesto) * 100 : 0;
-                 totalDiferenciaMargen += diferenciaMargen;
-                totalPorcentajeDiferencia = porcentajeDiferencia;
+               
             } else {
                 row.style.display = 'none';
             }
@@ -475,36 +458,42 @@
             totalIngresosRealForecast,
             totalCostosRealForecast,
             totalMargenRealForecast,
-            totalDiferenciaMargen,
-            totalPorcentajeDiferencia,
+          
             contador
         );
     }
 
-    function updateTotals(
+        function updateTotals(
         totalMontoPresupuesto,
         totalCostosPresupuesto,
         totalMargenPresupuesto,
         totalIngresosRealForecast,
         totalCostosRealForecast,
         totalMargenRealForecast,
-        totalDiferenciaMargen,
-        totalPorcentajeDiferencia,
         contador
     ) {
         const table = document.getElementById('facturasTable');
-        const totalRow = table.querySelector('.bg-gray-100'); 
-        const promedioRow = table.querySelector('.bg-green-100'); 
+        const totalRow = table.querySelector('.bg-gray-100');
+        const promedioRow = table.querySelector('.bg-green-100');
+
+        // Calcular porcentajes
+        const porcentajeMargenPresupuesto = totalMontoPresupuesto !== 0 ?
+            (totalMargenPresupuesto / totalMontoPresupuesto) * 100 : 0;
+
+        const porcentajeMargenRealForecast = totalIngresosRealForecast !== 0 ?
+            (totalMargenRealForecast / totalIngresosRealForecast) * 100 : 0;
 
         // Actualizar totales
         totalRow.getElementsByTagName('td')[5].innerText = formatNumber(totalMontoPresupuesto);
         totalRow.getElementsByTagName('td')[6].innerText = formatNumber(totalCostosPresupuesto);
         totalRow.getElementsByTagName('td')[7].innerText = formatNumber(totalMargenPresupuesto);
+        totalRow.getElementsByTagName('td')[8].innerHTML =
+            `<strong>${porcentajeMargenPresupuesto === 0 ? '' : formatNumber(porcentajeMargenPresupuesto) + '%'}</strong>`;
         totalRow.getElementsByTagName('td')[9].innerText = formatNumber(totalIngresosRealForecast);
         totalRow.getElementsByTagName('td')[10].innerText = formatNumber(totalCostosRealForecast);
         totalRow.getElementsByTagName('td')[11].innerText = formatNumber(totalMargenRealForecast);
-        totalRow.getElementsByTagName('td')[13].innerText = formatNumber(totalDiferenciaMargen); 
-        totalRow.getElementsByTagName('td')[14].innerText = formatNumber(totalPorcentajeDiferencia) + "%"; 
+        totalRow.getElementsByTagName('td')[12].innerHTML =
+            `<strong>${porcentajeMargenRealForecast === 0 ? '' : formatNumber(porcentajeMargenRealForecast) + '%'}</strong>`;
 
         // Calcular promedios
         const promedioMontoPresupuesto = contador > 0 ? totalMontoPresupuesto / contador : 0;
@@ -513,18 +502,25 @@
         const promedioIngresosRealForecast = contador > 0 ? totalIngresosRealForecast / contador : 0;
         const promedioCostosRealForecast = contador > 0 ? totalCostosRealForecast / contador : 0;
         const promedioMargenRealForecast = contador > 0 ? totalMargenRealForecast / contador : 0;
-        const promedioDiferenciaMargen = contador > 0 ? totalDiferenciaMargen / contador : 0;
-        const promedioPorcentajeDiferencia = totalMargenPresupuesto > 0 ? (totalMargenRealForecast / totalMargenPresupuesto) * 100 : 0;
+
+        // Calcular porcentajes promedios
+        const porcentajeMargenPresupuestoPromedio = promedioMontoPresupuesto !== 0 ?
+            (promedioMargenPresupuesto / promedioMontoPresupuesto) * 100 : 0;
+
+        const porcentajeMargenRealForecastPromedio = promedioIngresosRealForecast !== 0 ?
+            (promedioMargenRealForecast / promedioIngresosRealForecast) * 100 : 0;
 
         // Actualizar promedios
         promedioRow.getElementsByTagName('td')[5].innerText = formatNumber(promedioMontoPresupuesto);
         promedioRow.getElementsByTagName('td')[6].innerText = formatNumber(promedioCostosPresupuesto);
         promedioRow.getElementsByTagName('td')[7].innerText = formatNumber(promedioMargenPresupuesto);
+        promedioRow.getElementsByTagName('td')[8].innerHTML =
+            `<strong>${porcentajeMargenPresupuestoPromedio === 0 ? '' : formatNumber(porcentajeMargenPresupuestoPromedio) + '%'}</strong>`;
         promedioRow.getElementsByTagName('td')[9].innerText = formatNumber(promedioIngresosRealForecast);
         promedioRow.getElementsByTagName('td')[10].innerText = formatNumber(promedioCostosRealForecast);
         promedioRow.getElementsByTagName('td')[11].innerText = formatNumber(promedioMargenRealForecast);
-        promedioRow.getElementsByTagName('td')[13].innerText = formatNumber(promedioDiferenciaMargen); 
-        promedioRow.getElementsByTagName('td')[14].innerText = formatNumber(promedioPorcentajeDiferencia) + "%"; 
+        promedioRow.getElementsByTagName('td')[12].innerHTML =
+            `<strong>${porcentajeMargenRealForecastPromedio === 0 ? '' : formatNumber(porcentajeMargenRealForecastPromedio) + '%'}</strong>`;
     }
     function formatNumber(number) {
         return number.toLocaleString('de-DE', { maximumFractionDigits: 0 });

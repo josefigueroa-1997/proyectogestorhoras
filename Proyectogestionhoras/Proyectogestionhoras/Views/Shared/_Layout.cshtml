@@ -304,7 +304,7 @@ else
                         </button>
                         <ul class="pl-4 mt-1 space-y-1 text-sm">
 
-                            <li><a href="@Url.Action("Index", "Home")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Todo los Proyectos</a></li>
+                            <li><a href="@Url.Action("GetProyectos", "Proyecto")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Todo los Proyectos</a></li>
                             <!--Proyectos menu-->
                             <li class="relative group" id="menu-proyectos-item" style="min-width: 160px;">
                                 <a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
@@ -378,13 +378,13 @@ else
                                         <div class="mb-4">
                                             <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Key Indicators</h3>
                                             <ul class="space-y-1 text-sm">
-                                                <li><a href="/Reportes/MetasFacturacion" class="hover:text-orange-500 block">Metas de Facturación</a></li>
-                                                <li><a href="/Reportes/ProyectosNegociacion" class="hover:text-orange-500 block">Proyectos en Negociación</a></li>
-                                                <li><a href="/Reportes/HHSocios" class="hover:text-orange-500 block">HH Socios</a></li>
-                                                <li><a href="/Reportes/MargenContribucion" class="hover:text-orange-500 block">Margen de Contribución</a></li>
-                                                <li><a href="/Reportes/PlanVenta" class="hover:text-orange-500 block">Plan de Venta</a></li>
-                                                <li><a href="/Reportes/EstadoResultadoMensual" class="hover:text-orange-500 block">Estado Resultado Mensual</a></li>
-                                                <li><a href="/Reportes/EstadoResultadoQuarter" class="hover:text-orange-500 block">Estado Resultado Quarter</a></li>
+                                                <li><a href="/Reporte/recuperarcuotas?mes=@DateTime.Now.Month&anio=@DateTime.Now.Year" class="hover:text-orange-500 block">Metas de Facturación</a></li>
+                                                <li><a href="/Reporte/ReporteNeogiciacionKey" class="hover:text-orange-500 block">Proyectos en Negociación</a></li>
+                                                <li><a href="/Reporte/ReportehorasSociosProyectos?mes=@DateTime.Now.Month&anio=@DateTime.Now.Year" class="hover:text-orange-500 block">HH Socios</a></li>
+                                                <li><a href="/Reporte/ReporteMargenProyectos" class="hover:text-orange-500 block">Margen de Contribución</a></li>
+                                                <li><a href="/Reporte/ReportePlandeVentas" class="hover:text-orange-500 block">Plan de Venta</a></li>
+                                                <li><a href="/Reporte/ReporteEstadoResultado" class="hover:text-orange-500 block">Estado Resultado Mensual</a></li>
+                                                <li><a href="/Reporte/ReporteEstadoResultadoQuarter" class="hover:text-orange-500 block">Estado Resultado Quarter</a></li>
                                             </ul>
                                         </div>
 
@@ -392,9 +392,9 @@ else
                                         <div class="mb-4">
                                             <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Forecast</h3>
                                             <ul class="space-y-1 text-sm">
-                                                <li><a href="/Reportes/ForecastIngresos" class="hover:text-orange-500 block">Forecast Ingresos</a></li>
-                                                <li><a href="/Reportes/ForecastCostos" class="hover:text-orange-500 block">Forecast Costos</a></li>
-                                                <li><a href="/Reportes/ForecastFlujoCaja" class="hover:text-orange-500 block">Forecast Flujo de Caja</a></li>
+                                                <li><a href="/Reporte/ReporteForecastIngresos" class="hover:text-orange-500 block">Forecast Ingresos</a></li>
+                                                <li><a href="/Reporte/ReporteForecastCostos" class="hover:text-orange-500 block">Forecast Costos</a></li>
+                                                <li><a href="/Reporte/ReporteForecastFlujoCaja" class="hover:text-orange-500 block">Forecast Flujo de Caja</a></li>
                                             </ul>
                                         </div>
 
@@ -402,10 +402,10 @@ else
                                         <div class="mb-4">
                                             <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Facturación</h3>
                                             <ul class="space-y-1 text-sm">
-                                                <li><a href="/Reportes/FacturacionProyecto" class="hover:text-orange-500 block">Facturación por Proyecto</a></li>
-                                                <li><a href="/Reportes/ProyectosNegociacion" class="hover:text-orange-500 block">Proyectos en Negociación</a></li>
-                                                <li><a href="/Reportes/ResumenQuarter" class="hover:text-orange-500 block">Resumen por Quarter</a></li>
-                                                <li><a href="/Reportes/ResumenCostosProyecto" class="hover:text-orange-500 block">Resumen Costos Proyecto</a></li>
+                                                <li><a href="/Reporte/ReportesFactura" class="hover:text-orange-500 block">Facturación por Proyecto</a></li>
+                                                <li><a href="/Reporte/ReporteProyectosNegociacion" class="hover:text-orange-500 block">Proyectos en Negociación</a></li>
+                                                <li><a href="/Reporte/ReporteResumenQuarter?anio=@DateTime.Now.Year" class="hover:text-orange-500 block">Resumen por Quarter</a></li>
+                                                <li><a href="/Reporte/ReporteResumenCostosProyecto" class="hover:text-orange-500 block">Resumen Costos Proyecto</a></li>
                                             </ul>
                                         </div>
 
@@ -413,11 +413,11 @@ else
                                         <div class="mb-4">
                                             <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Reportes HH Asignadas</h3>
                                             <ul class="space-y-1 text-sm">
-                                                <li><a href="/Reportes/HHSociosAsignadas" class="hover:text-orange-500 block">HH Socios Asignadas</a></li>
-                                                <li><a href="/Reportes/HHStaffAsignadas" class="hover:text-orange-500 block">HH Staff Asignadas</a></li>
-                                                <li><a href="/Reportes/HHConsultorA" class="hover:text-orange-500 block">HH Consultor A</a></li>
-                                                <li><a href="/Reportes/HHConsultorB" class="hover:text-orange-500 block">HH Consultor B</a></li>
-                                                <li><a href="/Reportes/HHConsultorC" class="hover:text-orange-500 block">HH Consultor C</a></li>
+                                                <li><a href="/Reporte/ReporteHHSocios?recurso=Socio" class="hover:text-orange-500 block">HH Socios Asignadas</a></li>
+                                                <li><a href="/Reporte/ReporteHHStaff?recurso=Staff" class="hover:text-orange-500 block">HH Staff Asignadas</a></li>
+                                                <li><a href="/Reporte/ReporteHHConsultorA?tipoconsultor=Consultor A" class="hover:text-orange-500 block">HH Consultor A</a></li>
+                                                <li><a href="/Reporte/ReporteHHConsultorB?tipoconsultor=Consultor B" class="hover:text-orange-500 block">HH Consultor B</a></li>
+                                                <li><a href="/Reporte/ReporteHHConsultorC?tipoconsultor=Consultor C" class="hover:text-orange-500 block">HH Consultor C</a></li>
                                             </ul>
                                         </div>
 
@@ -425,11 +425,11 @@ else
                                         <div class="mb-4">
                                             <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Reportes Costos Asignados</h3>
                                             <ul class="space-y-1 text-sm">
-                                                <li><a href="/Reportes/CostosHHSocios" class="hover:text-orange-500 block">Costos HH Socios</a></li>
-                                                <li><a href="/Reportes/CostosHHStaff" class="hover:text-orange-500 block">Costo HH Staff</a></li>
-                                                <li><a href="/Reportes/CostosConsultorA" class="hover:text-orange-500 block">Costo Consultor A</a></li>
-                                                <li><a href="/Reportes/CostosConsultorB" class="hover:text-orange-500 block">Costo Consultor B</a></li>
-                                                <li><a href="/Reportes/CostosConsultorC" class="hover:text-orange-500 block">Costo Consultor C</a></li>
+                                                <li><a href="/Reporte/ReporteCostosSocios?recurso=Socio" class="hover:text-orange-500 block">Costos HH Socios</a></li>
+                                                <li><a href="/Reporte/ReporteCostosStaff?recurso=Staff" class="hover:text-orange-500 block">Costo HH Staff</a></li>
+                                                <li><a href="/Reporte/ReporteCostosConsultorA?tipoconsultor=Consultor A" class="hover:text-orange-500 block">Costo Consultor A</a></li>
+                                                <li><a href="/Reporte/ReporteCostosConsultorB?tipoconsultor=Consultor B" class="hover:text-orange-500 block">Costo Consultor B</a></li>
+                                                <li><a href="/Reporte/ReporteCostosConsultorC?tipoconsultor=Consultor C" class="hover:text-orange-500 block">Costo Consultor C</a></li>
                                             </ul>
                                         </div>
 
@@ -437,11 +437,11 @@ else
                                         <div class="mb-2">
                                             <h3 class="text-sm font-bold text-orange-600 uppercase mb-2">Control Avances HH</h3>
                                             <ul class="space-y-1 text-sm">
-                                                <li><a href="/Reportes/ControlAvancesHH" class="hover:text-orange-500 block">Control Avances HH</a></li>
-                                                <li><a href="/Reportes/ActividadesSocios" class="hover:text-orange-500 block">Actividades Socios</a></li>
-                                                <li><a href="/Reportes/DetalleHHPersonal" class="hover:text-orange-500 block">Detalle HH Personal</a></li>
-                                                <li><a href="/Reportes/DetalleHHGeneral" class="hover:text-orange-500 block">Detalle HH General</a></li>
-                                                <li><a href="/Reportes/BalanceHorasEfectivas" class="hover:text-orange-500 block">Balance Horas Efectivas</a></li>
+                                                <li><a href="/Reporte/SeleccionarProyecto" class="hover:text-orange-500 block">Control Avances HH</a></li>
+                                                <li><a href="/Reporte/HHsociosActividad?mes=@DateTime.Now.Month" class="hover:text-orange-500 block">Actividades Socios</a></li>
+                                                <li><a href="/Reporte/PersonalChoice" class="hover:text-orange-500 block">Detalle HH Personal</a></li>
+                                                <li><a href="/Reporte/SeleccionarMesAnioPlanilla" class="hover:text-orange-500 block">Detalle HH General</a></li>
+                                                <li><a href="/Reporte/ReporteBalanceHoras" class="hover:text-orange-500 block">Balance Horas Efectivas</a></li>
                                             </ul>
                                         </div>
 
@@ -465,7 +465,7 @@ else
                                     <div class="p-4" id="metas-content">
                                         <ul class="list-none space-y-2">
                                             <li><a href="/Metas/ParametrosMetas" class="text-md font-bold text-orange-600 hover:underline block">Parametros Metas</a></li>
-                                            <li><a href="/Metas/Personal" class="text-md font-bold text-orange-600 hover:underline block">Salidas Metas</a></li>
+                                            <li><a href="/Metas/SalidasMetas" class="text-md font-bold text-orange-600 hover:underline block">Salidas Metas</a></li>
 
                                         </ul>
                                     </div>
@@ -517,17 +517,17 @@ else
                                      style="min-width: 280px;">
                                     <div class="p-4" id="parametros-content">
                                         <ul class="list-none space-y-2">
-                                            <li><a href="/Parametros/Cuentas" class="text-md font-bold text-orange-600 hover:underline block">Cuentas</a></li>
-                                            <li><a href="/Parametros/Personal" class="text-md font-bold text-orange-600 hover:underline block">Personal</a></li>
-                                            <li><a href="/Parametros/Gastos" class="text-md font-bold text-orange-600 hover:underline block">Gastos</a></li>
-                                            <li><a href="/Parametros/Servicios" class="text-md font-bold text-orange-600 hover:underline block">Servicios</a></li>
-                                            <li><a href="/Parametros/Segmentos" class="text-md font-bold text-orange-600 hover:underline block">Segmentos</a></li>
-                                            <li><a href="/Parametros/Tipologias" class="text-md font-bold text-orange-600 hover:underline block">Tipologías</a></li>
-                                            <li><a href="/Parametros/Actividades" class="text-md font-bold text-orange-600 hover:underline block">Actividades</a></li>
-                                            <li><a href="/Parametros/SubActividades" class="text-md font-bold text-orange-600 hover:underline block">SubActividades</a></li>
-                                            <li><a href="/Parametros/BonosSocios" class="text-md font-bold text-orange-600 hover:underline block">Bonos Socios</a></li>
-                                            <li><a href="/Parametros/Proveedores" class="text-md font-bold text-orange-600 hover:underline block">Proveedores</a></li>
-                                            <li><a href="/Parametros/DiaPagoHH" class="text-md font-bold text-orange-600 hover:underline block">Día de Pago HH</a></li>
+                                            <li><a href="/Parametros/GestorCuentas" class="text-md font-bold text-orange-600 hover:underline block">Cuentas</a></li>
+                                            <li><a href="/Usuario/Personal" class="text-md font-bold text-orange-600 hover:underline block">Personal</a></li>
+                                            <li><a href="/Parametros/GestorGastos" class="text-md font-bold text-orange-600 hover:underline block">Gastos</a></li>
+                                            <li><a href="/Parametros/GestorServicios" class="text-md font-bold text-orange-600 hover:underline block">Servicios</a></li>
+                                            <li><a href="/Parametros/GestorSegmentos" class="text-md font-bold text-orange-600 hover:underline block">Segmentos</a></li>
+                                            <li><a href="/Parametros/GestorTipologias" class="text-md font-bold text-orange-600 hover:underline block">Tipologías</a></li>
+                                            <li><a href="/Parametros/GestorActividades" class="text-md font-bold text-orange-600 hover:underline block">Actividades</a></li>
+                                            <li><a href="/Parametros/GestorSubActividades" class="text-md font-bold text-orange-600 hover:underline block">SubActividades</a></li>
+                                            <li><a href="/Parametros/GestorBonos?anio=@DateTime.Now.Year" class="text-md font-bold text-orange-600 hover:underline block">Bonos Socios</a></li>
+                                            <li><a href="/Parametros/GestorProveedores" class="text-md font-bold text-orange-600 hover:underline block">Proveedores</a></li>
+                                            <li><a href="/Parametros/GestorDiaPago" class="text-md font-bold text-orange-600 hover:underline block">Día de Pago HH</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -567,98 +567,95 @@ else
 
 
             
-            //submenu proyectos
-                    document.addEventListener("DOMContentLoaded", function () {
-                document.querySelectorAll(".toggle-submenu").forEach(el => {
-                    el.addEventListener("click", function (e) {
-                        e.preventDefault();
-                        const id = this.dataset.id;
-                        const submenu = document.getElementById(id);
-                        const icon = document.getElementById(`icon-${id}`);
-                        submenu.classList.toggle("hidden");
-                        icon.classList.toggle("rotate-180");
-                    });
-                });
-            });
+          document.addEventListener("DOMContentLoaded", () => {
+  // Submenú toggle
+  
+  
 
-                          document.addEventListener("DOMContentLoaded", () => {
-              const proyectosDropdown = document.getElementById("proyectos-dropdown");
-              const proyectosContent = document.getElementById("proyectos-content");
+  const proyectosDropdown = document.getElementById("proyectos-dropdown");
+  const proyectosContent = document.getElementById("proyectos-content");
 
-              const estados = [
-                { id: 6, nombre: "Presupuesto" },
-                { id: 1, nombre: "En Negociación" },
-                { id: 2, nombre: "En Ejecución" },
-                { id: 4, nombre: "Terminado" },
-                { id: 3, nombre: "Rechazado" },
-              ];
+  const estados = [
+    { id: 6, nombre: "Presupuesto" },
+    { id: 1, nombre: "En Negociación" },
+    { id: 2, nombre: "En Ejecución" },
+    { id: 4, nombre: "Terminado" },
+    { id: 3, nombre: "Rechazado" },
+  ];
 
-              let cacheProyectos = {};
+  let cacheProyectos = {};
 
-              async function cargarProyectos(idEstado) {
-                if (cacheProyectos[idEstado]) return cacheProyectos[idEstado];
+  async function cargarProyectos(idEstado) {
+    if (cacheProyectos[idEstado]) return cacheProyectos[idEstado];
 
-                const resp = await fetch(`/Home/ObtenerProyectosPorEstadoJson?idEstado=${idEstado}`);
-                if (!resp.ok) return [];
+    const resp = await fetch(`/Home/ObtenerProyectosPorEstadoJson?idEstado=${idEstado}`);
+    if (!resp.ok) return [];
 
-                const data = await resp.json();
-                cacheProyectos[idEstado] = data;
-                return data;
-              }
+    const data = await resp.json();
+    cacheProyectos[idEstado] = data;
+    return data;
+  }
 
-              async function mostrarProyectos() {
-                proyectosContent.innerHTML = "";
+  async function mostrarProyectos() {
+    proyectosContent.innerHTML = "";
 
-                for (const estado of estados) {
-                  const proyectos = await cargarProyectos(estado.id);
+    const estadosExistentes = new Set();
+    proyectosContent.querySelectorAll("h3").forEach(h3 => {
+      estadosExistentes.add(h3.textContent.trim());
+    });
 
-                  const contenedorEstado = document.createElement("div");
-                  contenedorEstado.className = "mb-4";
+    for (const estado of estados) {
+      if (estadosExistentes.has(estado.nombre)) continue;
 
-                  const titulo = document.createElement("h3");
-                  titulo.textContent = estado.nombre;
-                  titulo.className = "font-semibold mb-2 text-orange-600";
-                  contenedorEstado.appendChild(titulo);
+      const proyectos = await cargarProyectos(estado.id);
 
-                  if (proyectos.length === 0) {
-                    const p = document.createElement("p");
-                    p.textContent = "No hay proyectos";
-                    p.className = "text-sm text-gray-500";
-                    contenedorEstado.appendChild(p);
-                  } else {
-                    const ul = document.createElement("ul");
-                    ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
+      const contenedorEstado = document.createElement("div");
+      contenedorEstado.className = "mb-4";
 
-                    proyectos.forEach((proy) => {
-                      const li = document.createElement("li");
-                      li.textContent = proy.Nombre ?? proy.nombre ?? "Proyecto sin nombre";
-                      li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
-                      li.title = li.textContent;
+      const titulo = document.createElement("h3");
+      titulo.textContent = estado.nombre;
+      titulo.className = "font-semibold mb-2 text-orange-600";
+      contenedorEstado.appendChild(titulo);
 
-                      li.addEventListener("click", () => {
-                        window.location.href = `/Proyecto/Detalle/${proy.Id ?? proy.id}`;
-                      });
+      if (proyectos.length === 0) {
+        const p = document.createElement("p");
+        p.textContent = "No hay proyectos";
+        p.className = "text-sm text-gray-500";
+        contenedorEstado.appendChild(p);
+      } else {
+        const ul = document.createElement("ul");
+        ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
 
-                      ul.appendChild(li);
-                    });
+        proyectos.forEach((proy) => {
+          const li = document.createElement("li");
+          li.textContent = proy.Nombre ?? proy.nombre ?? "Proyecto sin nombre";
+          li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
+          li.title = li.textContent;
 
-                    contenedorEstado.appendChild(ul);
-                  }
+          li.addEventListener("click", () => {
+            window.location.href = `/Proyecto/ObtenerProyectos/${proy.Id ?? proy.id}`;
+          });
 
-                  proyectosContent.appendChild(contenedorEstado);
-                }
-              }
+          ul.appendChild(li);
+        });
 
-              let cargado = false;
-              const menuItem = document.getElementById("menu-proyectos-item");
-              menuItem.addEventListener("mouseenter", async () => {
-                if (!cargado) {
-                  proyectosContent.textContent = "Cargando proyectos...";
-                  await mostrarProyectos();
-                  cargado = true;
-                }
-              });
-            });
+        contenedorEstado.appendChild(ul);
+      }
+
+      proyectosContent.appendChild(contenedorEstado);
+    }
+  }
+
+  let cargado = false;
+  const menuItem = document.getElementById("menu-proyectos-item");
+  menuItem.addEventListener("mouseenter", async () => {
+    if (!cargado) {
+      proyectosContent.textContent = "Cargando proyectos...";
+      await mostrarProyectos();
+      cargado = true;
+    }
+  });
+});
 
 
             //submenu clientes
@@ -712,14 +709,14 @@ else
                     const ul = document.createElement("ul");
                     ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
 
-                    clientes.forEach((proy) => {
+                    clientes.forEach((cliente) => {
                       const li = document.createElement("li");
-                      li.textContent = proy.Nombre ?? proy.nombre ?? "Cliente sin nombre";
+                      li.textContent = cliente.Nombre ?? cliente.nombre ?? "Cliente sin nombre";
                       li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
                       li.title = li.textContent;
 
                       li.addEventListener("click", () => {
-                        window.location.href = `/Proyecto/Detalle/${proy.Id ?? proy.id}`;
+                        window.location.href = `/Cliente/ProyectosCliente?idcliente=${cliente.id}`;
                       });
 
                       ul.appendChild(li);

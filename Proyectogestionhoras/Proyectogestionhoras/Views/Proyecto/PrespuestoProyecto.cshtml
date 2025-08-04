@@ -662,9 +662,56 @@
     
 </div>
 
+@if (TempData["SuccessMensaje"] != null)
+{
+    <div id="successModal" style="margin-top: 70px;" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-xl font-semibold mb-4 text-orange-500">¡Éxito!</h2>
+            <p class="text-gray-700" id="modalMessage">@TempData["SuccessMensaje"]</p>
+
+            <div class="mt-6 flex justify-end">
+                <button id="closeModalBtn"
+                        class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md transition duration-200">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
 <script>
     function confirmTermination() {
         // Muestra la alerta de confirmación
         return confirm("¿Está seguro de que quiere terminar el proyecto? Ya no podrá realizar modificaciones.");
     }
+</script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+       
+        var mensajeExito = document.getElementById("modalMessage").textContent;
+
+        if (successModal && mensajeExito && mensajeExito.trim() !== '') {
+            successModal.classList.remove('hidden');
+        }
+
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                successModal.classList.add('hidden');
+            });
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.classList.add('hidden');
+            }
+        });
+    });
 </script>
