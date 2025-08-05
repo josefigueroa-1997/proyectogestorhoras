@@ -1766,6 +1766,8 @@ namespace Proyectogestionhoras.Controllers
                 var forecastServicios = await (from s in context.Serviciosejecucions
                                                join se in context.Servicios on s.Idservicio equals se.Id
                                                join p in context.Proyectos on s.Idproyecto equals p.Id
+                                               join pro in context.Proveedores on s.Idproveedor equals pro.Id 
+                                               join c in context.Cuenta on se.Idcuenta equals c.Id
                                                where s.Estado == "Forecast"
                                                select new EgresosExcelDTO
                                                {
@@ -1773,14 +1775,19 @@ namespace Proyectogestionhoras.Controllers
                                                    Idegreso = s.Idservicio,
                                                    egreso = se.Nombre,
                                                    NombreProyecto = p.Nombre,
+                                                    proveedor = pro.Nombre,
                                                    Idproyecto = s.Idproyecto,
                                                    Monto = s.Monto.Value,
+                                                   Fecha = s.Fecha.Value,
+                                                   Idcuenta = c.Idcuenta,
                                                    Tipo = s.Tiposervicio,
                                                }).ToListAsync();
 
                 var forecastGastos = await (from s in context.Gastosejecucions
                                             join se in context.Gastos on s.Idgasto equals se.Id
                                             join p in context.Proyectos on s.Idproyecto equals p.Id
+                                            join pro in context.Proveedores on s.Idproveedor equals pro.Id
+                                            join c in context.Cuenta on se.Idcuenta equals c.Id
                                             where s.Estado == "Forecast"
                                             select new EgresosExcelDTO
                                             {
@@ -1788,8 +1795,11 @@ namespace Proyectogestionhoras.Controllers
                                                 Idegreso = s.Idgasto,
                                                 egreso = se.Nombre,
                                                 NombreProyecto = p.Nombre,
+                                                proveedor = pro.Nombre,
                                                 Idproyecto = s.Idproyecto,
                                                 Monto = s.Monto.Value,
+                                                Fecha = s.Fecha.Value,
+                                                Idcuenta = c.Idcuenta,
                                                 Tipo = "Gastos",
                                             }).ToListAsync();
 

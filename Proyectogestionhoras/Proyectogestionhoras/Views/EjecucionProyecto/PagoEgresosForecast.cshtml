@@ -1,4 +1,9 @@
-﻿@model List<Proyectogestionhoras.Models.DTO.ProyectoEgresosDTO>
+﻿
+@{
+	ViewData["Title"] = "PagoEgresosForecast";
+}
+
+@model List<Proyectogestionhoras.Models.DTO.ProyectoEgresosDTO>
 
 @if (Model == null || !Model.Any())
 {
@@ -77,7 +82,10 @@ else
                                     <tr class="text-left border-b border-gray-300">
                                         <th class="p-2">✔</th>
                                         <th class="p-2">Nombre del Egreso</th>
-                                        <th class="p-2">Monto</th>
+                                        <th class="p-2">Proveedor</th>
+                                        <th class="p-2">Fecha</th>
+                                        <th class="p-2">IdCuenta</th>
+                                        <th class="p-2 text-center">Monto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,10 +101,14 @@ else
                                                        data-idegreso="@egreso.Idegreso"
                                                        data-idproyecto="@proyecto.IdProyecto"
                                                        data-monto="@egreso.Monto"
+                                                       data-fecha="@egreso.Fecha"
                                                        data-tiposervicio="@egreso.Tipo" />
                                             </td>
                                             <td class="p-2">@egreso.egreso</td>
-                                            <td class="p-2">$@egreso.Monto.ToString("N0")</td>
+                                            <td class="p-2">@egreso.proveedor</td>
+                                            <td class="p-2">@egreso.Fecha.ToString("dd/MM/yyyy")</td>
+                                            <td class="p-2">@egreso.Idcuenta</td>
+                                            <td class="p-2 text-right">$@egreso.Monto.ToString("N0")</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -156,7 +168,9 @@ else
                 crearInput("Idegresoregistro", cb.dataset.idegresoregistro);
                 crearInput("Idegreso", cb.dataset.idegreso);
                 crearInput("Idpeoyecto", cb.dataset.idproyecto);
+                crearInput("Fecha", cb.dataset.fecha);
                 crearInput("Monto", cb.dataset.monto);
+                
                 crearInput("Tiposervicio", cb.dataset.tiposervicio);
             });
         });

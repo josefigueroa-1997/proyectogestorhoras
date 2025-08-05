@@ -15,6 +15,7 @@
         public int? Idproyecto { get; set; }
         public int? Idegreso { get; set; }
         public int? Idegresoregistro { get; set; }
+        public int? Idcuenta { get; set; }
         public string? NombreProyecto { get; set; }
 
     }

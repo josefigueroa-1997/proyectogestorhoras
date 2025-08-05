@@ -747,7 +747,7 @@ namespace Proyectogestionhoras.Services
                         {
                             servicio.Idproyecto = egreso.Idpeoyecto;
                             servicio.Idservicio = egreso.Idegreso;
-                            servicio.Fecha = DateTime.Now;
+                            servicio.Fecha = egreso.Fecha;
                             servicio.Monto = egreso.Monto;
                             servicio.Estado = "Pagada";
                             servicio.Venta = "Vendido";
@@ -763,7 +763,7 @@ namespace Proyectogestionhoras.Services
                         {
                             gasto.Idproyecto = egreso.Idpeoyecto;
                             gasto.Idgasto = egreso.Idegreso;
-                            gasto.Fecha = DateTime.Now;
+                            gasto.Fecha = egreso.Fecha;
                             gasto.Monto = egreso.Monto;
                             gasto.Estado = "Pagada";
                             gasto.Venta = "Vendido";

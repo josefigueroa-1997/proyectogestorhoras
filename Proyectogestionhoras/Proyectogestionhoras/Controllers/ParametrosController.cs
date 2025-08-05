@@ -49,7 +49,14 @@ namespace Proyectogestionhoras.Controllers
             {
                 if (cuentas.Id == 0)
                 {
+                    bool cuentaYaExiste = await context.Cuenta
+                .AnyAsync(c => c.Idcuenta == cuentas.Idcuenta);
 
+                    if (cuentaYaExiste)
+                    {
+                        TempData["Errorcuenta"] = "Ya existe una cuenta con ese Idcuenta.";
+                        return RedirectToAction("GestorCuentas");
+                    }
                     context.Cuenta.Add(cuentas);
                     TempData["Successcuenta"] = "Cuenta creada Éxitosamente.";
                 }
