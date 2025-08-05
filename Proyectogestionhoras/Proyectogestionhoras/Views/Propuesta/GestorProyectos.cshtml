@@ -2211,8 +2211,8 @@
 			<!-- Gastos -->
 
 			<div id="section-gastos" class="seccion hidden">
-				<form method="post" asp-action="#" asp-controller="#">
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
+				<form method="post" asp-action="RegistrarGastos" asp-controller="EjecucionProyecto">
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					@if (TempData["ErrorMessageGastos"] != null)
 					{
 						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
@@ -2239,7 +2239,7 @@
 					}
 					<h3 class="text-lg font-bold text-orange-500 mb-2">💸 Gastos</h3>
 					<div class="flex justify-center mb-4">
-						<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
+						<button type="button" id="btnGuardarGastos" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
 							Guardar Gastos
 						</button>
 					</div>
@@ -2327,23 +2327,24 @@
 									  });
 									});
 
-									async function cargarDatosGastos(idProyecto) {
+																		async function cargarDatosGastos(idProyecto, pagina = 1, tamanio = 50) {
 									  try {
 										const tbody = document.querySelector('#tablagastos tbody');
 										const mensajeDiv = document.getElementById("mensajeGastos");
 										tbody.innerHTML = "";
 										mensajeDiv.textContent = "Cargando Gastos...";
 
-										const gastosReales = await fetch(`/EjecucionProyecto/CargarGastosReales?idproyecto=${idProyecto}`).then(res => res.json());
+										const response = await fetch(`/Propuesta/CargarGastosReales?idproyecto=${idProyecto}&pagina=${pagina}&tamanioPagina=${tamanio}`);
+										const resultado = await response.json();
 
-										if (gastosReales.length > 0) {
-										  renderizarTablaGastos(gastosReales);
-										  mensajeDiv.textContent = "";
-										  document.getElementById("tablagastos").style.display = "";
+										if (resultado.datos.length > 0) {
+										  renderizarTablaGastos(resultado.datos);
+										  mensajeDiv.textContent = `Mostrando ${resultado.datos.length} gastos / Total: ${resultado.total}`;
+										  renderizarPaginacion(resultado.total, pagina, tamanio, idProyecto);
 										} else {
 										  mensajeDiv.textContent = "No hay gastos para este proyecto.";
-										  document.getElementById("tablagastos").style.display = "none";
 										}
+
 									  } catch (error) {
 										console.error("Error al cargar gastos:", error);
 									  }
@@ -2418,7 +2419,47 @@
 									  tbody.innerHTML = html;
 									}
 
+																									function renderizarPaginacion(total, paginaActual, tamanio, idProyecto) {
+									  const totalPaginas = Math.ceil(total / tamanio);
+									  const contenedor = document.getElementById("paginacionGastos") || document.createElement("div");
+									  contenedor.id = "paginacionGastos";
+									  contenedor.className = "mt-4 flex gap-2 justify-center flex-wrap";
+									  contenedor.innerHTML = "";
 
+									  const crearBoton = (numero, texto = null) => {
+										const btn = document.createElement("button");
+										btn.type = "button";
+										btn.textContent = texto || numero;
+										btn.className = `px-3 py-1 rounded border ${numero === paginaActual ? "bg-orange-500 text-white" : "bg-white text-black"}`;
+										btn.onclick = () => cargarDatosGastos(idProyecto, numero, tamanio);
+										contenedor.appendChild(btn);
+									  };
+
+									  // Mostrar botón "1"
+									  if (paginaActual > 6) {
+										crearBoton(1);
+									  }
+
+									  let inicio = Math.max(1, paginaActual - 4);
+									  let fin = Math.min(totalPaginas, inicio + 9);
+
+									  // Ajuste si estamos cerca del final
+									  if (totalPaginas - paginaActual < 5) {
+										inicio = Math.max(1, totalPaginas - 9);
+										fin = totalPaginas;
+									  }
+
+									  for (let i = inicio; i <= fin; i++) {
+										crearBoton(i);
+									  }
+
+									  // Mostrar botón "Último"
+									  if (paginaActual < totalPaginas - 4) {
+										crearBoton(totalPaginas, "Último");
+									  }
+
+									  document.querySelector("#tablagastos").after(contenedor);
+									}
 									/*gastos nuevos*/
 									function agregarFilaAGastos() {
 										const tbody = document.querySelector('#tablaAgregarGastos tbody');
@@ -2506,7 +2547,104 @@
 										fila.style.display = 'none';
 
 									}
+																									document.getElementById('btnGuardarGastos').addEventListener('click', async function() {
+										try {
+											const idProyecto = @idproyectos; 
 
+											// Función para parsear valores
+											const parseValue = (value, type) => {
+												if (value === "" || value === null) return null;
+												if (type === "number") return parseInt(value);
+												if (type === "decimal") return parseFloat(value);
+												if (type === "date") return new Date(value).toISOString();
+												return value;
+											};
+
+											// Recolectar datos
+											const todosLosGastos = [];
+
+										
+																				// Gastos existentes
+									document.querySelectorAll('#tablagastos tbody tr').forEach(tr => {
+										const esEliminado = tr.querySelector('input.esEliminados')?.value === 'true';
+
+										// Solo agrega si tiene ID o si no está eliminado (para evitar enviar filas vacías)
+										if (esEliminado || tr.querySelector('input[name="IdGastoReal"]')) {
+											todosLosGastos.push({
+												IdGastoReal: parseValue(tr.querySelector('input[name="IdGastoReal"]').value, "number"),
+												Idgasto: parseValue(tr.querySelector('select[name="idgastos"]').value, "number"),
+												Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastos"]').value, "number"),
+												Segmento: null,
+												Monto: parseValue(tr.querySelector('input[name="montogasto"]').value.replace(/\D/g, ''), "decimal"),
+												Fecha: parseValue(tr.querySelector('input[name="fechagasto"]').value, "date"),
+												Estado: tr.querySelector('select[name="estadogasto"]').value,
+												Observacion: tr.querySelector('textarea[name="observaciongasto"]').value,
+												Venta: "Vendido",
+												EsEliminado: esEliminado
+											});
+										}
+									});
+
+											// Nuevos gastos
+											document.querySelectorAll('#tablaAgregarGastos tbody tr').forEach(tr => {
+												if (tr.style.display !== 'none') {
+													todosLosGastos.push({
+														IdGastoReal: 0, // Para nuevos gastos
+														Idgasto: parseValue(tr.querySelector('select[name="idgastosnuevos"]').value, "number"),
+														Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastosnuevos"]').value, "number"),
+														Segmento: null,
+														Monto: parseValue(tr.querySelector('input[name="montogastonuevos"]').value.replace(/\D/g, ''), "decimal"),
+														Fecha: parseValue(tr.querySelector('input[name="fechagastonuevos"]').value, "date"),
+														Estado: tr.querySelector('select[name="estadogastonuevos"]').value,
+														Observacion: tr.querySelector('textarea[name="observaciongastonuevos"]').value,
+														Venta: "Vendido",
+														EsEliminado: tr.querySelector('input.esEliminados').value === 'true'
+													});
+												}
+											});
+																													const gastosParaEnviar = todosLosGastos.filter(g =>
+										g.EsEliminado || (g.Idgasto !== null && g.Idproveedor !== null)
+									);
+
+																			 const requestData = {
+											idproyecto: idProyecto,
+											gastos: gastosParaEnviar
+										};
+
+										console.log("Datos a enviar:", requestData); // Verifica en la consola
+
+										const response = await fetch('/#/GuardarGastos', {
+											method: 'POST',
+											headers: {
+												'Content-Type': 'application/json',
+												'Accept': 'application/json'
+											},
+											body: JSON.stringify(requestData)
+										});
+
+										if (!response.ok) {
+											const errorText = await response.text();
+											throw new Error('Error en la respuesta del servidor: ' + errorText);
+										}
+
+										const result = await response.json();
+										if (result.success) {
+											alert('Gastos guardados con éxito');
+																	 // 1. Limpiar la tabla de nuevos gastos
+									const tablaNuevosGastos = document.querySelector('#tablaAgregarGastos tbody');
+									tablaNuevosGastos.innerHTML = ''; // Elimina todas las filas
+										agregarFilaAGastos(); // Agrega una nueva fila vacía
+									
+											cargarDatosGastos(idProyecto);
+										} else {
+											alert('Error al guardar: ' + (result.message || ''));
+										}
+									} catch (error) {
+										console.error('Error:', error);
+										alert('Error al guardar: ' + error.message);
+									}
+									});
+																	
 
 								</script>
 							</div>
@@ -2933,8 +3071,8 @@
 					}
 
 					async function init() {
-						//const idProyecto = document.getElementById("proyectoId").getAttribute("data-idproyecto");
-						const flujoCajaData = await obtenerFlujoCaja(277);
+						const idProyecto = '@idproyectos';
+						const flujoCajaData = await obtenerFlujoCaja(idProyecto);
 
 						if (flujoCajaData.length > 0) {
 							crearTabla(flujoCajaData);
@@ -2968,6 +3106,9 @@
 
 			cargarDatosCosto(idProyectoActual);
 			ResumenCostos = true;
+				cargarListasDeGastosYProveedores();
+
+	 
 	});
 	buttons.forEach(btn => {
 	  btn.addEventListener("click", () => {

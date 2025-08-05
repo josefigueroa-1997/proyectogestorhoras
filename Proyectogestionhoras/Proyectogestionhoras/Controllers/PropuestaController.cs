@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Proyectogestionhoras.Models;
+using Proyectogestionhoras.Models.DTO;
+using Proyectogestionhoras.Models.ViewModel;
 using Proyectogestionhoras.Services;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
@@ -31,14 +33,52 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> CargarGastosReales(int idproyecto)
+        public async Task<IActionResult> CargarGastosReales(int idproyecto, int pagina = 1, int tamanioPagina = 50)
         {
+            var resultadoCompleto = await ejecucionService.ObtenerGastosReales(idproyecto);
 
-            var resultado = await ejecucionService.ObtenerGastosReales(idproyecto);
+            var total = resultadoCompleto.Count;
+            var datos = resultadoCompleto
+                            .Skip((pagina - 1) * tamanioPagina)
+                            .Take(tamanioPagina)
+                            .ToList();
 
+            return Json(new { datos, total });
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> GuardarGastos([FromBody] GuardarGastosRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Request es null. Verifica el formato de los datos enviados."
+                });
+            }
 
-            return Json(resultado);
+            try
+            {
+                if (request.gastos == null)
+                {
+                    return Json(new { success = false, message = "La lista de gastos es null" });
+                }
+
+                await ejecucionService.GestorGastosReales(request.idproyecto, request.gastos);
+                return Json(new { success = true, message = "Éxito en el registro/actualización" });
+            }
+            catch (Exception ex)
+            {
+                // Log el error completo
+                Debug.WriteLine($"Error al guardar gastos: {ex.ToString()}");
+                return Json(new
+                {
+                    success = false,
+                    message = "Error interno al procesar la solicitud",
+                    error = ex.Message
+                });
+            }
         }
 
 

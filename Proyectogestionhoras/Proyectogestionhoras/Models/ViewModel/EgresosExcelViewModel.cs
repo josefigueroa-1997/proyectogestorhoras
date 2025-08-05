@@ -3,6 +3,7 @@
     public class EgresosExcelViewModel
     {
         public int Idegreso { get; set; }
+        public int Idegresoregistro { get; set; }
         public int Idpeoyecto { get; set; }
         public int? Idproveedor { get; set; }
         public decimal? Monto { get; set; }

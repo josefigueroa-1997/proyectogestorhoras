@@ -12,5 +12,10 @@
         public string? Glosa { get; set; }
         public string? Tipo { get; set; }
 
+        public int? Idproyecto { get; set; }
+        public int? Idegreso { get; set; }
+        public int? Idegresoregistro { get; set; }
+        public string? NombreProyecto { get; set; }
+
     }
 }

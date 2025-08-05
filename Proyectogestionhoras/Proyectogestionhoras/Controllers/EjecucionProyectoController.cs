@@ -192,11 +192,11 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> CargarGastosReales(int idproyecto)
         {
-           
-            var resultado = await ejecucionService.ObtenerGastosReales(idproyecto);
-           
 
-           
+            var resultado = await ejecucionService.ObtenerGastosReales(idproyecto);
+
+
+
             return Json(resultado);
         }
 
@@ -205,7 +205,7 @@ namespace Proyectogestionhoras.Controllers
         public async Task<IActionResult> CargarServiciosReales(int idproyecto, string tipo)
         {
             var resultado = await ejecucionService.ObtenerServiciosReales(idproyecto, tipo);
-          
+
             return Json(resultado);
         }
 
@@ -220,8 +220,8 @@ namespace Proyectogestionhoras.Controllers
                     .Where(hc => hc.Idproyecto == idProyecto)
                     .Select(hc => hc.Costosocio)
                     .FirstOrDefaultAsync();
-                
-                decimal? hhsocioinicio = await context.HhUsuarioHistorials.Where(h=>h.IdProyecto == idProyecto).Select(h => h.HhSocios).FirstOrDefaultAsync();
+
+                decimal? hhsocioinicio = await context.HhUsuarioHistorials.Where(h => h.IdProyecto == idProyecto).Select(h => h.HhSocios).FirstOrDefaultAsync();
 
                 decimal? hhsocioproyectadas = costohhsocio * hhsocioinicio;
 
@@ -254,7 +254,7 @@ namespace Proyectogestionhoras.Controllers
                 var serviciosProyecto = await proyectoService.ObtenerServiciosProyecto(idProyecto);
                 var gastosProyecto = await proyectoService.ObtenerGastosProyectos(idProyecto);
 
-               
+
                 var serviciosejecucion = await context.Serviciosejecucions
                     .Where(s => s.Idproyecto == idProyecto)
                     .ToListAsync();
@@ -263,7 +263,7 @@ namespace Proyectogestionhoras.Controllers
                     .Where(s => s.Idproyecto == idProyecto)
                     .ToListAsync();
 
-                
+
                 var serviciosreales = serviciosejecucion
                     .GroupBy(x => new { x.Idservicio, x.Estado })
                     .Select(g => new
@@ -351,11 +351,11 @@ namespace Proyectogestionhoras.Controllers
                 var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
                 ViewBag.GastosHH = gastoshh;
                 ViewBag.GastosRecursos = datosgastosrecursos;
-  
+
                 return View();
 
             }
-             
+
             return RedirectToAction("Index", "Home");
 
         }
@@ -1758,5 +1758,87 @@ namespace Proyectogestionhoras.Controllers
 
         }
 
+
+        public async Task<IActionResult> PagoEgresosForecast()
+        {
+            try
+            {
+                var forecastServicios = await (from s in context.Serviciosejecucions
+                                               join se in context.Servicios on s.Idservicio equals se.Id
+                                               join p in context.Proyectos on s.Idproyecto equals p.Id
+                                               where s.Estado == "Forecast"
+                                               select new EgresosExcelDTO
+                                               {
+                                                   Idegresoregistro = s.Id,
+                                                   Idegreso = s.Idservicio,
+                                                   egreso = se.Nombre,
+                                                   NombreProyecto = p.Nombre,
+                                                   Idproyecto = s.Idproyecto,
+                                                   Monto = s.Monto.Value,
+                                                   Tipo = s.Tiposervicio,
+                                               }).ToListAsync();
+
+                var forecastGastos = await (from s in context.Gastosejecucions
+                                            join se in context.Gastos on s.Idgasto equals se.Id
+                                            join p in context.Proyectos on s.Idproyecto equals p.Id
+                                            where s.Estado == "Forecast"
+                                            select new EgresosExcelDTO
+                                            {
+                                                Idegresoregistro = s.Id,
+                                                Idegreso = s.Idgasto,
+                                                egreso = se.Nombre,
+                                                NombreProyecto = p.Nombre,
+                                                Idproyecto = s.Idproyecto,
+                                                Monto = s.Monto.Value,
+                                                Tipo = "Gastos",
+                                            }).ToListAsync();
+
+                var forecastEgresos = forecastServicios.Concat(forecastGastos).ToList();
+
+                var agrupadoPorProyecto = forecastEgresos
+                    .GroupBy(e => new { e.Idproyecto, e.NombreProyecto })
+                    .Select(g => new ProyectoEgresosDTO
+                    {
+                        IdProyecto = g.Key.Idproyecto.Value,
+                        NombreProyecto = g.Key.NombreProyecto,
+                        Egresos = g.ToList()
+                    }).ToList();
+
+                return View(agrupadoPorProyecto);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al obtener forecast de egresos: {ex.Message}");
+                return StatusCode(500, "Error al obtener forecast de egresos");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegistrarPagoEgreso(List<EgresosExcelViewModel> egresos)
+        {
+            try
+            {
+                await ejecucionService.ActualizarEgresosMasivosForecast(egresos);
+                var modificacion = egresos
+                    .Where(g => g.Fecha != null)
+                    .Select(g => new MoficacionProyectoViewModel
+                    {
+                        IdProyecto = g.Idpeoyecto,
+                        FechaPago = g.Fecha
+                    })
+                    .Distinct()
+                    .ToList();
+                await proyectoService.GestorFechaModificacionProyectoMasivo(modificacion);
+                TempData["SuccessPagosEgresos"] = "Egresos pagados correctamente.";
+                return RedirectToAction("PagoEgresosForecast");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al registrar pago de egreso: {ex.Message}");
+                TempData["ErrorPagosEgresos"] = "Error al registrar pago de egreso.";
+                return RedirectToAction("PagoEgresosForecast");
+            }
+
+        }
     }
 }

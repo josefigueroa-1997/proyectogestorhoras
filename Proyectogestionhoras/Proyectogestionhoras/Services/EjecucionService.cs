@@ -65,7 +65,7 @@ namespace Proyectogestionhoras.Services
                             ingresoExistente.Iva = ingreso.Iva;
                             ingresoExistente.Estado = ingreso.Estado;
                             
-                            ingresoExistente.Idcuenta = ingreso.Idcuenta;
+                            ingresoExistente.Idcuenta = 4101001;
                             ingresoExistente.FechaPago = ingreso.FechaPago;
                             ingresoExistente.Observacion = ingreso.Observacion;
                         }
@@ -86,7 +86,7 @@ namespace Proyectogestionhoras.Services
                             Iva = ingreso.Iva,
                             Estado = ingreso.Estado,
                             Venta = "Vendido",
-                            Idcuenta = ingreso.Idcuenta,
+                            Idcuenta = 4101001,
                             FechaPago = ingreso.FechaPago,
                             Observacion = ingreso.Observacion
                         };
@@ -724,6 +724,60 @@ namespace Proyectogestionhoras.Services
                 return new List<ProveedorForecastDTO>();
 
             }
+        }
+
+
+        public async Task ActualizarEgresosMasivosForecast(List<EgresosExcelViewModel> egresos)
+        {
+            try
+            {
+                if (egresos == null || !egresos.Any())
+                    return;
+
+                foreach (var egreso in egresos)
+                {
+                    var glosa = egreso.Observacion?.Trim() ?? "";
+
+                    if (egreso.Tiposervicio != "Gastos")
+                    {
+                        var servicio = await context.Serviciosejecucions
+                            .FirstOrDefaultAsync(s => s.Id == egreso.Idegresoregistro);
+
+                        if (servicio != null)
+                        {
+                            servicio.Idproyecto = egreso.Idpeoyecto;
+                            servicio.Idservicio = egreso.Idegreso;
+                            servicio.Fecha = DateTime.Now;
+                            servicio.Monto = egreso.Monto;
+                            servicio.Estado = "Pagada";
+                            servicio.Venta = "Vendido";
+                            servicio.Tiposervicio = egreso.Tiposervicio;
+                        }
+                    }
+                    else
+                    {
+                        var gasto = await context.Gastosejecucions
+                            .FirstOrDefaultAsync(g => g.Id == egreso.Idegresoregistro);
+
+                        if (gasto != null)
+                        {
+                            gasto.Idproyecto = egreso.Idpeoyecto;
+                            gasto.Idgasto = egreso.Idegreso;
+                            gasto.Fecha = DateTime.Now;
+                            gasto.Monto = egreso.Monto;
+                            gasto.Estado = "Pagada";
+                            gasto.Venta = "Vendido";
+                        }
+                    }
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error al actualizar los egresos masivos: {e.Message}");
+            }
+            
         }
     }
 }
