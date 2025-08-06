@@ -104,7 +104,10 @@ namespace Proyectogestionhoras.Controllers
                 var Idcuenta = Request.Form["Idcuenta"];
                 var Observacion = Request.Form["Observacion"];
                 var idingresoreal = Request.Form["IdIngresoreal"];
-                var esliminado = Request.Form["esEliminados"];
+                var esliminado = Request.Form["esEliminadosIngreso"];
+
+                Debug.WriteLine(numdocumento.Count);
+            
 
 
                 for (int i = 0; i < numdocumento.Count; i++)
@@ -153,16 +156,83 @@ namespace Proyectogestionhoras.Controllers
 
                     ingresos.Add(ingresoViewModel);
                 }
+
+
+                /*ingresos nuevos*/
+                List<IngresoViewModel> ingresosnuevos = new List<IngresoViewModel>();
+
+                var numdocumentonuevos = Request.Form["Numdocumentonuevo"];
+                var fechapagonuevos = Request.Form["FechaPagonuevo"];
+                var fechaemisionnuevos = Request.Form["FechaEmisionnuevo"];
+
+                var Montoclplistnuevos = Request.Form["Montoclpnuevo"];
+                var Ivalistnuevos = Request.Form["Ivanuevo"];
+                var Estadonuevos = Request.Form["estadoingresonuevos"];
+                var Idcuentanuevos = Request.Form["Idcuentanueva"];
+                var Observacionnuevos = Request.Form["Observacionnueva"];
+                var idingresorealnuevos = Request.Form["IdIngresonuevo"];
+                var esliminadonuevos = Request.Form["esEliminadosIngresonuevo"];
+
+                Debug.WriteLine(numdocumentonuevos.Count);
+                for (int i = 0; i < numdocumentonuevos.Count; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(numdocumentonuevos[i]))
+                    {
+                        continue;
+                    }
+
+
+                    string montosclpStr = Montoclplistnuevos[i]?.ToString().Trim() ?? "0";
+                    string montosivaStr = Ivalistnuevos[i]?.ToString().Trim() ?? "0";
+
+
+
+
+                    decimal.TryParse(montosclpStr.Replace(".", ""), out decimal montoclp);
+                    decimal.TryParse(montosivaStr.Replace(".", ""), out decimal montoiva);
+
+
+
+                    int.TryParse(idingresorealnuevos[i]?.ToString(), out int idIngresoRealParsed);
+                    int.TryParse(Idcuentanuevos[i]?.ToString(), out int idCuentaParsed);
+
+
+                    DateTime fechaemisionParsed = DateTime.TryParse(fechaemisionnuevos[i], out DateTime tempDate)
+                        ? tempDate
+                        : DateTime.Today;
+
+
+                    var ingresoViewModel = new IngresoViewModel
+                    {
+                        IdIngresoreal = idIngresoRealParsed,
+                        Numdocumento = numdocumentonuevos[i],
+                        FechaEmision = fechaemisionParsed,
+                        FechaPago = DateTime.TryParse(fechapagonuevos[i], out DateTime fecha) ? (DateTime?)fecha : null,
+
+                        Montoclp = montoclp,
+                        Iva = montoiva,
+                        Estado = Estadonuevos[i],
+
+                        Idcuenta = idCuentaParsed,
+                        Observacion = Observacionnuevos[i],
+                        EsEliminado = esliminadonuevos[i] == "true",
+                    };
+
+                    ingresosnuevos.Add(ingresoViewModel);
+                }
+
+                
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 await ejecucionService.GestorIngresos(idproyecto, ingresos);
+                await ejecucionService.GestorIngresos(idproyecto, ingresosnuevos);
                 TempData["SuccessMessageIngresos"] = "Los ingresos del proyecto se han registrado y actualizado correctamente.";
-                return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-ingresos");
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al registrar/editar costos del proyecto:{e.Message}");
                 TempData["ErrorMessageIngresos"] = "Hubo un error al Registrar/Editar ingresos del proyecto.";
-                return RedirectToAction("ForecastIngreso", "EjecucionProyecto", new { id = idproyecto });
+                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-ingresos");
             }
 
         }
@@ -190,14 +260,17 @@ namespace Proyectogestionhoras.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CargarGastosReales(int idproyecto)
+        public async Task<IActionResult> CargarGastosReales(int idproyecto, int pagina = 1, int tamanioPagina = 50)
         {
+            var resultadoCompleto = await ejecucionService.ObtenerGastosReales(idproyecto);
 
-            var resultado = await ejecucionService.ObtenerGastosReales(idproyecto);
+            var total = resultadoCompleto.Count;
+            var datos = resultadoCompleto
+                            .Skip((pagina - 1) * tamanioPagina)
+                            .Take(tamanioPagina)
+                            .ToList();
 
-
-
-            return Json(resultado);
+            return Json(new { datos, total });
         }
 
 
@@ -362,6 +435,53 @@ namespace Proyectogestionhoras.Controllers
 
 
         [HttpPost]
+        public async Task<IActionResult> GuardarGastos([FromBody] GuardarGastosRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Request es null. Verifica el formato de los datos enviados."
+                });
+            }
+
+            try
+            {
+                if (request.gastos == null)
+                {
+                    return Json(new { success = false, message = "La lista de gastos es null" });
+                }
+
+                await ejecucionService.GestorGastosReales(request.idproyecto, request.gastos);
+                var gastosConvertidos = request.gastos
+                    .Where(g => !g.EsEliminado && g.Idgasto > 0) 
+                .Select(g => new GastoViewModel
+                {
+                     Idgastos = g.Idgasto
+                 })
+                 .ToList();
+
+                
+                await proyectoService.AgregarGastoProyectoeJECUCION(request.idproyecto, gastosConvertidos);
+                await proyectoService.GestorFechaModificacionProyecto(request.idproyecto);
+                return Json(new { success = true, message = "Éxito en el registro/actualización" });
+            }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine($"Error al guardar gastos: {ex.ToString()}");
+                return Json(new
+                {
+                    success = false,
+                    message = "Error interno al procesar la solicitud",
+                    error = ex.Message
+                });
+            }
+        }
+
+
+        [HttpPost]
         public async Task<IActionResult> RegistrarConsultores()
         {
             var idproyecto = int.Parse(Request.Form["idproyecto"].ToString());
@@ -453,7 +573,7 @@ namespace Proyectogestionhoras.Controllers
 
                 var eliminarServicioOtronuevo = Request.Form["EliminarServicioOtroNuevo"].Select(e => e == "true").ToList();
 
-                var serviciosnuevos = ProcesarServicios(Request.Form["idservicionuevos"].ToList(), Request.Form["idproveedorgastosnuevos"].ToList(), Request.Form["montoserviciosnuevos"].ToList(), Request.Form["fechaserviciosnuevos"].ToList(), Request.Form["IdServicioRealnuevos"].ToList(), Request.Form["observacionservicionuevos"].ToList(), Request.Form["estadoserviciosnuevos"].ToList(), Request.Form["Tiposervicionuevo"].ToList(), eliminarServicioOtronuevo);
+                var serviciosnuevos = ProcesarServicios(Request.Form["idservicionuevos"].ToList(), Request.Form["idproveedorserviciosnuevos"].ToList(), Request.Form["montoserviciosnuevos"].ToList(), Request.Form["fechaserviciosnuevos"].ToList(), Request.Form["IdServicioRealnuevos"].ToList(), Request.Form["observacionservicionuevos"].ToList(), Request.Form["estadoserviciosnuevos"].ToList(), Request.Form["Tiposervicionuevo"].ToList(), eliminarServicioOtronuevo);
 
 
                 var idservicionuevos = Request.Form["idservicionuevos"];
@@ -525,7 +645,7 @@ namespace Proyectogestionhoras.Controllers
 
                 List<GastosRealesViewModel> gastosnuevos = new List<GastosRealesViewModel>();
                 var idsgastosnuevos = Request.Form["idgastosnuevos"];
-                var idproveedoresgastosnuevos = Request.Form["idproveedorgastosnuevos"];
+                var idproveedoresgastosnuevos = Request.Form["idproveedornuevos"];
                 var montogastosListnuevos = Request.Form["montogastonuevos"];
                 var fechagastosnuevos = Request.Form["fechagastonuevos"];
                 var idgastorealnuevos = Request.Form["IdGastoRealnuevos"];
@@ -1768,7 +1888,7 @@ namespace Proyectogestionhoras.Controllers
                                                join p in context.Proyectos on s.Idproyecto equals p.Id
                                                join pro in context.Proveedores on s.Idproveedor equals pro.Id 
                                                join c in context.Cuenta on se.Idcuenta equals c.Id
-                                               where s.Estado == "Forecast"
+                                               where s.Estado == "Forecast" && p.StatusProyecto == 2
                                                select new EgresosExcelDTO
                                                {
                                                    Idegresoregistro = s.Id,
@@ -1780,7 +1900,9 @@ namespace Proyectogestionhoras.Controllers
                                                    Monto = s.Monto.Value,
                                                    Fecha = s.Fecha.Value,
                                                    Idcuenta = c.Idcuenta,
+                                                   Glosa = s.Observacion,
                                                    Tipo = s.Tiposervicio,
+                                                   
                                                }).ToListAsync();
 
                 var forecastGastos = await (from s in context.Gastosejecucions
@@ -1788,7 +1910,7 @@ namespace Proyectogestionhoras.Controllers
                                             join p in context.Proyectos on s.Idproyecto equals p.Id
                                             join pro in context.Proveedores on s.Idproveedor equals pro.Id
                                             join c in context.Cuenta on se.Idcuenta equals c.Id
-                                            where s.Estado == "Forecast"
+                                            where s.Estado == "Forecast" && p.StatusProyecto == 2
                                             select new EgresosExcelDTO
                                             {
                                                 Idegresoregistro = s.Id,
@@ -1800,6 +1922,7 @@ namespace Proyectogestionhoras.Controllers
                                                 Monto = s.Monto.Value,
                                                 Fecha = s.Fecha.Value,
                                                 Idcuenta = c.Idcuenta,
+                                                Glosa = s.Observacion,
                                                 Tipo = "Gastos",
                                             }).ToListAsync();
 

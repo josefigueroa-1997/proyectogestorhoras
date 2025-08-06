@@ -70,7 +70,7 @@ namespace Proyectogestionhoras.Controllers
             }
             catch (Exception ex)
             {
-                // Log el error completo
+                
                 Debug.WriteLine($"Error al guardar gastos: {ex.ToString()}");
                 return Json(new
                 {

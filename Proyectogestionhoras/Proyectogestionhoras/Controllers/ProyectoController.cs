@@ -881,6 +881,7 @@ namespace Proyectogestionhoras.Controllers
                 return NotFound();
             }
             proyecto.StatusProyecto = 2;
+            proyecto.Fechaejecucion = DateTime.Now;
             await context.SaveChangesAsync();
             return RedirectToAction("ObtenerProyectos", "Proyecto", new { id = proyecto.Id });
         }

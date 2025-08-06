@@ -35,32 +35,32 @@
 		<div class="flex gap-2 mb-6">
 			<a href="#"
 			   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-							@(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+								@(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+																															 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																											 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																															Síntesis del Proyecto
+																																														</a>
+																																														<a href="#"
+																																														   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+												             @(ViewContext.RouteData.Values["action"]?.ToString() == "GestorProyectos"
 																											   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
 																									 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																													Síntesis del Proyecto
+																																													Gestor del Proyecto
 																																												</a>
 																																												<a href="#"
 																																												   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
 
-											             @(ViewContext.RouteData.Values["action"]?.ToString() == "GestorProyectos"
-																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																											Gestor del Proyecto
-																																										</a>
-																																										<a href="#"
-																																										   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-
-										             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
-																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																											Presupuesto
-																																										</a>
-																																										<a href="#"
-																																										   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-										             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
-																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+											             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+																											   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																									 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																													Presupuesto
+																																												</a>
+																																												<a href="#"
+																																												   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+											             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
+																											   	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																									 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
 			Seleccionar Proyecto
 		</a>
 	</div>
@@ -90,7 +90,7 @@
 					<tbody>
 
 						<tr class="bg-white hover:bg-gray-50">
-							<td class="p-2 border text-center">@proyecto.numproyecto - @proyecto.NombreProyecto</td>
+							<td class="p-2 border text-center" id="proyectoData" data-nombreproyecto="@proyecto.NombreProyecto">@proyecto.numproyecto - @proyecto.NombreProyecto</td>
 							<td class="p-2 border text-center">@proyecto.NombreCliente</td>
 
 							<td class="p-2 border text-center">@proyecto.MONEDA</td>
@@ -310,7 +310,7 @@
 
 
 					</div>
-					
+
 				</div>
 				<h3 class="text-lg font-bold text-orange-500 mb-2">Resumen Costos del Proyecto</h3>
 				<div class="p-4 bg-white-50 rounded-b">
@@ -439,125 +439,110 @@
 
 
 
-							$(document).ready(function () {
 
-								var idproyecto = '@idproyectos';
-
-
+							function cargarForecastProveedores(idProyecto) {
 								$.ajax({
 									url: '/EjecucionProyecto/RecuperarForecastProveedores',
 									type: 'GET',
-									data: { idproyecto: idproyecto },
+									data: { idproyecto: idProyecto },
 									success: function (data) {
-										renderizarTabla(data);
+										renderizarTablaForecast(data);
 									},
 									error: function (err) {
 										console.error('Error al recuperar los datos:', err);
 									}
 								});
+							}
 
-								function renderizarTabla(data) {
-									const tabla = $('#tablaforecastproveedor');
-									const tablaBody = tabla.find('tbody');
-									const tablaHead = tabla.find('thead');
+							function renderizarTablaForecast(data) {
+								const tabla = $('#tablaforecastproveedor');
+								const tablaBody = tabla.find('tbody');
+								const tablaHead = tabla.find('thead');
 
+								tablaBody.empty();
+								tablaHead.empty();
 
-									tablaBody.empty();
-									tablaHead.empty();
-
-
-									const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))]
-										.sort((a, b) => {
-											const [mesA, anioA] = a.split('-').map(Number);
-											const [mesB, anioB] = b.split('-').map(Number);
-											const fechaA = new Date(anioA, mesA - 1);
-											const fechaB = new Date(anioB, mesB - 1);
-											return fechaA - fechaB;
-										});
-
-
-									let encabezado = `
-														<tr class="bg-green-100 text-black">
-														<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Proveedor</th>
-														<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Cuenta</th>
-														<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Nombre</th>`;
-									mesesUnicos.forEach(mes => {
-										encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
+								const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))]
+									.sort((a, b) => {
+										const [mesA, anioA] = a.split('-').map(Number);
+										const [mesB, anioB] = b.split('-').map(Number);
+										const fechaA = new Date(anioA, mesA - 1);
+										const fechaB = new Date(anioB, mesB - 1);
+										return fechaA - fechaB;
 									});
-									encabezado += `<th class="p-2 border border-gray-300 text-right">Total Proveedores</th>`;
-									encabezado += `</tr>`;
-									tablaHead.append(encabezado);
 
+								let encabezado = `
+									<tr class="bg-green-100 text-black">
+										<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Proveedor</th>
+										<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Cuenta</th>
+										<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Nombre</th>`;
+								mesesUnicos.forEach(mes => {
+									encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
+								});
+								encabezado += `<th class="p-2 border border-gray-300 text-right">Total Proveedores</th>`;
+								encabezado += `</tr>`;
+								tablaHead.append(encabezado);
 
-									const totalesPorMes = new Array(mesesUnicos.length).fill(0);
-									let totalGeneral = 0;
+								const totalesPorMes = new Array(mesesUnicos.length).fill(0);
+								let totalGeneral = 0;
 
+								const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre']);
 
-									const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre']);
+								for (let [key, registros] of Object.entries(agrupados)) {
+									const [proveedor, cuenta, nombre] = key.split('|');
 
-									for (let [key, registros] of Object.entries(agrupados)) {
-										const [proveedor, cuenta, nombre] = key.split('|');
+									let fila = `
+										<tr>
+											<td class="p-2 border border-gray-300 text-left">${proveedor}</td>
+											<td class="p-2 border border-gray-300 text-left">${cuenta}</td>
+											<td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
 
+									let totalFila = 0;
+									mesesUnicos.forEach((mes, index) => {
+										const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
+										const monto = registroMes ? registroMes.totalforecastproveedor : null;
 
-										let fila = `
-														<tr>
-															<td class="p-2 border border-gray-300 text-left">${proveedor}</td>
-															<td class="p-2 border border-gray-300 text-left">${cuenta}</td>
-															<td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
-
-
-										let totalFila = 0;
-										mesesUnicos.forEach((mes, index) => {
-											const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
-											const monto = registroMes ? registroMes.totalforecastproveedor : null;
-
-											if (monto === null || monto === 0) {
-												fila += `<td class="p-2 border border-gray-300 text-right"></td>`;
-											} else {
-												totalFila += monto;
-												totalesPorMes[index] += monto;
-												fila += `<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatMoneda(monto)}</td>`;
-											}
-										});
-
-
-										fila += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalFila)}</td>`;
-										fila += `</tr>`;
-										tablaBody.append(fila);
-										totalGeneral += totalFila;
-									}
-
-
-									let filaTotales = `
-														<tr class="bg-green-100">
-														<td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
-									totalesPorMes.forEach(totalMes => {
-										filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
-									});
-									filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
-									filaTotales += `</tr>`;
-
-
-									tablaBody.append(filaTotales);
-								}
-
-
-								function agruparPor(array, keys) {
-									return array.reduce((result, item) => {
-										const groupKey = keys.map(key => item[key]).join('|');
-										if (!result[groupKey]) {
-											result[groupKey] = [];
+										if (monto === null || monto === 0) {
+											fila += `<td class="p-2 border border-gray-300 text-right"></td>`;
+										} else {
+											totalFila += monto;
+											totalesPorMes[index] += monto;
+											fila += `<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatMoneda(monto)}</td>`;
 										}
-										result[groupKey].push(item);
-										return result;
-									}, {});
+									});
+
+									fila += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalFila)}</td>`;
+									fila += `</tr>`;
+									tablaBody.append(fila);
+									totalGeneral += totalFila;
 								}
 
+								let filaTotales = `
+									<tr class="bg-green-100">
+										<td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
+								totalesPorMes.forEach(totalMes => {
+									filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
+								});
+								filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
+								filaTotales += `</tr>`;
 
-								function formatMoneda(valor) {
-									return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-								}
-							});
+								tablaBody.append(filaTotales);
+							}
+
+							function agruparPor(array, keys) {
+								return array.reduce((result, item) => {
+									const groupKey = keys.map(key => item[key]).join('|');
+									if (!result[groupKey]) {
+										result[groupKey] = [];
+									}
+									result[groupKey].push(item);
+									return result;
+								}, {});
+							}
+
+							function formatMoneda(valor) {
+								return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+							}
 
 						</script>
 
@@ -575,7 +560,32 @@
 			</div>
 
 			<div id="section-ingresos" class="seccion hidden">
-
+				<form method="post" asp-action="RegistrarIngresos" asp-controller="EjecucionProyecto">
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
+					@if (TempData["ErrorMessageIngresos"] != null)
+					{
+						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+							@TempData["ErrorMessageIngresos"]
+						</div>
+					}
+					@if (TempData["SuccessMessageIngresos"] != null)
+					{
+						<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
+							@TempData["SuccessMessageIngresos"]
+						</div>
+					}
+					@if (TempData["ErrorMessageIngresos"] != null || TempData["SuccessMessageIngresos"] != null)
+					{
+						<script>
+							setTimeout(() => {
+								document.querySelectorAll('[role="alert"]').forEach(alert => {
+									alert.style.transition = "opacity 0.5s ease-out";
+									alert.style.opacity = "0";
+									setTimeout(() => alert.remove(), 500);
+								});
+							}, 5000);
+						</script>
+					}
 				<h3 class="text-lg font-bold text-orange-500 mb-2">💰 Ingresos</h3>
 				<div class="flex justify-center mb-4">
 					<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
@@ -601,7 +611,7 @@
 										<th class="p-2 border border-gray-300 text-left">Estado</th>
 										<th class="p-2 border border-gray-300 text-left">Cuenta Asociada</th>
 										<th class="p-2 border border-gray-300 text-left">Glosa</th>
-										
+
 
 									</tr>
 								</thead>
@@ -636,7 +646,7 @@
 							</table>
 							<div id="mensajeIngresos" class="text-left text-gray-500 mt-2"></div>
 							<script>
-								
+
 
 
 								async function cargarDatosIngresos(idProyecto) {
@@ -683,94 +693,119 @@
 									row.classList.add("bg-white", "hover:bg-gray-50");
 
 										const Estadoselect = `
-										<select name="estadoconsultor"  class="border border-gray-300 rounded px-2 py-1">
+										<select name="Estado"  class="border border-gray-300 rounded px-2 py-1">
 											<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
 											<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
 										</select>
 										`;
 
 									row.innerHTML = `
-									   <td class="p-1 border"><input type="text" name="montoconsultor" value="${item.numdocumento}" class=" w-full text-left border rounded px-2 py-1"></td>
-									  <td class="p-1 border"><input type="date" name="fechaconsultor" value="${item.fechaEmision.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
-									  <td class="p-1 border"><input type="date" name="fechaconsultor" value="${item.fechaPago.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
-									  <td class="p-1 border"><input type="text" name="montoconsultor" value="${formatearMiles(item.montoclp)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
-									  <td class="p-1 border"><input type="text" name="montoconsultor" value="${formatearMiles(item.iva)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
-									  
+									   <td class="p-1 border"><input type="text" name="Numdocumento" value="${item.numdocumento}" class=" w-full text-left border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><input type="date" name="FechaEmision" value="${item.fechaEmision.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><input type="date" name="FechaPago" value="${item.fechaPago.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><input type="text" name="Montoclp" value="${formatearMiles(item.montoclp)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><input type="text" name="Iva" value="${formatearMiles(item.iva)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+
 									  <td class="p-1 border">${Estadoselect}</td>
-									  
-									  <td class="p-1 border"><input type="text" readonly name="cuentaconsultor" value="${item.idcuenta}" class="w-full border rounded px-2 py-1"></td>
-									  <td class="p-1 border"><textarea rows="2" name="observacionconsultor" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea></td>
+
+									  <td class="p-1 border"><input type="text" readonly name="Idcuenta" value="4101001" class="w-full border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea></td>
 									  <td class="p-1 border text-center">
-										<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarServicioHonorario(this)">🗑️</button>
+										<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarFilaIngreso(this)">🗑️</button>
 									  </td>
 									  <td style="display:none;">
-											<input type="hidden" name="EliminarServicioHonorario" class="EliminarServicioHonorario" value="false" />
+											<input type="hidden" name="esEliminadosIngreso" class="esEliminadosIngreso" value="false" />
 										</td>
-										  <input type="hidden" name="IdIngresoReal" value="${item.id}" />
-										
+										  <input type="hidden" name="IdIngresoreal" value="${item.id}" />
+
 									`;
 
 									tbody.appendChild(row);
 								  });
-														  document.querySelectorAll(".monto-input").forEach(input => {
-												input.addEventListener("input", () => {
+															document.querySelectorAll(".monto-input").forEach(input => {
+									  input.addEventListener("input", () => {
+										let valor = input.value;
 
-												const valorSinFormato = input.value.replace(/\D/g, "");
-												if (valorSinFormato) {
+										// Permitir solo un signo '-' al inicio, quitar otros caracteres no numéricos
+										// Extraemos el signo negativo si está al inicio
+										const esNegativo = valor.startsWith('-');
 
-											 input.value = parseInt(valorSinFormato).toLocaleString("es-CL");
-												} else {
-											  input.value = "";
-												}
-											});
-											});
+										// Quitar todo excepto dígitos, porque ya tenemos el signo aparte
+										let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+										if (valorSinSigno.length > 0) {
+										  // Parseamos el número
+										  let numero = parseInt(valorSinSigno, 10);
+
+										  if (esNegativo) {
+											numero = -numero;
+										  }
+
+										  // Formateamos número con miles en español (Chile)
+										  input.value = numero.toLocaleString("es-CL");
+										} else {
+										  // Si no hay números, solo dejamos el signo si está solo
+										  input.value = esNegativo ? "-" : "";
+										}
+									  });
+									});
 								}
 
-								/*servicios nuevos*/
+								/*ingresos nuevos*/
 								function agregarFilaIngresos() {
 									const tbody = document.querySelector('#tablaAgregarIngresos tbody');
 
-								
+
 
 									const nuevaFila = document.createElement("tr");
 									nuevaFila.classList.add("bg-white", "hover:bg-gray-50");
 									const estadoSelect = `
-											<select name="estadoconsultornuevos"  class="border border-gray-300 rounded px-2 py-1">
+											<select name="estadoingresonuevos"  class="border border-gray-300 rounded px-2 py-1">
 												<option value="Forecast">Forecast</option>
 												<option value="Pagada">Pagada</option>
 											</select>
 										`;
 									nuevaFila.innerHTML = `
-										
-										<td class="p-1 border"><input type="text" name="montoconsultornuevos" class=" w-full text-right border rounded px-2 py-1"></td>
-										<td class="p-1 border"><input type="date" name="fechaconsultornuevos" class="w-full border rounded px-2 py-1"></td>
-										<td class="p-1 border"><input type="date" name="fechaconsultornuevos" class="w-full border rounded px-2 py-1"></td>
-													  <td class="p-1 border"><input type="text" name="montoconsultor"  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
-									  <td class="p-1 border"><input type="text" name="montoconsultor"  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
-										<td class="p-1 border">${estadoSelect}</td>
-										<td class="p-1 border"><input type="text" readonly name="cuentaconsultor"  class="w-full border rounded px-2 py-1"></td>
-										<td class="p-1 border"><textarea rows="2" name="observacionconsultornuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
-										<td style="display:none;">
-											<input type="hidden" name="Idconsultorrealnuevos" value="" />
+
+										<td class="p-1 border"><input type="text" name="Numdocumentonuevo" class=" w-full text-left border rounded px-2 py-1"></td>
+										 <td class="p-1 border"><input type="date" name="FechaEmisionnuevo"  class="w-full border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><input type="date" name="FechaPagonuevo"  class="w-full border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><input type="text" name="Montoclpnuevo"  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><input type="text" name="Ivanuevo"  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+
+									  <td class="p-1 border">${estadoSelect}</td>
+
+									  <td class="p-1 border"><input type="text" readonly name="Idcuentanueva" value="4101001" class="w-full border rounded px-2 py-1"></td>
+									  <td class="p-1 border"><textarea rows="2" name="Observacionnueva" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
+									 
+									  <td style="display:none;">
+											<input type="hidden" name="esEliminadosIngresonuevo" class="esEliminadosIngresonuevo" value="false" />
 										</td>
-										<td style="display:none;">
-											<input type="hidden" name="EliminarconsultorOtroNuevo" class="EliminarServicioOtro" value="false" />
-										</td>
-										<input type="hidden" name="Tipoconsultornuevo" value="Consultores Externos" />
+										  <input type="hidden" name="IdIngresonuevo" value="" />
 									`;
 
 									tbody.appendChild(nuevaFila);
 
 
-									nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
-										const valorSinFormato = this.value.replace(/\D/g, "");
-										this.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
+										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
+									  let valor = this.value;
+
+									  const esNegativo = valor.startsWith('-');
+									  let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+									  if (valorSinSigno.length > 0) {
+										let numero = parseInt(valorSinSigno, 10);
+										if (esNegativo) numero = -numero;
+										this.value = numero.toLocaleString("es-CL");
+									  } else {
+										this.value = esNegativo ? "-" : "";
+									  }
 									});
 								}
 
 								document.addEventListener("DOMContentLoaded", async () => {
 
-								  
+
 
 
 								  const contenedorBoton = document.getElementById("contenedorBotonIngresos");
@@ -791,12 +826,12 @@
 								  });
 								});
 
-								function limpiarServicioHonorario(button) {
+								function limpiarFilaIngreso(button) {
 
 									var fila = button.closest('tr');
 
 
-									var esEliminado = fila.querySelector('input.EliminarServicioHonorario');
+									var esEliminado = fila.querySelector('input.esEliminadosIngreso');
 									if (esEliminado) {
 										esEliminado.value = 'true';
 									}
@@ -812,12 +847,13 @@
 						</div>
 					</div>
 				</details>
+				</form>
 			</div>
 
 
 			<!-- HH (accordion) -->
 
-			<form asp-action="#" asp-controller="#" method="post">
+			<form asp-action="RegistrarHH" asp-controller="EjecucionProyecto" method="post">
 				<div id="section-hh" class="seccion hidden">
 					<h3 class="text-lg font-bold text-orange-500 mb-2">Horas Hombre</h3>
 					@if (TempData["ErrorMessage"] != null)
@@ -845,9 +881,10 @@
 						</script>
 					}
 
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					<div class="flex justify-center mb-4">
-						<button type="submit" class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">
+						<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
+
 							Guardar Registros HH
 						</button>
 					</div>
@@ -1469,15 +1506,15 @@
 														<td class="hhsocio p-2 border border-gray-300 text-right"><input type="text" name="hhsocio" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																											<td class="p-2 border border-gray-300 text-right costohhsocio">
-																												<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																											</td>
+																												<td class="p-2 border border-gray-300 text-right costohhsocio">
+																													<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																												</td>
 						}
 						else
 						{
-																											<td class="p-2 border border-gray-300 text-right costohhsocio">
-																												<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																											</td>
+																												<td class="p-2 border border-gray-300 text-right costohhsocio">
+																													<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																												</td>
 						}
 
 
@@ -1526,15 +1563,15 @@
 																				<td class="hhstaff p-2 border border-gray-300 text-right"><input type="text" name="hhstaff" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																										<td class="p-2 border border-gray-300 text-right costohhstaff">
-																											<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																										</td>
+																											<td class="p-2 border border-gray-300 text-right costohhstaff">
+																												<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																											</td>
 						}
 						else
 						{
-																										<td class="p-2 border border-gray-300 text-right costohhstaff">
-																											<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																										</td>
+																											<td class="p-2 border border-gray-300 text-right costohhstaff">
+																												<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																											</td>
 						}
 													<td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhstaff" readonly name="montohhstaff" class="montohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 
@@ -1601,8 +1638,8 @@
 			</form>
 			<!-- Consultores -->
 			<div id="section-consultores" class="seccion hidden ">
-				<form method="post" asp-action="#" asp-controller="#">
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
+				<form method="post" asp-action="RegistrarConsultores" asp-controller="EjecucionProyecto">
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					@if (TempData["ErrorMessageConsultores"] != null)
 					{
 						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
@@ -1748,7 +1785,7 @@
 
 										// Select para servicio
 										const servicioSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="idconsultores">
+										  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idconsultores">
 											${listaconsultores.map(s => `
 											  <option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>${s.nombre}</option>
 											`).join('')}
@@ -1792,18 +1829,33 @@
 
 										tbody.appendChild(row);
 									  });
-															  document.querySelectorAll(".monto-input").forEach(input => {
-													input.addEventListener("input", () => {
+																							document.querySelectorAll(".monto-input").forEach(input => {
+									  input.addEventListener("input", () => {
+										let valor = input.value;
 
-													const valorSinFormato = input.value.replace(/\D/g, "");
-													if (valorSinFormato) {
+										// Permitir solo un signo '-' al inicio, quitar otros caracteres no numéricos
+										// Extraemos el signo negativo si está al inicio
+										const esNegativo = valor.startsWith('-');
 
-												 input.value = parseInt(valorSinFormato).toLocaleString("es-CL");
-													} else {
-												  input.value = "";
-													}
-												});
-												});
+										// Quitar todo excepto dígitos, porque ya tenemos el signo aparte
+										let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+										if (valorSinSigno.length > 0) {
+										  // Parseamos el número
+										  let numero = parseInt(valorSinSigno, 10);
+
+										  if (esNegativo) {
+											numero = -numero;
+										  }
+
+										  // Formateamos número con miles en español (Chile)
+										  input.value = numero.toLocaleString("es-CL");
+										} else {
+										  // Si no hay números, solo dejamos el signo si está solo
+										  input.value = esNegativo ? "-" : "";
+										}
+									  });
+									});
 									}
 
 									/*servicios nuevos*/
@@ -1811,14 +1863,14 @@
 										const tbody = document.querySelector('#tablaAgregarConsultores tbody');
 
 										const serviciosSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idconsultornuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idconsultornuevos">
 												<option value="" disabled selected>Seleccione un servicio</option>
 												${listaconsultores.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('')}
 											</select>
 										`;
 
 										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorconsultornuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorconsultornuevos">
 											<option value=""  disabled selected>Seleccione un proveedor</option>
 												${listaProveedoresconsultores.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
 											</select>
@@ -1837,7 +1889,7 @@
 										nuevaFila.innerHTML = `
 											<td class="p-1 border">${serviciosSelect}</td>
 											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border"><input type="text" name="montoconsultornuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
+											<td class="p-1 border"><input type="text" name="montoconsultornuevos" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
 											<td class="p-1 border"><input type="date" name="fechaconsultornuevos" class="w-full border rounded px-2 py-1"></td>
 											<td class="p-1 border">${estadoSelect}</td>
 											<td class="p-1 border"><textarea rows="2" name="observacionconsultornuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
@@ -1853,10 +1905,20 @@
 										tbody.appendChild(nuevaFila);
 
 
-										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
-											const valorSinFormato = this.value.replace(/\D/g, "");
-											this.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
-										});
+																			nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
+									  let valor = this.value;
+
+									  const esNegativo = valor.startsWith('-');
+									  let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+									  if (valorSinSigno.length > 0) {
+										let numero = parseInt(valorSinSigno, 10);
+										if (esNegativo) numero = -numero;
+										this.value = numero.toLocaleString("es-CL");
+									  } else {
+										this.value = esNegativo ? "-" : "";
+									  }
+									});
 									}
 
 									document.addEventListener("DOMContentLoaded", async () => {
@@ -1908,8 +1970,8 @@
 
 			<!-- Servicios -->
 			<div id="section-servicios" class="seccion hidden">
-				<form method="post" asp-action="#" asp-controller="#">
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
+				<form method="post" asp-action="RegistrarServicios" asp-controller="EjecucionProyecto">
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					@if (TempData["ErrorMessageServicios"] != null)
 					{
 						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
@@ -2054,7 +2116,7 @@
 
 										// Select para servicio
 										const servicioSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="Idservicio">
+										  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="Idservicio">
 											${listaServicios.map(s => `
 											  <option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>${s.nombre}</option>
 											`).join('')}
@@ -2099,32 +2161,47 @@
 
 										tbody.appendChild(row);
 									  });
-												document.querySelectorAll(".monto-input").forEach(input => {
-													input.addEventListener("input", () => {
+														document.querySelectorAll(".monto-input").forEach(input => {
+									  input.addEventListener("input", () => {
+										let valor = input.value;
 
-													const valorSinFormato = input.value.replace(/\D/g, "");
-													if (valorSinFormato) {
+										// Permitir solo un signo '-' al inicio, quitar otros caracteres no numéricos
+										// Extraemos el signo negativo si está al inicio
+										const esNegativo = valor.startsWith('-');
 
-												 input.value = parseInt(valorSinFormato).toLocaleString("es-CL");
-													} else {
-												  input.value = "";
-													}
-												});
-												});
+										// Quitar todo excepto dígitos, porque ya tenemos el signo aparte
+										let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+										if (valorSinSigno.length > 0) {
+										  // Parseamos el número
+										  let numero = parseInt(valorSinSigno, 10);
+
+										  if (esNegativo) {
+											numero = -numero;
+										  }
+
+										  // Formateamos número con miles en español (Chile)
+										  input.value = numero.toLocaleString("es-CL");
+										} else {
+										  // Si no hay números, solo dejamos el signo si está solo
+										  input.value = esNegativo ? "-" : "";
+										}
+									  });
+									});
 									}
 									/*servicios nuevos*/
 									function agregarFilaAServicios() {
 										const tbody = document.querySelector('#tablaAgregarServicios tbody');
 
 										const serviciosSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idservicionuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idservicionuevos">
 												<option value="" disabled selected>Seleccione un servicio</option>
 												${listaServicios.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('')}
 											</select>
 										`;
 
 										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorgastosnuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorserviciosnuevos">
 											<option value=""  disabled selected>Seleccione un proveedor</option>
 												${listaProveedoresservicios.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
 											</select>
@@ -2143,7 +2220,7 @@
 										nuevaFila.innerHTML = `
 											<td class="p-1 border">${serviciosSelect}</td>
 											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border"><input type="text" name="montoserviciosnuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
+											<td class="p-1 border"><input type="text" name="montoserviciosnuevos" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
 											<td class="p-1 border"><input type="date" name="fechaserviciosnuevos" class="w-full border rounded px-2 py-1"></td>
 											<td class="p-1 border">${estadoSelect}</td>
 											<td class="p-1 border"><textarea rows="2" name="observacionservicionuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
@@ -2160,9 +2237,19 @@
 
 
 										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
-											const valorSinFormato = this.value.replace(/\D/g, "");
-											this.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
-										});
+									  let valor = this.value;
+
+									  const esNegativo = valor.startsWith('-');
+									  let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+									  if (valorSinSigno.length > 0) {
+										let numero = parseInt(valorSinSigno, 10);
+										if (esNegativo) numero = -numero;
+										this.value = numero.toLocaleString("es-CL");
+									  } else {
+										this.value = esNegativo ? "-" : "";
+									  }
+									});
 									}
 
 									document.addEventListener("DOMContentLoaded", async () => {
@@ -2211,7 +2298,7 @@
 			<!-- Gastos -->
 
 			<div id="section-gastos" class="seccion hidden">
-				<form method="post" asp-action="RegistrarGastos" asp-controller="EjecucionProyecto">
+				
 					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					@if (TempData["ErrorMessageGastos"] != null)
 					{
@@ -2315,16 +2402,47 @@
 									// Se ejecuta al cargar la página
 									document.addEventListener("DOMContentLoaded", () => {
 									  cargarListasDeGastosYProveedores();
-
-									  // Delegación de eventos para inputs con formato
 									  const tbody = document.querySelector('#tablagastos tbody');
-									  tbody.addEventListener("input", function (e) {
-										if (e.target.classList.contains("monto-input")) {
-										  const input = e.target;
-										  const valorSinFormato = input.value.replace(/\D/g, "");
-										  input.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
+
+																											tbody.addEventListener("input", function (e) {
+									  if (e.target.classList.contains("monto-input")) {
+										const input = e.target;
+
+										// Guardar posición del cursor antes de cambiar valor
+										const selectionStart = input.selectionStart;
+
+										// Permitir solo dígitos y un '-' al inicio
+										let valorSinFormato = input.value
+										  .replace(/[^0-9\-]/g, "")   // solo números y '-'
+										  .replace(/(?!^)-/g, "");    // quitar '-' que no está al inicio
+
+										// Si el valor es solo '-' o vacío, no formatear aún
+										if (valorSinFormato === "" || valorSinFormato === "-") {
+										  input.value = valorSinFormato;
+										  return;
 										}
-									  });
+
+										let esNegativo = valorSinFormato.startsWith("-");
+										let numeroStr = esNegativo ? valorSinFormato.slice(1) : valorSinFormato;
+
+										// Si no hay número válido, no formatear
+										if (!/^\d+$/.test(numeroStr)) {
+										  input.value = valorSinFormato;
+										  return;
+										}
+
+										let numero = parseInt(numeroStr, 10);
+
+										let textoFormateado = numero.toLocaleString("es-CL");
+
+										input.value = esNegativo ? "-" + textoFormateado : textoFormateado;
+
+										// Tratar de restaurar la posición del cursor
+										// Calculamos diferencia de longitud para ajustar posición
+										let diff = input.value.length - valorSinFormato.length;
+										input.selectionStart = input.selectionEnd = selectionStart + diff;
+									  }
+									});
 									});
 
 																		async function cargarDatosGastos(idProyecto, pagina = 1, tamanio = 50) {
@@ -2334,7 +2452,7 @@
 										tbody.innerHTML = "";
 										mensajeDiv.textContent = "Cargando Gastos...";
 
-										const response = await fetch(`/Propuesta/CargarGastosReales?idproyecto=${idProyecto}&pagina=${pagina}&tamanioPagina=${tamanio}`);
+										const response = await fetch(`/EjecucionProyecto/CargarGastosReales?idproyecto=${idProyecto}&pagina=${pagina}&tamanioPagina=${tamanio}`);
 										const resultado = await response.json();
 
 										if (resultado.datos.length > 0) {
@@ -2348,14 +2466,27 @@
 									  } catch (error) {
 										console.error("Error al cargar gastos:", error);
 									  }
+																		}
+
+																		function formatearMiles(valor) {
+									  if (valor === null || valor === undefined || valor === "") return "";
+
+									  let strValor = String(valor);
+									  const esNegativo = strValor.startsWith('-');
+
+									  strValor = esNegativo
+										? '-' + strValor.slice(1).replace(/[^\d.,]/g, '')
+										: strValor.replace(/[^\d.,]/g, '');
+
+									  const numero = parseFloat(strValor.replace(/\./g, '').replace(',', '.'));
+									  if (isNaN(numero)) return "";
+
+									  return numero.toLocaleString("es-CL", {
+										minimumFractionDigits: 0,
+										maximumFractionDigits: 0
+									  });
 									}
 
-									function formatearMiles(valor) {
-									  if (!valor) return "";
-									  const numero = parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
-									  if (isNaN(numero)) return "";
-									  return numero.toLocaleString("es-CL");
-									}
 
 									function renderizarTablaGastos(data) {
 									  const tbody = document.querySelector('#tablagastos tbody');
@@ -2366,17 +2497,17 @@
 									  data.forEach((item) => {
 										const gastoSelect = `
 										  <select class="border border-gray-300 rounded px-2 py-1" name="idgastos">
-											${listaGastos.map(g => `
-											  <option value="${g.id}" ${g.id === item.idGasto ? "selected" : ""}>${g.nombre}</option>
-											`).join('')}
+											${listaGastos.map(g =>
+											  `<option value="${g.id}" ${g.id === item.idGasto ? "selected" : ""}>${g.nombre}</option>`
+											).join('')}
 										  </select>
 										`;
 
 										const proveedorSelect = `
 										  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorgastos">
-											${listaProveedores.map(p => `
-											  <option value="${p.id}" ${p.id === item.idProveedor ? "selected" : ""}>${p.nombre}</option>
-											`).join('')}
+											${listaProveedores.map(p =>
+											  `<option value="${p.id}" ${p.id === item.idProveedor ? "selected" : ""}>${p.nombre}</option>`
+											).join('')}
 										  </select>
 										`;
 
@@ -2393,7 +2524,7 @@
 											<td class="p-1 border">${proveedorSelect}</td>
 											<td class="p-1 border">
 											  <input type="text" name="montogasto" value="${formatearMiles(item.monto)}"
-											  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">
+												class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">
 											</td>
 											<td class="p-1 border">
 											  <input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">
@@ -2417,9 +2548,12 @@
 									  });
 
 									  tbody.innerHTML = html;
+
+
 									}
 
-																									function renderizarPaginacion(total, paginaActual, tamanio, idProyecto) {
+
+									function renderizarPaginacion(total, paginaActual, tamanio, idProyecto) {
 									  const totalPaginas = Math.ceil(total / tamanio);
 									  const contenedor = document.getElementById("paginacionGastos") || document.createElement("div");
 									  contenedor.id = "paginacionGastos";
@@ -2472,7 +2606,7 @@
 										`;
 
 										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorgastosnuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorgastosnuevos">
 											<option value=""  disabled selected>Seleccione un proveedor</option>
 												${listaProveedores.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
 											</select>
@@ -2505,11 +2639,31 @@
 
 										tbody.appendChild(nuevaFila);
 
+																			nuevaFila.querySelector(".monto-input").addEventListener("blur", function () {
+										let valor = this.value.trim();
 
-										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
-											const valorSinFormato = this.value.replace(/\D/g, "");
-											this.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
+										// Reemplaza puntos y comas para convertir correctamente
+										valor = valor.replace(/\./g, '').replace(',', '.');
+
+										// Permitir solo número con signo negativo opcional y decimales
+										if (!/^(-)?\d+(\.\d{0,2})?$/.test(valor)) {
+											this.value = "";
+											return;
+										}
+
+										const numero = parseFloat(valor);
+										if (isNaN(numero)) {
+											this.value = "";
+											return;
+										}
+
+										// Formatear como número entero con puntos de miles y signo negativo
+										this.value = numero.toLocaleString('es-CL', {
+											minimumFractionDigits: 0,
+											maximumFractionDigits: 0
 										});
+									});
+
 									}
 
 									document.addEventListener("DOMContentLoaded", async () => {
@@ -2549,7 +2703,7 @@
 									}
 																									document.getElementById('btnGuardarGastos').addEventListener('click', async function() {
 										try {
-											const idProyecto = @idproyectos; 
+											const idProyecto = '@idproyectos';
 
 											// Función para parsear valores
 											const parseValue = (value, type) => {
@@ -2560,22 +2714,24 @@
 												return value;
 											};
 
-											// Recolectar datos
+
 											const todosLosGastos = [];
 
-										
+
 																				// Gastos existentes
 									document.querySelectorAll('#tablagastos tbody tr').forEach(tr => {
 										const esEliminado = tr.querySelector('input.esEliminados')?.value === 'true';
 
-										// Solo agrega si tiene ID o si no está eliminado (para evitar enviar filas vacías)
+
 										if (esEliminado || tr.querySelector('input[name="IdGastoReal"]')) {
+																				let montoRaw = tr.querySelector('input[name="montogasto"]').value.trim();
+									montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
 											todosLosGastos.push({
 												IdGastoReal: parseValue(tr.querySelector('input[name="IdGastoReal"]').value, "number"),
 												Idgasto: parseValue(tr.querySelector('select[name="idgastos"]').value, "number"),
 												Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastos"]').value, "number"),
 												Segmento: null,
-												Monto: parseValue(tr.querySelector('input[name="montogasto"]').value.replace(/\D/g, ''), "decimal"),
+												Monto: parseValue(montoRaw, "decimal"),
 												Fecha: parseValue(tr.querySelector('input[name="fechagasto"]').value, "date"),
 												Estado: tr.querySelector('select[name="estadogasto"]').value,
 												Observacion: tr.querySelector('textarea[name="observaciongasto"]').value,
@@ -2586,22 +2742,25 @@
 									});
 
 											// Nuevos gastos
-											document.querySelectorAll('#tablaAgregarGastos tbody tr').forEach(tr => {
-												if (tr.style.display !== 'none') {
-													todosLosGastos.push({
-														IdGastoReal: 0, // Para nuevos gastos
-														Idgasto: parseValue(tr.querySelector('select[name="idgastosnuevos"]').value, "number"),
-														Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastosnuevos"]').value, "number"),
-														Segmento: null,
-														Monto: parseValue(tr.querySelector('input[name="montogastonuevos"]').value.replace(/\D/g, ''), "decimal"),
-														Fecha: parseValue(tr.querySelector('input[name="fechagastonuevos"]').value, "date"),
-														Estado: tr.querySelector('select[name="estadogastonuevos"]').value,
-														Observacion: tr.querySelector('textarea[name="observaciongastonuevos"]').value,
-														Venta: "Vendido",
-														EsEliminado: tr.querySelector('input.esEliminados').value === 'true'
-													});
-												}
+									document.querySelectorAll('#tablaAgregarGastos tbody tr').forEach(tr => {
+										if (tr.style.display !== 'none') {
+											let montoRaw = tr.querySelector('input[name="montogastonuevos"]').value.trim();
+											montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
+
+											todosLosGastos.push({
+												IdGastoReal: 0,
+												Idgasto: parseValue(tr.querySelector('select[name="idgastosnuevos"]').value, "number"),
+												Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastosnuevos"]').value, "number"),
+												Segmento: null,
+												Monto: parseValue(montoRaw, "decimal"),
+												Fecha: parseValue(tr.querySelector('input[name="fechagastonuevos"]').value, "date"),
+												Estado: tr.querySelector('select[name="estadogastonuevos"]').value,
+												Observacion: tr.querySelector('textarea[name="observaciongastonuevos"]').value,
+												Venta: "Vendido",
+												EsEliminado: tr.querySelector('input.esEliminados').value === 'true'
 											});
+										}
+									});
 																													const gastosParaEnviar = todosLosGastos.filter(g =>
 										g.EsEliminado || (g.Idgasto !== null && g.Idproveedor !== null)
 									);
@@ -2611,9 +2770,9 @@
 											gastos: gastosParaEnviar
 										};
 
-										console.log("Datos a enviar:", requestData); // Verifica en la consola
 
-										const response = await fetch('/#/GuardarGastos', {
+
+										const response = await fetch('/EjecucionProyecto/GuardarGastos', {
 											method: 'POST',
 											headers: {
 												'Content-Type': 'application/json',
@@ -2634,8 +2793,10 @@
 									const tablaNuevosGastos = document.querySelector('#tablaAgregarGastos tbody');
 									tablaNuevosGastos.innerHTML = ''; // Elimina todas las filas
 										agregarFilaAGastos(); // Agrega una nueva fila vacía
-									
+
 											cargarDatosGastos(idProyecto);
+											cargarDatosCosto(idProyecto);
+											cargarForecastProveedores(idProyecto);
 										} else {
 											alert('Error al guardar: ' + (result.message || ''));
 										}
@@ -2644,18 +2805,24 @@
 										alert('Error al guardar: ' + error.message);
 									}
 									});
-																	
+
 
 								</script>
 							</div>
 						</div>
 					</details>
-				</form>
+				
 			</div>
 
 			<!--Flujo de Caja -->
 			<div id="section-flujocaja" class="seccion hidden">
 				<h3 class="text-lg font-bold text-orange-500 mb-2">Flujo de Caja del Proyecto</h3>
+				<div class="text-center">
+					<button id="btnExportarExcel" class="p-2 bg-green-500 text-white rounded">
+						Exportar Flujo de Caja a Excel
+					</button>
+					
+				</div>
 				<div class="p-4 bg-gray-50 rounded-b">
 
 					<div class="flex overflow-x-auto">
@@ -3081,8 +3248,8 @@
 						}
 					}
 
-									
-					
+
+
 
 
 				</script>
@@ -3101,14 +3268,15 @@
 	 let ResumenCostos = false;
 	 let flujocajacargado = false;
 	 let ingresoscargado = false;
-	
+
 	 document.addEventListener("DOMContentLoaded", () => {
 
 			cargarDatosCosto(idProyectoActual);
+			cargarForecastProveedores(idProyectoActual);
 			ResumenCostos = true;
 				cargarListasDeGastosYProveedores();
 
-	 
+
 	});
 	buttons.forEach(btn => {
 	  btn.addEventListener("click", () => {
@@ -3135,15 +3303,18 @@
 
 		}
 		if (target === "flujocaja" && !flujocajacargado) {
-		
+
 			init();
+			const script = document.createElement('script');
+	script.src = '/js/ExportarFlujoCaja.js';
+	document.body.appendChild(script);
 			flujocajacargado = true;
 		}
 		if(target  ==="ingresos" && !ingresoscargado) {
-		
+
 			cargarDatosIngresos(idProyectoActual);
 			ingresoscargado = true;
-		
+
 		}
 	  });
 	});
