@@ -538,7 +538,7 @@
 			@{
 				var viewName = ViewContext.RouteData.Values["action"]?.ToString();
 				var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
-				var isGestorProyectos = controllerName == "Propuesta" && viewName == "GestorProyectos";
+				var isGestorProyectos = controllerName == "EjecucionProyecto" && viewName == "GestorProyectos";
 			}
 			<!-- Contenido principal -->
 			<main class="flex-grow mt-[72px] ml-56">
@@ -592,17 +592,16 @@
 				return data;
 			  }
 
-			  async function mostrarProyectos() {
+						  let mostrandoProyectos = false;
+
+			async function mostrarProyectos() {
+			  if (mostrandoProyectos) return;
+			  mostrandoProyectos = true;
+
+			  try {
 				proyectosContent.innerHTML = "";
 
-				const estadosExistentes = new Set();
-				proyectosContent.querySelectorAll("h3").forEach(h3 => {
-				  estadosExistentes.add(h3.textContent.trim());
-				});
-
 				for (const estado of estados) {
-				  if (estadosExistentes.has(estado.nombre)) continue;
-
 				  const proyectos = await cargarProyectos(estado.id);
 
 				  const contenedorEstado = document.createElement("div");
@@ -640,7 +639,10 @@
 
 				  proyectosContent.appendChild(contenedorEstado);
 				}
+			  } finally {
+				mostrandoProyectos = false;
 			  }
+			}
 
 			  let cargado = false;
 			  const menuItem = document.getElementById("menu-proyectos-item");

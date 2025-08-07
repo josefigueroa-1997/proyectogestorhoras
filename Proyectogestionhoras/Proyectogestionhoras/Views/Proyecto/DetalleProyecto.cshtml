@@ -105,7 +105,7 @@
 		}
 </style>
 
-<div class="form-container">
+<div class="max-w-[1200px] text-xs mx-auto bg-white p-5 rounded-[10px] shadow-md mt-[60px]">
 	<div class="form-group">
 		@{
 			decimal Monto = 0;
@@ -208,8 +208,41 @@
 		}
 		@foreach (var proyecto in ViewBag.Proyectos)
 		{
+			<div class="flex gap-2 mb-6 text-sm">
 
-			<p class="form-subtitle" style="color:black;">Detalles del Proyecto</p>
+				<a href="#"
+				   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+	              @(ViewContext.RouteData.Values["action"]?.ToString() == "ObtenerProyectos"
+																																							 	  ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																																					  : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																																				   				Síntesis del Proyecto
+					
+						
+					
+					</a>
+			@if (proyecto.Tipo_Status == "En Ejecución" || proyecto.Tipo_Status == "Terminado")
+				{
+					<a href="@Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto = proyecto.Id })"
+					class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+	                              @(ViewContext.RouteData.Values["action"]?.ToString() == "GestorProyectos"
+																																						  ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																																			  : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+						Gestor del Proyecto
+					</a>
+				}			
+				<a href="@Url.Action("ObtenerPresupuestoProyecto", "Proyecto", new { id = proyecto.Id })"
+																																																		   			   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+	                              @(ViewContext.RouteData.Values["action"]?.ToString() == "ObtenerPresupuestoProyecto"
+																																						  ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																																			  : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+				Presupuesto
+			</a>
+
+
+			</div>
+			<p class="text-sm text-black-50 text-center mb-5">Detalles del Proyecto</p>
 			<div style="display: flex; gap: 10px;">
 
 				@if (proyecto.Tipo_Status == "Terminado" && (idusuario == 88 || idusuario == 96))
@@ -229,8 +262,7 @@
 					</form>
 				}
 
-				<a href="@Url.Action("ObtenerhistorialNegociaciones", "Proyecto", new { idproyecto = proyecto.Id })" class="nuevo-btn">Ver Historial de Negociación</a>
-				<a href="@Url.Action("ObtenerPresupuestoProyecto", "Proyecto", new { idpresupuesto = proyecto.idpresupuesto,id=proyecto.Id })" class="presupuesto-btn">Ver Presupuesto Proyecto</a>
+				
 			</div>
 			<div class="tables-wrapper">
 
@@ -379,7 +411,7 @@
 
 
 	<div class="form-group">
-		<p class="form-subtitle" style="color:black">Cuotas</p>
+		<p class="text-sm text-black-50 text-center mb-5">Cuotas</p>
 		<div style="display: flex; justify-content: space-between;">
 
 			<table style="width: 100%; border-collapse: collapse; text-align: left;">
@@ -435,7 +467,7 @@
 	@*COSTOS DIRECTOS*@
 
 	<div class="form-group">
-		<p class="form-subtitle" style="color:black">Costos Directos</p>
+		<p class="text-sm text-black-50 text-center mb-5">Costos Directos</p>
 		<div style="display: flex; justify-content: space-between;">
 			@{
 				decimal totalsocios = 0;
@@ -617,7 +649,7 @@
 
 
 	<div class="form-group">
-		<p class="form-subtitle" style="color:black">Subcontratación de Servicios</p>
+		<p class="text-sm text-black-50 text-center mb-5">Subcontratación de Servicios</p>
 		<div style="display: flex; justify-content: space-between;">
 
 
@@ -630,7 +662,7 @@
 
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">IDCuenta</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Cuenta Contable</th>
-						@*th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>*@<
+						@*th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Segmento</th>*@
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Fecha</th>
 						<th style="padding: 10px; border: 1px solid #ddd;text-align:center;">Monto</th>
 
@@ -674,7 +706,7 @@
 	</div>
 
 	<div class="form-group">
-		<p class="form-subtitle" style="color:black">Gastos Operacionales</p>
+		<p class="text-sm text-black-50 text-center mb-5">Gastos Operacionales</p>
 		<div style="display: flex; justify-content: space-between;">
 
 
@@ -732,16 +764,11 @@
 
 	<div id="sintesis-economica" class="form-group">
 		<div class="form-group text-center">
-			<p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
-			@if (status == 2 || status == 4)
-			{
-				<a href="@Url.Action("FlujoCajaProyecto","EjecucionProyecto",new{id=idproyecto})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 inline-block">
-					Ver Flujo de Caja
-				</a>
-			}
-			<br />
-			<br />
-			<p style="text-align:center;">Fecha de última modificación: @ViewBag.FechaModificacion</p>
+			<p class="text-sm text-black-50 text-center mb-5">Síntesis Económica del Proyecto</p>
+			
+			<p class="text-center">
+				Fecha de última modificación: @ViewBag.FechaModificacion
+			</p>
 		</div>
 		<br />
 		<div class="overflow-x-auto relative">

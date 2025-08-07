@@ -48,7 +48,7 @@ namespace Proyectogestionhoras.Controllers
         {
             int idproyecto = int.Parse(Request.Form["idproyecto"].ToString());
             HttpContext.Session.SetInt32("numproyecto", idproyecto);
-            return RedirectToAction("SeleccionarActividad", "EjecucionProyecto");
+            return RedirectToAction("GestorProyectos", "EjecucionProyecto", new {idproyecto = idproyecto});
         }
         public IActionResult SeleccionarActividad()
         {
@@ -226,13 +226,13 @@ namespace Proyectogestionhoras.Controllers
                 await ejecucionService.GestorIngresos(idproyecto, ingresos);
                 await ejecucionService.GestorIngresos(idproyecto, ingresosnuevos);
                 TempData["SuccessMessageIngresos"] = "Los ingresos del proyecto se han registrado y actualizado correctamente.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-ingresos");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-ingresos");
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al registrar/editar costos del proyecto:{e.Message}");
                 TempData["ErrorMessageIngresos"] = "Hubo un error al Registrar/Editar ingresos del proyecto.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-ingresos");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-ingresos");
             }
 
         }
@@ -405,11 +405,12 @@ namespace Proyectogestionhoras.Controllers
 
 
 
-        public async Task<IActionResult> EgresosProyectos(int? idproyecto, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
+        public async Task<IActionResult> GestorProyectos(int? idproyecto, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
         {
             var idsession = HttpContext.Session.GetInt32("id");
             if (idsession.HasValue)
             {
+                ViewBag.AnchoExtendido = true;
                 Debug.WriteLine(idproyecto);
                 var proyecto = await proyectoService.ObtenerProyectos(idproyecto, idcliente, nombre, idtipoempresa, statusproyecto, numproyecto, idtipologia, unidadneg, idccosto, idusuario);
                 ViewBag.Proyecto = proyecto;
@@ -424,8 +425,8 @@ namespace Proyectogestionhoras.Controllers
                 var datosgastosrecursos = await context.Gastoshhhejecucions.Where(g => g.Idproyecto == idproyecto).ToListAsync();
                 ViewBag.GastosHH = gastoshh;
                 ViewBag.GastosRecursos = datosgastosrecursos;
-
-                return View();
+                var flujocaja = await reporteService.ProcesarFlujoCajaPorMesAsync(idproyecto);
+                return View(flujocaja);
 
             }
 
@@ -547,13 +548,13 @@ namespace Proyectogestionhoras.Controllers
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicionuevos);
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 TempData["SuccessMessageSconsultores"] = "Los Honorarios del proyecto se han registrado y actualizado correctamente.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-consultores");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-consultores");
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Error al registrar honorarios: {e.Message}");
                 TempData["ErrorMessageConsultores"] = "Error al registrar los honorarios del proyecto.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-consultores");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-consultores");
             }
         }
 
@@ -624,13 +625,13 @@ namespace Proyectogestionhoras.Controllers
                 await proyectoService.AgregarServicioProyectoeJECUCION(idproyecto, verificarservicionuevos);
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 TempData["SuccessMessageServicios"] = "Los Servicios del proyecto se han registrado y actualizado correctamente.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Error al registrar seriviocs: {e.Message}");
                 TempData["ErrorMessageServicios"] = "Error al registrar los servicios del proyecto.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-servicios");
             }
         }
 
@@ -1099,7 +1100,7 @@ namespace Proyectogestionhoras.Controllers
                 await ejecucionService.GestorGastosHH(idproyecto, gastohhstaff);
                 await proyectoService.GestorFechaModificacionProyecto(idproyecto);
                 TempData["SuccessMessage"] = "Los Registros hh del proyecto se han registrado y actualizado correctamente.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
 
             }
             catch (Exception ex)
@@ -1108,7 +1109,7 @@ namespace Proyectogestionhoras.Controllers
                 Debug.WriteLine(ex.ToString());
                 Debug.WriteLine(ex.InnerException);
                 TempData["ErrorMessage"] = "Error al registrar/actualizar los registros hh del proyecto.";
-                return Redirect($"{Url.Action("EgresosProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
+                return Redirect($"{Url.Action("GestorProyectos", "EjecucionProyecto", new { idproyecto })}#section-hh");
 
             }
 

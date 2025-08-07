@@ -557,7 +557,7 @@ namespace Proyectogestionhoras.Services
                     join c in context.Historialcuentasproyectos on p.Id equals c.Idproyecto
                     join hc in context.HistorialCostosProyectos on p.Id equals hc.Idproyecto
 
-                    where p.StatusProyecto == 2 &&
+                    where (p.StatusProyecto == 2 || p.StatusProyecto == 4 )&&
                           (estado == null || g.Estado == estado) &&
                           (idproyecto == null || p.Id == idproyecto)
                     group new { g, p, c, hc } by new

@@ -128,6 +128,14 @@ namespace Proyectogestionhoras.Controllers
             {
                 if (gastos.Id == 0)
                 {
+                    bool gastoYaExiste = await context.Gastos
+                    .AnyAsync(c => c.Nombre == gastos.Nombre);
+
+                    if (gastoYaExiste)
+                    {
+                        TempData["ErrorGasto"] = "Ya existe un gasto con ese nombre.";
+                        return RedirectToAction("GestorGastos");
+                    }
                     context.Gastos.Add(gastos);
                     TempData["SuccessGasto"] = "Gasto agregado correctamente.";
                 }
@@ -190,6 +198,14 @@ namespace Proyectogestionhoras.Controllers
             {
                 if (servicios.Id == 0)
                 {
+                    bool servicioYaExiste = await context.Servicios
+                    .AnyAsync(c => c.Nombre == servicios.Nombre);
+
+                    if (servicioYaExiste)
+                    {
+                        TempData["ErrorServicio"] = "Ya existe un servicio con ese nombre.";
+                        return RedirectToAction("GestorServicios");
+                    }
                     context.Servicios.Add(servicios);
                     TempData["SuccessServicio"] = "Servicio agregado correctamente.";
                 }

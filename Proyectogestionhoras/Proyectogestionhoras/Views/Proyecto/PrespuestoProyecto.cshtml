@@ -96,7 +96,7 @@
         }
 </style>
 
-<div class="form-container">
+<div class="max-w-[1200px] text-xs mx-auto bg-white p-5 rounded-[10px] shadow-md mt-[60px]">
     <div class="form-group">
         @{
             decimal Monto = 0;
@@ -108,8 +108,36 @@
         }
         @foreach (var proyecto in ViewBag.Presupuesto)
         {
+            <div class="flex gap-2 mb-6 text-sm">
+                <a href="@Url.Action("ObtenerProyectos", "Proyecto", new { id = proyecto.Id })"
+                   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+              @(ViewContext.RouteData.Values["action"]?.ToString() == "ObtenerProyectos"
+                                                                                                                                                         ? "bg-white border-orange-500 text-orange-500 font-semibold"
+                                                                                                                                            : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+                                                                                                                                                                                                                Síntesis del Proyecto
+                                                                                                                                                                                                            </a>
+            @if (proyecto.Tipo_Status == "En Ejecución" || proyecto.Tipo_Status == "Terminado")
+                {
+                    <a href="@Url.Action("GestorProyectos","EjecucionProyecto",new{idproyecto = proyecto.Id})"
+                    class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
 
-            <p class="form-subtitle" style="color:black;">Detalle Presupuesto del Proyecto</p>
+                              @(ViewContext.RouteData.Values["action"]?.ToString() == "GestorProyectos"
+                                                                                                                                                ? "bg-white border-orange-500 text-orange-500 font-semibold"
+                                                                                                                                    : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+                                                                                                                                                                                                        Gestor del Proyecto
+                                                                                                                                                                                                    </a>}
+                                                                                                                                                                                                    <a href="#"
+                                                                                                                                                                                                       class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+
+                              @(ViewContext.RouteData.Values["action"]?.ToString() == "ObtenerPresupuestoProyecto"
+                                                                                                                                                ? "bg-white border-orange-500 text-orange-500 font-semibold"
+                                                                                                                                    : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+                                                                                                                                                                                                        Presupuesto
+                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                   
+                         
+        </div>
+            <p class="text-sm text-black-50 text-center mb-5" >Detalle Presupuesto del Proyecto</p>
             <div style="display: flex; gap: 10px;">
 
                 @if (proyecto.Tipo_Status != "Rechazado" && proyecto.Tipo_Status != "Terminado" && proyecto.Tipo_Status=="Presupuesto")
@@ -230,7 +258,7 @@
 
     @*FACTURAS PROYECTO*@
     <div class="form-group">
-        <p class="form-subtitle" style="color:black">Cuotas</p>
+        <p class="text-sm text-gray-600 text-black text-center mb-5">Cuotas</p>
         <div style="display: flex; justify-content: space-between;">
 
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
@@ -286,7 +314,7 @@
     @*COSTOS DIRECTOS*@
 
     <div class="form-group">
-        <p class="form-subtitle" style="color:black">Costos Directos</p>
+        <p class="text-sm text-gray-600 text-black text-center mb-5">Costos Directos</p>
         <div style="display: flex; justify-content: space-between;">
             @{
                 decimal totalsocios = 0;
@@ -451,7 +479,7 @@
     
 
     <div class="form-group">
-        <p class="form-subtitle" style="color:black">Subcontratación de Servicios</p>
+        <p class="text-sm text-gray-600 text-black text-center mb-5">Subcontratación de Servicios</p>
         <div style="display: flex; justify-content: space-between;">
 
 
@@ -511,7 +539,7 @@
     </div>
 
     <div class="form-group">
-        <p class="form-subtitle" style="color:black">Gastos Operacionales</p>
+        <p class="text-sm text-gray-600 text-black text-center mb-5">Gastos Operacionales</p>
         <div style="display: flex; justify-content: space-between;">
 
 
@@ -571,7 +599,7 @@
 
     
     <div class="form-group">
-        <p class="form-subtitle" style="color:black;">Síntesis Económica del Proyecto</p>
+        <p class="text-sm text-gray-600 text-black text-center mb-5">Síntesis Económica del Proyecto</p>
         <table style="width: 80%; border-collapse: collapse; margin: 0 auto;">
             <thead>
                 <tr style="background-color: #fa8164; color: black; text-align:center">

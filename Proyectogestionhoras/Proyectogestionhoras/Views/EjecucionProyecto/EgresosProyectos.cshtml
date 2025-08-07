@@ -1,8 +1,9 @@
-﻿
-@{
-	ViewData["Title"] = "Costos del Proyecto";
+﻿@{
+	ViewData["Title"] = "Gestor del Proyecto";
 }
 
+@using Proyectogestionhoras.Models.DTO
+@model Dictionary<string, Dictionary<string, Dictionary<(int Mes, int Anio), List<FlujoCajaProyectosDTO>>>>
 
 
 @{
@@ -25,42 +26,41 @@
 
 }
 
-<div class="max-w-[1800px] mx-auto p-12 bg-gray-50 rounded-xl shadow-xl">
-
+<div class="max-w-[calc(100vw-16rem)] p-12 bg-gray-50 rounded-xl shadow-xl">
 
 	<!-- 🔶 PESTAÑAS TIPO NAVEGADOR -->
 	@foreach (var proyecto in ViewBag.Proyecto)
 	{
 		idproyectos = proyecto.Id;
 		<div class="flex gap-2 mb-6">
-			<a href="@Url.Action("ForecastIngreso", "EjecucionProyecto", new { id = idproyectos })"
+			<a href="#"
 			   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-						@(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
-																									  	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																							 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																											 Ingresos del Proyecto
-																																										</a>
-																																										<a href="#"
-																																										   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+									@(ViewContext.RouteData.Values["action"]?.ToString() == "ForecastIngreso"
+																																 	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																													 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																																	Síntesis del Proyecto
+																																																</a>
+																																																<a href="#"
+																																																   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
 
-										             @(ViewContext.RouteData.Values["action"]?.ToString() == "EgresosProyectos"
-																							 	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																					 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																									 Costos del Proyecto
-																																								</a>
-																																								<a href="@Url.Action("FlujoCajaProyecto", "EjecucionProyecto", new { id = idproyectos })"
-																																								   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+													             @(ViewContext.RouteData.Values["action"]?.ToString() == "GestorProyectos"
+																															 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																											 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																															Gestor del Proyecto
+																																														</a>
+																																														<a href="#"
+																																														   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
 
-									             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
-																							 	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																					 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
-																																									Flujo de Caja
-																																								</a>
-																																								<a href="@Url.Action("SeleccionarProyecto", "EjecucionProyecto", new { statusproyecto = 2 })"
-																																								   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
-									             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
-																							 	 ? "bg-white border-orange-500 text-orange-500 font-semibold"
-																					 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+												             @(ViewContext.RouteData.Values["action"]?.ToString() == "FlujoCajaProyecto"
+																															 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																											 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
+																																															Presupuesto
+																																														</a>
+																																														<a href="#"
+																																														   class="px-5 py-2 rounded-t-lg border border-b-0 transition-all
+												             @(ViewContext.RouteData.Values["action"]?.ToString() == "SeleccionarProyecto"
+																															 ? "bg-white border-orange-500 text-orange-500 font-semibold"
+																											 	 : "bg-gray-200 text-gray-600 hover:bg-orange-500 hover:text-white")">
 			Seleccionar Proyecto
 		</a>
 	</div>
@@ -90,16 +90,16 @@
 					<tbody>
 
 						<tr class="bg-white hover:bg-gray-50">
-							<td class="p-2 border text-center">@proyecto.numproyecto - @proyecto.NombreProyecto</td>
+							<td class="p-2 border text-center" id="proyectoData" data-nombreproyecto="@proyecto.NombreProyecto">@proyecto.numproyecto - @proyecto.NombreProyecto</td>
 							<td class="p-2 border text-center">@proyecto.NombreCliente</td>
-							
+
 							<td class="p-2 border text-center">@proyecto.MONEDA</td>
 							@if (proyecto.MontoOrigenExtranjero > 0)
 							{
 								<td class="p-2 border  text-center">@String.Format("{0:N0}", @proyecto.MontoOrigenExtranjero)</td>
 							}
 							<td class="p-2 border text-right">@String.Format("{0:N0}", @proyecto.MONTO)</td>
-							
+
 							<td class="p-2 border text-center">@proyecto.Codigo</td>
 
 						</tr>
@@ -114,40 +114,216 @@
 	<div class="flex gap-6">
 
 		<!-- 🔸 SIDEBAR -->
-		<aside class="w-64 sticky top-20 self-start bg-white border border-gray-200 p-4 rounded-xl shadow-md">
+		<aside class="w-64 sticky top-40 self-start bg-white border border-gray-200 p-4 rounded-xl shadow-md">
 			<nav class="space-y-2 text-sm">
 				<button data-section="general" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">📋 Resumen General del Proyecto</button>
-				@*<button data-section="ingresos" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">💰 Ingresos</button>*@
+				<button data-section="ingresos" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">💰 Ingresos</button>
 				<button data-section="hh" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🔧 HH del Proyecto</button>
 				<button data-section="consultores" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">👨‍💼 Consultores</button>
 				<button data-section="servicios" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🛠 Servicios</button>
 				<button data-section="gastos" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">💸 Gastos</button>
-				@*<button data-section="flujo" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🔁 Flujo de Caja</button>*@
+				<button data-section="flujocaja" class="w-full text-left px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-700 font-medium transition-all">🔁 Flujo de Caja</button>
 			</nav>
 		</aside>
 
 		<!-- 🔸 SECCIONES -->
-		<main class="flex-1 space-y-8">
+		<main class="flex-1 space-y-8 bg-white">
 
 			<!--general-->
 			<div id="section-general" class="seccion ">
+				<h3 class="text-lg font-bold text-orange-500 mb-2">Resumen Ingresos del Proyecto</h3>
+				<div class="flex justify-center">
+					<div class="overflow-x-auto w-full max-w-full">
+						<table class="min-w-max w-full border-collapse text-left text-xs border border-gray-300">
 
-				
+							<tbody>
+								<tr>
+									<td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Fecha</td>
+									@{
+
+										var mesesAnios = new HashSet<(int, int)>();
+
+
+										foreach (var proyecto in Model)
+										{
+											foreach (var tipo in proyecto.Value)
+											{
+												if (tipo.Key == "Ingreso")
+												{
+													foreach (var flujo in tipo.Value)
+													{
+														var mesAnio = flujo.Key;
+														if (flujo.Value.Any(f => f.Estado == "Real" || f.Estado == "Proyectado" || f.Estado == "Forecast"))
+														{
+															mesesAnios.Add(mesAnio);
+														}
+													}
+												}
+											}
+										}
+
+
+										var mesesAniosOrdenados = mesesAnios.OrderBy(ma => ma.Item2).ThenBy(ma => ma.Item1);
+
+
+										foreach (var mesAnio in mesesAniosOrdenados)
+										{
+											<th class="p-2 bg-blue-100 border border-gray-300 text-center">@($"{mesAnio.Item1:D2}-{mesAnio.Item2}")</th>
+										}
+									}
+									<td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Totales</td>
+								</tr>
+								<tr>
+									<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Proyectado</td>
+									@{
+										decimal totalProyectadoFila = 0;
+									}
+									@foreach (var proyecto in Model.OrderBy(p => p.Key))
+									{
+										foreach (var tipo in proyecto.Value)
+										{
+
+
+
+											foreach (var mesAnio in mesesAniosOrdenados)
+											{
+												var flujo = tipo.Value
+												.FirstOrDefault(flujoList =>
+												flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+
+												decimal proyectado = 0;
+
+												if (flujo.Key != default)
+												{
+
+													proyectado = flujo.Value
+													.Where(f => f.Estado == "Proyectado")
+													.Sum(f => f.Monto);
+												}
+
+
+												if (tipo.Key == "Ingreso")
+												{
+													<td class="p-2 border border-gray-300 text-right">
+														@(proyectado == 0 ? "" : String.Format("{0:N0}", proyectado))
+													</td>
+													totalProyectadoFila += proyectado;
+												}
+											}
+										}
+									}
+									<td class="p-2 border border-gray-300 text-right">
+										@(totalProyectadoFila == 0 ? "" : String.Format("{0:N0}", totalProyectadoFila))
+									</td>
+								</tr>
+								<tr>
+									<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Real</td>
+									@{
+										decimal totalRealFila = 0;
+									}
+									@foreach (var proyecto in Model.OrderBy(p => p.Key))
+									{
+										foreach (var tipo in proyecto.Value)
+										{
+
+
+
+											foreach (var mesAnio in mesesAniosOrdenados)
+											{
+												var flujo = tipo.Value
+												.FirstOrDefault(flujoList =>
+												flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+
+												decimal real = 0;
+
+												if (flujo.Key != default)
+												{
+
+													real = flujo.Value
+													.Where(f => f.Estado == "Real")
+													.Sum(f => f.Monto);
+												}
+
+
+												if (tipo.Key == "Ingreso")
+												{
+													<td class="p-2 border border-gray-300 text-right">
+														@(real == 0 ? "" : String.Format("{0:N0}", real))
+													</td>
+													totalRealFila += real;
+												}
+											}
+										}
+									}
+									<td class="p-2 border border-gray-300 text-right">
+										@(totalRealFila == 0 ? "" : String.Format("{0:N0}", totalRealFila))
+									</td>
+								</tr>
+
+
+
+								<tr>
+									<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Forecast</td>
+									@{
+										decimal totalForecastFila = 0;
+									}
+									@foreach (var proyecto in Model.OrderBy(p => p.Key))
+									{
+										foreach (var tipo in proyecto.Value)
+										{
+
+
+
+											foreach (var mesAnio in mesesAniosOrdenados)
+											{
+												var flujo = tipo.Value
+												.FirstOrDefault(flujoList =>
+												flujoList.Key.Item1 == mesAnio.Item1 && flujoList.Key.Item2 == mesAnio.Item2);
+
+												decimal forecast = 0;
+
+												if (flujo.Key != default)
+												{
+
+													forecast = flujo.Value
+													.Where(f => f.Estado == "Forecast")
+													.Sum(f => f.Monto);
+												}
+
+
+												if (tipo.Key == "Ingreso")
+												{
+													<td class="p-2 border border-gray-300 text-right">
+														@(forecast == 0 ? "" : String.Format("{0:N0}", forecast))
+													</td>
+													totalForecastFila += forecast;
+												}
+											}
+										}
+									}
+									<td class="p-2 border border-gray-300 text-right">
+										@(totalForecastFila == 0 ? "" : String.Format("{0:N0}", totalForecastFila))
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+
+					</div>
+
+				</div>
 				<h3 class="text-lg font-bold text-orange-500 mb-2">Resumen Costos del Proyecto</h3>
-				<div class="p-4 bg-gray-50 rounded-b">
-					<div class="overflow-x-auto">
-						<table class="min-w-full text-xs border-collapse">
+				<div class="p-4 bg-white-50 rounded-b">
+					<div class="overflow-x-auto w-full max-w-full">
+						<table class="w-full text-xs border-collapse border border-gray-300 table-auto">
 							<thead>
 								<tr class="bg-orange-100 text-black">
-
-									<th class="p-2 border border-gray-300 text-left">Tipo</th>
-									<th class="p-1 border border-gray-300 text-left">IdCuenta</th>
-									<th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-									<th class="p-2 border border-gray-300 text-left">Total Proyectado</th>
-									<th class="p-2 border border-gray-300 text-left">Total Real</th>
-									<th class="p-2 border border-gray-300 text-left">Total Forecast</th>
-
-
+									<th class="p-2 border border-gray-300 text-left ">Tipo</th>
+									<th class="p-1 border border-gray-300 text-left ">IdCuenta</th>
+									<th class="p-2 border border-gray-300 text-left ">Cuenta Contable</th>
+									<th class="p-2 border border-gray-300 text-right ">Total Proyectado</th>
+									<th class="p-2 border border-gray-300 text-right ">Total Real</th>
+									<th class="p-2 border border-gray-300 text-right ">Total Forecast</th>
 								</tr>
 							</thead>
 
@@ -162,10 +338,10 @@
 								<table id="tablaforecastproveedor" class="min-w-full text-xs border-collapse border border-gray-300">
 									<thead>
 										<tr class="bg-green-100 text-black">
-											<th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
-											<th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
-											<th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>
-											<th class="p-2 border border-gray-300 text-center min-w-[150px]">fecha</th>
+											<th class="p-2 border border-gray-300 text-left max-w-[120px] truncate">Proveedor</th>
+											<th class="p-2 border border-gray-300 text-left max-w-[120px] truncate">Cuenta</th>
+											<th class="p-2 border border-gray-300 text-left max-w-[120px] truncate">Nombre</th>
+											<th class="p-2 border border-gray-300 text-center max-w-[120px] truncate">fecha</th>
 
 										</tr>
 									</thead>
@@ -190,12 +366,12 @@
 								function crearFila(tipo, idCuenta, cuenta, proyectado, real, forecast) {
 								  return `
 									<tr>
-									  <td class="p-2 border border-gray-300 text-left">${tipo}</td>
-									  <td class="p-2 border border-gray-300 text-left">${idCuenta}</td>
-									  <td class="p-2 border border-gray-300 text-left">${cuenta}</td>
-									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(proyectado)}</td>
-									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(real)}</td>
-									  <td class="p-2 border border-gray-300 text-right">${formatearNumero(forecast)}</td>
+									  <td class="p-2 border border-gray-300 text-left  max-w-[200px] truncate">${tipo}</td>
+									  <td class="p-2 border border-gray-300 text-left  max-w-[200px] truncate">${idCuenta}</td>
+									  <td class="p-2 border border-gray-300 text-left  max-w-[200px] truncate">${cuenta}</td>
+									  <td class="p-1 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(proyectado)}</td>
+									  <td class="p-1 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(real)}</td>
+									  <td class="p-1 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(forecast)}</td>
 									</tr>
 								  `;
 								}
@@ -245,9 +421,9 @@
 								tbody.innerHTML += `
 								  <tr class="font-bold bg-gray-200">
 									<td class="p-2 border border-gray-300 text-left" colspan="3">Totales</td>
-									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalProyectado)}</td>
-									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalReal)}</td>
-									<td class="p-2 border border-gray-300 text-right">${formatearNumero(totalForecast)}</td>
+									<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(totalProyectado)}</td>
+									<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(totalReal)}</td>
+									<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatearNumero(totalForecast)}</td>
 								  </tr>
 								`;
 
@@ -263,125 +439,110 @@
 
 
 
-							$(document).ready(function () {
 
-								var idproyecto = '@idproyectos';
-
-
+							function cargarForecastProveedores(idProyecto) {
 								$.ajax({
 									url: '/EjecucionProyecto/RecuperarForecastProveedores',
 									type: 'GET',
-									data: { idproyecto: idproyecto },
+									data: { idproyecto: idProyecto },
 									success: function (data) {
-										renderizarTabla(data);
+										renderizarTablaForecast(data);
 									},
 									error: function (err) {
 										console.error('Error al recuperar los datos:', err);
 									}
 								});
+							}
 
-								function renderizarTabla(data) {
-									const tabla = $('#tablaforecastproveedor');
-									const tablaBody = tabla.find('tbody');
-									const tablaHead = tabla.find('thead');
+							function renderizarTablaForecast(data) {
+								const tabla = $('#tablaforecastproveedor');
+								const tablaBody = tabla.find('tbody');
+								const tablaHead = tabla.find('thead');
 
+								tablaBody.empty();
+								tablaHead.empty();
 
-									tablaBody.empty();
-									tablaHead.empty();
-
-
-									const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))]
-										.sort((a, b) => {
-											const [mesA, anioA] = a.split('-').map(Number);
-											const [mesB, anioB] = b.split('-').map(Number);
-											const fechaA = new Date(anioA, mesA - 1);
-											const fechaB = new Date(anioB, mesB - 1);
-											return fechaA - fechaB;
-										});
-
-
-									let encabezado = `
-														<tr class="bg-green-100 text-black">
-														<th class="p-2 border border-gray-300 text-left min-w-[150px]">Proveedor</th>
-														<th class="p-2 border border-gray-300 text-left min-w-[100px]">Cuenta</th>
-														<th class="p-2 border border-gray-300 text-left min-w-[150px]">Nombre</th>`;
-									mesesUnicos.forEach(mes => {
-										encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
+								const mesesUnicos = [...new Set(data.map(item => `${item.mes.toString().padStart(2, '0')}-${item.anio}`))]
+									.sort((a, b) => {
+										const [mesA, anioA] = a.split('-').map(Number);
+										const [mesB, anioB] = b.split('-').map(Number);
+										const fechaA = new Date(anioA, mesA - 1);
+										const fechaB = new Date(anioB, mesB - 1);
+										return fechaA - fechaB;
 									});
-									encabezado += `<th class="p-2 border border-gray-300 text-right">Total Proveedores</th>`;
-									encabezado += `</tr>`;
-									tablaHead.append(encabezado);
 
+								let encabezado = `
+									<tr class="bg-green-100 text-black">
+										<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Proveedor</th>
+										<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Cuenta</th>
+										<th class="p-2 border border-gray-300 text-left max-w-[200px] truncate">Nombre</th>`;
+								mesesUnicos.forEach(mes => {
+									encabezado += `<th class="p-2 border border-gray-300 text-center">${mes}</th>`;
+								});
+								encabezado += `<th class="p-2 border border-gray-300 text-right">Total Proveedores</th>`;
+								encabezado += `</tr>`;
+								tablaHead.append(encabezado);
 
-									const totalesPorMes = new Array(mesesUnicos.length).fill(0);
-									let totalGeneral = 0;
+								const totalesPorMes = new Array(mesesUnicos.length).fill(0);
+								let totalGeneral = 0;
 
+								const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre']);
 
-									const agrupados = agruparPor(data, ['nombreproveedor', 'cuenta', 'nombre']);
+								for (let [key, registros] of Object.entries(agrupados)) {
+									const [proveedor, cuenta, nombre] = key.split('|');
 
-									for (let [key, registros] of Object.entries(agrupados)) {
-										const [proveedor, cuenta, nombre] = key.split('|');
+									let fila = `
+										<tr>
+											<td class="p-2 border border-gray-300 text-left">${proveedor}</td>
+											<td class="p-2 border border-gray-300 text-left">${cuenta}</td>
+											<td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
 
+									let totalFila = 0;
+									mesesUnicos.forEach((mes, index) => {
+										const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
+										const monto = registroMes ? registroMes.totalforecastproveedor : null;
 
-										let fila = `
-														<tr>
-															<td class="p-2 border border-gray-300 text-left">${proveedor}</td>
-															<td class="p-2 border border-gray-300 text-left">${cuenta}</td>
-															<td class="p-2 border border-gray-300 text-left">${nombre}</td>`;
-
-
-										let totalFila = 0;
-										mesesUnicos.forEach((mes, index) => {
-											const registroMes = registros.find(r => `${r.mes.toString().padStart(2, '0')}-${r.anio}` === mes);
-											const monto = registroMes ? registroMes.totalforecastproveedor : null;
-
-											if (monto === null || monto === 0) {
-												fila += `<td class="p-2 border border-gray-300 text-right"></td>`;
-											} else {
-												totalFila += monto;
-												totalesPorMes[index] += monto;
-												fila += `<td class="p-2 border border-gray-300 text-right">${formatMoneda(monto)}</td>`;
-											}
-										});
-
-
-										fila += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalFila)}</td>`;
-										fila += `</tr>`;
-										tablaBody.append(fila);
-										totalGeneral += totalFila;
-									}
-
-
-									let filaTotales = `
-														<tr class="bg-green-100">
-														<td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
-									totalesPorMes.forEach(totalMes => {
-										filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
-									});
-									filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
-									filaTotales += `</tr>`;
-
-
-									tablaBody.append(filaTotales);
-								}
-
-
-								function agruparPor(array, keys) {
-									return array.reduce((result, item) => {
-										const groupKey = keys.map(key => item[key]).join('|');
-										if (!result[groupKey]) {
-											result[groupKey] = [];
+										if (monto === null || monto === 0) {
+											fila += `<td class="p-2 border border-gray-300 text-right"></td>`;
+										} else {
+											totalFila += monto;
+											totalesPorMes[index] += monto;
+											fila += `<td class="p-2 border border-gray-300 text-right max-w-[200px] truncate">${formatMoneda(monto)}</td>`;
 										}
-										result[groupKey].push(item);
-										return result;
-									}, {});
+									});
+
+									fila += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalFila)}</td>`;
+									fila += `</tr>`;
+									tablaBody.append(fila);
+									totalGeneral += totalFila;
 								}
 
+								let filaTotales = `
+									<tr class="bg-green-100">
+										<td class="p-2 border border-gray-300 text-left font-bold" colspan="3">Totales</td>`;
+								totalesPorMes.forEach(totalMes => {
+									filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalMes)}</td>`;
+								});
+								filaTotales += `<td class="p-2 border border-gray-300 text-right font-bold">${formatMoneda(totalGeneral)}</td>`;
+								filaTotales += `</tr>`;
 
-								function formatMoneda(valor) {
-									return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-								}
-							});
+								tablaBody.append(filaTotales);
+							}
+
+							function agruparPor(array, keys) {
+								return array.reduce((result, item) => {
+									const groupKey = keys.map(key => item[key]).join('|');
+									if (!result[groupKey]) {
+										result[groupKey] = [];
+									}
+									result[groupKey].push(item);
+									return result;
+								}, {});
+							}
+
+							function formatMoneda(valor) {
+								return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+							}
 
 						</script>
 
@@ -397,6 +558,298 @@
 
 
 			</div>
+
+			<div id="section-ingresos" class="seccion hidden">
+				<form method="post" asp-action="RegistrarIngresos" asp-controller="EjecucionProyecto">
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
+					@if (TempData["ErrorMessageIngresos"] != null)
+					{
+						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+							@TempData["ErrorMessageIngresos"]
+						</div>
+					}
+					@if (TempData["SuccessMessageIngresos"] != null)
+					{
+						<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
+							@TempData["SuccessMessageIngresos"]
+						</div>
+					}
+					@if (TempData["ErrorMessageIngresos"] != null || TempData["SuccessMessageIngresos"] != null)
+					{
+						<script>
+							setTimeout(() => {
+								document.querySelectorAll('[role="alert"]').forEach(alert => {
+									alert.style.transition = "opacity 0.5s ease-out";
+									alert.style.opacity = "0";
+									setTimeout(() => alert.remove(), 500);
+								});
+							}, 5000);
+						</script>
+					}
+					<h3 class="text-lg font-bold text-orange-500 mb-2">💰 Ingresos</h3>
+					<div class="flex justify-center mb-4">
+						<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
+							Guardar Ingresos
+						</button>
+
+
+					</div>
+					<!-- Accordion: Agregar Ingreso  -->
+					<details class="border rounded mb-4">
+						<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">➕ Agregar Ingresos</summary>
+						<div class="p-4 bg-gray-50 rounded-b">
+
+							<div class="overflow-x-auto">
+								<table id="tablaAgregarIngresos" class="min-w-full text-xs border-collapse">
+									<thead>
+										<tr class="bg-orange-100 text-black">
+											<th class="p-2 border border-gray-300 text-left">Nº Documento</th>
+											<th class="p-2 border border-gray-300 text-left">Fecha Emision</th>
+											<th class="p-2 border border-gray-300 text-left">Fecha de Pago</th>
+											<th class="p-2 border border-gray-300 text-left">Monto CLP</th>
+											<th class="p-2 border border-gray-300 text-left">IVA</th>
+											<th class="p-2 border border-gray-300 text-left">Estado</th>
+											<th class="p-2 border border-gray-300 text-left">Cuenta Asociada</th>
+											<th class="p-2 border border-gray-300 text-left">Glosa</th>
+
+
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="contenedorBotonIngresos"></div>
+							</div>
+						</div>
+					</details>
+					<!-- Accordion: Tabla de consultores  -->
+					<details open class="border rounded">
+						<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">💰 Ingresos</summary>
+						<div class="p-4 bg-gray-50 rounded-b">
+							<div class="overflow-x-auto">
+								<table id="tablaingresos" class="min-w-full text-xs border-collapse">
+									<thead>
+										<tr class="bg-orange-100 text-black">
+											<th class="p-2 border border-gray-300 text-left">Nº Documento</th>
+											<th class="p-2 border border-gray-300 text-left">Fecha Emision</th>
+											<th class="p-2 border border-gray-300 text-left">Fecha de Pago</th>
+											<th class="p-2 border border-gray-300 text-left">Monto CLP</th>
+											<th class="p-2 border border-gray-300 text-left">IVA</th>
+											<th class="p-2 border border-gray-300 text-left">Estado</th>
+											<th class="p-2 border border-gray-300 text-left">Cuenta Asociada</th>
+											<th class="p-2 border border-gray-300 text-left">Glosa</th>
+											<th class="p-2 border border-gray-300 text-left">Acción</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<div id="mensajeIngresos" class="text-left text-gray-500 mt-2"></div>
+								<script>
+
+
+
+									async function cargarDatosIngresos(idProyecto) {
+									  try {
+
+										  const tbody = document.querySelector('#tablaingresos tbody');
+												const mensajeDiv = document.getElementById("mensajeIngresos");
+												tbody.innerHTML = "";
+												mensajeDiv.textContent = "Cargando Ingresos...";
+
+											await cargarListasDeConsultoresYProveedores();
+
+
+											const IngresosReales = await fetch(`/EjecucionProyecto/CargarIngresosReales?idproyecto=${idProyecto}`).then(res => res.json());
+
+											if (IngresosReales.length > 0) {
+												renderizarTablaIngresos(IngresosReales);
+												mensajeDiv.textContent = "";
+												document.getElementById("tablaingresos").style.display = "";
+											} else {
+													mensajeDiv.textContent = "No hay Ingresos para este proyecto.";
+													document.getElementById("tablaingresos").style.display = "none";
+												}
+
+
+
+									  } catch (error) {
+										console.error("Error al cargar ingresos:", error);
+									  }
+									}
+
+										   function formatearMiles(valor) {
+									  if (!valor) return "";
+									  const numero = parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
+									  if (isNaN(numero)) return "";
+									  return numero.toLocaleString("es-CL");
+									}
+									function renderizarTablaIngresos(data) {
+									  const tbody = document.querySelector('#tablaingresos tbody');
+									  tbody.innerHTML = "";
+
+									  data.forEach((item, index) => {
+										const row = document.createElement('tr');
+										row.classList.add("bg-white", "hover:bg-gray-50");
+
+											const Estadoselect = `
+											<select name="Estado"  class="border border-gray-300 rounded px-2 py-1">
+												<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
+												<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
+											</select>
+											`;
+
+										row.innerHTML = `
+										   <td class="p-1 border"><input type="text" name="Numdocumento" value="${item.numdocumento}" class=" w-full text-left border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="date" name="FechaEmision" value="${item.fechaEmision.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="date" name="FechaPago" value="${item.fechaPago.split('T')[0]}" class="w-full border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="text" name="Montoclp" value="${formatearMiles(item.montoclp)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="text" name="Iva" value="${formatearMiles(item.iva)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+
+										  <td class="p-1 border">${Estadoselect}</td>
+
+										  <td class="p-1 border"><input type="text" readonly name="Idcuenta" value="4101001" class="w-full border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><textarea rows="2" name="Observacion" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea></td>
+										  <td class="p-1 border text-center">
+											<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarFilaIngreso(this)">🗑️</button>
+										  </td>
+										  <td style="display:none;">
+												<input type="hidden" name="esEliminadosIngreso" class="esEliminadosIngreso" value="false" />
+											</td>
+											  <input type="hidden" name="IdIngresoreal" value="${item.id}" />
+
+										`;
+
+										tbody.appendChild(row);
+									  });
+																document.querySelectorAll(".monto-input").forEach(input => {
+										  input.addEventListener("input", () => {
+											let valor = input.value;
+
+											// Permitir solo un signo '-' al inicio, quitar otros caracteres no numéricos
+											// Extraemos el signo negativo si está al inicio
+											const esNegativo = valor.startsWith('-');
+
+											// Quitar todo excepto dígitos, porque ya tenemos el signo aparte
+											let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+											if (valorSinSigno.length > 0) {
+											  // Parseamos el número
+											  let numero = parseInt(valorSinSigno, 10);
+
+											  if (esNegativo) {
+												numero = -numero;
+											  }
+
+											  // Formateamos número con miles en español (Chile)
+											  input.value = numero.toLocaleString("es-CL");
+											} else {
+											  // Si no hay números, solo dejamos el signo si está solo
+											  input.value = esNegativo ? "-" : "";
+											}
+										  });
+										});
+									}
+
+									/*ingresos nuevos*/
+									function agregarFilaIngresos() {
+										const tbody = document.querySelector('#tablaAgregarIngresos tbody');
+
+
+
+										const nuevaFila = document.createElement("tr");
+										nuevaFila.classList.add("bg-white", "hover:bg-gray-50");
+										const estadoSelect = `
+												<select name="estadoingresonuevos"  class="border border-gray-300 rounded px-2 py-1">
+													<option value="Forecast">Forecast</option>
+													<option value="Pagada">Pagada</option>
+												</select>
+											`;
+										nuevaFila.innerHTML = `
+
+											<td class="p-1 border"><input type="text" name="Numdocumentonuevo" class=" w-full text-left border rounded px-2 py-1"></td>
+											 <td class="p-1 border"><input type="date" name="FechaEmisionnuevo"  class="w-full border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="date" name="FechaPagonuevo"  class="w-full border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="text" name="Montoclpnuevo"  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><input type="text" name="Ivanuevo"  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
+
+										  <td class="p-1 border">${estadoSelect}</td>
+
+										  <td class="p-1 border"><input type="text" readonly name="Idcuentanueva" value="4101001" class="w-full border rounded px-2 py-1"></td>
+										  <td class="p-1 border"><textarea rows="2" name="Observacionnueva" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
+
+										  <td style="display:none;">
+												<input type="hidden" name="esEliminadosIngresonuevo" class="esEliminadosIngresonuevo" value="false" />
+											</td>
+											  <input type="hidden" name="IdIngresonuevo" value="" />
+										`;
+
+										tbody.appendChild(nuevaFila);
+
+
+											nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
+										  let valor = this.value;
+
+										  const esNegativo = valor.startsWith('-');
+										  let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+										  if (valorSinSigno.length > 0) {
+											let numero = parseInt(valorSinSigno, 10);
+											if (esNegativo) numero = -numero;
+											this.value = numero.toLocaleString("es-CL");
+										  } else {
+											this.value = esNegativo ? "-" : "";
+										  }
+										});
+									}
+
+									document.addEventListener("DOMContentLoaded", async () => {
+
+
+
+
+									  const contenedorBoton = document.getElementById("contenedorBotonIngresos");
+									  const botonAgregar = document.createElement("button");
+									  botonAgregar.id = "btnAgregarFilaIngreso";
+									  botonAgregar.className = "mb-3 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600";
+									  botonAgregar.textContent = "Agregar Ingreso";
+
+									  contenedorBoton.appendChild(botonAgregar);
+
+
+									  agregarFilaIngresos();
+
+
+									  botonAgregar.addEventListener("click", (e) => {
+										  e.preventDefault();
+										agregarFilaIngresos();
+									  });
+									});
+
+									function limpiarFilaIngreso(button) {
+
+										var fila = button.closest('tr');
+
+
+										var esEliminado = fila.querySelector('input.esEliminadosIngreso');
+										if (esEliminado) {
+											esEliminado.value = 'true';
+										}
+
+										fila.style.display = 'none';
+
+
+									}
+
+
+
+								</script>
+							</div>
+						</div>
+					</details>
+				</form>
+			</div>
+
 
 			<!-- HH (accordion) -->
 
@@ -428,10 +881,10 @@
 						</script>
 					}
 
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					<div class="flex justify-center mb-4">
 						<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
-							
+
 							Guardar Registros HH
 						</button>
 					</div>
@@ -1053,15 +1506,15 @@
 														<td class="hhsocio p-2 border border-gray-300 text-right"><input type="text" name="hhsocio" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																										<td class="p-2 border border-gray-300 text-right costohhsocio">
-																											<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																										</td>
+																													<td class="p-2 border border-gray-300 text-right costohhsocio">
+																														<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																													</td>
 						}
 						else
 						{
-																										<td class="p-2 border border-gray-300 text-right costohhsocio">
-																											<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																										</td>
+																													<td class="p-2 border border-gray-300 text-right costohhsocio">
+																														<input value="@String.Format("{0:N0}", costohhscio)" type="text" name="costohhsocio" readonly class="costohhsocio form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																													</td>
 						}
 
 
@@ -1110,15 +1563,15 @@
 																				<td class="hhstaff p-2 border border-gray-300 text-right"><input type="text" name="hhstaff" class="  form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 						@if (idusuario == 88 || idusuario == 96)
 						{
-																									<td class="p-2 border border-gray-300 text-right costohhstaff">
-																										<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																									</td>
+																												<td class="p-2 border border-gray-300 text-right costohhstaff">
+																													<input type="text" value="@String.Format("{0:N0}", costohhstaff)" name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																												</td>
 						}
 						else
 						{
-																									<td class="p-2 border border-gray-300 text-right costohhstaff">
-																										<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
-																									</td>
+																												<td class="p-2 border border-gray-300 text-right costohhstaff">
+																													<input type="text" value="@String.Format("{0:N0}", costohhstaff)" readonly name="costohhstaff" class="costohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" />
+																												</td>
 						}
 													<td class="p-2 border border-gray-300 text-right"><input type="text" id="montohhstaff" readonly name="montohhstaff" class="montohhstaff form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 
@@ -1184,9 +1637,9 @@
 				</div>
 			</form>
 			<!-- Consultores -->
-			<div id="section-consultores" class="seccion hidden">
+			<div id="section-consultores" class="seccion hidden ">
 				<form method="post" asp-action="RegistrarConsultores" asp-controller="EjecucionProyecto">
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					@if (TempData["ErrorMessageConsultores"] != null)
 					{
 						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
@@ -1225,7 +1678,7 @@
 						<div class="p-4 bg-gray-50 rounded-b">
 
 							<div class="overflow-x-auto">
-								<table id="tablaAgregarConsultores" class="min-w-full text-xs border-collapse">
+								<table id="tablaAgregarConsultores" class="min-w-[1200px] text-xs border-collapse w-full">
 									<thead>
 										<tr class="bg-orange-100 text-black">
 											<th class="p-2 border border-gray-300 text-left">TipoServicio</th>
@@ -1246,11 +1699,11 @@
 					</details>
 
 					<!-- Accordion: Tabla de consultores  -->
-					<details open class="border rounded">
+					<details open class="border rounded ">
 						<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">👨‍💼 Consultores</summary>
 						<div class="p-4 bg-gray-50 rounded-b">
-							<div class="overflow-x-auto">
-								<table id="tablaconsultores" class="min-w-full text-xs border-collapse">
+							<div class="overflow-x-auto min-w-0">
+								<table id="tablaconsultores" class="min-w-[1200px] text-xs border-collapse w-full">
 									<thead>
 										<tr class="bg-orange-100 text-black">
 											<th class="p-2 border border-gray-300 text-left">TipoServicio</th>
@@ -1332,7 +1785,7 @@
 
 										// Select para servicio
 										const servicioSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="idconsultores">
+										  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idconsultores">
 											${listaconsultores.map(s => `
 											  <option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>${s.nombre}</option>
 											`).join('')}
@@ -1341,7 +1794,7 @@
 
 										// Select para Proveedor
 										const proveedorSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="idproveedorconsultor">
+										  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorconsultor">
 											${listaProveedoresconsultores.map(p => `
 											  <option value="${p.id}" ${p.id === item.idproveedor ? "selected" : ""}>${p.nombre}</option>
 											`).join('')}
@@ -1376,18 +1829,33 @@
 
 										tbody.appendChild(row);
 									  });
-															  document.querySelectorAll(".monto-input").forEach(input => {
-													input.addEventListener("input", () => {
+																							document.querySelectorAll(".monto-input").forEach(input => {
+									  input.addEventListener("input", () => {
+										let valor = input.value;
 
-													const valorSinFormato = input.value.replace(/\D/g, "");
-													if (valorSinFormato) {
+										// Permitir solo un signo '-' al inicio, quitar otros caracteres no numéricos
+										// Extraemos el signo negativo si está al inicio
+										const esNegativo = valor.startsWith('-');
 
-												 input.value = parseInt(valorSinFormato).toLocaleString("es-CL");
-													} else {
-												  input.value = "";
-													}
-												});
-												});
+										// Quitar todo excepto dígitos, porque ya tenemos el signo aparte
+										let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+										if (valorSinSigno.length > 0) {
+										  // Parseamos el número
+										  let numero = parseInt(valorSinSigno, 10);
+
+										  if (esNegativo) {
+											numero = -numero;
+										  }
+
+										  // Formateamos número con miles en español (Chile)
+										  input.value = numero.toLocaleString("es-CL");
+										} else {
+										  // Si no hay números, solo dejamos el signo si está solo
+										  input.value = esNegativo ? "-" : "";
+										}
+									  });
+									});
 									}
 
 									/*servicios nuevos*/
@@ -1395,14 +1863,14 @@
 										const tbody = document.querySelector('#tablaAgregarConsultores tbody');
 
 										const serviciosSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idconsultornuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idconsultornuevos">
 												<option value="" disabled selected>Seleccione un servicio</option>
 												${listaconsultores.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('')}
 											</select>
 										`;
 
 										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorconsultornuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorconsultornuevos">
 											<option value=""  disabled selected>Seleccione un proveedor</option>
 												${listaProveedoresconsultores.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
 											</select>
@@ -1421,7 +1889,7 @@
 										nuevaFila.innerHTML = `
 											<td class="p-1 border">${serviciosSelect}</td>
 											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border"><input type="text" name="montoconsultornuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
+											<td class="p-1 border"><input type="text" name="montoconsultornuevos" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
 											<td class="p-1 border"><input type="date" name="fechaconsultornuevos" class="w-full border rounded px-2 py-1"></td>
 											<td class="p-1 border">${estadoSelect}</td>
 											<td class="p-1 border"><textarea rows="2" name="observacionconsultornuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
@@ -1437,10 +1905,20 @@
 										tbody.appendChild(nuevaFila);
 
 
-										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
-											const valorSinFormato = this.value.replace(/\D/g, "");
-											this.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
-										});
+																			nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
+									  let valor = this.value;
+
+									  const esNegativo = valor.startsWith('-');
+									  let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+									  if (valorSinSigno.length > 0) {
+										let numero = parseInt(valorSinSigno, 10);
+										if (esNegativo) numero = -numero;
+										this.value = numero.toLocaleString("es-CL");
+									  } else {
+										this.value = esNegativo ? "-" : "";
+									  }
+									});
 									}
 
 									document.addEventListener("DOMContentLoaded", async () => {
@@ -1493,7 +1971,7 @@
 			<!-- Servicios -->
 			<div id="section-servicios" class="seccion hidden">
 				<form method="post" asp-action="RegistrarServicios" asp-controller="EjecucionProyecto">
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
+					<input type="hidden" name="idproyecto" value="@idproyectos" />
 					@if (TempData["ErrorMessageServicios"] != null)
 					{
 						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
@@ -1638,7 +2116,7 @@
 
 										// Select para servicio
 										const servicioSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="Idservicio">
+										  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="Idservicio">
 											${listaServicios.map(s => `
 											  <option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>${s.nombre}</option>
 											`).join('')}
@@ -1647,7 +2125,7 @@
 
 										// Select para Proveedor
 										const proveedorSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="Idproveedorservicio">
+										  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="Idproveedorservicio">
 											${listaProveedoresservicios.map(p => `
 											  <option value="${p.id}" ${p.id === item.idproveedor ? "selected" : ""}>${p.nombre}</option>
 											`).join('')}
@@ -1683,32 +2161,47 @@
 
 										tbody.appendChild(row);
 									  });
-												document.querySelectorAll(".monto-input").forEach(input => {
-													input.addEventListener("input", () => {
+														document.querySelectorAll(".monto-input").forEach(input => {
+									  input.addEventListener("input", () => {
+										let valor = input.value;
 
-													const valorSinFormato = input.value.replace(/\D/g, "");
-													if (valorSinFormato) {
+										// Permitir solo un signo '-' al inicio, quitar otros caracteres no numéricos
+										// Extraemos el signo negativo si está al inicio
+										const esNegativo = valor.startsWith('-');
 
-												 input.value = parseInt(valorSinFormato).toLocaleString("es-CL");
-													} else {
-												  input.value = "";
-													}
-												});
-												});
+										// Quitar todo excepto dígitos, porque ya tenemos el signo aparte
+										let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+										if (valorSinSigno.length > 0) {
+										  // Parseamos el número
+										  let numero = parseInt(valorSinSigno, 10);
+
+										  if (esNegativo) {
+											numero = -numero;
+										  }
+
+										  // Formateamos número con miles en español (Chile)
+										  input.value = numero.toLocaleString("es-CL");
+										} else {
+										  // Si no hay números, solo dejamos el signo si está solo
+										  input.value = esNegativo ? "-" : "";
+										}
+									  });
+									});
 									}
 									/*servicios nuevos*/
 									function agregarFilaAServicios() {
 										const tbody = document.querySelector('#tablaAgregarServicios tbody');
 
 										const serviciosSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idservicionuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idservicionuevos">
 												<option value="" disabled selected>Seleccione un servicio</option>
 												${listaServicios.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('')}
 											</select>
 										`;
 
 										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorgastosnuevos">
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorserviciosnuevos">
 											<option value=""  disabled selected>Seleccione un proveedor</option>
 												${listaProveedoresservicios.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
 											</select>
@@ -1727,7 +2220,7 @@
 										nuevaFila.innerHTML = `
 											<td class="p-1 border">${serviciosSelect}</td>
 											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border"><input type="text" name="montoserviciosnuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
+											<td class="p-1 border"><input type="text" name="montoserviciosnuevos" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1"></td>
 											<td class="p-1 border"><input type="date" name="fechaserviciosnuevos" class="w-full border rounded px-2 py-1"></td>
 											<td class="p-1 border">${estadoSelect}</td>
 											<td class="p-1 border"><textarea rows="2" name="observacionservicionuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
@@ -1744,9 +2237,19 @@
 
 
 										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
-											const valorSinFormato = this.value.replace(/\D/g, "");
-											this.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
-										});
+									  let valor = this.value;
+
+									  const esNegativo = valor.startsWith('-');
+									  let valorSinSigno = valor.replace(/[^0-9]/g, "");
+
+									  if (valorSinSigno.length > 0) {
+										let numero = parseInt(valorSinSigno, 10);
+										if (esNegativo) numero = -numero;
+										this.value = numero.toLocaleString("es-CL");
+									  } else {
+										this.value = esNegativo ? "-" : "";
+									  }
+									});
 									}
 
 									document.addEventListener("DOMContentLoaded", async () => {
@@ -1795,310 +2298,962 @@
 			<!-- Gastos -->
 
 			<div id="section-gastos" class="seccion hidden">
-				<form method="post" asp-action="RegistrarGastos" asp-controller="EjecucionProyecto">
-					<input type="hidden" name="idproyecto" value="@idproyecto" />
-					@if (TempData["ErrorMessageGastos"] != null)
-					{
-						<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
-							@TempData["ErrorMessageGastos"]
-						</div>
-					}
-					@if (TempData["SuccessMessageGastos"] != null)
-					{
-						<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
-							@TempData["SuccessMessageGastos"]
-						</div>
-					}
-					@if (TempData["ErrorMessageGastos"] != null || TempData["SuccessMessageGastos"] != null)
-					{
-						<script>
-							setTimeout(() => {
-								document.querySelectorAll('[role="alert"]').forEach(alert => {
-									alert.style.transition = "opacity 0.5s ease-out";
-									alert.style.opacity = "0";
-									setTimeout(() => alert.remove(), 500);
-								});
-							}, 5000);
-						</script>
-					}
-					<h3 class="text-lg font-bold text-orange-500 mb-2">💸 Gastos</h3>
-					<div class="flex justify-center mb-4">
-						<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
-							Guardar Gastos
-						</button>
+
+				<input type="hidden" name="idproyecto" value="@idproyectos" />
+				@if (TempData["ErrorMessageGastos"] != null)
+				{
+					<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+						@TempData["ErrorMessageGastos"]
 					</div>
-					<!-- Accordion: Agregar Gasto (cerrado, pero primero) -->
-					<details class="border rounded mb-4">
-						<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">➕ Agregar Gasto</summary>
-						<div class="p-4 bg-gray-50 rounded-b">
+				}
+				@if (TempData["SuccessMessageGastos"] != null)
+				{
+					<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
+						@TempData["SuccessMessageGastos"]
+					</div>
+				}
+				@if (TempData["ErrorMessageGastos"] != null || TempData["SuccessMessageGastos"] != null)
+				{
+					<script>
+						setTimeout(() => {
+							document.querySelectorAll('[role="alert"]').forEach(alert => {
+								alert.style.transition = "opacity 0.5s ease-out";
+								alert.style.opacity = "0";
+								setTimeout(() => alert.remove(), 500);
+							});
+						}, 5000);
+					</script>
+				}
+				<h3 class="text-lg font-bold text-orange-500 mb-2">💸 Gastos</h3>
+				<div class="flex justify-center mb-4">
+					<button type="button" id="btnGuardarGastos" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
+						Guardar Gastos
+					</button>
+				</div>
+				<!-- Accordion: Agregar Gasto (cerrado, pero primero) -->
+				<details class="border rounded mb-4">
+					<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">➕ Agregar Gasto</summary>
+					<div class="p-4 bg-gray-50 rounded-b">
 
-							<div class="overflow-x-auto">
-								<table id="tablaAgregarGastos" class="min-w-full text-xs border-collapse">
-									<thead>
-										<tr class="bg-orange-100 text-black">
-											<th class="p-2 border border-gray-300 text-left">TipoGasto</th>
-											<th class="p-2 border border-gray-300 text-left">Proveedor</th>
-											<th class="p-2 border border-gray-300 text-left">Monto</th>
-											<th class="p-2 border border-gray-300 text-left">FechaPago</th>
-											<th class="p-2 border border-gray-300 text-left">Estado</th>
-											<th class="p-2 border border-gray-300 text-left">Glosa</th>
+						<div class="overflow-x-auto">
+							<table id="tablaAgregarGastos" class="min-w-full text-xs border-collapse">
+								<thead>
+									<tr class="bg-orange-100 text-black">
+										<th class="p-2 border border-gray-300 text-left">TipoGasto</th>
+										<th class="p-2 border border-gray-300 text-left">Proveedor</th>
+										<th class="p-2 border border-gray-300 text-left">Monto</th>
+										<th class="p-2 border border-gray-300 text-left">FechaPago</th>
+										<th class="p-2 border border-gray-300 text-left">Estado</th>
+										<th class="p-2 border border-gray-300 text-left">Glosa</th>
 
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-								<div id="contenedorBoton"></div>
-							</div>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div id="contenedorBoton"></div>
 						</div>
-					</details>
+					</div>
+				</details>
 
-					<!-- Accordion: Tabla de Gastos (abierto por defecto, pero segundo) -->
-					<details open class="border rounded">
-						<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">📄 Gastos</summary>
-						<div class="p-4 bg-gray-50 rounded-b">
-							<div class="overflow-x-auto">
-								<table id="tablagastos" class="min-w-full text-xs border-collapse">
-									<thead>
-										<tr class="bg-orange-100 text-black">
-											<th class="p-2 border border-gray-300 text-left">TipoGasto</th>
-											<th class="p-2 border border-gray-300 text-left">Proveedor</th>
-											<th class="p-2 border border-gray-300 text-left">Monto</th>
-											<th class="p-2 border border-gray-300 text-left">FechaPago</th>
-											<th class="p-2 border border-gray-300 text-left">Estado</th>
-											<th class="p-2 border border-gray-300 text-left">Glosa</th>
-											<th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-											<th class="p-2 border border-gray-300 text-left">Eliminar</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-								<div id="mensajeGastos" class="text-left text-gray-500 mt-2"></div>
+				<!-- Accordion: Tabla de Gastos (abierto por defecto, pero segundo) -->
+				<details open class="border rounded">
+					<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">📄 Gastos</summary>
+					<div class="p-4 bg-gray-50 rounded-b">
+						<div class="overflow-x-auto">
+							<table id="tablagastos" class="min-w-full text-xs border-collapse">
+								<thead>
+									<tr class="bg-orange-100 text-black">
+										<th class="p-2 border border-gray-300 text-left">TipoGasto</th>
+										<th class="p-2 border border-gray-300 text-left">Proveedor</th>
+										<th class="p-2 border border-gray-300 text-left">Monto</th>
+										<th class="p-2 border border-gray-300 text-left">FechaPago</th>
+										<th class="p-2 border border-gray-300 text-left">Estado</th>
+										<th class="p-2 border border-gray-300 text-left">Glosa</th>
+										<th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
+										<th class="p-2 border border-gray-300 text-left">Eliminar</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div id="mensajeGastos" class="text-left text-gray-500 mt-2"></div>
 
-								<script>
+							<script>
 
-																	   let listaGastos = [];
-									let listaProveedores = [];
+																   let listaGastos = [];
+								let listaProveedores = [];
 
-									// Cargar solo una vez
-									async function cargarListasDeGastosYProveedores() {
-									  try {
-										const [gastos, proveedores] = await Promise.all([
-										  fetch('/EjecucionProyecto/GetGastos').then(res => res.json()),
-										  fetch('/EjecucionProyecto/GetProveedoresGastos').then(res => res.json())
-										]);
+								// Cargar solo una vez
+								async function cargarListasDeGastosYProveedores() {
+								  try {
+									const [gastos, proveedores] = await Promise.all([
+									  fetch('/EjecucionProyecto/GetGastos').then(res => res.json()),
+									  fetch('/EjecucionProyecto/GetProveedoresGastos').then(res => res.json())
+									]);
 
-										listaGastos = gastos;
-										listaProveedores = proveedores;
-									  } catch (error) {
-										console.error("Error al cargar listas de gastos y proveedores:", error);
-									  }
+									listaGastos = gastos;
+									listaProveedores = proveedores;
+								  } catch (error) {
+									console.error("Error al cargar listas de gastos y proveedores:", error);
+								  }
+								}
+
+								// Se ejecuta al cargar la página
+								document.addEventListener("DOMContentLoaded", () => {
+								  cargarListasDeGastosYProveedores();
+								  const tbody = document.querySelector('#tablagastos tbody');
+
+																										tbody.addEventListener("input", function (e) {
+								  if (e.target.classList.contains("monto-input")) {
+									const input = e.target;
+
+									// Guardar posición del cursor antes de cambiar valor
+									const selectionStart = input.selectionStart;
+
+									// Permitir solo dígitos y un '-' al inicio
+									let valorSinFormato = input.value
+									  .replace(/[^0-9\-]/g, "")   // solo números y '-'
+									  .replace(/(?!^)-/g, "");    // quitar '-' que no está al inicio
+
+									// Si el valor es solo '-' o vacío, no formatear aún
+									if (valorSinFormato === "" || valorSinFormato === "-") {
+									  input.value = valorSinFormato;
+									  return;
 									}
 
-									// Se ejecuta al cargar la página
-									document.addEventListener("DOMContentLoaded", () => {
-									  cargarListasDeGastosYProveedores();
+									let esNegativo = valorSinFormato.startsWith("-");
+									let numeroStr = esNegativo ? valorSinFormato.slice(1) : valorSinFormato;
 
-									  // Delegación de eventos para inputs con formato
-									  const tbody = document.querySelector('#tablagastos tbody');
-									  tbody.addEventListener("input", function (e) {
-										if (e.target.classList.contains("monto-input")) {
-										  const input = e.target;
-										  const valorSinFormato = input.value.replace(/\D/g, "");
-										  input.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
-										}
-									  });
+									// Si no hay número válido, no formatear
+									if (!/^\d+$/.test(numeroStr)) {
+									  input.value = valorSinFormato;
+									  return;
+									}
+
+									let numero = parseInt(numeroStr, 10);
+
+									let textoFormateado = numero.toLocaleString("es-CL");
+
+									input.value = esNegativo ? "-" + textoFormateado : textoFormateado;
+
+									// Tratar de restaurar la posición del cursor
+									// Calculamos diferencia de longitud para ajustar posición
+									let diff = input.value.length - valorSinFormato.length;
+									input.selectionStart = input.selectionEnd = selectionStart + diff;
+								  }
+								});
+								});
+
+																	async function cargarDatosGastos(idProyecto, pagina = 1, tamanio = 50) {
+								  try {
+									const tbody = document.querySelector('#tablagastos tbody');
+									const mensajeDiv = document.getElementById("mensajeGastos");
+									tbody.innerHTML = "";
+									mensajeDiv.textContent = "Cargando Gastos...";
+
+									const response = await fetch(`/EjecucionProyecto/CargarGastosReales?idproyecto=${idProyecto}&pagina=${pagina}&tamanioPagina=${tamanio}`);
+									const resultado = await response.json();
+
+									if (resultado.datos.length > 0) {
+									  renderizarTablaGastos(resultado.datos);
+									  mensajeDiv.textContent = `Mostrando ${resultado.datos.length} gastos / Total: ${resultado.total}`;
+									  renderizarPaginacion(resultado.total, pagina, tamanio, idProyecto);
+									} else {
+									  mensajeDiv.textContent = "No hay gastos para este proyecto.";
+									}
+
+								  } catch (error) {
+									console.error("Error al cargar gastos:", error);
+								  }
+																	}
+
+																	function formatearMiles(valor) {
+								  if (valor === null || valor === undefined || valor === "") return "";
+
+								  let strValor = String(valor);
+								  const esNegativo = strValor.startsWith('-');
+
+								  strValor = esNegativo
+									? '-' + strValor.slice(1).replace(/[^\d.,]/g, '')
+									: strValor.replace(/[^\d.,]/g, '');
+
+								  const numero = parseFloat(strValor.replace(/\./g, '').replace(',', '.'));
+								  if (isNaN(numero)) return "";
+
+								  return numero.toLocaleString("es-CL", {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 0
+								  });
+								}
+
+
+								function renderizarTablaGastos(data) {
+								  const tbody = document.querySelector('#tablagastos tbody');
+								  tbody.innerHTML = "";
+
+								  let html = "";
+
+								  data.forEach((item) => {
+									const gastoSelect = `
+									  <select class="border border-gray-300 rounded px-2 py-1" name="idgastos">
+										${listaGastos.map(g =>
+										  `<option value="${g.id}" ${g.id === item.idGasto ? "selected" : ""}>${g.nombre}</option>`
+										).join('')}
+									  </select>
+									`;
+
+									const proveedorSelect = `
+									  <select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorgastos">
+										${listaProveedores.map(p =>
+										  `<option value="${p.id}" ${p.id === item.idProveedor ? "selected" : ""}>${p.nombre}</option>`
+										).join('')}
+									  </select>
+									`;
+
+									const estadoSelect = `
+									  <select name="estadogasto" class="border border-gray-300 rounded px-2 py-1">
+										<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
+										<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
+									  </select>
+									`;
+
+									html += `
+									  <tr class="bg-white hover:bg-gray-50">
+										<td class="p-1 border">${gastoSelect}</td>
+										<td class="p-1 border">${proveedorSelect}</td>
+										<td class="p-1 border">
+										  <input type="text" name="montogasto" value="${formatearMiles(item.monto)}"
+											class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">
+										</td>
+										<td class="p-1 border">
+										  <input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">
+										</td>
+										<td class="p-1 border">${estadoSelect}</td>
+										<td class="p-1 border">
+										  <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea>
+										</td>
+										<td class="p-1 border">
+										  <input type="text" readonly name="cuentagasto" value="${item.cuenta}" class="w-full border rounded px-2 py-1">
+										</td>
+										<td style="display:none;">
+										  <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+										</td>
+										<td class="p-1 border text-center">
+										  <button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarFilagasto(this)">🗑️</button>
+										</td>
+										<input type="hidden" name="IdGastoReal" value="${item.idGastosReal}"/>
+									  </tr>
+									`;
+								  });
+
+								  tbody.innerHTML = html;
+
+
+								}
+
+
+								function renderizarPaginacion(total, paginaActual, tamanio, idProyecto) {
+								  const totalPaginas = Math.ceil(total / tamanio);
+								  const contenedor = document.getElementById("paginacionGastos") || document.createElement("div");
+								  contenedor.id = "paginacionGastos";
+								  contenedor.className = "mt-4 flex gap-2 justify-center flex-wrap";
+								  contenedor.innerHTML = "";
+
+								  const crearBoton = (numero, texto = null) => {
+									const btn = document.createElement("button");
+									btn.type = "button";
+									btn.textContent = texto || numero;
+									btn.className = `px-3 py-1 rounded border ${numero === paginaActual ? "bg-orange-500 text-white" : "bg-white text-black"}`;
+									btn.onclick = () => cargarDatosGastos(idProyecto, numero, tamanio);
+									contenedor.appendChild(btn);
+								  };
+
+								  // Mostrar botón "1"
+								  if (paginaActual > 6) {
+									crearBoton(1);
+								  }
+
+								  let inicio = Math.max(1, paginaActual - 4);
+								  let fin = Math.min(totalPaginas, inicio + 9);
+
+								  // Ajuste si estamos cerca del final
+								  if (totalPaginas - paginaActual < 5) {
+									inicio = Math.max(1, totalPaginas - 9);
+									fin = totalPaginas;
+								  }
+
+								  for (let i = inicio; i <= fin; i++) {
+									crearBoton(i);
+								  }
+
+								  // Mostrar botón "Último"
+								  if (paginaActual < totalPaginas - 4) {
+									crearBoton(totalPaginas, "Último");
+								  }
+
+								  document.querySelector("#tablagastos").after(contenedor);
+								}
+								/*gastos nuevos*/
+								function agregarFilaAGastos() {
+									const tbody = document.querySelector('#tablaAgregarGastos tbody');
+
+									const gastoSelect = `
+										<select class="border border-gray-300 rounded px-2 py-1" name="idgastosnuevos">
+											<option value="" disabled selected>Seleccione un gasto</option>
+											${listaGastos.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('')}
+										</select>
+									`;
+
+									const proveedorSelect = `
+										<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorgastosnuevos">
+										<option value=""  disabled selected>Seleccione un proveedor</option>
+											${listaProveedores.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
+										</select>
+									`;
+
+									const estadoSelect = `
+										<select name="estadogastonuevos"  class="border border-gray-300 rounded px-2 py-1">
+											<option value="Forecast">Forecast</option>
+											<option value="Pagada">Pagada</option>
+										</select>
+									`;
+
+									const nuevaFila = document.createElement("tr");
+									nuevaFila.classList.add("bg-white", "hover:bg-gray-50");
+
+									nuevaFila.innerHTML = `
+										<td class="p-1 border">${gastoSelect}</td>
+										<td class="p-1 border">${proveedorSelect}</td>
+										<td class="p-1 border"><input type="text" name="montogastonuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
+										<td class="p-1 border"><input type="date" name="fechagastonuevos" class="w-full border rounded px-2 py-1"></td>
+										<td class="p-1 border">${estadoSelect}</td>
+										<td class="p-1 border"><textarea rows="2" name="observaciongastonuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
+										<td style="display:none;">
+											<input type="hidden" name="IdGastoRealnuevos" value="" />
+										</td>
+										<td style="display:none;">
+											<input type="hidden" name="esEliminadosnuevos" class="esEliminados" value="false" />
+										</td>
+									`;
+
+									tbody.appendChild(nuevaFila);
+
+																		nuevaFila.querySelector(".monto-input").addEventListener("blur", function () {
+									let valor = this.value.trim();
+
+									// Reemplaza puntos y comas para convertir correctamente
+									valor = valor.replace(/\./g, '').replace(',', '.');
+
+									// Permitir solo número con signo negativo opcional y decimales
+									if (!/^(-)?\d+(\.\d{0,2})?$/.test(valor)) {
+										this.value = "";
+										return;
+									}
+
+									const numero = parseFloat(valor);
+									if (isNaN(numero)) {
+										this.value = "";
+										return;
+									}
+
+									// Formatear como número entero con puntos de miles y signo negativo
+									this.value = numero.toLocaleString('es-CL', {
+										minimumFractionDigits: 0,
+										maximumFractionDigits: 0
 									});
+								});
 
-									async function cargarDatosGastos(idProyecto) {
-									  try {
-										const tbody = document.querySelector('#tablagastos tbody');
-										const mensajeDiv = document.getElementById("mensajeGastos");
-										tbody.innerHTML = "";
-										mensajeDiv.textContent = "Cargando Gastos...";
+								}
 
-										const gastosReales = await fetch(`/EjecucionProyecto/CargarGastosReales?idproyecto=${idProyecto}`).then(res => res.json());
+								document.addEventListener("DOMContentLoaded", async () => {
 
-										if (gastosReales.length > 0) {
-										  renderizarTablaGastos(gastosReales);
-										  mensajeDiv.textContent = "";
-										  document.getElementById("tablagastos").style.display = "";
-										} else {
-										  mensajeDiv.textContent = "No hay gastos para este proyecto.";
-										  document.getElementById("tablagastos").style.display = "none";
-										}
-									  } catch (error) {
-										console.error("Error al cargar gastos:", error);
-									  }
+								  await cargarListasDeGastosYProveedores();
+
+
+								  const contenedorBoton = document.getElementById("contenedorBoton");
+								  const botonAgregar = document.createElement("button");
+								  botonAgregar.id = "btnAgregarFila";
+								  botonAgregar.className = "mb-3 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600";
+								  botonAgregar.textContent = "Agregar fila";
+
+								  contenedorBoton.appendChild(botonAgregar);
+
+
+								  agregarFilaAGastos();
+
+
+								  botonAgregar.addEventListener("click", (e) => {
+									  e.preventDefault();
+									agregarFilaAGastos();
+								  });
+								});
+								/*Eliminar Gasto*/
+								function limpiarFilagasto(button) {
+									var fila = button.closest('tr');
+
+
+									var esEliminado = fila.querySelector('input.esEliminados');
+									if (esEliminado) {
+										esEliminado.value = 'true';
 									}
 
-									function formatearMiles(valor) {
-									  if (!valor) return "";
-									  const numero = parseFloat(valor.toString().replace(/\./g, '').replace(',', '.'));
-									  if (isNaN(numero)) return "";
-									  return numero.toLocaleString("es-CL");
-									}
+									fila.style.display = 'none';
 
-									function renderizarTablaGastos(data) {
-									  const tbody = document.querySelector('#tablagastos tbody');
-									  tbody.innerHTML = "";
+								}
+																								document.getElementById('btnGuardarGastos').addEventListener('click', async function() {
+									try {
+										const idProyecto = '@idproyectos';
 
-									  let html = "";
-
-									  data.forEach((item) => {
-										const gastoSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="idgastos">
-											${listaGastos.map(g => `
-											  <option value="${g.id}" ${g.id === item.idGasto ? "selected" : ""}>${g.nombre}</option>
-											`).join('')}
-										  </select>
-										`;
-
-										const proveedorSelect = `
-										  <select class="border border-gray-300 rounded px-2 py-1" name="idproveedorgastos">
-											${listaProveedores.map(p => `
-											  <option value="${p.id}" ${p.id === item.idProveedor ? "selected" : ""}>${p.nombre}</option>
-											`).join('')}
-										  </select>
-										`;
-
-										const estadoSelect = `
-										  <select name="estadogasto" class="border border-gray-300 rounded px-2 py-1">
-											<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
-											<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
-										  </select>
-										`;
-
-										html += `
-										  <tr class="bg-white hover:bg-gray-50">
-											<td class="p-1 border">${gastoSelect}</td>
-											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border">
-											  <input type="text" name="montogasto" value="${formatearMiles(item.monto)}"
-											  class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">
-											</td>
-											<td class="p-1 border">
-											  <input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">
-											</td>
-											<td class="p-1 border">${estadoSelect}</td>
-											<td class="p-1 border">
-											  <textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea>
-											</td>
-											<td class="p-1 border">
-											  <input type="text" readonly name="cuentagasto" value="${item.cuenta}" class="w-full border rounded px-2 py-1">
-											</td>
-											<td style="display:none;">
-											  <input type="hidden" name="esEliminados" class="esEliminados" value="false" />
-											</td>
-											<td class="p-1 border text-center">
-											  <button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarFilagasto(this)">🗑️</button>
-											</td>
-											<input type="hidden" name="IdGastoReal" value="${item.idGastosReal}"/>
-										  </tr>
-										`;
-									  });
-
-									  tbody.innerHTML = html;
-									}
+										// Función para parsear valores
+										const parseValue = (value, type) => {
+											if (value === "" || value === null) return null;
+											if (type === "number") return parseInt(value);
+											if (type === "decimal") return parseFloat(value);
+											if (type === "date") return new Date(value).toISOString();
+											return value;
+										};
 
 
-									/*gastos nuevos*/
-									function agregarFilaAGastos() {
-										const tbody = document.querySelector('#tablaAgregarGastos tbody');
-
-										const gastoSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idgastosnuevos">
-												<option value="" disabled selected>Seleccione un gasto</option>
-												${listaGastos.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('')}
-											</select>
-										`;
-
-										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idproveedorgastosnuevos">
-											<option value=""  disabled selected>Seleccione un proveedor</option>
-												${listaProveedores.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('')}
-											</select>
-										`;
-
-										const estadoSelect = `
-											<select name="estadogastonuevos"  class="border border-gray-300 rounded px-2 py-1">
-												<option value="Forecast">Forecast</option>
-												<option value="Pagada">Pagada</option>
-											</select>
-										`;
-
-										const nuevaFila = document.createElement("tr");
-										nuevaFila.classList.add("bg-white", "hover:bg-gray-50");
-
-										nuevaFila.innerHTML = `
-											<td class="p-1 border">${gastoSelect}</td>
-											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border"><input type="text" name="montogastonuevos" class="monto-input w-full text-right border rounded px-2 py-1"></td>
-											<td class="p-1 border"><input type="date" name="fechagastonuevos" class="w-full border rounded px-2 py-1"></td>
-											<td class="p-1 border">${estadoSelect}</td>
-											<td class="p-1 border"><textarea rows="2" name="observaciongastonuevos" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"></textarea></td>
-											<td style="display:none;">
-												<input type="hidden" name="IdGastoRealnuevos" value="" />
-											</td>
-											<td style="display:none;">
-												<input type="hidden" name="esEliminadosnuevos" class="esEliminados" value="false" />
-											</td>
-										`;
-
-										tbody.appendChild(nuevaFila);
+										const todosLosGastos = [];
 
 
-										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
-											const valorSinFormato = this.value.replace(/\D/g, "");
-											this.value = valorSinFormato ? parseInt(valorSinFormato).toLocaleString("es-CL") : "";
+																			// Gastos existentes
+								document.querySelectorAll('#tablagastos tbody tr').forEach(tr => {
+									const esEliminado = tr.querySelector('input.esEliminados')?.value === 'true';
+
+
+									if (esEliminado || tr.querySelector('input[name="IdGastoReal"]')) {
+																			let montoRaw = tr.querySelector('input[name="montogasto"]').value.trim();
+								montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
+										todosLosGastos.push({
+											IdGastoReal: parseValue(tr.querySelector('input[name="IdGastoReal"]').value, "number"),
+											Idgasto: parseValue(tr.querySelector('select[name="idgastos"]').value, "number"),
+											Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastos"]').value, "number"),
+											Segmento: null,
+											Monto: parseValue(montoRaw, "decimal"),
+											Fecha: parseValue(tr.querySelector('input[name="fechagasto"]').value, "date"),
+											Estado: tr.querySelector('select[name="estadogasto"]').value,
+											Observacion: tr.querySelector('textarea[name="observaciongasto"]').value,
+											Venta: "Vendido",
+											EsEliminado: esEliminado
 										});
 									}
+								});
 
-									document.addEventListener("DOMContentLoaded", async () => {
+										// Nuevos gastos
+								document.querySelectorAll('#tablaAgregarGastos tbody tr').forEach(tr => {
+									if (tr.style.display !== 'none') {
+										let montoRaw = tr.querySelector('input[name="montogastonuevos"]').value.trim();
+										montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
 
-									  await cargarListasDeGastosYProveedores();
+										todosLosGastos.push({
+											IdGastoReal: 0,
+											Idgasto: parseValue(tr.querySelector('select[name="idgastosnuevos"]').value, "number"),
+											Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastosnuevos"]').value, "number"),
+											Segmento: null,
+											Monto: parseValue(montoRaw, "decimal"),
+											Fecha: parseValue(tr.querySelector('input[name="fechagastonuevos"]').value, "date"),
+											Estado: tr.querySelector('select[name="estadogastonuevos"]').value,
+											Observacion: tr.querySelector('textarea[name="observaciongastonuevos"]').value,
+											Venta: "Vendido",
+											EsEliminado: tr.querySelector('input.esEliminados').value === 'true'
+										});
+									}
+								});
+																												const gastosParaEnviar = todosLosGastos.filter(g =>
+									g.EsEliminado || (g.Idgasto !== null && g.Idproveedor !== null)
+								);
+
+																		 const requestData = {
+										idproyecto: idProyecto,
+										gastos: gastosParaEnviar
+									};
 
 
-									  const contenedorBoton = document.getElementById("contenedorBoton");
-									  const botonAgregar = document.createElement("button");
-									  botonAgregar.id = "btnAgregarFila";
-									  botonAgregar.className = "mb-3 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600";
-									  botonAgregar.textContent = "Agregar fila";
 
-									  contenedorBoton.appendChild(botonAgregar);
-
-
-									  agregarFilaAGastos();
-
-
-									  botonAgregar.addEventListener("click", (e) => {
-										  e.preventDefault();
-										agregarFilaAGastos();
-									  });
+									const response = await fetch('/EjecucionProyecto/GuardarGastos', {
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json',
+											'Accept': 'application/json'
+										},
+										body: JSON.stringify(requestData)
 									});
-									/*Eliminar Gasto*/
-									function limpiarFilagasto(button) {
-										var fila = button.closest('tr');
 
-
-										var esEliminado = fila.querySelector('input.esEliminados');
-										if (esEliminado) {
-											esEliminado.value = 'true';
-										}
-
-										fila.style.display = 'none';
-
+									if (!response.ok) {
+										const errorText = await response.text();
+										throw new Error('Error en la respuesta del servidor: ' + errorText);
 									}
 
+									const result = await response.json();
+									if (result.success) {
+										alert('Gastos guardados con éxito');
+																 // 1. Limpiar la tabla de nuevos gastos
+								const tablaNuevosGastos = document.querySelector('#tablaAgregarGastos tbody');
+								tablaNuevosGastos.innerHTML = ''; // Elimina todas las filas
+									agregarFilaAGastos(); // Agrega una nueva fila vacía
 
-								</script>
-							</div>
+										cargarDatosGastos(idProyecto);
+										cargarDatosCosto(idProyecto);
+										cargarForecastProveedores(idProyecto);
+									} else {
+										alert('Error al guardar: ' + (result.message || ''));
+									}
+								} catch (error) {
+									console.error('Error:', error);
+									alert('Error al guardar: ' + error.message);
+								}
+								});
+
+
+							</script>
 						</div>
-					</details>
-				</form>
+					</div>
+				</details>
+
 			</div>
 
+			<!--Flujo de Caja -->
+			<div id="section-flujocaja" class="seccion hidden">
+				<h3 class="text-lg font-bold text-orange-500 mb-2">Flujo de Caja del Proyecto</h3>
+				<div class="text-center">
+					<button id="btnExportarExcel" class="p-2 bg-green-500 text-white rounded">
+						Exportar Flujo de Caja a Excel
+					</button>
+
+				</div>
+				<div class="p-4 bg-gray-50 rounded-b">
+
+					<div class="flex overflow-x-auto">
+
+						<div class="w-full max-w-3xl border-collapse text-left text-xs" id="tablaFlujoCaja"></div>
+					</div>
+				</div>
+
+				<script>
+									async function obtenerFlujoCaja(id) {
+						const response = await fetch(`/EjecucionProyecto/ObtenerFlujo/${id}`);
+						const data = await response.json();
+						return data;
+					}
+
+					function formatearMes(mes, anio) {
+						const opciones = { month: 'long', year: 'numeric' };
+						const fecha = new Date(anio, mes - 1);
+						return fecha.toLocaleDateString('es-ES', opciones);
+					}
+
+					function formatearMiles(valor) {
+						return valor.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+					}
+
+
+					function crearTabla(flujoCaja) {
+						const tabla = document.createElement('table');
+						tabla.id = 'TablaFlujoCaja';
+						// Cabecera
+						const thead = document.createElement('thead');
+						const cabeceraRow = document.createElement('tr');
+						cabeceraRow.className = 'bg-blue-100 text-black';
+						cabeceraRow.innerHTML = `
+								<th class="p-2 border border-gray-300 text-center">Tipo</th>
+								<th class="p-2 border border-gray-300 text-center">Id Cuenta</th>
+								<th class="p-2 border border-gray-300 text-center">Cuenta</th>
+							<th class="p-2 border border-gray-300 text-center">Glosa</th>
+						`;
+
+							const mesesUnicos = [...new Set(flujoCaja.map(item => `${item.mes}-${item.anio}`))];
+
+							mesesUnicos.sort((a, b) => new Date(a.split('-')[1], a.split('-')[0] - 1) - new Date(b.split('-')[1], b.split('-')[0] - 1));
+
+
+								mesesUnicos.forEach(mesAnio => {
+
+								cabeceraRow.innerHTML += `<th class="p-2 border border-gray-300 text-center" colspan="3">${mesAnio}</th>`;
+							});
+						cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Real</th>';
+						cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Proyectado</th>';
+						cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Forecast</th>';
+						thead.appendChild(cabeceraRow);
+
+
+							// Segunda fila (Proyectado, Real, Forecast)
+						const subCabeceraRow = document.createElement('tr');
+						subCabeceraRow.className = 'bg-gray-200 text-black';
+						subCabeceraRow.innerHTML = `<th></th><th></th><th></th><th></th>`;
+
+						mesesUnicos.forEach(() => {
+							subCabeceraRow.innerHTML += `<th class="p-2 border border-gray-300  text-center">Proyectado</th><th class="p-2 border border-gray-300  text-center">Real</th><th class="p-2 border border-gray-300  text-center">Forecast</th>`;
+						});
+						subCabeceraRow.innerHTML += '<th></th';
+						subCabeceraRow.innerHTML += '<th></th';
+						subCabeceraRow.innerHTML += '<th></th';
+						thead.appendChild(subCabeceraRow);
+						tabla.appendChild(thead);
+
+
+						const tbody = document.createElement('tbody');
+
+						const totalesEgresos = {};
+
+						const gruposPorTipoYCuenta = flujoCaja.reduce((acc, item) => {
+							if (!acc[item.tipo]) {
+								acc[item.tipo] = {};
+							}
+							if (!acc[item.tipo][item.idCuenta]) {
+								acc[item.tipo][item.idCuenta] = [];
+							}
+							acc[item.tipo][item.idCuenta].push(item);
+							return acc;
+						}, {});
+
+							const agrupadosPorGlosa = {};
+
+
+							for (const tipo in gruposPorTipoYCuenta) {
+								const cuentas = gruposPorTipoYCuenta[tipo];
+
+								mesesUnicos.forEach(mesAnio => {
+								 const [mes, anio] = mesAnio.split('-');
+
+									for (const idCuenta in cuentas) {
+										cuentas[idCuenta].forEach(item => {
+											if (item.mes == mes && item.anio == anio) {
+											 const key = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mesAnio}-${item.estado}`;
+
+												if (!agrupadosPorGlosa[key]) {
+													agrupadosPorGlosa[key] = {
+						glosa: item.glosa,
+						tipo: item.tipo,
+						idCuenta: item.idCuenta,
+						mes: mes,
+						anio: anio,
+						estado: item.estado,
+						monto: 0
+					};
+												}
+											agrupadosPorGlosa[key].monto += item.monto; // Sumar el monto
+									}
+											 });
+									 }
+									});
+							}
+						let totalRealEgresos = 0;
+						let totalProyectadoEgresos = 0;
+						let totalForecastEgresos = 0;
+						let totalRealIngresos = 0;
+						for (const tipo in gruposPorTipoYCuenta) {
+							const cuentas = gruposPorTipoYCuenta[tipo];
+
+
+							const totalesPorMes = {};
+
+							mesesUnicos.forEach(mesAnio => {
+								const [mes, anio] = mesAnio.split('-');
+								totalesPorMes[mesAnio] = { proyectado: 0, real: 0, forecast: 0 };
+
+								for (const idCuenta in cuentas) {
+									cuentas[idCuenta].forEach(item => {
+										if (item.mes == mes && item.anio == anio) {
+											if (item.estado === 'Proyectado') {
+												totalesPorMes[mesAnio].proyectado += item.monto;
+												if (tipo !== "Ingreso") {
+													totalProyectadoEgresos += item.monto;
+												}
+											}
+											if (item.estado === 'Real') {
+												totalesPorMes[mesAnio].real += item.monto;
+
+												if (tipo !== "Ingreso") {
+													totalRealEgresos += item.monto;
+												}
+												if (tipo == "Ingreso") {
+													totalRealIngresos += item.monto;
+												}
+											}
+											if (item.estado === 'Forecast') {
+												totalesPorMes[mesAnio].forecast += item.monto;
+												if (tipo !== "Ingreso") {
+													totalForecastEgresos += item.monto;
+												}
+											}
+
+											if (tipo !== "Ingreso") {
+												if (!totalesEgresos[mesAnio]) {
+													totalesEgresos[mesAnio] = { proyectado: 0, real: 0, forecast: 0 };
+												}
+												totalesEgresos[mesAnio].proyectado += item.estado === 'Proyectado' ? item.monto : 0;
+												totalesEgresos[mesAnio].real += item.estado === 'Real' ? item.monto : 0;
+												totalesEgresos[mesAnio].forecast += item.estado === 'Forecast' ? item.monto : 0;
+											}
+										}
+									});
+								}
+							});
+
+
+							const totalRow = document.createElement('tr');
+							totalRow.innerHTML = `<td class="text-left text-xs font-medium sticky left-0 bg-white min-w-[250px]" rowspan="${Object.keys(cuentas).length}">${tipo}</td>`;
+
+							let firstAccountRow = true;
+
+							for (const idCuenta in cuentas) {
+								const itemsCuenta = cuentas[idCuenta];
+
+
+								if (firstAccountRow) {
+									totalRow.innerHTML += `<td class="text-left text-xs font-medium ">'${itemsCuenta[0].idCuenta}</td><td class="text-left text-xs font-medium min-w-[300px]">${itemsCuenta[0].cuenta}</td><td> <span class="expand-icon" id="expand-icon-${idCuenta}">+</span></td>`;
+
+
+									let totalReal = 0;
+									let totalProyectado = 0;
+									let totalForecast = 0;
+									mesesUnicos.forEach(mesAnio => {
+										totalRow.innerHTML += `
+													  <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
+													${totalesPorMes[mesAnio].proyectado !== 0 ? formatearMiles(totalesPorMes[mesAnio].proyectado) : ''}
+													</td>
+													<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
+													${totalesPorMes[mesAnio].real !== 0 ? formatearMiles(totalesPorMes[mesAnio].real) : ''}
+													 </td>
+														<td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">
+													 ${totalesPorMes[mesAnio].forecast !== 0 ? formatearMiles(totalesPorMes[mesAnio].forecast) : ''}
+														 </td>`;
+										totalReal += totalesPorMes[mesAnio].real;
+										totalProyectado += totalesPorMes[mesAnio].proyectado;
+										totalForecast += totalesPorMes[mesAnio].forecast;
+									});
+									totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalReal!==0 ? formatearMiles(totalReal) : '' }</td>`;
+									totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectado !== 0 ? formatearMiles(totalProyectado) : ''}</td>`;
+									totalRow.innerHTML += `<td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecast !== 0 ? formatearMiles(totalForecast) : ''}</td>`;
+
+									totalRow.style.cursor = 'pointer';
+									totalRow.onclick = function () {
+										const glosaRows = document.querySelectorAll(`.glosa-row-${idCuenta}`);
+										const expandIcon = document.getElementById(`expand-icon-${idCuenta}`);
+										glosaRows.forEach(row => {
+											row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
+										});
+										if (expandIcon) {
+											if (expandIcon.innerHTML === '+') {
+												expandIcon.innerHTML = '-';
+											} else {
+												expandIcon.innerHTML = '+';
+											}
+										}
+									};
+									tbody.appendChild(totalRow);
+									firstAccountRow = false;
+								} else {
+
+									const row = document.createElement('tr');
+									row.innerHTML = `<td></td><td>'${itemsCuenta[0].idCuenta}</td><td>${itemsCuenta[0].cuenta}</td><td></td>`;
+									mesesUnicos.forEach(mesAnio => {
+										const [mes, anio] = mesAnio.split('-');
+
+										// Obtener el monto específico para cada estado y mes
+										const montoProyectado = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Proyectado')?.monto || 0;
+										const montoReal = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Real')?.monto || 0;
+										const montoForecast = itemsCuenta.find(f => f.mes == mes && f.anio == anio && f.estado === 'Forecast')?.monto || 0;
+
+										row.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${montoProyectado}</td><td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${montoReal}</td><td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${montoForecast}</td>`;
+									});
+									tbody.appendChild(row);
+								}
+
+								// Filas por glosa específicas para esta cuenta
+
+								const glosasContadas = new Set();
+
+									itemsCuenta.forEach(item => {
+									if (item.glosa && !glosasContadas.has(item.glosa)) {
+										glosasContadas.add(item.glosa);
+
+										const rowGlosa = document.createElement('tr');
+										rowGlosa.className = `glosa-row-${idCuenta}`;
+										rowGlosa.style.display = 'none';
+										rowGlosa.innerHTML = `<td></td><td></td><td></td><td class="text-left text-xs font-medium sticky left-0 bg-white  min-w-[250px]">${item.glosa}</td>`;
+										let totalRealG = 0;
+										let totalForecastG = 0;
+										mesesUnicos.forEach(mesAnio => {
+											const [mes, anio] = mesAnio.split('-');
+
+												const keyP = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mes}-${anio}-Proyectado`;
+					const keyR = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mes}-${anio}-Real`;
+					const keyF = `${item.tipo}-${item.idCuenta}-${item.glosa}-${mes}-${anio}-Forecast`;
+
+					const montoProyectadoG = agrupadosPorGlosa[keyP]?.monto || 0;
+					const montoRealG = agrupadosPorGlosa[keyR]?.monto || 0;
+					const montoForecastG = agrupadosPorGlosa[keyF]?.monto || 0;
+											totalRealG += montoRealG;
+											totalForecastG += montoForecastG;
+											rowGlosa.innerHTML += `
+													<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+														${montoProyectadoG !== 0 ? formatearMiles(montoProyectadoG) : ''}
+													</td>
+													<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">
+														${montoRealG !== 0 ? formatearMiles(montoRealG) : ''}
+													</td>
+													<td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">
+														${montoForecastG !== 0 ? formatearMiles(montoForecastG) : ''}
+													</td>
+											`;
+										});
+											rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]">${totalRealG !== 0 ? formatearMiles(totalRealG) : ''}</td>`;
+											rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+											rowGlosa.innerHTML += `<td class="text-xs border font-medium text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecastG !== 0 ? formatearMiles(totalForecastG) : ''}</td>`;
+											tbody.appendChild(rowGlosa);
+									}
+								});
+							}
+						}
+
+						// Agregar fila de Totales Egresos al final del cuerpo de la tabla
+						const totalEgresosRow = document.createElement('tr');
+						totalEgresosRow.className = 'bg-red-100';
+						totalEgresosRow.innerHTML = '<td class="text-left text-xs font-medium font-bold sticky left-0 bg-red-100">Total Egresos</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
+
+						mesesUnicos.forEach(mesAnio => {
+							totalEgresosRow.innerHTML += `
+										<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
+										${totalesEgresos[mesAnio]?.proyectado != null && totalesEgresos[mesAnio]?.proyectado !== 0
+											 ? formatearMiles(totalesEgresos[mesAnio]?.proyectado)
+												: ''
+												}
+										 </td>
+										<td class="text-xs border font-bold text-right  border-black px-4 py-2 min-w-[100px]">
+											${totalesEgresos[mesAnio]?.real != null && totalesEgresos[mesAnio]?.real !== 0
+									? formatearMiles(totalesEgresos[mesAnio]?.real)
+									: ''
+								}
+										</td>
+										<td class="text-xs border font-bold text-right  border-black px-4 py-2 min-w-[100px]">
+											${totalesEgresos[mesAnio]?.forecast != null && totalesEgresos[mesAnio]?.forecast !== 0
+									? formatearMiles(totalesEgresos[mesAnio]?.forecast)
+									: ''
+								}
+										</td>`;
+						});
+
+						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalRealEgresos !== 0 ? formatearMiles(totalRealEgresos) : ''}</td>`;
+						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectadoEgresos !==0 ? formatearMiles(totalProyectadoEgresos): ''}</td>`;
+						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalForecastEgresos !== 0 ? formatearMiles(totalForecastEgresos): ''}</td>`;
+						tbody.appendChild(totalEgresosRow);
+
+						const margenContribucionRow = document.createElement('tr');
+						margenContribucionRow.className = 'bg-gray-300 font-bold';
+
+						margenContribucionRow.innerHTML = '<td class="text-left text-xs font-medium font-bold sticky left-0 bg-gray-300">Margen de Contribución</td><td colspan="3"></td>'; // Espacio para Id Cuenta, Cuenta y Glosa
+						let totalmargenreal = 0;
+						mesesUnicos.forEach(mesAnio => {
+
+							const ingresosProyectado = flujoCaja
+								.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Proyectado')
+								.reduce((sum, item) => sum + item.monto, 0);
+
+							const ingresosReal = flujoCaja
+								.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+								.reduce((sum, item) => sum + item.monto, 0);
+
+
+							const egresosProyectado = totalesEgresos[mesAnio]?.proyectado || 0;
+							const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+
+
+							const margenProyectado = ingresosProyectado - egresosProyectado;
+							const margenReal = ingresosReal - egresosReal;
+							totalmargenreal += margenReal;
+
+							margenContribucionRow.innerHTML += `
+							<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenProyectado !== 0 ? formatearMiles(margenProyectado) : '' }</td>
+							<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenReal !== 0 ? formatearMiles(margenReal) : ''}</td>
+							<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+						});
+						margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalmargenreal)}</td>`;
+						margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+						margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+
+						tbody.appendChild(margenContribucionRow);
+
+
+						const porcentajeMargenRow = document.createElement('tr');
+						porcentajeMargenRow.className = 'bg-green-100 font-bold';
+
+						porcentajeMargenRow.innerHTML = '<td class="text-left text-xs font-medium sticky left-0 bg-green-100">% de Margen de Contribución</td><td colspan="3"></td>';
+
+						mesesUnicos.forEach(mesAnio => {
+							const ingresosReal = flujoCaja
+								.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+								.reduce((sum, item) => sum + item.monto, 0);
+
+							const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+							const margenReal = ingresosReal - egresosReal;
+							const porcentajeMargen = ingresosReal > 0 ? (margenReal / ingresosReal) * 100 : 0;
+
+							// Mostrar en la tabla HTML
+							porcentajeMargenRow.innerHTML += `<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+														  <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">
+															  ${porcentajeMargen !== 0 ? porcentajeMargen.toFixed(2) : ''}%
+														  </td>
+														  <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+						});
+						const porcentajetotalmargen = totalRealIngresos > 0 ? (totalmargenreal / totalRealIngresos) * 100 : 0;
+						porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${porcentajetotalmargen.toFixed(2)}%</td>`;
+						porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+						porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+
+						tbody.appendChild(porcentajeMargenRow);
+
+
+						const saldoAcumuladoRow = document.createElement('tr');
+						saldoAcumuladoRow.className = 'bg-yellow-100 font-bold';
+						saldoAcumuladoRow.innerHTML = '<td class="text-left text-xs font-medium  sticky left-0 bg-yellow-100">Saldo Acumulado</td><td colspan="3"></td>';
+
+						let saldoAcumulado = 0;
+
+						mesesUnicos.forEach(mesAnio => {
+							const ingresosReal = flujoCaja
+								.filter(item => item.tipo === 'Ingreso' && `${item.mes}-${item.anio}` === mesAnio && item.estado === 'Real')
+								.reduce((sum, item) => sum + item.monto, 0);
+
+							const egresosReal = totalesEgresos[mesAnio]?.real || 0;
+							const margenReal = ingresosReal - egresosReal;
+
+							saldoAcumulado += margenReal;
+
+							saldoAcumuladoRow.innerHTML += `
+										<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>
+										 <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${saldoAcumulado !== 0 ? formatearMiles(saldoAcumulado) : ''}</td>
+										<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+						});
+						const saldoacumuladototal = totalmargenreal;
+						saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${saldoacumuladototal !== 0 ? formatearMiles(saldoacumuladototal) : '' }</td>`;
+						saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+						saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
+						tbody.appendChild(saldoAcumuladoRow);
+						tabla.appendChild(tbody);
+						document.getElementById('tablaFlujoCaja').appendChild(tabla);
+					}
+
+					async function init() {
+						const idProyecto = '@idproyectos';
+						const flujoCajaData = await obtenerFlujoCaja(idProyecto);
+
+						if (flujoCajaData.length > 0) {
+							crearTabla(flujoCajaData);
+						} else {
+							document.getElementById('tablaFlujoCaja').innerText = 'No hay datos disponibles.';
+						}
+					}
+
+
+
+
+
+				</script>
+			</div>
 		</main>
 	</div>
 </div>
@@ -2111,10 +3266,17 @@
 	 let serviciosCargados = false;
 	 let consultoresCargados = false;
 	 let ResumenCostos = false;
+	 let flujocajacargado = false;
+	 let ingresoscargado = false;
+
 	 document.addEventListener("DOMContentLoaded", () => {
 
 			cargarDatosCosto(idProyectoActual);
+			cargarForecastProveedores(idProyectoActual);
 			ResumenCostos = true;
+				cargarListasDeGastosYProveedores();
+
+
 	});
 	buttons.forEach(btn => {
 	  btn.addEventListener("click", () => {
@@ -2138,6 +3300,20 @@
 
 			cargarDatosCosto(idProyectoActual);
 			ResumenCostos = true;
+
+		}
+		if (target === "flujocaja" && !flujocajacargado) {
+
+			init();
+			const script = document.createElement('script');
+	script.src = '/js/ExportarFlujoCaja.js';
+	document.body.appendChild(script);
+			flujocajacargado = true;
+		}
+		if(target  ==="ingresos" && !ingresoscargado) {
+
+			cargarDatosIngresos(idProyectoActual);
+			ingresoscargado = true;
 
 		}
 	  });
@@ -2164,4 +3340,5 @@
 
 
 </script>
+
 
