@@ -15,284 +15,152 @@
 
 </head>
 @{
-	    int? idrol = Context.Session.GetInt32("idrol");
-	    int? idusuario = Context.Session.GetInt32("id");
-	    string? nombre = Context.Session.GetString("nombre");
+			    int? idrol = Context.Session.GetInt32("idrol");
+			    int? idusuario = Context.Session.GetInt32("id");
+			    string? nombre = Context.Session.GetString("nombre");
 }
 <body class="bg-gray-100">
-	@if (idusuario != 99)
-	{
-		<link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
 
-		<!-- Top Panel (New Header) -->
-		<header class="shadow bg-gray-100">
-			<div class="container mx-auto flex flex-col">
-				<!-- Encabezado adicional -->
-				<div class="header-title bg-gray-100 w-full flex items-center justify-center py-2">
-					<!-- Logo -->
-					<img src="~/images/logo-unit.png" alt="Logo" class="h-10 mr-4">
-					<!-- Título -->
-					<p class="text-lg font-semibold">Dashboard: Plataforma de Control y Gestión de Proyectos</p>
+
+	<link rel="stylesheet" href="~/css/propuestalayout.css" asp-append-version="true" />
+	<!-- Top Panel (New Header) -->
+	<header class="shadow bg-gray-100">
+		<div class="container mx-auto flex flex-col">
+			<!-- Encabezado adicional -->
+			<div class="header-title bg-gray-100 w-full flex items-center justify-center py-2">
+				<!-- Logo -->
+				<img src="~/images/logo-unit.png" alt="Logo" class="h-10 mr-4">
+				<!-- Título -->
+				<p class="text-lg font-semibold">Dashboard: Plataforma de Control y Gestión de Proyectos</p>
+			</div>
+
+			<!-- Contenido Principal del Header -->
+			<div class="flex justify-between items-center w-full">
+				<!-- Logo -->
+				<div class="logo flex items-center">
+					<a asp-controller="Home" asp-action="Index" class="logo flex items-center">
+						<img src="~/images/logo-unit.png" alt="Logo" class="h-12">
+					</a>
 				</div>
 
-				<!-- Contenido Principal del Header -->
-				<div class="flex justify-between items-center w-full">
-					<!-- Logo -->
-					<div class="logo flex items-center">
-						<img src="~/images/logo-unit.png" alt="Logo" class="h-12">
-					</div>
-
-					<!-- Navigation Menu -->
-					@if (idrol == 1 || idrol == 3)
-					{
-						<nav class="flex text-sm font-light text-gray-800 h-16">
-							<!-- Menú Proyectos -->
-							<div class="relative group h-full">
-								<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-									Menú Proyectos
-								</button>
-								<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("Index", "Home")">Ingreso de proyectos y clientes</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("GetProyectos", "Proyecto")">Proyectos</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("NuestrosClientes", "Cliente")">Clientes</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("GetProyectosCategoria", "Proyecto")">Clasificación Proyectos</a>
-									</li>
-								</ul>
-							</div>
-
-							<!-- Menú Control HH -->
-							<div class="relative group h-full">
-								<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-									Menú Control HH
-								</button>
-								<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-									@if (idrol == 1)
-									{
-										<li class="px-6 py-2 hover:bg-gray-100 text-center">
-											<a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
-										</li>
-									}
-
-									@if (idusuario == 88 || idusuario == 96)
-									{
-										<li class="px-6 py-2 hover:bg-gray-100 text-center">
-											<a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")">Admin.Registros HH</a>
-										</li>
-									}
-								</ul>
-							</div>
-
-							<!-- Menú Administración -->
-							<div class="relative group h-full">
-								<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-									Menú Administración
-								</button>
-								<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("TodosReportes", "Reporte")">Reportes</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("TodoslosParametros", "Parametros")">Parámetros</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("MetasFunciones", "Metas")">Metas</a>
-									</li>
-								</ul>
-							</div>
-						</nav>
-					}
-					else if (idrol == 2)
-					{
-						<nav class="flex text-sm font-light text-gray-800 h-16">
-							<ul class="flex">
-								<li class="list-none text-center border border-gray-300 bg-gray-100 px-6 h-16 flex items-center hover:bg-gray-200">
-									<a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+				<!-- Navigation Menu -->
+				@if (idrol == 1 || idrol == 3)
+				{
+					<nav class="flex text-sm font-light text-gray-800 h-16">
+						<!-- Menú Proyectos -->
+						<div class="relative group h-full">
+							<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+								Menú Proyectos
+							</button>
+							<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+								<li class="px-6 py-2 hover:bg-gray-100 text-center">
+									<a href="@Url.Action("Index", "Home")">Ingreso de proyectos y clientes</a>
+								</li>
+								<li class="px-6 py-2 hover:bg-gray-100 text-center">
+									<a href="@Url.Action("GetProyectos", "Proyecto")">Proyectos</a>
+								</li>
+								<li class="px-6 py-2 hover:bg-gray-100 text-center">
+									<a href="@Url.Action("NuestrosClientes", "Cliente")">Clientes</a>
+								</li>
+								<li class="px-6 py-2 hover:bg-gray-100 text-center">
+									<a href="@Url.Action("GetProyectosCategoria", "Proyecto")">Clasificación Proyectos</a>
 								</li>
 							</ul>
-						</nav>
-					}
-
-
-					<!-- User Profile -->
-					<div class="user-profile">
-						<img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
-						<div class="dropdown-menu" id="userMenu">
-							<p style="text-align:center">Hola, @nombre</p>
-							<a href="@Url.Action("Logout", "Usuario")">Cerrar sesión</a>
 						</div>
-					</div>
-				</div>
-			</div>
-		</header>
 
-		<!-- Main Content -->
-		<div class="py-20">
-			@RenderBody()
+						<!-- Menú Control HH -->
+						<div class="relative group h-full">
+							<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+								Menú Control HH
+							</button>
+							<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+								@if (idrol == 1)
+								{
+									<li class="px-6 py-2 hover:bg-gray-100 text-center">
+										<a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+									</li>
+								}
 
-		</div>
-		@RenderSection("Scripts", required: false)
-		<script>
-			document.getElementById('userMenuButton').addEventListener('click', (event) => {
-				event.stopPropagation();
-				const userMenu = document.getElementById('userMenu');
-				userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
-			});
+								@if (idusuario == 88 || idusuario == 96)
+								{
+									<li class="px-6 py-2 hover:bg-gray-100 text-center">
+										<a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")">Admin.Registros HH</a>
+									</li>
+								}
+							</ul>
+						</div>
 
-			document.addEventListener('click', (event) => {
-				const userMenu = document.getElementById('userMenu');
-				const userMenuButton = document.getElementById('userMenuButton');
-
-				if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
-					userMenu.style.display = 'none';
+						<!-- Menú Administración -->
+						<div class="relative group h-full">
+							<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
+								Menú Administración
+							</button>
+							<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
+								<li class="px-6 py-2 hover:bg-gray-100 text-center">
+									<a href="@Url.Action("TodosReportes", "Reporte")">Reportes</a>
+								</li>
+								<li class="px-6 py-2 hover:bg-gray-100 text-center">
+									<a href="@Url.Action("TodoslosParametros", "Parametros")">Parámetros</a>
+								</li>
+								<li class="px-6 py-2 hover:bg-gray-100 text-center">
+									<a href="@Url.Action("MetasFunciones", "Metas")">Metas</a>
+								</li>
+							</ul>
+						</div>
+					</nav>
 				}
-			});
-		</script>
+				else if (idrol == 2)
+				{
+					<nav class="flex text-sm font-light text-gray-800 h-16">
+						<ul class="flex">
+							<li class="list-none text-center border border-gray-300 bg-gray-100 px-6 h-16 flex items-center hover:bg-gray-200">
+								<a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
+							</li>
+						</ul>
+					</nav>
+				}
 
 
-	}
-	else
-	{
-		<link rel="stylesheet" href="~/css/propuestalayout.css" asp-append-version="true" />
-		<!-- Top Panel (New Header) -->
-		<header class="shadow bg-gray-100">
-			<div class="container mx-auto flex flex-col">
-				<!-- Encabezado adicional -->
-				<div class="header-title bg-gray-100 w-full flex items-center justify-center py-2">
-					<!-- Logo -->
-					<img src="~/images/logo-unit.png" alt="Logo" class="h-10 mr-4">
-					<!-- Título -->
-					<p class="text-lg font-semibold">Dashboard: Plataforma de Control y Gestión de Proyectos</p>
-				</div>
-
-				<!-- Contenido Principal del Header -->
-				<div class="flex justify-between items-center w-full">
-					<!-- Logo -->
-					<div class="logo flex items-center">
-						<img src="~/images/logo-unit.png" alt="Logo" class="h-12">
-					</div>
-
-					<!-- Navigation Menu -->
-					@if (idrol == 1 || idrol == 3)
-					{
-						<nav class="flex text-sm font-light text-gray-800 h-16">
-							<!-- Menú Proyectos -->
-							<div class="relative group h-full">
-								<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-									Menú Proyectos
-								</button>
-								<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("Index", "Home")">Ingreso de proyectos y clientes</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("GetProyectos", "Proyecto")">Proyectos</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("NuestrosClientes", "Cliente")">Clientes</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("GetProyectosCategoria", "Proyecto")">Clasificación Proyectos</a>
-									</li>
-								</ul>
-							</div>
-
-							<!-- Menú Control HH -->
-							<div class="relative group h-full">
-								<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-									Menú Control HH
-								</button>
-								<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-									@if (idrol == 1)
-									{
-										<li class="px-6 py-2 hover:bg-gray-100 text-center">
-											<a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
-										</li>
-									}
-
-									@if (idusuario == 88 || idusuario == 96)
-									{
-										<li class="px-6 py-2 hover:bg-gray-100 text-center">
-											<a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")">Admin.Registros HH</a>
-										</li>
-									}
-								</ul>
-							</div>
-
-							<!-- Menú Administración -->
-							<div class="relative group h-full">
-								<button class="bg-gray-100 border border-gray-300 w-72 text-left h-full flex items-center justify-center px-6 hover:bg-gray-200">
-									Menú Administración
-								</button>
-								<ul class="absolute hidden group-hover:block bg-white shadow-lg border border-gray-200 w-72 z-10">
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("TodosReportes", "Reporte")">Reportes</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("TodoslosParametros", "Parametros")">Parámetros</a>
-									</li>
-									<li class="px-6 py-2 hover:bg-gray-100 text-center">
-										<a href="@Url.Action("MetasFunciones", "Metas")">Metas</a>
-									</li>
-								</ul>
-							</div>
-						</nav>
-					}
-					else if (idrol == 2)
-					{
-						<nav class="flex text-sm font-light text-gray-800 h-16">
-							<ul class="flex">
-								<li class="list-none text-center border border-gray-300 bg-gray-100 px-6 h-16 flex items-center hover:bg-gray-200">
-									<a href="@Url.Action("PlanillaRegistro", "Planilla")">Control HH</a>
-								</li>
-							</ul>
-						</nav>
-					}
-
-
-					<!-- User Profile -->
-					<div class="user-profile">
-						<img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
-						<div class="dropdown-menu" id="userMenu">
-							<p style="text-align:center">Hola, @nombre</p>
-							<a href="@Url.Action("Logout", "Usuario")">Cerrar sesión</a>
-						</div>
+				<!-- User Profile -->
+				<div class="user-profile">
+					<img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="User Icon" id="userMenuButton" class="h-8 w-8">
+					<div class="dropdown-menu" id="userMenu">
+						<p style="text-align:center">Hola, @nombre</p>
+						<a href="@Url.Action("Logout", "Usuario")">Cerrar sesión</a>
 					</div>
 				</div>
 			</div>
-		</header>
-		<style>
-			/* Sidebar contraído: oculta texto, ajusta padding */
-			[data-sidebar="closed"] .sidebar-text {
-				display: none;
-			}
+		</div>
+	</header>
+	<style>
+		/* Sidebar contraído: oculta texto, ajusta padding */
+		[data-sidebar="closed"] .sidebar-text {
+			display: none;
+		}
 
-			[data-sidebar="closed"] ul {
-				padding-left: 0;
-			}
+		[data-sidebar="closed"] ul {
+			padding-left: 0;
+		}
 
-			/* Opcional: centrar íconos */
-			[data-sidebar="closed"] button svg {
-				margin: auto;
-			}
-		</style>
+		/* Opcional: centrar íconos */
+		[data-sidebar="closed"] button svg {
+			margin: auto;
+		}
+	</style>
 
-		<!-- Main Content -->
-		<div class="flex">
-			<!-- Sidebar -->
-			<aside id="sidebar"
-				   class="w-56 h-screen fixed top-0 left-0 bg-gray-200 text-black pt-[72px] px-4 z-10">
-				<!-- Botón de toggle -->
-				<!-- Menú -->
-				<nav class="space-y-4">
-					<!-- Proyectos -->
+	<!-- Main Content -->
+	<div class="flex">
+		<!-- Sidebar -->
+		<aside id="sidebar"
+			   class="w-56 h-screen border border-gray-200 rounded-md fixed top-0 left-0 bg-gray-100 text-black pt-[72px] px-4 z-10">
+			<!-- Botón de toggle -->
+			<!-- Menú -->
+			<nav class="space-y-4">
+				<!-- Proyectos -->
+				@if (idrol == 1 || idrol == 3)
+				{
 					<div>
+
 						<button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
 							<svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -319,7 +187,7 @@
 									 class="hidden group-hover:block absolute top-0 left-full ml-1 w-80 max-h-96 overflow-auto rounded border border-gray-300 bg-white shadow-lg z-50"
 									 style="min-width: 280px;">
 									<div class="p-4" id="proyectos-content">
-										Cargando proyectos...
+										
 									</div>
 								</div>
 							</li>
@@ -483,8 +351,16 @@
 							<span class="sidebar-text">Control HH</span>
 						</button>
 						<ul class="pl-4 mt-1 space-y-1 text-sm">
-							<li><a href="@Url.Action("PlanillaRegistro", "Planilla")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso HH</a></li>
-							<li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Administración HH</a></li>
+							@if (idrol == 1)
+							{
+								<li><a href="@Url.Action("PlanillaRegistro", "Planilla")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso HH</a></li>
+
+							}
+							@if (idusuario == 88 || idusuario == 96)
+							{
+								<li><a href="@Url.Action("SeleccionarMesAnioPlanillaAdmin", "AdminHH")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Administración HH</a></li>
+							}
+
 						</ul>
 					</div>
 					<!-- Administración -->
@@ -497,7 +373,7 @@
 						</button>
 						<ul class="pl-4 mt-1 space-y-1 text-sm">
 
-							<li><a href="@Url.Action("Index", "Home")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso Datos</a></li>
+							<li><a href="@Url.Action("Index", "Home")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso Data Proyecto</a></li>
 							<!--Parametros-->
 							<li class="relative group" id="menu-parametros-item" style="min-width: 160px;">
 								<a href="#" class="flex items-center justify-between w-full hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text transition">
@@ -533,272 +409,263 @@
 
 						</ul>
 					</div>
-				</nav>
-			</aside>
-			@{
-				var viewName = ViewContext.RouteData.Values["action"]?.ToString();
-				var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
-				var isGestorProyectos = controllerName == "EjecucionProyecto" && viewName == "GestorProyectos";
+				}
+				else if (idrol == 2)
+				{
+					<div>
+						<button class="flex items-center gap-2 w-full text-left font-semibold hover:bg-orange-500 hover:text-white px-3 py-2 rounded transition">
+							<svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M4 6h16" />
+							</svg>
+							<span class="sidebar-text">Control HH</span>
+						</button>
+						<ul class="pl-4 mt-1 space-y-1 text-sm">
+							<li><a href="@Url.Action("PlanillaRegistro", "Planilla")" class="block hover:bg-orange-500 hover:text-white px-2 py-1 rounded sidebar-text">Ingreso HH</a></li>
+
+						</ul>
+					</div>
+				}
+			</nav>
+		</aside>
+		@{
+			var viewName = ViewContext.RouteData.Values["action"]?.ToString();
+			var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+			var isGestorProyectos = controllerName == "EjecucionProyecto" && viewName == "GestorProyectos";
+		}
+		<!-- Contenido principal -->
+		<main class="flex-grow mt-[72px] ml-56">
+			@if (isGestorProyectos)
+			{
+				<div class="w-[calc(100vw-16rem)] min-h-screen pl-1 pr-6 py-12  ">
+					@RenderBody()
+				</div>
 			}
-			<!-- Contenido principal -->
-			<main class="flex-grow mt-[72px] ml-56">
-				@if (isGestorProyectos)
-				{
-					<div class="w-[calc(100vw-16rem)] min-h-screen pl-1 pr-6 py-12  ">
-						@RenderBody()
-					</div>
-				}
-				else
-				{
-					<div class="mx-auto max-w-7xl px-6 py-6 w-full">
-						@RenderBody()
-					</div>
-				}
-			</main>
+			else
+			{
+				<div class="mx-auto max-w-7xl px-6 py-6 w-full">
+					@RenderBody()
+				</div>
+			}
+		</main>
 
-		</div>
+	</div>
 
-		<script>
+	<script>
 
 
 
 
 
-			document.addEventListener("DOMContentLoaded", () => {
+			document.addEventListener("DOMContentLoaded", async () => {
+		  const proyectosDropdown = document.getElementById("proyectos-dropdown");
+		  const proyectosContent = document.getElementById("proyectos-content");
 
+		  const estados = [
+			{ id: 6, nombre: "Presupuesto" },
+			{ id: 1, nombre: "En Negociación" },
+			{ id: 2, nombre: "En Ejecución" },
+			{ id: 4, nombre: "Terminado" },
+			{ id: 3, nombre: "Rechazado" },
+		  ];
 
+		  let cacheProyectos = {};
 
-			  const proyectosDropdown = document.getElementById("proyectos-dropdown");
-			  const proyectosContent = document.getElementById("proyectos-content");
+		  async function cargarProyectos(idEstado) {
+			if (cacheProyectos[idEstado]) return cacheProyectos[idEstado];
+			const resp = await fetch(`/Home/ObtenerProyectosPorEstadoJson?idEstado=${idEstado}`);
+			if (!resp.ok) return [];
+			const data = await resp.json();
+			cacheProyectos[idEstado] = data;
+			return data;
+		  }
 
-			  const estados = [
-				{ id: 6, nombre: "Presupuesto" },
-				{ id: 1, nombre: "En Negociación" },
-				{ id: 2, nombre: "En Ejecución" },
-				{ id: 4, nombre: "Terminado" },
-				{ id: 3, nombre: "Rechazado" },
-			  ];
+		  async function mostrarProyectos() {
+			proyectosContent.innerHTML = "";
 
-			  let cacheProyectos = {};
+			for (const estado of estados) {
+			  const proyectos = await cargarProyectos(estado.id);
 
-			  async function cargarProyectos(idEstado) {
-				if (cacheProyectos[idEstado]) return cacheProyectos[idEstado];
+			  const contenedorEstado = document.createElement("div");
+			  contenedorEstado.className = "mb-4";
 
-				const resp = await fetch(`/Home/ObtenerProyectosPorEstadoJson?idEstado=${idEstado}`);
-				if (!resp.ok) return [];
+			  const titulo = document.createElement("h3");
+			  titulo.textContent = estado.nombre;
+			  titulo.className = "font-semibold mb-2 text-orange-600";
+			  contenedorEstado.appendChild(titulo);
 
-				const data = await resp.json();
-				cacheProyectos[idEstado] = data;
-				return data;
+			  if (proyectos.length === 0) {
+				const p = document.createElement("p");
+				p.textContent = "No hay proyectos";
+				p.className = "text-sm text-gray-500";
+				contenedorEstado.appendChild(p);
+			  } else {
+				const ul = document.createElement("ul");
+				ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
+
+				proyectos.forEach((proy) => {
+				  const li = document.createElement("li");
+				  li.textContent = proy.Nombre ?? proy.nombre ?? "Proyecto sin nombre";
+				  li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
+				  li.title = li.textContent;
+
+				  li.addEventListener("click", () => {
+					window.location.href = `/Proyecto/ObtenerProyectos/${proy.Id ?? proy.id}`;
+				  });
+
+				  ul.appendChild(li);
+				});
+
+				contenedorEstado.appendChild(ul);
 			  }
 
-						  let mostrandoProyectos = false;
+			  proyectosContent.appendChild(contenedorEstado);
+			}
+		  }
 
-			async function mostrarProyectos() {
-			  if (mostrandoProyectos) return;
-			  mostrandoProyectos = true;
+		  await mostrarProyectos();
+		});
 
-			  try {
-				proyectosContent.innerHTML = "";
 
-				for (const estado of estados) {
-				  const proyectos = await cargarProyectos(estado.id);
 
-				  const contenedorEstado = document.createElement("div");
-				  contenedorEstado.className = "mb-4";
+					//submenu clientes
 
-				  const titulo = document.createElement("h3");
-				  titulo.textContent = estado.nombre;
-				  titulo.className = "font-semibold mb-2 text-orange-600";
-				  contenedorEstado.appendChild(titulo);
+		document.addEventListener("DOMContentLoaded", () => {
+					  const clienteDropdown = document.getElementById("clientes-dropdown");
+					  const clienteContent = document.getElementById("clientes-content");
 
-				  if (proyectos.length === 0) {
-					const p = document.createElement("p");
-					p.textContent = "No hay proyectos";
-					p.className = "text-sm text-gray-500";
-					contenedorEstado.appendChild(p);
-				  } else {
-					const ul = document.createElement("ul");
-					ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
+					  const tipos = [
+						{ id: "Empr.Públicas Chile", nombre: "Empr.Públicas Chile" },
+						{ id: "Empr.Privadas Chile", nombre: "Empr.Privadas Chile" },
+						 { id: "Empr.Internacional", nombre: "Empr.Internacional" },
+						{ id: "Fundaciones y Org.Sin Fin Lucro", nombre: "Fundaciones y Org.Sin Fin Lucro" },
 
-					proyectos.forEach((proy) => {
-					  const li = document.createElement("li");
-					  li.textContent = proy.Nombre ?? proy.nombre ?? "Proyecto sin nombre";
-					  li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
-					  li.title = li.textContent;
 
-					  li.addEventListener("click", () => {
-						window.location.href = `/Proyecto/ObtenerProyectos/${proy.Id ?? proy.id}`;
+					  ];
+
+					  let cacheClientes = {};
+
+					  async function cargarClientes(tipo) {
+						if (cacheClientes[tipo]) return cacheClientes[tipo];
+
+						const resp = await fetch(`/Home/ObtenerClientesporTipo?tipo=${tipo}`);
+						if (!resp.ok) return [];
+
+						const data = await resp.json();
+						cargarClientes[tipo] = data;
+						return data;
+					  }
+
+					  async function mostrarClientes() {
+						clienteContent.innerHTML = "";
+
+						for (const tipo of tipos) {
+						  const clientes = await cargarClientes(tipo.id);
+
+						  const contenedorEstado = document.createElement("div");
+						  contenedorEstado.className = "mb-4";
+
+						  const titulo = document.createElement("h3");
+						  titulo.textContent = tipo.nombre;
+						  titulo.className = "font-semibold mb-2 text-orange-600";
+						  contenedorEstado.appendChild(titulo);
+
+						  if (clientes.length === 0) {
+							const p = document.createElement("p");
+							p.textContent = "No hay Clientes";
+							p.className = "text-sm text-gray-500";
+							contenedorEstado.appendChild(p);
+						  } else {
+							const ul = document.createElement("ul");
+							ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
+
+							clientes.forEach((cliente) => {
+							  const li = document.createElement("li");
+							  li.textContent = cliente.Nombre ?? cliente.nombre ?? "Cliente sin nombre";
+							  li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
+							  li.title = li.textContent;
+
+							  li.addEventListener("click", () => {
+								window.location.href = `/Cliente/ProyectosCliente?idcliente=${cliente.id}`;
+							  });
+
+							  ul.appendChild(li);
+							});
+
+							contenedorEstado.appendChild(ul);
+						  }
+
+						  clienteContent.appendChild(contenedorEstado);
+						}
+					  }
+
+					  let cargado = false;
+					  const menuItem = document.getElementById("menu-cliente-item");
+					  menuItem.addEventListener("mouseenter", async () => {
+						if (!cargado) {
+						  clienteContent.textContent = "Cargando Clientes...";
+						  await mostrarClientes();
+						  cargado = true;
+						}
 					  });
-
-					  ul.appendChild(li);
 					});
 
-					contenedorEstado.appendChild(ul);
-				  }
+				//parametros
+				document.addEventListener("DOMContentLoaded", () => {
 
-				  proyectosContent.appendChild(contenedorEstado);
-				}
-			  } finally {
-				mostrandoProyectos = false;
-			  }
+
+							 const menuItems = document.getElementById("menu-parametros-item");
+		const dropdown = document.getElementById("parametros-dropdown");
+
+		menuItems.addEventListener("mouseenter", () => {
+		  dropdown.classList.remove("hidden"); // Mostrar para medir altura
+
+
+		  dropdown.style.transform = "translateY(0)";
+
+		  const rect = dropdown.getBoundingClientRect();
+		  const spaceBelow = window.innerHeight - rect.top;
+		  const dropdownHeight = rect.height;
+
+		  if (spaceBelow < dropdownHeight) {
+
+			dropdown.style.transform = `translateY(-${dropdownHeight - spaceBelow + 10}px)`;
+		  }
+		});
+
+		menuItems.addEventListener("mouseleave", () => {
+		  dropdown.classList.add("hidden");
+		  dropdown.style.transform = "translateY(0)";
+		});
+
+
+
+
+
+				});
+
+	</script>
+
+	@RenderSection("Scripts", required: false)
+	<script>
+		document.getElementById('userMenuButton').addEventListener('click', (event) => {
+			event.stopPropagation();
+			const userMenu = document.getElementById('userMenu');
+			userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+		});
+
+		document.addEventListener('click', (event) => {
+			const userMenu = document.getElementById('userMenu');
+			const userMenuButton = document.getElementById('userMenuButton');
+
+			if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
+				userMenu.style.display = 'none';
 			}
+		});
 
-			  let cargado = false;
-			  const menuItem = document.getElementById("menu-proyectos-item");
-			  menuItem.addEventListener("mouseenter", async () => {
-				if (!cargado) {
-				  proyectosContent.textContent = "Cargando proyectos...";
-				  await mostrarProyectos();
-				  cargado = true;
-				}
-			  });
-					
-			
-
-
-			});
-
-
-						//submenu clientes
-
-			document.addEventListener("DOMContentLoaded", () => {
-						  const clienteDropdown = document.getElementById("clientes-dropdown");
-						  const clienteContent = document.getElementById("clientes-content");
-
-						  const tipos = [
-							{ id: "Empr.Públicas Chile", nombre: "Empr.Públicas Chile" },
-							{ id: "Empr.Privadas Chile", nombre: "Empr.Privadas Chile" },
-							 { id: "Empr.Internacional", nombre: "Empr.Internacional" },
-							{ id: "Fundaciones y Org.Sin Fin Lucro", nombre: "Fundaciones y Org.Sin Fin Lucro" },
-
-
-						  ];
-
-						  let cacheClientes = {};
-
-						  async function cargarClientes(tipo) {
-							if (cacheClientes[tipo]) return cacheClientes[tipo];
-
-							const resp = await fetch(`/Home/ObtenerClientesporTipo?tipo=${tipo}`);
-							if (!resp.ok) return [];
-
-							const data = await resp.json();
-							cargarClientes[tipo] = data;
-							return data;
-						  }
-
-						  async function mostrarClientes() {
-							clienteContent.innerHTML = "";
-
-							for (const tipo of tipos) {
-							  const clientes = await cargarClientes(tipo.id);
-
-							  const contenedorEstado = document.createElement("div");
-							  contenedorEstado.className = "mb-4";
-
-							  const titulo = document.createElement("h3");
-							  titulo.textContent = tipo.nombre;
-							  titulo.className = "font-semibold mb-2 text-orange-600";
-							  contenedorEstado.appendChild(titulo);
-
-							  if (clientes.length === 0) {
-								const p = document.createElement("p");
-								p.textContent = "No hay Clientes";
-								p.className = "text-sm text-gray-500";
-								contenedorEstado.appendChild(p);
-							  } else {
-								const ul = document.createElement("ul");
-								ul.className = "list-disc list-inside max-h-40 overflow-y-auto";
-
-								clientes.forEach((cliente) => {
-								  const li = document.createElement("li");
-								  li.textContent = cliente.Nombre ?? cliente.nombre ?? "Cliente sin nombre";
-								  li.className = "text-sm hover:text-orange-500 cursor-pointer truncate";
-								  li.title = li.textContent;
-
-								  li.addEventListener("click", () => {
-									window.location.href = `/Cliente/ProyectosCliente?idcliente=${cliente.id}`;
-								  });
-
-								  ul.appendChild(li);
-								});
-
-								contenedorEstado.appendChild(ul);
-							  }
-
-							  clienteContent.appendChild(contenedorEstado);
-							}
-						  }
-
-						  let cargado = false;
-						  const menuItem = document.getElementById("menu-cliente-item");
-						  menuItem.addEventListener("mouseenter", async () => {
-							if (!cargado) {
-							  clienteContent.textContent = "Cargando Clientes...";
-							  await mostrarClientes();
-							  cargado = true;
-							}
-						  });
-						});
-
-					//parametros
-					document.addEventListener("DOMContentLoaded", () => {
-
-
-								 const menuItems = document.getElementById("menu-parametros-item");
-			const dropdown = document.getElementById("parametros-dropdown");
-
-			menuItems.addEventListener("mouseenter", () => {
-			  dropdown.classList.remove("hidden"); // Mostrar para medir altura
-
-			 
-			  dropdown.style.transform = "translateY(0)";
-
-			  const rect = dropdown.getBoundingClientRect();
-			  const spaceBelow = window.innerHeight - rect.top;
-			  const dropdownHeight = rect.height;
-
-			  if (spaceBelow < dropdownHeight) {
-				
-				dropdown.style.transform = `translateY(-${dropdownHeight - spaceBelow + 10}px)`; 
-			  }
-			});
-
-			menuItems.addEventListener("mouseleave", () => {
-			  dropdown.classList.add("hidden");
-			  dropdown.style.transform = "translateY(0)";
-			});
-					
-					
-					
-					
-					
-					});
-			
-		</script>
-
-		@RenderSection("Scripts", required: false)
-		<script>
-			document.getElementById('userMenuButton').addEventListener('click', (event) => {
-				event.stopPropagation();
-				const userMenu = document.getElementById('userMenu');
-				userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
-			});
-
-			document.addEventListener('click', (event) => {
-				const userMenu = document.getElementById('userMenu');
-				const userMenuButton = document.getElementById('userMenuButton');
-
-				if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
-					userMenu.style.display = 'none';
-				}
-			});
-
-		</script>
+	</script>
 
 
 
-	}
+
 </body>
 </html>

@@ -269,6 +269,87 @@ namespace Proyectogestionhoras.Services
             }
         }
 
+        /*Pago utomatico ingresos y egresos forecast*/
+        public async Task PagoAutomaticoForecast()
+        {
+            try
+            {
+                var ingresosforecast = await context.Ingresosreales
+                     .Where(i => i.Estado == "Forecast" && i.IdproyectoNavigation.StatusProyecto == 2 && i.FechaPago < DateTime.Today)
+                    .ToListAsync();
+                if (ingresosforecast.Count > 0)
+                {
+                    List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
+                    foreach (var ingreso in ingresosforecast)
+                    {
+                        ingresos.Add(new IngresoViewModel
+                        {
+                            IdIngresoreal = ingreso.Id,
+                            Estado = "Pagada",
+                            FechaPago = ingreso.FechaPago?.AddDays(1),
+                            Numdocumento = ingreso.Numdocumento,
+                            FechaEmision = ingreso.FechaEmision,
+                            Montoclp = ingreso.Montoclp,
+                            Iva = ingreso.Iva,
+                            Observacion = ingreso.Observacion?.Trim() ?? "",
+                        });
+                       
+                    }
+                    await GestorIngresos(0, ingresos);
+                }
+                /*servicios*/
+                var serviciosforecast = await context.Serviciosejecucions
+                    .Where(s => s.Estado == "Forecast" && s.IdproyectoNavigation.StatusProyecto == 2 && s.Fecha < DateTime.Today)
+                    .ToListAsync();
+                if (serviciosforecast.Count > 0)
+                {
+                    List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
+                    foreach (var servicio in serviciosforecast)
+                    {
+                        servicios.Add(new ServiciosRealesViewModel
+                        {
+                            IdServicioReal = servicio.Id,
+                            Estado = "Pagada",
+                            Fecha = servicio.Fecha?.AddDays(1),
+                            Idservicio = servicio.Idservicio ?? 0,
+                            Idproveedor = servicio.Idproveedor,
+                            Monto = servicio.Monto,
+                            Observacion = servicio.Observacion?.Trim() ?? "",
+                            Tiposervicio = servicio.Tiposervicio
+                        });
+                    }
+                    await GestorServiciosReales(0, servicios);
+                }
+
+                /*gastos*/
+                var gastosforecast = await context.Gastosejecucions
+                    .Where(g => g.Estado == "Forecast" && g.IdproyectoNavigation.StatusProyecto == 2 && g.Fecha < DateTime.Today)
+                    .ToListAsync();
+                if (gastosforecast.Count > 0)
+                {
+                    List<GastosRealesViewModel> gastos = new List<GastosRealesViewModel>();
+                    foreach (var gasto in gastosforecast)
+                    {
+                        gastos.Add(new GastosRealesViewModel
+                        {
+                            IdGastoReal = gasto.Id,
+                            Estado = "Pagada",
+                            Fecha = gasto.Fecha?.AddDays(1),
+                            Idgasto = gasto.Idgasto ?? 0,
+                            Idproveedor = gasto.Idproveedor,
+                            Segmento = gasto.Segmento,
+                            Monto = gasto.Monto,
+                            Observacion = gasto.Observacion?.Trim() ?? "",
+                        });
+                    }
+                    await GestorGastosReales(0, gastos);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Hubo un error al pagar los ingresos y egresos forecast: {e.Message}");
+            }
+        }
 
 
 
