@@ -20,13 +20,15 @@ namespace Proyectogestionhoras.Controllers
         private readonly EjecucionService ejecucionService;
         private readonly ReporteService reporteService;
         private readonly PROYECTO_CONTROL_HORASContext context;
-        public EjecucionProyectoController(ProyectoService proyectoService, FacturaService facturaService, EjecucionService ejecucionService, PROYECTO_CONTROL_HORASContext context, ReporteService reporteService)
+        private readonly Masivo masivo;
+        public EjecucionProyectoController(ProyectoService proyectoService, FacturaService facturaService, EjecucionService ejecucionService, PROYECTO_CONTROL_HORASContext context, ReporteService reporteService, Masivo masivo)
         {
             this.proyectoService = proyectoService;
             this.facturaService = facturaService;
             this.ejecucionService = ejecucionService;
             this.context = context;
             this.reporteService = reporteService;
+            this.masivo = masivo;
         }
 
         public async Task<IActionResult> SeleccionarProyecto(int? id, int? idcliente, string? nombre, int? idtipoempresa, int? statusproyecto, string? numproyecto, int? idtipologia, int? unidadneg, int? idccosto, int? idusuario)
@@ -1864,7 +1866,7 @@ namespace Proyectogestionhoras.Controllers
                     })
                     .Distinct()
                     .ToList();
-                await proyectoService.GestorFechaModificacionProyectoMasivo(modificacion);
+                await masivo.GestorFechaModificacionProyectoMasivo(modificacion);
                 TempData["SuccessMessageGastosHH"] = "Los pagos de HH socios/staff se han registrado correctamente.";
                 return RedirectToAction("PagosDistribucionHH", new { estado = 0 });
             }
@@ -1962,7 +1964,7 @@ namespace Proyectogestionhoras.Controllers
                     })
                     .Distinct()
                     .ToList();
-                await proyectoService.GestorFechaModificacionProyectoMasivo(modificacion);
+                await masivo.GestorFechaModificacionProyectoMasivo(modificacion);
                 TempData["SuccessPagosEgresos"] = "Egresos pagados correctamente.";
                 return RedirectToAction("PagoEgresosForecast");
             }

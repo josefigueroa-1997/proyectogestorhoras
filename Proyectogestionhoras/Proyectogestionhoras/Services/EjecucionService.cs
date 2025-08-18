@@ -16,14 +16,14 @@ namespace Proyectogestionhoras.Services
     {
         private readonly PROYECTO_CONTROL_HORASContext context;
         private readonly Conexion conexion;
+        private readonly Masivo proyectoService;
         private readonly ILogger<EjecucionService> logger;
-        
-        public EjecucionService(PROYECTO_CONTROL_HORASContext context, Conexion conexion,ILogger<EjecucionService> logger)
+        public EjecucionService(PROYECTO_CONTROL_HORASContext context, Conexion conexion, ILogger<EjecucionService> logger, Masivo proyectoService)
         {
             this.context = context;
             this.conexion = conexion;
             this.logger = logger;
-         
+            this.proyectoService = proyectoService;
         }
 
         public async Task GestorIngresos(int idproyecto, List<IngresoViewModel> ingresos)
@@ -270,86 +270,116 @@ namespace Proyectogestionhoras.Services
         }
 
         /*Pago utomatico ingresos y egresos forecast*/
+
+
+        private async Task ProcesarForecast<TEntidad, TViewModel>(
+    IQueryable<TEntidad> query,
+    Func<TEntidad, TViewModel> mapToViewModel,
+    Func<List<TViewModel>, Task> gestor,
+    Func<TViewModel, MoficacionProyectoViewModel> mapToModificacion)
+        {
+            var forecast = await query.ToListAsync();
+            if (forecast.Count == 0) return;
+
+            var lista = forecast.Select(mapToViewModel).ToList();
+
+            await gestor(lista);
+
+            var modificaciones = lista
+                .Select(mapToModificacion)
+                .Where(m => m.FechaPago != null)
+                .Distinct()
+                .ToList();
+
+            await proyectoService.GestorFechaModificacionProyectoMasivo(modificaciones);
+        }
+
+
+
+
+
         public async Task PagoAutomaticoForecast()
         {
             try
             {
-                var ingresosforecast = await context.Ingresosreales
-                     .Where(i => i.Estado == "Forecast" && i.IdproyectoNavigation.StatusProyecto == 2 && i.FechaPago < DateTime.Today)
-                    .ToListAsync();
-                if (ingresosforecast.Count > 0)
-                {
-                    List<IngresoViewModel> ingresos = new List<IngresoViewModel>();
-                    foreach (var ingreso in ingresosforecast)
+                await ProcesarForecast(
+                    context.Ingresosreales
+                        .Where(i => i.Estado == "Forecast" &&
+                                    i.IdproyectoNavigation.StatusProyecto == 2 &&
+                                    i.FechaPago < DateTime.Today),
+                    ingreso => new IngresoViewModel
                     {
-                        ingresos.Add(new IngresoViewModel
-                        {
-                            IdIngresoreal = ingreso.Id,
-                            Estado = "Pagada",
-                            FechaPago = ingreso.FechaPago?.AddDays(1),
-                            Numdocumento = ingreso.Numdocumento,
-                            FechaEmision = ingreso.FechaEmision,
-                            Montoclp = ingreso.Montoclp,
-                            Iva = ingreso.Iva,
-                            Observacion = ingreso.Observacion?.Trim() ?? "",
-                        });
-                       
-                    }
-                    await GestorIngresos(0, ingresos);
-                }
-                /*servicios*/
-                var serviciosforecast = await context.Serviciosejecucions
-                    .Where(s => s.Estado == "Forecast" && s.IdproyectoNavigation.StatusProyecto == 2 && s.Fecha < DateTime.Today)
-                    .ToListAsync();
-                if (serviciosforecast.Count > 0)
-                {
-                    List<ServiciosRealesViewModel> servicios = new List<ServiciosRealesViewModel>();
-                    foreach (var servicio in serviciosforecast)
+                        IdIngresoreal = ingreso.Id,
+                        Estado = "Pagada",
+                        FechaPago = ingreso.FechaPago?.AddDays(1),
+                        Numdocumento = ingreso.Numdocumento,
+                        FechaEmision = ingreso.FechaEmision,
+                        Montoclp = ingreso.Montoclp,
+                        Iva = ingreso.Iva,
+                        Observacion = ingreso.Observacion?.Trim() ?? "",
+                        Idproyecto = ingreso.Idproyecto
+                    },
+                    ingresos => GestorIngresos(0, ingresos),
+                    vm => new MoficacionProyectoViewModel
                     {
-                        servicios.Add(new ServiciosRealesViewModel
-                        {
-                            IdServicioReal = servicio.Id,
-                            Estado = "Pagada",
-                            Fecha = servicio.Fecha?.AddDays(1),
-                            Idservicio = servicio.Idservicio ?? 0,
-                            Idproveedor = servicio.Idproveedor,
-                            Monto = servicio.Monto,
-                            Observacion = servicio.Observacion?.Trim() ?? "",
-                            Tiposervicio = servicio.Tiposervicio
-                        });
-                    }
-                    await GestorServiciosReales(0, servicios);
-                }
+                        IdProyecto = vm.Idproyecto.Value,
+                        FechaPago = vm.FechaPago
+                    });
 
-                /*gastos*/
-                var gastosforecast = await context.Gastosejecucions
-                    .Where(g => g.Estado == "Forecast" && g.IdproyectoNavigation.StatusProyecto == 2 && g.Fecha < DateTime.Today)
-                    .ToListAsync();
-                if (gastosforecast.Count > 0)
-                {
-                    List<GastosRealesViewModel> gastos = new List<GastosRealesViewModel>();
-                    foreach (var gasto in gastosforecast)
+                await ProcesarForecast(
+                    context.Serviciosejecucions
+                        .Where(s => s.Estado == "Forecast" &&
+                                    s.IdproyectoNavigation.StatusProyecto == 2 &&
+                                    s.Fecha < DateTime.Today),
+                    servicio => new ServiciosRealesViewModel
                     {
-                        gastos.Add(new GastosRealesViewModel
-                        {
-                            IdGastoReal = gasto.Id,
-                            Estado = "Pagada",
-                            Fecha = gasto.Fecha?.AddDays(1),
-                            Idgasto = gasto.Idgasto ?? 0,
-                            Idproveedor = gasto.Idproveedor,
-                            Segmento = gasto.Segmento,
-                            Monto = gasto.Monto,
-                            Observacion = gasto.Observacion?.Trim() ?? "",
-                        });
-                    }
-                    await GestorGastosReales(0, gastos);
-                }
+                        IdServicioReal = servicio.Id,
+                        Estado = "Pagada",
+                        Fecha = servicio.Fecha?.AddDays(1),
+                        Idservicio = servicio.Idservicio ?? 0,
+                        Idproveedor = servicio.Idproveedor,
+                        Monto = servicio.Monto,
+                        Observacion = servicio.Observacion?.Trim() ?? "",
+                        Tiposervicio = servicio.Tiposervicio,
+                        Idproyecto = servicio.Idproyecto.Value
+                    },
+                    servicios => GestorServiciosReales(0, servicios),
+                    vm => new MoficacionProyectoViewModel
+                    {
+                        IdProyecto = vm.Idproyecto,
+                        FechaPago = vm.Fecha
+                    });
+
+                await ProcesarForecast(
+                    context.Gastosejecucions
+                        .Where(g => g.Estado == "Forecast" &&
+                                    g.IdproyectoNavigation.StatusProyecto == 2 &&
+                                    g.Fecha < DateTime.Today),
+                    gasto => new GastosRealesViewModel
+                    {
+                        IdGastoReal = gasto.Id,
+                        Estado = "Pagada",
+                        Fecha = gasto.Fecha?.AddDays(1),
+                        Idgasto = gasto.Idgasto ?? 0,
+                        Idproveedor = gasto.Idproveedor,
+                        Segmento = gasto.Segmento,
+                        Monto = gasto.Monto,
+                        Observacion = gasto.Observacion?.Trim() ?? "",
+                        Idproyecto = gasto.Idproyecto.Value
+                    },
+                    gastos => GestorGastosReales(0, gastos),
+                    vm => new MoficacionProyectoViewModel
+                    {
+                        IdProyecto = vm.Idproyecto,
+                        FechaPago = vm.Fecha
+                    });
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Hubo un error al pagar los ingresos y egresos forecast: {e.Message}");
             }
         }
+
 
 
 

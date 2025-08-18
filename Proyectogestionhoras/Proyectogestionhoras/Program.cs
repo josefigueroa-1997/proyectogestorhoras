@@ -72,6 +72,7 @@ builder.Services.AddScoped<BonoService>();
 builder.Services.AddScoped<PresupuestoService>();
 builder.Services.AddScoped<EjecucionService>();
 builder.Services.AddScoped<ExcelService>();
+builder.Services.AddScoped<Masivo>();
 builder.Services.Configure<FormOptions>(options =>
 {
     options.ValueCountLimit = 20000; 

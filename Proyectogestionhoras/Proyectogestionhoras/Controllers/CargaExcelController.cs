@@ -21,9 +21,10 @@ namespace Proyectogestionhoras.Controllers
     {
         private readonly PROYECTO_CONTROL_HORASContext context;
         private readonly ExcelService excelService;
-        private readonly ProyectoService proyectoService;
+        private readonly Masivo proyectoService;
+        
 
-        public CargaExcelController(PROYECTO_CONTROL_HORASContext context,ExcelService excelService, ProyectoService proyectoService) {
+        public CargaExcelController(PROYECTO_CONTROL_HORASContext context,ExcelService excelService, Masivo proyectoService) {
             this.context = context;
             this.excelService = excelService;
             this.proyectoService = proyectoService;
