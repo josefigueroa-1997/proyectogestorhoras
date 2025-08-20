@@ -41,7 +41,7 @@ namespace Proyectogestionhoras.Controllers
                         var usuariosproyectos = await usuario.ObtenerUsuariosProyecto(id.Value);
                         await usuario.GestorHHSocios();
                         await usuario.GestorHHStaff();
-                        await ejecucionService.PagoAutomaticoForecast();
+                        //await ejecucionService.PagoAutomaticoForecast();
                        // await ejecucionService.PagoAutomaticoHH();
                         ViewBag.clientes = clientes;
                         ViewBag.Proyectos = usuariosproyectos;
@@ -63,6 +63,11 @@ namespace Proyectogestionhoras.Controllers
         }
 
         public IActionResult Dashboard()
+        {
+            return View();
+        }
+
+        public IActionResult BaseProyectos()
         {
             return View();
         }

@@ -1,0 +1,396 @@
+﻿<h2 class="text-2xl py-10 font-bold mb-4">Propuesta de Base Proyectos</h2>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600">Muestra los ingresos y egresos como los estados (Pagados y Forecast) de los proyectos. Usted puede filtrar por proyecto, cuenta, estado,tipo ingreso/gasto/servicio y mes/anio.</p>
+</div>
+<button class="mt-4 bg-green-500 text-white p-2 rounded" id="exportarExcel">Exportar a Excel</button>
+<div class="container mx-auto mb-4 p-4 bg-white rounded-lg shadow-md">
+    <p class="text-sm text-gray-600 mb-2 font-bold">Filtros</p>
+
+    <!-- Contenedor de filtros -->
+    <div id="filtros-container"></div>
+</div>
+
+<div class="container mx-auto mt-4 p-4 bg-white rounded-lg shadow-md">
+    <div class="overflow-x-auto">
+        <div id="tabla-container"></div>
+    </div>
+</div>
+
+<script>
+    let datosOriginal = [];
+    let filtrosSeleccionados = {
+        proyecto: new Set(),
+        cuenta: new Set(),
+        estado: new Set(),
+        concepto: new Set(),
+        periodo: new Set()
+    };
+
+    async function cargarTabla() {
+        try {
+            const response = await fetch('/Reporte/ObtenerBaseProyectos');
+            const data = await response.json();
+            datosOriginal = data;
+
+            if (!data || data.length === 0) {
+                document.getElementById("tabla-container").innerHTML = "<p>No hay datos</p>";
+                return;
+            }
+
+            // Generar filtros dinámicos
+            generarFiltros(data);
+
+            // Render inicial
+            renderizarTabla(data);
+
+        } catch (error) {
+            console.error("Error cargando tabla:", error);
+        }
+    }
+
+        function generarFiltros(data) {
+        // Filtros de texto ordenados alfabéticamente
+        const proyectos = [...new Set(data.map(d => d.nombreProyecto))].sort((a, b) => a.localeCompare(b));
+        const cuentas   = [...new Set(data.map(d => d.cuenta))].sort((a, b) => a.localeCompare(b));
+        const estados   = [...new Set(data.map(d => d.estado))].sort((a, b) => a.localeCompare(b));
+        const conceptos = [...new Set(data.map(d => d.nombreConcepto))].sort((a, b) => a.localeCompare(b));
+
+        // Mes/Año
+        let periodos = [];
+        data.forEach(d => {
+            if (!periodos.some(p => p.mes === d.mes && p.anio === d.anio)) {
+                periodos.push({ mes: d.mes, anio: d.anio });
+            }
+        });
+
+        // Ordenar periodos por Año y Mes
+        periodos.sort((a, b) => a.anio === b.anio ? a.mes - b.mes : a.anio - b.anio);
+
+        // Contenedor de filtros
+        const cont = document.getElementById("filtros-container");
+        cont.innerHTML = "";
+
+        crearFiltro("Proyecto", proyectos, "proyecto");
+        crearFiltro("Cuenta", cuentas, "cuenta");
+        crearFiltro("Estado", estados, "estado");
+        crearFiltro("Tipo  Ingreso/Gasto/Servicio", conceptos, "concepto");
+        crearFiltro("Mes/Año", periodos.map(p => `${p.mes}/${p.anio}`), "periodo");
+    }
+
+           function crearFiltro(nombre, valores, clave) {
+        const cont = document.getElementById("filtros-container");
+
+        const div = document.createElement("div");
+        div.className = "border mb-2 rounded-lg overflow-hidden"; 
+
+        // Botón (acordeón)
+        const btn = document.createElement("button");
+        btn.textContent = nombre;
+        btn.className = "w-full text-left font-semibold bg-orange-500 text-sm text-white px-3 py-2";
+        btn.onclick = () => {
+            boxContainer.classList.toggle("hidden");
+        };
+
+        // Contenedor desplegable (lista de checkboxes)
+       const boxContainer = document.createElement("div");
+boxContainer.className = "hidden grid gap-2 p-3 bg-white text-black";
+boxContainer.style.gridAutoFlow = "column";       
+boxContainer.style.gridAutoRows = "min-content";  
+boxContainer.style.gridTemplateRows = "repeat(10, min-content)"; 
+        valores.forEach(val => {
+            const label = document.createElement("label");
+            label.className = "flex items-center space-x-2 text-xs";
+
+            const chk = document.createElement("input");
+            chk.type = "checkbox";
+            chk.value = val;
+            chk.className = "mr-2";
+            chk.onchange = (e) => {
+                if (e.target.checked) {
+                    filtrosSeleccionados[clave].add(val);
+                } else {
+                    filtrosSeleccionados[clave].delete(val);
+                }
+                aplicarFiltros();
+            };
+
+            label.appendChild(chk);
+            label.appendChild(document.createTextNode(val));
+            boxContainer.appendChild(label);
+        });
+
+        div.appendChild(btn);
+        div.appendChild(boxContainer);
+        cont.appendChild(div);
+    }
+
+
+    function aplicarFiltros() {
+        let filtrados = datosOriginal.filter(d => {
+            const matchProyecto = filtrosSeleccionados.proyecto.size === 0 || filtrosSeleccionados.proyecto.has(d.nombreProyecto);
+            const matchCuenta   = filtrosSeleccionados.cuenta.size === 0 || filtrosSeleccionados.cuenta.has(d.cuenta);
+            const matchEstado   = filtrosSeleccionados.estado.size === 0 || filtrosSeleccionados.estado.has(d.estado);
+            const matchConcepto = filtrosSeleccionados.concepto.size === 0 || filtrosSeleccionados.concepto.has(d.nombreConcepto);
+            const matchPeriodo  = filtrosSeleccionados.periodo.size === 0 || filtrosSeleccionados.periodo.has(`${d.mes}/${d.anio}`);
+
+            return matchProyecto && matchCuenta && matchEstado && matchConcepto && matchPeriodo;
+        });
+
+        renderizarTabla(filtrados);
+    }
+
+    function renderizarTabla(data) {
+        if (data.length === 0) {
+            document.getElementById("tabla-container").innerHTML = "<p>No hay datos para mostrar</p>";
+            return;
+        }
+
+        // Obtener periodos únicos ordenados
+        let periodos = [];
+        data.forEach(d => {
+            if (!periodos.some(p => p.mes === d.mes && p.anio === d.anio)) {
+                periodos.push({ mes: d.mes, anio: d.anio });
+            }
+        });
+        periodos.sort((a,b) => a.anio === b.anio ? a.mes - b.mes : a.anio - b.anio);
+
+        // Agrupar
+        const agrupado = {};
+      data.forEach(d => {
+    const key = `${d.nombreProyecto}|${d.cuenta}|${d.estado}|${d.nombreConcepto}`;
+    if (!agrupado[key]) {
+        agrupado[key] = {
+            NombreProyecto: d.nombreProyecto,
+            Cuenta: d.cuenta,
+            Estado: d.estado,
+            NombreConcepto: d.nombreConcepto,
+            montos: {}
+        };
+    }
+
+    const keyPeriodo = `${d.mes}/${d.anio}`;
+
+  
+    agrupado[key].montos[keyPeriodo] = 
+        (agrupado[key].montos[keyPeriodo] || 0) + d.monto;
+});
+
+        const filas = Object.values(agrupado).sort((a, b) =>
+    a.NombreProyecto.localeCompare(b.NombreProyecto)
+);
+
+// Construcción tabla
+let html = "<table class='min-w-full border border-gray-300 text-xs'>";
+html += "<thead class='bg-gray-100 sticky top-0 z-30'>";
+html += "<tr>";
+html += "<th class='border px-2 py-1 min-w-[150px]'>Proyecto</th>";
+html += "<th class='border px-2 py-1 min-w-[150px]'>Cuenta</th>";
+html += "<th class='border px-2 py-1'>Estado</th>";
+html += "<th class='border px-2 py-1 min-w-[150px]'>Nombre</th>";
+periodos.forEach(p => html += `<th class='border px-2 py-1'>${p.mes}/${p.anio}</th>`);
+html += "</tr>";
+html += "</thead>";
+
+html += "<tbody>";
+filas.forEach(row => {
+    html += "<tr>";
+    html += `<td class='border px-2 py-1 '>${row.NombreProyecto}</td>`;
+    html += `<td class='border px-2 py-1 min-w-[150px]'>${row.Cuenta}</td>`;
+    html += `<td class='border px-2 py-1'>${row.Estado}</td>`;
+    html += `<td class='border px-2 py-1 min-w-[150px]'>${row.NombreConcepto}</td>`;
+    periodos.forEach(p => {
+        const keyPeriodo = `${p.mes}/${p.anio}`;
+        const valor = row.montos[keyPeriodo];
+        html += `<td class='border px-2 py-1 text-right'>${valor !== undefined
+            ? valor.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })
+            : ""}</td>`;
+    });
+    html += "</tr>";
+        });
+        html += "</tbody></table>";
+
+        document.getElementById("tabla-container").innerHTML = html;
+    }
+
+    cargarTabla();
+</script>
+
+
+    <script>
+async function exportarTablaAExcel(tablaContainerId) {
+    const container = document.getElementById(tablaContainerId);
+    if (!container) return;
+
+    const tabla = container.querySelector('table');
+    if (!tabla) return;
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Reporte');
+
+    // Agregar logo
+    const response = await fetch('/images/unitt.png');
+    const imageBlob = await response.blob();
+    const arrayBuffer = await imageBlob.arrayBuffer();
+
+    const logoImageId = workbook.addImage({
+        buffer: arrayBuffer,
+        extension: 'png',
+    });
+
+    worksheet.addImage(logoImageId, {
+        tl: { col: 0, row: 0 },
+        ext: { width: 150, height: 50 },
+    });
+
+    worksheet.addRow([]);
+    worksheet.addRow([]);
+
+    worksheet.mergeCells('D3:G3');
+    const titleCell = worksheet.getCell('D3');
+    titleCell.value = `Propuesta Base de Proyectos`;
+    titleCell.font = { bold: true, size: 14 };
+    titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+
+    worksheet.addRow([]);
+    worksheet.addRow([]);
+
+    function parseMonto(valor) {
+        if (!valor || valor.trim() === '') return null;
+        
+        
+        const esNegativo = valor.trim().startsWith('-');
+        
+  
+        valor = valor.replace(/\$/g, "").replace(/\s/g, "");
+        
+        valor = valor.replace(/\./g, "");
+
+        valor = valor.replace(",", ".");
+        
+
+        if (esNegativo) {
+            valor = valor.replace(/^-/, ""); 
+        }
+        
+        const num = parseFloat(valor);
+        if (isNaN(num)) return null;
+        
+        
+        return esNegativo ? -num : num;
+    }
+
+    
+    const startRow = 6; 
+
+    // Recorrer filas de la tabla HTML
+    Array.from(tabla.rows).forEach((tr, rowIndex) => {
+        const rowData = [];
+        
+        Array.from(tr.cells).forEach((td, colIndex) => {
+            let valor = td.innerText.trim();
+
+            if (rowIndex === 0) {
+                rowData.push(valor);
+            } else {
+                if (td.classList.contains('text-right')) {
+                    const numero = parseMonto(valor);
+                    rowData.push(numero);
+                } else {
+                    rowData.push(valor);
+                }
+            }
+        });
+        
+      
+        const excelRow = worksheet.getRow(startRow + rowIndex);
+        rowData.forEach((value, colIndex) => {
+            excelRow.getCell(colIndex + 1).value = value;
+        });
+    });
+
+    const headerRow = worksheet.getRow(startRow);
+    headerRow.eachCell((cell) => {
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFDDEBF7' } // Azul claro
+        };
+        cell.font = {
+            bold: true,
+            color: { argb: 'FF000000' } // Texto negro
+        };
+        cell.alignment = {
+            horizontal: 'center',
+            vertical: 'middle'
+        };
+        cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        };
+    });
+
+    const totalRows = worksheet.rowCount;
+    for (let rowNumber = startRow + 1; rowNumber <= totalRows; rowNumber++) {
+        const row = worksheet.getRow(rowNumber);
+        
+        row.eachCell((cell, colNumber) => {
+            const headerCell = worksheet.getRow(startRow).getCell(colNumber);
+            if (headerCell.value && (headerCell.value.includes('/') || colNumber > 4)) {
+                if (cell.value !== null && typeof cell.value === 'number') {
+                    cell.alignment = { horizontal: 'right' };
+                    
+                    // Formato explícito para positivos y negativos
+                    if (cell.value < 0) {
+                        cell.numFmt = '"$"#,##0;[Red]-"$"#,##0';
+                        cell.font = { color: { argb: 'FFFF0000' } };
+                    } else {
+                        cell.numFmt = '"$"#,##0';
+                    }
+                }
+            } else {
+                cell.alignment = { horizontal: 'left' };
+            }
+
+            // Agregar bordes a todas las celdas de datos
+            cell.border = {
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: 'thin' }
+            };
+        });
+    }
+
+    const headerCells = Array.from(tabla.rows[0].cells);
+    headerCells.forEach((headerCell, colIndex) => {
+        const column = worksheet.getColumn(colIndex + 1);
+        let maxLength = 0;
+
+        for (let rowNumber = startRow; rowNumber <= totalRows; rowNumber++) {
+            const cell = worksheet.getRow(rowNumber).getCell(colIndex + 1);
+            const cellLength = cell.value ? cell.value.toString().length : 10;
+            if (cellLength > maxLength) {
+                maxLength = cellLength;
+            }
+        }
+        
+        column.width = Math.min(maxLength + 2, 20);
+    });
+
+
+    worksheet.views = [
+        { state: 'frozen', xSplit: 1, ySplit: startRow }
+    ];
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    saveAs(blob, "Base de Proyectos.xlsx");
+}
+
+// Uso
+document.getElementById('exportarExcel').addEventListener('click', async () => {
+    await exportarTablaAExcel('tabla-container');
+});
+    </script>

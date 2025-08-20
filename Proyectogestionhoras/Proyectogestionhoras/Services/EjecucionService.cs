@@ -552,7 +552,7 @@ namespace Proyectogestionhoras.Services
                                            Cuenta = c.Cuenta,
                                            IdCuenta = c.Idcuenta,
                                            Monto = g.Monto,
-                                           Fecha = g.Fecha,
+                                           Fecha = g.Fecha ?? DateTime.MinValue,
                                            Observacion = g.Observacion,
                                            Estado = g.Estado,
                                            Venta = g.Venta,

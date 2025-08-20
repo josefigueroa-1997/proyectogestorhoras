@@ -12,6 +12,7 @@
         public decimal Monto { get; set; }
         public string? Estado { get; set; }
         public string? Glosa { get; set; }
+        public string? NombreConcepto { get; set; }
         public int Orden { get; set; }
     }
 }

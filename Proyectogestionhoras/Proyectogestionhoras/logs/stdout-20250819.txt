@@ -3633,3 +3633,1018 @@ WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_
 2025-08-19 10:53:41.084 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 2.9111ms
 2025-08-19 10:53:41.084 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
 2025-08-19 10:53:41.084 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - 200 null application/json; charset=utf-8 3.7155ms
+2025-08-19 19:37:42.718 -04:00 [INF] User profile is available. Using 'C:\Users\USUARIO\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-08-19 19:37:43.151 -04:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert.
+2025-08-19 19:37:43.206 -04:00 [INF] Now listening on: https://localhost:7297
+2025-08-19 19:37:43.206 -04:00 [INF] Now listening on: http://localhost:5295
+2025-08-19 19:37:43.231 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-08-19 19:37:43.231 -04:00 [INF] Hosting environment: Development
+2025-08-19 19:37:43.231 -04:00 [INF] Content root path: C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras
+2025-08-19 19:37:43.993 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-08-19 19:37:44.155 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-08-19 19:37:44.223 -04:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:44.427 -04:00 [INF] Executing RedirectResult, redirecting to /Usuario/Login.
+2025-08-19 19:37:44.430 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 205.2056ms
+2025-08-19 19:37:44.430 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-08-19 19:37:44.434 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 302 0 null 446.0136ms
+2025-08-19 19:37:44.439 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Usuario/Login - null null
+2025-08-19 19:37:44.444 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-08-19 19:37:44.445 -04:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-08-19 19:37:44.457 -04:00 [INF] Executing ViewResult, running view Login.
+2025-08-19 19:37:44.537 -04:00 [INF] Executed ViewResult - view Login executed in 85.8423ms.
+2025-08-19 19:37:44.537 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 92.3756ms
+2025-08-19 19:37:44.537 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-08-19 19:37:44.538 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Usuario/Login - 200 null text/html; charset=utf-8 99.526ms
+2025-08-19 19:37:44.562 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-08-19 19:37:44.562 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-08-19 19:37:44.571 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 16525 application/javascript; charset=utf-8 8.556ms
+2025-08-19 19:37:44.578 -04:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-08-19 19:37:44.579 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 17.1726ms
+2025-08-19 19:37:44.581 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-08-19 19:37:44.626 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 45.6007ms
+2025-08-19 19:37:49.596 -04:00 [INF] Request starting HTTP/2 POST https://localhost:7297/Usuario/Login - application/x-www-form-urlencoded 28
+2025-08-19 19:37:49.602 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-08-19 19:37:49.609 -04:00 [INF] Route matched with {action = "Login", controller = "Usuario"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(System.String, System.String) on controller Proyectogestionhoras.Controllers.UsuarioController (Proyectogestionhoras).
+2025-08-19 19:37:50.218 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:52.405 -04:00 [INF] Executed DbCommand (157ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [r].[ESTADO]
+FROM [USUARIO] AS [u]
+INNER JOIN [RECURSO] AS [r] ON [u].[ID_RECURSO] = [r].[ID]
+WHERE [u].[ID] = @__id_0
+2025-08-19 19:37:52.411 -04:00 [INF] Executing RedirectResult, redirecting to /.
+2025-08-19 19:37:52.411 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras) in 2802.8207ms
+2025-08-19 19:37:52.412 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.UsuarioController.Login (Proyectogestionhoras)'
+2025-08-19 19:37:52.413 -04:00 [INF] Session started; Key:2fedc74a-6af3-6232-02a2-19d9f6e2de85, Id:e7d349af-8d30-e280-f767-9e926f9cc845
+2025-08-19 19:37:52.416 -04:00 [INF] Request finished HTTP/2 POST https://localhost:7297/Usuario/Login - 302 0 null 2820.2085ms
+2025-08-19 19:37:52.418 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/ - null null
+2025-08-19 19:37:52.421 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-08-19 19:37:52.421 -04:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:52.432 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:52.954 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM(COALESCE([r].[HH_ANUALES], 0.0)), 0.0)
+FROM [RECURSO] AS [r]
+WHERE ((([r].[ESTADO] = 'Activo') AND ([r].[NOMBRE_RECURSO] = 'Socio')) AND ([r].[DESDE] <= GETDATE())) AND ([r].[HASTA] >= GETDATE())
+2025-08-19 19:37:53.129 -04:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[ID], [t].[ANIO], [t].[CANTIDAD], [t].[TIPO_RECURSO], [t].[TOTAL_HH_ANUALES], [t].[TOTALINMODIFICABLE]
+FROM [TOTAL_RECURSOS] AS [t]
+WHERE ([t].[ANIO] = DATEPART(year, GETDATE())) AND ([t].[TIPO_RECURSO] = 'Socio')
+2025-08-19 19:37:53.324 -04:00 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([h].[HH_SOCIOS]), 0)
+FROM [PROYECTO] AS [p]
+INNER JOIN [HH_USUARIO_HISTORIAL] AS [h] ON [p].[ID] = [h].[ID_PROYECTO]
+WHERE [p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = DATEPART(year, GETDATE()))
+2025-08-19 19:37:53.497 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM(COALESCE([r].[HH_ANUALES], 0.0)), 0.0)
+FROM [RECURSO] AS [r]
+WHERE ((([r].[ESTADO] = 'Activo') AND ([r].[NOMBRE_RECURSO] = 'Staff')) AND ([r].[DESDE] <= GETDATE())) AND ([r].[HASTA] >= GETDATE())
+2025-08-19 19:37:53.655 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[ID], [t].[ANIO], [t].[CANTIDAD], [t].[TIPO_RECURSO], [t].[TOTAL_HH_ANUALES], [t].[TOTALINMODIFICABLE]
+FROM [TOTAL_RECURSOS] AS [t]
+WHERE ([t].[ANIO] = DATEPART(year, GETDATE())) AND ([t].[TIPO_RECURSO] = 'Staff')
+2025-08-19 19:37:53.819 -04:00 [INF] Executed DbCommand (162ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([h].[HH_STAFF]), 0)
+FROM [PROYECTO] AS [p]
+INNER JOIN [HH_USUARIO_HISTORIAL] AS [h] ON [p].[ID] = [h].[ID_PROYECTO]
+WHERE [p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = DATEPART(year, GETDATE()))
+2025-08-19 19:37:53.992 -04:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[ID], [i].[CUOTA], [i].[ESTADO], [i].[FECHA_EMISION], [i].[FECHA_PAGO], [i].[FECHA_VENCIMIENTO], [i].[IDCUENTA], [i].[IDPROYECTO], [i].[IVA], [i].[MONTOCLP], [i].[MONTOUS], [i].[NUMDOCUMENTO], [i].[OBSERVACION], [i].[TC], [i].[VENTA]
+FROM [INGRESOSREALES] AS [i]
+LEFT JOIN [PROYECTO] AS [p] ON [i].[IDPROYECTO] = [p].[ID]
+WHERE (([i].[ESTADO] = 'Forecast') AND ([p].[STATUS_PROYECTO] = 2)) AND ([i].[FECHA_PAGO] < CONVERT(date, GETDATE()))
+2025-08-19 19:37:54.156 -04:00 [INF] Executed DbCommand (159ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[ESTADO], [s].[FECHA], [s].[IDPROVEEDOR], [s].[IDPROYECTO], [s].[IDSERVICIO], [s].[MONTO], [s].[OBSERVACION], [s].[TIPOSERVICIO], [s].[VENTA]
+FROM [SERVICIOSEJECUCION] AS [s]
+LEFT JOIN [PROYECTO] AS [p] ON [s].[IDPROYECTO] = [p].[ID]
+WHERE (([s].[ESTADO] = 'Forecast') AND ([p].[STATUS_PROYECTO] = 2)) AND ([s].[FECHA] < CONVERT(date, GETDATE()))
+2025-08-19 19:37:54.336 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[ESTADO], [s].[FECHA], [s].[IDPROVEEDOR], [s].[IDPROYECTO], [s].[IDSERVICIO], [s].[MONTO], [s].[OBSERVACION], [s].[TIPOSERVICIO], [s].[VENTA]
+FROM [SERVICIOSEJECUCION] AS [s]
+WHERE [s].[ID] IN (204, 205, 207, 208, 209, 213, 214, 215, 221, 222, 223, 224)
+2025-08-19 19:37:54.705 -04:00 [INF] Executed DbCommand (166ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?' (Size = 100) (DbType = AnsiString), @p1='?' (DbType = Date), @p5='?' (DbType = Int32), @p3='?' (Size = 100) (DbType = AnsiString), @p4='?' (DbType = Date), @p8='?' (DbType = Int32), @p6='?' (Size = 100) (DbType = AnsiString), @p7='?' (DbType = Date), @p11='?' (DbType = Int32), @p9='?' (Size = 100) (DbType = AnsiString), @p10='?' (DbType = Date), @p14='?' (DbType = Int32), @p12='?' (Size = 100) (DbType = AnsiString), @p13='?' (DbType = Date), @p17='?' (DbType = Int32), @p15='?' (Size = 100) (DbType = AnsiString), @p16='?' (DbType = Date), @p20='?' (DbType = Int32), @p18='?' (Size = 100) (DbType = AnsiString), @p19='?' (DbType = Date), @p23='?' (DbType = Int32), @p21='?' (Size = 100) (DbType = AnsiString), @p22='?' (DbType = Date), @p26='?' (DbType = Int32), @p24='?' (Size = 100) (DbType = AnsiString), @p25='?' (DbType = Date), @p29='?' (DbType = Int32), @p27='?' (Size = 100) (DbType = AnsiString), @p28='?' (DbType = Date), @p32='?' (DbType = Int32), @p30='?' (Size = 100) (DbType = AnsiString), @p31='?' (DbType = Date), @p35='?' (DbType = Int32), @p33='?' (Size = 100) (DbType = AnsiString), @p34='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p0, [FECHA] = @p1
+WHERE [ID] = @p2;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p3, [FECHA] = @p4
+WHERE [ID] = @p5;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p6, [FECHA] = @p7
+WHERE [ID] = @p8;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p9, [FECHA] = @p10
+WHERE [ID] = @p11;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p12, [FECHA] = @p13
+WHERE [ID] = @p14;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p15, [FECHA] = @p16
+WHERE [ID] = @p17;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p18, [FECHA] = @p19
+WHERE [ID] = @p20;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p21, [FECHA] = @p22
+WHERE [ID] = @p23;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p24, [FECHA] = @p25
+WHERE [ID] = @p26;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p27, [FECHA] = @p28
+WHERE [ID] = @p29;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p30, [FECHA] = @p31
+WHERE [ID] = @p32;
+SELECT @@ROWCOUNT;
+
+UPDATE [SERVICIOSEJECUCION] SET [ESTADO] = @p33, [FECHA] = @p34
+WHERE [ID] = @p35;
+SELECT @@ROWCOUNT;
+2025-08-19 19:37:55.031 -04:00 [INF] Executed DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [f].[id], [f].[FECHAMODIFICACION], [f].[IDPROYECTO]
+FROM [FECHAMODIFICACIONPROYECTO] AS [f]
+WHERE [f].[IDPROYECTO] IN (277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277)
+2025-08-19 19:37:55.366 -04:00 [INF] Executed DbCommand (156ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?' (DbType = DateTime), @p1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [FECHAMODIFICACIONPROYECTO] SET [FECHAMODIFICACION] = @p0, [IDPROYECTO] = @p1
+WHERE [id] = @p2;
+SELECT @@ROWCOUNT;
+2025-08-19 19:37:55.685 -04:00 [INF] Executed DbCommand (163ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[ESTADO], [g].[FECHA], [g].[IDGASTO], [g].[IDPROVEEDOR], [g].[IDPROYECTO], [g].[MONTO], [g].[OBSERVACION], [g].[SEGMENTO], [g].[VENTA]
+FROM [GASTOSEJECUCION] AS [g]
+LEFT JOIN [PROYECTO] AS [p] ON [g].[IDPROYECTO] = [p].[ID]
+WHERE (([g].[ESTADO] = 'Forecast') AND ([p].[STATUS_PROYECTO] = 2)) AND ([g].[FECHA] < CONVERT(date, GETDATE()))
+2025-08-19 19:37:55.690 -04:00 [INF] Executing ViewResult, running view Index.
+2025-08-19 19:37:55.742 -04:00 [INF] Executed ViewResult - view Index executed in 52.0234ms.
+2025-08-19 19:37:55.742 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras) in 3320.7701ms
+2025-08-19 19:37:55.742 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.Index (Proyectogestionhoras)'
+2025-08-19 19:37:55.743 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/ - 200 null text/html; charset=utf-8 3324.6087ms
+2025-08-19 19:37:55.757 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/propuestalayout.css?v=cVhi8W7vwPeWdSQ7zCOLqWs4YPM4zBOWn9TANd45rk8 - null null
+2025-08-19 19:37:55.757 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-08-19 19:37:55.758 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 16525 application/javascript; charset=utf-8 1.1312ms
+2025-08-19 19:37:55.762 -04:00 [INF] Sending file. Request path: '/css/propuestalayout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\propuestalayout.css'
+2025-08-19 19:37:55.762 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/propuestalayout.css?v=cVhi8W7vwPeWdSQ7zCOLqWs4YPM4zBOWn9TANd45rk8 - 200 1246 text/css 5.0623ms
+2025-08-19 19:37:55.777 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-08-19 19:37:55.789 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 11.787ms
+2025-08-19 19:37:55.902 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - null null
+2025-08-19 19:37:55.902 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:55.905 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:55.949 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:56.112 -04:00 [INF] Executed DbCommand (156ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:56.114 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:56.118 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 213.352ms
+2025-08-19 19:37:56.119 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.119 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - 200 null application/json; charset=utf-8 217.4051ms
+2025-08-19 19:37:56.121 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - null null
+2025-08-19 19:37:56.123 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.123 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:56.124 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:56.277 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:56.302 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:56.304 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 181.3905ms
+2025-08-19 19:37:56.304 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.305 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - 200 null application/json; charset=utf-8 183.9525ms
+2025-08-19 19:37:56.307 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - null null
+2025-08-19 19:37:56.307 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.307 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:56.308 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:56.461 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:56.462 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:56.462 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 154.5877ms
+2025-08-19 19:37:56.462 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.462 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - 200 null application/json; charset=utf-8 155.6969ms
+2025-08-19 19:37:56.465 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - null null
+2025-08-19 19:37:56.466 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.466 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:56.466 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:56.618 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:56.619 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:56.620 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 153.9014ms
+2025-08-19 19:37:56.620 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.620 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - 200 null application/json; charset=utf-8 154.9607ms
+2025-08-19 19:37:56.622 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - null null
+2025-08-19 19:37:56.623 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.623 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:56.623 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:56.778 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:56.778 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:56.778 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 155.6679ms
+2025-08-19 19:37:56.778 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:56.779 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - 200 null application/json; charset=utf-8 156.733ms
+2025-08-19 19:37:57.480 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/SeleccionarProyecto?statusproyecto=2 - null null
+2025-08-19 19:37:57.482 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras)'
+2025-08-19 19:37:57.487 -04:00 [INF] Route matched with {action = "SeleccionarProyecto", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] SeleccionarProyecto(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:37:57.492 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:57.744 -04:00 [INF] Executing ViewResult, running view SeleccionarProyecto.
+2025-08-19 19:37:57.764 -04:00 [INF] Executed ViewResult - view SeleccionarProyecto executed in 20.7801ms.
+2025-08-19 19:37:57.766 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras) in 279.3014ms
+2025-08-19 19:37:57.766 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras)'
+2025-08-19 19:37:57.767 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/SeleccionarProyecto?statusproyecto=2 - 200 null text/html; charset=utf-8 286.8768ms
+2025-08-19 19:37:57.793 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-08-19 19:37:57.793 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-08-19 19:37:57.794 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 16525 application/javascript; charset=utf-8 1.2398ms
+2025-08-19 19:37:57.803 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 10.465ms
+2025-08-19 19:37:57.861 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - null null
+2025-08-19 19:37:57.862 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:57.862 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:57.863 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:58.014 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:58.015 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:58.015 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 153.0736ms
+2025-08-19 19:37:58.015 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.015 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - 200 null application/json; charset=utf-8 154.3425ms
+2025-08-19 19:37:58.018 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - null null
+2025-08-19 19:37:58.019 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.019 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:58.019 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:58.173 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:58.174 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:58.174 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 155.3146ms
+2025-08-19 19:37:58.174 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.174 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - 200 null application/json; charset=utf-8 156.4312ms
+2025-08-19 19:37:58.177 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - null null
+2025-08-19 19:37:58.177 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.177 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:58.178 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:58.331 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:58.332 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:58.332 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 154.3566ms
+2025-08-19 19:37:58.332 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.332 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - 200 null application/json; charset=utf-8 155.3145ms
+2025-08-19 19:37:58.334 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - null null
+2025-08-19 19:37:58.335 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.335 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:58.336 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:58.487 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:58.487 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:58.487 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 152.5476ms
+2025-08-19 19:37:58.487 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.488 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - 200 null application/json; charset=utf-8 153.5424ms
+2025-08-19 19:37:58.490 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - null null
+2025-08-19 19:37:58.490 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.491 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:37:58.491 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:58.642 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:37:58.642 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:37:58.643 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 152.039ms
+2025-08-19 19:37:58.643 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:37:58.643 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - 200 null application/json; charset=utf-8 153.0155ms
+2025-08-19 19:37:59.211 -04:00 [INF] Request starting HTTP/2 POST https://localhost:7297/EjecucionProyecto/RedirigirActividad - application/x-www-form-urlencoded 14
+2025-08-19 19:37:59.217 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RedirigirActividad (Proyectogestionhoras)'
+2025-08-19 19:37:59.218 -04:00 [INF] Route matched with {action = "RedirigirActividad", controller = "EjecucionProyecto"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult RedirigirActividad() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:37:59.220 -04:00 [INF] Executing RedirectResult, redirecting to /EjecucionProyecto/GestorProyectos?idproyecto=277.
+2025-08-19 19:37:59.220 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.RedirigirActividad (Proyectogestionhoras) in 1.4539ms
+2025-08-19 19:37:59.220 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RedirigirActividad (Proyectogestionhoras)'
+2025-08-19 19:37:59.220 -04:00 [INF] Request finished HTTP/2 POST https://localhost:7297/EjecucionProyecto/RedirigirActividad - 302 0 null 9.2993ms
+2025-08-19 19:37:59.224 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GestorProyectos?idproyecto=277 - null null
+2025-08-19 19:37:59.225 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GestorProyectos (Proyectogestionhoras)'
+2025-08-19 19:37:59.228 -04:00 [INF] Route matched with {action = "GestorProyectos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GestorProyectos(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:37:59.235 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:37:59.596 -04:00 [INF] Executed DbCommand (163ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID] AS [idproyecto], [p].[NOMBRE] AS [nombreproyecto], COALESCE([g].[ANIO], 0) AS [anio], COALESCE([g].[MES], 0) AS [mes], [g].[TIPORECURSO] AS [tiporecurso], COALESCE([h].[IDCUENTASOCIO], 0) AS [idcuentasocio], COALESCE([h].[IDCUENTASTAFF], 0) AS [idcuentastaff], [h].[CUENTASOCIO] AS [cuentasocio], [h].[CUENTASTAFF] AS [cuentastaff], COALESCE(SUM(COALESCE([g].[HHTOTALES], 0.0)), 0.0) AS [totalhh], COALESCE(SUM(COALESCE([g].[HHTOTALES], 0.0) * [g].[costounitariomes]), 0.0) AS [costorecursosocio], [h0].[COSTOSOCIO] AS [costohhsocio], [h0].[COSTOSTAFF] AS [costohhstaff], [g].[ID] AS [idgastohh], COALESCE([g].[REAJUSTE], 0.0) AS [reajuste], COALESCE([g].[MONTO], 0.0) AS [monto], [g].[OBSERVACION] AS [observacion], COALESCE([g].[FECHAPAGO], NULL) AS [fechapago], COALESCE([g].[ESTADO], 0) AS [estado], COALESCE([g].[costounitariomes], 0.0) AS [costounitariomes]
+FROM [GASTOSHHHEJECUCION] AS [g]
+INNER JOIN [PROYECTO] AS [p] ON [g].[IDPROYECTO] = [p].[ID]
+INNER JOIN [HISTORIALCUENTASPROYECTO] AS [h] ON [p].[ID] = [h].[IDPROYECTO]
+INNER JOIN [HISTORIAL_COSTOS_PROYECTOS] AS [h0] ON [p].[ID] = [h0].[IDPROYECTO]
+WHERE [p].[STATUS_PROYECTO] IN (2, 4) AND ([p].[ID] = @__idproyecto_0)
+GROUP BY [p].[ID], [p].[NOMBRE], [g].[ID], [g].[ANIO], [g].[MES], [g].[TIPORECURSO], [h].[IDCUENTASOCIO], [h].[IDCUENTASTAFF], [h].[CUENTASOCIO], [h].[CUENTASTAFF], [h0].[COSTOSOCIO], [h0].[COSTOSTAFF], [g].[REAJUSTE], [g].[MONTO], [g].[OBSERVACION], [g].[FECHAPAGO], [g].[ESTADO], [g].[costounitariomes]
+ORDER BY COALESCE([g].[ANIO], 0), COALESCE([g].[MES], 0)
+2025-08-19 19:37:59.751 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[IDCUENTASOCIO]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:37:59.907 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[CUENTASOCIO]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:00.066 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSOCIO]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:00.222 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[IDCUENTASTAFF]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:00.378 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[CUENTASTAFF]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:00.534 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSTAFF]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:00.694 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[ANIO], [g].[ANIOEMISION], [g].[costounitariomes], [g].[ESTADO], [g].[FECHAPAGO], [g].[HHTOTALES], [g].[IDPROYECTO], [g].[MES], [g].[MESEMISION], [g].[MONTO], [g].[OBSERVACION], [g].[REAJUSTE], [g].[SUBTOTAL], [g].[TIPORECURSO]
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE [g].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:01.299 -04:00 [INF] Executing ViewResult, running view GestorProyectos.
+2025-08-19 19:38:01.424 -04:00 [INF] Executed ViewResult - view GestorProyectos executed in 124.7402ms.
+2025-08-19 19:38:01.424 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GestorProyectos (Proyectogestionhoras) in 2195.5232ms
+2025-08-19 19:38:01.424 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GestorProyectos (Proyectogestionhoras)'
+2025-08-19 19:38:01.424 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GestorProyectos?idproyecto=277 - 200 null text/html; charset=utf-8 2200.4925ms
+2025-08-19 19:38:01.604 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-08-19 19:38:01.605 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-08-19 19:38:01.607 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 16525 application/javascript; charset=utf-8 1.9592ms
+2025-08-19 19:38:01.614 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 10.1522ms
+2025-08-19 19:38:01.629 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - null null
+2025-08-19 19:38:01.629 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - null null
+2025-08-19 19:38:01.630 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - null null
+2025-08-19 19:38:01.630 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - null null
+2025-08-19 19:38:01.630 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/ObtenerDatosResumen?idProyecto=277 - null null
+2025-08-19 19:38:01.630 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:01.630 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:01.630 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:01.630 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:01.630 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.ObtenerDatosResumen (Proyectogestionhoras)'
+2025-08-19 19:38:01.632 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/RecuperarForecastProveedores?idproyecto=277 - null null
+2025-08-19 19:38:01.633 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - null null
+2025-08-19 19:38:01.633 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RecuperarForecastProveedores (Proyectogestionhoras)'
+2025-08-19 19:38:01.636 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:01.637 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:01.640 -04:00 [INF] Route matched with {action = "GetServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Servicio]] GetServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:01.640 -04:00 [INF] Route matched with {action = "GetProveedoresGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:01.640 -04:00 [INF] Route matched with {action = "GetGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Gasto]] GetGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:01.641 -04:00 [INF] Route matched with {action = "ObtenerDatosResumen", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerDatosResumen(Int32) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:01.641 -04:00 [INF] Route matched with {action = "GetProveedoresServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:01.641 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.644 -04:00 [INF] Route matched with {action = "RecuperarForecastProveedores", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RecuperarForecastProveedores(System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:01.644 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.644 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.644 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.645 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.647 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.684 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.793 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:01.793 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:01.793 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 155.7578ms
+2025-08-19 19:38:01.793 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:01.793 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - 200 null application/json; charset=utf-8 161.2461ms
+2025-08-19 19:38:01.796 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - null null
+2025-08-19 19:38:01.796 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:01.796 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:01.797 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:01.948 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:01.949 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:01.949 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 152.6762ms
+2025-08-19 19:38:01.949 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:01.949 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - 200 null application/json; charset=utf-8 153.4718ms
+2025-08-19 19:38:01.951 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - null null
+2025-08-19 19:38:01.952 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:01.952 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:01.952 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:02.104 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:02.104 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:02.105 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 152.8343ms
+2025-08-19 19:38:02.105 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:02.105 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - 200 null application/json; charset=utf-8 153.6371ms
+2025-08-19 19:38:02.108 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - null null
+2025-08-19 19:38:02.108 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:02.108 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:02.109 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:02.260 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:02.261 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:02.261 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 153.073ms
+2025-08-19 19:38:02.261 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:02.261 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - 200 null application/json; charset=utf-8 154.1586ms
+2025-08-19 19:38:02.264 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - null null
+2025-08-19 19:38:02.264 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:02.264 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:02.266 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:02.420 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[IDCUENTA], [g].[NOMBRE]
+FROM [GASTOS] AS [g]
+2025-08-19 19:38:02.429 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:02.457 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras) in 816.9285ms
+2025-08-19 19:38:02.458 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:02.458 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - 200 null application/json; charset=utf-8 828.183ms
+2025-08-19 19:38:02.459 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - null null
+2025-08-19 19:38:02.459 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:02.459 -04:00 [INF] Route matched with {action = "GetGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Gasto]] GetGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:02.460 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:02.460 -04:00 [INF] Executing JsonResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.ProveedorForecastDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:02.469 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.RecuperarForecastProveedores (Proyectogestionhoras) in 824.706ms
+2025-08-19 19:38:02.469 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RecuperarForecastProveedores (Proyectogestionhoras)'
+2025-08-19 19:38:02.469 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/RecuperarForecastProveedores?idproyecto=277 - 200 null application/json; charset=utf-8 837.3281ms
+2025-08-19 19:38:02.610 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[IDCUENTA], [g].[NOMBRE]
+FROM [GASTOS] AS [g]
+2025-08-19 19:38:02.611 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:02.611 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras) in 152.0301ms
+2025-08-19 19:38:02.611 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:02.612 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - 200 null application/json; charset=utf-8 153.0021ms
+2025-08-19 19:38:02.613 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - null null
+2025-08-19 19:38:02.613 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:02.613 -04:00 [INF] Route matched with {action = "GetGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Gasto]] GetGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:02.614 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:02.765 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[IDCUENTA], [g].[NOMBRE]
+FROM [GASTOS] AS [g]
+2025-08-19 19:38:02.765 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:02.765 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras) in 152.1268ms
+2025-08-19 19:38:02.765 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:02.766 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - 200 null application/json; charset=utf-8 152.9258ms
+2025-08-19 19:38:03.024 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[IDCUENTA], [s].[NOMBRE]
+FROM [SERVICIOS] AS [s]
+2025-08-19 19:38:03.025 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Servicio%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:03.026 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Gasto%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:03.030 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.032 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras) in 1391.5503ms
+2025-08-19 19:38:03.032 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:03.032 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - 200 null application/json; charset=utf-8 1403.6725ms
+2025-08-19 19:38:03.034 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - null null
+2025-08-19 19:38:03.034 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:03.034 -04:00 [INF] Route matched with {action = "GetServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Servicio]] GetServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:03.035 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:03.036 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.036 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.042 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - null null
+2025-08-19 19:38:03.042 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - null null
+2025-08-19 19:38:03.042 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:03.042 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:03.042 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras) in 1401.914ms
+2025-08-19 19:38:03.042 -04:00 [INF] Route matched with {action = "GetProveedoresServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:03.042 -04:00 [INF] Route matched with {action = "GetProveedoresGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:03.042 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:03.042 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras) in 1401.2613ms
+2025-08-19 19:38:03.042 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:03.043 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - 200 null application/json; charset=utf-8 1413.0439ms
+2025-08-19 19:38:03.043 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - 200 null application/json; charset=utf-8 1413.5783ms
+2025-08-19 19:38:03.043 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:03.043 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:03.186 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[IDCUENTA], [s].[NOMBRE]
+FROM [SERVICIOS] AS [s]
+2025-08-19 19:38:03.187 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.187 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras) in 153.0222ms
+2025-08-19 19:38:03.187 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:03.187 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - 200 null application/json; charset=utf-8 153.9681ms
+2025-08-19 19:38:03.195 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Servicio%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:03.196 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Gasto%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:03.197 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.197 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.198 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras) in 155.474ms
+2025-08-19 19:38:03.198 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:03.198 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras) in 155.789ms
+2025-08-19 19:38:03.198 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:03.198 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - 200 null application/json; charset=utf-8 156.5024ms
+2025-08-19 19:38:03.198 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - 200 null application/json; charset=utf-8 156.6212ms
+2025-08-19 19:38:03.199 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - null null
+2025-08-19 19:38:03.199 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:03.199 -04:00 [INF] Route matched with {action = "GetProveedoresGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:03.200 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:03.353 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Gasto%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:03.354 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.355 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras) in 155.2658ms
+2025-08-19 19:38:03.355 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:03.355 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - 200 null application/json; charset=utf-8 155.9816ms
+2025-08-19 19:38:03.639 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:03.639 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:03.639 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 1374.8567ms
+2025-08-19 19:38:03.640 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:03.640 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - 200 null application/json; charset=utf-8 1376.0173ms
+2025-08-19 19:38:03.641 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSOCIO]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:03.795 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[HH_SOCIOS]
+FROM [HH_USUARIO_HISTORIAL] AS [h]
+WHERE [h].[ID_PROYECTO] = @__idProyecto_0
+2025-08-19 19:38:03.952 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Socio')) AND ([g].[ESTADO] = 1)
+2025-08-19 19:38:04.107 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Socio')) AND ([g].[ESTADO] = 2)
+2025-08-19 19:38:04.263 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSTAFF]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:04.419 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[HH_STAFF]
+FROM [HH_USUARIO_HISTORIAL] AS [h]
+WHERE [h].[ID_PROYECTO] = @__idProyecto_0
+2025-08-19 19:38:04.574 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Staff')) AND ([g].[ESTADO] = 1)
+2025-08-19 19:38:04.731 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Staff')) AND ([g].[ESTADO] = 2)
+2025-08-19 19:38:05.214 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[ESTADO], [s].[FECHA], [s].[IDPROVEEDOR], [s].[IDPROYECTO], [s].[IDSERVICIO], [s].[MONTO], [s].[OBSERVACION], [s].[TIPOSERVICIO], [s].[VENTA]
+FROM [SERVICIOSEJECUCION] AS [s]
+WHERE [s].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:05.373 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[ESTADO], [g].[FECHA], [g].[IDGASTO], [g].[IDPROVEEDOR], [g].[IDPROYECTO], [g].[MONTO], [g].[OBSERVACION], [g].[SEGMENTO], [g].[VENTA]
+FROM [GASTOSEJECUCION] AS [g]
+WHERE [g].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:05.479 -04:00 [INF] Executing ContentResult with HTTP Response ContentType of application/json
+2025-08-19 19:38:05.481 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.ObtenerDatosResumen (Proyectogestionhoras) in 3839.6583ms
+2025-08-19 19:38:05.481 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.ObtenerDatosResumen (Proyectogestionhoras)'
+2025-08-19 19:38:05.481 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/ObtenerDatosResumen?idProyecto=277 - 200 5587 application/json 3851.2025ms
+2025-08-19 19:38:06.711 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/CargarGastosReales?idproyecto=277&pagina=1&tamanioPagina=50 - null null
+2025-08-19 19:38:06.712 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.CargarGastosReales (Proyectogestionhoras)'
+2025-08-19 19:38:06.714 -04:00 [INF] Route matched with {action = "CargarGastosReales", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CargarGastosReales(Int32, Int32, Int32) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:06.718 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:06.905 -04:00 [INF] Executed DbCommand (171ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID] AS [IdGastosReal], [g].[IDGASTO] AS [IdGasto], [g].[IDPROVEEDOR] AS [IdProveedor], CASE
+    WHEN [s].[ID] IS NOT NULL THEN [s].[ID]
+    ELSE 0
+END AS [IdSegmento], CASE
+    WHEN [s].[ID] IS NOT NULL THEN [s].[NOMBRE]
+    ELSE ''
+END AS [NombreSegmento], [c].[CUENTA] AS [Cuenta], [c].[IDCUENTA] AS [IdCuenta], [g].[MONTO] AS [Monto], [g].[FECHA] AS [Fecha], [g].[OBSERVACION] AS [Observacion], [g].[ESTADO] AS [Estado], [g].[VENTA] AS [Venta]
+FROM [PROYECTO] AS [p]
+INNER JOIN [GASTOSEJECUCION] AS [g] ON [p].[ID] = [g].[IDPROYECTO]
+INNER JOIN [GASTOS] AS [g0] ON [g].[IDGASTO] = [g0].[ID]
+LEFT JOIN [SEGMENTO] AS [s] ON [g].[SEGMENTO] = [s].[ID]
+INNER JOIN [CUENTA] AS [c] ON [g0].[IDCUENTA] = [c].[ID]
+WHERE [p].[ID] = @__idproyecto_0
+ORDER BY CASE
+    WHEN ([g].[ESTADO] <> 'Forecast') OR [g].[ESTADO] IS NULL THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END, [g].[FECHA]
+2025-08-19 19:38:06.907 -04:00 [INF] Executing JsonResult, writing value of type '<>f__AnonymousType14`2[[System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.GastosRealesDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-08-19 19:38:06.913 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.CargarGastosReales (Proyectogestionhoras) in 198.8435ms
+2025-08-19 19:38:06.913 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.CargarGastosReales (Proyectogestionhoras)'
+2025-08-19 19:38:06.914 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/CargarGastosReales?idproyecto=277&pagina=1&tamanioPagina=50 - 200 null application/json; charset=utf-8 202.607ms
+2025-08-19 19:38:16.771 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-08-19 19:38:16.773 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 2.3901ms
+2025-08-19 19:38:16.774 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7297/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-08-19 19:38:31.956 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/SeleccionarProyecto?statusproyecto=2 - null null
+2025-08-19 19:38:31.958 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras)'
+2025-08-19 19:38:31.958 -04:00 [INF] Route matched with {action = "SeleccionarProyecto", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] SeleccionarProyecto(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:31.958 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:32.147 -04:00 [INF] Executing ViewResult, running view SeleccionarProyecto.
+2025-08-19 19:38:32.155 -04:00 [INF] Executed ViewResult - view SeleccionarProyecto executed in 7.5995ms.
+2025-08-19 19:38:32.155 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras) in 197.1279ms
+2025-08-19 19:38:32.155 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.SeleccionarProyecto (Proyectogestionhoras)'
+2025-08-19 19:38:32.155 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/SeleccionarProyecto?statusproyecto=2 - 200 null text/html; charset=utf-8 199.4224ms
+2025-08-19 19:38:32.177 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-08-19 19:38:32.176 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-08-19 19:38:32.177 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 16525 application/javascript; charset=utf-8 1.1047ms
+2025-08-19 19:38:32.185 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 8.4386ms
+2025-08-19 19:38:32.260 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - null null
+2025-08-19 19:38:32.260 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.260 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:32.261 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:32.412 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:32.413 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:32.413 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 152.3772ms
+2025-08-19 19:38:32.413 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.413 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - 200 null application/json; charset=utf-8 153.2814ms
+2025-08-19 19:38:32.415 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - null null
+2025-08-19 19:38:32.416 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.416 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:32.416 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:32.569 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:32.570 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:32.570 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 154.0408ms
+2025-08-19 19:38:32.570 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.570 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - 200 null application/json; charset=utf-8 154.837ms
+2025-08-19 19:38:32.573 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - null null
+2025-08-19 19:38:32.573 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.573 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:32.574 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:32.727 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:32.727 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:32.728 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 154.1196ms
+2025-08-19 19:38:32.728 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.728 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - 200 null application/json; charset=utf-8 155.0645ms
+2025-08-19 19:38:32.730 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - null null
+2025-08-19 19:38:32.730 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.730 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:32.731 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:32.884 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:32.885 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:32.885 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 154.9947ms
+2025-08-19 19:38:32.885 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.886 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - 200 null application/json; charset=utf-8 155.8992ms
+2025-08-19 19:38:32.888 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - null null
+2025-08-19 19:38:32.888 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:32.888 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:32.889 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:33.040 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:33.040 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:33.041 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 152.457ms
+2025-08-19 19:38:33.041 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:33.041 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - 200 null application/json; charset=utf-8 153.2651ms
+2025-08-19 19:38:34.288 -04:00 [INF] Request starting HTTP/2 POST https://localhost:7297/EjecucionProyecto/RedirigirActividad - application/x-www-form-urlencoded 14
+2025-08-19 19:38:34.290 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RedirigirActividad (Proyectogestionhoras)'
+2025-08-19 19:38:34.290 -04:00 [INF] Route matched with {action = "RedirigirActividad", controller = "EjecucionProyecto"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult RedirigirActividad() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:34.290 -04:00 [INF] Executing RedirectResult, redirecting to /EjecucionProyecto/GestorProyectos?idproyecto=238.
+2025-08-19 19:38:34.291 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.RedirigirActividad (Proyectogestionhoras) in 0.4172ms
+2025-08-19 19:38:34.291 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RedirigirActividad (Proyectogestionhoras)'
+2025-08-19 19:38:34.291 -04:00 [INF] Request finished HTTP/2 POST https://localhost:7297/EjecucionProyecto/RedirigirActividad - 302 0 null 3.1489ms
+2025-08-19 19:38:34.294 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GestorProyectos?idproyecto=238 - null null
+2025-08-19 19:38:34.296 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GestorProyectos (Proyectogestionhoras)'
+2025-08-19 19:38:34.296 -04:00 [INF] Route matched with {action = "GestorProyectos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GestorProyectos(System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.String, System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32], System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:34.297 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:34.616 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID] AS [idproyecto], [p].[NOMBRE] AS [nombreproyecto], COALESCE([g].[ANIO], 0) AS [anio], COALESCE([g].[MES], 0) AS [mes], [g].[TIPORECURSO] AS [tiporecurso], COALESCE([h].[IDCUENTASOCIO], 0) AS [idcuentasocio], COALESCE([h].[IDCUENTASTAFF], 0) AS [idcuentastaff], [h].[CUENTASOCIO] AS [cuentasocio], [h].[CUENTASTAFF] AS [cuentastaff], COALESCE(SUM(COALESCE([g].[HHTOTALES], 0.0)), 0.0) AS [totalhh], COALESCE(SUM(COALESCE([g].[HHTOTALES], 0.0) * [g].[costounitariomes]), 0.0) AS [costorecursosocio], [h0].[COSTOSOCIO] AS [costohhsocio], [h0].[COSTOSTAFF] AS [costohhstaff], [g].[ID] AS [idgastohh], COALESCE([g].[REAJUSTE], 0.0) AS [reajuste], COALESCE([g].[MONTO], 0.0) AS [monto], [g].[OBSERVACION] AS [observacion], COALESCE([g].[FECHAPAGO], NULL) AS [fechapago], COALESCE([g].[ESTADO], 0) AS [estado], COALESCE([g].[costounitariomes], 0.0) AS [costounitariomes]
+FROM [GASTOSHHHEJECUCION] AS [g]
+INNER JOIN [PROYECTO] AS [p] ON [g].[IDPROYECTO] = [p].[ID]
+INNER JOIN [HISTORIALCUENTASPROYECTO] AS [h] ON [p].[ID] = [h].[IDPROYECTO]
+INNER JOIN [HISTORIAL_COSTOS_PROYECTOS] AS [h0] ON [p].[ID] = [h0].[IDPROYECTO]
+WHERE [p].[STATUS_PROYECTO] IN (2, 4) AND ([p].[ID] = @__idproyecto_0)
+GROUP BY [p].[ID], [p].[NOMBRE], [g].[ID], [g].[ANIO], [g].[MES], [g].[TIPORECURSO], [h].[IDCUENTASOCIO], [h].[IDCUENTASTAFF], [h].[CUENTASOCIO], [h].[CUENTASTAFF], [h0].[COSTOSOCIO], [h0].[COSTOSTAFF], [g].[REAJUSTE], [g].[MONTO], [g].[OBSERVACION], [g].[FECHAPAGO], [g].[ESTADO], [g].[costounitariomes]
+ORDER BY COALESCE([g].[ANIO], 0), COALESCE([g].[MES], 0)
+2025-08-19 19:38:34.767 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[IDCUENTASOCIO]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:34.918 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[CUENTASOCIO]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:35.068 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSOCIO]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:35.221 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[IDCUENTASTAFF]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:35.374 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[CUENTASTAFF]
+FROM [HISTORIALCUENTASPROYECTO] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:35.526 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSTAFF]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:35.677 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[ANIO], [g].[ANIOEMISION], [g].[costounitariomes], [g].[ESTADO], [g].[FECHAPAGO], [g].[HHTOTALES], [g].[IDPROYECTO], [g].[MES], [g].[MESEMISION], [g].[MONTO], [g].[OBSERVACION], [g].[REAJUSTE], [g].[SUBTOTAL], [g].[TIPORECURSO]
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE [g].[IDPROYECTO] = @__idproyecto_0
+2025-08-19 19:38:35.849 -04:00 [INF] Executing ViewResult, running view GestorProyectos.
+2025-08-19 19:38:35.864 -04:00 [INF] Executed ViewResult - view GestorProyectos executed in 15.1121ms.
+2025-08-19 19:38:35.864 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GestorProyectos (Proyectogestionhoras) in 1568.4158ms
+2025-08-19 19:38:35.864 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GestorProyectos (Proyectogestionhoras)'
+2025-08-19 19:38:35.864 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GestorProyectos?idproyecto=238 - 200 null text/html; charset=utf-8 1570.2532ms
+2025-08-19 19:38:35.884 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/images/logo-unit.png - null null
+2025-08-19 19:38:35.884 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/css/propuestalayout.css?v=cVhi8W7vwPeWdSQ7zCOLqWs4YPM4zBOWn9TANd45rk8 - null null
+2025-08-19 19:38:35.889 -04:00 [INF] Sending file. Request path: '/css/propuestalayout.css'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\css\propuestalayout.css'
+2025-08-19 19:38:35.890 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/css/propuestalayout.css?v=cVhi8W7vwPeWdSQ7zCOLqWs4YPM4zBOWn9TANd45rk8 - 200 1246 text/css 5.8397ms
+2025-08-19 19:38:35.890 -04:00 [INF] Sending file. Request path: '/images/logo-unit.png'. Physical path: 'C:\Users\USUARIO\Desktop\Nueva carpeta\proyectogestorhoras\Proyectogestionhoras\Proyectogestionhoras\wwwroot\images\logo-unit.png'
+2025-08-19 19:38:35.890 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/images/logo-unit.png - 200 9531 image/png 6.7037ms
+2025-08-19 19:38:35.899 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - null null
+2025-08-19 19:38:35.900 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_framework/aspnetcore-browser-refresh.js - 200 16525 application/javascript; charset=utf-8 1.1941ms
+2025-08-19 19:38:35.902 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/_vs/browserLink - null null
+2025-08-19 19:38:35.910 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/_vs/browserLink - 200 null text/javascript; charset=UTF-8 7.6676ms
+2025-08-19 19:38:36.069 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - null null
+2025-08-19 19:38:36.070 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - null null
+2025-08-19 19:38:36.070 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - null null
+2025-08-19 19:38:36.070 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - null null
+2025-08-19 19:38:36.070 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.070 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.070 -04:00 [INF] Route matched with {action = "GetServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Servicio]] GetServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.070 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.070 -04:00 [INF] Route matched with {action = "GetProveedoresServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.070 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.070 -04:00 [INF] Route matched with {action = "GetProveedoresGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.070 -04:00 [INF] Route matched with {action = "GetGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Gasto]] GetGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.071 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/RecuperarForecastProveedores?idproyecto=238 - null null
+2025-08-19 19:38:36.071 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/ObtenerDatosResumen?idProyecto=238 - null null
+2025-08-19 19:38:36.072 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.ObtenerDatosResumen (Proyectogestionhoras)'
+2025-08-19 19:38:36.072 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.072 -04:00 [INF] Route matched with {action = "ObtenerDatosResumen", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerDatosResumen(Int32) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.072 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.072 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.072 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.072 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RecuperarForecastProveedores (Proyectogestionhoras)'
+2025-08-19 19:38:36.074 -04:00 [INF] Route matched with {action = "RecuperarForecastProveedores", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RecuperarForecastProveedores(System.Nullable`1[System.Int32]) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.077 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.078 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - null null
+2025-08-19 19:38:36.078 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.080 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:36.080 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:36.085 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.222 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[IDCUENTA], [g].[NOMBRE]
+FROM [GASTOS] AS [g]
+2025-08-19 19:38:36.223 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.223 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[IDCUENTA], [s].[NOMBRE]
+FROM [SERVICIOS] AS [s]
+2025-08-19 19:38:36.223 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras) in 152.4188ms
+2025-08-19 19:38:36.223 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.223 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Gasto%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:36.223 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.223 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - 200 null application/json; charset=utf-8 153.2567ms
+2025-08-19 19:38:36.223 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras) in 152.8579ms
+2025-08-19 19:38:36.223 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.223 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - 200 null application/json; charset=utf-8 154.3041ms
+2025-08-19 19:38:36.224 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.224 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras) in 154.0988ms
+2025-08-19 19:38:36.224 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.225 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - null null
+2025-08-19 19:38:36.225 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - 200 null application/json; charset=utf-8 154.9567ms
+2025-08-19 19:38:36.225 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - null null
+2025-08-19 19:38:36.226 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - null null
+2025-08-19 19:38:36.226 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.226 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.226 -04:00 [INF] Route matched with {action = "GetGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Gasto]] GetGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.226 -04:00 [INF] Route matched with {action = "GetServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Servicio]] GetServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.226 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.226 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Servicio%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:36.226 -04:00 [INF] Route matched with {action = "GetProveedoresGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.226 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.226 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.226 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.231 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.235 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras) in 164.69ms
+2025-08-19 19:38:36.235 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.235 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - null null
+2025-08-19 19:38:36.235 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - 200 null application/json; charset=utf-8 166.0516ms
+2025-08-19 19:38:36.236 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.236 -04:00 [INF] Route matched with {action = "GetProveedoresServicios", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresServicios() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.236 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.378 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[IDCUENTA], [s].[NOMBRE]
+FROM [SERVICIOS] AS [s]
+2025-08-19 19:38:36.378 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Servicio, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.378 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras) in 152.408ms
+2025-08-19 19:38:36.378 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.378 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetServicios - 200 null application/json; charset=utf-8 153.6562ms
+2025-08-19 19:38:36.379 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Gasto%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:36.380 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.381 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras) in 155.0391ms
+2025-08-19 19:38:36.381 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.381 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - 200 null application/json; charset=utf-8 155.7231ms
+2025-08-19 19:38:36.382 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - null null
+2025-08-19 19:38:36.382 -04:00 [INF] Executed DbCommand (156ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[IDCUENTA], [g].[NOMBRE]
+FROM [GASTOS] AS [g]
+2025-08-19 19:38:36.382 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.382 -04:00 [INF] Route matched with {action = "GetProveedoresGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Proveedore]] GetProveedoresGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.382 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.382 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras) in 156.7324ms
+2025-08-19 19:38:36.382 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.383 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.383 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - 200 null application/json; charset=utf-8 158.0604ms
+2025-08-19 19:38:36.384 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - null null
+2025-08-19 19:38:36.386 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.386 -04:00 [INF] Route matched with {action = "GetGastos", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Proyectogestionhoras.Models.Gasto]] GetGastos() on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:36.386 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.389 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Servicio%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:36.390 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.391 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras) in 155.382ms
+2025-08-19 19:38:36.391 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresServicios (Proyectogestionhoras)'
+2025-08-19 19:38:36.391 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresServicios - 200 null application/json; charset=utf-8 156.0601ms
+2025-08-19 19:38:36.534 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FUNCION], [p].[NOMBRE], [p].[RUT], [p].[TIPO]
+FROM [PROVEEDORES] AS [p]
+WHERE [p].[TIPO] LIKE '%Gasto%'
+ORDER BY [p].[NOMBRE]
+2025-08-19 19:38:36.535 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Proveedore, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.536 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras) in 153.4918ms
+2025-08-19 19:38:36.536 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetProveedoresGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.536 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetProveedoresGastos - 200 null application/json; charset=utf-8 154.127ms
+2025-08-19 19:38:36.538 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[IDCUENTA], [g].[NOMBRE]
+FROM [GASTOS] AS [g]
+2025-08-19 19:38:36.539 -04:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.Gasto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.539 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras) in 153.1476ms
+2025-08-19 19:38:36.539 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.GetGastos (Proyectogestionhoras)'
+2025-08-19 19:38:36.539 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/GetGastos - 200 null application/json; charset=utf-8 155.5377ms
+2025-08-19 19:38:36.863 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:36.863 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.863 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 783.1554ms
+2025-08-19 19:38:36.863 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:36.863 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=6 - 200 null application/json; charset=utf-8 785.8016ms
+2025-08-19 19:38:36.866 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - null null
+2025-08-19 19:38:36.866 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSOCIO]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:36.866 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:36.867 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:36.867 -04:00 [INF] Executing JsonResult, writing value of type 'System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.ProveedorForecastDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:36.867 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.RecuperarForecastProveedores (Proyectogestionhoras) in 793.2635ms
+2025-08-19 19:38:36.867 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.RecuperarForecastProveedores (Proyectogestionhoras)'
+2025-08-19 19:38:36.867 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:36.868 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/RecuperarForecastProveedores?idproyecto=238 - 200 null application/json; charset=utf-8 796.8851ms
+2025-08-19 19:38:37.020 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[HH_SOCIOS]
+FROM [HH_USUARIO_HISTORIAL] AS [h]
+WHERE [h].[ID_PROYECTO] = @__idProyecto_0
+2025-08-19 19:38:37.021 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:37.022 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:37.022 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 155.1514ms
+2025-08-19 19:38:37.022 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:37.022 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=1 - 200 null application/json; charset=utf-8 155.9132ms
+2025-08-19 19:38:37.024 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - null null
+2025-08-19 19:38:37.025 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:37.025 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:37.025 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:37.174 -04:00 [INF] Executed DbCommand (154ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Socio')) AND ([g].[ESTADO] = 1)
+2025-08-19 19:38:37.178 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:37.178 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:37.178 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 153.3776ms
+2025-08-19 19:38:37.178 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:37.178 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=2 - 200 null application/json; charset=utf-8 154.1206ms
+2025-08-19 19:38:37.180 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - null null
+2025-08-19 19:38:37.181 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:37.181 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:37.181 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:37.190 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/EjecucionProyecto/CargarGastosReales?idproyecto=238&pagina=1&tamanioPagina=50 - null null
+2025-08-19 19:38:37.191 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.CargarGastosReales (Proyectogestionhoras)'
+2025-08-19 19:38:37.191 -04:00 [INF] Route matched with {action = "CargarGastosReales", controller = "EjecucionProyecto"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CargarGastosReales(Int32, Int32, Int32) on controller Proyectogestionhoras.Controllers.EjecucionProyectoController (Proyectogestionhoras).
+2025-08-19 19:38:37.191 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:37.330 -04:00 [INF] Executed DbCommand (156ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Socio')) AND ([g].[ESTADO] = 2)
+2025-08-19 19:38:37.334 -04:00 [INF] Executed DbCommand (152ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:37.334 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:37.334 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 153.6046ms
+2025-08-19 19:38:37.334 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:37.334 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=4 - 200 null application/json; charset=utf-8 154.2326ms
+2025-08-19 19:38:37.337 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - null null
+2025-08-19 19:38:37.337 -04:00 [INF] Executing endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:37.337 -04:00 [INF] Route matched with {action = "ObtenerProyectosPorEstadoJson", controller = "Home"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ObtenerProyectosPorEstadoJson(Int32) on controller Proyectogestionhoras.Controllers.HomeController (Proyectogestionhoras).
+2025-08-19 19:38:37.337 -04:00 [INF] Entity Framework Core 6.0.0 initialized 'PROYECTO_CONTROL_HORASContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.0' with options: None
+2025-08-19 19:38:37.343 -04:00 [INF] Executed DbCommand (151ms) [Parameters=[@__idproyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID] AS [IdGastosReal], [g].[IDGASTO] AS [IdGasto], [g].[IDPROVEEDOR] AS [IdProveedor], CASE
+    WHEN [s].[ID] IS NOT NULL THEN [s].[ID]
+    ELSE 0
+END AS [IdSegmento], CASE
+    WHEN [s].[ID] IS NOT NULL THEN [s].[NOMBRE]
+    ELSE ''
+END AS [NombreSegmento], [c].[CUENTA] AS [Cuenta], [c].[IDCUENTA] AS [IdCuenta], [g].[MONTO] AS [Monto], [g].[FECHA] AS [Fecha], [g].[OBSERVACION] AS [Observacion], [g].[ESTADO] AS [Estado], [g].[VENTA] AS [Venta]
+FROM [PROYECTO] AS [p]
+INNER JOIN [GASTOSEJECUCION] AS [g] ON [p].[ID] = [g].[IDPROYECTO]
+INNER JOIN [GASTOS] AS [g0] ON [g].[IDGASTO] = [g0].[ID]
+LEFT JOIN [SEGMENTO] AS [s] ON [g].[SEGMENTO] = [s].[ID]
+INNER JOIN [CUENTA] AS [c] ON [g0].[IDCUENTA] = [c].[ID]
+WHERE [p].[ID] = @__idproyecto_0
+ORDER BY CASE
+    WHEN ([g].[ESTADO] <> 'Forecast') OR [g].[ESTADO] IS NULL THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END, [g].[FECHA]
+2025-08-19 19:38:37.343 -04:00 [INF] Executing JsonResult, writing value of type '<>f__AnonymousType14`2[[System.Collections.Generic.List`1[[Proyectogestionhoras.Models.DTO.GastosRealesDTO, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-08-19 19:38:37.343 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.CargarGastosReales (Proyectogestionhoras) in 152.4062ms
+2025-08-19 19:38:37.343 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.CargarGastosReales (Proyectogestionhoras)'
+2025-08-19 19:38:37.343 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/CargarGastosReales?idproyecto=238&pagina=1&tamanioPagina=50 - 200 null application/json; charset=utf-8 153.1783ms
+2025-08-19 19:38:37.484 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[COSTOSTAFF]
+FROM [HISTORIAL_COSTOS_PROYECTOS] AS [h]
+WHERE [h].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:37.487 -04:00 [INF] Executed DbCommand (150ms) [Parameters=[@__idEstado_0='?' (DbType = Int32), @__anioactual_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ID], [p].[FECHA], [p].[FECHA_INICIO], [p].[FECHA_PLAZO_NEG], [p].[FECHA_TERMINO], [p].[FECHAEJECUCION], [p].[FECHAQUARTERFIN], [p].[FECHAQUARTERINICIO], [p].[FECHAREALTERMINO], [p].[ID_CCOSTO_UNEGOCIO], [p].[ID_CLIENTE_SUCURSAL], [p].[ID_PRESUPUESTO], [p].[ID_TIPOLOGIA], [p].[NOMBRE], [p].[NUM_PROYECTO], [p].[PLAZO], [p].[PORCENTAJE_PROBABILIDAD], [p].[PROBABILIDAD], [p].[STATUS_PROYECTO], [p].[TIPO_EMPRESA]
+FROM [PROYECTO] AS [p]
+WHERE ([p].[STATUS_PROYECTO] = @__idEstado_0) AND ((((DATEPART(year, [p].[FECHA_INICIO]) = @__anioactual_1) AND (DATEPART(year, [p].[FECHA_TERMINO]) = @__anioactual_1)) OR ([p].[FECHAEJECUCION] IS NOT NULL AND (DATEPART(year, [p].[FECHAEJECUCION]) = @__anioactual_1))) OR ([p].[FECHAREALTERMINO] IS NOT NULL AND (DATEPART(year, [p].[FECHAREALTERMINO]) = @__anioactual_1)))
+2025-08-19 19:38:37.487 -04:00 [INF] Executing JsonResult, writing value of type 'System.Linq.Enumerable+SelectEnumerableIterator`2[[Proyectogestionhoras.Models.Proyecto, Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[<>f__AnonymousType3`2[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Proyectogestionhoras, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-08-19 19:38:37.487 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras) in 150.5149ms
+2025-08-19 19:38:37.487 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.HomeController.ObtenerProyectosPorEstadoJson (Proyectogestionhoras)'
+2025-08-19 19:38:37.488 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/Home/ObtenerProyectosPorEstadoJson?idEstado=3 - 200 null application/json; charset=utf-8 151.2634ms
+2025-08-19 19:38:37.640 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [h].[HH_STAFF]
+FROM [HH_USUARIO_HISTORIAL] AS [h]
+WHERE [h].[ID_PROYECTO] = @__idProyecto_0
+2025-08-19 19:38:37.795 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Staff')) AND ([g].[ESTADO] = 1)
+2025-08-19 19:38:37.949 -04:00 [INF] Executed DbCommand (153ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([g].[MONTO]), 0.0)
+FROM [GASTOSHHHEJECUCION] AS [g]
+WHERE (([g].[IDPROYECTO] = @__idProyecto_0) AND ([g].[TIPORECURSO] = 'Staff')) AND ([g].[ESTADO] = 2)
+2025-08-19 19:38:38.419 -04:00 [INF] Executed DbCommand (157ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ID], [s].[ESTADO], [s].[FECHA], [s].[IDPROVEEDOR], [s].[IDPROYECTO], [s].[IDSERVICIO], [s].[MONTO], [s].[OBSERVACION], [s].[TIPOSERVICIO], [s].[VENTA]
+FROM [SERVICIOSEJECUCION] AS [s]
+WHERE [s].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:38.575 -04:00 [INF] Executed DbCommand (155ms) [Parameters=[@__idProyecto_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[ID], [g].[ESTADO], [g].[FECHA], [g].[IDGASTO], [g].[IDPROVEEDOR], [g].[IDPROYECTO], [g].[MONTO], [g].[OBSERVACION], [g].[SEGMENTO], [g].[VENTA]
+FROM [GASTOSEJECUCION] AS [g]
+WHERE [g].[IDPROYECTO] = @__idProyecto_0
+2025-08-19 19:38:38.576 -04:00 [INF] Executing ContentResult with HTTP Response ContentType of application/json
+2025-08-19 19:38:38.576 -04:00 [INF] Executed action Proyectogestionhoras.Controllers.EjecucionProyectoController.ObtenerDatosResumen (Proyectogestionhoras) in 2504.4544ms
+2025-08-19 19:38:38.576 -04:00 [INF] Executed endpoint 'Proyectogestionhoras.Controllers.EjecucionProyectoController.ObtenerDatosResumen (Proyectogestionhoras)'
+2025-08-19 19:38:38.576 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7297/EjecucionProyecto/ObtenerDatosResumen?idProyecto=238 - 200 3730 application/json 2505.6011ms
