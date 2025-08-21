@@ -661,6 +661,14 @@ namespace Proyectogestionhoras.Controllers
 
                 if (proveedor.Id == 0)
                 {
+                    bool prveedorYaExiste = await context.Proveedores
+                   .AnyAsync(c => c.Nombre == proveedor.Nombre);
+
+                    if (prveedorYaExiste)
+                    {
+                        TempData["ErrorProveedor"] = "Ya existe un proveedor con ese nombre.";
+                        return RedirectToAction("GestorProveedores");
+                    }
                     await context.Proveedores.AddAsync(proveedor);
                     TempData["SuccessProveedor"] = "Proveedor agregado correctamente.";
                 }

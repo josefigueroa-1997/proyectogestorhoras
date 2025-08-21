@@ -22,115 +22,127 @@
 	}
 
 	<h2 class="text-3xl font-bold text-black mb-8">📝 Ingreso de Data Proyectos</h2>
-	
-	
-		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-			<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-				<!-- Nuevo Proyecto -->
-				<a href="@Url.Action("NuevoProyecto", "Proyecto")" class="group transform hover:scale-[1.03] transition-all duration-300">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">+ Nuevo Proyecto</h3>
-							<p class="text-sm text-gray-600 mt-2">Crear un nuevo proyecto</p>
-						</div>
-					</div>
-				</a>
 
-				<!-- Nuevo Cliente -->
-				<button id="nuevoClienteBtn" class="group transform hover:scale-[1.03] transition-all duration-300 w-full">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M16 14v-2a4 4 0 00-8 0v2M12 18h.01M20 12h.01M4 12h.01M12 4h.01" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">+ Nuevo Cliente</h3>
-							<p class="text-sm text-gray-600 mt-2">Agregar un nuevo cliente</p>
-						</div>
-					</div>
-				</button>
 
-				<!-- Desarrollo del Proyecto -->
-				<a href="@Url.Action("SeleccionarProyecto", "EjecucionProyecto", new { statusproyecto = 2 })" class="group transform hover:scale-[1.03] transition-all duration-300">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">Desarrollo del Proyecto</h3>
-							<p class="text-sm text-gray-600 mt-2">Agregar costos y gastos</p>
-						</div>
+	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+			<!-- Nuevo Proyecto -->
+			<a href="@Url.Action("NuevoProyecto", "Proyecto")" class="group transform hover:scale-[1.03] transition-all duration-300">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+						</svg>
 					</div>
-				</a>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">+ Nuevo Proyecto</h3>
+						<p class="text-sm text-gray-600 mt-2">Crear un nuevo proyecto</p>
+					</div>
+				</div>
+			</a>
 
-				<!-- Agregar Egresos Masivos -->
-				<button onclick="abrirModal('modalExcel')" class="group transform hover:scale-[1.03] transition-all duration-300 w-full">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v16h16M16 8H8v8h8V8z" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">Agregar Egresos Masivos</h3>
-							<p class="text-sm text-gray-600 mt-2">Cargar archivo Excel</p>
-						</div>
+			<!-- Nuevo Cliente -->
+			<button id="nuevoClienteBtn" class="group transform hover:scale-[1.03] transition-all duration-300 w-full">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M16 14v-2a4 4 0 00-8 0v2M12 18h.01M20 12h.01M4 12h.01M12 4h.01" />
+						</svg>
 					</div>
-				</button>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">+ Nuevo Cliente</h3>
+						<p class="text-sm text-gray-600 mt-2">Agregar un nuevo cliente</p>
+					</div>
+				</div>
+			</button>
 
-				<!-- Agregar Ingresos Masivos -->
-				<button onclick="abrirModal('modalExcelIngresos')" class="group transform hover:scale-[1.03] transition-all duration-300 w-full">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">Agregar Ingresos Masivos</h3>
-							<p class="text-sm text-gray-600 mt-2">Cargar archivo Excel</p>
-						</div>
+			<!-- Desarrollo del Proyecto -->
+			<a href="@Url.Action("SeleccionarProyecto", "EjecucionProyecto", new { statusproyecto = 2 })" class="group transform hover:scale-[1.03] transition-all duration-300">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+						</svg>
 					</div>
-				</button>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">Desarrollo del Proyecto</h3>
+						<p class="text-sm text-gray-600 mt-2">Agregar costos y gastos</p>
+					</div>
+				</div>
+			</a>
 
-				<!-- Registro de Pagos HH -->
-				<a href="@Url.Action("PagosDistribucionHH", "EjecucionProyecto", new { estado = 0 })" class="group transform hover:scale-[1.03] transition-all duration-300">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">Registro de Pagos HH</h3>
-							<p class="text-sm text-gray-600 mt-2">Socios y Staff</p>
-						</div>
+			<!-- Agregar Egresos Masivos -->
+			<button onclick="abrirModal('modalExcel')" class="group transform hover:scale-[1.03] transition-all duration-300 w-full">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v16h16M16 8H8v8h8V8z" />
+						</svg>
 					</div>
-				</a>
-				<!-- Registro de Pagos ForecastEgresos -->
-				<a href="@Url.Action("PagoEgresosForecast", "EjecucionProyecto")" class="group transform hover:scale-[1.03] transition-all duration-300">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">Registro de Pagos Forecast Egresos</h3>
-							<p class="text-sm text-gray-600 mt-2">Gastos y Servicios</p>
-						</div>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">Agregar Egresos Masivos</h3>
+						<p class="text-sm text-gray-600 mt-2">Cargar archivo Excel</p>
 					</div>
-				</a>
+				</div>
+			</button>
 
-			@if(idusuario == 99)
+			<!-- Agregar Ingresos Masivos -->
+			<button onclick="abrirModal('modalExcelIngresos')" class="group transform hover:scale-[1.03] transition-all duration-300 w-full">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8" />
+						</svg>
+					</div>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">Agregar Ingresos Masivos</h3>
+						<p class="text-sm text-gray-600 mt-2">Cargar archivo Excel</p>
+					</div>
+				</div>
+			</button>
+
+			<!-- Registro de Pagos HH -->
+			<a href="@Url.Action("PagosDistribucionHH", "EjecucionProyecto", new { estado = 0 })" class="group transform hover:scale-[1.03] transition-all duration-300">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					</div>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">Registro de Pagos HH</h3>
+						<p class="text-sm text-gray-600 mt-2">Socios y Staff</p>
+					</div>
+				</div>
+			</a>
+			<!-- Registro de Pagos ForecastEgresos -->
+			<a href="@Url.Action("PagoEgresosForecast", "EjecucionProyecto")" class="group transform hover:scale-[1.03] transition-all duration-300">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					</div>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">Registro de Pagos Forecast Egresos</h3>
+						<p class="text-sm text-gray-600 mt-2">Gastos y Servicios</p>
+					</div>
+				</div>
+			</a>
+			<a href="@Url.Action("SeguimientoEstadoProyectos", "EjecucionProyecto")" class="group transform hover:scale-[1.03] transition-all duration-300">
+				<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
+					<div class="flex justify-center">
+						<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					</div>
+					<div class="text-center mt-4">
+						<h3 class="text-lg font-bold text-orange-600">Seguimiento Proyectos</h3>
+						<p class="text-sm text-gray-600 mt-2">Seguimiento Proyectos</p>
+					</div>
+				</div>
+			</a>
+			@if (idusuario == 99)
 			{
 				<!-- Propuesta Dashboard -->
 				<a href="@Url.Action("Dashboard", "Home")" class="group transform hover:scale-[1.03] transition-all duration-300">
@@ -147,31 +159,17 @@
 					</div>
 				</a>
 				<!-- Propuesta BasePryectoo -->
-				<a href="@Url.Action("BaseProyectos", "Home")" class="group transform hover:scale-[1.03] transition-all duration-300">
-					<div class="bg-white border-2 border-orange-600 rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col h-full">
-						<div class="flex justify-center">
-							<svg class="w-12 h-12 text-orange-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-							</svg>
-						</div>
-						<div class="text-center mt-4">
-							<h3 class="text-lg font-bold text-orange-600">Propuesta vista base proyecto</h3>
-							<p class="text-sm text-gray-600 mt-2">Propuesta vista base proyecto</p>
-						</div>
-					</div>
-				</a>
-
 			}
-			
 
-				
-			</div>
+
+
 		</div>
+	</div>
 
 
 
-	
-	
+
+
 </section>
 
 

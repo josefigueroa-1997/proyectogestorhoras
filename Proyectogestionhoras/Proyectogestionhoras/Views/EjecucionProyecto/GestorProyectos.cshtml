@@ -175,7 +175,7 @@
 									<td class="bg-blue-100 text-black p-2 border border-gray-300 text-center">Totales</td>
 								</tr>
 								<tr>
-									<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Proyectado</td>
+									<td class="bg-red-100 text-black p-2 border border-gray-300 text-center">Presupuesto</td>
 									@{
 										decimal totalProyectadoFila = 0;
 									}
@@ -322,7 +322,7 @@
 									<th class="p-2 border border-gray-300 text-left ">Tipo</th>
 									<th class="p-1 border border-gray-300 text-left ">IdCuenta</th>
 									<th class="p-2 border border-gray-300 text-left ">Cuenta Contable</th>
-									<th class="p-2 border border-gray-300 text-right ">Total Proyectado</th>
+									<th class="p-2 border border-gray-300 text-right ">Total Presupuesto</th>
 									<th class="p-2 border border-gray-300 text-right ">Total Real</th>
 									<th class="p-2 border border-gray-300 text-right ">Total Forecast</th>
 								</tr>
@@ -1675,18 +1675,22 @@
 						</script>
 					}
 					<h3 class="text-lg font-bold text-orange-500 mb-2">👨‍💼 Honorarios Consultores</h3>
-					<div class="flex justify-center mb-4">
+					<div class="flex justify-center mb-4 gap-4">
 						@if (statusproyecto == "En Ejecución")
 						{
-
+							@if (idusuario == 99)
+							{
+								<button type="button" 
+										class="btnModalProveedor bg-orange-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-orange-600 transition">
+									Nuevo Proveedor
+								</button>
+							}
 							<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
 								Guardar Consultores
 							</button>
 						}
-						
-
-
 					</div>
+
 					<!-- Accordion: Agregar consultor  -->
 					<details class="border rounded mb-4">
 						<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">➕ Agregar Honorario Consultores Externos</summary>
@@ -1728,7 +1732,7 @@
 											<th class="p-2 border border-gray-300 text-left">Estado</th>
 											<th class="p-2 border border-gray-300 text-left">Glosa</th>
 											<th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-											<th class="p-2 border border-gray-300 text-left">Acción</th>
+											<th class="p-2 border border-gray-300 text-left">Eliminar</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -2012,10 +2016,16 @@
 						</script>
 					}
 					<h3 class="text-lg font-bold text-orange-500 mb-2">🛠 Servicios</h3>
-					<div class="flex justify-center mb-4">
+					<div class="flex justify-center mb-4 gap-4">
 						@if (statusproyecto == "En Ejecución")
 						{
-
+							@if (idusuario == 99)
+							{
+								<button type="button" 
+										class="btnModalProveedor bg-orange-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-orange-600 transition">
+									Nuevo Proveedor
+								</button>
+							}
 							<button type="submit" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
 								Guardar Servicios
 							</button>
@@ -2063,7 +2073,7 @@
 											<th class="p-2 border border-gray-300 text-left">Estado</th>
 											<th class="p-2 border border-gray-300 text-left">Glosa</th>
 											<th class="p-2 border border-gray-300 text-left">Cuenta Contable</th>
-											<th class="p-2 border border-gray-300 text-left">Acción</th>
+											<th class="p-2 border border-gray-300 text-left">Eliminar</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -2323,15 +2333,24 @@
 				<div id="alertas" class="mb-4"></div>
 
 				<h3 class="text-lg font-bold text-orange-500 mb-2">💸 Gastos</h3>
-				<div class="flex justify-center mb-4">
+				<div class="flex justify-center mb-4 space-x-2">
 					@if (statusproyecto == "En Ejecución")
 					{
-						<button type="button" id="btnGuardarGastos" class="bg-black text-white px-4 py-2 cursor-pointer rounded-t hover:bg-gray-800 transition">
+						@if(idusuario == 99)
+						{
+							<button type="button"
+									class="btnModalProveedor bg-orange-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-orange-600 transition">
+								Nuevo Proveedor
+							</button>
+						}
+						
+						<button type="button" id="btnGuardarGastos"
+								class="bg-black text-white px-4 py-2 cursor-pointer rounded hover:bg-gray-800 transition">
 							Guardar Gastos
 						</button>
 					}
-				
 				</div>
+
 				<!-- Accordion: Agregar Gasto (cerrado, pero primero) -->
 				<details class="border rounded mb-4">
 					<summary class="bg-orange-500 text-white px-4 py-2 cursor-pointer rounded-t">➕ Agregar Gasto</summary>
@@ -2799,6 +2818,7 @@
 											cargarDatosGastos(idProyecto);
 											cargarDatosCosto(idProyecto);
 											cargarForecastProveedores(idProyecto);
+											init();
 										} else {
 											mostrarAlerta('error', 'Error al guardar: ' + (result.message || ''));
 										}
@@ -2894,9 +2914,11 @@
 
 								cabeceraRow.innerHTML += `<th class="p-2 border border-gray-300 text-center" colspan="3">${mesAnio}</th>`;
 							});
+							cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Presupuesto</th>';
 						cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Real</th>';
-						cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Proyectado</th>';
+						
 						cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Forecast</th>';
+						cabeceraRow.innerHTML += '<th class="p-2 border border-gray-300 text-center">Total Real + Forecast</th>';
 						thead.appendChild(cabeceraRow);
 
 
@@ -2906,8 +2928,11 @@
 						subCabeceraRow.innerHTML = `<th></th><th></th><th></th><th></th>`;
 
 						mesesUnicos.forEach(() => {
-							subCabeceraRow.innerHTML += `<th class="p-2 border border-gray-300  text-center">Proyectado</th><th class="p-2 border border-gray-300  text-center">Real</th><th class="p-2 border border-gray-300  text-center">Forecast</th>`;
+							subCabeceraRow.innerHTML += `<th class="p-2 border border-gray-300  text-center">Presupuesto</th><th class="p-2 border border-gray-300  text-center">Real</th><th class="p-2 border border-gray-300  text-center">Forecast</th>`;
 						});
+						subCabeceraRow.innerHTML += '<th></th';
+						subCabeceraRow.innerHTML += '<th></th';
+						subCabeceraRow.innerHTML += '<th></th';
 						subCabeceraRow.innerHTML += '<th></th';
 						subCabeceraRow.innerHTML += '<th></th';
 						subCabeceraRow.innerHTML += '<th></th';
@@ -2965,6 +2990,7 @@
 						let totalProyectadoEgresos = 0;
 						let totalForecastEgresos = 0;
 						let totalRealIngresos = 0;
+						let totalRealForecastEgresos = 0;
 						for (const tipo in gruposPorTipoYCuenta) {
 							const cuentas = gruposPorTipoYCuenta[tipo];
 
@@ -2989,6 +3015,7 @@
 
 												if (tipo !== "Ingreso") {
 													totalRealEgresos += item.monto;
+													totalRealForecastEgresos += item.monto;
 												}
 												if (tipo == "Ingreso") {
 													totalRealIngresos += item.monto;
@@ -2998,6 +3025,7 @@
 												totalesPorMes[mesAnio].forecast += item.monto;
 												if (tipo !== "Ingreso") {
 													totalForecastEgresos += item.monto;
+													totalRealForecastEgresos += item.monto;
 												}
 											}
 
@@ -3031,6 +3059,7 @@
 									let totalReal = 0;
 									let totalProyectado = 0;
 									let totalForecast = 0;
+									let totalRealForecast = 0;
 									mesesUnicos.forEach(mesAnio => {
 										totalRow.innerHTML += `
 													  <td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">
@@ -3045,10 +3074,13 @@
 										totalReal += totalesPorMes[mesAnio].real;
 										totalProyectado += totalesPorMes[mesAnio].proyectado;
 										totalForecast += totalesPorMes[mesAnio].forecast;
+										totalRealForecast += totalesPorMes[mesAnio].real + totalesPorMes[mesAnio].forecast;
 									});
-									totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalReal!==0 ? formatearMiles(totalReal) : '' }</td>`;
 									totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectado !== 0 ? formatearMiles(totalProyectado) : ''}</td>`;
+									totalRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalReal!==0 ? formatearMiles(totalReal) : '' }</td>`;
+									
 									totalRow.innerHTML += `<td class="text-xs border font-bold text-right text-red-500 border-black px-4 py-2 min-w-[100px]">${totalForecast !== 0 ? formatearMiles(totalForecast) : ''}</td>`;
+									totalRow.innerHTML += `<td class="text-xs border font-bold text-right  border-black px-4 py-2 min-w-[100px]">${totalRealForecast !== 0 ? formatearMiles(totalRealForecast) : ''}</td>`;
 
 									totalRow.style.cursor = 'pointer';
 									totalRow.onclick = function () {
@@ -3157,10 +3189,11 @@
 								}
 										</td>`;
 						});
-
-						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalRealEgresos !== 0 ? formatearMiles(totalRealEgresos) : ''}</td>`;
 						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalProyectadoEgresos !==0 ? formatearMiles(totalProyectadoEgresos): ''}</td>`;
+						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalRealEgresos !== 0 ? formatearMiles(totalRealEgresos) : ''}</td>`;
+						
 						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalForecastEgresos !== 0 ? formatearMiles(totalForecastEgresos): ''}</td>`;
+						totalEgresosRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${totalRealForecastEgresos !== 0 ? formatearMiles(totalRealForecastEgresos): ''}</td>`;
 						tbody.appendChild(totalEgresosRow);
 
 						const margenContribucionRow = document.createElement('tr');
@@ -3192,6 +3225,8 @@
 							<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]">${margenReal !== 0 ? formatearMiles(margenReal) : ''}</td>
 							<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						});
+						
+						margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]">${formatearMiles(totalmargenreal)}</td>`;
 						margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						margenContribucionRow.innerHTML += `<td class="text-xs border font-bold text-right border-black px-4 py-2 min-w-[100px]"></td>`;
@@ -3221,6 +3256,8 @@
 														  <td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						});
 						const porcentajetotalmargen = totalRealIngresos > 0 ? (totalmargenreal / totalRealIngresos) * 100 : 0;
+						
+						porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${porcentajetotalmargen.toFixed(2)}%</td>`;
 						porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						porcentajeMargenRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
@@ -3250,6 +3287,8 @@
 										<td class="text-xs border  text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						});
 						const saldoacumuladototal = totalmargenreal;
+						
+						saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]">${saldoacumuladototal !== 0 ? formatearMiles(saldoacumuladototal) : '' }</td>`;
 						saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
 						saldoAcumuladoRow.innerHTML += `<td class="text-xs border text-right border-black px-4 py-2 min-w-[100px]"></td>`;
@@ -3279,6 +3318,85 @@
 	</div>
 </div>
 
+
+<!-- Modal Proveedor-->
+<div id="modalProveedor" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+	<div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+		<!-- Botón cerrar -->
+		<button id="cerrarModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">✖</button>
+
+		<h2 class="text-xl font-bold mb-4 text-orange-500">Nuevo Proveedor</h2>
+
+		<form id="formProveedor">
+			<input type="hidden" id="id" name="Id" />
+			<input type="hidden" name="Funcion" value="Varios sin Especificar"/>
+			<!-- RUT -->
+			<div class="mb-3">
+				<label for="rut" class="block text-sm font-medium text-gray-700">RUT</label>
+				<input type="text" id="rut" name="Rut"
+					   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+			</div>
+
+			<!-- Nombre -->
+			<div class="mb-3">
+				<label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+				<input type="text" id="nombre" name="Nombre"
+					   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+			</div>
+
+			<!-- Tipo (checkboxes) -->
+			<div class="mb-3">
+				<label class="block text-sm font-medium text-gray-700">Tipo</label>
+				<div class="flex space-x-4 mt-1">
+					<label class="flex items-center space-x-2">
+						<input type="checkbox" name="Tipo" value="Gasto"
+							   class="text-orange-500 focus:ring-orange-500 border-gray-300 rounded">
+						<span class="text-gray-700">Gasto</span>
+					</label>
+					<label class="flex items-center space-x-2">
+						<input type="checkbox" name="Tipo" value="Servicio"
+							   class="text-orange-500 focus:ring-orange-500 border-gray-300 rounded">
+						<span class="text-gray-700">Servicio</span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Botones -->
+			<div class="flex justify-end space-x-2 mt-4">
+				<button type="button" id="cancelarModal"
+						class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">
+					Cancelar
+				</button>
+				<button type="submit"
+						class="px-4 py-2 rounded bg-orange-500 text-white hover:bg-orange-600">
+					Guardar
+				</button>
+			</div>
+		</form>
+
+	</div>
+	<script>
+				const modal = document.getElementById("modalProveedor");
+		const btnAbrir = document.querySelectorAll(".btnModalProveedor"); // TODOS los botones
+		const btnCerrar = document.getElementById("cerrarModal");
+		const btnCancelar = document.getElementById("cancelarModal");
+
+		btnAbrir.forEach(btn => {
+			btn.addEventListener("click", () => {
+				modal.classList.remove("hidden");
+			});
+		});
+
+		btnCerrar.addEventListener("click", () => modal.classList.add("hidden"));
+		btnCancelar.addEventListener("click", () => modal.classList.add("hidden"));
+
+		modal.addEventListener("click", (e) => {
+			if (e.target === modal) modal.classList.add("hidden");
+		});
+	</script>
+</div>
+
+
 <script>
 	const buttons = document.querySelectorAll("aside button");
 	const sections = document.querySelectorAll(".seccion");
@@ -3289,7 +3407,7 @@
 	 let ResumenCostos = false;
 	 let flujocajacargado = false;
 	 let ingresoscargado = false;
-
+	 let seccionActiva = "general";
 	 document.addEventListener("DOMContentLoaded", () => {
 
 			cargarDatosCosto(idProyectoActual);
@@ -3302,6 +3420,7 @@
 	buttons.forEach(btn => {
 	  btn.addEventListener("click", () => {
 		const target = btn.dataset.section;
+		 seccionActiva = target;
 		sections.forEach(sec => sec.classList.add("hidden"));
 		document.getElementById(`section-${target}`).classList.remove("hidden");
 		 if (target === "gastos" && !gastosCargados) {
@@ -3348,6 +3467,83 @@
 		}
 	});
 
+
+
+	
+				document.getElementById("formProveedor").addEventListener("submit", async function(e) {
+			e.preventDefault();
+
+			// Construir los datos del formulario
+			const formData = new FormData(this);
+			
+			
+			try {
+				const response = await fetch('/Parametros/GuardarActualizarProveedor', {
+					method: 'POST',
+					body: formData
+				});
+
+				if (response.ok) {
+					alert("✅ Proveedor guardado correctamente.");
+					document.getElementById("modalProveedor").classList.add("hidden");
+
+							if(seccionActiva === "gastos") {
+								await actualizarSelectProveedoresGastos(idProyectoActual);
+							}
+							if(seccionActiva === "consultores") {
+								await actualizarSelectProveedoresConsultores(idProyectoActual);
+							}
+							if(seccionActiva === "servicios") {
+								await actualizarSelectProveedoresServicios(idProyectoActual);
+							}
+					this.reset(); // limpiar formulario
+				} else {
+					alert("❌ Error al guardar proveedor.");
+				}
+			} catch (error) {
+				console.error("Error en la petición:", error);
+				alert("⚠️ Hubo un problema al enviar los datos.");
+			}
+		});
+						async function actualizarSelectProveedoresGastos(idProyecto) {
+			await cargarListasDeGastosYProveedores(); // actualiza listaProveedores
+			await cargarDatosGastos(idProyecto);
+			// Buscar todos los select de proveedores de gastos nuevos
+			const selects = document.querySelectorAll('select[name="idproveedorgastosnuevos"]');
+
+			selects.forEach(select => {
+				const valorActual = select.value; // conservar valor seleccionado
+				select.innerHTML = `<option value="" disabled selected>Seleccione un proveedor</option>` +
+					listaProveedores.map(p => `<option value="${p.id}" ${p.id == valorActual ? "selected" : ""}>${p.nombre}</option>`).join('');
+			});
+		}
+		//CONSULTORES PROVEEDORES
+			async function actualizarSelectProveedoresConsultores(idProyecto) {
+			await cargarListasDeConsultoresYProveedores(); // actualiza listaProveedores
+			cargarDatosConsultores(idProyecto,"Consultores Externos");
+			// Buscar todos los select de proveedores de CONSULTORESD nuevos
+			const selects = document.querySelectorAll('select[name="idproveedorconsultornuevos"]');
+
+			selects.forEach(select => {
+				const valorActual = select.value; // conservar valor seleccionado
+				select.innerHTML = `<option value="" disabled selected>Seleccione un proveedor</option>` +
+					listaProveedoresconsultores.map(p => `<option value="${p.id}" ${p.id == valorActual ? "selected" : ""}>${p.nombre}</option>`).join('');
+			});
+		}
+		// Servicios
+		async function actualizarSelectProveedoresServicios(idProyecto) {
+			await cargarListasDeServiciosYProveedores(); // actualiza listaProveedores
+			cargarDatosServicios(idProyecto,"Otros");
+			// Buscar todos los select de proveedores de CONSULTORESD nuevos
+			const selects = document.querySelectorAll('select[name="idproveedorserviciosnuevos"]');
+
+			selects.forEach(select => {
+				const valorActual = select.value; // conservar valor seleccionado
+				select.innerHTML = `<option value="" disabled selected>Seleccione un proveedor</option>` +
+					listaProveedoresservicios.map(p => `<option value="${p.id}" ${p.id == valorActual ? "selected" : ""}>${p.nombre}</option>`).join('');
+			});
+		}
+		
 </script>
 <script>
 	function mostrarCargando() {

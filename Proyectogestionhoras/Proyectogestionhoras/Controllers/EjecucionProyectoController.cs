@@ -1976,5 +1976,10 @@ namespace Proyectogestionhoras.Controllers
             }
 
         }
+
+        public IActionResult SeguimientoEstadoProyectos()
+        {
+            return View();
+        }
     }
 }
