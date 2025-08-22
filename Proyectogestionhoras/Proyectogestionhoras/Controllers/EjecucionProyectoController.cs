@@ -254,6 +254,12 @@ namespace Proyectogestionhoras.Controllers
             var idsession = HttpContext.Session.GetInt32("id");
             if (idsession.HasValue)
             {
+                var parametros = await context.Fechalimitemodificacioons
+       .Select(f => new { f.Fechalimite, f.Estado })
+       .FirstOrDefaultAsync();
+
+                ViewBag.FechaLimite = parametros?.Fechalimite;
+                ViewBag.Estado = parametros?.Estado;
                 var distribucion = await ejecucionService.ObtenerDistribucionHH(idproyecto, estado);
                 return View(distribucion);
 

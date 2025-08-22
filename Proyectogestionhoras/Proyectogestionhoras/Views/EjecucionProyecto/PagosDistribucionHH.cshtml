@@ -1,7 +1,13 @@
 ﻿@{
 	ViewData["Title"] = "Vista Previa Distribución HH";
-}
 
+}
+@{
+	DateTime fechaLimite = ViewBag.FechaLimite ?? DateTime.Today;
+	string estadofecha = ViewBag.Estado ?? "Inhabilitado";
+	string minDateAttr = estadofecha == "Habilitado" ? $"min='{fechaLimite:yyyy-MM-dd}'" : "";
+	
+}
 
 @model List<Proyectogestionhoras.Models.DTO.GastosHHRecursosDTO>
 
@@ -107,7 +113,12 @@
 									<input type="hidden" name="gastos[@i].Subtotal" value="@item.costorecursosocio" />
 									<td class="p-2 border">@item.mes/@item.anio</td>
 									<td class="p-2 border">
-										<input type="date" name="gastos[@i].Fechapago" class="form-control text-right px-3 py-2 border rounded w-25" />
+
+										<input type="date"
+											   name="gastos[@i].Fechapago"
+											   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+											   @Html.Raw(minDateAttr)
+											   value="@(Model[@i].fechapago?.ToString("yyyy-MM-dd") ?? "")" />
 									</td>
 									<td class="p-2 border">@item.nombreproyecto</td>
 									<td class="p-2 border">@item.idcuentasocio</td>
@@ -161,10 +172,16 @@
 							if (item.tiporecurso == "Staff")
 							{
 								<tr>
+									
 									<input type="hidden" name="gastos[@i].Subtotal" value="@item.costorecurstaff" />
 									<td class="p-2 border">@item.mes/@item.anio</td>
 									<td class="p-2 border">
-										<input type="date" name="gastos[@i].Fechapago" class="form-control text-right px-3 py-2 border rounded w-25" />
+
+										<input type="date"
+											   name="gastos[@i].Fechapago"
+											   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+											   @Html.Raw(minDateAttr)
+											   value="@(Model[@i].fechapago?.ToString("yyyy-MM-dd") ?? "")" />
 									</td>
 									<td class="p-2 border">@item.nombreproyecto</td>
 									<td class="p-2 border">@item.idcuentastaff</td>
@@ -285,10 +302,33 @@
 	   function parseCurrency(value) {
 		   return parseInt(value.replace(/\./g, ''), 10) || 0;
 	   }
-
+	   // Formato correcto para la fecha límite
+	
 
 
 
 	});
 
+		document.addEventListener('DOMContentLoaded', function () {
+		document.querySelectorAll("input[type='date']").forEach(input => {
+			// Forzar validación HTML5
+			input.addEventListener("input", function () {
+				if (!input.checkValidity()) {
+					input.reportValidity();
+				}
+			});
+
+			// Validación adicional al cambiar
+			input.addEventListener("change", function () {
+				if (!input.checkValidity()) {
+					input.reportValidity();
+					// Restablecer al valor mínimo si es inválido
+					const minDate = input.min;
+					if (minDate && input.value < minDate) {
+						input.value = minDate;
+					}
+				}
+			});
+		});
+	});
 </script>

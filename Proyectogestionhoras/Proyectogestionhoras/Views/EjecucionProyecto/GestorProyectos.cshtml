@@ -24,7 +24,7 @@
 	decimal totalsociosforecast = 0;
 	decimal totalstaffforecast = 0;
 	DateTime fechaLimite = ViewBag.FechaLimite ?? DateTime.MinValue;
-	string estado = ViewBag.Estado ?? "Inhabilitado";
+	string estadofecha = ViewBag.Estado ?? "Inhabilitado";
 }
 <script>
 	let fechaLimiteGlobal = null;
@@ -39,6 +39,26 @@
 		}
 		return { fechaLimiteGlobal, estadoGlobal };
 	}
+		async function aplicarRestriccionesFecha(fila = null) {
+		const { fechaLimiteGlobal, estadoGlobal } = await obtenerFechaLimiteEstado();
+
+		if (estadoGlobal === "Habilitado") {
+			let fechaISO = fechaLimiteGlobal.toISOString().split("T")[0];
+
+			if (fila) {
+				// Solo aplica a los inputs dentro de la fila nueva
+				fila.querySelectorAll('input[type="date"]').forEach(input => {
+					input.setAttribute("min", fechaISO);
+				});
+			} else {
+				// Aplica a todos los inputs ya existentes
+				document.querySelectorAll('input[type="date"]').forEach(input => {
+					input.setAttribute("min", fechaISO);
+				});
+			}
+		}
+	}
+
 </script>
 <div class="max-w-[calc(100vw-16rem)] p-12 bg-gray-50 rounded-xl shadow-xl">
 
@@ -742,6 +762,8 @@
 											`;
 
 											tbody.appendChild(row);
+											aplicarRestriccionesFecha(row);
+											
 										}
 									
 																document.querySelectorAll(".monto-input").forEach(input => {
@@ -808,7 +830,16 @@
 
 										tbody.appendChild(nuevaFila);
 
-
+										aplicarRestriccionesFecha(nuevaFila);
+																		 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+									fechaLimiteInput.forEach(input => {
+										input.addEventListener('input', async function () {
+											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
+											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
+												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
+											}
+										});
+									});
 											nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
 										  let valor = this.value;
 
@@ -948,7 +979,7 @@
 												var gasto = ViewBag.GastosHH[i];
 												@if (gasto.tiporecurso == "Socio" && gasto.estado != 2)
 												{
-													bool deshabilitar = gasto.fechapago != null && gasto.fechapago < fechaLimite && estado == "Habilitado";
+													bool deshabilitar = gasto.fechapago != null && gasto.fechapago < fechaLimite && estadofecha == "Habilitado";
 													string disabledAttr = deshabilitar ? "disabled" : "";
 
 													<tr>
@@ -963,18 +994,23 @@
 														@if (gasto.fechapago != null)
 														{
 															<td class="p-1 border border-gray-300 text-right">
-																<input type="date" name="Fechapago" value="@gasto.fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" @disabledAttr />
+																<input type="date"
+																	   name="Fechapago"
+																	   value="@gasto.fechapago?.ToString("yyyy-MM-dd")"
+																	   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+																	   @disabledAttr
+																	   @(estadofecha == "Habilitado" ? $"min={fechaLimite:yyyy-MM-dd}" : "") />
 															</td>
-
 														}
-
 														else
 														{
 															<td class="p-1 border border-gray-300 text-right">
-																<input type="date" name="Fechapago" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" @disabledAttr />
+																<input type="date"
+																	   name="Fechapago"
+																	   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+																	   @disabledAttr
+																	   @(estadofecha == "Habilitado" ? $"min={fechaLimite:yyyy-MM-dd}" : "") />
 															</td>
-
-
 														}
 
 														<td class="p-2 border border-gray-300 text-right">@gasto.idcuentasocio</td>
@@ -1078,8 +1114,29 @@
 											{
 												if (gs.estado == 2 && gs.tiporecurso == "Socio")
 												{
+													bool deshabilitar = gs.fechapago != null && gs.fechapago < fechaLimite && estadofecha == "Habilitado";
+													string disabledAttr = deshabilitar ? "disabled" : "";
 													<tr>
-														<td class="p-2 border border-gray-300 text-left"><input type="date" value="@gs.fechapago.ToString("yyyy-MM-dd")" name="fechahhsocio" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-30" /></td>
+														@if (gs.fechapago != null)
+														{
+															<td class="p-1 border border-gray-300 text-right">
+																<input type="date"
+																	   name="fechahhsocio"
+																	   value="@gs.fechapago?.ToString("yyyy-MM-dd")"
+																	   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+																	   @(estadofecha == "Habilitado" ? $"min={fechaLimite:yyyy-MM-dd}" : "") @(deshabilitar ? "disabled" : "") />
+															</td>
+														}
+														else
+														{
+															<td class="p-1 border border-gray-300 text-right">
+																<input type="date"
+																	   name="fechahhsocio"
+																	   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+																	   @(estadofecha == "Habilitado" ? $"min={fechaLimite:yyyy-MM-dd}" : "") @(deshabilitar ? "disabled" : "") />
+															</td>
+														}
+														
 														<td class="hhsocio p-2 border border-gray-300 text-right"><input type="text" value="@String.Format("{0:N0}", @gs.totalhh)" name="hhsocio" class=" form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" /></td>
 														@if (idusuario == 88 || idusuario == 96)
 														{
@@ -1198,7 +1255,7 @@
 												@if (gasto.tiporecurso == "Staff" && gasto.estado != 2)
 												{
 
-													bool deshabilitar = gasto.fechapago != null && gasto.fechapago < fechaLimite && estado == "Habilitado";
+													bool deshabilitar = gasto.fechapago != null && gasto.fechapago < fechaLimite && estadofecha == "Habilitado";
 													string disabledAttr = deshabilitar ? "disabled" : "";
 													<tr>
 														<input type="hidden" name="Tiporecursostaff" value="@gasto.tiporecurso" @disabledAttr />
@@ -1212,19 +1269,25 @@
 														@if (gasto.fechapago != null)
 														{
 															<td class="p-1 border border-gray-300 text-right">
-																<input type="date" name="Fechapagostaff" value="@gasto.fechapago?.ToString("yyyy-MM-dd")" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" @disabledAttr />
+																<input type="date"
+																	   name="Fechapagostaff"
+																	   value="@gasto.fechapago?.ToString("yyyy-MM-dd")"
+																	   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+																	   @disabledAttr
+																	   @(estadofecha == "Habilitado" ? $"min={fechaLimite:yyyy-MM-dd}" : "") />
 															</td>
-
 														}
-
 														else
 														{
 															<td class="p-1 border border-gray-300 text-right">
-																<input type="date" name="Fechapagostaff" class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25" @disabledAttr />
+																<input type="date"
+																	   name="Fechapagostaff"
+																	   class="form-control text-right px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-25"
+																	   @disabledAttr
+																	   @(estadofecha == "Habilitado" ? $"min={fechaLimite:yyyy-MM-dd}" : "") />
 															</td>
-
-
 														}
+														
 
 														<td class="p-2 border border-gray-300 text-right">@gasto.idcuentastaff</td>
 														<td class="p-1">@gasto.cuentastaff</td>
@@ -1568,6 +1631,8 @@
 													`;
 
 								$('#tablahhSocios tbody').append(nuevaFila);
+								aplicarRestriccionesFecha(nuevaFila);
+
 								$(document).on('input', 'input[name="hhsocio"], input[name="costohhsocio"]', function (e) {
 									formatCurrency(e);
 									updateMontoFinalCosto(this);
@@ -1623,6 +1688,7 @@
 													`;
 
 								$('#tablahhStaff tbody').append(nuevaFila);
+								aplicarRestriccionesFecha(nuevaFila);
 								$(document).on('input', 'input[name="hhstaff"], input[name="costohhstaff"]', function (e) {
 									formatCurrency(e);
 									updateMontoFinalCosto(this);
@@ -1662,6 +1728,7 @@
 
 
 						}
+						
 					</script>
 				</div>
 			</form>
@@ -1869,6 +1936,7 @@
 											`;
 
 											tbody.appendChild(row);
+											aplicarRestriccionesFecha(row);
 										}
 									
 
@@ -1948,7 +2016,16 @@
 
 										tbody.appendChild(nuevaFila);
 
-
+										aplicarRestriccionesFecha(nuevaFila);
+											 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+									fechaLimiteInput.forEach(input => {
+										input.addEventListener('input', async function () {
+											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
+											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
+												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
+											}
+										});
+									});
 																			nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
 									  let valor = this.value;
 
@@ -2211,6 +2288,7 @@
 									  `;
 
 									  tbody.appendChild(row);
+									  aplicarRestriccionesFecha(row);
 									}
 														document.querySelectorAll(".monto-input").forEach(input => {
 									  input.addEventListener("input", () => {
@@ -2285,8 +2363,16 @@
 										`;
 
 										tbody.appendChild(nuevaFila);
-
-
+										aplicarRestriccionesFecha(nuevaFila);
+											 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+									fechaLimiteInput.forEach(input => {
+										input.addEventListener('input', async function () {
+											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
+											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
+												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
+											}
+										});
+									});
 										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
 									  let valor = this.value;
 
@@ -2594,6 +2680,7 @@
 										`;
 
 										tbody.appendChild(row);
+										aplicarRestriccionesFecha(row);
 									}
 								}
 
@@ -2683,7 +2770,16 @@
 										`;
 
 										tbody.appendChild(nuevaFila);
-
+										aplicarRestriccionesFecha(nuevaFila);
+											 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+									fechaLimiteInput.forEach(input => {
+										input.addEventListener('input', async function () {
+											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
+											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
+												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
+											}
+										});
+									});
 																			nuevaFila.querySelector(".monto-input").addEventListener("blur", function () {
 										let valor = this.value.trim();
 

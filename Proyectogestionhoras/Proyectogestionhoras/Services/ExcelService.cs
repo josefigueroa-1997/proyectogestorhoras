@@ -21,12 +21,20 @@ namespace Proyectogestionhoras.Services
         {
             if (egresos == null || !egresos.Any())
                 return;
+            var parametros = await context.Fechalimitemodificacioons
+       .Select(f => new { f.Fechalimite, f.Estado })
+       .FirstOrDefaultAsync();
 
+            // Obtener la fecha límite
+            DateTime fechaLimite = parametros?.Fechalimite ?? DateTime.MinValue;
+            string estadolimite = parametros?.Estado ?? "Inhabilitado";
             var servicios = new List<Serviciosejecucion>();
             var gastos = new List<Gastosejecucion>();
 
             foreach (var egreso in egresos)
             {
+                if (egreso.Fecha < fechaLimite && estadolimite == "Habilitado")
+                    continue;
                 var idProyecto = egreso.Idpeoyecto;
                 var idEgreso = egreso.Idegreso;
                 var glosa = egreso.Observacion?.Trim() ?? "";
@@ -83,10 +91,17 @@ namespace Proyectogestionhoras.Services
                 return;
 
             var listaingreso = new List<Ingresosreale>();
+            var parametros = await context.Fechalimitemodificacioons
+     .Select(f => new { f.Fechalimite, f.Estado })
+     .FirstOrDefaultAsync();
 
+            // Obtener la fecha límite
+            DateTime fechaLimite = parametros?.Fechalimite ?? DateTime.MinValue;
+            string estadolimite = parametros?.Estado ?? "Inhabilitado";
             foreach (var ingreso in ingresos)
             {
-
+                if ((ingreso.Fechapago < fechaLimite || ingreso.Fechaemision < fechaLimite) && estadolimite == "Habilitado")
+                    continue;
 
                 listaingreso.Add(new Ingresosreale
                 {
