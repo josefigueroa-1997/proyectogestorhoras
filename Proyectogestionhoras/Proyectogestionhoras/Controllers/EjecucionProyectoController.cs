@@ -428,6 +428,12 @@ namespace Proyectogestionhoras.Controllers
                 ViewBag.GastosHH = gastoshh;
                 ViewBag.GastosRecursos = datosgastosrecursos;
                 var flujocaja = await reporteService.ProcesarFlujoCajaPorMesAsync(idproyecto);
+                var parametros = await context.Fechalimitemodificacioons
+        .Select(f => new { f.Fechalimite, f.Estado })
+        .FirstOrDefaultAsync();
+
+                ViewBag.FechaLimite = parametros?.Fechalimite;
+                ViewBag.Estado = parametros?.Estado;
                 return View(flujocaja);
 
             }

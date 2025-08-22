@@ -29,6 +29,7 @@ namespace Proyectogestionhoras.Models
         public virtual DbSet<Diapago> Diapagos { get; set; } = null!;
         public virtual DbSet<Empresa> Empresas { get; set; } = null!;
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
+        public virtual DbSet<Fechalimitemodificacioon> Fechalimitemodificacioons { get; set; } = null!;
         public virtual DbSet<Fechamodificacionproyecto> Fechamodificacionproyectos { get; set; } = null!;
         public virtual DbSet<Gasto> Gastos { get; set; } = null!;
         public virtual DbSet<Gastosejecucion> Gastosejecucions { get; set; } = null!;
@@ -423,6 +424,22 @@ namespace Proyectogestionhoras.Models
                     .HasForeignKey(d => d.Idsegmento)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("IDSEGFAC");
+            });
+
+            modelBuilder.Entity<Fechalimitemodificacioon>(entity =>
+            {
+                entity.ToTable("FECHALIMITEMODIFICACIOON");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Estado)
+                    .HasMaxLength(300)
+                    .IsUnicode(false)
+                    .HasColumnName("ESTADO");
+
+                entity.Property(e => e.Fechalimite)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHALIMITE");
             });
 
             modelBuilder.Entity<Fechamodificacionproyecto>(entity =>

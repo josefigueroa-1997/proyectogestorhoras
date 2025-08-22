@@ -754,6 +754,66 @@ namespace Proyectogestionhoras.Controllers
 
             return RedirectToAction("GestorDiaPago");
         }
+        /*Fecha limite modificación datos proyectos*/
+        public async Task<IActionResult> GestorFechaLimiteModificacion()
+        {
+            var fechalimite = await context.Fechalimitemodificacioons.FirstOrDefaultAsync();
+            return View(fechalimite);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> GuardarActualizarFechaLimite(Fechalimitemodificacioon fechalimitemodificacioon)
+        {
+            if (fechalimitemodificacioon == null)
+            {
+                TempData["ErrorFechalimite"] = "No se pudo actualizar la fecha de modificación de proyecto.";
+                return RedirectToAction("GestorFechaLimiteModificacion");
+            }
+            
+
+            try
+            {
+                if (fechalimitemodificacioon.Id == 0)
+                {
+                    context.Fechalimitemodificacioons.Add(fechalimitemodificacioon);
+                    TempData["Successfechalimite"] = "Fecha limite asignado correctamente.";
+                }
+                else
+                {
+                    var fechaExistente = await context.Fechalimitemodificacioons.FindAsync(fechalimitemodificacioon.Id);
+                    if (fechaExistente == null)
+                    {
+                        TempData["ErrorFechalimite"] = "Fecha no encontrado.";
+                        return RedirectToAction("GestorFechaLimiteModificacion");
+                    }
+
+                    fechaExistente.Fechalimite = fechalimitemodificacioon.Fechalimite;
+                    fechaExistente.Estado = fechalimitemodificacioon.Estado;
+                    context.Fechalimitemodificacioons.Update(fechaExistente);
+                    TempData["Successfechalimite"] = "Fecha de pago y estado actualizado correctamente.";
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch
+            {
+                TempData["ErrorFechalimite"] = "Ocurrió un error al guardar la fecha limite de modificación.";
+            }
+
+            return RedirectToAction("GestorFechaLimiteModificacion");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ObtenerFechaLimiteEstado()
+        {
+            var resultado = await context.Fechalimitemodificacioons
+                .Select(f => new
+                {
+                    
+                    f.Fechalimite,
+                    f.Estado
+                })
+                .FirstOrDefaultAsync();
+            return Json(resultado);
+        }
     }
 }
