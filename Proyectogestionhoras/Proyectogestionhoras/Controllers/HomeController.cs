@@ -159,18 +159,24 @@ namespace Proyectogestionhoras.Controllers
         [HttpGet]
         public async Task<IActionResult> ObtenerProyectosPorEstadoJson(int idEstado)
         {
-            int anioactual = DateTime.Now.Year;
+            int anioActual = DateTime.Now.Year;
+            DateTime inicioAnio = new DateTime(anioActual, 1, 1);
+            DateTime finAnio = new DateTime(anioActual, 12, 31);
 
             var proyectos = await context.Proyectos
                 .Where(p => p.StatusProyecto == idEstado &&
                             (
-                                (p.FechaInicio.Year == anioactual && p.FechaTermino.Year == anioactual) ||
-                                (p.Fechaejecucion.HasValue && p.Fechaejecucion.Value.Year == anioactual) ||
-                                (p.Fecharealtermino.HasValue && p.Fecharealtermino.Value.Year == anioactual)
+                                
+                                (p.FechaInicio <= finAnio && p.FechaTermino >= inicioAnio) ||
+
+                                
+                                (p.Fechaejecucion.HasValue && p.Fechaejecucion.Value.Year == anioActual) ||
+
+                                
+                                (p.Fecharealtermino.HasValue && p.Fecharealtermino.Value.Year == anioActual)
                             ))
                 .ToListAsync();
 
-            
             var resultado = proyectos
                 .DistinctBy(p => p.Id)
                 .Select(p => new {

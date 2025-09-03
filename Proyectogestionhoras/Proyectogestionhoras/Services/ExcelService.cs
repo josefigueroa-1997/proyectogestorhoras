@@ -33,7 +33,7 @@ namespace Proyectogestionhoras.Services
 
             foreach (var egreso in egresos)
             {
-                if (egreso.Fecha < fechaLimite && estadolimite == "Habilitado")
+                if (egreso.Fecha <= fechaLimite && estadolimite == "Habilitado")
                     continue;
                 var idProyecto = egreso.Idpeoyecto;
                 var idEgreso = egreso.Idegreso;
@@ -96,11 +96,11 @@ namespace Proyectogestionhoras.Services
      .FirstOrDefaultAsync();
 
             // Obtener la fecha límite
-            DateTime fechaLimite = parametros?.Fechalimite ?? DateTime.MinValue;
+            DateTime fechaLimite = parametros?.Fechalimite  ?? DateTime.MinValue;
             string estadolimite = parametros?.Estado ?? "Inhabilitado";
             foreach (var ingreso in ingresos)
             {
-                if ((ingreso.Fechapago < fechaLimite || ingreso.Fechaemision < fechaLimite) && estadolimite == "Habilitado")
+                if ((ingreso.Fechapago <= fechaLimite || ingreso.Fechaemision <= fechaLimite) && estadolimite == "Habilitado")
                     continue;
 
                 listaingreso.Add(new Ingresosreale

@@ -39,11 +39,15 @@
 		}
 		return { fechaLimiteGlobal, estadoGlobal };
 	}
-		async function aplicarRestriccionesFecha(fila = null) {
+	async function aplicarRestriccionesFecha(fila = null) {
 		const { fechaLimiteGlobal, estadoGlobal } = await obtenerFechaLimiteEstado();
 
 		if (estadoGlobal === "Habilitado") {
-			let fechaISO = fechaLimiteGlobal.toISOString().split("T")[0];
+			// Clonamos la fecha para no alterar fechaLimiteGlobal
+			let fechaMinima = new Date(fechaLimiteGlobal);
+			fechaMinima.setDate(fechaMinima.getDate() + 1); // sumamos 1 día
+
+			let fechaISO = fechaMinima.toISOString().split("T")[0];
 
 			if (fila) {
 				// Solo aplica a los inputs dentro de la fila nueva
@@ -57,6 +61,7 @@
 				});
 			}
 		}
+	
 	}
 
 </script>
@@ -831,12 +836,17 @@
 										tbody.appendChild(nuevaFila);
 
 										aplicarRestriccionesFecha(nuevaFila);
-																		 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+									const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
 									fechaLimiteInput.forEach(input => {
 										input.addEventListener('input', async function () {
 											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
-												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
+
+											// Creamos la fecha mínima (1 día después de la límite)
+											let fechaMinima = new Date(fechaLimiteGlobal);
+											fechaMinima.setDate(fechaMinima.getDate() + 1);
+
+											if (this.value && new Date(this.value) < fechaMinima) {
+												this.value = fechaMinima.toISOString().split("T")[0];
 											}
 										});
 									});
@@ -2017,12 +2027,17 @@
 										tbody.appendChild(nuevaFila);
 
 										aplicarRestriccionesFecha(nuevaFila);
-											 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+																				 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
 									fechaLimiteInput.forEach(input => {
 										input.addEventListener('input', async function () {
 											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
-												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
+
+											// Creamos la fecha mínima (1 día después de la límite)
+											let fechaMinima = new Date(fechaLimiteGlobal);
+											fechaMinima.setDate(fechaMinima.getDate() + 1);
+
+											if (this.value && new Date(this.value) < fechaMinima) {
+												this.value = fechaMinima.toISOString().split("T")[0];
 											}
 										});
 									});
@@ -2364,12 +2379,17 @@
 
 										tbody.appendChild(nuevaFila);
 										aplicarRestriccionesFecha(nuevaFila);
-											 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+																				const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
 									fechaLimiteInput.forEach(input => {
 										input.addEventListener('input', async function () {
 											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
-												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
+
+											// Creamos la fecha mínima (1 día después de la límite)
+											let fechaMinima = new Date(fechaLimiteGlobal);
+											fechaMinima.setDate(fechaMinima.getDate() + 1);
+
+											if (this.value && new Date(this.value) < fechaMinima) {
+												this.value = fechaMinima.toISOString().split("T")[0];
 											}
 										});
 									});
@@ -2771,15 +2791,20 @@
 
 										tbody.appendChild(nuevaFila);
 										aplicarRestriccionesFecha(nuevaFila);
-											 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
-									fechaLimiteInput.forEach(input => {
-										input.addEventListener('input', async function () {
-											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-											if (this.value && new Date(this.value) < fechaLimiteGlobal) {
-												this.value = fechaLimiteGlobal.toISOString().split("T")[0];
-											}
-										});
+																			const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
+								fechaLimiteInput.forEach(input => {
+									input.addEventListener('input', async function () {
+										const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
+
+										// Creamos la fecha mínima (1 día después de la límite)
+										let fechaMinima = new Date(fechaLimiteGlobal);
+										fechaMinima.setDate(fechaMinima.getDate() + 1);
+
+										if (this.value && new Date(this.value) < fechaMinima) {
+											this.value = fechaMinima.toISOString().split("T")[0];
+										}
 									});
+								});
 																			nuevaFila.querySelector(".monto-input").addEventListener("blur", function () {
 										let valor = this.value.trim();
 
