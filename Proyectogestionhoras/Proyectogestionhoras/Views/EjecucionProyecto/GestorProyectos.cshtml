@@ -1889,7 +1889,7 @@
 									  if (isNaN(numero)) return "";
 									  return numero.toLocaleString("es-CL");
 									}
-																										async function renderizarTablaConsultores(data) {
+																																		async function renderizarTablaConsultores(data) {
 										const tbody = document.querySelector('#tablaconsultores tbody');
 										tbody.innerHTML = "";
 
@@ -1902,41 +1902,110 @@
 
 											// Revisar si se debe deshabilitar según la fecha
 											const fechaPago = new Date(item.fecha.split('T')[0]);
-											const deshabilitar = (fechaPago < fechaLimiteGlobal && estadoGlobal === "Habilitado") ? "disabled" : "";
+											const estaDeshabilitada = (fechaPago < fechaLimiteGlobal && estadoGlobal === "Habilitado");
 
-											const servicioSelect = `
-												<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idconsultores" ${deshabilitar}>
-													${listaconsultores.map(s => `
-														<option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>${s.nombre}</option>
-													`).join('')}
-												</select>
-											`;
+											// -----------------------------
+											// Servicio
+											// -----------------------------
+											let servicioCell = "";
+											if (estaDeshabilitada) {
+												const servicio = listaconsultores.find(s => s.id === item.idservicio);
+												servicioCell = `
+													<input type="hidden" name="idconsultores" value="${item.idservicio}" />
+													${servicio ? servicio.nombre : ""}
+												`;
+											} else {
+												servicioCell = `
+													<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate"
+															name="idconsultores">
+														${listaconsultores.map(s => `
+															<option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>
+																${s.nombre}
+															</option>
+														`).join('')}
+													</select>
+												`;
+											}
 
-											const proveedorSelect = `
-												<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorconsultor" ${deshabilitar}>
-													${listaProveedoresconsultores.map(p => `
-														<option value="${p.id}" ${p.id === item.idproveedor ? "selected" : ""}>${p.nombre}</option>
-													`).join('')}
-												</select>
-											`;
+											// -----------------------------
+											// Proveedor
+											// -----------------------------
+											let proveedorCell = "";
+											if (estaDeshabilitada) {
+												const proveedor = listaProveedoresconsultores.find(p => p.id === item.idproveedor);
+												proveedorCell = `
+													<input type="hidden" name="idproveedorconsultor" value="${item.idproveedor}" />
+													${proveedor ? proveedor.nombre : ""}
+												`;
+											} else {
+												proveedorCell = `
+													<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate"
+															name="idproveedorconsultor">
+														${listaProveedoresconsultores.map(p => `
+															<option value="${p.id}" ${p.id === item.idproveedor ? "selected" : ""}>
+																${p.nombre}
+															</option>
+														`).join('')}
+													</select>
+												`;
+											}
 
-											const estadoSelect = `
-												<select name="estadoconsultor" class="border border-gray-300 rounded px-2 py-1" ${deshabilitar}>
-													<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
-													<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
-												</select>
-											`;
+											// -----------------------------
+											// Estado
+											// -----------------------------
+											let estadoCell = "";
+											if (estaDeshabilitada) {
+												estadoCell = `
+													<input type="hidden" name="estadoconsultor" value="${item.estado}" />
+													${item.estado}
+												`;
+											} else {
+												estadoCell = `
+													<select name="estadoconsultor" class="border border-gray-300 rounded px-2 py-1">
+														<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
+														<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
+													</select>
+												`;
+											}
 
+											// -----------------------------
+											// Montos, fecha, observación, cuenta
+											// -----------------------------
+											const montoCell = estaDeshabilitada
+												? `<input type="hidden" name="montoconsultor" value="${item.monto}" />${formatearMiles(item.monto)}`
+												: `<input type="text" class="text-right" name="montoconsultor" value="${formatearMiles(item.monto)}"
+														   class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">`;
+
+											const fechaCell = estaDeshabilitada
+												? `<input type="hidden" name="fechaconsultor" value="${item.fecha.split('T')[0]}" />${item.fecha.split('T')[0]}`
+												: `<input type="date" name="fechaconsultor" value="${item.fecha.split('T')[0]}"
+														   class="w-full border rounded px-2 py-1">`;
+
+											const observacionCell = estaDeshabilitada
+												? `<input type="hidden" name="observacionconsultor" value="${item.observacion}" />${item.observacion}`
+												: `<textarea rows="2" name="observacionconsultor"
+															 class="form-control text-left px-3 py-2 border border-gray-300 rounded
+																	focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion}</textarea>`;
+
+											const cuentaCell = estaDeshabilitada
+												? `<input type="hidden" name="cuentaconsultor" value="${item.cuenta}" />${item.cuenta}`
+												: `<input type="text" readonly name="cuentaconsultor" value="${item.cuenta}"
+														   class="w-full border rounded px-2 py-1">`;
+
+											// -----------------------------
+											// Construcción final de la fila
+											// -----------------------------
 											row.innerHTML = `
-												<td class="p-1 border">${servicioSelect}</td>
-												<td class="p-1 border">${proveedorSelect}</td>
-												<td class="p-1 border"><input type="text" name="montoconsultor" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1" ${deshabilitar}></td>
-												<td class="p-1 border"><input type="date" name="fechaconsultor" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1" ${deshabilitar}></td>
-												<td class="p-1 border">${estadoSelect}</td>
-												<td class="p-1 border"><textarea rows="2" name="observacionconsultor" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48" ${deshabilitar}>${item.observacion}</textarea></td>
-												<td class="p-1 border"><input type="text" readonly name="cuentaconsultor" value="${item.cuenta}" class="w-full border rounded px-2 py-1" ${deshabilitar}></td>
+												<td class="p-1 border">${servicioCell}</td>
+												<td class="p-1 border">${proveedorCell}</td>
+												<td class="p-1 border">${montoCell}</td>
+												<td class="p-1 border">${fechaCell}</td>
+												<td class="p-1 border">${estadoCell}</td>
+												<td class="p-1 border">${observacionCell}</td>
+												<td class="p-1 border">${cuentaCell}</td>
 												<td class="p-1 border text-center">
-													<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarServicioHonorario(this)" ${deshabilitar}>🗑️</button>
+													<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600"
+															onclick="limpiarServicioHonorario(this)" ${estaDeshabilitada ? "disabled" : ""}>🗑️</button>
 												</td>
 												<td style="display:none;">
 													<input type="hidden" name="EliminarServicioHonorario" class="EliminarServicioHonorario" value="false" />
@@ -1948,6 +2017,7 @@
 											tbody.appendChild(row);
 											aplicarRestriccionesFecha(row);
 										}
+									
 									
 
 									
@@ -2252,7 +2322,7 @@
 									  if (isNaN(numero)) return "";
 									  return numero.toLocaleString("es-CL");
 									}
-																								  async function renderizarTablaServicio(data) {
+																																										 async function renderizarTablaServicio(data) {
 									const tbody = document.querySelector('#tablaservicios tbody');
 									tbody.innerHTML = "";
 
@@ -2263,37 +2333,79 @@
 									  row.classList.add("bg-white", "hover:bg-gray-50");
 
 									  const fechaPago = new Date(item.fecha.split('T')[0]);
-									  const deshabilitar = (fechaPago < fechaLimiteGlobal && estadoGlobal === "Habilitado") ? "disabled" : "";
+									  const estaDeshabilitado = (fechaPago < fechaLimiteGlobal && estadoGlobal === "Habilitado");
 
-									  const servicioSelect = `
-										<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="Idservicio" ${deshabilitar}>
-										  ${listaServicios.map(s => `<option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>${s.nombre}</option>`).join('')}
-										</select>
-									  `;
+									  // SERVICIO
+									  const servicioCell = estaDeshabilitado
+										? `
+											${listaServicios.find(s => s.id === item.idservicio)?.nombre || ""}
+											<input type="hidden" name="Idservicio" value="${item.idservicio}" />
+										  `
+										: `
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="Idservicio">
+											  ${listaServicios.map(s => `
+												<option value="${s.id}" ${s.id === item.idservicio ? "selected" : ""}>${s.nombre}</option>
+											  `).join('')}
+											</select>
+										  `;
 
-									  const proveedorSelect = `
-										<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="Idproveedorservicio" ${deshabilitar}>
-										  ${listaProveedoresservicios.map(p => `<option value="${p.id}" ${p.id === item.idproveedor ? "selected" : ""}>${p.nombre}</option>`).join('')}
-										</select>
-									  `;
+									  // PROVEEDOR
+									  const proveedorCell = estaDeshabilitado
+										? `
+											${listaProveedoresservicios.find(p => p.id === item.idproveedor)?.nombre || ""}
+											<input type="hidden" name="Idproveedorservicio" value="${item.idproveedor}" />
+										  `
+										: `
+											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="Idproveedorservicio">
+											  ${listaProveedoresservicios.map(p => `
+												<option value="${p.id}" ${p.id === item.idproveedor ? "selected" : ""}>${p.nombre}</option>
+											  `).join('')}
+											</select>
+										  `;
 
-									  const estadoSelect = `
-										<select name="estadoservicio" class="border border-gray-300 rounded px-2 py-1" ${deshabilitar}>
-										  <option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
-										  <option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
-										</select>
-									  `;
+									  // ESTADO
+									  const estadoCell = estaDeshabilitado
+										? `
+											${item.estado}
+											<input type="hidden" name="estadoservicio" value="${item.estado}" />
+										  `
+										: `
+											<select name="estadoservicio" class="border border-gray-300 rounded px-2 py-1">
+											  <option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
+											  <option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
+											</select>
+										  `;
 
 									  row.innerHTML = `
-										<td class="p-1 border">${servicioSelect}</td>
-										<td class="p-1 border">${proveedorSelect}</td>
-										<td class="p-1 border"><input type="text" name="montoservicio" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1" ${deshabilitar}></td>
-										<td class="p-1 border"><input type="date" name="fechaservicio" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1" ${deshabilitar}></td>
-										<td class="p-1 border">${estadoSelect}</td>
-										<td class="p-1 border"><textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48" ${deshabilitar}>${item.observacion}</textarea></td>
-										<td class="p-1 border"><input type="text" readonly name="cuentaservicio" value="${item.cuenta}" class="w-full border rounded px-2 py-1" ${deshabilitar}></td>
+										<td class="p-1 border">${servicioCell}</td>
+										<td class="p-1 border">${proveedorCell}</td>
+										<td class="p-1 border">
+										  ${estaDeshabilitado
+											? `${formatearMiles(item.monto)} <input type="hidden" class="text-right" name="montoservicio" value="${item.monto}" />`
+											: `<input type="text" name="montoservicio" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">`
+										  }
+										</td>
+										<td class="p-1 border">
+										  ${estaDeshabilitado
+											? `${item.fecha.split('T')[0]} <input type="hidden" name="fechaservicio" value="${item.fecha.split('T')[0]}" />`
+											: `<input type="date" name="fechaservicio" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">`
+										  }
+										</td>
+										<td class="p-1 border">${estadoCell}</td>
+										<td class="p-1 border">
+										  ${estaDeshabilitado
+											? `${item.observacion || ""} <input type="hidden" name="observacionservicio" value="${item.observacion || ""}" />`
+											: `<textarea rows="2" name="observacionservicio" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion || ""}</textarea>`
+										  }
+										</td>
+										<td class="p-1 border">
+										  ${estaDeshabilitado
+											? `${item.cuenta} <input type="hidden" name="cuentaservicio" value="${item.cuenta}" />`
+											: `<input type="text" readonly name="cuentaservicio" value="${item.cuenta}" class="w-full border rounded px-2 py-1">`
+										  }
+										</td>
 										<td class="p-1 border text-center">
-										  <button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarServicioOtro(this)" ${deshabilitar}>🗑️</button>
+										  <button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarServicioOtro(this)" ${estaDeshabilitado ? "disabled" : ""}>🗑️</button>
 										</td>
 										<td style="display:none;">
 										  <input type="hidden" name="EliminarServicioOtro" class="EliminarServicioOtro" value="false" />
@@ -2635,73 +2747,81 @@
 									}
 
 
-																	async function renderizarTablaGastos(data) {
-									const tbody = document.querySelector('#tablagastos tbody');
-									tbody.innerHTML = "";
+																								async function renderizarTablaGastos(data) {
+								const tbody = document.querySelector('#tablagastos tbody');
+								tbody.innerHTML = "";
 
-									// Obtener fecha límite y estado global una sola vez
-									const { fechaLimiteGlobal, estadoGlobal } = await obtenerFechaLimiteEstado();
+								const { fechaLimiteGlobal, estadoGlobal } = await obtenerFechaLimiteEstado();
 
-									for (const item of data) {
-										const row = document.createElement('tr');
-										row.classList.add("bg-white", "hover:bg-gray-50");
+								for (const item of data) {
+									const row = document.createElement('tr');
+									row.classList.add("bg-white", "hover:bg-gray-50");
 
-										// Revisar si se debe deshabilitar según la fecha
-										const fechaPago = new Date(item.fecha.split('T')[0]);
-										const deshabilitar = (fechaPago < fechaLimiteGlobal && estadoGlobal === "Habilitado") ? "disabled" : "";
+									const fechaPago = new Date(item.fecha.split('T')[0]);
+									const deshabilitar = (fechaPago < fechaLimiteGlobal && estadoGlobal === "Habilitado") ? "disabled" : "";
 
-										const gastoSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1" name="idgastos" ${deshabilitar}>
-												${listaGastos.map(g =>
-													`<option value="${g.id}" ${g.id === item.idGasto ? "selected" : ""}>${g.nombre}</option>`
-												).join('')}
-											</select>
-										`;
+									// GASTO
+									const gastoCell = deshabilitar
+										? `${listaGastos.find(g => g.id === item.idGasto)?.nombre || ""}<input type="hidden" name="idgastos" value="${item.idGasto}" />`
+										: `<select class="border border-gray-300 rounded px-2 py-1" name="idgastos">
+												${listaGastos.map(g => `<option value="${g.id}" ${g.id === item.idGasto ? "selected" : ""}>${g.nombre}</option>`).join('')}
+										   </select>`;
 
-										const proveedorSelect = `
-											<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorgastos" ${deshabilitar}>
-												${listaProveedores.map(p =>
-													`<option value="${p.id}" ${p.id === item.idProveedor ? "selected" : ""}>${p.nombre}</option>`
-												).join('')}
-											</select>
-										`;
+									// PROVEEDOR
+									const proveedorCell = deshabilitar
+										? `${listaProveedores.find(p => p.id === item.idProveedor)?.nombre || ""}<input type="hidden" name="idproveedorgastos" value="${item.idProveedor}" />`
+										: `<select class="border border-gray-300 rounded px-2 py-1 max-w-[200px] truncate" name="idproveedorgastos">
+												${listaProveedores.map(p => `<option value="${p.id}" ${p.id === item.idProveedor ? "selected" : ""}>${p.nombre}</option>`).join('')}
+										   </select>`;
 
-										const estadoSelect = `
-											<select name="estadogasto" class="border border-gray-300 rounded px-2 py-1" ${deshabilitar}>
+									// ESTADO
+									const estadoCell = deshabilitar
+										? `${item.estado}<input type="hidden" name="estadogasto" value="${item.estado}" />`
+										: `<select name="estadogasto" class="border border-gray-300 rounded px-2 py-1">
 												<option value="Forecast" ${item.estado === "Forecast" ? "selected" : ""}>Forecast</option>
 												<option value="Pagada" ${item.estado === "Pagada" ? "selected" : ""}>Pagada</option>
-											</select>
-										`;
+										   </select>`;
 
-										row.innerHTML = `
-											<td class="p-1 border">${gastoSelect}</td>
-											<td class="p-1 border">${proveedorSelect}</td>
-											<td class="p-1 border">
-												<input type="text" name="montogasto" value="${formatearMiles(item.monto)}"
-												class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1" ${deshabilitar}>
-											</td>
-											<td class="p-1 border">
-												<input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1" ${deshabilitar}>
-											</td>
-											<td class="p-1 border">${estadoSelect}</td>
-											<td class="p-1 border">
-												<textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48" ${deshabilitar}>${item.observacion}</textarea>
-											</td>
-											<td class="p-1 border">
-												<input type="text" readonly name="cuentagasto" value="${item.cuenta}" class="w-full border rounded px-2 py-1" ${deshabilitar}>
-											</td>
-											<td style="display:none;">
-												<input type="hidden" name="esEliminados" class="esEliminados" value="false" />
-											</td>
-											<td class="p-1 border text-center">
-												<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarFilagasto(this)" ${deshabilitar}>🗑️</button>
-											</td>
-											<input type="hidden" name="IdGastoReal" value="${item.idGastosReal}"/>
-										`;
+									row.innerHTML = `
+										<td class="p-1 border">${gastoCell}</td>
+										<td class="p-1 border">${proveedorCell}</td>
+										<td class="p-1 border">
+											${deshabilitar
+												? `${formatearMiles(item.monto)}<input class="text-right" type="hidden" name="montogasto" value="${item.monto}" />`
+												: `<input type="text" name="montogasto" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">`
+											}
+										</td>
+										<td class="p-1 border">
+											${deshabilitar
+												? `${item.fecha.split('T')[0]}<input type="hidden" name="fechagasto" value="${item.fecha.split('T')[0]}" />`
+												: `<input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">`
+											}
+										</td>
+										<td class="p-1 border">${estadoCell}</td>
+										<td class="p-1 border">
+											${deshabilitar
+												? `${item.observacion || ""}<input type="hidden" name="observaciongasto" value="${item.observacion || ""}" />`
+												: `<textarea rows="2" name="observaciongasto" class="form-control text-left px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-48">${item.observacion || ""}</textarea>`
+											}
+										</td>
+										<td class="p-1 border">
+											${deshabilitar
+												? `${item.cuenta}<input type="hidden" name="cuentagasto" value="${item.cuenta}" />`
+												: `<input type="text" readonly name="cuentagasto" value="${item.cuenta}" class="w-full border rounded px-2 py-1">`
+											}
+										</td>
+										<td class="p-1 border text-center">
+											<button type="button" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600" onclick="limpiarFilagasto(this)" ${deshabilitar ? "disabled" : ""}>🗑️</button>
+										</td>
+										<td style="display:none;">
+											<input type="hidden" name="esEliminados" class="esEliminados" value="false" />
+										</td>
+										<input type="hidden" name="IdGastoReal" value="${item.idGastosReal}" />
+									`;
 
-										tbody.appendChild(row);
-										aplicarRestriccionesFecha(row);
-									}
+									tbody.appendChild(row);
+									aplicarRestriccionesFecha(row);
+								}
 								}
 
 
