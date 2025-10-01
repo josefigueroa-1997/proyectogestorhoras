@@ -467,6 +467,7 @@ namespace Proyectogestionhoras.Controllers
                 {
                     return Json(new { success = false, message = "La lista de gastos es null" });
                 }
+               
 
                 await ejecucionService.GestorGastosReales(request.idproyecto, request.gastos);
                 var gastosConvertidos = request.gastos

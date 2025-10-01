@@ -42,28 +42,41 @@
 	async function aplicarRestriccionesFecha(fila = null) {
 		const { fechaLimiteGlobal, estadoGlobal } = await obtenerFechaLimiteEstado();
 
-		if (estadoGlobal === "Habilitado") {
-			// Clonamos la fecha para no alterar fechaLimiteGlobal
-			let fechaMinima = new Date(fechaLimiteGlobal);
-			fechaMinima.setDate(fechaMinima.getDate() + 1); // sumamos 1 día
+	if (estadoGlobal === "Habilitado") {
+		let fechaMinima = new Date(fechaLimiteGlobal);
+		fechaMinima.setDate(fechaMinima.getDate() + 1); // +1 día
+		let fechaISO = fechaMinima.toISOString().split("T")[0];
 
-			let fechaISO = fechaMinima.toISOString().split("T")[0];
+		const inputs = fila
+			? fila.querySelectorAll('input[type="date"]')
+			: document.querySelectorAll('input[type="date"]');
 
-			if (fila) {
-				// Solo aplica a los inputs dentro de la fila nueva
-				fila.querySelectorAll('input[type="date"]').forEach(input => {
-					input.setAttribute("min", fechaISO);
-				});
-			} else {
-				// Aplica a todos los inputs ya existentes
-				document.querySelectorAll('input[type="date"]').forEach(input => {
-					input.setAttribute("min", fechaISO);
-				});
-			}
-		}
+		inputs.forEach(input => {
+			input.setAttribute("min", fechaISO);
+			 let alerta = document.createElement('div');
+			alerta.style.color = 'red';
+			alerta.style.fontSize = '0.8rem';
+			alerta.style.display = 'none';
+			alerta.textContent = `La fecha debe ser >= ${fechaISO}`;
+			input.insertAdjacentElement('afterend', alerta);
+			// Agregamos el listener con debounce
+			input.addEventListener('input', debounce(function() {
+				if (this.value && new Date(this.value) < fechaMinima) {
+					this.value = fechaISO;
+				}
+			}, 2000)); // 1000ms = 1 segundo
+		});
+	}
 	
 	}
-
+		// Función de debounce
+	function debounce(fn, delay) {
+		let timer;
+		return function (...args) {
+			clearTimeout(timer);
+			timer = setTimeout(() => fn.apply(this, args), delay);
+		};
+	}
 </script>
 <div class="max-w-[calc(100vw-16rem)] p-12 bg-gray-50 rounded-xl shadow-xl">
 
@@ -836,20 +849,7 @@
 										tbody.appendChild(nuevaFila);
 
 										aplicarRestriccionesFecha(nuevaFila);
-									const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
-									fechaLimiteInput.forEach(input => {
-										input.addEventListener('input', async function () {
-											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-
-											// Creamos la fecha mínima (1 día después de la límite)
-											let fechaMinima = new Date(fechaLimiteGlobal);
-											fechaMinima.setDate(fechaMinima.getDate() + 1);
-
-											if (this.value && new Date(this.value) < fechaMinima) {
-												this.value = fechaMinima.toISOString().split("T")[0];
-											}
-										});
-									});
+									
 											nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
 										  let valor = this.value;
 
@@ -1972,14 +1972,19 @@
 											// Montos, fecha, observación, cuenta
 											// -----------------------------
 											const montoCell = estaDeshabilitada
-												? `<input type="hidden" name="montoconsultor" value="${item.monto}" />${formatearMiles(item.monto)}`
+																			 ? `<span class="block text-right">${formatearMiles(item.monto)}</span>
+									<input type="hidden" name="montoconsultor" value="${item.monto}" />`
 												: `<input type="text" class="text-right" name="montoconsultor" value="${formatearMiles(item.monto)}"
 														   class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">`;
 
-											const fechaCell = estaDeshabilitada
-												? `<input type="hidden" name="fechaconsultor" value="${item.fecha.split('T')[0]}" />${item.fecha.split('T')[0]}`
-												: `<input type="date" name="fechaconsultor" value="${item.fecha.split('T')[0]}"
-														   class="w-full border rounded px-2 py-1">`;
+																				const fechaISO = item.fecha.split('T')[0]; // yyyy-MM-dd
+									const [anio, mes, dia] = fechaISO.split('-');
+									const fechaFormateada = `${dia}/${mes}/${anio}`;
+
+									const fechaCell = estaDeshabilitada
+										? `<span class="block text-center">${fechaFormateada}</span>
+										   <input type="hidden" name="fechaconsultor" value="${fechaISO}" />`
+										: `<input type="date" name="fechaconsultor" value="${fechaISO}" class="w-full border rounded px-2 py-1">`;
 
 											const observacionCell = estaDeshabilitada
 												? `<input type="hidden" name="observacionconsultor" value="${item.observacion}" />${item.observacion}`
@@ -2097,20 +2102,7 @@
 										tbody.appendChild(nuevaFila);
 
 										aplicarRestriccionesFecha(nuevaFila);
-																				 const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
-									fechaLimiteInput.forEach(input => {
-										input.addEventListener('input', async function () {
-											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-
-											// Creamos la fecha mínima (1 día después de la límite)
-											let fechaMinima = new Date(fechaLimiteGlobal);
-											fechaMinima.setDate(fechaMinima.getDate() + 1);
-
-											if (this.value && new Date(this.value) < fechaMinima) {
-												this.value = fechaMinima.toISOString().split("T")[0];
-											}
-										});
-									});
+																				
 																			nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
 									  let valor = this.value;
 
@@ -2379,18 +2371,24 @@
 									  row.innerHTML = `
 										<td class="p-1 border">${servicioCell}</td>
 										<td class="p-1 border">${proveedorCell}</td>
-										<td class="p-1 border">
+										<td class="p-1 border text-right">
 										  ${estaDeshabilitado
 											? `${formatearMiles(item.monto)} <input type="hidden" class="text-right" name="montoservicio" value="${item.monto}" />`
 											: `<input type="text" name="montoservicio" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">`
 										  }
 										</td>
-										<td class="p-1 border">
-										  ${estaDeshabilitado
-											? `${item.fecha.split('T')[0]} <input type="hidden" name="fechaservicio" value="${item.fecha.split('T')[0]}" />`
-											: `<input type="date" name="fechaservicio" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">`
-										  }
-										</td>
+																			<td class="p-1 border">
+									  ${estaDeshabilitado
+										? (() => {
+											const fechaISO = item.fecha.split('T')[0]; // yyyy-MM-dd
+											const [anio, mes, dia] = fechaISO.split('-');
+											const fechaFormateada = `${dia}/${mes}/${anio}`;
+											return `<span class="block text-center">${fechaFormateada}</span>
+													<input type="hidden" name="fechaservicio" value="${fechaISO}" />`;
+										  })()
+										: `<input type="date" name="fechaservicio" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">`
+									  }
+									</td>
 										<td class="p-1 border">${estadoCell}</td>
 										<td class="p-1 border">
 										  ${estaDeshabilitado
@@ -2491,20 +2489,7 @@
 
 										tbody.appendChild(nuevaFila);
 										aplicarRestriccionesFecha(nuevaFila);
-																				const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
-									fechaLimiteInput.forEach(input => {
-										input.addEventListener('input', async function () {
-											const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-
-											// Creamos la fecha mínima (1 día después de la límite)
-											let fechaMinima = new Date(fechaLimiteGlobal);
-											fechaMinima.setDate(fechaMinima.getDate() + 1);
-
-											if (this.value && new Date(this.value) < fechaMinima) {
-												this.value = fechaMinima.toISOString().split("T")[0];
-											}
-										});
-									});
+																			
 										nuevaFila.querySelector(".monto-input").addEventListener("input", function () {
 									  let valor = this.value;
 
@@ -2658,7 +2643,7 @@
 									  }
 									}
 
-									// Se ejecuta al cargar la página
+								
 									document.addEventListener("DOMContentLoaded", () => {
 									  cargarListasDeGastosYProveedores();
 									  const tbody = document.querySelector('#tablagastos tbody');
@@ -2667,15 +2652,15 @@
 									  if (e.target.classList.contains("monto-input")) {
 										const input = e.target;
 
-										// Guardar posición del cursor antes de cambiar valor
+										
 										const selectionStart = input.selectionStart;
 
-										// Permitir solo dígitos y un '-' al inicio
+										
 										let valorSinFormato = input.value
-										  .replace(/[^0-9\-]/g, "")   // solo números y '-'
-										  .replace(/(?!^)-/g, "");    // quitar '-' que no está al inicio
+										  .replace(/[^0-9\-]/g, "")   
+										  .replace(/(?!^)-/g, "");  
 
-										// Si el valor es solo '-' o vacío, no formatear aún
+									
 										if (valorSinFormato === "" || valorSinFormato === "-") {
 										  input.value = valorSinFormato;
 										  return;
@@ -2684,7 +2669,7 @@
 										let esNegativo = valorSinFormato.startsWith("-");
 										let numeroStr = esNegativo ? valorSinFormato.slice(1) : valorSinFormato;
 
-										// Si no hay número válido, no formatear
+									
 										if (!/^\d+$/.test(numeroStr)) {
 										  input.value = valorSinFormato;
 										  return;
@@ -2696,8 +2681,7 @@
 
 										input.value = esNegativo ? "-" + textoFormateado : textoFormateado;
 
-										// Tratar de restaurar la posición del cursor
-										// Calculamos diferencia de longitud para ajustar posición
+									
 										let diff = input.value.length - valorSinFormato.length;
 										input.selectionStart = input.selectionEnd = selectionStart + diff;
 									  }
@@ -2785,18 +2769,24 @@
 									row.innerHTML = `
 										<td class="p-1 border">${gastoCell}</td>
 										<td class="p-1 border">${proveedorCell}</td>
-										<td class="p-1 border">
+										<td class="p-1 border text-right">
 											${deshabilitar
-												? `${formatearMiles(item.monto)}<input class="text-right" type="hidden" name="montogasto" value="${item.monto}" />`
+												? `${formatearMiles(item.monto)}<input  type="hidden" name="montogasto" value="${item.monto}" />`
 												: `<input type="text" name="montogasto" value="${formatearMiles(item.monto)}" class="monto-input min-w-[160px] w-full text-right border rounded px-2 py-1">`
 											}
 										</td>
-										<td class="p-1 border">
-											${deshabilitar
-												? `${item.fecha.split('T')[0]}<input type="hidden" name="fechagasto" value="${item.fecha.split('T')[0]}" />`
-												: `<input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">`
-											}
-										</td>
+																		<td class="p-1 border">
+								  ${deshabilitar
+									? (() => {
+										const fechaISO = item.fecha.split('T')[0]; 
+										const [anio, mes, dia] = fechaISO.split('-');
+										const fechaFormateada = `${dia}/${mes}/${anio}`;
+										return `<span class="block text-center">${fechaFormateada}</span>
+												<input type="hidden" name="fechagasto" value="${fechaISO}" />`;
+									  })()
+									: `<input type="date" name="fechagasto" value="${item.fecha.split('T')[0]}" class="w-full border rounded px-2 py-1">`
+								  }
+								</td>
 										<td class="p-1 border">${estadoCell}</td>
 										<td class="p-1 border">
 											${deshabilitar
@@ -2911,20 +2901,7 @@
 
 										tbody.appendChild(nuevaFila);
 										aplicarRestriccionesFecha(nuevaFila);
-																			const fechaLimiteInput = nuevaFila.querySelectorAll('input[type="date"]');
-								fechaLimiteInput.forEach(input => {
-									input.addEventListener('input', async function () {
-										const { fechaLimiteGlobal } = await obtenerFechaLimiteEstado();
-
-										// Creamos la fecha mínima (1 día después de la límite)
-										let fechaMinima = new Date(fechaLimiteGlobal);
-										fechaMinima.setDate(fechaMinima.getDate() + 1);
-
-										if (this.value && new Date(this.value) < fechaMinima) {
-											this.value = fechaMinima.toISOString().split("T")[0];
-										}
-									});
-								});
+																		
 																			nuevaFila.querySelector(".monto-input").addEventListener("blur", function () {
 										let valor = this.value.trim();
 
@@ -3002,37 +2979,54 @@
 
 
 											const todosLosGastos = [];
+																										document.querySelectorAll('#tablagastos tbody tr').forEach((tr, index) => {
+																let montoRaw = tr.querySelector('input[name="montogasto"]').value.trim();
+								montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
+								const monto = parseValue(montoRaw, "decimal");
+								console.log(`Fila ${index + 1} - MontoRaw: "${montoRaw}" | Monto parseado:`, monto);
+								});
 
+																											// Gastos existentes
+								document.querySelectorAll('#tablagastos tbody tr').forEach(tr => {
+									const idGastoRealInput = tr.querySelector('input[name="IdGastoReal"]');
+									const montoInput = tr.querySelector('input[name="montogasto"]'); // 👀 guardar ref
 
-																				// Gastos existentes
-									document.querySelectorAll('#tablagastos tbody tr').forEach(tr => {
-										const esEliminado = tr.querySelector('input.esEliminados')?.value === 'true';
+									const esEliminado = tr.querySelector('input.esEliminados')?.value === 'true';
 
+									if ((esEliminado || idGastoRealInput) && montoInput) { // 👀 validar existencia
+										let montoRaw = montoInput.value.trim();
+										montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
 
-										if (esEliminado || tr.querySelector('input[name="IdGastoReal"]')) {
-																				let montoRaw = tr.querySelector('input[name="montogasto"]').value.trim();
-									montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
-											todosLosGastos.push({
-												IdGastoReal: parseValue(tr.querySelector('input[name="IdGastoReal"]').value, "number"),
-												Idgasto: parseValue(tr.querySelector('select[name="idgastos"]').value, "number"),
-												Idproveedor: parseValue(tr.querySelector('select[name="idproveedorgastos"]').value, "number"),
-												Segmento: null,
-												Monto: parseValue(montoRaw, "decimal"),
-												Fecha: parseValue(tr.querySelector('input[name="fechagasto"]').value, "date"),
-												Estado: tr.querySelector('select[name="estadogasto"]').value,
-												Observacion: tr.querySelector('textarea[name="observaciongasto"]').value,
-												Venta: "Vendido",
-												EsEliminado: esEliminado
-											});
-										}
-									});
+										const idGastoElement = tr.querySelector('select[name="idgastos"]') || tr.querySelector('input[name="idgastos"]');
+										const idProveedorElement = tr.querySelector('select[name="idproveedorgastos"]') || tr.querySelector('input[name="idproveedorgastos"]');
+										const estadoElement = tr.querySelector('select[name="estadogasto"]') || tr.querySelector('input[name="estadogasto"]');
+
+										const gastoObj = {
+											IdGastoReal: parseValue(idGastoRealInput?.value, "number"),
+											Idgasto: parseValue(idGastoElement?.value, "number"),
+											Idproveedor: parseValue(idProveedorElement?.value, "number"),
+											Segmento: null,
+											Monto: montoRaw ? parseFloat(montoRaw) : 0,
+											Fecha: parseValue(tr.querySelector('input[name="fechagasto"]')?.value, "date"),
+											Estado: estadoElement?.value,
+											Observacion: tr.querySelector('textarea[name="observaciongasto"]')?.value ?? "",
+											Venta: "Vendido",
+											EsEliminado: esEliminado
+										};
+
+										console.log("Gasto a enviar:", gastoObj);
+										todosLosGastos.push(gastoObj);
+									} else {
+										console.warn("⚠️ Fila sin montogasto o IdGastoReal:", tr);
+									}
+								});
 
 											// Nuevos gastos
 									document.querySelectorAll('#tablaAgregarGastos tbody tr').forEach(tr => {
 										if (tr.style.display !== 'none') {
 											let montoRaw = tr.querySelector('input[name="montogastonuevos"]').value.trim();
 											montoRaw = montoRaw.replace(/\./g, '').replace(',', '.');
-
+											
 											todosLosGastos.push({
 												IdGastoReal: 0,
 												Idgasto: parseValue(tr.querySelector('select[name="idgastosnuevos"]').value, "number"),
